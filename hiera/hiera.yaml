@@ -1,0 +1,17 @@
+:yaml:
+  :datadir: /etc/puppet/hiera/%{::environment}/
+:hierarchy:
+  - sf_version
+  - hosts
+  - ssh
+  - edeploy_client
+  - edeploy_server
+  - "%{::clientcert}"
+  - bup
+  - jenkins
+  - gerrit
+  - cauth
+  - common
+  - sfarch
+  - sfconfig
+  - sfcreds

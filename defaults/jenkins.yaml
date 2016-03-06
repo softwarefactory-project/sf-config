@@ -1,0 +1,2 @@
+jenkins:
+  jenkins_heap_limit: 256m
