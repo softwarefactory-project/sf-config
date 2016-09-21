@@ -1,0 +1,164 @@
+#
+# Copyright (C) 2014 eNovance SAS <licensing@enovance.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+# Server Specific Configurations
+import os
+
+# Pecan Application Configurations
+app = {
+    'guess_content_type_from_ext': False,
+    'root': 'managesf.controllers.root.RootController',
+    'modules': ['managesf'],
+    'template_path': '%(confdir)s/managesf/templates',
+    'debug': False,
+}
+
+logging = {
+    'loggers': {
+        'managesf': {'level': 'DEBUG',
+                     'handlers': ['file_handler']},
+        'pysflib': {'level': 'DEBUG',
+                     'handlers': ['file_handler']},
+        '__force_dict__': True
+    },
+    'handlers': {
+        'file_handler': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'DEBUG',
+            'formatter': 'simple',
+            'filename': '/var/log/managesf/managesf.log',
+        }
+    },
+    'formatters': {
+        'simple': {
+            'format': ('%(asctime)s %(levelname)-5.5s [%(name)s]'
+                      '[%(threadName)s] %(message)s')
+        }
+    }
+}
+
+# Authorization configurations
+auth = {
+    'host': 'auth.{{ fqdn }}',
+}
+
+services = [
+# Because of http://softwarefactory-project.io/redmine/issues/1466
+# Add storyboard service at the begining
+{% if 'storyboard' in roles %}
+    'SFStoryboard',
+{% endif %}
+{% if 'redmine' in roles %}
+    'SFRedmine',
+{% endif %}
+{% if 'gerrit' in roles %}
+    'SFGerrit',
+{% endif %}
+{% if 'jenkins' in roles %}
+    'jenkins',
+{% endif %}
+{% if 'etherpad' in roles %}
+    'etherpad',
+{% endif %}
+{% if 'lodgeit' in roles %}
+    'lodgeit',
+{% endif %}
+{% if 'nodepool' in roles %}
+    'nodepool',
+{% endif %}
+]
+
+mysql = {
+    'host': 'mysql.{{ fqdn }}',
+}
+jenkins = {
+    'host': 'jenkins.{{ fqdn }}',
+}
+etherpad = {
+    'host': 'managesf.{{ fqdn }}',
+}
+lodgeit = {
+    'host': 'managesf.{{ fqdn }}',
+}
+
+
+# fake host, does not matter
+nodepool = {
+    'host': 'nodepool.{{ fqdn }}',
+}
+
+managesf = {
+    'host': 'managesf.{{ fqdn }}',
+    'sshkey_priv_path': '/usr/share/httpd/.ssh/id_rsa',
+    'backup_dir': '/var/www/managesf/',
+}
+
+admin = {
+    'name': 'admin',
+    'email': 'admin@{{ fqdn }}',
+    'http_password': '{{ authentication['admin_password'] }}',
+}
+
+gerrit = {
+    'user': 'gerrit',
+    'admin_user': 'admin',
+    'admin_password': '{{ authentication['admin_password'] }}',
+    'host': 'gerrit.{{ fqdn }}',
+    'url': '{{ gateway_url }}/',
+    'top_domain': '{{ fqdn }}',
+    'ssh_port': 29418,
+    'sshkey_priv_path': '/var/www/managesf/gerrit_admin_rsa',
+    'replication_config_path': '/home/gerrit/site_path/etc/replication.config',
+    'db_host': 'mysql.{{ fqdn }}',
+    'db_name': 'gerrit',
+    'db_user': 'gerrit',
+    'db_password': '{{ creds_gerrit_sql_pwd }}'
+}
+
+redmine = {
+    'host': 'api-redmine.{{ fqdn }}',
+    'url': '{{ redmine_api_url }}',
+    'db_url': 'mysql://managesf:{{ creds_managesf_sql_pwd }}@mysql.{{ fqdn }}/redmine?charset=utf8',
+}
+
+storyboard = {
+    'url': 'http://storyboard.{{ fqdn }}:20000/v1/',
+    'host': 'storyboard',
+    'service_token': '{{ creds_storyboard_service_token }}',
+    'db_host': 'mysql.{{ fqdn }}',
+    'db_name': 'storyboard',
+    'db_user': 'storyboard',
+    'db_password': '{{ creds_storyboard_sql_pwd }}',
+}
+
+sqlalchemy = {
+    'url': 'mysql://managesf:{{ creds_managesf_sql_pwd }}@mysql.{{ fqdn }}/managesf?charset=utf8',
+    'encoding': 'utf-8',
+}
+
+htpasswd = {
+    'filename': '/etc/httpd/managesf_htpasswd'
+}
+
+pages = {
+    'maps': '/etc/httpd/pages.txt'
+}
+
+sshconfig = {
+    'hostname': 'gerrit.{{ fqdn }}',
+}
+
+policy = {
+    'policy_file': '/var/www/managesf/policy.yaml',
+}
