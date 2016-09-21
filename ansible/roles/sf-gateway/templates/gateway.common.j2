@@ -1,0 +1,255 @@
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} !{{ fqdn }} [NC]
+    RewriteRule ^/(.*)$ {{ fqdn }}/$1 [R=301,L]
+
+    RewriteMap base64helper "prg:/usr/local/sbin/base64helper"
+
+    # Don't login to Redmine itself, use cauth instead
+    <LocationMatch "/redmine/login">
+    RewriteEngine On
+    RewriteRule ^(.*)$ /auth/login [R,NC,L]
+    </LocationMatch>
+
+
+    # TODO: make /issues/ location bug-tracker awar
+    <Location "/issues/">
+        RewriteEngine On
+        RewriteRule "/issues(.*$)" "/redmine/issues/$1" [R]
+    </Location>
+
+    <Location /redmine/>
+        ProxyPassReverse /
+
+        ProxyHTMLURLMap /           /redmine/
+        ProxyHTMLURLMap /redmine/   /redmine/
+
+        SetOutputFilter INFLATE;proxy-html;DEFLATE
+
+        ProxyHTMLMeta On
+        ProxyHTMLEnable On
+
+        # Included example from /usr/share/doc/httpd-2.4.6/proxy-html.conf
+        ProxyHTMLLinks    a             href
+        ProxyHTMLLinks    area          href
+        ProxyHTMLLinks    link          href
+        ProxyHTMLLinks    img           src longdesc usemap
+        ProxyHTMLLinks    object        classid codebase data usemap
+        ProxyHTMLLinks    q             cite
+        ProxyHTMLLinks    blockquote    cite
+        ProxyHTMLLinks    ins           cite
+        ProxyHTMLLinks    del           cite
+        ProxyHTMLLinks    form          action
+        ProxyHTMLLinks    input         src usemap
+        ProxyHTMLLinks    head          profile
+        ProxyHTMLLinks    base          href
+        ProxyHTMLLinks    script        src for
+
+        ProxyHTMLEvents    onclick ondblclick onmousedown onmouseup \
+                onmouseover onmousemove onmouseout onkeypress \
+                onkeydown onkeyup onfocus onblur onload \
+                onunload onsubmit onreset onselect onchange
+
+        # Non-default addition for Redmine
+        ProxyHTMLLinks  option      value
+    </Location>
+
+    <LocationMatch "/r/(?!(login|logout|a))">
+    RewriteEngine On
+
+    # Logged in in SSO, but logged out from Gerrit
+    RewriteCond %{HTTP_COOKIE} !^GerritAccount.*$ [NC]
+    RewriteCond %{HTTP_COOKIE} ^.*auth_pubtkt.*$ [NC]
+    RewriteRule ^(.*)$ /r/login [R,NC,L]
+
+    # Logged in in Gerrit, but logged out from cauth
+    RewriteCond %{HTTP_COOKIE} ^GerritAccount.*$ [NC]
+    RewriteCond %{HTTP_COOKIE} !^.*auth_pubtkt.*$ [NC]
+    RewriteRule ^(.*)$ /r/logout [R,NC,L]
+    </LocationMatch>
+
+    <LocationMatch "/r/(login|a)(/|$)">
+        Order Allow,Deny
+        Allow from all
+
+        AuthType mod_auth_pubtkt
+        TKTAuthFakeBasicAuth on
+        TKTAuthLoginURL /auth/login
+        TKTAuthDebug 1
+        require valid-user
+    </LocationMatch>
+
+    # Redirect a gerrit page that give an easy access to gitweb
+    # if user does not have the GerritAccount cookie in its browser
+    # This prevent the 'Not Found' 404 from Gerrit if cookie not set
+    <LocationMatch "/r/gitweb.*">
+        RewriteEngine On
+        RewriteCond %{HTTP_COOKIE} !^.*gerritaccount.*$ [NC]
+        RewriteCond %{QUERY_STRING} ^p=(.*).git;a=summary$
+        RewriteRule /r/gitweb.*$ /r/#/admin/projects/%1,branches [QSD,R,L,NE]
+    </LocationMatch>
+
+    <LocationMatch "^/grafana/">
+        RequestHeader unset X-Forwarded-User
+        <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
+            AuthType mod_auth_pubtkt
+            TKTAuthLoginURL /auth/login
+            TKTAuthFakeBasicAuth on
+            TKTAuthDebug 1
+            AuthName "Grafana"
+            require valid-user
+            RewriteEngine On
+            RewriteCond %{LA-U:REMOTE_USER} (.+)
+            RewriteRule .* - [E=RU:%1,NS]
+            RequestHeader set X-Forwarded-User %{RU}e
+        </If>
+    </LocationMatch>
+
+    <IfModule mod_proxy.c>
+        ProxyVia On
+        ProxyRequests Off
+
+        ProxyPass /r/ {{ gerrit_internal_url }} nocanon retry=0
+        ProxyPassReverse /r/ {{ gerrit_internal_url }}
+
+        # Requires internal authentication in Gerrit (without SSO)
+        ProxyPass /api/ {{ gerrit_internal_url }} nocanon
+        ProxyPassReverse /api/ {{ gerrit_internal_url }}
+
+        ProxyPass /jenkins/ {{ jenkins_internal_url }} nocanon retry=0
+        ProxyPassReverse /jenkins/ {{ jenkins_internal_url }}
+
+        ProxyPass /zuul/ {{ zuul_internal_url }} nocanon retry=0
+        ProxyPassReverse /zuul/ {{ zuul_internal_url }}
+
+        ProxyPass /storyboard_api/ http://storyboard:20000/v1/ nocanon retry=0
+        ProxyPassReverse /storyboard_api/ http://storyboard:20000/v1/
+
+        ProxyPass /redmine/ {{ redmine_internal_url }} nocanon retry=0
+        ProxyPassReverse /redmine/ {{ redmine_internal_url }}
+        ProxyHTMLURLMap {{ redmine_internal_url }} /redmine/
+
+        ProxyPass /etherpad/ http://127.0.0.1:9001/ retry=0
+        ProxyPassReverse /etherpad/ http://127.0.0.1:9001/
+
+        ProxyPass /paste/ http://127.0.0.1:5000/paste/ retry=0
+        ProxyPassReverse /paste/ http://127.0.0.1:5000/paste/
+
+        ProxyPreserveHost On
+        AllowEncodedSlashes NoDecode
+        <Proxy *>
+            Options FollowSymLinks MultiViews
+            AllowOverride All
+            Order allow,deny
+            allow from all
+        </Proxy>
+
+        {% for prefix in authentication['allowed_proxy_prefixes'] %}
+        ProxyPassMatch ^/jenkinslogs/{{ prefix }}(.*)$ http://{{ prefix }}$1
+        {% endfor %}
+
+        RewriteRule ^/grafana$ grafana/ [R]
+        ProxyPass /grafana/ http://127.0.0.1:3000/
+        ProxyPassReverse /grafana/ http://127.0.0.1:3000/
+
+    </IfModule>
+
+    <LocationMatch "^/jenkinslogs/">
+        Order Allow,Deny
+        Allow from all
+
+        AuthType mod_auth_pubtkt
+        TKTAuthFakeBasicAuth on
+        TKTAuthLoginURL /auth/login
+        TKTAuthDebug 1
+        require valid-user
+    </LocationMatch>
+
+    DocumentRoot /var/www/
+
+    RewriteEngine On
+    RewriteRule ^/$ /r/ [R]
+    RewriteRule ^/redmine/redmine/(.*)$ /redmine/$1 [R=301,L]
+
+    <LocationMatch "^/storyboard_api">
+        # Make sure the access_token is set to username
+        Header set Authorization "Bearer %{REMOTE_USER}e"
+        Header set Cache-Control "no-cache, must-revalidate"
+        AuthType mod_auth_pubtkt
+        TKTAuthFakeBasicAuth on
+        TKTAuthLoginURL /auth/login
+        TKTAuthDebug 1
+        require valid-user
+    </LocationMatch>
+
+    <LocationMatch "^/dashboard">
+        Header set Cache-Control "no-cache, must-revalidate"
+        AuthType mod_auth_pubtkt
+        TKTAuthFakeBasicAuth on
+        TKTAuthLoginURL /auth/login
+        TKTAuthDebug 1
+        require valid-user
+    </LocationMatch>
+
+    <LocationMatch "^/api">
+        AuthType Basic
+        AuthName "Gerrit API"
+        AuthUserFile /etc/httpd/managesf_htpasswd
+        require valid-user
+
+        Order Allow,Deny
+        Allow from {{ fqdn }}
+
+        # Grant access based on password authentication or IP address
+        Satisfy any
+
+        # Helper to send a fake authorization header to Gerrit
+        RewriteCond %{REMOTE_USER} (.+)
+        RewriteRule .* - [E=B64:${base64helper:%{REMOTE_USER}},NE]
+        RequestHeader set Authorization "Basic %{B64}e"
+
+        # Requests from localhost get admin permission
+        RewriteCond %{REMOTE_HOST} ^.*.{{ fqdn }}$
+        RewriteRule .* - [E=B64:${base64helper:admin},NE]
+        RequestHeader set Authorization "Basic %{B64}e"
+    </LocationMatch>
+
+    RewriteMap path2content "txt:/etc/httpd/pages.txt"
+    <LocationMatch "^/pages/((?!404.*).)+">
+        RewriteEngine On
+        RewriteRule "/pages/([a-zA-Z1-9]*)/(.*$)" "${path2content:$1|{{ fqdn }}/pages/404}/$2" [P]
+    </LocationMatch>
+
+    <LocationMatch "^/pages/404/.*">
+        RewriteEngine On
+        RewriteRule ^(.*)$ /pages-404.html [R]
+    </LocationMatch>
+
+    <Directory /var/www>
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    <Directory /var/www/managesf>
+        Order allow,deny
+        Deny from all
+    </Directory>
+
+    <Directory /var/www/cauth>
+        Order allow,deny
+        Deny from all
+    </Directory>
+
+    {% if authentication["authenticated_only"] %}
+    # Make sure static files, docs, git and the topmenu are accessible even if
+    # anonymous access is disabled. Git itself is protected by Gerrit
+    <LocationMatch "^(?!/(r/.*/(info/refs|git-upload-pack)|docs|static|auth|index.html|$))">
+        Order deny,allow
+        Allow from all
+        AuthType mod_auth_pubtkt
+        TKTAuthLoginURL /auth/login
+        TKTAuthFakeBasicAuth on
+        TKTAuthDebug 1
+        require valid-user
+    </LocationMatch>
+    {% endif %}
