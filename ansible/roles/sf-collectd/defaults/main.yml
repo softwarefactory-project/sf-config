@@ -2,7 +2,6 @@ role_actions:
   - install
   - setup
 
-collectd_repo_name: sfmaster
 collectd_service: collectd
 influxdb_host: influxdb.example.com
 influxdb_port: 25826

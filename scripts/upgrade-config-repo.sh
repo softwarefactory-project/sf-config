@@ -19,7 +19,7 @@ set -e
 
 # Clone the config project
 CONF_TMP=$(mktemp -d)
-git clone git+ssh://{{ fqdn }}/config ${CONF_TMP}
+git clone git+ssh://gerrit/config ${CONF_TMP}
 
 rsync -av /usr/share/sf-config/config-repo/ ${CONF_TMP}/ \
       --exclude jobs/projects.yaml \

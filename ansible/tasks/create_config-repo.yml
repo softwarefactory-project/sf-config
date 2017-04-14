@@ -1,9 +1,3 @@
-- name: Install upgrade-config-repo.sh
-  template:
-    src: "{{ sf_templates_dir }}/upgrade-config-repo.sh.j2"
-    dest: "/usr/local/bin/upgrade-config-repo.sh"
-    mode: 0555
-
 - stat: path=/root/config
   register: config_done
 

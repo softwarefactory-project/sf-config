@@ -113,7 +113,7 @@
           jenkins-jobs test jobs/ -o ../build/
 
           echo "[+] Checking zuul"
-          /usr/local/bin/yaml-merger.py zuul | tee ../build/zuul/layout.yaml
+          /usr/share/sf-config/scripts/yaml-merger.py zuul | tee ../build/zuul/layout.yaml
           cp zuul/*.py ../build/zuul/ || true
           zuul-server -c ../build/zuul/zuul.conf -l ../build/zuul/layout.yaml -t
 
