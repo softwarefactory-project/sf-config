@@ -33,7 +33,7 @@ install -p -D -m 0644 defaults/logo-splash.png %{buildroot}%{_sysconfdir}/softwa
 install -p -D -m 0644 defaults/logo-topmenu.png %{buildroot}%{_sysconfdir}/software-factory/logo-topmenu.png
 # /usr/share/sf-config
 install -p -d %{buildroot}%{_datarootdir}/sf-config
-mv ansible config-repo defaults refarch scripts %{buildroot}%{_datarootdir}/sf-config/
+mv ansible config-repo defaults refarch scripts templates %{buildroot}%{_datarootdir}/sf-config/
 
 %files
 %{_bindir}/sfconfig.py
@@ -43,5 +43,5 @@ mv ansible config-repo defaults refarch scripts %{buildroot}%{_datarootdir}/sf-c
 %{_datarootdir}/sf-config/
 
 %changelog
-* Tue Apr 11 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.5.0-1
+* Fri Apr 14 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.5.0-1
 - Initial packaging
