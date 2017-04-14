@@ -23,25 +23,27 @@ Requires:       python-jinja2
 %build
 
 %install
-# scripts
+# The sfconfig.py
 install -p -D -m 0755 scripts/sfconfig.py %{buildroot}%{_bindir}/sfconfig.py
-install -p -D -m 0755 scripts/hieraedit.py %{buildroot}%{_bindir}/hieraedit.py
+# retro compat until 2.5.0 is released
+install -p -D -m 0755 scripts/yaml-merger.py %{buildroot}/usr/local/bin/yaml-merger.py
 # /etc/software-factory
 install -p -D -m 0644 defaults/arch.yaml %{buildroot}%{_sysconfdir}/software-factory/arch.yaml
 install -p -D -m 0644 defaults/sfconfig.yaml %{buildroot}%{_sysconfdir}/software-factory/sfconfig.yaml
+install -p -D -m 0644 defaults/logo-favicon.ico %{buildroot}%{_sysconfdir}/software-factory/logo-favicon.ico
 install -p -D -m 0644 defaults/logo-splash.png %{buildroot}%{_sysconfdir}/software-factory/logo-splash.png
 install -p -D -m 0644 defaults/logo-topmenu.png %{buildroot}%{_sysconfdir}/software-factory/logo-topmenu.png
 # /usr/share/sf-config
 install -p -d %{buildroot}%{_datarootdir}/sf-config
-mv ansible config-repo defaults refarch scripts %{buildroot}%{_datarootdir}/sf-config/
+mv ansible config-repo defaults refarch scripts templates %{buildroot}%{_datarootdir}/sf-config/
 
 %files
+/usr/local/bin/yaml-merger.py
 %{_bindir}/sfconfig.py
-%{_bindir}/hieraedit.py
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
 %changelog
-* Tue Apr 11 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.5.0-1
+* Fri Apr 14 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.5.0-1
 - Initial packaging
