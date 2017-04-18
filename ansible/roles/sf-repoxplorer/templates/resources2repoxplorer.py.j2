@@ -1,5 +1,6 @@
 #!/bin/env python
 
+import os
 import sys
 import yaml
 import shutil
@@ -33,8 +34,9 @@ if __name__ == "__main__":
         default['groups'][group] = grp
 
     if len(sys.argv) > 1 and sys.argv[1] == 'apply':
-        shutil.copy(REPOXPLORER_DEFAULT_FILE,
-                    REPOXPLORER_DEFAULT_FILE + 'save')
+        if os.path.exist(REPOXPLORER_DEFAULT_FILE):
+            shutil.copy(REPOXPLORER_DEFAULT_FILE,
+                        REPOXPLORER_DEFAULT_FILE + 'save')
         yaml.safe_dump(default,
                        file(REPOXPLORER_DEFAULT_FILE, 'w'),
                        default_flow_style=False)
