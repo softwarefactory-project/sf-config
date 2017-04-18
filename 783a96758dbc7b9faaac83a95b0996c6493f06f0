@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da9b358b_474b425a",
+        "filename": "ansible/roles/sf-nodepool/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-04-18T19:02:07Z",
+      "side": 1,
+      "message": "notify: apache reload",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 70
+      },
+      "revId": "783a96758dbc7b9faaac83a95b0996c6493f06f0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
