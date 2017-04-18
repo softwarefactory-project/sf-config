@@ -11,12 +11,6 @@
     regexp: "^db_default_file =.*$"
     replace: "db_default_file = '/etc/repoxplorer/default.yaml'"
 
-- name: "Install default index file for repoxplorer"
-  template:
-    src: default.yaml.j2
-    dest: /etc/repoxplorer/default.yaml
-    force: no
-
 - name: "Remove index.yaml example definition"
   file:
     path: /etc/repoxplorer/index.yaml
