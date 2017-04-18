@@ -39,6 +39,9 @@
     - { name: secure.config,
         path: /etc/gerrit,
         mode: '0600' }
+    - { name: gerrit,
+        path: /etc/sysconfig,
+        mode: '0444' }
   notify: [restart gerrit]
 
 - name: "Install static configuration files for gerrit"
