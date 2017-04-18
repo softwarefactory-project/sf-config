@@ -1,35 +1,44 @@
 description: "One instances per service sample 10 nodes deployment"
 inventory:
   - name: mysql
+    ip: 192.168.135.101
     roles:
       - install-server
       - mysql
   - name: managesf
+    ip: 192.168.135.102
     roles:
       - cauth
       - gateway
       - managesf
   - name: zuul
+    ip: 192.168.135.103
     roles:
       - zuul
   - name: nodepool
+    ip: 192.168.135.104
     roles:
       - nodepool
   - name: jenkins
+    ip: 192.168.135.105
     cpu: 4
     ram: 8
     roles:
       - jenkins
   - name: statsd
+    ip: 192.168.135.106
     roles:
       - statsd
   - name: murmur
+    ip: 192.168.135.107
     roles:
       - murmur
   - name: gerritbot
+    ip: 192.168.135.108
     roles:
       - gerritbot
   - name: review
+    ip: 192.168.135.109
     cpu: 4
     ram: 8
     roles:
