@@ -8,6 +8,12 @@
     - /usr/libexec/software-factory
     - /usr/share/software-factory
 
+- name: "system: setenforce 0"
+  command: setenforce 0
+  when:
+    - ansible_virtualization_role != "guest"
+    - ansible_selinux["mode"] != "permissive"
+
 - name: "sf: create log directory"
   file: path=/var/log/software-factory state=directory mode=0700
 
