@@ -54,21 +54,29 @@
 - name: Check repoxplorer version
   command: rpm -q --queryformat '%{VERSION}' repoxplorer
   register: version
-  when: config_done.stat.exists != True
+  when:
+    - "'repoxplorer' in roles"
+    - config_done.stat.exists != True
 - file:
      path: "{{ item }}"
      state: absent
   with_items:
      - "{{ conf_tmp.stdout }}/repoxplorer/projects.yaml"
      - "{{ conf_tmp.stdout }}/repoxplorer/idents.yaml"
-  when: config_done.stat.exists != True and version.stdout == '0.8.0'
+  when:
+    - "'repoxplorer' in roles"
+    - config_done.stat.exists != True
+    - version.stdout == '0.8.0'
 
 - name: Change default fqdn in default repoxplorer projects.yaml file
   replace:
       dest: "{{ conf_tmp.stdout }}/repoxplorer/projects.yaml"
       regexp: 'sftests.com'
       replace: '{{ fqdn }}'
-  when: config_done.stat.exists != True and version.stdout == '0.7.2'
+  when:
+    - "'repoxplorer' in roles"
+    - config_done.stat.exists != True
+    - version.stdout == '0.7.2'
 
 # Commit
 - name: Push config repo

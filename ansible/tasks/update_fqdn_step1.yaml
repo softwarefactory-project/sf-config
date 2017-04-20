@@ -1,7 +1,6 @@
 ---
-
 - name: Check if fqdn has been changed
-  shell: test `hostname -d` = "{{ fqdn }}"
+  shell: test "$(hostname -d)" = "{{ fqdn }}"
   register: fqdn_changed
   failed_when: "fqdn_changed.rc > 1"
   changed_when: "fqdn_changed.rc == 1"
@@ -14,11 +13,15 @@
 
 - name: Kill rabbitmq
   service: name=rabbitmq-server state=stopped
-  when: fqdn_changed.rc == 1
+  when:
+     - '"rabbitmq" in roles'
+     - fqdn_changed.rc == 1
 
 - name: Remove rabbitmq state data
   command: rm -Rf /var/lib/rabbitmq/mnesia/
-  when: fqdn_changed.rc == 1
+  when:
+     - '"rabbitmq" in roles'
+     - fqdn_changed.rc == 1
 
 - name: Restart mariadb service
   when: fqdn_changed.rc == 1

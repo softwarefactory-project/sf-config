@@ -3,11 +3,6 @@
 - name: "Create gerrit user"
   include: "{{ sf_tasks_dir }}/create_user.yml user_name=gerrit ssh_key=gerrit_service_rsa shell=/bin/bash"
 
-- name: "Chmod cgi file"
-  file:
-    path: /var/www/git/gitweb.cgi
-    mode: 0755
-
 - name: "Install project.config"
   copy:
     src: "project.config"

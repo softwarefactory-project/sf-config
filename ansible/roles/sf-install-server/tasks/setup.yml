@@ -40,5 +40,10 @@
       - {name: backup_gerrit, job: /usr/local/bin/trigger_backup.sh, hour: "1", minute: "0"}
       - {name: auto_backup, job: /usr/local/bin/export_backup_swift.sh, hour: "5", minute: "0"}
 
+- name: Install rsyncd.conf
+  copy:
+    src: rsyncd.conf
+    dest: /etc/rsyncd.conf
+
 - name: Start rsyncd
   service: name=rsyncd state=started enabled=yes
