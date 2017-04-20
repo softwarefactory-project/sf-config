@@ -8,3 +8,14 @@
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: "Set permissive selinux"
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: 'SELINUX=permissive'
+
+- name: "Enable selinux autorelabel"
+  file:
+    path: /.autorelabel
+    state: touch
