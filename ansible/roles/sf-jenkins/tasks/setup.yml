@@ -84,6 +84,9 @@
       mode: 0444
       force: yes
 
+- name: Fix passlib version weirdness (invalid version number '1.7.0.post20170223134505')
+  copy: content="__version__ = '1.7.0'" dest=/usr/lib/python2.7/site-packages/passlib/__init__.py
+
 - name: Manage jenkins user password for apache
   htpasswd:
       path: /etc/httpd/htpasswd
