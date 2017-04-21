@@ -14,6 +14,8 @@ import sys
 
 
 def execute(cmd):
+    if globals()['debug']:
+        print "Debug: execute: %s" % cmd
     p = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     if p.wait():
         fail(p.stdout.read())
@@ -52,8 +54,12 @@ def main():
     parser.add_argument("--failure", action="store_const", const=True)
     parser.add_argument("--recheck", action="store_const", const=True)
     parser.add_argument("--rebase", action="store_const", const=True)
+    parser.add_argument("--debug", action="store_const", const=True)
     parser.add_argument("--review-id", type=int, default=0)
     args = parser.parse_args()
+
+    globals()['debug'] = args.debug
+
     os.chdir(args.repository)
 
     # Check gerrit host
@@ -66,15 +72,19 @@ def main():
     if "username" not in open("%s/.gitconfig" % os.environ["HOME"]).read():
         execute("git config --global gitreview.username admin")
 
+    gr_opts = ''
+    if args.debug:
+        gr_opts = '-v'
+
     if args.review_id:
-        print execute("git review -d %s" % args.review_id)
+        print execute("git review %s -d %s" % (gr_opts, args.review_id))
         sha = execute("git log -n1 --pretty=format:%H")
     else:
         # Submit change
         if "Change-Id:" in execute("git log -n 1"):
-            print execute("git review -y")
+            print execute("git review %s -y" % gr_opts)
         else:
-            print execute("git review -yi")
+            print execute("git review %s -yi" % gr_opts)
         # get current branch
         current_ref = open(".git/HEAD").read()
         if current_ref.startswith('ref: '):
