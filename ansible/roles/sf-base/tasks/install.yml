@@ -2,9 +2,32 @@
 - name: "Create libexec directory"
   file: path=/usr/local/libexec/software-factory state=directory mode=0755
 
-- name: "Install packages"
+- name: "Install package to fix the current issue on RDO 20170223"
   yum:
-    name: "postfix, monit, ntp, cloud-init, cloud-utils-growpart, python2-sfmanager"
+    name: python2-passlib-1.6.5
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: "Install packages"
+  yum:
+    name: "{{ item }}"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  with_items:
+    - cloud-init
+    - cloud-utils-growpart
+    - git
+    - monit
+    - ntp
+    - patch
+    - postfix
+    - python-flake8
+    - python-nose
+    - python2-sfmanager
+    - rubygem-rake
+    - rubygems
+    - sf-release
+    - tmux
+    - vim-enhanced
