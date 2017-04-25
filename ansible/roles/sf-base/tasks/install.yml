@@ -4,7 +4,18 @@
 
 - name: "Install packages"
   yum:
-    name: "postfix, monit, ntp, cloud-init, cloud-utils-growpart, python2-sfmanager"
+    name: "{{ item }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  with_items:
+    - cloud-init
+    - cloud-utils-growpart
+    - git
+    - monit
+    - ntp
+    - patch
+    - postfix
+    - sf-release
+    - tmux
+    - vim-enhanced
