@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "da9b358b_4017a3ed",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-04-26T15:08:02Z",
+      "side": 1,
+      "message": "Ok, how do you think we should manage theses packages ? build a cloud image and a simple qcow without cloud-init ?",
+      "parentUuid": "da9b358b_0dd55442",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da9b358b_8dc16483",
         "filename": "ansible/roles/sf-base/tasks/install.yml",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-04-26T06:24:32Z",
       "side": 1,
       "message": "Git is only (explicitely) needed on install-server.",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_2005bfc1",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-04-26T15:08:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da9b358b_8dc16483",
       "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "da9b358b_00319ba2",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-04-26T15:08:02Z",
+      "side": 1,
+      "message": "ok, but these packages are not present on our config repo, so should we remove them from the playbook ?",
+      "parentUuid": "da9b358b_adc42892",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da9b358b_cdce4cb4",
         "filename": "ansible/roles/sf-base/tasks/install.yml",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "da9b358b_c02a932c",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-04-26T15:08:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da9b358b_cdce4cb4",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da9b358b_edc910ae",
         "filename": "ansible/roles/sf-base/tasks/install.yml",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2017-04-26T06:24:32Z",
       "side": 1,
       "message": "Rubygem should only be installed on the install-server, to run serverspec. Though we should replace serverspec by infra test instead. Anyway, not in sf-base.",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_801dab11",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-04-26T15:08:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da9b358b_edc910ae",
       "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -115,6 +205,24 @@
       "writtenOn": "2017-04-26T09:50:17Z",
       "side": 1,
       "message": "Well, we do need to make sure sf-release is installed on remote host, though we should enforce the version using \"sf-release-{{ sf_version }}\"",
+      "parentUuid": "da9b358b_2dd01853",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_601aa719",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-04-26T15:08:02Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "da9b358b_2dd01853",
       "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",

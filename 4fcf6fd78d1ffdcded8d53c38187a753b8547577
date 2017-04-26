@@ -16,6 +16,24 @@
       "revId": "4fcf6fd78d1ffdcded8d53c38187a753b8547577",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_e057d7c8",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-04-26T15:08:02Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "da9b358b_6dbe2001",
+      "revId": "4fcf6fd78d1ffdcded8d53c38187a753b8547577",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
