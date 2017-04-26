@@ -101,6 +101,24 @@
       "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_8dd844f1",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-04-26T09:50:17Z",
+      "side": 1,
+      "message": "Well, we do need to make sure sf-release is installed on remote host, though we should enforce the version using \"sf-release-{{ sf_version }}\"",
+      "parentUuid": "da9b358b_2dd01853",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
