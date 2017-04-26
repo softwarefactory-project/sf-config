@@ -3,6 +3,7 @@
 import os
 import sys
 import yaml
+import copy
 import shutil
 import requests
 
@@ -25,8 +26,11 @@ if __name__ == "__main__":
     resources = resources['resources']
     for project, data in resources['projects'].items():
         default['projects'][project] = {}
+        # Set a template by project to ease overwriting via the config repo
+        default['project-templates'][project] = copy.deepcopy(
+            default['project-templates']['default'])
         for repo in data['source-repositories']:
-            default['projects'][project][repo] = {'template': 'default'}
+            default['projects'][project][repo] = {'template': project}
     for group, data in resources['groups'].items():
         grp = {}
         grp['description'] = data.get('description', '')
