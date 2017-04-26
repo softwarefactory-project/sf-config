@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da9b358b_0dd55442",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-04-26T06:24:32Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be installed by sf-base, either it\u0027s a cloud system, then it has cloud-init, either it does not need it",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_8dc16483",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-04-26T06:24:32Z",
+      "side": 1,
+      "message": "Git is only (explicitely) needed on install-server.",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_adc42892",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-04-26T06:24:32Z",
+      "side": 1,
+      "message": "flake8 and nose should only be installed on jenkins slave node",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_cdce4cb4",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-04-26T06:24:32Z",
+      "side": 1,
+      "message": "sfmanager is only needed on install-server",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_edc910ae",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-04-26T06:24:32Z",
+      "side": 1,
+      "message": "Rubygem should only be installed on the install-server, to run serverspec. Though we should replace serverspec by infra test instead. Anyway, not in sf-base.",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_2dd01853",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-04-26T06:24:32Z",
+      "side": 1,
+      "message": "To use sf-config, you need sf-release in the first place, so no need to install it here.",
+      "revId": "cc2e5a5e15d558301019e7d5c14813993c8e415d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
