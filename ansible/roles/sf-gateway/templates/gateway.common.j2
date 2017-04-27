@@ -126,6 +126,12 @@
 {% endif %}
     </IfModule>
 
+    # Disable un-used jenkins cli
+    <Location "/jenkins/cli">
+        Order deny,allow
+        Deny from all
+    </Location>
+
     <LocationMatch "^/jenkinslogs/">
         Order Allow,Deny
         Allow from all
