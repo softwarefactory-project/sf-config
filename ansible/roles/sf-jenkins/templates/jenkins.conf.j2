@@ -6,11 +6,6 @@
     ProxyPass /jenkins/ http://127.0.0.1:{{ jenkins_port }}/jenkins/ nocanon retry=1 acquire=3000 timeout=600 Keepalive=On
     ProxyPassReverse /jenkins/ http://127.0.0.1:{{ jenkins_port }}/jenkins/
 
-    # jjb fails with "jenkins.NotFoundException: Requested item could not be found" when trying to access:
-    # http://jenkins.sftests.com:8080/api/json?tree=jobs[url,color,name,jobs]
-    ProxyPass /api/ http://127.0.0.1:{{ jenkins_port }}/jenkins/api/ nocanon retry=1 acquire=3000 timeout=600 Keepalive=On
-    ProxyPassReverse /api/ http://127.0.0.1:{{ jenkins_port }}/jenkins/api/
-
     ProxyPreserveHost On
     AllowEncodedSlashes NoDecode
     <Proxy *>
@@ -58,10 +53,9 @@
             TKTAuthDebug 1
             AuthName "Jenkins"
             require valid-user
-            RewriteEngine On
-            RewriteCond %{LA-U:REMOTE_USER} (.+)
-            RewriteRule .* - [E=RU:%1,NS]
-            RequestHeader set X-Forwarded-User %{RU}e
+	    <If "%{REMOTE_USER} == 'admin'">
+                RequestHeader set X-Forwarded-User admin
+            </If>
         </If>
     </LocationMatch>
 </VirtualHost>
