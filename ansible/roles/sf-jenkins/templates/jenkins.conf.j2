@@ -58,10 +58,9 @@
             TKTAuthDebug 1
             AuthName "Jenkins"
             require valid-user
-            RewriteEngine On
-            RewriteCond %{LA-U:REMOTE_USER} (.+)
-            RewriteRule .* - [E=RU:%1,NS]
-            RequestHeader set X-Forwarded-User %{RU}e
+	    <If "%{REMOTE_USER} == 'admin'">
+                RequestHeader set X-Forwarded-User admin
+            </If>
         </If>
     </LocationMatch>
 </VirtualHost>
