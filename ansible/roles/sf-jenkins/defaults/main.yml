@@ -28,9 +28,6 @@ jenkins_password: "CHANGE_ME"
 jenkins_plugins_url: "https://updates.jenkins-ci.org/download/plugins"
 jenkins_cache_url: ""
 
-jenkins_swarm_client_version: "2.1"
-jenkins_swarm_client_checksum: "sha256:dbabd2757624df588b258a3c476c06946e0e8c3e98076cc17d7ade371b91a967"
-
 jenkins_plugins:
   - name: ansicolor
     version: "0.4.2"
@@ -62,9 +59,6 @@ jenkins_plugins:
   - name: ssh-agent
     version: "1.4.1"
     checksum: "sha256:ae8227bf219e96a4d76f36dc6d6e652ddd0209e8d9c4cf4483a07858d707ce6e"
-  - name: swarm
-    version: "{{ jenkins_swarm_client_version }}"
-    checksum: "sha256:2e673b88982fc8568c8d023753616fac9e0ac37e03405def8a68dfa9f8c7366a"
   - name: timestamper
     version: "1.8.7"
     checksum: "sha256:c2b766486270969489db38541dd5fcf0cd566c10753b378570053c3c9f03c0c6"
