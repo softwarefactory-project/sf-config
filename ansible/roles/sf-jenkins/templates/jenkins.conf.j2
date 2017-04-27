@@ -1,15 +1,12 @@
 # Managed by Ansible
+
+# This virtualhost is password protected by apache and it's used for service api access (jjb, managesf, swarm slaves)
 <VirtualHost *:{{ jenkins_api_port }}>
     ProxyVia On
     ProxyRequests Off
 
     ProxyPass /jenkins/ http://127.0.0.1:{{ jenkins_port }}/jenkins/ nocanon retry=1 acquire=3000 timeout=600 Keepalive=On
     ProxyPassReverse /jenkins/ http://127.0.0.1:{{ jenkins_port }}/jenkins/
-
-    # jjb fails with "jenkins.NotFoundException: Requested item could not be found" when trying to access:
-    # http://jenkins.sftests.com:8080/api/json?tree=jobs[url,color,name,jobs]
-    ProxyPass /api/ http://127.0.0.1:{{ jenkins_port }}/jenkins/api/ nocanon retry=1 acquire=3000 timeout=600 Keepalive=On
-    ProxyPassReverse /api/ http://127.0.0.1:{{ jenkins_port }}/jenkins/api/
 
     ProxyPreserveHost On
     AllowEncodedSlashes NoDecode
@@ -33,6 +30,7 @@
     </LocationMatch>
 </VirtualHost>
 
+# This virtualhost is exposed through gateway proxy
 <VirtualHost *:{{ jenkins_http_port }}>
     ProxyVia On
     ProxyRequests Off
@@ -49,6 +47,16 @@
         allow from all
     </Proxy>
 
+    # Disable un-used jenkins cli and api
+    <Location "/jenkins/cli">
+        Order deny,allow
+        Deny from all
+    </Location>
+    <Location "/jenkins/api">
+        Order deny,allow
+        Deny from all
+    </Location>
+
     <LocationMatch "/jenkins/">
         RequestHeader unset X-Forwarded-User
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
@@ -58,10 +66,8 @@
             TKTAuthDebug 1
             AuthName "Jenkins"
             require valid-user
-            RewriteEngine On
-            RewriteCond %{LA-U:REMOTE_USER} (.+)
-            RewriteRule .* - [E=RU:%1,NS]
-            RequestHeader set X-Forwarded-User %{RU}e
+            # Only admin user get to be logged on jenkins
+            RequestHeader set X-Forwarded-User admin "expr=%{REMOTE_USER}=='admin'"
         </If>
     </LocationMatch>
 </VirtualHost>
