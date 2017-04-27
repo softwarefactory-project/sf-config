@@ -75,14 +75,17 @@
       - {name: org.jenkinsci.main.modules.sshd.SSHD.xml}
       - {name: org.jenkinsci.plugins.ZMQEventPublisher.HudsonNotificationProperty.xml}
 
-- name: Install init script that sets SF service credentials in Jenkins secrets store
+- name: Install init.groove.d scripts
   template:
-      src: service_user_credentials.groovy.j2
+      src: "{{ item }}.j2"
       dest: /var/lib/jenkins/init.groovy.d/service_user_credentials.groovy
       owner: jenkins
       group: jenkins
       mode: 0444
       force: yes
+  with_items:
+    - service_user_credentials.groovy
+    - cli-shutdown.groovy
 
 - name: Fix passlib version weirdness (invalid version number '1.7.0.post20170223134505')
   copy: content="__version__ = '1.7.0'" dest=/usr/lib/python2.7/site-packages/passlib/__init__.py

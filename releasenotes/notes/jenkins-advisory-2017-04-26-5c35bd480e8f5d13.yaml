@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    Jenkins swarm plugin is disabled and no longer supported.
+security:
+  - |
+    Mitigate https://jenkins.io/security/advisory/2017-04-26/ by disabling cli
+    endpoint and removing authenticate user jenkins mapping, except for admin user.
