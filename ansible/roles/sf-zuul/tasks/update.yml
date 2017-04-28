@@ -20,12 +20,12 @@
   register: upstreamconfig
 
 - name: Reload zuul service
-  service: name=zuul state=reloaded
+  service: name=zuul state=reloaded enabled=yes
   when: "'zuul' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
 
 # Zuul-merger doesn't support reload, restart is needed
 - name: Restart zuul-merger service
-  service: name=zuul-merger state=restarted
+  service: name=zuul-merger state=restarted enabled=yes
   when: "'zuul-merger' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
 
 - name: Write config repo sha1 matching current configuration

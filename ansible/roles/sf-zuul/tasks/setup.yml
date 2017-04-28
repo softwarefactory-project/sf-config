@@ -44,13 +44,6 @@
   template: src=zuul.conf.j2 dest=/etc/zuul/zuul.conf mode=0440 group=zuul
   notify: restart zuul
 
-- name: Start service
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-  with_items: "{{ zuul_services }}"
-
 - name: "Copy gearman-check script"
   copy: src=gearman-check dest=/usr/local/bin/gearman-check mode=0555
   when: "'zuul' in zuul_services"
