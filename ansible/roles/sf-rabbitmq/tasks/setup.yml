@@ -10,6 +10,12 @@
   command: rabbitmqctl force_reset
   ignore_errors: yes
 
+- name: Set rabbitmq heartbeat timeout
+  replace:
+    dest: /etc/rabbitmq/rabbitmq.config
+    regexp: ".*{heartbeat, 600}.*"
+    replace: "   {heartbeat, 3600}"
+
 - name: Rabbitmq service started and enabled
   service: name=rabbitmq-server state=started enabled=yes
 
