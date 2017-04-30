@@ -10,6 +10,12 @@
   command: rabbitmqctl force_reset
   ignore_errors: yes
 
+- name: Deactivate rabbitmq heartbeat
+  replace:
+    dest: /etc/rabbitmq/rabbitmq.config
+    regexp: ".*heartbeat.*"
+    replace: "   {heartbeat, 0}"
+
 - name: Rabbitmq service started and enabled
   service: name=rabbitmq-server state=started enabled=yes
 
