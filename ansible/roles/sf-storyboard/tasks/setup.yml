@@ -9,6 +9,12 @@
     - service_token.sql
   notify: restart storyboard
 
+- name: "Install storyboard sysconfig file"
+  template:
+      src: storyboard.j2
+      dest: /etc/sysconfig/storyboard
+      mode: 0644
+
 - name: "Setup database"
   command: storyboard-db-manage upgrade head
 
