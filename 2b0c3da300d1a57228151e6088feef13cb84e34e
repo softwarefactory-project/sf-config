@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da9b358b_591d5ebc",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-05-01T14:48:57Z",
+      "side": 1,
+      "message": "I think that\u0027s better to put that in one item to avoid calling yum len(items).",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "2b0c3da300d1a57228151e6088feef13cb84e34e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_39797afd",
+        "filename": "ansible/roles/sf-install-server/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-05-01T14:48:57Z",
+      "side": 1,
+      "message": "Ditto, maybe I\u0027m wrong maybe interesting to test if that better in one item on more.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "2b0c3da300d1a57228151e6088feef13cb84e34e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
