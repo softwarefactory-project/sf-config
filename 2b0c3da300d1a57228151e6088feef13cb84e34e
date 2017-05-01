@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "da9b358b_d9d5eeb9",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-05-01T15:50:33Z",
+      "side": 1,
+      "message": "There is a note on the module http://docs.ansible.com/ansible/yum_module.html\n\nWhen used with a loop of package names in a playbook, ansible optimizes the call to the yum module. Instead of calling the module with a single package each time through the loop, ansible calls the module once with all of the package names from the loop.\n\nAnd it\u0027s easier to read and maintain ;)",
+      "parentUuid": "da9b358b_591d5ebc",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "2b0c3da300d1a57228151e6088feef13cb84e34e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da9b358b_39797afd",
         "filename": "ansible/roles/sf-install-server/tasks/install.yml",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2017-05-01T14:48:57Z",
       "side": 1,
       "message": "Ditto, maybe I\u0027m wrong maybe interesting to test if that better in one item on more.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "2b0c3da300d1a57228151e6088feef13cb84e34e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_b9db4aed",
+        "filename": "ansible/roles/sf-install-server/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-05-01T15:50:33Z",
+      "side": 1,
+      "message": "it should be the same, see the other comment",
+      "parentUuid": "da9b358b_39797afd",
       "range": {
         "startLine": 9,
         "startChar": 0,
