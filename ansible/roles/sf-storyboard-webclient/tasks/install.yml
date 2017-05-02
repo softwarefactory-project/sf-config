@@ -1,18 +1,31 @@
 ---
 - name: "Create /var/www/storyboard"
-  file: path=/var/www/storyboard state=directory mode=0755
+  file:
+    path: /var/www/storyboard
+    state: directory
+    mode: 0755
 
-- name: "Check for pre-installed in /var/www/storyboard-webclient"
-  stat: path=/var/www/storyboard/index.html
+- name: "Check for pre-installed in /var/www/storyboard/{{ storyboard_webclient_commit }}"
+  stat:
+    path: "/var/www/storyboard/{{ storyboard_webclient_commit }}"
   register: installed
 
 - name: "Extract pre-built client"
-  unarchive: src={{ storyboard_webclient_url }} dest=/var/www/storyboard/ copy=no
+  unarchive:
+    src: "{{ storyboard_webclient_url }}"
+    dest: /var/www/storyboard/
+    copy: no
   when: installed.stat.exists == false
 
 - name: "Remove dist sub directory"
   shell: "mv /var/www/storyboard/dist/* /var/www/storyboard/ && rm -Rf /var/www/storyboard/dist/"
   when: installed.stat.exists == false
+
+- name: "Touch /var/www/storyboard/{{ storyboard_webclient_commit }}"
+  file:
+    path: "/var/www/storyboard/{{ storyboard_webclient_commit }}"
+    state: touch
+    mode: 0644
 
 # Manual build process bellow
 #- name: "Install storyboard-webclient code"
