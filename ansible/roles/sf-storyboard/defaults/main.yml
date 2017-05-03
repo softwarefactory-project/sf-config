@@ -14,6 +14,8 @@ storyboard_mysql_password: "CHANGE_ME"
 storyboard_email_notification: True
 storyboard_rabbitmq_password: "CHANGE_ME"
 
+storyboard_api_workers: 1
+
 storyboard_services:
   - storyboard
   - storyboard-worker
