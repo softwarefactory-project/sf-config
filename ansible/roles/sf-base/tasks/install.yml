@@ -1,21 +1,35 @@
 ---
-- name: "Create libexec directory"
-  file: path=/usr/local/libexec/software-factory state=directory mode=0755
+- name: Create libexec directory
+  file:
+    path: /usr/local/libexec/software-factory
+    state: directory
+    mode: 0755
 
-- name: "Install packages"
+- name: Install useful packages
   yum:
-    name: "postfix, monit, ntp, cloud-init, cloud-utils-growpart, python2-sfmanager"
+    name: '{{ item }}'
     state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'
+  with_items:
+    - cloud-init
+    - cloud-utils-growpart
+    - git
+    - monit
+    - ntp
+    - patch
+    - postfix
+    - sf-release
+    - tmux
+    - vim-enhanced
 
-- name: "Set permissive selinux"
+- name: Set permissive selinux
   lineinfile:
     dest: /etc/selinux/config
     regexp: '^SELINUX='
     line: 'SELINUX=permissive'
 
-- name: "Enable selinux autorelabel"
+- name: Enable selinux autorelabel
   file:
     path: /.autorelabel
     state: touch
