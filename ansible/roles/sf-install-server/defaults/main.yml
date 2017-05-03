@@ -19,3 +19,5 @@ backup_os_password: "{{ backup.os_password }}"
 
 backup_swift_backup_container: "{{ backup.swift_backup_container }}"
 backup_swift_backup_max_retention_secs: "{{ backup.swift_backup_max_retention_secs }}"
+
+serverspec_version: 2.25.0
