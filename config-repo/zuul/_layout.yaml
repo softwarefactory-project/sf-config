@@ -43,7 +43,7 @@ pipelines:
       open: True
       current-patchset: True
       approval:
-        - verified: [1, 2]
+        - verified: [-2, 1, 2]
           username: jenkins
         - code-review: 2
         - workflow: 1
@@ -59,6 +59,8 @@ pipelines:
           approval:
             - verified: 1
           username: jenkins
+        - event: comment-added
+          comment: (?i)regate
     start:
       gerrit:
         verified: 0
