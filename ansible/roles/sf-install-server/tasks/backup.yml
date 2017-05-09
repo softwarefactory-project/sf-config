@@ -8,5 +8,15 @@
     rsync_opts: --relative
   with_items:
     - /etc/software-factory/sfconfig.yaml
+    - /etc/software-factory/logo-splash.png
+    - /etc/software-factory/logo-topmenu.png
+    - /etc/software-factory/logo-favicon.ico
     - /var/lib/software-factory/bootstrap-data
     - /root/config
+
+- name: "Include original arch"
+  synchronize:
+    mode: pull
+    src: /etc/software-factory/arch.yaml
+    dest: "{{ backup_dest }}/etc/software-factory/arch-backup.yaml"
+    rsync_opts: --relative
