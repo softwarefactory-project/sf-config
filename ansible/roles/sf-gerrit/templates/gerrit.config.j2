@@ -8,7 +8,7 @@
     database = {{ gerrit_mysql_db }}
     username = {{ gerrit_mysql_user }}
     port = {{ gerrit_mysql_port }}
-    url = jdbc:mysql://{{ gerrit_mysql_host }}/{{ gerrit_mysql_db }}?useUnicode=yes&characterEncoding=UTF-8
+    url = jdbc:mysql://{{ gerrit_mysql_host }}/{{ gerrit_mysql_db }}?useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true
 {% if gerrit_connection_pool %}
     connectionPool = true
     poolLimit = {{ gerrit_connection_pool }}
