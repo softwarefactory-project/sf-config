@@ -10,6 +10,7 @@ import random
 import subprocess
 import string
 import sys
+import shutil
 import time
 import uuid
 import yaml
@@ -658,7 +659,7 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
     # Generate playbooks
     for playbooks in ("sf_install", "sf_setup", "sf_postconf",
                       "sf_configrepo_update",
-                      "get_logs", "sf_backup", "sf_restore"):
+                      "get_logs", "sf_backup", "sf_restore", "sf_recover"):
         render_template("%s/%s.yml" % (ansible_root, playbooks),
                         "%s/%s.yml.j2" % (templates, playbooks),
                         arch)
@@ -672,6 +673,21 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
     render_template("/etc/hosts",
                     "%s/etc-hosts.j2" % templates,
                     arch)
+
+
+def extract_backup(backup_file):
+    backup_dir = "/var/lib/software-factory/backup",
+    if os.path.isfile("%s/.recovered" % backup_dir):
+        return
+    os.makedirs(backup_dir, 0o700)
+    # Extract backup file
+    execute(["tar", "-xpf", backup_file, "-C", backup_dir])
+    # Install sfconfig and arch in place
+    shutil.copy("%s/install-server/etc/software-factory/sfconfig.yaml",
+                "/etc/software-factory/sfconfig.yaml")
+    shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml",
+                "/etc/software-factory/arch.yaml")
+    open("%s/.recovered" % backup_dir, "w").close()
 
 
 def usage():
@@ -696,6 +712,8 @@ def usage():
                    help="Do not call install tasks")
     p.add_argument("--skip-setup", default=False, action='store_true',
                    help="Do not call setup tasks")
+    # special actions
+    p.add_argument("--recover", help="Deploy a backup file")
     return p.parse_args()
 
 
@@ -720,6 +738,9 @@ def main():
         # Remove previously created link to sfconfig.yaml
         os.unlink(allyaml)
 
+    if args.recover and os.path.isfile(args.recover):
+        extract_backup(args.recover)
+
     # Make sure the yaml files are updated
     sfconfig = yaml_load(args.sfconfig)
     sfarch = yaml_load(args.arch)
@@ -727,6 +748,10 @@ def main():
         save_file(sfconfig, args.sfconfig)
     if clean_arch(sfarch):
         save_file(sfarch, args.arch)
+
+    if args.recover and len(sfarch["inventory"]) > 1:
+        print("Make sure ip addresses in %s are correct" % args.arch)
+        raw_input("Press enter to continue")
 
     # Process the arch file and render playbooks
     local_ip = pread(["ip", "route", "get", "8.8.8.8"]).split()[6]
@@ -744,6 +769,9 @@ def main():
 
     print("[+] %s written!" % allyaml)
     os.environ["ANSIBLE_CONFIG"] = "/usr/share/sf-config/ansible/ansible.cfg"
+    if args.recover:
+        execute(["ansible-playbook",
+                 "/var/lib/software-factory/ansible/sf_recover.yml"])
     if not args.skip_install:
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_install.yml"])
