@@ -1,0 +1,25 @@
+---
+# Recover a backup
+- hosts: localhost
+  tasks:
+    - name: "Signal journald"
+      command: "logger sf_rescue.yml: started"
+
+# Start mysql
+- hosts: mysql
+  tasks:
+    - service: name=mariadb state=started
+
+# Call restore task
+{% for host in inventory %}
+- hosts: {{ host['hostname'] }}
+  roles:
+{% for role in host['rolesname'] %}    - {role: "{{ role }}", action: "restore", backup_src: "/var/lib/software-factory/backup/{{ role|replace('sf-', '') }}"}
+{% endfor %}
+{% endfor %}
+
+# Call sfconfig
+- hosts: localhost
+  tasks:
+    - name: "Signal journald"
+      command: "logger sf_restore.yml: ended"

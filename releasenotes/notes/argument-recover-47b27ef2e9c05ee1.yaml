@@ -1,0 +1,4 @@
+---
+features:
+  - A new --recover parameter to sfconfig enables to deploy a backup on a fresh
+    instance.
