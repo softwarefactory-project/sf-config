@@ -8,6 +8,7 @@ role_actions:
 zuul_services:
   - zuul
   - zuul-merger
+  - zuul-launcher
 
 zuul_port: 8084
 
