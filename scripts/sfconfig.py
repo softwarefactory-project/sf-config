@@ -643,6 +643,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 host.setdefault("zuul_services", []).append("zuul")
             elif role == "sf-zuul-merger":
                 host.setdefault("zuul_services", []).append("zuul-merger")
+            elif role == "sf-zuul-launcher":
+                host.setdefault("zuul_services", []).append("zuul-launcher")
 
         # Remove meta roles
         if "sf-nodepool-builder" in host["rolesname"]:
@@ -652,6 +654,11 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 host["rolesname"].append("sf-nodepool")
         if "sf-zuul-merger" in host["rolesname"]:
             host["rolesname"].remove("sf-zuul-merger")
+            # Make sure the base role is present
+            if "sf-zuul" not in host["rolesname"]:
+                host["rolesname"].append("sf-zuul")
+        if "sf-zuul-launcher" in host["rolesname"]:
+            host["rolesname"].remove("sf-zuul-launcher")
             # Make sure the base role is present
             if "sf-zuul" not in host["rolesname"]:
                 host["rolesname"].append("sf-zuul")
