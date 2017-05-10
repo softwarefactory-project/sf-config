@@ -1,6 +1,6 @@
 ---
 # Use 0751 to let apache access /var/lib/zuul/git
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=jenkins_rsa home_dir_mode=0751"
+- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=jenkins_rsa home_dir_mode=0751 shell=/bin/bash"
 
 - name: Apply selinux port labelling
   seport:
@@ -35,6 +35,7 @@
     - logging.conf
     - gearman-logging.conf
     - merger-logging.conf
+    - launcher-logging.conf
 
 - name: "Setup sysconfig"
   template: src=sysconfig.j2 dest=/etc/sysconfig/zuul
