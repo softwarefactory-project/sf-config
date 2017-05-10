@@ -3,7 +3,9 @@ elements-dir: /etc/nodepool/elements:/usr/share/sf-elements:/usr/share/nodepool/
 images-dir: /var/lib/nodepool/dib
 
 zmq-publishers:
-  - tcp://{{ jenkins_host }}:8888
+{% for publisher in jobs_zmq_publishers %}
+  - {{ publisher }}
+{% endfor %}
 
 gearman-servers:
   - host: zuul.{{ fqdn }}

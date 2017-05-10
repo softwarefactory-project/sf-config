@@ -1,5 +1,6 @@
 [gearman]
 server=zuul.{{ fqdn }}
+check_job_registration=true
 
 [gearman_server]
 start=true
@@ -13,6 +14,7 @@ state_dir=/var/lib/zuul
 status_url={{ zuul_pub_url }}
 job_name_in_report=true
 report_times=true
+url_pattern=https://{{ fqdn }}/logs/{build.parameters[LOG_PATH]}
 
 [merger]
 git_dir=/var/lib/zuul/git
@@ -21,6 +23,27 @@ git_user_name=zuul
 zuul_url={{ zuul_pub_url }}p
 log_config=/etc/zuul/merger-logging.conf
 append_hostname=true
+
+[launcher]
+log_config=/etc/zuul/launcher-logging.conf
+jenkins_jobs=/etc/zuul/jobs/
+workspace_root=/var/lib/zuul/jobs/
+results_dir=/var/www/logs/results/
+private_key_file=/var/lib/zuul/.ssh/id_rsa
+username=zuul
+
+{% for logserver in logservers|default([]) %}
+[site "{{ logserver["name"] }}"]
+host={{ logserver["host"] }}
+user={{ logserver["user"] }}
+root={{ logserver["path"] }}
+
+{% endfor %}
+
+[node "master"]
+host=localhost
+description=The master node allowed to trigger config-update
+labels=master
 
 {% if not logs['disabled'] %}
 [swift]
