@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A new zuul-launcher service is available to execute job without Jenkins.
+    When activated, this service manage jobs from the jobs-zuul config
+    repository directory.

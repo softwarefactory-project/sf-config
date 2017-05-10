@@ -360,7 +360,9 @@ def generate_role_vars(arch, sfconfig, allvars_file, args):
     glue = {'mysql_databases': {},
             'sf_tasks_dir': "%s/ansible/tasks" % args.share,
             'sf_templates_dir': "%s/templates" % args.share,
-            'sf_playbooks_dir': "%s" % args.ansible_root}
+            'sf_playbooks_dir': "%s" % args.ansible_root,
+            'jobs_zmq_publishers': [],
+    }
 
     def get_hostname(role):
         if len(arch["roles"][role]) != 1:
@@ -539,6 +541,8 @@ DNS.1 = %s
             get_hostname("jenkins"), defaults["jenkins_api_port"])
         glue["jenkins_pub_url"] = "%s/jenkins/" % glue["gateway_url"]
         get_or_generate_ssh_key("jenkins_rsa")
+        glue["jobs_zmq_publishers"].append(
+            "tcp://%s:8889" % glue["jenkins_host"])
 
     if "zuul" in arch["roles"]:
         if ("nodepool" not in arch["roles"] or
@@ -551,6 +555,11 @@ DNS.1 = %s
             get_hostname("zuul"), defaults["zuul_port"])
         # TODO(tristanC): create a dedicated key for zuul
         glue["zuul_rsa_pub"] = glue["jenkins_rsa_pub"]
+
+    if "zuul-launcher" in arch["roles"]:
+        glue["zuul_launcher_host"] = get_hostname("zuul-launcher")
+        glue["jobs_zmq_publishers"].append(
+            "tcp://%s:8888" % glue["zuul_launcher_host"])
 
     if "nodepool" in arch["roles"]:
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
@@ -643,6 +652,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 host.setdefault("zuul_services", []).append("zuul")
             elif role == "sf-zuul-merger":
                 host.setdefault("zuul_services", []).append("zuul-merger")
+            elif role == "sf-zuul-launcher":
+                host.setdefault("zuul_services", []).append("zuul-launcher")
 
         # Remove meta roles
         if "sf-nodepool-builder" in host["rolesname"]:
@@ -652,6 +663,11 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 host["rolesname"].append("sf-nodepool")
         if "sf-zuul-merger" in host["rolesname"]:
             host["rolesname"].remove("sf-zuul-merger")
+            # Make sure the base role is present
+            if "sf-zuul" not in host["rolesname"]:
+                host["rolesname"].append("sf-zuul")
+        if "sf-zuul-launcher" in host["rolesname"]:
+            host["rolesname"].remove("sf-zuul-launcher")
             # Make sure the base role is present
             if "sf-zuul" not in host["rolesname"]:
                 host["rolesname"].append("sf-zuul")
