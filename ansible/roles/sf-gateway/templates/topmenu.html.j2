@@ -26,6 +26,9 @@
                 <li><a href="/jenkins/" target="_top">Jenkins</a></li>
             {% endif %}
                 <li><a href="/zuul/" target="_top">Zuul</a></li>
+            {% if 'zuul-launcher' in roles %}
+                <li><a href="/logs/results/" target="_top">Jobs</a></li>
+            {% endif %}
             {% if 'storyboard' in roles %}
                 <li><a href="/storyboard/" target="_top">Storyboard</a></li>
             {% endif %}
