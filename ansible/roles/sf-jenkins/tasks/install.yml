@@ -7,12 +7,24 @@
     gpgkey: "{{ jenkins_repo_gpgkey }}"
     gpgcheck: "{{ jenkins_repo_gpgcheck }}"
 
+- name: "Check installed"
+  command: rpm -q jenkins
+  ignore_errors: True
+  register: rpm_check
+
 - name: "Install package"
   yum:
     name: "jenkins-1.651.3"
     state: present
     disablerepo: "*"
     enablerepo: "{{ jenkins_repo_name }}"
+
+- name: "Ensure Jenkins stopped"
+  systemd:
+      name: jenkins
+      state: stopped
+      daemon_reload: yes
+  when: rpm_check.rc == 1
 
 - name: "Install requirements"
   yum:
