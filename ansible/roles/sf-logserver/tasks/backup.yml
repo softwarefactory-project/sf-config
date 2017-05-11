@@ -1,0 +1,8 @@
+---
+- name: "Backup data"
+  synchronize:
+    mode: pull
+    src: "/var/www/logs"
+    dest: "{{ backup_dest }}/"
+    delete: yes
+    rsync_opts: --relative

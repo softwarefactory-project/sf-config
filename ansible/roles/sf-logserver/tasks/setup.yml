@@ -1,0 +1,32 @@
+---
+- name: Create user
+  include: "{{ sf_tasks_dir }}/create_user.yml user_name=loguser shell=/bin/sh"
+
+- name: Create logs directory
+  file: path=/var/www/logs state=directory owner=loguser group=apache mode=0750
+
+- name: Authorize loguser sshkey
+  authorized_key:
+      user: loguser
+      key: "{{ loguser_authorized_key }}"
+
+- name: Install httpd conf.d logserver
+  copy: src=logserver.conf dest=/etc/httpd/conf.d/logserver.conf
+  register: httpd_conf
+
+- name: Reload httpd
+  service: name=httpd state=reloaded enabled=yes
+  when: httpd_conf|changed
+
+- name: Disable DNS lookup in sshd
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '.*UseDNS.*'
+    line: "UseDNS no"
+
+
+- name: Start services
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - sshd
+    - httpd
