@@ -699,6 +699,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                         arch)
 
     # Generate server spec hosts file
+    if not os.path.isdir("/etc/serverspec"):
+        os.mkdir("/etc/serverspec")
     render_template("/etc/serverspec/hosts.yaml",
                     "%s/serverspec.yml.j2" % templates,
                     arch)
