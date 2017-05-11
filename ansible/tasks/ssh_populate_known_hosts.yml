@@ -1,4 +1,12 @@
 ---
+- name: Ensure /root/.ssh exists
+  file:
+      path: /root/.ssh
+      owner: root
+      group: root
+      mode: 0700
+      state: directory
+
 - name: Check if ssh_known_hosts exist
   stat: path=/root/.ssh/known_hosts
   register: ssh_known_hosts
