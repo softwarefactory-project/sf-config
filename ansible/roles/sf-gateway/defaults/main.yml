@@ -6,6 +6,7 @@ role_actions:
 
 gateway_host: localhost
 nodepool_builder_host: ""
+logserver_host: ""
 
 welcome_page_path: "sf/welcome.html"
 

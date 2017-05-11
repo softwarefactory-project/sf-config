@@ -8,6 +8,17 @@
     - /usr/libexec/software-factory
     - /usr/share/software-factory
 
+- name: "system: disable DNS lookup in sshd"
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '.*UseDNS.*'
+    line: "UseDNS no"
+  register: sshd_config
+
+- name: "system: restart sshd"
+  service: name=sshd state=restarted enabled=yes
+  when: sshd_config|changed
+
 - name: "system: setenforce 0"
   command: setenforce 0
   when:
