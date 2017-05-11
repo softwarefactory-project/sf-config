@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new koji_host option in sfconfig.yaml enable to configure access to a
+    Koji instance through the gateway at https://fqdn/koji.
