@@ -1,4 +1,4 @@
 role_actions:
   - install
 
-theme: kogakure
+gitweb_theme: kogakure
