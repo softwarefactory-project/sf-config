@@ -106,6 +106,11 @@
         ProxyPassReverse /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
 {% endif %}
 
+{% if gateway_host != logserver_host %}
+        ProxyPass /logs/ http://{{ logserver_host }}/logs/
+        ProxyPassReverse /logs/ http://{{ logserver_host }}/logs/
+{% endif %}
+
         ProxyPreserveHost On
         AllowEncodedSlashes NoDecode
         <Proxy *>

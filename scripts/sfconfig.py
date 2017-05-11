@@ -531,6 +531,15 @@ DNS.1 = %s
         get_or_generate_ssh_key("gerrit_service_rsa")
         get_or_generate_ssh_key("gerrit_admin_rsa")
 
+    if "jenkins" in arch["roles"]:
+        glue["jenkins_host"] = get_hostname("jenkins")
+        glue["jenkins_internal_url"] = "http://%s:%s/jenkins/" % (
+            get_hostname("jenkins"), defaults["jenkins_http_port"])
+        glue["jenkins_api_url"] = "http://%s:%s/jenkins/" % (
+            get_hostname("jenkins"), defaults["jenkins_api_port"])
+        glue["jenkins_pub_url"] = "%s/jenkins/" % glue["gateway_url"]
+        get_or_generate_ssh_key("jenkins_rsa")
+
     if "zuul" in arch["roles"]:
         if ("nodepool" not in arch["roles"] or
             len(sfconfig["nodepool"].get("providers", [])) == 0 or (
@@ -540,6 +549,8 @@ DNS.1 = %s
         glue["zuul_pub_url"] = "%s/zuul/" % glue["gateway_url"]
         glue["zuul_internal_url"] = "http://%s:%s/" % (
             get_hostname("zuul"), defaults["zuul_port"])
+        # TODO(tristanC): create a dedicated key for zuul
+        glue["zuul_rsa_pub"] = glue["jenkins_rsa_pub"]
 
     if "nodepool" in arch["roles"]:
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
@@ -553,14 +564,15 @@ DNS.1 = %s
     if "nodepool-builder" in arch["roles"]:
         glue["nodepool_builder_host"] = get_hostname("nodepool-builder")
 
-    if "jenkins" in arch["roles"]:
-        glue["jenkins_host"] = get_hostname("jenkins")
-        glue["jenkins_internal_url"] = "http://%s:%s/jenkins/" % (
-            get_hostname("jenkins"), defaults["jenkins_http_port"])
-        glue["jenkins_api_url"] = "http://%s:%s/jenkins/" % (
-            get_hostname("jenkins"), defaults["jenkins_api_port"])
-        glue["jenkins_pub_url"] = "%s/jenkins/" % glue["gateway_url"]
-        get_or_generate_ssh_key("jenkins_rsa")
+    if "logserver" in arch["roles"]:
+        glue["logserver_host"] = get_hostname("logserver")
+        glue["loguser_authorized_key"] = glue["zuul_rsa_pub"]
+        glue["logservers"] = [{
+            "name": "logs",
+            "host": glue["logserver_host"],
+            "user": "loguser",
+            "path": "/var/www/logs",
+        }]
 
     if "firehose" in arch["roles"]:
         glue["firehose_host"] = get_hostname("firehose")
