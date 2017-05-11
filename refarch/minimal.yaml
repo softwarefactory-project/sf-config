@@ -8,9 +8,11 @@ inventory:
       - gateway
       - cauth
       - managesf
+      - gitweb
       - gerrit
       - zuul
       - zuul-merger
+      - nodepool
       - jenkins
     mem: 8
     cpu: 4
