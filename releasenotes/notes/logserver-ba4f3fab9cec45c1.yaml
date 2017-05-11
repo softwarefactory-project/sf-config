@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new logserver role configure https://fqdn/logs endpoint for zuul-launcher
+    scp publisher. It uses os-loganalyze to prettify console logs.

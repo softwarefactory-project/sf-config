@@ -1,0 +1,30 @@
+---
+- name: Create user
+  include: "{{ sf_tasks_dir }}/create_user.yml user_name=loguser shell=/bin/sh"
+
+- name: Create logs directory
+  file: path=/var/www/logs state=directory owner=loguser group=apache mode=0755
+
+- name: Authorize loguser sshkey
+  authorized_key:
+      user: loguser
+      key: "{{ loguser_authorized_key }}"
+
+- name: Install httpd conf.d logserver
+  copy: src=logserver.conf dest=/etc/httpd/conf.d/logserver.conf
+  register: httpd_conf
+
+- name: Install index header
+  copy:
+    content: '<script type="text/javascript" src="/static/js/topmenu.js"></script>'
+    dest: /var/www/static/index-header.html
+
+- name: Reload httpd
+  service: name=httpd state=reloaded enabled=yes
+  when: httpd_conf|changed
+
+- name: Start services
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - sshd
+    - httpd
