@@ -606,6 +606,9 @@ DNS.1 = %s
         if sfconfig["mumble"].get("password"):
             glue["murmur_password"] = sfconfig["mumble"].get("password")
 
+    if "koji_host" in sfconfig["network"] and sfconfig["network"]["koji_host"]:
+        glue["koji_host"] = sfconfig["network"]["koji_host"]
+
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
     # And add them to the all.yaml file
