@@ -8,6 +8,6 @@
 
 - name: "Copy theme to gitweb.css"
   copy:
-    src: "/var/www/git/static/{{ theme }}.css"
+    src: "/var/www/git/static/{{ gitweb_theme }}.css"
     dest: "/var/www/git/static/gitweb.css"
     remote_src: True
