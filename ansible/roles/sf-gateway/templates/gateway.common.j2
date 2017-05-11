@@ -133,6 +133,17 @@
 {% if 'lodgeit' in roles %}
         ProxyPass /paste/ http://127.0.0.1:5000/paste/ retry=0
         ProxyPassReverse /paste/ http://127.0.0.1:5000/paste/
+{% endif %}
+{% if koji_host|default(False) %}
+
+        ProxyPass /koji/ http://{{ koji_host }}/koji/ retry=0
+        ProxyPassReverse /koji/ http://{{ koji_host }}/koji/
+
+        ProxyPass /koji-static/ http://{{ koji_host }}/koji-static/ retry=0
+        ProxyPassReverse /koji-static/ http://{{ koji_host }}/koji-static/
+
+        ProxyPass /kojifiles/ http://{{ koji_host }}/kojifiles/ retry=0
+        ProxyPassReverse /kojifiles/ http://{{ koji_host }}/kojifiles/
 
 {% endif %}
 {% if 'nodepool' in roles and gateway_host != nodepool_builder_host %}
