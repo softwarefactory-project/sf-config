@@ -2,10 +2,7 @@
 
 ACTION=${SSH_ORIGINAL_COMMAND:-sf_configrepo_update}
 
-if [ "${ACTION}" == "/usr/local/bin/sf-config-update.sh" ]; then
-        # Retro compatibility with 2.2.2
-        ACTION=sf_configrepo_update
-fi
+export ANSIBLE_CONFIG=/usr/share/sf-config/ansible/ansible.cfg
 
 case $ACTION in
     sf_configrepo_update)
