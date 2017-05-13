@@ -20,6 +20,18 @@
   template: src=zuul.site.j2 dest=/etc/httpd/conf.d/zuul.conf mode=0444
   notify: apache reload
 
+- name: Create config-check directory
+  file: path=/var/lib/zuul/defconf state=directory
+
+- name: Install config-check service default configuration
+  template:
+    src: "config-check/{{ item }}.j2"
+    dest: "/var/lib/zuul/defconf/{{ item|replace('defconf-', '') }}"
+  with_items:
+    - defconf-nodepool.yaml
+    - defconf-zuul.conf
+    - defconf-repoxplorer.py
+
 - name: Create /var/www/zuul
   file: path=/var/www/zuul state=directory
 
