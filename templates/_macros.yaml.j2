@@ -1,0 +1,30 @@
+# This file is managed by ansible, don't edit
+#
+# This defines some macros adapted from
+#    openstack-infra/project-config/jenkins/jobs/macros.yaml
+
+- builder:
+    name: prepare-workspace
+    builders:
+      - shell: |
+          # If this is called in a periodic job, these will not be set
+          echo "Use default for ZUUL_BRANCH and ZUUL_REF if needed"
+          export ZUUL_BRANCH=${ZUUL_BRANCH:-master}
+          export ZUUL_REF=${ZUUL_REF:-None}
+          # In the post pipeline ZUUL_REF is master but does not behave as we want
+          # So fall back on None
+          [ "$ZUUL_REF" = "master" ] && ZUUL_REF=None
+          echo "Clean workspace"
+          rm -Rf ./*
+          echo "Clone $ZUUL_PROJECT"
+          zuul-cloner https://{{ fqdn }}/r $ZUUL_PROJECT
+
+- publisher:
+    name: console-log
+    publishers:
+      - scp:
+          site: 'logs'
+          files:
+            - target: '$LOG_PATH'
+              copy-console: true
+              copy-after-failure: true

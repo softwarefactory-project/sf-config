@@ -46,6 +46,12 @@
     dest: "{{ conf_tmp.stdout }}/jobs/_default_jobs.yaml"
   when: config_done.stat.exists != True
 
+- name: Copy default zuul-launcher macros
+  template:
+    src: "{{ sf_templates_dir }}/_macros.yaml.j2"
+    dest: "{{ conf_tmp.stdout }}/jobs-zuul/_macros.yaml"
+  when: config_done.stat.exists != True
+
 - name: Copy default resources file
   command: mv /root/resources.yaml "{{ conf_tmp.stdout }}/resources/resources.yaml"
   when: config_done.stat.exists != True
