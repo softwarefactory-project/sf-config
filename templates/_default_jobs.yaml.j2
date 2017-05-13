@@ -31,7 +31,8 @@
           echo "Clean workspace"
           rm -Rf ./*
           echo "Clone $ZUUL_PROJECT"
-          zuul-cloner http://{{ fqdn }}/r $ZUUL_PROJECT
+          zuul-cloner https://{{ fqdn }}/r $ZUUL_PROJECT
+
 {% if 'firehose' in roles and 'jenkins' in roles %}
 - publisher:
     name: firehose-zuul
@@ -93,72 +94,3 @@
     triggers:
       - zuul
     node: '{node}'
-
-# Config repository associated jobs
-- job:
-    name: 'config-check'
-    defaults: global
-    builders:
-      - shell: |
-          set -e
-          rm -Rf config build
-          zuul-cloner http://{{ fqdn }}/r config
-          # Prepare a default configuration for zuul and nodepool
-          mkdir -p build/nodepool build/zuul
-          cp ~jenkins/defconf/zuul.conf build/zuul/
-          cp ~jenkins/defconf/nodepool.yaml build/nodepool/_nodepool.yaml
-
-          cd config
-          echo "[+] Checking jobs"
-          jenkins-jobs test jobs/ -o ../build/
-
-          echo "[+] Checking zuul"
-          /usr/share/sf-config/scripts/yaml-merger.py zuul | tee ../build/zuul/layout.yaml
-          cp zuul/*.py ../build/zuul/ || true
-          zuul-server -c ../build/zuul/zuul.conf -l ../build/zuul/layout.yaml -t
-
-          echo "[+] Checking nodepool"
-          /usr/local/bin/sf-nodepool-conf-merger.py ../build/nodepool/nodepool.yaml
-          nodepool -c ../build/nodepool/nodepool.yaml config-validate
-
-          echo "[+] Checking gerrit replication"
-          git config -f gerrit/replication.config -l > /dev/null
-
-          echo "[+] Checking gerrit commentlinks"
-          python -c "import yaml; 'commentlinks' in yaml.safe_load(open('gerrit/commentlinks.yaml'))"
-
-          echo "[+] Check dashboards"
-          sf-update-dashboard --check --input dashboards/
-
-          echo "[+] Checking syntax errors in policy file"
-          python -c "import yaml; yaml.safe_load(open('policies/policy.yaml'))"
-
-          echo "[+] Checking syntax errors in repoxplorer definition files"
-          cat << EOF > config.py
-          db_path = 'repoxplorer/'
-          EOF
-          repoxplorer-config-validate --config config.py
-
-          echo "[+] Checking resources changes"
-          /usr/local/bin/resources.sh validate
-
-    triggers:
-      - zuul
-    node: master
-
-- job:
-    name: 'config-update'
-    defaults: global
-    builders:
-      - shell: |
-          echo "[+] Updating configuration using $ZUUL_COMMIT"
-          ssh root@managesf.{{ fqdn }} sf_configrepo_update
-
-          echo "[+] Applying resources changes"
-          /usr/local/bin/resources.sh apply
-    publishers:
-      - email:
-          recipients: {{ network.admin_mail_forward }}
-    triggers:
-      - zuul
-    node: master
