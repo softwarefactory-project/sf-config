@@ -29,12 +29,6 @@
     dest: /root/.config/openstack/clouds.yaml
     mode: 0400
 
-- name: Install sf-nodepool-conf-merger.py
-  copy:
-    src: sf-nodepool-conf-merger.py
-    dest: /usr/local/bin/sf-nodepool-conf-merger.py
-    mode: 0555
-
 - name: Create image build log directory
   file: path=/var/www/nodepool-log state=directory owner=nodepool group=apache mode=0750
 
