@@ -1,4 +1,4 @@
-source-url: http://{{ domain }}/jenkins
+source-url: https://{{ domain }}
 
 # List of zmq event inputs.
 zmq-publishers:
@@ -9,6 +9,6 @@ zmq-publishers:
 subunit-files: []
 # List of files to source logs from.
 source-files:
-  - name: consoleText
+  - name: console.html
     tags:
       - console
