@@ -45,6 +45,9 @@
 - name: "system: manage /etc/hosts"
   template: src="{{ sf_templates_dir }}/etc-hosts.j2" dest=/etc/hosts mode=0644
 
+- name: "system: install /usr/local/bin/resources.sh"
+  template: src=resources.sh.j2 dest=/usr/local/bin/resources.sh mode=0555
+
 - name: "system: remove unused ip address if present"
   known_hosts: name='[192.168.135.101]:29418' state=absent
 

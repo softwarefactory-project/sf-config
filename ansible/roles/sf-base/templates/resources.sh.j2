@@ -2,9 +2,7 @@
 
 set -e
 
-FQDN="{{ fqdn }}"
-GATEWAY_URL="{{ gateway_url }}"
-ENDPOINT="http://managesf.{{ fqdn }}:20001/resources/"
+ENDPOINT="{{ managesf_internal_url }}/resources/"
 
 APPLIED_OUTPUT="applied-output"
 VALIDATED_OUTPUT="validated-output"
@@ -87,7 +85,7 @@ case $1 in
         ;;
     apply)
         clone=$(mktemp -d)
-        git clone $GATEWAY_URL/r/config $clone
+        git clone http://gerrit/r/config $clone
         # Be sure to use the right ref (ZUUL_COMMIT references the commit
         # for which the config-update job is running)
         cd $clone
@@ -162,7 +160,7 @@ SCRIPT
         [ "$2" == "submit" ] && {
             clone=$(mktemp -d)
             msg=$(mktemp)
-            git clone git+ssh://$FQDN/config $clone
+            git clone git+ssh://gerrit/config $clone
             cp missing_resources.yaml $clone/resources/missing_resources_$(date +%s).yaml
             cat > $msg << EOF
 Propose missing resources to the config repo
@@ -189,4 +187,3 @@ EOF
         echo "Action not supported."
         ;;
 esac
-

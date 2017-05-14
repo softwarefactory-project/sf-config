@@ -27,7 +27,6 @@
   with_items:
       - {name: jenkins-remove-offline-node.sh, dest: /etc/cron.daily, mode: '0555'}
       - {name: nodepool.yaml, dest: /var/lib/jenkins/defconf}
-      - {name: resources.sh, dest: /usr/local/bin, mode: '0555'}
       - {name: zuul.conf, dest: /var/lib/jenkins/defconf}
 
 - name: Install templates for jenkins user
