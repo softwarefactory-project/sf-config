@@ -40,6 +40,17 @@
 
 - name: Install httpd conf.d nodepool log
   copy: src=nodepool_log.conf dest=/etc/httpd/conf.d/nodepool_log.conf
+  register: nodepool_log_http_conf
+
+- name: Ensure httpd is running on nodepool-builder host
+  when: nodepool_log_http_conf|changed and 'nodepool-builder' in nodepool_services
+  service: name=httpd state=reloaded enabled=yes
+
+- name: Ensure /var/www/html exists
+  file: path=/var/www/html state=directory
+
+- name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log
+  file: path=/var/www/html/nodepool-log src=/var/www/nodepool-log state=link
 
 - name: Setup sysconfig
   template:
