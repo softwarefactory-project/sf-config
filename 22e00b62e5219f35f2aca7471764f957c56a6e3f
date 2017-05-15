@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da9b358b_f8dd4271",
+        "filename": "ansible/roles/sf-logserver/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-05-15T13:25:51Z",
+      "side": 1,
+      "message": ", mod_wsgi",
+      "revId": "22e00b62e5219f35f2aca7471764f957c56a6e3f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da9b358b_78d01254",
+        "filename": "ansible/roles/sf-logserver/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-05-15T13:25:51Z",
+      "side": 1,
+      "message": "I suggest to set that setting in sf-base then.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 21
+      },
+      "revId": "22e00b62e5219f35f2aca7471764f957c56a6e3f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
