@@ -73,3 +73,8 @@
 - name: "Setup gearman-check cron"
   cron: name=gearman-check-cron job=/usr/local/bin/gearman-check minute=0 hour=0
   when: "'zuul' in zuul_services"
+
+- name: "Import jenkins secrets if any"
+  command: /usr/share/sf-config/scripts/jenkins-decrypt /var/lib/jenkins --output /var/lib/zuul/ansible/secrets.yaml
+  register: jenkins_decrypt
+  failed_when: jenkins_decrypt.rc != 0 and jenkins_decrypt.rc != 2
