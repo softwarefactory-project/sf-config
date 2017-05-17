@@ -13,6 +13,10 @@ user=jenkins
 
 {% endif %}{% endfor %}
 
+[connection sqlreporter]
+driver=sql
+dburi=sqlite://
+
 [connection smtp]
 driver=smtp
 server=localhost
