@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    A new SQL database is configured for Zuul reporter to store build event and
+    enable a jenkins-like dashboard for all Zuul job executions.
+upgrade:
+  - |
+    The Zuul sql reporter is added to check/gate/post/periodic/tag and
+    experimental pipelines.

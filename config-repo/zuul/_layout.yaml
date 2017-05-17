@@ -8,6 +8,12 @@ jobs:
   - name: ^.*$
     parameter-function: set_node_options
 
+# sqlreporter score value:
+# +1/-1  check
+# +2/-2  gate
+# +0/-3  periodic (less critical than post)
+# +0/-4  post (very critical error)
+# +0/-5  tag (even more critical error to look for)
 pipelines:
   - name: check
     description: Newly uploaded patchsets enter this pipeline to receive an initial +/-1 Verified vote from Jenkins.
@@ -31,9 +37,13 @@ pipelines:
     success:
       gerrit:
         verified: 1
+      sqlreporter:
+        score: 1
     failure:
       gerrit:
         verified: -1
+      sqlreporter:
+        score: -1
 
   - name: gate
     description: Changes that have been approved by core developers are enqueued in order in this pipeline
@@ -66,9 +76,13 @@ pipelines:
       gerrit:
         verified: 2
         submit: true
+      sqlreporter:
+        score: 2
     failure:
       gerrit:
         verified: -2
+      sqlreporter:
+        score: -2
     window-floor: 20
     window-increase-factor: 2
 
@@ -80,6 +94,11 @@ pipelines:
       gerrit:
         - event: ref-updated
           ref: ^(?!(devnull|refs/.*)).*$
+    success:
+      sqlreporter: {}
+    failure:
+      sqlreporter:
+        score: -4
 
   - name: periodic
     description: Jobs in this queue are triggered daily.
@@ -88,6 +107,12 @@ pipelines:
     trigger:
       timer:
         - time: '0 0 * * *'
+    success:
+      sqlreporter:
+        score: 0
+    failure:
+      sqlreporter:
+        score: -3
 
   - name: tag
     description: This pipeline runs jobs in response to any tag event.
@@ -98,6 +123,11 @@ pipelines:
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/.*$
+    success:
+      sqlreporter: {}
+    failure:
+      sqlreporter:
+        score: -5
 
   - name: experimental
     description: On-demand pipeline for requesting a run against a set of jobs that are not yet gating. Leave review comment of "check experimental" to run jobs in this pipeline.
@@ -112,8 +142,10 @@ pipelines:
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*check experimental\s*$
     success:
       gerrit: {}
+      sqlreporter: {}
     failure:
       gerrit: {}
+      sqlreporter: {}
 
 projects:
   - name: config

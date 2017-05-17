@@ -11,6 +11,12 @@ zuul_services:
 
 zuul_port: 8084
 
+zuul_mysql_host: "mysql.example.com"
+zuul_mysql_port: 3306
+zuul_mysql_db: "zuul"
+zuul_mysql_user: "zuul"
+zuul_mysql_password: "CHANGE_ME"
+
 gerrit_pub_url: "https://example.com/r/"
 zuul_pub_url: "https://example.com/zuul/"
 zuul_internal_url: "http://localhost:{{ zuul_port }}/"

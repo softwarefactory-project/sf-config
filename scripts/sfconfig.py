@@ -551,6 +551,12 @@ DNS.1 = %s
             get_hostname("zuul"), defaults["zuul_port"])
         # TODO(tristanC): create a dedicated key for zuul
         glue["zuul_rsa_pub"] = glue["jenkins_rsa_pub"]
+        glue["zuul_mysql_host"] = glue["mysql_host"]
+        glue["mysql_databases"]["zuul"] = {
+            'hosts': ["localhost", get_hostname("zuul")],
+            'user': 'zuul',
+            'password': secrets['zuul_mysql_password'],
+        }
 
     if "nodepool" in arch["roles"]:
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
