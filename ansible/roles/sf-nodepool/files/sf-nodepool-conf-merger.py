@@ -16,8 +16,15 @@ def merge(_nodepool):
             provider["image-type"] = "raw"
 
     for dib in user['diskimages']:
-        dib['env-vars']['TMPDIR'] = '/var/cache/nodepool/dib_tmp'
-        dib['env-vars']['DIB_IMAGE_CACHE'] = '/var/cache/nodepool/dib_cache'
+        envvars = dib.setdefault('env-vars', {})
+        envvars['TMPDIR'] = '/var/cache/nodepool/dib_tmp'
+        envvars['DIB_IMAGE_CACHE'] = '/var/cache/nodepool/dib_cache'
+        envvars['DIB_GRUB_TIMEOUT'] = '0'
+        envvars['DIB_CHECKSUM'] = '1'
+        # Make sure env-vars are str
+        for k, v in envvars.items():
+            if not isinstance(v, basestring):
+                envvars[k] = str(v)
 
     if 'cron' in user:
         conf['cron'] = user['cron']
