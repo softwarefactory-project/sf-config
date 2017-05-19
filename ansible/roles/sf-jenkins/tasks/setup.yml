@@ -49,6 +49,7 @@
       - hudson.plugins.gearman.GearmanPluginConfig.xml
       - hudson.plugins.git.GitSCM.xml
       - jenkins.model.JenkinsLocationConfiguration.xml
+      - nodeMonitors.xml
 
 - name: Install files for root user
   template:
