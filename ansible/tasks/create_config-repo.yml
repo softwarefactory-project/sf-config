@@ -57,7 +57,7 @@
       with_items:
         - "add -A"
         - "commit -m 'Initialize config repository'"
-        - "push origin master"
+        - "push git+ssh://gerrit/config master"
 
     - command: mv {{ conf_tmp.stdout }} /root/config
   when: config_done.stat.exists != True

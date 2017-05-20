@@ -25,9 +25,14 @@
             {% if 'jenkins' in roles %}
                 <li><a href="/jenkins/" target="_top">Jenkins</a></li>
             {% endif %}
+            {% if 'zuul-server' in roles %}
                 <li><a href="/zuul/" target="_top">Zuul</a></li>
+            {% endif %}
             {% if 'zuul-launcher' in roles %}
                 <li><a href="/logs/results/" target="_top">Jobs</a></li>
+            {% endif %}
+            {% if 'zuul3-scheduler' in roles %}
+                <li><a href="/zuul3/" target="_top">ZuulV3</a></li>
             {% endif %}
             {% if 'storyboard' in roles %}
                 <li><a href="/storyboard/" target="_top">Storyboard</a></li>
