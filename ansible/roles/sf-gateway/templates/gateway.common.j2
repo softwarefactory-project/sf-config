@@ -116,6 +116,11 @@
         ProxyPassReverse /zuul/ {{ zuul_internal_url }}
 
 {% endif %}
+{% if 'zuul3' in roles %}
+        ProxyPass /zuul3/ {{ zuul3_internal_url }} nocanon retry=0
+        ProxyPassReverse /zuul3/ {{ zuul3_internal_url }}
+
+{% endif %}
 {% if 'storyboard' in roles %}
         ProxyPass /storyboard_api/ http://storyboard:20000/v1/ nocanon retry=0
         ProxyPassReverse /storyboard_api/ http://storyboard:20000/v1/
