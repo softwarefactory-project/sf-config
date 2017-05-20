@@ -1,0 +1,74 @@
+[gearman]
+server={{ zuul3_scheduler_host }}
+check_job_registration=true
+
+[gearman_server]
+start=true
+log_config={{ zuul3_conf_dir }}/gearman-logging.conf
+
+[webapp]
+listen_address=0.0.0.0
+port={{ zuul3_webapp_port }}
+
+[zuul]
+tenant_config={{ zuul3_conf_dir }}/main.yaml
+log_config={{ zuul3_conf_dir }}/scheduler-logging.conf
+state_dir={{ zuul3_lib_dir }}
+status_url={{ zuul3_pub_url }}
+zookeeper_hosts={{ zookeeper_host }}:2181
+job_name_in_report=true
+report_times=true
+url_pattern=https://{{ fqdn }}/logs/{build.parameters[LOG_PATH]}
+
+[merger]
+git_dir={{ zuul3_lib_dir }}/git/
+git_user_email=zuul@{{ fqdn }}
+git_user_name=zuul
+zuul_url={{ zuul3_pub_url }}p
+log_config={{ zuul3_conf_dir }}/merger-logging.conf
+append_hostname=true
+
+[executor]
+git_dir={{ zuul3_lib_dir }}/executor/
+log_config={{ zuul3_conf_dir }}/executor-logging.conf
+finger_port=7979
+
+[connection sqlreporter]
+driver=sql
+dburi=mysql+pymysql://{{ zuul3_mysql_user }}:{{ zuul3_mysql_password}}@{{ zuul3_mysql_host }}/{{ zuul3_mysql_db }}
+
+[connection gerrit]
+driver=gerrit
+server=gerrit.{{ fqdn }}
+# baseurl is only use to fetch git refs on diff url than server.
+# Using baseurl we cannot modify url zuul report to user
+baseurl={{ gerrit_pub_url }}
+user=zuul
+sshkey={{ zuul3_lib_dir }}/.ssh/id_rsa
+
+{% for conn in gerrit_connections %}{% if "disabled" not in conn or not conn["disabled"] %}
+[connection {{ conn['name'] }}]
+driver=gerrit
+server={{ conn['hostname'] }}
+baseurl={{ conn['puburl'] }}
+user={{ conn['username'] }}
+sshkey={{ zuul3_lib_dir }}/.ssh/id_rsa
+
+{% endif %}{% endfor %}
+
+{% for conn in github_connections|default([]) %}
+[connection {{ conn['name'] }}]
+driver=github
+git_host={{ conn['hostname']|default('github.com') }}
+api_token={{ conn['api_token'] }}
+webhook_token={{ conn['webhook_token'] }}
+sshkey={{ zuul3_lib_dir }}/.ssh/id_rsa
+
+{% endfor %}
+
+[connection smtp]
+driver=smtp
+server=localhost
+port=25
+default_from=zuul@{{ fqdn }}
+default_to=admin@{{ fqdn }}

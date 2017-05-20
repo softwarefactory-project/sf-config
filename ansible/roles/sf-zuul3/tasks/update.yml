@@ -1,0 +1,33 @@
+---
+- file: path=/var/lib/software-factory/state/zuul3_config state=touch
+
+- name: Check local config
+  command: cat /var/lib/software-factory/state/zuul3_config
+  register: localconfig
+
+- name: Check upstream config
+  command: chdir=/root/config git log --oneline zuulV3/
+  register: upstreamconfig
+
+- name: Update zuul main.yaml
+  command: chdir=/root/config {{ item }}
+  with_items:
+    - cp zuulV3/main.yaml "{{ zuul3_conf_dir }}/main.yaml"
+  when: "localconfig.stdout != upstreamconfig.stdout"
+
+- name: Reload zuul-scheduler service
+  service: name=zuul-scheduler state=reloaded enabled=yes
+  when: "'zuul-scheduler' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
+
+- name: Reload zuul-executor service
+  service: name=zuul-executor state=reloaded enabled=yes
+  when: "'zuul-executor' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
+
+# Zuul-merger doesn't support reload, restart is needed
+- name: Restart zuul-merger service
+  service: name=zuul-merger state=restarted enabled=yes
+  when: "'zuul-merger' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
+
+- name: Write config repo sha1 matching current configuration
+  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/state/zuul3_config
+  when: localconfig.stdout != upstreamconfig.stdout
