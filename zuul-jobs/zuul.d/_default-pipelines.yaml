@@ -1,0 +1,43 @@
+---
+- pipeline:
+    name: check
+    manager: independent
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
+    success:
+      gerrit:
+        verified: 1
+      sqlreporter:
+        score: 1
+    failure:
+      gerrit:
+        verified: -1
+      sqlreporter:
+        score: -1
+
+- pipeline:
+    name: github-check
+    manager: independent
+    trigger:
+      github:
+        - event: pull_request
+          action: opened
+        - event: pull_request
+          action: comment
+          comment: 'recheck'
+    start:
+      github:
+        status: 'pending'
+    success:
+      github:
+        status: 'success'
+      sqlreporter:
+        score: 1
+    failure:
+      github:
+        status: 'failure'
+      sqlreporter:
+        score: -1
