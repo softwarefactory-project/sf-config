@@ -10,8 +10,6 @@ def merge(_nodepool):
     user = yaml.safe_load(open("nodepool/nodepool.yaml"))
 
     for provider in user['providers']:
-        for image in provider['images']:
-            image['private-key'] = '/var/lib/nodepool/.ssh/id_rsa'
         if not provider.get("image-type"):
             provider["image-type"] = "raw"
 

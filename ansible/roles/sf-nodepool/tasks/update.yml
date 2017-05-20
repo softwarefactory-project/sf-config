@@ -15,7 +15,6 @@
   with_items:
     - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py /etc/nodepool/nodepool.yaml
     - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ /etc/nodepool/scripts/
-    - rsync -avi /usr/local/share/sf-jenkins-slave-tools/ /etc/nodepool/scripts/
     - rsync -avi --delete nodepool/elements/ /etc/nodepool/elements/
 
 - name: Load nodepool configuration

@@ -1,5 +1,5 @@
 [gearman]
-server=zuul.{{ fqdn }}
+server={{ zuul_scheduler_host }}
 check_job_registration=true
 
 [gearman_server]
@@ -7,11 +7,12 @@ start=true
 log_config=/etc/zuul/gearman-logging.conf
 
 [zuul]
-layout_config=/etc/zuul/layout.yaml
-log_config=/etc/zuul/logging.conf
+tenant_config=/etc/zuul/main.yaml
+log_config=/etc/zuul/scheduler-logging.conf
 pidfile=/var/run/zuul/zuul.pid
 state_dir=/var/lib/zuul
 status_url={{ zuul_pub_url }}
+zookeeper_hosts={{ zookeeper_host }}:2181
 job_name_in_report=true
 report_times=true
 url_pattern=https://{{ fqdn }}/logs/{build.parameters[LOG_PATH]}
@@ -24,13 +25,9 @@ zuul_url={{ zuul_pub_url }}p
 log_config=/etc/zuul/merger-logging.conf
 append_hostname=true
 
-[launcher]
-log_config=/etc/zuul/launcher-logging.conf
-jenkins_jobs=/etc/zuul/jobs/
-workspace_root=/var/lib/zuul/jobs/
-results_dir=/var/www/logs/results/
-private_key_file=/var/lib/zuul/.ssh/id_rsa
-username=zuul
+[executor]
+git_dir=/var/lib/zuul/executor/
+log_config=/etc/zuul/executor-logging.conf
 
 {% for logserver in logservers|default([]) %}
 [site "{{ logserver["name"] }}"]
@@ -43,6 +40,7 @@ root={{ logserver["path"] }}
 [node "master"]
 host=localhost
 description=The master node allowed to trigger config-update
+host_key=ssh-rsa {{ hostvars[zuul_executor_host].ansible_ssh_host_key_rsa_public }}
 labels=master
 
 {% if not logs['disabled'] %}
@@ -79,7 +77,7 @@ server=gerrit.{{ fqdn }}
 # baseurl is only use to fetch git refs on diff url than server.
 # Using baseurl we cannot modify url zuul report to user
 baseurl={{ gerrit_pub_url }}
-user=jenkins
+user=zuul
 sshkey=/var/lib/zuul/.ssh/id_rsa
 
 {% for conn in gerrit_connections %}{% if "disabled" not in conn or not conn["disabled"] %}

@@ -1,0 +1,12 @@
+- hosts: all
+  vars:
+    project_path: "{{ zuul['executor']['src_root'] }}/{{ zuul['project']['canonical_name'] }}"
+  tasks:
+    - name: Update configuration
+      command: ssh root@install-server sf_configrepo_update
+
+    - name: Apply resources change
+      command: /usr/local/bin/resources.sh apply
+      environment: zuul.env
+      args:
+        chdir: "{{ project_path }}"

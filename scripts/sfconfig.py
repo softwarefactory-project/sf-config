@@ -555,9 +555,8 @@ DNS.1 = %s
             glue["zuul_offline_node_when_complete"] = False
         glue["zuul_pub_url"] = "%s/zuul/" % glue["gateway_url"]
         glue["zuul_internal_url"] = "http://%s:%s/" % (
-            get_hostname("zuul"), defaults["zuul_port"])
-        # TODO(tristanC): create a dedicated key for zuul
-        glue["zuul_rsa_pub"] = glue["jenkins_rsa_pub"]
+            get_hostname("zuul-scheduler"), defaults["zuul_port"])
+        get_or_generate_ssh_key("zuul_rsa")
         glue["zuul_mysql_host"] = glue["mysql_host"]
         glue["mysql_databases"]["zuul"] = {
             'hosts': ["localhost", get_hostname("zuul")],
@@ -565,19 +564,15 @@ DNS.1 = %s
             'password': secrets['zuul_mysql_password'],
         }
 
-    if "zuul-launcher" in arch["roles"]:
-        glue["zuul_launcher_host"] = get_hostname("zuul-launcher")
-        glue["jobs_zmq_publishers"].append(
-            "tcp://%s:8888" % glue["zuul_launcher_host"])
+    if "zuul-scheduler" in arch["roles"]:
+        glue["zuul_scheduler_host"] = get_hostname("zuul-scheduler")
+
+    if "zuul-executor" in arch["roles"]:
+        glue["zuul_executor_host"] = get_hostname("zuul-executor")
 
     if "nodepool" in arch["roles"]:
+        get_or_generate_ssh_key("nodepool_rsa")
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
-        glue["nodepool_mysql_host"] = glue["mysql_host"]
-        glue["mysql_databases"]["nodepool"] = {
-            'hosts': ["localhost", get_hostname("nodepool")],
-            'user': 'nodepool',
-            'password': secrets['nodepool_mysql_password'],
-        }
 
     if "nodepool-builder" in arch["roles"]:
         glue["nodepool_builder_host"] = get_hostname("nodepool-builder")
@@ -660,15 +655,9 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                     )
             add_service("nodepool", "launcher")
             add_service("nodepool", "builder")
-            add_service("zuul", "server")
+            add_service("zuul", "scheduler")
             add_service("zuul", "merger")
-            add_service("zuul", "launcher")
-            # Special case for zuul-server service that is simply called zuul
-            if role == "sf-zuul":
-                host.setdefault("zuul_services", []).append("zuul")
-            # Special case for nodepoold service that is simply called nodepool
-            if role == "sf-nodepool":
-                host.setdefault("nodepool_services", []).append("nodepool")
+            add_service("zuul", "executor")
 
         # Ensure base role exists for metarole
         # e.g. the role sf-zuul-scheduler needs to be replaced by sf-zuul
@@ -688,7 +677,7 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                         host
                     )
         ensure_role(["launcher", "builder"], "nodepool")
-        ensure_role(["server", "merger", "launcher"], "zuul")
+        ensure_role(["scheduler", "merger", "executor"], "zuul")
 
         # if firehose role is in the arch, install ochlero where needed
         if firehose:

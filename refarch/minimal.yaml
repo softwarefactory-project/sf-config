@@ -5,13 +5,14 @@ inventory:
     roles:
       - install-server
       - mysql
+      - zookeeper
       - gateway
       - cauth
       - managesf
       - gerrit
-      - zuul
+      # ZuulV3
+      - zuul-scheduler
+      - zuul-executor
       - zuul-merger
-      - jenkins
-    mem: 8
-    cpu: 4
-    disk: 20
+      - nodepool-launcher
+      - nodepool-builder

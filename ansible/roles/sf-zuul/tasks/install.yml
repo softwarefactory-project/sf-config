@@ -1,7 +1,7 @@
 ---
 - name: "Install package"
   yum:
-    name: "zuul-webui, zuul-server, zuul-merger, zuul-launcher"
+    name: "zuul3-webui, zuul3-scheduler, zuul3-merger, zuul3-executor"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"

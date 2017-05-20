@@ -1,0 +1,48 @@
+- hosts: all
+  vars:
+    project_path: "{{ zuul['executor']['src_root'] }}/{{ zuul['project']['canonical_name'] }}"
+  tasks:
+    - name: Load local architecture
+      include_vars: ~zuul/defconf/arch.yaml
+
+    - block:
+        - name: Validate zuul-scheduler
+          command: zuul-scheduler -c ~zuul/defconf/zuul.conf -t
+          args:
+            chdir: "{{ project_path }}"
+      when: "'zuul-scheduler' in roles"
+
+    - block:
+        - name: Validate gerrit replication config
+          command: git config -f "gerrit/replication.config" -l
+          args:
+            chdir: "{{ project_path }}"
+
+        - name: Validate commentlinks
+          command: python -c "import yaml; 'commentlinks' in yaml.safe_load(open('gerrit/commentlinks.yaml'))"
+          args:
+            chdir: "{{ project_path }}"
+      when: "'gerrit' in roles"
+
+    - name: Validate dashboards
+      command: /usr/local/bin/sf-update-dashboard --check --input dashboards/
+      args:
+        chdir: "{{ project_path }}"
+
+    - name: Validate policy file
+      command: python -c "import yaml; yaml.safe_load(open('policies/policy.yaml'))"
+      args:
+        chdir: "{{ project_path }}"
+
+    - block:
+        - name: Validate repoxplorer configuration
+          command: repoxplorer-config-validate --config ~zuul/defconf/repoxplorer.py
+          args:
+            chdir: "{{ project_path }}"
+      when: "'repoxplorer' in roles"
+
+    - name: Check resources changes
+      command: /usr/local/bin/resources.sh validate
+      environment: zuul.env
+      args:
+        chdir: "{{ project_path }}"

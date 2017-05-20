@@ -1,13 +1,8 @@
 ---
-- name: Ensure jobs-zuul ensure locally
-  file: path=/root/config/jobs-zuul state=directory
-
-- name: Update zuul layout
+- name: Update zuul main.yaml
   command: chdir=/root/config {{ item }}
   with_items:
-    - bash -c "/usr/local/bin/yaml-merger.py zuul | tee /etc/zuul/layout.yaml"
-    - bash -c "cp zuul/*.py /etc/zuul/ || true"
-    - rsync -a --delete jobs-zuul/ /etc/zuul/jobs/
+    - cp zuul/main.yaml /etc/zuul/main.yaml
 
 - name: Enable slave reuse when nodepool is not enabled
   when: zuul_offline_node_when_complete == False
@@ -20,16 +15,16 @@
   register: localconfig
 
 - name: Check upstream config
-  command: chdir=/root/config git log --oneline zuul/ jobs-zuul/
+  command: chdir=/root/config git log --oneline zuul/
   register: upstreamconfig
 
-- name: Reload zuul service
-  service: name=zuul state=reloaded enabled=yes
-  when: "'zuul' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
+- name: Reload zuul-scheduler service
+  service: name=zuul-scheduler state=reloaded enabled=yes
+  when: "'zuul-scheduler' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
 
-- name: Reload zuul-launcher service
-  service: name=zuul-launcher state=reloaded enabled=yes
-  when: "'zuul-launcher' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
+- name: Reload zuul-executor service
+  service: name=zuul-executor state=reloaded enabled=yes
+  when: "'zuul-executor' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
 
 # Zuul-merger doesn't support reload, restart is needed
 - name: Restart zuul-merger service

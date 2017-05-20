@@ -1,7 +1,7 @@
 ---
 # Use 0751 to let apache access /var/lib/zuul/git
 # Use /bin/sh shell to allow zuul to connect to localhost for config-update jobs
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=jenkins_rsa home_dir_mode=0751 shell=/bin/sh"
+- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir_mode=0751 shell=/bin/sh"
 
 - name: Authorize zuul localhost connection for config-update jobs
   authorized_key:
@@ -32,11 +32,13 @@
     - defconf-zuul.conf
     - defconf-repoxplorer.py
 
+- name: Dump current architecture for config-check test
+  copy:
+    dest: /var/lib/zuul/defconf/arch.yaml
+    content: '{{ {"roles": roles}| to_yaml }}'
+
 - name: Create /var/www/zuul
   file: path=/var/www/zuul state=directory
-
-- name: Create /var/www/logs/results
-  file: path=/var/www/logs/results state=directory owner=zuul mode=0755
 
 - name: Symlink zuul image
   file: src=/usr/share/javascript/zuul/images/ dest=/var/www/zuul/images state=link
@@ -53,10 +55,10 @@
 - name: "Copy logging configuration"
   template: src={{ item }}.j2 dest=/etc/zuul/{{ item }}
   with_items:
-    - logging.conf
     - gearman-logging.conf
+    - scheduler-logging.conf
     - merger-logging.conf
-    - launcher-logging.conf
+    - executor-logging.conf
 
 - name: "Setup sysconfig"
   template: src=sysconfig.j2 dest=/etc/sysconfig/zuul
