@@ -62,6 +62,7 @@
     - gearman-logging.conf
     - merger-logging.conf
     - launcher-logging.conf
+  notify: restart zuul if already started
 
 - name: "Setup sysconfig"
   template: src=sysconfig.j2 dest=/etc/sysconfig/zuul

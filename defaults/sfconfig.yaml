@@ -103,6 +103,11 @@ gerrit_connections:
       username: external-gerrit-user-name
       disabled: True
 
+github_connections: []
+#    - name: "github"
+#      hostname: github.com
+#      api_token: XXX # See https://help.github.com/articles/creating-an-access-token-for-command-line-use/
+#      webhook_token: XXX # See https://developer.github.com/webhooks/securing/>
 
 theme:
     loginpage_custom_footer: ""
