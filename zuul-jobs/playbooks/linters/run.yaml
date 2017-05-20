@@ -1,0 +1,6 @@
+---
+- hosts: all
+  roles:
+    - role: lint-flake8
+    - role: lint-bashate
+    - role: lint-yaml
