@@ -498,6 +498,9 @@ DNS.1 = %s
     if "mysql" in arch["roles"]:
         glue["mysql_host"] = get_hostname("mysql")
 
+    if "zookeeper" in arch["roles"]:
+        glue["zookeeper_host"] = get_hostname("zookeeper")
+
     if "cauth" in arch["roles"]:
         glue["cauth_mysql_host"] = get_hostname("mysql")
         glue["mysql_databases"]["cauth"] = {
