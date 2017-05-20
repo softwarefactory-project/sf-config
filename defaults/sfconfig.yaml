@@ -134,6 +134,16 @@ nodepool:
       region_name: regionOne
       regions: []
 
+nodepool3:
+  providers:
+    - name: default
+      auth_url:
+      project_name: tenantname
+      username: username
+      password: secret
+      region_name: regionOne
+      regions: []
+
 logs:
   disabled: true
   swift_logsexport_container: logs
@@ -179,6 +189,22 @@ zuul:
   #    port: 29418
   #    puburl: https://external-gerrit-host-name/r/
   #    username: external-gerrit-user-name
+
+zuul3:
+  # Set external gerrit connections to act as third party CI
+  gerrit_connections: []
+  #  - name: "external_gerrit"
+  #    hostname: external-gerrit-hostname
+  #    port: 29418
+  #    puburl: https://external-gerrit-host-name/r/
+  #    username: external-gerrit-user-name
+
+  github_connections: []
+  #    - name: "github"
+  #      hostname: github.com
+  #      port: 22
+  #      api_token: XXX # See https://help.github.com/articles/creating-an-access-token-for-command-line-use/
+  #      webhook_token: XXX # See https://developer.github.com/webhooks/securing/>
 
 gerritbot:
   disabled: true
