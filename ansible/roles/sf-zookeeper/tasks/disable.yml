@@ -1,0 +1,22 @@
+---
+- name: Disable services
+  service:
+    name: zookeeper
+    enabled: no
+    state: stopped
+  ignore_errors: yes
+
+- block:
+    - name: Remove stat data
+      file:
+        path: /var/lib/zookeeper
+        state: absent
+
+    - name: Ensure /var/lib/zookeeper exists though
+      file:
+        path: /var/lib/zookeeper
+        state: directory
+        owner: zookeeper
+        group: zookeeper
+        mode: "0750"
+  when: erase == True
