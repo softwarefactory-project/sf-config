@@ -1,0 +1,20 @@
+---
+- job:
+    name: tox
+    parent: base
+    post-run: tox/post
+
+- job:
+    name: tox-linters
+    parent: tox
+    run: tox/linters
+
+- job:
+    name: tox-py27
+    parent: tox
+    run: tox/py27
+
+- job:
+    name: tox-py34
+    parent: tox
+    run: tox/py34

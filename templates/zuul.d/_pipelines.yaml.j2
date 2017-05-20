@@ -1,0 +1,48 @@
+---
+- pipeline:
+    name: check
+    manager: independent
+    trigger:
+{% if 'gerrit' in roles %}
+      gerrit:
+        - event: patchset-created
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
+{% endif %}
+{% for github_connection in zuul3_github_connections %}
+    {{ github_connection.name }}:
+        - event: pull_request
+          action: opened
+        - event: pull_request
+          action: comment
+          comment: 'recheck'
+{% endfor %}
+{% if zuul3_github_connections %}
+    start:
+{% for github_connection in zuul3_github_connections %}
+      {{ github_connection.name }}:
+        status: 'pending'
+{% endfor %}
+{% endif %}
+    success:
+{% for github_connection in zuul3_github_connections %}
+      {{ github_connection.name }}:
+        status: 'success'
+{% endfor %}
+{% if 'gerrit' in roles %}
+      gerrit:
+        verified: 1
+{% endif %}
+      sqlreporter:
+        score: 1
+    failure:
+{% for github_connection in zuul3_github_connections %}
+      {{ github_connection.name }}:
+        status: 'failure'
+{% endfor %}
+{% if 'gerrit' in roles %}
+      gerrit:
+        verified: -1
+{% endif %}
+      sqlreporter:
+        score: -1

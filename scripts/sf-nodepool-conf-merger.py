@@ -5,13 +5,15 @@ import sys
 import yaml
 
 
-def merge(_nodepool):
+def merge(inp, _nodepool):
     conf = yaml.safe_load(open(_nodepool))
-    user = yaml.safe_load(open("nodepool/nodepool.yaml"))
+    user = yaml.safe_load(open(inp))
 
     for provider in user['providers']:
-        for image in provider['images']:
-            image['private-key'] = '/var/lib/nodepool/.ssh/id_rsa'
+        if inp.endswith("nodepool.yaml"):
+            # This syntax is nodepool2 only
+            for image in provider['images']:
+                image['private-key'] = '/var/lib/nodepool/.ssh/id_rsa'
         if not provider.get("image-type"):
             provider["image-type"] = "raw"
 
@@ -35,14 +37,15 @@ def merge(_nodepool):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print "Please provide the target filename"
+    if len(sys.argv) != 3:
+        print("usage: %s src dest" % sys.argv[0])
         sys.exit(1)
-    out = sys.argv[1]
+    inp = sys.argv[1]
+    out = sys.argv[2]
     _nodepool = "%s/_nodepool.yaml" % os.path.dirname(out)
-    for reqfile in (_nodepool, "nodepool/nodepool.yaml"):
+    for reqfile in (_nodepool, inp):
         if not os.path.isfile(reqfile):
-            print "%s: missing file" % reqfile
+            print("%s: missing file" % reqfile)
             sys.exit(1)
-    merged = merge(_nodepool)
+    merged = merge(inp, _nodepool)
     open(out, 'w').write(merged)

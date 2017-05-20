@@ -33,7 +33,7 @@
     - sed -i -e 's#ssh root@managesf..* /usr/local/bin/sf-config-update.sh#ssh root@managesf.{{ fqdn }} /usr/local/bin/sf-config-update.sh#g' jobs/_default_jobs.yaml
     - git add .gitreview jobs/_default_jobs.yaml
     - git commit -m "Update with new fqdn"
-    - git push git+ssh://{{ fqdn }}:29418/config master
+    - git push git+ssh://gerrit/config master
 
 - name: Restart zuul service
   when: fqdn_changed.stat.exists
