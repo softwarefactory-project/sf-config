@@ -35,7 +35,7 @@ install -p -D -m 0644 defaults/logo-splash.png %{buildroot}%{_sysconfdir}/softwa
 install -p -D -m 0644 defaults/logo-topmenu.png %{buildroot}%{_sysconfdir}/software-factory/logo-topmenu.png
 # /usr/share/sf-config
 install -p -d %{buildroot}%{_datarootdir}/sf-config
-mv ansible config-repo defaults refarch scripts templates %{buildroot}%{_datarootdir}/sf-config/
+mv ansible config-repo zuul-jobs defaults refarch scripts templates %{buildroot}%{_datarootdir}/sf-config/
 
 %files
 /usr/local/bin/yaml-merger.py

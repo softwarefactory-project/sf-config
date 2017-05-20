@@ -1,0 +1,4 @@
+- hosts: all
+  roles:
+    - role: run-tox
+      envlist: pep8
