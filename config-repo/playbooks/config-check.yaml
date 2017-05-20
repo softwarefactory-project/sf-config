@@ -1,0 +1,9 @@
+- hosts: all
+  vars:
+    project_path: "{{ zuul['executor']['src_root'] }}/{{ zuul['project']['canonical_name'] }}"
+  tasks:
+    - name: "Check yaml files"
+      shell: "find . -name '*.yml' | xargs yamllint"
+      args:
+        chdir: "{{ project_path }}"
+

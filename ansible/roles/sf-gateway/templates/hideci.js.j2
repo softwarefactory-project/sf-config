@@ -27,10 +27,12 @@ var trustedCIRegex = /^(OpenStack CI|Jenkins|Zuul|Jenkins CI)$/;
 var firstPartyCI = /^(Jenkins|Zuul)/;
 // this regex matches the pipeline markup
 var pipelineNameRegex = /Build \w+ \((\w+) pipeline\)/;
+{% if zuul_pub_url %}
 // The url to full status information on running jobs
 var zuulStatusURL = '{{ zuul_pub_url }}';
 // The json URL to check for running jobs
 var zuulStatusJSON = '{{ zuul_pub_url }}/status/change/';
+{% endif %}
 
 // This is a variable to determine if we're in debugging mode, which
 // lets you globally set it to see what's going on in the flow.
@@ -373,9 +375,11 @@ var ci_page_loaded = function() {
         if (!showOrHide) {
             ci_hide_ci_comments(comments);
         }
+        {% if zuul_pub_url %}
         if (zuul_inline === true) {
             ci_zuul_for_change(comments);
         }
+        {% endif %}
     } else {
         $("#toggleci").hide();
     }

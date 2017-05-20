@@ -1,0 +1,28 @@
+- hosts: all
+  vars:
+    project_path: "{{ zuul['executor']['src_root'] }}/{{ zuul['project']['canonical_name'] }}"
+    repo_path: "{{ zuul['executor']['src_root'] }}/zuul-rpm-build"
+  tasks:
+    - name: Fetch sources
+      shell: "spectool -g *.spec"
+      args:
+        chdir: "{{ project_path }}"
+
+    - name: Cleanup rpm-build directory
+      file:
+        path: "{{ repo_path }}"
+        state: absent
+
+    - name: Create rpm-build directory
+      file:
+        path: "{{ repo_path }}"
+        state: directory
+
+    - name: Build srpm
+      shell: "mock --result {{ repo_path }}/ --buildsrpm --source {{ project_path }} --spec {{ project_path_}}/*.spec"
+
+    - name: Build rpm
+      shell: "mock --result {{ repo_path }}/ --rebuild {{ repo_path }}/*.src.rpm"
+
+    - name: Create repository
+      command: "createrepo {{ repo_path }}"
