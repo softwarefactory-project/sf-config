@@ -1,0 +1,7 @@
+---
+- name: "Fetch zuul logs"
+  synchronize: mode=pull src="{{ zuul3_log_dir }}" dest="{{ log_dest }}/log"
+  ignore_errors: True
+- name: "Fetch zuul config"
+  synchronize: mode=pull src="{{ zuul3_conf_dir }}" dest="{{ log_dest }}/etc"
+  ignore_errors: True

@@ -1,0 +1,45 @@
+- job:
+    name: base
+    pre-run: base/pre
+    post-run: base/post
+    roles:
+      - zuul: zuul-jobs
+    success-url: https://sftests.com/logs/{build.uuid}/
+    failure-url: https://sftests.com/logs/{build.uuid}/
+    timeout: 1800
+    vars:
+      zuul_workspace_root: /var/lib/zuul
+    nodes:
+      - name: main
+        label: centos-7
+
+- job:
+    name: linters
+    parent: base
+    run: linters/run
+
+- job:
+    name: tox
+    parent: base
+    post-run: tox/post
+
+- job:
+    name: tox-linters
+    parent: tox
+    run: tox/linters
+
+- job:
+    name: tox-py27
+    parent: tox
+    run: tox/py27
+
+- job:
+    name: tox-py34
+    parent: tox
+    run: tox/py34
+
+- project:
+    name: zuul-jobs
+    check:
+      jobs:
+        - linters
