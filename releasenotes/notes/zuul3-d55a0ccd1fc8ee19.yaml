@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    New roles are available to deploy zuulV3, zuul3-scheduler, zuul3-merger and
+    zuul3-executor. For nodepoolV3, it's nodepool3-launcher and nodepool3-builder.

@@ -1,0 +1,9 @@
+- tenant:
+    name: ''
+    source:
+      gerrit:
+        config-projects:
+          - config
+          - zuul-jobs
+        untrusted-projects:
+          - tdpw/python-readerlib-distgit
