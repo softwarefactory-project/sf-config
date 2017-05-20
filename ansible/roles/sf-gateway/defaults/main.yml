@@ -9,6 +9,8 @@ gateway_host: localhost
 nodepool_builder_host: ""
 logserver_host: ""
 
+zuul_pub_url: ""
+
 welcome_page_path: "sf/welcome.html"
 
 # Base64 encoded logo data
