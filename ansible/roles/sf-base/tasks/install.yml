@@ -32,6 +32,8 @@
     - postfix
     - tmux
     - vim-enhanced
+    - mod_auth_pubtkt # it's required because base setup install httpd tkt.conf
+    - sf-config       # it's required for sf-config scripts
 
 - name: Set permissive selinux
   lineinfile:

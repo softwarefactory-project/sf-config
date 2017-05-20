@@ -1,0 +1,28 @@
+Listen {{ zuul3_port }}
+NameVirtualHost *:{{ zuul3_port }}
+
+<VirtualHost *:{{ zuul3_port }}>
+  DocumentRoot /var/www/zuul3
+
+  LogLevel warn
+
+  RewriteEngine on
+  RewriteRule ^/status.json$ http://127.0.0.1:{{ zuul3_webapp_port }}/status.json [P]
+  RewriteRule ^/status/(.*) http://127.0.0.1:{{ zuul3_webapp_port }}/status/$1 [P]
+
+  AddOutputFilterByType DEFLATE application/json
+
+  SetEnv GIT_PROJECT_ROOT {{ zuul3_lib_dir }}/git/
+  SetEnv GIT_HTTP_EXPORT_ALL
+
+  <Directory /usr/libexec/git-core/>
+    require all granted
+  </Directory>
+  <Directory /var/www/zuul3/>
+    Options FollowSymLinks
+  </Directory>
+
+  AliasMatch ^/p/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$ {{ zuul3_lib_dir }}/git/$1
+  AliasMatch ^/p/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ {{ zuul3_lib_dir }}/git/$1
+  ScriptAlias /p/ /usr/libexec/git-core/git-http-backend/
+</VirtualHost>

@@ -648,6 +648,34 @@ DNS.1 = %s
     if "nodepool-builder" in arch["roles"]:
         glue["nodepool_builder_host"] = get_hostname("nodepool-builder")
 
+    if "zuul" in arch["roles"] or "zuul3" in arch["roles"]:
+        get_or_generate_ssh_key("zuul_rsa")
+
+# ZuulV3 and NodepoolV3
+    if "zuul3" in arch["roles"]:
+        glue["zuul3_pub_url"] = "%s/zuul3/" % glue["gateway_url"]
+        glue["zuul3_internal_url"] = "http://%s:%s/" % (
+            get_hostname("zuul3-scheduler"), defaults["zuul3_port"])
+        glue["zuul3_mysql_host"] = glue["mysql_host"]
+        glue["mysql_databases"][defaults["zuul3_mysql_db"]] = {
+            'hosts': ["localhost", get_hostname("zuul3-scheduler")],
+            'user': defaults["zuul3_mysql_user"],
+            'password': secrets["zuul3_mysql_password"],
+        }
+        glue["loguser_authorized_keys"].append(glue["zuul_rsa_pub"])
+
+    if "zuul3-scheduler" in arch["roles"]:
+        glue["zuul3_scheduler_host"] = get_hostname("zuul3-scheduler")
+
+    if "zuul3-executor" in arch["roles"]:
+        glue["zuul3_executor_host"] = get_hostname("zuul3-executor")
+
+    if "nodepool3" in arch["roles"]:
+        glue["nodepool3_providers"] = sfconfig.get("nodepool3", {}).get(
+            "providers", [])
+        get_or_generate_ssh_key("nodepool_rsa")
+
+
     if "logserver" in arch["roles"]:
         glue["logserver_host"] = get_hostname("logserver")
         glue["logservers"].append({
@@ -740,6 +768,9 @@ DNS.1 = %s
     if zuul_config.get("gerrit_connections"):
         glue["zuul_extra_gerrits"] = zuul_config["gerrit_connections"]
 
+    if zuul_config.get("github_connections"):
+        glue["zuul_github_connections"] = zuul_config["github_connections"]
+
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
     glue.update(secrets)
@@ -764,7 +795,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 service_name = "%s-%s" % (role_name, meta_name)
                 if service_name in host["roles"]:
                     host["params"].setdefault(
-                        "%s_services" % role_name, []).append(service_name)
+                        "%s_services" % role_name, []).append(
+                            service_name.replace('3', ''))
                 name = "sf-%s" % service_name
                 # Replace meta role by real role
                 if name in host["rolesname"]:
@@ -781,11 +813,21 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
 
         ensure_role_services("nodepool", ["launcher", "builder"])
         ensure_role_services("zuul", ["server", "merger", "launcher"])
+        ensure_role_services("nodepool3", ["launcher", "builder"])
+        ensure_role_services("zuul3", ["scheduler", "merger", "executor"])
 
         # if firehose role is in the arch, install ochlero where needed
         if firehose:
             if "zuul" in host["roles"] or "nodepool" in host["roles"]:
                 host["rolesname"].append("sf-ochlero")
+
+    # Check for conflicts
+    for conflict in (("nodepool3", "nodepool"), ("zuul3", "zuul")):
+        for host in arch["inventory"]:
+            if conflict[0] in host["roles"] and conflict[1] in host["roles"]:
+                raise RuntimeError("%s: can't install both %s and %s" % (
+                    host["hostname"], conflict[0], conflict[1]
+                ))
 
     templates = "%s/templates" % share
 
