@@ -1,0 +1,26 @@
+---
+- job:
+    name: base
+    pre-run: base/pre
+    post-run: base/post
+    roles:
+      - zuul: zuul-jobs
+    success-url: {{ zuul3_success_log_url }}
+    failure-url: {{ zuul3_failure_log_url }}
+    timeout: 1800
+    vars:
+      zuul_workspace_root: /var/lib/zuul
+    nodes:
+      - name: main
+        label: dib-centos-7
+
+- job:
+    name: linters
+    parent: base
+    run: linters/run
+
+- project:
+    name: zuul-jobs
+    check:
+      jobs:
+        - linters

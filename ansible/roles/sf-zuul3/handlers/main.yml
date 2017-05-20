@@ -1,0 +1,4 @@
+---
+- name: restart zuul3 if already started
+  shell: systemctl is-active {{ item }} && systemctl restart {{ item }} || true
+  with_items: "{{ zuul3_services }}"

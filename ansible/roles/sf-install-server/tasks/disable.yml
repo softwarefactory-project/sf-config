@@ -22,6 +22,7 @@
       with_items:
         - /etc/auto_backup.conf
         - /root/config
+        - /root/zuul-jobs
         - /root/.ssh/known_hosts
 
     - name: Remove packages
