@@ -11,6 +11,15 @@ inventory:
       - gitweb
       - gerrit
       - logserver
+# Enable zuul3
+#      - zookeeper
+#      - zuul3-scheduler
+#      - zuul3-merger
+#      - zuul3-executor
+# Enable nodepool3
+#      - nodepool3-launcher
+#      - nodepool3-builder
+# Remove roles bellow
       - zuul-server
       - zuul-launcher
       - zuul-merger

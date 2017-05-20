@@ -593,6 +593,31 @@ DNS.1 = %s
     if "nodepool-builder" in arch["roles"]:
         glue["nodepool_builder_host"] = get_hostname("nodepool-builder")
 
+
+# ZuulV3 and NodepoolV3
+    if "zuul3" in arch["roles"]:
+        glue["zuul3_pub_url"] = "%s/zuul3/" % glue["gateway_url"]
+        glue["zuul3_internal_url"] = "http://%s:%s/" % (
+            get_hostname("zuul3-scheduler"), defaults["zuul3_port"])
+        get_or_generate_ssh_key("zuul_rsa")
+        glue["zuul3_mysql_host"] = glue["mysql_host"]
+        glue["mysql_databases"]["zuul3"] = {
+            'hosts': ["localhost", get_hostname("zuul3-scheduler")],
+            'user': 'zuul3',
+            'password': secrets['zuul3_mysql_password'],
+        }
+
+    if "zuul3-scheduler" in arch["roles"]:
+        glue["zuul3_scheduler_host"] = get_hostname("zuul3-scheduler")
+
+    if "zuul3-executor" in arch["roles"]:
+        glue["zuul3_executor_host"] = get_hostname("zuul3-executor")
+
+    if "nodepool3" in arch["roles"]:
+        glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
+        get_or_generate_ssh_key("nodepool_rsa")
+
+
     if "logserver" in arch["roles"]:
         glue["logserver_host"] = get_hostname("logserver")
         glue["loguser_authorized_key"] = glue["zuul_rsa_pub"]
@@ -678,7 +703,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 service_name = "%s-%s" % (role_name, meta_name)
                 if service_name in host["roles"]:
                     host["params"].setdefault(
-                        "%s_services" % role_name, []).append(service_name)
+                        "%s_services" % role_name, []).append(
+                            service_name.replace('3', ''))
                 name = "sf-%s" % service_name
                 # Replace meta role by real role
                 if name in host["rolesname"]:
@@ -694,6 +720,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
 
         ensure_role_services("nodepool", ["launcher", "builder"])
         ensure_role_services("zuul", ["server", "merger", "launcher"])
+        ensure_role_services("nodepool3", ["launcher", "builder"])
+        ensure_role_services("zuul3", ["scheduler", "merger", "executor"])
 
         # if firehose role is in the arch, install ochlero where needed
         if firehose:

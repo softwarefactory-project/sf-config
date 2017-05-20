@@ -1,0 +1,34 @@
+---
+- file: path=/var/lib/software-factory/nodepool3_config state=touch
+
+- name: Check last applied Nodepool config checksum
+  command: cat /var/lib/software-factory/nodepool3_config
+  register: localconfig
+
+- name: Check new Nodepool config checksum
+  shell: chdir=/root/config git log --oneline nodepool/ && md5sum /etc/nodepool/_nodepool.yaml
+  register: upstreamconfig
+
+- name: Update nodepool configuration
+  command: chdir=/root/config {{ item }}
+  when: localconfig.stdout != upstreamconfig.stdout
+  with_items:
+    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py /etc/nodepool/nodepool.yaml
+    - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ /etc/nodepool/scripts/
+    - rsync -avi --delete nodepool/elements/ /etc/nodepool/elements/
+
+- name: Load nodepool configuration
+  include_vars: file=/etc/nodepool/nodepool.yaml name=nodepool3_config
+
+- name: Update builder-logging.conf
+  template: src={{ item }}.j2 dest=/etc/nodepool/{{ item }}
+  with_items: [logging.conf, builder-logging.conf]
+
+- name: Restart service
+  service: name={{ item }} state=restarted
+  with_items: "{{ nodepool3_services }}"
+  when: localconfig.stdout != upstreamconfig.stdout
+
+- name: Write config repo checksum matching current configuration
+  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/nodepool3_config
+  when: localconfig.stdout != upstreamconfig.stdout
