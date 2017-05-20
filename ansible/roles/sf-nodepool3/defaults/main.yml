@@ -1,0 +1,28 @@
+role_actions:
+  - install
+  - setup
+  - update
+  - get_logs
+  - disable
+
+nodepool3_services:
+  - nodepool-launcher
+  - nodepool-builder
+
+nodepool3_packages:
+  - nodepool3
+  - nodepool3-launcher
+  - nodepool3-builder
+  - sf-elements
+  - httpd
+
+nodepool3_providers:
+  - name: default
+    auth_url: http://localhost:35357/v2.0
+    project_name: tenantname
+    username: username
+    password: secret
+    region_name: regionOne
+
+nodepool_loglevel: INFO
+nodepool_root_loglevel: WARNING
