@@ -1,0 +1,88 @@
+---
+- include: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa"
+
+- name: Install config
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/nodepool/{{ item }}"
+    owner: "root"
+    group: "nodepool"
+    mode: "0440"
+  with_items:
+    - _nodepool.yaml
+    - secure.conf
+
+- name: Install os-client-config
+  template:
+    src: clouds.yaml.j2
+    dest: /var/lib/nodepool/.config/openstack/clouds.yaml
+    owner: nodepool
+    group: nodepool
+    mode: 0400
+
+- name: Ensure /root/.config/openstack exists
+  file:
+    path: /root/.config/openstack
+    state: directory
+
+- name: Install os-client-config for root user
+  template:
+    src: clouds.yaml.j2
+    dest: /root/.config/openstack/clouds.yaml
+    mode: 0400
+
+- name: Create nodepool image build log directory
+  file:
+    path: /var/www/nodepool3-log
+    state: directory
+    owner: nodepool
+    group: apache
+    mode: 0750
+
+- name: Install httpd conf.d nodepool log
+  copy:
+    src: nodepool3_log.conf
+    dest: /etc/httpd/conf.d/nodepool3_log.conf
+  register: nodepool3_log_http_conf
+
+- name: Reload http on the nodepool-builder node
+  service:
+    name: httpd
+    state: reloaded
+    enabled: "yes"
+  when:
+    - 'nodepool3_log_http_conf|changed'
+    - '"nodepool-builder" in nodepool3_services'
+
+- name: Ensure /var/www/html exists
+  file:
+    path: /var/www/html
+    state: directory
+
+- name: Ensure /var/www/html/nodepool3-log link to /var/www/nodepool3-log
+  file:
+    path: /var/www/html/nodepool3-log
+    src: /var/www/nodepool3-log
+    state: link
+
+- name: Setup sysconfig
+  template:
+    src: sysconfig.j2
+    dest: /etc/sysconfig/nodepool
+  notify: nodepool3 restart
+
+- name: Setup authorized keys
+  copy:
+    content: "{{ zuul_rsa_pub }}"
+    dest: /etc/nodepool/scripts/authorized_keys
+
+- name: Setup localCA
+  copy:
+    content: "{{ localCA_pem }}"
+    dest: /etc/nodepool/scripts/localCA.pem
+
+- name: Start service
+  service:
+    name: "{{ item }}"
+    enabled: "yes"
+  with_items: "{{ nodepool3_services }}"
