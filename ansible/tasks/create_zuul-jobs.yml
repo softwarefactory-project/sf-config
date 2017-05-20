@@ -1,0 +1,26 @@
+- stat: path=/root/zuul-jobs
+  register: zuul_jobs_done
+
+- block:
+  - name: Create a temporary clone directory
+    command: mktemp -d
+    register: jobs_tmp
+
+  - name: Clone the zuul-jobs repository
+    git:
+      repo: git+ssh://gerrit/zuul-jobs
+      dest: "{{ jobs_tmp.stdout }}"
+
+  - name: Sync /usr/share/sf-config/zuul-jobs
+    command: "rsync -a /usr/share/sf-config/zuul-jobs/ {{ jobs_tmp.stdout }}/"
+
+  - name: Push zuul jobs repo
+    command: git {{ item }} chdir={{ jobs_tmp.stdout }}
+    with_items:
+      - "add -A"
+      - "commit -m 'Initialize zuul jobs repository'"
+      - "push origin master"
+
+  - name: Save zuul jobs repo
+    command: "mv {{ conf_tmp.stdout }} /root/zuul-jobs"
+  when: zuul_jobs_done.stat.exists != True

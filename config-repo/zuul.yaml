@@ -1,0 +1,18 @@
+- pipeline:
+    name: check
+    manager: independent
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
+    success:
+      gerrit:
+        verified: 1
+      sqlreporter:
+        score: 1
+    failure:
+      gerrit:
+        verified: -1
+      sqlreporter:
+        score: -1

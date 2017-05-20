@@ -1,0 +1,25 @@
+- name: Disable services
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items: "{{ zuul3_services }}"
+  ignore_errors: yes
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/httpd/conf.d/zuul3.conf
+        - /var/lib/zuul
+        - /etc/zuul
+        - /var/log/zuul
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items: "{{ zuul3_packages }}"
+  when: erase == True

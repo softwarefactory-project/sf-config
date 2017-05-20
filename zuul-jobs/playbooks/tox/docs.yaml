@@ -1,0 +1,5 @@
+- hosts: all
+  roles:
+    - revoke-sudo
+    - role: run-docs
+      envlist: venv

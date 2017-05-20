@@ -1,0 +1,37 @@
+role_actions:
+  - stop
+  - install
+  - setup
+  - update
+  - get_logs
+  - disable
+
+zuul3_services:
+  - zuul-scheduler
+  - zuul-merger
+  - zuul-executor
+
+zuul3_packages:
+  - zuul3
+  - zuul3-webui
+  - zuul3-scheduler
+  - zuul3-merger
+  - zuul3-executor
+  - httpd
+
+zuul3_port: 8085
+zuul3_webapp_port: 8004
+
+zuul3_mysql_host: "mysql.example.com"
+zuul3_mysql_port: 3306
+zuul3_mysql_db: "zuul3"
+zuul3_mysql_user: "zuul"
+zuul3_mysql_password: "CHANGE_ME"
+
+gerrit_pub_url: "https://example.com/r/"
+zuul3_pub_url: "https://example.com/zuul3/"
+zuul3_internal_url: "http://localhost:{{ zuul3_port }}/"
+
+zuul_loglevel: INFO
+zuul_gear_loglevel: WARNING
+zuul_root_loglevel: WARNING
