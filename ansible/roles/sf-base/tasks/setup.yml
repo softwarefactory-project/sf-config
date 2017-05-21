@@ -8,6 +8,9 @@
     - /usr/libexec/software-factory
     - /usr/share/software-factory
 
+- name: "sf: create sql directory"
+  file: path=/var/lib/software-factory/sql state=directory mode=0700
+
 - name: "system: disable DNS lookup in sshd"
   lineinfile:
     dest: /etc/ssh/sshd_config
