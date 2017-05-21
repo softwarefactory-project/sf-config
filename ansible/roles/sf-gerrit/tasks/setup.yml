@@ -3,11 +3,6 @@
 - name: "Create gerrit user"
   include: "{{ sf_tasks_dir }}/create_user.yml user_name=gerrit ssh_key=gerrit_service_rsa shell=/bin/bash"
 
-- name: "Install project.config"
-  copy:
-    src: "project.config"
-    dest: "/root/project.config"
-
 # During the first run, config repo isn't created, so use the default file
 - include_vars: "{{ item }}"
   with_first_found:
@@ -53,16 +48,11 @@
 
 - name: "Install initialization and migration scripts"
   template:
-    src: "{{ item.name }}.j2"
-    dest: "/root/{{ item.name }}"
-    owner: root
-    group: root
-    mode: "{{ item.mode | default('0700')}}"
+    src: "{{ item }}.j2"
+    dest: "/var/lib/software-factory/sql/{{ item }}"
   with_items:
-    - { name: gerrit-firstuser-init.sql, mode: '0644' }
-    - { name: gerrit-restore-user-keys.sql, mode: '0644' }
-    - { name: gerrit-set-default-acl.sh }
-    - { name: gerrit-set-ci-user.sh }
+    - gerrit-firstuser-init.sql
+    - gerrit-restore-user-keys.sql
 
 - name: "Add monit service check"
   copy:
@@ -97,7 +87,7 @@
       dest: "/root/.ssh/gerrit_admin.pub"
       mode: "0444"
 
-- name: "Allow gerrit to connect to himself for self replication"
+- name: "Allow gerrit to connect to himself for self replication test"
   authorized_key:
       user: gerrit
       key: "{{ gerrit_service_rsa_pub }}"
@@ -135,13 +125,13 @@
   service: name=gerrit state=started enabled=yes
 
 - name: "Add initial user"
-  shell: 'mysql gerrit < /root/gerrit-firstuser-init.sql'
+  shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'
   when: gerrit_allprojects.stat.exists == False
 
 - name: "Add jenkins user"
-  command: /root/gerrit-set-ci-user.sh
+  command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "jenkins" "ssh-rsa {{ jenkins_rsa_pub.split()[1] }}" "jenkins@{{ fqdn }}"
   when: gerrit_allprojects.stat.exists == False
 
 - name: "Set ACL"
-  command: /root/gerrit-set-default-acl.sh
+  command: /usr/share/sf-config/scripts/gerrit-set-default-acl.sh
   when: gerrit_allprojects.stat.exists == False

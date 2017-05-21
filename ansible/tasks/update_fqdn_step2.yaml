@@ -10,7 +10,7 @@
   when: fqdn_changed.stat.exists
   shell: "{{ item }}"
   with_items:
-    - mysql gerrit < /root/gerrit-restore-user-keys.sql
+    - mysql gerrit < /var/lib/software-factory/sql/gerrit-restore-user-keys.sql
     - systemctl restart gerrit
 
 - name: Remove outdated /usr/share/httpd/.ssh/known_hosts
