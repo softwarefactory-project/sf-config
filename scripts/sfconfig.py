@@ -649,37 +649,46 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
     firehose = "firehose" in arch["roles"]
     for host in arch["inventory"]:
         host["rolesname"] = map(lambda x: "sf-%s" % x, host["roles"])
-    # Merge nodepool/nodepool-builder role
     for host in arch["inventory"]:
         for role in host["rolesname"]:
+            # Add role services for meta role
+            # e.g. the role sf-nodepool-launcher add nodepool-launcher service
+            def add_service(role_name, service_name):
+                if role == "sf-%s-%s" % (role_name, service_name):
+                    host.setdefault("%s_services" % role_name, []).append(
+                        "%s-%s" % (role_name, service_name)
+                    )
+            add_service("nodepool", "launcher")
+            add_service("nodepool", "builder")
+            add_service("zuul", "server")
+            add_service("zuul", "merger")
+            add_service("zuul", "launcher")
+            # Special case for zuul-server service that is simply called zuul
+            if role == "sf-zuul":
+                host.setdefault("zuul_services", []).append("zuul")
+            # Special case for nodepoold service that is simply called nodepool
             if role == "sf-nodepool":
                 host.setdefault("nodepool_services", []).append("nodepool")
-            elif role == "sf-nodepool-builder":
-                host.setdefault("nodepool_services", []).append(
-                    "nodepool-builder")
-            elif role == "sf-zuul":
-                host.setdefault("zuul_services", []).append("zuul")
-            elif role == "sf-zuul-merger":
-                host.setdefault("zuul_services", []).append("zuul-merger")
-            elif role == "sf-zuul-launcher":
-                host.setdefault("zuul_services", []).append("zuul-launcher")
 
-        # Remove meta roles
-        if "sf-nodepool-builder" in host["rolesname"]:
-            host["rolesname"].remove("sf-nodepool-builder")
-            # Make sure the base role is present
-            if "sf-nodepool" not in host["rolesname"]:
-                host["rolesname"].append("sf-nodepool")
-        if "sf-zuul-merger" in host["rolesname"]:
-            host["rolesname"].remove("sf-zuul-merger")
-            # Make sure the base role is present
-            if "sf-zuul" not in host["rolesname"]:
-                host["rolesname"].append("sf-zuul")
-        if "sf-zuul-launcher" in host["rolesname"]:
-            host["rolesname"].remove("sf-zuul-launcher")
-            # Make sure the base role is present
-            if "sf-zuul" not in host["rolesname"]:
-                host["rolesname"].append("sf-zuul")
+        # Ensure base role exists for metarole
+        # e.g. the role sf-zuul-scheduler needs to be replaced by sf-zuul
+        def ensure_role(meta_names, role_name):
+            for meta_name in meta_names:
+                name = "sf-%s-%s" % (role_name, meta_name)
+                # Replace meta role by real role
+                if name in host["rolesname"]:
+                    host["rolesname"].remove(name)
+                    if "sf-%s" % role_name not in host["rolesname"]:
+                        host["rolesname"].append("sf-%s" % role_name)
+                # Add base role if not defined
+                if role_name not in host["roles"]:
+                    host["roles"].append(role_name)
+                if role_name not in arch["roles"]:
+                    arch["roles"].setdefault(role_name, []).append(
+                        host
+                    )
+        ensure_role(["launcher", "builder"], "nodepool")
+        ensure_role(["server", "merger", "launcher"], "zuul")
 
         # if firehose role is in the arch, install ochlero where needed
         if firehose:
