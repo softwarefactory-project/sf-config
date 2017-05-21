@@ -3,17 +3,17 @@
 set -x
 set -e
 
-USER_NAME="${1:-jenkins}"
-USER_SSHKEY="${2:-ssh-rsa {{ jenkins_rsa_pub.split()[1] }}}"
-USER_MAIL="${3:-jenkins@{{ fqdn }}}"
+USER_NAME="${1}"
+USER_SSHKEY="${2}"
+USER_MAIL="${3}"
 # Capitalize user_name, e.g. "Jenkins CI"
 USER_FULLNAME="$(tr '[:lower:]' '[:upper:]' <<< ${USER_NAME:0:1})${USER_NAME:1} CI"
 
 # Check if Jenkins user does not exist yet
-USER_EXISTS=$(ssh {{ fqdn }} gerrit ls-members \"Non-Interactive Users\" | { grep ${USER_NAME} || true; })
+USER_EXISTS=$(ssh gerrit gerrit ls-members \"Non-Interactive Users\" | { grep ${USER_NAME} || true; })
 
 if [ -z "$USER_EXISTS" ]; then
-    echo "$USER_SSHKEY" | ssh {{ fqdn }} gerrit create-account ${USER_NAME} \
+    echo "$USER_SSHKEY" | ssh gerrit gerrit create-account ${USER_NAME} \
         -g \"Non-Interactive Users\"        \
         --email "${USER_MAIL}"              \
         --full-name \"${USER_FULLNAME}\"    \

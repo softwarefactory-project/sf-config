@@ -20,16 +20,16 @@
   delay: 1
   when: mysql_root_password_set|failed
 
-- name: Install initialization scripts
+- name: Setup create_database sql query
   template:
-    src: "{{ item.name }}.j2"
-    dest: "/root/{{ item.realname | default(item.name) }}"
-    owner: root
-    group: root
-    mode: "{{ item.mode | default('0555')}}"
-  with_items:
-    - { name: create_databases.sql }
-    - { name: client.cnf, realname: .my.cnf, mode: '0400' }
+    src: create_databases.sql.j2
+    dest: /var/lib/software-factory/sql/databases.sql
+
+- name: Setup root user client.cnf
+  template:
+    src:  "client.cnf.j2"
+    dest: "/root/.my.cnf"
+    mode: "0400"
 
 - name: ensure anonymous users are not in the database
   mysql_user: name='' host={{ item }} state=absent
@@ -45,4 +45,4 @@
       - test
 
 - name: Create databases
-  shell: "mysql < /root/create_databases.sql"
+  shell: "mysql < /var/lib/software-factory/sql/databases.sql"
