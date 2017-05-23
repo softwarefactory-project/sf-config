@@ -657,8 +657,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
             elif role == "sf-nodepool-builder":
                 host.setdefault("nodepool_services", []).append(
                     "nodepool-builder")
-            elif role == "sf-zuul":
-                host.setdefault("zuul_services", []).append("zuul")
+            elif role == "sf-zuul" or role == "sf-zuul-server":
+                host.setdefault("zuul_services", []).append("zuul-server")
             elif role == "sf-zuul-merger":
                 host.setdefault("zuul_services", []).append("zuul-merger")
             elif role == "sf-zuul-launcher":
