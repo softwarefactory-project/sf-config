@@ -1,5 +1,5 @@
 [gearman]
-server=zuul.{{ fqdn }}
+server={{ zuul_server_host }}
 check_job_registration=true
 
 [gearman_server]
@@ -8,7 +8,7 @@ log_config=/etc/zuul/gearman-logging.conf
 
 [zuul]
 layout_config=/etc/zuul/layout.yaml
-log_config=/etc/zuul/logging.conf
+log_config=/etc/zuul/server-logging.conf
 pidfile=/var/run/zuul/zuul.pid
 state_dir=/var/lib/zuul
 status_url={{ zuul_pub_url }}
