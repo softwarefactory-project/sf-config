@@ -333,7 +333,10 @@ def clean_arch(data):
 
 
 def get_sf_version():
-    return open("/etc/sf-release").read().strip()
+    try:
+        return open("/etc/sf-release").read().strip()
+    except IOError:
+        return "master"
 
 
 def generate_role_vars(arch, sfconfig, allvars_file, args):
