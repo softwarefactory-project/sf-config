@@ -3,6 +3,7 @@ role_actions:
   - update
   - setup
   - get_logs
+  - disable
 
 gateway_host: localhost
 nodepool_builder_host: ""

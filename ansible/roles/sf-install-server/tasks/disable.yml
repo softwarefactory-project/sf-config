@@ -1,0 +1,29 @@
+- name: Disable services
+  service:
+    name: rsyncd
+    state: stopped
+    enabled: no
+
+- block:
+    - name: Remove crontabs
+      cron:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - backup_gerrit
+        - auto_backup
+
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/auto_backup.conf
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - python2-sfmanager
+  when: erase == True

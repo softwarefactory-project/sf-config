@@ -1,0 +1,22 @@
+---
+- name: Disable services
+  service:
+    name: mariadb
+    enabled: no
+    state: stopped
+  ignore_errors: yes
+
+- block:
+    - name: Remove mysql data
+      file:
+        path: /var/lib/mysql
+        state: absent
+
+    - name: Ensure /var/lib/mysql exists though
+      file:
+        path: /var/lib/mysql
+        state: directory
+        owner: mysql
+        group: mysql
+        mode: "0755"
+  when: erase == True

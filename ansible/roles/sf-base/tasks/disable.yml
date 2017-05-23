@@ -1,0 +1,17 @@
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/log/software-factory
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - python2-pysflib
+        - sf-release
+        - sf-config
+  when: erase == True
