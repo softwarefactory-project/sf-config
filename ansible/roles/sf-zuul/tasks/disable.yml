@@ -7,6 +7,13 @@
   with_items: "{{ zuul_services }}"
   ignore_errors: yes
 
+- name: Disable legacy zuul service too
+  service:
+    name: zuul
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
 - block:
     - name: Remove files
       file:
