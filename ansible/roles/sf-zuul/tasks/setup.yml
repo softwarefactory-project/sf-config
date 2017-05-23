@@ -53,7 +53,7 @@
 - name: "Copy logging configuration"
   template: src={{ item }}.j2 dest=/etc/zuul/{{ item }}
   with_items:
-    - logging.conf
+    - server-logging.conf
     - gearman-logging.conf
     - merger-logging.conf
     - launcher-logging.conf
@@ -68,8 +68,8 @@
 
 - name: "Copy gearman-check script"
   copy: src=gearman-check dest=/usr/local/bin/gearman-check mode=0555
-  when: "'zuul' in zuul_services"
+  when: "'zuul-server' in zuul_services"
 
 - name: "Setup gearman-check cron"
   cron: name=gearman-check-cron job=/usr/local/bin/gearman-check minute=0 hour=0
-  when: "'zuul' in zuul_services"
+  when: "'zuul-server' in zuul_services"
