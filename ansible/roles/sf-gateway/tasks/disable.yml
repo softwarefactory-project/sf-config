@@ -1,0 +1,22 @@
+- name: Disable httpd service
+  service: name=httpd state=stopped enabled=no
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/www/sf
+        - /var/www/dashboard
+        - /var/www/dashboards_data
+        - /var/www/localCA.pem
+        - /etc/pki/tls/certs/{{ fqdn }}.crt
+        - /etc/pki/tls/certs/{{ fqdn }}-chain.crt
+        - /etc/pki/tls/private/{{ fqdn }}.key
+        - /etc/httpd/conf.d/ssl.conf
+        - /etc/httpd/conf.d/gateway.conf
+        - /etc/httpd/conf.d/gateway.common
+        - /etc/httpd/conf.d/gateway-kibana.conf
+        - /etc/httpd/managesf_htpasswd
+  when: erase == True

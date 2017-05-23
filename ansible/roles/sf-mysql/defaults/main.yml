@@ -4,6 +4,7 @@ role_actions:
   - get_logs
   - backup
   - restore
+  - disable
 
 mysql_host: "mysql.example.com"
 mysql_root_password: "CHANGE_ME"

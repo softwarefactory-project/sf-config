@@ -4,6 +4,7 @@ role_actions:
   - backup
   - restore
   - get_logs
+  - disable
 
 fqdn: "{{ fqdn }}"
 backup: "{{ backup }}"
