@@ -5,9 +5,10 @@ role_actions:
   - update
   - get_logs
   - disable
+  - upgrade
 
 zuul_services:
-  - zuul
+  - zuul-server
   - zuul-merger
   - zuul-launcher
 
