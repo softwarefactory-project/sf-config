@@ -10,7 +10,9 @@ inventory:
       - managesf
       - gitweb
       - gerrit
+      - logserver
       - zuul
+      - zuul-launcher
       - zuul-merger
       - nodepool
       - jenkins

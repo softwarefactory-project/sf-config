@@ -19,6 +19,8 @@
         state: absent
       with_items:
         - /etc/auto_backup.conf
+        - /root/config
+        - /root/.ssh/known_hosts
 
     - name: Remove packages
       yum:

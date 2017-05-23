@@ -12,6 +12,7 @@ zuul_services:
   - zuul-launcher
 
 zuul_packages:
+  - zuul
   - zuul-webui
   - zuul-server
   - zuul-merger

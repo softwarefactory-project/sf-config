@@ -9,8 +9,11 @@
 - block:
     - name: Remove mysql data
       file:
-        path: /var/lib/mysql
+        path: "{{ item }}"
         state: absent
+      with_items:
+        - /var/lib/mysql
+        - /root/.my.cnf
 
     - name: Ensure /var/lib/mysql exists though
       file:
