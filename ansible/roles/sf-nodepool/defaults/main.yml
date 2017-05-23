@@ -11,12 +11,12 @@ jenkins_host: "example.com"
 jenkins_api_url: "http://{{ jenkins_host }}:8080/jenkins/"
 
 nodepool_services:
-  - nodepool
+  - nodepool-launcher
   - nodepool-builder
 
 nodepool_packages:
   - nodepool
-  - nodepoold
+  - nodepool-launcher
   - nodepool-builder
   - nodepool-elements
   - sf-elements

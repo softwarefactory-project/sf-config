@@ -24,8 +24,8 @@
   register: upstreamconfig
 
 - name: Reload zuul service
-  service: name=zuul state=reloaded enabled=yes
-  when: "'zuul' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
+  service: name=zuul-server state=reloaded enabled=yes
+  when: "'zuul-server' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
 
 - name: Reload zuul-launcher service
   service: name=zuul-launcher state=reloaded enabled=yes
