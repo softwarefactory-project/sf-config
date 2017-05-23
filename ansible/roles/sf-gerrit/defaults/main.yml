@@ -6,6 +6,7 @@ role_actions:
   - backup
   - restore
   - stop
+  - disable
 
 gerrit_port: 8000
 

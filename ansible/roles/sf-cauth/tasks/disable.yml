@@ -1,0 +1,18 @@
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/cauth/config.py
+        - /etc/cauth/templates/login.html
+        - /etc/httpd/conf.d/cauth.site
+        - /var/lib/cauth/keys/privkey.pem
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - python2-cauth
+  when: erase == True

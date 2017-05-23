@@ -1,0 +1,33 @@
+- name: Disable services
+  service:
+    name: gerrit
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/lib/gerrit/hooks/patchset-created
+        - /var/lib/gerrit/hooks/change-merged
+        - /etc/gerrit/gerrit.config
+        - /etc/gerrit/secure.config
+        - /etc/gerrit/replication.config
+        - /etc/gerrit/gerrit_service_rsa
+        - /etc/gerrit/gerrit_service_rsa_pub
+        - /root/.ssh/gerrit_admin
+        - /root/.ssh/gerrit_admin.pub
+        - /var/lib/gerrit/git
+        - /var/lib/gerrit/cache
+        - /var/lib/gerrit/index
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - gerrit
+  when: erase == True

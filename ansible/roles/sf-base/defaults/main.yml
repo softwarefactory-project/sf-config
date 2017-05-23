@@ -1,5 +1,6 @@
 role_actions:
   - install
   - setup
+  - disable
 edeploy_server: "install-server"
 edeploy_service_port: "873"
