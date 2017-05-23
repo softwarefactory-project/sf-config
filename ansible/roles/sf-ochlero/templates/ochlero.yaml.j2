@@ -6,7 +6,7 @@ mqtt:
     password: {{ sf_service_user_password }}
 watchers:
 {% if 'nodepool' in roles %}
-  - unit: nodepool.service
+  - unit: nodepool-launcher.service
     topic: nodepool
     events:
       - name: node_create_start
@@ -41,7 +41,7 @@ watchers:
         publish: '{"TIMESTAMP": "_EPOCH_", "EVENT": "DELETED_ORCHESTRATOR", "NODE_ID": "${NODE_ID}", "ORCHESTRATOR": "${ORCHESTRATOR}"}'
 {% endif %}
 {% if 'zuul' in roles %}
-  - unit: zuul.service
+  - unit: zuul-server.service
     topic: zuul
     events:
       - name: add_to_pipeline

@@ -14,9 +14,10 @@ inventory:
       - gitweb
       - gerrit
       - gerritbot
-      - zuul
+      - zuul-server
       - zuul-merger
-      - nodepool
+      - zuul-launcher
+      - nodepool-launcher
       - nodepool-builder
       - jenkins
       - murmur
@@ -30,6 +31,3 @@ inventory:
       - storyboard-webclient
       - repoxplorer
       - firehose
-    mem: 8
-    cpu: 4
-    disk: 20
