@@ -9,6 +9,7 @@
 {% if role != 'sf-mysql' and role != 'sf-install-server' %}
     - name: "{{ role }}"
       action: disable
+      erase: False
 {% if role == "sf-nodepool" %}
       nodepool_services: {{ host["nodepool_services"] }}
 {% elif role == "sf-zuul" %}
@@ -22,15 +23,18 @@
   roles:
     - name: sf-mysql
       action: disable
+      erase: False
 
 # Disable install-server after mysql
 - hosts: install-server
   roles:
     - name: sf-install-server
       action: disable
+      erase: False
 
 # Disable base at last
 - hosts: all
   roles:
     - name: sf-base
       action: disable
+      erase: False
