@@ -1,0 +1,26 @@
+- name: Disable services
+  service:
+    name: gerrit
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/gerrit
+        - /root/.ssh/gerrit_admin
+        - /root/.ssh/gerrit_admin.pub
+        - /var/lib/gerrit
+        - /var/log/gerrit
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - gerrit
+  when: erase == True

@@ -1,0 +1,25 @@
+- name: Disable services
+  service:
+    name: managesf
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/lib/managesf
+        - /etc/managesf
+        - /etc/httpd/managesf_htpasswd
+        - /var/log/managesf
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - managesf
+  when: erase == True

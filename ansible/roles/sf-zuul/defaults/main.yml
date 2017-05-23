@@ -4,9 +4,16 @@ role_actions:
   - setup
   - update
   - get_logs
+  - disable
 
 zuul_services:
   - zuul
+  - zuul-merger
+  - zuul-launcher
+
+zuul_packages:
+  - zuul-webui
+  - zuul-server
   - zuul-merger
   - zuul-launcher
 

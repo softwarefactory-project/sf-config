@@ -1,0 +1,22 @@
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/log/software-factory
+        - /var/lib/cauth
+        - /var/lib/edeploy
+        - /etc/pki/ca-trust/source/anchors/localCA.pem
+
+    - name: "Update trust"
+      command: update-ca-trust
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - python2-pysflib
+        - sf-config
+  when: erase == True

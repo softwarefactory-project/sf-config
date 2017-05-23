@@ -693,7 +693,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
     # Generate playbooks
     for playbooks in ("sf_install", "sf_setup", "sf_postconf",
                       "sf_configrepo_update",
-                      "get_logs", "sf_backup", "sf_restore", "sf_recover"):
+                      "get_logs", "sf_backup", "sf_restore", "sf_recover",
+                      "sf_disable", "sf_erase"):
         render_template("%s/%s.yml" % (ansible_root, playbooks),
                         "%s/%s.yml.j2" % (templates, playbooks),
                         arch)
@@ -754,6 +755,8 @@ def usage():
                    help="Do not call setup tasks")
     # special actions
     p.add_argument("--recover", help="Deploy a backup file")
+    p.add_argument("--disable", action='store_true', help="Turn off services")
+    p.add_argument("--erase", action='store_true', help="Erase data")
     return p.parse_args()
 
 
@@ -809,6 +812,12 @@ def main():
 
     print("[+] %s written!" % allyaml)
     os.environ["ANSIBLE_CONFIG"] = "/usr/share/sf-config/ansible/ansible.cfg"
+    if args.disable:
+        return execute(["ansible-playbook",
+                        "/var/lib/software-factory/ansible/sf_disable.yml"])
+    if args.erase:
+        return execute(["ansible-playbook",
+                        "/var/lib/software-factory/ansible/sf_erase.yml"])
     if args.recover:
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_recover.yml"])

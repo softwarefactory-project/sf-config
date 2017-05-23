@@ -3,6 +3,7 @@ role_actions:
   - setup
   - update
   - get_logs
+  - disable
 
 jenkins_password: "CHANGE_ME"
 
@@ -12,6 +13,12 @@ jenkins_api_url: "http://{{ jenkins_host }}:8080/jenkins/"
 nodepool_services:
   - nodepool
   - nodepool-builder
+
+nodepool_packages:
+  - nodepoold
+  - nodepool-builder
+  - nodepool-elements
+  - sf-elements
 
 nodepool_providers:
   - name: default
