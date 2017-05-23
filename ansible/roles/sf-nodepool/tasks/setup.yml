@@ -1,6 +1,13 @@
 ---
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=jenkins_rsa"
 
+- name: Ensure legacy service is turned off
+  service:
+    name: nodepool
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
 - name: Install config
   template:
     src: "{{ item }}.j2"

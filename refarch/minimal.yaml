@@ -10,9 +10,11 @@ inventory:
       - managesf
       - gitweb
       - gerrit
-      - zuul
+      - logserver
+      - zuul-server
       - zuul-merger
-      - nodepool
+      - zuul-launcher
+      - nodepool-launcher
       - jenkins
     mem: 8
     cpu: 4

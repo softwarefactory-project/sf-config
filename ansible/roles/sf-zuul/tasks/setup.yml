@@ -3,6 +3,13 @@
 # Use /bin/sh shell to allow zuul to connect to localhost for config-update jobs
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=jenkins_rsa home_dir_mode=0751 shell=/bin/sh"
 
+- name: Ensure legacy service is turned off
+  service:
+    name: zuul
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
 - name: Authorize zuul localhost connection for config-update jobs
   authorized_key:
       user: zuul
@@ -53,7 +60,7 @@
 - name: "Copy logging configuration"
   template: src={{ item }}.j2 dest=/etc/zuul/{{ item }}
   with_items:
-    - logging.conf
+    - server-logging.conf
     - gearman-logging.conf
     - merger-logging.conf
     - launcher-logging.conf
@@ -68,8 +75,8 @@
 
 - name: "Copy gearman-check script"
   copy: src=gearman-check dest=/usr/local/bin/gearman-check mode=0555
-  when: "'zuul' in zuul_services"
+  when: "'zuul-server' in zuul_services"
 
 - name: "Setup gearman-check cron"
   cron: name=gearman-check-cron job=/usr/local/bin/gearman-check minute=0 hour=0
-  when: "'zuul' in zuul_services"
+  when: "'zuul-server' in zuul_services"

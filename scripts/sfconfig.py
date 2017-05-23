@@ -652,19 +652,25 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
     # Merge nodepool/nodepool-builder role
     for host in arch["inventory"]:
         for role in host["rolesname"]:
-            if role == "sf-nodepool":
-                host.setdefault("nodepool_services", []).append("nodepool")
+            if role == "sf-nodepool" or role == "sf-nodepool-launcher":
+                host.setdefault("nodepool_services", []).append(
+                    "nodepool-launcher")
             elif role == "sf-nodepool-builder":
                 host.setdefault("nodepool_services", []).append(
                     "nodepool-builder")
-            elif role == "sf-zuul":
-                host.setdefault("zuul_services", []).append("zuul")
+            elif role == "sf-zuul" or role == "sf-zuul-server":
+                host.setdefault("zuul_services", []).append("zuul-server")
             elif role == "sf-zuul-merger":
                 host.setdefault("zuul_services", []).append("zuul-merger")
             elif role == "sf-zuul-launcher":
                 host.setdefault("zuul_services", []).append("zuul-launcher")
 
         # Remove meta roles
+        if "sf-nodepool-launcher" in host["rolesname"]:
+            host["rolesname"].remove("sf-nodepool-launcher")
+            # Make sure the base role is present
+            if "sf-nodepool" not in host["rolesname"]:
+                host["rolesname"].append("sf-nodepool-launcher")
         if "sf-nodepool-builder" in host["rolesname"]:
             host["rolesname"].remove("sf-nodepool-builder")
             # Make sure the base role is present
@@ -677,6 +683,11 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 host["rolesname"].append("sf-zuul")
         if "sf-zuul-launcher" in host["rolesname"]:
             host["rolesname"].remove("sf-zuul-launcher")
+            # Make sure the base role is present
+            if "sf-zuul" not in host["rolesname"]:
+                host["rolesname"].append("sf-zuul")
+        if "sf-zuul-server" in host["rolesname"]:
+            host["rolesname"].remove("sf-zuul-server")
             # Make sure the base role is present
             if "sf-zuul" not in host["rolesname"]:
                 host["rolesname"].append("sf-zuul")

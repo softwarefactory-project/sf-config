@@ -7,7 +7,7 @@ role_actions:
   - disable
 
 zuul_services:
-  - zuul
+  - zuul-server
   - zuul-merger
   - zuul-launcher
 
