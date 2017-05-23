@@ -8,7 +8,7 @@ zmq-publishers:
 {% endfor %}
 
 gearman-servers:
-  - host: zuul.{{ fqdn }}
+  - host: {{ zuul_server_host }}
 
 cron:
   image-update: '14 2 * * *'
