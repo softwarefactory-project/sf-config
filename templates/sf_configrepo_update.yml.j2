@@ -23,7 +23,9 @@
   roles:
     - role: 'sf-zuul'
       action: 'update'
-      zuul_services: {{ host["zuul_services"] }}
+{% for key, value in host['params'].items() %}
+      {{ key }}: {{ value }}
+{% endfor %}
 
 {% endif %}{% endfor %}
 {% if 'gerritbot' in roles %}
@@ -38,7 +40,9 @@
   roles:
     - role: 'sf-nodepool'
       action: 'update'
-      nodepool_services: {{ host["nodepool_services"] }}
+{% for key, value in host['params'].items() %}
+      {{ key }}: {{ value }}
+{% endfor %}
 
 {% endif %}{% endfor %}
 - hosts: gerrit

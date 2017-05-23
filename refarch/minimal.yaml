@@ -11,11 +11,8 @@ inventory:
       - gitweb
       - gerrit
       - logserver
-      - zuul
+      - zuul-server
       - zuul-launcher
       - zuul-merger
-      - nodepool
+      - nodepool-launcher
       - jenkins
-    mem: 8
-    cpu: 4
-    disk: 20
