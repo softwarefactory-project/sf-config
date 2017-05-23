@@ -7,9 +7,9 @@
 
     - file: path="/var/lib/software-factory/backup/{{'{{'}} item {{'}}'}}" state=directory
       with_items:
-    {% for role in roles %}
-        - {{ role }}
-    {% endfor %}
+    {% for host in inventory %}{% for role in host['rolesname'] %}
+        - {{ role|replace('sf-', '') }}
+    {% endfor %}{% endfor %}
 
 # Call backup task
 {% for host in inventory %}

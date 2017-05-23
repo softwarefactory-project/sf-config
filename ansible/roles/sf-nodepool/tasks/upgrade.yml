@@ -1,0 +1,14 @@
+---
+- block:
+    - name: Ensure nodepoold package is removed
+      yum:
+        name: nodepoold
+        state: absent
+
+    - name: Ensure nodepool service is disabled
+      service:
+        name: nodepool
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+  when: sf_previous_version == "2.5.0"

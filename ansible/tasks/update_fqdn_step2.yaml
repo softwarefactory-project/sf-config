@@ -32,7 +32,7 @@
 
 - name: Restart zuul service
   when: fqdn_changed.stat.exists
-  service: name=zuul state=restarted
+  service: name=zuul-server state=restarted
 
 - name: Restart zuul-merger service
   when: fqdn_changed.stat.exists
