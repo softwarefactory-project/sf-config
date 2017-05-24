@@ -24,18 +24,26 @@
 {% for host in inventory %}
 - hosts: {{ host['hostname'] }}
   roles:
-{% for role in host['rolesname'] %}    - {role: "{{ role }}", action: "stop"}
+{% for role in host['rolesname'] %}
+    - role: "{{ role }}"
+      action: "stop"
+{% for key, value in host['params'].items() %}
+      {{ key }}: {{ value }}
 {% endfor %}
 {% endfor %}
 
+{% endfor %}
 # Call restore task
 {% for host in inventory %}
 - hosts: {{ host['hostname'] }}
   roles:
-{% for role in host['rolesname'] %}    - {role: "{{ role }}", action: "restore", backup_src: "/var/lib/software-factory/backup/{{ role|replace('sf-', '') }}"}
-{% endfor %}
+{% for role in host['rolesname'] %}
+    - role: "{{ role }}"
+      action: "restore"
+      backup_src: "/var/lib/software-factory/backup/{{ role|replace('sf-', '') }}"
 {% endfor %}
 
+{% endfor %}
 # Call sfconfig
 - hosts: localhost
   tasks:

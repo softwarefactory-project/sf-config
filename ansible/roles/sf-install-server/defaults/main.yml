@@ -5,6 +5,7 @@ role_actions:
   - restore
   - get_logs
   - disable
+  - upgrade
 
 fqdn: "{{ fqdn }}"
 backup: "{{ backup }}"
