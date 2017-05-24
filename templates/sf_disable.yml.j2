@@ -10,11 +10,9 @@
     - name: "{{ role }}"
       action: disable
       erase: False
-{% if role == "sf-nodepool" %}
-      nodepool_services: {{ host["nodepool_services"] }}
-{% elif role == "sf-zuul" %}
-      zuul_services: {{ host["zuul_services"] }}
-{% endif %}
+{% for key, value in host['params'].items() %}
+      {{ key }}: {{ value }}
+{% endfor %}
 {% endif %}{% endfor %}
 
 {% endfor %}

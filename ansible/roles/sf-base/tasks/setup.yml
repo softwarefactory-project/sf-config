@@ -124,18 +124,6 @@
       dest: /etc/httpd/conf.d/auth_pubtkt.conf
       mode: 0444
 
-- name: "edeploy: create /var/lib/edeploy"
-  file: path=/var/lib/edeploy state=directory
-
-- name: "edeploy: set /var/lib/edeploy/conf"
-  template: src=edeploy.conf.j2 dest=/var/lib/edeploy/conf
-
-- name: "Set edeploy server port"
-  lineinfile:
-      dest: /var/lib/edeploy/conf
-      regexp: ^RSERV_PORT=
-      line: "RSERV_PORT={{ edeploy_service_port }}"
-
 - name: "Set ntp server"
   template: src=ntp.conf.j2 dest=/etc/ntp.conf
   register: ntp_config

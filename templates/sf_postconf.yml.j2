@@ -12,6 +12,8 @@
 {% for host in inventory %}
 - hosts: {{ host['hostname'] }}
   roles:
-{% for role in host['rolesname'] %}    - {role: "{{ role }}", action: "postconf"}
+{% for role in host['rolesname'] %}
+    - role: "{{ role }}"
+      action: "postconf"
 {% endfor %}
 {% endfor %}
