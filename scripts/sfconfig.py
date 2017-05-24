@@ -338,6 +338,13 @@ def get_sf_version():
     except IOError:
         return "master"
 
+def get_previous_version():
+    try:
+        return open("/var/lib/software-factory/.version").read().strip()
+    except IOError:
+        return "2.5.0"
+
+
 
 def generate_role_vars(arch, sfconfig, allvars_file, args):
     """ This function 'glue' all roles and convert sfconfig.yaml """
@@ -476,6 +483,7 @@ DNS.1 = %s
 
     glue["gateway_url"] = "https://%s" % sfconfig["fqdn"]
     glue["sf_version"] = get_sf_version()
+    glue["sf_previous_version"] = get_previous_version()
 
     if sfconfig["debug"]:
         for service in ("managesf", "zuul", "nodepool"):
@@ -652,6 +660,7 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
     firehose = "firehose" in arch["roles"]
     for host in arch["inventory"]:
         host["rolesname"] = map(lambda x: "sf-%s" % x, host["roles"])
+        host["params"] = {}
     # Merge nodepool/nodepool-builder role
     for host in arch["inventory"]:
         for role in host["rolesname"]:
@@ -666,6 +675,10 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 host.setdefault("zuul_services", []).append("zuul-merger")
             elif role == "sf-zuul-launcher":
                 host.setdefault("zuul_services", []).append("zuul-launcher")
+        if "zuul_services" in host:
+            host["params"]["zuul_services"] = host["zuul_services"]
+        if "nodepool_services" in host:
+            host["params"]["nodepool_services"] = host["nodepool_services"]
 
         # Remove meta roles
         if "sf-nodepool-builder" in host["rolesname"]:
@@ -697,7 +710,7 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                     arch)
 
     # Generate playbooks
-    for playbooks in ("sf_install", "sf_setup", "sf_postconf",
+    for playbooks in ("sf_install", "sf_setup", "sf_postconf", "sf_upgrade",
                       "sf_configrepo_update",
                       "get_logs", "sf_backup", "sf_restore", "sf_recover",
                       "sf_disable", "sf_erase"):
@@ -755,21 +768,31 @@ def usage():
     p.add_argument("--lib", default="/var/lib/software-factory/bootstrap-data",
                    help="Deployment secrets output directory")
     # tunning
-    p.add_argument("--skip-install", default=False, action='store_true',
-                   help="Do not call install tasks")
-    p.add_argument("--skip-setup", default=False, action='store_true',
-                   help="Do not call setup tasks")
+    p.add_argument("--skip-apply", default=False, action='store_true',
+                   help="Do not execute Ansible playbook")
     # special actions
     p.add_argument("--recover", help="Deploy a backup file")
     p.add_argument("--disable", action='store_true', help="Turn off services")
     p.add_argument("--erase", action='store_true', help="Erase data")
+    p.add_argument("--upgrade", action='store_true', help="Run upgrade task")
+
+    # Deprecated
+    p.add_argument("--skip-install", default=False, action='store_true',
+                   help="Do not call install tasks")
+    p.add_argument("--skip-setup", default=False, action='store_true',
+                   help="Do not call setup tasks")
     return p.parse_args()
 
 
 def main():
     args = usage()
 
-    if not args.skip_setup:
+    if args.skip_apply:
+        args.skip_install = True
+    if args.skip_apply:
+        args.skip_setup = True
+
+    if not args.skip_apply:
         execute(["logger", "sfconfig.py: started"])
         print("[%s] Running sfconfig.py" % time.ctime())
 
@@ -824,9 +847,12 @@ def main():
     if args.erase:
         return execute(["ansible-playbook",
                         "/var/lib/software-factory/ansible/sf_erase.yml"])
-    if args.recover:
+    if not args.skip_apply and args.recover:
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_recover.yml"])
+    if not args.skip_apply and args.upgrade:
+        execute(["ansible-playbook",
+                 "/var/lib/software-factory/ansible/sf_upgrade.yml"])
     if not args.skip_install:
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_install.yml"])
