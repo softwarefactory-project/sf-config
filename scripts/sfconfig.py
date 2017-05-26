@@ -153,6 +153,11 @@ def update_sfconfig(data):
         }
         dirty = True
 
+    # Remove it after 2.6.0 upgrade
+    if 'welcome_path_path' not in data:
+        data['welcome_page_path'] = 'sf/welcome.html'
+        dirty = True
+
     # 2.2.4: refactor OAuth2 and OpenID auth config
     if 'oauth2' not in data['authentication']:
         data['authentication']['oauth2'] = {
