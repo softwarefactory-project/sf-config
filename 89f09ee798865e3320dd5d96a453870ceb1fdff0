@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "baa041b7_bb20e04a",
+        "filename": "ansible/roles/sf-install-server/tasks/upgrade.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-05-26T09:19:41Z",
+      "side": 1,
+      "message": "Let\u0027s make it a group var path and change the default to somewhere else. I would prefer to delete that directory that contains unpacked edeploy images...",
+      "parentUuid": "baa041b7_fb0e68e4",
+      "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "baa041b7_7b6c989c",
         "filename": "ansible/roles/sf-install-server/tasks/upgrade.yml",
         "patchSetId": 4
@@ -48,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "baa041b7_9b1d1c12",
+        "filename": "ansible/roles/sf-install-server/tasks/upgrade.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-05-26T09:19:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baa041b7_7b6c989c",
+      "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "baa041b7_bbf900cb",
         "filename": "ansible/roles/sf-install-server/tasks/upgrade.yml",
         "patchSetId": 4
@@ -65,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "baa041b7_7b1a5819",
+        "filename": "ansible/roles/sf-install-server/tasks/upgrade.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-05-26T09:19:41Z",
+      "side": 1,
+      "message": "Other roles, and probably ansible synchronize module depends on it...",
+      "parentUuid": "baa041b7_bbf900cb",
+      "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "baa041b7_9bf63cd6",
         "filename": "ansible/roles/sf-jenkins/tasks/disable.yml",
         "patchSetId": 4
@@ -76,6 +130,24 @@
       "writtenOn": "2017-05-26T08:53:26Z",
       "side": 1,
       "message": "and python2-jenkins-job-builder",
+      "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_5b1794ed",
+        "filename": "ansible/roles/sf-jenkins/tasks/disable.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-05-26T09:19:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baa041b7_9bf63cd6",
       "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
