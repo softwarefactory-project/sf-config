@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_fb0e68e4",
+        "filename": "ansible/roles/sf-install-server/tasks/upgrade.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-05-26T08:53:26Z",
+      "side": 1,
+      "message": "Could we keep it as it is the default lookup dir for zuul_rpm_build directory ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 22
+      },
+      "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_7b6c989c",
+        "filename": "ansible/roles/sf-install-server/tasks/upgrade.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-05-26T08:53:26Z",
+      "side": 1,
+      "message": "This is already removed by the base role.",
+      "range": {
+        "startLine": 9,
+        "startChar": 11,
+        "endLine": 9,
+        "endChar": 26
+      },
+      "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_bbf900cb",
+        "filename": "ansible/roles/sf-install-server/tasks/upgrade.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-05-26T08:53:26Z",
+      "side": 1,
+      "message": "Could we even remove the rsync pkg.",
+      "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_9bf63cd6",
+        "filename": "ansible/roles/sf-jenkins/tasks/disable.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-05-26T08:53:26Z",
+      "side": 1,
+      "message": "and python2-jenkins-job-builder",
+      "revId": "89f09ee798865e3320dd5d96a453870ceb1fdff0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
