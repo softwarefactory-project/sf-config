@@ -1,4 +1,7 @@
 ---
+- name: "Copy a backup of arch.yaml file"
+  command: cp /etc/software-factory/arch.yaml /etc/software-factory/arch-backup.yaml
+
 - name: "Backup data"
   synchronize:
     mode: pull
@@ -13,10 +16,4 @@
     - /etc/software-factory/logo-favicon.ico
     - /var/lib/software-factory/bootstrap-data
     - /root/config
-
-- name: "Include original arch"
-  synchronize:
-    mode: pull
-    src: /etc/software-factory/arch.yaml
-    dest: "{{ backup_dest }}/etc/software-factory/arch-backup.yaml"
-    rsync_opts: --relative
+    - /etc/software-factory/arch-backup.yaml
