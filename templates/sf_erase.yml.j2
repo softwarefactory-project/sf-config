@@ -6,6 +6,7 @@
   tasks:
     - pause:
         prompt: "WARNING: this playbook will *DESTROY* software factory data, press ENTER to continue or CTRL-C to abort"
+      when: sfconfig_non_interactive is not defined
 
 # Call disable tasks with erase flag on
 {% for host in inventory %}
