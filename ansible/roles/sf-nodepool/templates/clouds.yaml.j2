@@ -4,7 +4,11 @@ clouds:
     auth:
       username: {{ provider['username'] }}
       password: {{ provider['password'] }}
+{% if nodepool_disable_providers %}
+      auth_url: localhost:12345
+{% else %}
       auth_url: {{ provider['auth_url'] }}
+{% endif %}
       project_name: {{ provider['project_name'] }}
 {% if provider.get("region_name") %}
     region_name: {{ provider["region_name"] }}

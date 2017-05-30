@@ -6,7 +6,7 @@
   register: localconfig
 
 - name: Check upstream config
-  command: chdir=/root/config git log --oneline gerrit/commentlinks.yaml
+  command: chdir=/root/config git log --oneline gerrit/
   register: upstreamconfig
 
 - include_vars: /root/config/gerrit/commentlinks.yaml
@@ -19,6 +19,34 @@
     owner: gerrit
     group: gerrit
     mode: 0644
+
+- block:
+  - stat: path=/root/config/gerrit/replication.config
+    register: rstat
+  - name: Check if replication.config changed
+    command: diff /root/config/gerrit/replication.config /etc/gerrit/replication.config
+    register: diffstat
+    no_log: True
+    when: rstat.stat.exists == True
+    failed_when: diffstat.rc > 1
+  - name: Update Gerrit replication.config
+    command: cp /root/config/gerrit/replication.config /etc/gerrit/
+    when: rstat.stat.exists == True and diffstat.rc == 1
+  - name: Reload the replication plugin
+    command: ssh -p 29418 admin@{{ fqdn }} gerrit plugin reload replication
+    when: rstat.stat.exists == True and diffstat.rc == 1
+  - name: Restart the replication
+    command: ssh -p 29418 admin@{{ fqdn }} replication start --all
+    when: rstat.stat.exists == True and diffstat.rc == 1
+  when: gerrit_replication and localconfig.stdout != upstreamconfig.stdout
+
+- block:
+  - name: Copy initial replication.config
+    copy:
+      src: replication.config
+      dest: /etc/gerrit
+      mode: 0644
+  when: not gerrit_replication and localconfig.stdout != upstreamconfig.stdout
 
 - name: Reload gerrit service
   service: name=gerrit state=restarted

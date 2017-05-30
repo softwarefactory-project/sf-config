@@ -42,9 +42,19 @@
     owner: gerrit
     group: gerrit
   with_items:
-    - { name: replication.config }
     - { name: GerritSiteHeader.html }
     - { name: GerritSite.css }
+
+- name: "Check for replication.config"
+  stat: path=/etc/gerrit/replication.config
+  register: gerrit_replication_config
+
+- name: "Copy initial replication.config"
+  copy:
+    src: replication.config
+    dest: /etc/gerrit/
+    mode: 0644
+  when: not gerrit_replication_config.stat.exists
 
 - name: "Install initialization and migration scripts"
   template:
