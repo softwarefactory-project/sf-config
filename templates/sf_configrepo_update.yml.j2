@@ -42,9 +42,6 @@
 
 {% endif %}{% endfor %}
 - hosts: gerrit
-  tasks:
-    # TODO: move this task to a replication role update action
-    - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/gerrit_replication_update.yaml"
   roles:
     - role: 'sf-gerrit'
       action: 'update'
