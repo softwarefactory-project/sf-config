@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A new --disable-external-resources and a sfconfig.yaml option enables to
+    deploy and/or recover a backup without gerrit replication or nodepool
+    providers.
