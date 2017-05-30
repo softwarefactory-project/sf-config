@@ -25,6 +25,9 @@ network:
   # Define a koji host to be accessible through fqdn/koji
   koji_host: ""
 
+  # Disable gerrit replication and nodepool providers
+  disable_external_resources: false
+
 authentication:
   admin_password: userpass
   # timeout of sessions in seconds

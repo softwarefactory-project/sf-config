@@ -38,3 +38,5 @@ nodepool_mysql_port: 3306
 nodepool_mysql_db: "nodepool"
 nodepool_mysql_user: "nodepool"
 nodepool_mysql_password: "CHANGE_ME"
+
+nodepool_disable_providers: False

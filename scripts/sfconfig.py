@@ -157,7 +157,7 @@ def load_refarch(filename, domain=None, install_server_ip=None):
     return arch
 
 
-def update_sfconfig(data):
+def update_sfconfig(data, args):
     """ This method ensure /etc/software-factory content is upgraded """
     dirty = False
     if not os.path.isfile("/etc/software-factory/logo-topmenu.png"):
@@ -388,6 +388,15 @@ def update_sfconfig(data):
         dirty = True
     if 'retention_days' not in data['logstash']:
         data['logstash']['retention_days'] = 60
+
+    if 'disable_external_resources' not in data['network']:
+        data['network']['disable_external_resources'] = False
+        dirty = True
+
+    if data['network']['disable_external_resources'] != \
+       args.disable_external_resources:
+        data['network']['disable_external_resources'] = \
+            args.disable_external_resources
         dirty = True
 
     return dirty
@@ -517,7 +526,7 @@ def generate_role_vars(arch, sfconfig, args):
             for fn in [gateway_cnf, gateway_req, gateway_crt]:
                 xunlink(fn)
             # Generate a random OU subject to be able to trust multiple sf CA
-            ou = ''.join(random.choice('0123456789abcdef') for n in xrange(6))
+            ou = ''.join(random.choice('0123456789abcdef') for n in range(6))
             execute(["openssl", "req", "-nodes", "-days", "3650", "-new",
                      "-x509", "-subj", "/C=FR/O=SoftwareFactory/OU=%s" % ou,
                      "-keyout", ca_key_file, "-out", ca_file])
@@ -646,6 +655,8 @@ DNS.1 = %s
         }
         get_or_generate_ssh_key("gerrit_service_rsa")
         get_or_generate_ssh_key("gerrit_admin_rsa")
+        if sfconfig["network"]["disable_external_resources"]:
+            glue["gerrit_replication"] = False
 
     if "jenkins" in arch["roles"]:
         glue["jenkins_host"] = get_hostname("jenkins")
@@ -691,6 +702,8 @@ DNS.1 = %s
             'user': 'nodepool',
             'password': secrets['nodepool_mysql_password'],
         }
+        if sfconfig["network"]["disable_external_resources"]:
+            glue["nodepool_disable_providers"] = True
 
     if "nodepool-launcher" in arch["roles"]:
         glue["nodepool_launcher_host"] = get_hostname("nodepool-launcher")
@@ -1011,8 +1024,8 @@ def bootstrap_backup():
     # Install sfconfig and arch in place
     shutil.copy("%s/install-server/etc/software-factory/sfconfig.yaml" % bdir,
                 "/etc/software-factory/sfconfig.yaml")
-    shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" % bdir,
-                "/etc/software-factory/arch.yaml")
+    shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" %
+                bdir, "/etc/software-factory/arch.yaml")
     # Copy bootstrap data
     execute(["rsync", "-a",
              "%s/install-server/var/lib/software-factory/" % bdir,
@@ -1040,6 +1053,9 @@ def usage():
     # tunning
     p.add_argument("--skip-apply", default=False, action='store_true',
                    help="Do not execute Ansible playbook")
+    p.add_argument("--disable-external-resources", default=False,
+                   action='store_true',
+                   help="Disable gerrit replication and nodepool providers")
     # special actions
     p.add_argument("--recover", nargs='?', const=bdir, metavar='BACKUP_PATH',
                    help="Deploy a backup")
@@ -1094,7 +1110,7 @@ def main():
     # Make sure the yaml files are updated
     sfconfig = yaml_load(args.sfconfig)
     sfarch = yaml_load(args.arch)
-    if update_sfconfig(sfconfig):
+    if update_sfconfig(sfconfig, args):
         save_file(sfconfig, args.sfconfig)
     if clean_arch(sfarch):
         save_file(sfarch, args.arch)
