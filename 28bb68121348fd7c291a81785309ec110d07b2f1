@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_11656b44",
+        "filename": "templates/sf_erase.yml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-05-30T06:54:40Z",
+      "side": 1,
+      "message": "How about calling it \"sfconfig_batch\" ?",
+      "revId": "28bb68121348fd7c291a81785309ec110d07b2f1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
