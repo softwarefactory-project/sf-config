@@ -16,7 +16,7 @@ watchers:
           PROVIDER: ".+"
           IMAGE: ".+"
           NODE_ID: "[0-9]+"
-        publish: '{"TIMESTAMP": "_EPOCH_", "EVENT": "CREATE", "HOSTNAME": "${HOSTNAME}", "IMAGE": "${IMAGE}, "PROVIDER": "${PROVIDER}", "NODE_ID": "${NODE_ID}"}'
+        publish: '{"TIMESTAMP": "_EPOCH_", "EVENT": "CREATE", "HOSTNAME": "${HOSTNAME}", "IMAGE": "${IMAGE}", "PROVIDER": "${PROVIDER}", "NODE_ID": "${NODE_ID}"}'
       - name: node_ready
         pattern: ".*Node id: ${NODE_ID} is ready"
         where:
