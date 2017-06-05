@@ -11,3 +11,4 @@
     - /var/lib/jenkins/secret.key
     - /var/lib/jenkins/secret.key.not-so-secret
     - /var/lib/jenkins/credentials.xml
+    - /var/lib/jenkins/secrets
