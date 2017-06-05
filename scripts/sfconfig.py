@@ -117,6 +117,13 @@ def load_refarch(filename, domain=None, install_server_ip=None):
             host = arch["inventory"][0]
             host["roles"].append(role)
             arch["roles"].setdefault(role, []).append(host)
+    # Adds zookeeper if nodepool-launcher is enabled
+    if "nodepool" in arch["roles"] or "nodepool-launcher" in arch["roles"]:
+        if "zookeeper" not in arch["roles"]:
+            print("Adding missing zookeeper role")
+            host = arch["inventory"][0]
+            host["roles"].append("zookeeper")
+            arch["roles"].setdefault("zookeeper", []).append(host)
 
     # Add gateway and install-server hostname/ip for easy access
     gateway_host = arch["roles"]["gateway"][0]
