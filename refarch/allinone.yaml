@@ -11,6 +11,7 @@ inventory:
       - managesf
       - etherpad
       - lodgeit
+      - gitweb
       - gerrit
       - gerritbot
       - zuul

@@ -37,8 +37,10 @@
     match = "{{ commentlink.match }}"
     html = "{{ commentlink.html }}"
 {% endfor %}
+{% if 'gitweb' in roles %}
 [gitweb]
     cgi = {{ gitweb_cgi }}
+{% endif %}
 [sendemail]
     enable = true
     from = MIXED
