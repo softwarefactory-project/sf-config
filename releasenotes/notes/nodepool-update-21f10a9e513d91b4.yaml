@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Nodepool version is updated, dropping support for snapshot based image
+    and enabling zookeeper service.
+upgrade:
+  - |
+    A new node.comment column is added to support nodepool hold reason.
