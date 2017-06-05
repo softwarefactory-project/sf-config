@@ -63,11 +63,6 @@
         name: gerrit
         state: stopped
 {% endif %}
-- hosts: mysql
-  tasks:
-    - service:
-        name: mariadb
-        state: stopped
 
 - hosts: all
   vars:
