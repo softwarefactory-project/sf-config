@@ -1,43 +1,7 @@
 ---
-- name: "Check for pre-installed in /var/www/storyboard/{{ storyboard_webclient_commit }}"
-  stat:
-    path: "/var/www/storyboard/{{ storyboard_webclient_commit }}"
-  register: installed
-
-- name: "Create /var/www/storyboard"
-  file:
-    path: /var/www/storyboard
-    state: directory
-    mode: 0755
-  when: installed.stat.exists == false
-
-- name: "Ensure /var/www/storyboard is clean"
-  shell: "rm -Rf /var/www/storyboard/*"
-  when: installed.stat.exists == false
-
-- name: "Extract pre-built client"
-  unarchive:
-    src: "{{ storyboard_webclient_url }}"
-    dest: /var/www/storyboard/
-    copy: no
-  when: installed.stat.exists == false
-
-- name: "Remove dist sub directory"
-  shell: "mv /var/www/storyboard/dist/* /var/www/storyboard/ && rm -Rf /var/www/storyboard/dist/"
-  when: installed.stat.exists == false
-
-- name: "Touch /var/www/storyboard/{{ storyboard_webclient_commit }}"
-  file:
-    path: "/var/www/storyboard/{{ storyboard_webclient_commit }}"
-    state: touch
-    mode: 0644
-
-# Manual build process bellow
-#- name: "Install storyboard-webclient code"
-#  git: repo=git://git.openstack.org/openstack-infra/storyboard-webclient dest=/usr/src/storyboard-webclient recursive=no version={{ storyboard_webclient_commit }} update=no
-#- name: "Create dist files"
-#  command: chdir=/srv/storyboard-webclient_git "{{ item }}"
-#  with_items:
-#    - virtualenv /usr/src/storyboard-webclient/.venv
-#    - /usr/src/storyboard-webclient/.venv/bin/pip install --upgrade 'pbr' 'pip<8' 'tox'
-#    - /usr/src/storyboard-webclient/.venv/bin/tox -egrunt_no_api -- compile
+- name: "Install package"
+  yum:
+    name: "storyboard-webclient"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
