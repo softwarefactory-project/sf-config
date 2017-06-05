@@ -10,8 +10,11 @@ zmq-publishers:
 gearman-servers:
   - host: {{ zuul_server_host }}
 
+zookeeper-servers:
+  - host: {{ zookeeper_host }}
+    port: 2181
+
 cron:
-  image-update: '14 2 * * *'
   cleanup: '*/30 * * * *'
   check: '*/15 * * * *'
 
