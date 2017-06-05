@@ -8,3 +8,11 @@
 - name: "Fetch ansible configuration"
   synchronize: mode=pull src="/var/lib/software-factory/ansible" dest="{{ log_dest }}/ansible"
   ignore_errors: True
+- name: "Fetch yum.repos.d"
+  synchronize:
+    mode: pull
+    src: "/etc/yum.repos.d/"
+    dest: "{{ log_dest }}/yum.repos.d"
+    rsync_opts:
+      - "--exclude=CentOS-*.repo"
+  ignore_errors: True
