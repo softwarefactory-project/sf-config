@@ -30,8 +30,8 @@
       action: "setup"
     - name: "sf-monit"
       action: "setup"
-{% if 'influxdb' in roles %}
-    - name: "sf-collectd"
+{% if 'sf-influxdb' in roles %}
+    - name: "sf-telegraf"
       action: "setup"
 {% endif %}
 

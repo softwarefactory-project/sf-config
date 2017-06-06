@@ -1,0 +1,20 @@
+---
+- name: Set influxdb host
+  replace:
+    dest: /etc/telegraf/telegraf.conf
+    regexp: '  urls = \["http://.*:8086"\].*'
+    replace: '  urls = ["http://{{ influxdb_host }}:8086"]'
+  notify: Restart telegraf
+
+- name: Setup statsd server
+  copy:
+    src: statsd.conf
+    dest: /etc/telegraf/telegraf.d/statsd.conf
+  when: ansible_fqdn == "{{ influxdb_host }}"
+  notify: Restart telegraf
+
+- name: Start service
+  service:
+      name: influxdb
+      state: started
+      enabled: yes
