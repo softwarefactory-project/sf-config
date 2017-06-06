@@ -1,27 +1,89 @@
 ---
-- name: Configure influxdb
-  blockinfile:
-      # TODO: use path with ansible 2.3
-      #path: /etc/influxdb/influxdb.conf
+- name: Define crt and key path if letsencrypt
+  set_fact:
+      crt: '/etc/letsencrypt/pem/{{ fqdn }}.pem'
+      key: '/etc/letsencrypt/private/{{ fqdn }}.key'
+  when: use_letsencrypt == True
+
+- name: Define crt and key path if self-signed
+  set_fact:
+      crt: '/etc/pki/tls/certs/{{ fqdn }}.crt'
+      key: '/etc/pki/tls/private/{{ fqdn }}.key'
+      ssl_options: '-unsafeSsl'
+  when: use_letsencrypt == False
+
+- name: Ensure influxdb can read tls key
+  acl:
+      path: '{{ key }}'
+      entity: influxdb
+      etype: user
+      permissions: r
+      state: present
+
+- name: Configure influxdb to use tls
+  ini_file:
       dest: /etc/influxdb/influxdb.conf
-      marker: '# <!-- {mark} ANSIBLE MANAGED BLOCK -->'
-      insertafter: '[[collectd]]'
-      block: |
-            enabled = true
-            bind-address = "{{ influxdb_host }}:{{ influxdb_port }}"
-            database = "collectd"
-            retention-policy = ""
-            typesdb = "/usr/share/collectd/types.db"
-            #security-level = "none"
-            #auth-file = "/etc/collectd/auth_file"
-            batch-size = 5000
-            batch-pending = 10
-            batch-timeout = "10s"
-            read-buffer = 0
-  notify: Restart influxdb
+      section: '{{ item.section }}'
+      option: '{{ item.option }}'
+      value: '{{ item.value }}'
+  with_items:
+      - {section: http, option: auth-enabled, value: 'true'}
+      - {section: http, option: https-enabled, value: 'true'}
+      - {section: http, option: https-certificate, value: '"{{ crt }}"'}
+      - {section: http, option: https-private-key, value: '"{{ key }}"'}
+  notify: restart influxdb
 
 - name: Start service
   service:
       name: influxdb
       state: started
       enabled: yes
+
+- name: Ensure service used tls configuration
+  service:
+      name: influxdb
+      state: restarted
+
+- name: Set influxdb cli fact
+  set_fact:
+    influxdb_cli: 'influx -ssl {{ ssl_options }}'
+
+- name: Check if admin password is set
+  shell: 'influx -ssl {{ ssl_options }} -execute "SHOW USERS"'
+  register: admin_password
+  ignore_errors: true
+  no_log: true
+
+- name: Create admin user
+  shell: "{{ influxdb_cli }} -execute \"CREATE USER admin WITH PASSWORD '{{ influxdb_admin_password }}' WITH ALL PRIVILEGES\""
+  when: "'create admin user' in admin_password.stdout"
+  no_log: true
+
+- name: Set influxdb cli fact
+  set_fact:
+    influxdb_cli: '{{ influxdb_cli }} -username admin -password {{ influxdb_admin_password }}'
+
+- name: Check if telegraf db exists
+  shell: '{{ influxdb_cli }} -execute "SHOW DATABASES"'
+  register: databases
+  no_log: true
+
+- name: Create telegraf db
+  shell: '{{ influxdb_cli }} -execute "CREATE DATABASE telegraf"'
+  when: "'telegraf' not in databases.stdout"
+
+- name: Check if telegraf user exists
+  shell: '{{ influxdb_cli }} -execute "SHOW USERS"'
+  register: users
+  no_log: true
+
+- block:
+    - name: Create telegraf user
+      shell: "{{ influxdb_cli }} -execute \"CREATE USER telegraf WITH PASSWORD '{{ telegraf_influxdb_password }}'\""
+
+    - name: Grant access for telegraf user
+      shell: "{{ influxdb_cli }} -execute 'GRANT ALL ON \"telegraf\" TO \"telegraf\"'"
+
+  ignore_errors: true
+  no_log: true
+  when: "'telegraf' not in users.stdout"
