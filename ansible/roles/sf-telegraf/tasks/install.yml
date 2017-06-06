@@ -7,9 +7,9 @@
     gpgkey: "{{ influxdb_repo_gpgkey }}"
     gpgcheck: "{{ influxdb_repo_gpgcheck }}"
 
-- name: Install influxdb packages
+- name: Install telegraf packages
   yum:
-    name: influxdb
+    name: telegraf
     state: present
     disablerepo: "*"
     enablerepo: "{{ influxdb_repo_name }}"
