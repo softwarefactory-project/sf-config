@@ -1,27 +1,44 @@
 ---
-- name: Configure influxdb
-  blockinfile:
-      # TODO: use path with ansible 2.3
-      #path: /etc/influxdb/influxdb.conf
+- name: Define crt and key path if letsencrypt
+  set_fact:
+      crt: '/etc/letsencrypt/pem/{{ fqdn }}.pem'
+      key: '/etc/letsencrypt/private/{{ fqdn }}.key'
+  when: use_letsencrypt == True
+
+- name: Define crt and key path if self-signed
+  set_fact:
+      crt: '/etc/pki/tls/certs/{{ fqdn }}.crt'
+      key: '/etc/pki/tls/private/{{ fqdn }}.key'
+      ssl_options: '-unsafeSsl'
+  when: use_letsencrypt == False
+
+- name: Ensure influxdb can read tls key
+  acl:
+      path: '{{ key }}'
+      entity: influxdb
+      etype: user
+      permissions: r
+      state: present
+
+- name: Configure influxdb to use tls
+  ini_file:
       dest: /etc/influxdb/influxdb.conf
-      marker: '# <!-- {mark} ANSIBLE MANAGED BLOCK -->'
-      insertafter: '[[collectd]]'
-      block: |
-            enabled = true
-            bind-address = "{{ influxdb_host }}:{{ influxdb_port }}"
-            database = "collectd"
-            retention-policy = ""
-            typesdb = "/usr/share/collectd/types.db"
-            #security-level = "none"
-            #auth-file = "/etc/collectd/auth_file"
-            batch-size = 5000
-            batch-pending = 10
-            batch-timeout = "10s"
-            read-buffer = 0
-  notify: Restart influxdb
+      section: "{{ item.section }}"
+      option: "{{ item.option }}"
+      value: "{{ item.value }}"
+  with_items:
+      - {section: http, option: https-certificate, value: '{{ crt }}'}
+      - {section: http, option: https-private-key, value: '{{ key }}'}
+      - {section: http, option: auth-enabled, value: true}
+  notify: restart influxdb
+      # - {section: http, option: https-enabled, value: true}
 
 - name: Start service
   service:
       name: influxdb
       state: started
       enabled: yes
+
+#- name: Create influxdb user
+#  shell: "influx -ssl {{ ssl_options }} -execute \"CREATE USER admin WITH PASSWORD '{{ influxdb_admin_password }}' WITH ALL PRIVILEGES\""
+#  when: influxdb_admin_user.rc == 0

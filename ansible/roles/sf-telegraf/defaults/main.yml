@@ -3,9 +3,6 @@ role_actions:
   - setup
 
 influxdb_host: influxdb.example.com
-influxdb_port: 25826
-influxdb_admin_password: CHANGE_ME
-
 influxdb_repo_name: influxdb
 influxdb_repo_desc: InfluxDB Repository
 influxdb_repo_url: https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable
