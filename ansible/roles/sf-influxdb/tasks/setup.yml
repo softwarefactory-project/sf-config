@@ -9,7 +9,7 @@
       block: |
             enabled = true
             bind-address = "{{ influxdb_host }}:{{ influxdb_port }}"
-            database = "collectd"
+            database = "telegraf"
             retention-policy = ""
             typesdb = "/usr/share/collectd/types.db"
             #security-level = "none"

@@ -1,0 +1,6 @@
+---
+- name: Start service
+  service:
+      name: influxdb
+      state: started
+      enabled: yes
