@@ -88,6 +88,7 @@
             RewriteCond %{LA-U:REMOTE_USER} (.+)
             RewriteRule .* - [E=RU:%1,NS]
             RequestHeader set X-Forwarded-User %{RU}e
+            RequestHeader unset Authorization
         </If>
     </LocationMatch>
 
@@ -171,8 +172,8 @@
 
 {% if 'grafana' in roles %}
         RewriteRule ^/grafana$ grafana/ [R]
-        ProxyPass /grafana/ {{ grafana_internal_url }}
-        ProxyPassReverse /grafana/ {{ grafana_internal_url }}
+        ProxyPass /grafana/ {{ grafana_internal_url }}/
+        ProxyPassReverse /grafana/ {{ grafana_internal_url }}/
 {% endif %}
     </IfModule>
 
