@@ -16,6 +16,15 @@
 {% endif %}{% endfor %}
 
 {% endfor %}
+
+{% if 'influxdb' in roles %}
+- hosts: all
+  roles:
+    - name: sf-telegraf
+      action: disable
+      erase: False
+{% endif %}
+
 # Disable mysql after services
 - hosts: mysql
   roles:
