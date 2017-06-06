@@ -6,6 +6,9 @@
 - hosts: all
   roles:
     - {name: "sf-base", action: "install"}
+{% if 'influxdb' in roles %}
+    - {name: "sf-telegraf", action: "install"}
+{% endif %}
 
 # Install all components
 {% for host in inventory %}
