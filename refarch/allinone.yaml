@@ -30,6 +30,8 @@ inventory:
       - storyboard-webclient
       - repoxplorer
       - firehose
+      - influxdb
+      - grafana
     mem: 8
     cpu: 4
     disk: 20
