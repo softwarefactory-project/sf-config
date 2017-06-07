@@ -4,6 +4,13 @@
       dest: /etc/my.cnf
       line: "character_set_server = utf8"
 
+- name: Set wait_timeout to 2 weeks
+  ini_file:
+    dest: /etc/my.cnf.d/mariadb-server.cnf
+    section: server
+    option: wait_timeout
+    value: 1209600
+
 - name: Start service
   service: name=mariadb enabled=yes state=started
 
