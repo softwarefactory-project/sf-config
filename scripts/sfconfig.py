@@ -869,6 +869,16 @@ def main():
     if not args.skip_setup:
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_setup.yml"])
+    if not args.skip_apply:
+        execute([
+            "ansible-playbook",
+            "/var/lib/software-factory/ansible/sf_configrepo_update.yml"])
+    if not args.skip_apply:
+        execute([
+            "ansible-playbook",
+            "/var/lib/software-factory/ansible/sf_postconf.yml"])
+
+    if not args.skip_apply:
         execute(["logger", "sfconfig.py: ended"])
         print("""%s: SUCCESS
 

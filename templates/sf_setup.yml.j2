@@ -69,10 +69,6 @@
     - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/update_fqdn_step2.yaml"
     - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/create_config-repo.yml"
 
-- include: sf_configrepo_update.yml
-
-- include: sf_postconf.yml
-
 # Store deployed version to be used by upgrade playbook
 - hosts: localhost
   connection: local
