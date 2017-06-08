@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_ede7c010",
+        "filename": "ansible/roles/sf-gerrit/templates/gerrit.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-08T08:29:09Z",
+      "side": 1,
+      "message": "Use \"{{ gerrit_mysql_host }} {{ gerrit_mysql_port }}\" instead",
+      "revId": "f1c6abe348e0fc7d6fb2cc258b061fc63489443d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
