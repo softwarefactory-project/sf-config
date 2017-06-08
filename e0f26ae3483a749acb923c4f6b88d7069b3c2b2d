@@ -16,6 +16,24 @@
       "revId": "e0f26ae3483a749acb923c4f6b88d7069b3c2b2d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_6d8f3024",
+        "filename": "ansible/roles/sf-ochlero/templates/ochlero.yaml.j2",
+        "patchSetId": 17
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-08T09:15:51Z",
+      "side": 1,
+      "message": "Good catch, it\u0027s renamed nodepool-launcher indeed!",
+      "parentUuid": "baa041b7_8d9cb46a",
+      "revId": "e0f26ae3483a749acb923c4f6b88d7069b3c2b2d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
