@@ -6,7 +6,7 @@
   register: localconfig
 
 - name: "Check upstream repoxplorer config"
-  command: chdir=/root/config git log --oneline repoxplorer/
+  command: chdir=/root/config git log --oneline repoxplorer/ resources/
   register: upstreamconfig
 
 - name: "Update local repoxplorer configuration files"
@@ -17,9 +17,11 @@
   with_fileglob:
     - "/root/config/repoxplorer/*"
 
+- name: "Update default repoxplorer index file from SF resources"
+  command: /usr/local/bin/resources2repoxplorer.py apply
+  when: localconfig.stdout != upstreamconfig.stdout
+
 - name: "Write config repo sha1 matching current repoxplorer configuration"
   copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/repoxplorer_config
   when: localconfig.stdout != upstreamconfig.stdout
 
-- name: "Update default repoxplorer index file from SF resources"
-  command: /usr/local/bin/resources2repoxplorer.py apply
