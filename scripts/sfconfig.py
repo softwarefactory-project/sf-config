@@ -363,7 +363,7 @@ def get_previous_version():
 
 
 
-def generate_role_vars(arch, sfconfig, allvars_file, args):
+def generate_role_vars(arch, sfconfig, args):
     """ This function 'glue' all roles and convert sfconfig.yaml """
     secrets = yaml_load("%s/secrets.yaml" % args.lib)
 
@@ -672,10 +672,8 @@ DNS.1 = %s
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
-    # And add them to the all.yaml file
-    yaml_dump(secrets, allvars_file)
-    # Add glue to the all.yaml.file
-    yaml_dump(glue, allvars_file)
+    glue.update(secrets)
+    return glue
 
 
 def generate_inventory_and_playbooks(arch, ansible_root, share):
@@ -847,12 +845,13 @@ def main():
 
     # Generate group vars
     with open(allyaml, "w") as allvars_file:
-        generate_role_vars(arch, sfconfig, allvars_file, args)
-        allvars_file.write("###### Legacy content ######\n")
-        allvars_file.write(open(args.sfconfig).read())
+        group_vars = generate_role_vars(arch, sfconfig, args)
+        # Add legacy content
+        group_vars.update(yaml_load(args.sfconfig))
         if os.path.isfile(args.extra):
-            allvars_file.write(open(args.extra).read())
-        yaml_dump(arch, allvars_file)
+            group_vars.update(yaml_load(args.extra))
+        group_vars.update(arch)
+        yaml_dump(group_vars, allvars_file)
 
     print("[+] %s written!" % allyaml)
     os.environ["ANSIBLE_CONFIG"] = "/usr/share/sf-config/ansible/ansible.cfg"
