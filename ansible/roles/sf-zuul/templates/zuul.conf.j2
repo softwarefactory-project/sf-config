@@ -40,6 +40,18 @@ root={{ logserver["path"] }}
 
 {% endfor %}
 
+{% if pages is defined %}
+[site "pages"]
+host={{ pages["host"] }}
+user={{ pages["user"] }}
+root={{ pages["path"] }}
+
+[node "pages"]
+host={{ pages["host"] }}
+description=The pages node for rendering and publishing pages
+labels=pages
+{% endif %}
+
 [node "master"]
 host=localhost
 description=The master node allowed to trigger config-update
