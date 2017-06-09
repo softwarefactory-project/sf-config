@@ -8,7 +8,8 @@
 - name: Authorize loguser sshkey
   authorized_key:
       user: loguser
-      key: "{{ loguser_authorized_key }}"
+      key: "{{ item }}"
+  with_items: "{{ loguser_authorized_keys }}"
 
 - name: Install httpd conf.d logserver
   copy: src=logserver.conf dest=/etc/httpd/conf.d/logserver.conf

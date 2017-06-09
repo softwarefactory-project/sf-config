@@ -389,6 +389,7 @@ def generate_role_vars(arch, sfconfig, args):
             'sf_templates_dir': "%s/templates" % args.share,
             'sf_playbooks_dir': "%s" % args.ansible_root,
             'jobs_zmq_publishers': [],
+            'loguser_authorized_keys': [],
     }
 
     def get_hostname(role):
@@ -584,8 +585,6 @@ DNS.1 = %s
         glue["zuul_pub_url"] = "%s/zuul/" % glue["gateway_url"]
         glue["zuul_internal_url"] = "http://%s:%s/" % (
             get_hostname("zuul"), defaults["zuul_port"])
-        # TODO(tristanC): create a dedicated key for zuul
-        glue["zuul_rsa_pub"] = glue["jenkins_rsa_pub"]
         glue["zuul_mysql_host"] = glue["mysql_host"]
         glue["mysql_databases"]["zuul"] = {
             'hosts': ["localhost", get_hostname("zuul")],
@@ -600,6 +599,7 @@ DNS.1 = %s
         glue["zuul_launcher_host"] = get_hostname("zuul-launcher")
         glue["jobs_zmq_publishers"].append(
             "tcp://%s:8888" % glue["zuul_launcher_host"])
+        glue["loguser_authorized_keys"].append(glue["jenkins_rsa_pub"])
 
     if "nodepool" in arch["roles"]:
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
@@ -615,7 +615,6 @@ DNS.1 = %s
 
     if "logserver" in arch["roles"]:
         glue["logserver_host"] = get_hostname("logserver")
-        glue["loguser_authorized_key"] = glue["zuul_rsa_pub"]
         glue["logservers"] = [{
             "name": "logs",
             "host": glue["logserver_host"],
