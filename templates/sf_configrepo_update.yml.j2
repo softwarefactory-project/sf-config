@@ -76,3 +76,50 @@
   roles:
     - role: 'sf-gateway'
       action: 'update'
+
+{% if 'pages' in roles %}
+- hosts: mirror
+  roles:
+    - role: 'sf-pages'
+      action: 'update'
+  tasks:
+    - name: Check modified witness
+      stat:
+        path: /var/lib/pagesuser/modified
+      register: modified
+- hosts: gateway
+  tasks:
+    - name: Reload httpd 
+      systemd:
+        name: httpd
+        state: reloaded
+      when: modified.stat.exists
+- hosts: managesf.sftests.com
+  tasks:
+    - name: Prepare directory for merge op
+      file:
+        path: /var/lib/software-factory/temp/zuul-merge
+        state: directory
+    - name: Copy layout.yaml and pages.yaml for merging
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        remote_src: true
+      with_items:
+      - { src: '/etc/zuul/layout.yaml', dest: '/var/lib/software-factory/temp/zuul-merge/layout.yaml' }
+      - { src: '/etc/zuul/pages.yaml', dest: '/var/lib/software-factory/temp/zuul-merge/pages.yaml' }
+    - name: Compute layout
+      command: bash -c "/usr/local/bin/yaml-merger.py /var/lib/software-factory/temp/zuul-merge  | tee /var/lib/software-factory/temp/zuul-merge/merged.yaml"
+    - name: Copy merged layout.yaml 
+      copy:
+        src: /var/lib/software-factory/temp/zuul-merge/merged.yaml
+        dest: /etc/zuul/layout.yaml
+        remote_src: true
+      register: layout
+    - name: Reload zuul-server 
+      systemd:
+        name: zuul-server
+        state: reloaded
+      when: layout|changed
+
+{% endif %}
