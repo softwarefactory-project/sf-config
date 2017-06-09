@@ -2,6 +2,21 @@
 - name: Ensure jobs-zuul ensure locally
   file: path=/root/config/jobs-zuul state=directory
 
+- name: Fetch zuul pages jobs from the pages node
+  synchronize:
+    src: /var/lib/pagesuser/zuul_pages.yaml
+    dest: /etc/zuul/_pages.yaml
+  delegate_to: pages
+  register: pagesconfig
+  when: "'pages' in roles"
+
+- name: Copy zuul/_pages.yaml for processing
+  copy:
+    src: /etc/zuul/_pages.yaml
+    dest: /root/config/zuul/_pages.yaml
+    remote_src: true
+  when: "'pages' in roles"
+
 - name: Update zuul layout
   command: chdir=/root/config {{ item }}
   with_items:
@@ -25,16 +40,16 @@
 
 - name: Reload zuul-server service
   service: name=zuul-server state=reloaded enabled=yes
-  when: "'zuul-server' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
+  when: "'zuul-server' in zuul_services and (localconfig.stdout != upstreamconfig.stdout or pagesconfig | changed)"
 
 - name: Reload zuul-launcher service
   service: name=zuul-launcher state=reloaded enabled=yes
-  when: "'zuul-launcher' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
+  when: "'zuul-launcher' in zuul_services and (localconfig.stdout != upstreamconfig.stdout or pagesconfig | changed)"
 
 # Zuul-merger doesn't support reload, restart is needed
 - name: Restart zuul-merger service
   service: name=zuul-merger state=restarted enabled=yes
-  when: "'zuul-merger' in zuul_services and localconfig.stdout != upstreamconfig.stdout"
+  when: "'zuul-merger' in zuul_services and (localconfig.stdout != upstreamconfig.stdout or pagesconfig | changed)"
 
 - name: Write config repo sha1 matching current configuration
   copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/state/zuul_config
