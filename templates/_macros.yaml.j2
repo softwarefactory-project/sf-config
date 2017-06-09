@@ -45,3 +45,14 @@
               source: 'artifacts/**'
               keep-hierarchy: true
               copy-after-failure: true
+
+- publisher:
+    name: pages-dir
+    publishers:
+      - scp:
+          site: 'pages'
+          files:
+            - target: '$ZUUL_PROJECT'
+              source: 'pages/**'
+              keep-hierarchy: true
+              copy-after-failure: true
