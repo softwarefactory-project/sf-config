@@ -623,6 +623,16 @@ DNS.1 = %s
             "path": "/var/www/logs",
         }]
 
+    if "pages" in arch["roles"]:
+        glue["pages_host"] = get_hostname("pages")
+        glue["pagesuser_authorized_key"] = glue["zuul_rsa_pub"]
+        glue["pages"] = {
+            "name": "pages",
+            "host": glue["pages_host"],
+            "user": "pagesuser",
+            "path": "/var/www/html/pages",
+        }
+
     if "firehose" in arch["roles"]:
         glue["firehose_host"] = get_hostname("firehose")
 
