@@ -1,0 +1,45 @@
+- file: path=/var/lib/software-factory/pages_config state=touch
+
+- name: Check local config
+  command: cat /var/lib/software-factory/pages_config
+  register: localconfig
+
+- name: Check upstream config
+  command: chdir=/root/config git log --oneline resources/
+  register: upstreamconfig
+
+- name: Remove modified witness
+  file:
+    path: /var/lib/pagesuser/modified
+    state: absent
+
+- name: Compute httpd and zuul definitions for pages
+  command: /usr/local/bin/resources2pages.py {{ fqdn }}
+  when: localconfig.stdout != upstreamconfig.stdout
+
+- name: Pull httpd config on gateway
+  synchronize:
+    src: /var/lib/pagesuser/httpd_pages.conf
+    dest: /etc/httpd/conf.d/pages.conf
+    mode: pull
+  delegate_to: gateway
+  when: localconfig.stdout != upstreamconfig.stdout
+
+- name: Pull zuul config on zuul
+  synchronize:
+    src: /var/lib/pagesuser/zuul_pages.yaml
+    dest: /etc/zuul/pages.yaml
+    mode: pull
+  delegate_to: zuul-server
+  when: localconfig.stdout != upstreamconfig.stdout
+  register: conf
+
+- name: Touch modified witness
+  file:
+    path: /var/lib/pagesuser/modified
+    state: touch
+  when: conf|changed
+
+- name: Write config repo sha1 matching current configuration
+  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/pages_config
+  when: localconfig.stdout != upstreamconfig.stdout
