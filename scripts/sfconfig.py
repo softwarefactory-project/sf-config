@@ -407,6 +407,7 @@ def generate_role_vars(arch, sfconfig, args):
             'sf_playbooks_dir': "%s" % args.ansible_root,
             'jobs_zmq_publishers': [],
             'loguser_authorized_keys': [],
+            'pagesuser_authorized_keys': [],
     }
 
     def get_hostname(role):
@@ -638,6 +639,16 @@ DNS.1 = %s
             "user": "loguser",
             "path": "/var/www/logs",
         }]
+
+    if "pages" in arch["roles"]:
+        glue["pages_host"] = get_hostname("pages")
+        glue["pages"] = {
+            "name": "pages",
+            "host": glue["pages_host"],
+            "user": "pagesuser",
+            "path": "/var/www/html/pages",
+        }
+        glue["pagesuser_authorized_keys"].append(glue["jenkins_rsa_pub"])
 
     if "firehose" in arch["roles"]:
         glue["firehose_host"] = get_hostname("firehose")
