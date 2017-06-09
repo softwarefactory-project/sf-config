@@ -76,3 +76,11 @@
   roles:
     - role: 'sf-gateway'
       action: 'update'
+
+{% if 'pages' in roles %}
+- hosts: pages
+  roles:
+    - role: 'sf-pages'
+      action: 'update'
+- include: "/usr/share/sf-config/ansible/roles/sf-pages/playbooks/update_ext_roles.yml"
+{% endif %}
