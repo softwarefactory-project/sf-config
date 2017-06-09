@@ -1,0 +1,17 @@
+- file: path=/var/lib/software-factory/state/pages_config state=touch
+
+- name: Check local config
+  command: cat /var/lib/software-factory/state/pages_config
+  register: localconfig
+
+- name: Check upstream config
+  command: chdir=/root/config git log --oneline resources/ zuul/ jobs-zuul/
+  register: upstreamconfig
+
+- name: Compute httpd virt host definitions for pages
+  command: /usr/local/bin/resources2pages.py /var/lib/pagesuser/ {{ fqdn }}
+  when: localconfig.stdout != upstreamconfig.stdout
+
+- name: Write config repo sha1 matching current configuration
+  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/state/pages_config
+  when: localconfig.stdout != upstreamconfig.stdout
