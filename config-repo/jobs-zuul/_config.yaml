@@ -62,3 +62,29 @@
       - console-log
       - email-admin
     node: master
+
+- job:
+    name: 'pages-render'
+    builders:
+      - shell: |
+          set -e
+          echo "Detect and render"
+    publishers:
+      - console-log
+      - email-admin
+    node: pages
+
+- job:
+    name: 'pages-update'
+    builders:
+      - shell: |
+          set -e
+          mkdir pages
+          zuul-cloner http://gerrit/r $ZUUL_PROJECT
+          echo "Detect, render and publish"
+          cp -Rf $ZUUL_PROJECT/* pages/
+    publishers:
+      - pages-dir
+      - console-log
+      - email-admin
+    node: pages
