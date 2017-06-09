@@ -1,0 +1,28 @@
+- file: path=/var/lib/software-factory/pages_config state=touch
+
+- name: Check local config
+  command: cat /var/lib/software-factory/pages_config
+  register: localconfig
+
+- name: Check upstream config
+  command: chdir=/root/config git log --oneline resources/ zuul/ jobs-zuul/
+  register: upstreamconfig
+
+- name: Remove modified witness
+  file:
+    path: /var/lib/pagesuser/modified
+    state: absent
+
+- block:
+  - name: Compute httpd and zuul definitions for pages
+    command: /usr/local/bin/resources2pages.py {{ fqdn }}
+
+  - name: Touch modified witness
+    file:
+      path: /var/lib/pagesuser/modified
+      state: touch
+
+  - name: Write config repo sha1 matching current configuration
+    copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/pages_config
+
+  when: localconfig.stdout != upstreamconfig.stdout
