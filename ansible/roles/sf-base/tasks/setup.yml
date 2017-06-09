@@ -105,6 +105,11 @@
   service: name=rsyslog state=restarted
   when: rsyslog_config|changed
 
+- name: "auth: ensure /var/lib/cauth/keys exists"
+  file:
+    path: "/var/lib/cauth/keys"
+    state: directory
+
 - name: "auth: install pubkey.pem"
   copy:
       content: "{{ cauth_pubkey }}"
