@@ -27,7 +27,7 @@
   template:
       src: auto_backup.conf.j2
       dest: /etc/auto_backup.conf
-      mode: 0444
+      mode: 0440
 
 - name: Install crontab for backup nightly jobs
   cron:
