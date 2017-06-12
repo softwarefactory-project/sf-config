@@ -12,6 +12,7 @@
       with_items:
         - backup_gerrit
         - auto_backup
+        - auto_backup_scp
 
     - name: Remove files
       file:
