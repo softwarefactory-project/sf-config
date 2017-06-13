@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_9e4e18c0",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-13T08:06:13Z",
+      "side": 1,
+      "message": "scp",
+      "range": {
+        "startLine": 54,
+        "startChar": 28,
+        "endLine": 54,
+        "endChar": 33
+      },
+      "revId": "1f4bfa47da3f049431aa9e18a6d6b6ec8ffcfda8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_7e4b54b1",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-13T08:06:13Z",
+      "side": 1,
+      "message": "Can be removed",
+      "range": {
+        "startLine": 70,
+        "startChar": 33,
+        "endLine": 70,
+        "endChar": 96
+      },
+      "revId": "1f4bfa47da3f049431aa9e18a6d6b6ec8ffcfda8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_5ec77012",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-13T08:06:13Z",
+      "side": 1,
+      "message": "Can be removed too",
+      "range": {
+        "startLine": 78,
+        "startChar": 28,
+        "endLine": 78,
+        "endChar": 88
+      },
+      "revId": "1f4bfa47da3f049431aa9e18a6d6b6ec8ffcfda8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
