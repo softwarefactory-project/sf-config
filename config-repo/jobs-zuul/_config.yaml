@@ -68,7 +68,16 @@
     builders:
       - shell: |
           set -e
+          rm -Rf ./*
+          zuul-cloner http://gerrit/r $ZUUL_PROJECT
           echo "Detect and render"
+          if [ -f "$ZUUL_PROJECT/pelicanconf.py" ]; then
+              pushd $ZUUL_PROJECT
+              pelican content
+              popd
+          else
+              echo "No engine detected"
+          fi
     publishers:
       - console-log
       - email-admin
@@ -83,7 +92,14 @@
           mkdir pages
           zuul-cloner http://gerrit/r $ZUUL_PROJECT
           echo "Detect, render and publish"
-          cp -Rf $ZUUL_PROJECT/* pages/
+          if [ -f "$ZUUL_PROJECT/pelicanconf.py" ]; then
+              pushd $ZUUL_PROJECT
+              pelican content -o ../pages/
+              popd
+          else
+              echo "No engine detected - copy raw files"
+              cp -Rf $ZUUL_PROJECT/* pages/
+          fi
     publishers:
       - pages-dir
       - console-log
