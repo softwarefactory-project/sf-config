@@ -311,6 +311,16 @@ def update_sfconfig(data):
             del provider['project_id']
             dirty = True
 
+    # 2.6.0: add scp backup parameters
+    if 'method' not in data['backup']:
+        data['backup']['method'] = 'swift'
+        data['backup']['scp_backup_host'] = 'remoteserver.sftests.com'
+        data['backup']['scp_backup_port'] = 22
+        data['backup']['scp_backup_user'] = 'root'
+        data['backup']['scp_backup_directory'] = '/var/lib/remote_backup'
+        data['backup']['scp_backup_max_retention_secs'] = 864000
+        dirty = True
+
     return dirty
 
 
