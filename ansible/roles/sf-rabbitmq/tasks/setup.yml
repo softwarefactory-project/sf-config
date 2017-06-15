@@ -32,4 +32,5 @@
     write_priv: .*
     read_priv: .*
     state: present
+    node: rabbit
   with_items: "{{ rabbitmq_users }}"
