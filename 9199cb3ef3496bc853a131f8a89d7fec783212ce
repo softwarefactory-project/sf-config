@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "baa041b7_a2d3fe37",
+        "filename": "ansible/roles/sf-influxdb/tasks/setup.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-06-15T12:00:11Z",
+      "side": 1,
+      "message": "The handler are executed at the end of the run. Without this restart, influxdb not run with the right setup. I will find a way to avoid this restart",
+      "parentUuid": "baa041b7_82523a12",
+      "revId": "9199cb3ef3496bc853a131f8a89d7fec783212ce",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "baa041b7_e24b4658",
         "filename": "refarch/allinone.yaml",
         "patchSetId": 14
@@ -30,6 +48,24 @@
       "writtenOn": "2017-06-15T08:41:42Z",
       "side": 1,
       "message": "Why not adding the telegraph role here ?",
+      "revId": "9199cb3ef3496bc853a131f8a89d7fec783212ce",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_82d8fa54",
+        "filename": "refarch/allinone.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-06-15T12:00:11Z",
+      "side": 1,
+      "message": "Telegraf will be automatically include when influxdb role is used. Telegraf should be installed on all hosts, I will collect cpu, memory, hdd, ... metrics",
+      "parentUuid": "baa041b7_e24b4658",
       "revId": "9199cb3ef3496bc853a131f8a89d7fec783212ce",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "baa041b7_62ddf641",
+        "filename": "templates/sf_install.yml.j2",
+        "patchSetId": 14
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-06-15T12:00:11Z",
+      "side": 1,
+      "message": "Yes, to collect system metrics",
+      "parentUuid": "baa041b7_22424e3f",
+      "revId": "9199cb3ef3496bc853a131f8a89d7fec783212ce",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "baa041b7_023f4ab5",
         "filename": "templates/sf_setup.yml.j2",
         "patchSetId": 14
@@ -64,6 +118,24 @@
       "writtenOn": "2017-06-15T08:41:42Z",
       "side": 1,
       "message": "Ditto, shouldn\u0027t this be set only on one host?",
+      "revId": "9199cb3ef3496bc853a131f8a89d7fec783212ce",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_42e2f204",
+        "filename": "templates/sf_setup.yml.j2",
+        "patchSetId": 14
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-06-15T12:00:11Z",
+      "side": 1,
+      "message": "Yes, to collect system metrics",
+      "parentUuid": "baa041b7_023f4ab5",
       "revId": "9199cb3ef3496bc853a131f8a89d7fec783212ce",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
