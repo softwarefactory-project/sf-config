@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_65a50003",
+        "filename": "ansible/roles/sf-grafana/defaults/main.yml",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-15T19:15:20Z",
+      "side": 1,
+      "message": "Thanks but also the task must be defined in this list.",
+      "revId": "97e8227f633d33cae3489aaa46376ead93d6e406",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
