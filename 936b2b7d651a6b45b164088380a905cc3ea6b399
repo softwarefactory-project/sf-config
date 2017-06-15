@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_82a0faf5",
+        "filename": "ansible/roles/sf-pages/playbooks/update_ext_roles.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-15T09:01:32Z",
+      "side": 1,
+      "message": "I think this playbook is not necessary and could be managed using task delegation.",
+      "revId": "936b2b7d651a6b45b164088380a905cc3ea6b399",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_62a5f602",
+        "filename": "ansible/roles/sf-pages/playbooks/update_ext_roles.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-15T09:01:32Z",
+      "side": 1,
+      "message": "For example, this could be executed from the page host using:\n\ndelegate_to: gateway",
+      "revId": "936b2b7d651a6b45b164088380a905cc3ea6b399",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_a29bfec8",
+        "filename": "ansible/roles/sf-pages/playbooks/update_ext_roles.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-15T09:01:32Z",
+      "side": 1,
+      "message": "iirc, this doesn\u0027t work when the register happen on a remote host, see health-check for config_sha variable that is accessed through group_vars.",
+      "revId": "936b2b7d651a6b45b164088380a905cc3ea6b399",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_42aaf2d5",
+        "filename": "ansible/roles/sf-pages/playbooks/update_ext_roles.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-15T09:01:32Z",
+      "side": 1,
+      "message": "This could be copied directly to the temp/zuul-merge directory.\nAnd perhaps using /var/tmp would be more suited too.",
+      "revId": "936b2b7d651a6b45b164088380a905cc3ea6b399",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_22b00e43",
+        "filename": "ansible/roles/sf-pages/playbooks/update_ext_roles.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-15T09:01:32Z",
+      "side": 1,
+      "message": "Same here, the output can be directly /etc/zuul/layout.yaml",
+      "revId": "936b2b7d651a6b45b164088380a905cc3ea6b399",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_02ad0ae9",
+        "filename": "ansible/roles/sf-pages/tasks/update.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-15T09:01:32Z",
+      "side": 1,
+      "message": "Ideally, this script would return a special code when there has been change so that we proceed with the update only if needed.",
+      "revId": "936b2b7d651a6b45b164088380a905cc3ea6b399",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_e2b90630",
+        "filename": "ansible/roles/sf-pages/tasks/update.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-15T09:01:32Z",
+      "side": 1,
+      "message": "By using delegated task, we could move the playbook here instead of using a \"witness\" file.",
+      "revId": "936b2b7d651a6b45b164088380a905cc3ea6b399",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_c25f220d",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-15T09:01:32Z",
+      "side": 1,
+      "message": "Turns out we better keep jenkins key for zuul-launcher user, so use jenkins_rsa_pub here.",
+      "revId": "936b2b7d651a6b45b164088380a905cc3ea6b399",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
