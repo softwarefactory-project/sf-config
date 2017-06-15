@@ -1,6 +1,7 @@
 role_actions:
   - install
   - setup
+  - disable
 
 lodgeit_mysql_host: "mysql.example.com"
 lodgeit_mysql_port: 3306

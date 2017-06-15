@@ -1,6 +1,7 @@
 role_actions:
   - install
   - setup
+  - disable
 
 kibana_repo_name: kibana
 kibana_repo_desc: Kibana repository

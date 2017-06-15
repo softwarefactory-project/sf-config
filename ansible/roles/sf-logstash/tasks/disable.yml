@@ -1,0 +1,21 @@
+- name: Disable services
+  service:
+    name: logstash
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items: []
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - logstash
+  when: erase == True

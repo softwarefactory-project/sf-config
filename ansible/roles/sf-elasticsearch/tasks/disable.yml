@@ -1,0 +1,22 @@
+- name: Disable services
+  service:
+    name: elasticsearch
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/lib/elasticsearch/elasticsearch
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - elasticsearch
+  when: erase == True

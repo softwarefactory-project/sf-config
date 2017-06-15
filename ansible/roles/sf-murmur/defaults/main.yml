@@ -1,6 +1,7 @@
 role_actions:
   - install
   - setup
+  - disable
 
 murmur_password: ""
 murmur_max_users: 42
