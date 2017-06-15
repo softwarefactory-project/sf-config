@@ -484,7 +484,7 @@ DNS.1 = %s
         if not os.path.isfile(gateway_crt):
             if os.path.isfile(gateway_pem):
                 xunlink(gateway_pem)
-            execute(["openssl", "x509", "-req", "-days", "3650",
+            execute(["openssl", "x509", "-req", "-days", "3650", "-sha256"
                      "-extensions", "v3_req", "-extfile", gateway_cnf,
                      "-CA", ca_file, "-CAkey", ca_key_file,
                      "-CAserial", ca_srl_file,
