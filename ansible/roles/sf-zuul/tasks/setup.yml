@@ -6,7 +6,7 @@
 - name: Authorize zuul localhost connection for config-update jobs
   authorized_key:
       user: zuul
-      key: "{{ zuul_rsa_pub }}"
+      key: "{{ jenkins_rsa_pub }}"
 
 - name: Apply selinux port labelling
   seport:
