@@ -1,10 +1,25 @@
 ---
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=logstash"
 - name: "Install logstash configuration"
-  template: src=templates/indexer.conf.erb dest=/etc/logstash/conf.d/indexer.conf
+  template:
+    src: templates/indexer.conf.erb
+    dest: /etc/logstash/conf.d/indexer.conf
   register: config
+- stat:
+    path: /var/log/logstash/logstash.log
+  register: logfile
+- file:
+    path: /var/log/logstash/logstash.log
+    user: logstash
+    group: logstash
+  when: logfile.stat.exists
 - name: "Enable logstash"
-  service: name=logstash enabled=yes state=started
+  service:
+    name: logstash
+    enabled: yes
+    state: started
 - name: "Restart logstash if needed"
-  service: name=logstash state=restarted
+  service:
+    name: logstash
+    state: restarted
   when: config|changed
