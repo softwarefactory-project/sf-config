@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_05ccf487",
+        "filename": "ansible/roles/sf-zuul/templates/sysconfig.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-16T08:52:35Z",
+      "side": 0,
+      "message": "This doesn\u0027t seems to work as it returns connection refused.",
+      "revId": "c71a64879d8ca31b4d0a9dcac32e2a05a31ae948",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
