@@ -1,0 +1,22 @@
+- name: Disable services
+  service:
+    name: rabbitmq-server
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/lib/rabbitmq/mnesia
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - rabbitmq-server
+  when: erase == True

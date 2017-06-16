@@ -3,5 +3,6 @@ role_actions:
   - setup
   - backup
   - restore
+  - disable
 
 loguser_authorized_keys: []

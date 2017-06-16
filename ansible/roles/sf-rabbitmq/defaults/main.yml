@@ -1,6 +1,7 @@
 role_actions:
   - install
   - setup
+  - disable
 
 rabbitmq_users:
   - name: storyboard

@@ -1,0 +1,25 @@
+- name: Disable services
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items:
+    - repoxplorer
+    - repoxplorer-webui
+  ignore_errors: yes
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/lib/repoxplorer
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - repoxplorer
+  when: erase == True

@@ -2,6 +2,7 @@ role_actions:
   - install
   - setup
   - get_logs
+  - disable
 
 storyboard_service_token: "CHANGE_ME"
 
