@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_25737882",
+        "filename": "ansible/roles/sf-telegraf/defaults/main.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-16T08:51:54Z",
+      "side": 1,
+      "message": "Remove this duplicate",
+      "revId": "626e4fdcf115a99b06c06a3c9fb86af3814153f7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_85bfe4cf",
+        "filename": "ansible/roles/sf-telegraf/tasks/setup.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-16T08:51:54Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be \"telegraf\" ?",
+      "revId": "626e4fdcf115a99b06c06a3c9fb86af3814153f7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_a5bae8df",
+        "filename": "templates/sf_setup.yml.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-16T08:51:54Z",
+      "side": 1,
+      "message": "The \"sf-\" prefixes is only added to the \"rolesnames\" list, in roles it\u0027s still named \"influxdb\"",
+      "revId": "626e4fdcf115a99b06c06a3c9fb86af3814153f7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
