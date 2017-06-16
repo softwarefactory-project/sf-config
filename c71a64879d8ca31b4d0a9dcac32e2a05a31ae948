@@ -16,6 +16,24 @@
       "revId": "c71a64879d8ca31b4d0a9dcac32e2a05a31ae948",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_e520f0f9",
+        "filename": "ansible/roles/sf-zuul/templates/sysconfig.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-06-16T14:26:57Z",
+      "side": 0,
+      "message": "we discuss about that point on irc, it\u0027s an udp service",
+      "parentUuid": "baa041b7_05ccf487",
+      "revId": "c71a64879d8ca31b4d0a9dcac32e2a05a31ae948",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
