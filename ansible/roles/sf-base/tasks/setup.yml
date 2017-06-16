@@ -2,7 +2,7 @@
 - name: "sf: create basic directories"
   file: path={{ item }} state=directory mode=0755
   with_items:
-    - /var/lib/software-factory
+    - /var/lib/software-factory/state
     - /etc/software-factory
     - /usr/share/software-factory
     - /usr/libexec/software-factory

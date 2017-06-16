@@ -1,8 +1,8 @@
 ---
-- file: path=/var/lib/software-factory/nodepool_config state=touch
+- file: path=/var/lib/software-factory/state/nodepool_config state=touch
 
 - name: Check last applied Nodepool config checksum
-  command: cat /var/lib/software-factory/nodepool_config
+  command: cat /var/lib/software-factory/state/nodepool_config
   register: localconfig
 
 - name: Check new Nodepool config checksum
@@ -31,5 +31,5 @@
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Write config repo checksum matching current configuration
-  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/nodepool_config
+  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/state/nodepool_config
   when: localconfig.stdout != upstreamconfig.stdout
