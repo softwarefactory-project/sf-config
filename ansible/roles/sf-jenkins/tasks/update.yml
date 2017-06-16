@@ -1,8 +1,8 @@
 ---
-- file: path=/var/lib/software-factory/jenkins_config state=touch
+- file: path=/var/lib/software-factory/state/jenkins_config state=touch
 
 - name: Check local config
-  command: cat /var/lib/software-factory/jenkins_config
+  command: cat /var/lib/software-factory/state/jenkins_config
   register: localconfig
 
 - name: Check upstream config
@@ -17,5 +17,5 @@
     - jenkins-jobs -l debug --ignore-cache update --delete-old jobs/
 
 - name: Write config repo sha1 matching current configuration
-  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/jenkins_config
+  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/state/jenkins_config
   when: localconfig.stdout != upstreamconfig.stdout
