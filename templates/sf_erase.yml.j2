@@ -47,5 +47,11 @@
 - hosts: all
   tasks:
     - file:
-        path: /var/lib/software-factory
+        path: "{{'{{'}} item {{'}}'}}"
         state: absent
+      with_items:
+        - /var/lib/software-factory/ansible
+	- /var/lib/software-factory/sql
+	- /var/lib/software-factory/state
+	- /var/lib/software-factory/.version
+	- /var/lib/software-factory/bootstrap-data/secrets.yaml
