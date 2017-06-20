@@ -77,6 +77,9 @@ services = [
 {% if 'nodepool' in roles %}
     'SFNodepool',
 {% endif %}
+{% if 'zuul' in roles %}
+    'SFZuul',
+{% endif %}
 ]
 
 mysql = {
@@ -118,6 +121,12 @@ gerrit = {
     'db_user': '{{ gerrit_mysql_user }}',
     'db_password': '{{ gerrit_mysql_password }}'
 }
+{% endif %}
+
+{% if 'zuul' in roles %}
+zuul = {
+    'dburi': 'mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}',
+    'status_url': 'http://zuul-server.{{ fqdn }}:8084/status.json',
 {% endif %}
 
 {% if 'jenkins' in roles %}
