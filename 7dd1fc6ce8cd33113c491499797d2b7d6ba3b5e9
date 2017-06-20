@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_5f3e6bb9",
+        "filename": "ansible/roles/sf-gateway/tasks/update.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-20T04:21:54Z",
+      "side": 1,
+      "message": "I think you can avoid the delegate_to and use \"mode: pull, src: rsync://{{ pages_hostname }}/path/\"",
+      "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_9f5bd32e",
+        "filename": "ansible/roles/sf-gateway/tasks/update.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-20T04:21:54Z",
+      "side": 1,
+      "message": "I worry we are already hitting limit with virtual host name. Can you please create a pages_hostname group vars in sfconfig.py using get_hostname(\"pages\") and use that instead. Like that this will resolve to the original hostname directly.",
+      "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_3f4ba75b",
+        "filename": "ansible/roles/sf-zuul/tasks/update.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-20T04:21:54Z",
+      "side": 1,
+      "message": "Same here, mode: pull and src: rsync://{{ pages_hostname }}",
+      "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_1f48e35a",
+        "filename": "ansible/roles/sf-zuul/tasks/update.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-20T04:21:54Z",
+      "side": 1,
+      "message": "I think you need or (\u0027pages\u0027 in roles and pagesconfig|changed)",
+      "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
