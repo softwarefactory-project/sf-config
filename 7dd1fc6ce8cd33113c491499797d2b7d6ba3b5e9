@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_9f163354",
+        "filename": "ansible/roles/sf-gateway/tasks/update.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-20T14:59:37Z",
+      "side": 1,
+      "message": "I\u0027m not sure to understand. It tell to use the rsync protocol but no rsync server is listening there. Anyway trying does not work :\n\n...  \\\"rsync://managesf.sftests.com/var/lib/pagesuser/zuul_pages.yaml\\\" \\\"/etc/zuul/_pages.yaml\\\"\", \"failed\": true, \"msg\": \"rsync: failed to connect to managesf.sftests.com (192.168.77.9): Connection refused (111)\\nrsync error: error in socket IO (code 10) at clientserver.c(122) ...\n\nI think the delegate_to is fine ?",
+      "parentUuid": "9aa53dc9_5f3e6bb9",
+      "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_9f5bd32e",
         "filename": "ansible/roles/sf-gateway/tasks/update.yml",
         "patchSetId": 20
@@ -30,6 +48,24 @@
       "writtenOn": "2017-06-20T04:21:54Z",
       "side": 1,
       "message": "I worry we are already hitting limit with virtual host name. Can you please create a pages_hostname group vars in sfconfig.py using get_hostname(\"pages\") and use that instead. Like that this will resolve to the original hostname directly.",
+      "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_df1cbb79",
+        "filename": "ansible/roles/sf-gateway/tasks/update.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-20T14:59:37Z",
+      "side": 1,
+      "message": "I don\u0027t know about that limit. The was delegate_to: pages always fails because pages was not in the known_hosts file of /root/. But ok I already had this pages_host var create in sfconfig.py so using it is ok.",
+      "parentUuid": "9aa53dc9_9f5bd32e",
       "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_ff177f52",
+        "filename": "ansible/roles/sf-zuul/tasks/update.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-20T14:59:37Z",
+      "side": 1,
+      "message": "Ditto",
+      "parentUuid": "9aa53dc9_3f4ba75b",
+      "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_1f48e35a",
         "filename": "ansible/roles/sf-zuul/tasks/update.yml",
         "patchSetId": 20
@@ -64,6 +118,24 @@
       "writtenOn": "2017-06-20T04:21:54Z",
       "side": 1,
       "message": "I think you need or (\u0027pages\u0027 in roles and pagesconfig|changed)",
+      "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_3f2f27a3",
+        "filename": "ansible/roles/sf-zuul/tasks/update.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-20T14:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_1f48e35a",
       "revId": "7dd1fc6ce8cd33113c491499797d2b7d6ba3b5e9",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
