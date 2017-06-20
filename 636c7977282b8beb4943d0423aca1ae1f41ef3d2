@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_7f25afc0",
+        "filename": "ansible/roles/sf-managesf/templates/config.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-20T14:53:39Z",
+      "side": 1,
+      "message": "You can use \u0027status_url\u0027: \u0027{{ zuul_internal_url }}/status.json\u0027 instead.",
+      "revId": "636c7977282b8beb4943d0423aca1ae1f41ef3d2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
