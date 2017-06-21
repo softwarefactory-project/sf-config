@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_0279acfc",
+        "filename": "ansible/roles/sf-gateway/templates/topmenu.html.j2",
+        "patchSetId": 20
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T08:38:35Z",
+      "side": 1,
+      "message": "I thought about the right side of the top menu. Because I see it as a quite different services than gerrit, jenkins, storyboard, ... It make more sense to my to be on the right of that topmenu.",
+      "revId": "e852353344053cc7bc03c2218373a6e66da15d31",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
