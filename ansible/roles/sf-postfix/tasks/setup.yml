@@ -19,7 +19,7 @@
       content: "{{ ansible_fqdn }}"
       owner: root
       group: root
-      mode: 0640
+      mode: 0644
 
 - name: Ensure directories exist
   file:
