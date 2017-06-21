@@ -1,0 +1,365 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_62ff5835",
+        "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "Create nodepool log directory",
+      "range": {
+        "startLine": 32,
+        "startChar": 15,
+        "endLine": 32,
+        "endChar": 20
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_a2ec4090",
+        "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "Reload http on the nodepool-builder node",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 39,
+        "endChar": 56
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_a2a3204f",
+        "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "You managed to avoid collision with the current nodepool implementation by naming some files and directories with the \u00273\u0027 suffix but some others like /etc/nodepool or /var/log/nodepool keep the same path. What the policy ? Zuul/Nodepool and Zuul3/Nodepool3 can cohabit but on separated node ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 45,
+        "endLine": 2,
+        "endChar": 61
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_a2ba006d",
+        "filename": "ansible/roles/sf-zuul3/defaults/main.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "Ok :) SCL powa ! Is it a convention you follow about the naming or could we have zuul3-scheduler, zuul3-merger, zuul3-executor ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 29
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_82b01c8d",
+        "filename": "ansible/roles/sf-zuul3/templates/zuul.site.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "{{ zuul3_lib_dir }}",
+      "range": {
+        "startLine": 15,
+        "startChar": 26,
+        "endLine": 15,
+        "endChar": 39
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_62ad1831",
+        "filename": "ansible/roles/sf-zuul3/templates/zuul.site.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "zuul3",
+      "range": {
+        "startLine": 21,
+        "startChar": 22,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_42aa141b",
+        "filename": "ansible/roles/sf-zuul3/templates/zuul.site.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "{{ zuul3_lib_dir }}",
+      "range": {
+        "startLine": 25,
+        "startChar": 56,
+        "endLine": 25,
+        "endChar": 70
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_22a71051",
+        "filename": "ansible/roles/sf-zuul3/templates/zuul.site.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 26,
+        "startChar": 65,
+        "endLine": 26,
+        "endChar": 78
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_0263ec1b",
+        "filename": "ansible/tasks/create_config-repo.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": ":)",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_e267e823",
+        "filename": "ansible/tasks/create_zuul-jobs.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "Could we take the opportunity to move it in /var/lib/software-factory/system-repos/ ?",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 1,
+        "endChar": 19
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_8277fcd3",
+        "filename": "ansible/tasks/create_zuul-jobs.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "maybe by using the get_url module and registering the yaml will be more the ansible way ?",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_6274f8ce",
+        "filename": "ansible/tasks/create_zuul-jobs.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "Create zuul-jobs repository",
+      "range": {
+        "startLine": 18,
+        "startChar": 23,
+        "endLine": 18,
+        "endChar": 36
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_4281f48e",
+        "filename": "ansible/tasks/create_zuul-jobs.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "zuul-jobs",
+      "range": {
+        "startLine": 38,
+        "startChar": 31,
+        "endLine": 38,
+        "endChar": 40
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_227ef0ae",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "Wonderful ! That\u0027s going to be reuse by the github-bridge !",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_024acc83",
+        "filename": "refarch/dual-zuul.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "Ok so that the confirmation both can\u0027t cohabit on the same node. That\u0027s ok.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 25
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_e24ec895",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": ":) Even clearer here :p",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_c243c46b",
+        "filename": "zuul-jobs/playbooks/base/post.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-21T11:16:09Z",
+      "side": 1,
+      "message": "Ok that\u0027s a custom SF \u0027publisher\u0027 for zuul3. Could you use synchronize and the logserver hostname instead of the direct rsync command ?",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
