@@ -1,0 +1,5 @@
+---
+features:
+  - Add new Software Factory service called SF pages.
+    Raw or Pelican WEB contents can be easily published
+    on a Software Factory host using a CI/CD workflow.
