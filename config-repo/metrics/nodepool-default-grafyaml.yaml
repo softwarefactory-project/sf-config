@@ -1,0 +1,159 @@
+dashboard:
+  title: 'Nodepool'
+  rows:
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - measurement: nodepool_provider_default_nodes_building
+              query: SELECT mean("value") FROM "nodepool_provider_default_nodes_building" WHERE $timeFilter GROUP BY time($__interval) fill(null)
+              rawQuery: true
+          type: singlestat
+          valueName: current
+        - title: Ready
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - measurement: nodepool_provider_default_nodes_ready
+              query: SELECT mean("value") FROM "nodepool_provider_default_nodes_ready" WHERE $timeFilter GROUP BY time($__interval) fill(null)
+              rawQuery: true
+          type: singlestat
+          valueName: current
+        - title: In Use
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - measurement: nodepool_provider_default_nodes_used
+              query: SELECT mean("value") FROM "nodepool_provider_default_nodes_used" WHERE $timeFilter GROUP BY time($__interval) fill(null)
+              rawQuery: true
+          type: singlestat
+          valueName: current
+        - title: Deleting
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - measurement: nodepool_provider_default_nodes_delete
+              query: SELECT mean("value") FROM "nodepool_provider_default_nodes_delete" WHERE $timeFilter GROUP BY time($__interval) fill(null)
+              rawQuery: true
+          type: singlestat
+          valueName: current
+    - title: API Operations
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Create Server
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - measurement: nodepool_task_default_ServerCreate
+              query: SELECT mean("mean") FROM "nodepool_task_default_ServerCreate" WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval)
+              rawQuery: true
+        - title: Get Server
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - measurement: nodepool_task_default_ServerDelete
+              query: SELECT mean("mean") FROM "nodepool_task_default_ServerDelete" WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval)
+              rawQuery: true
+        - title: Delete Server
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - measurement: nodepool_task_default_ServerGet
+              query: SELECT mean("mean") FROM "nodepool_task_default_ServerGet" WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval)
+              rawQuery: true
+        - title: List Servers
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - measurement: nodepool_task_default_ServerList
+              query: SELECT mean("mean") FROM "nodepool_task_default_ServerList" WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval)
+              rawQuery: true
+#    - title: Node Launches
+#      showTitle: true
+#      height: 250px
+#      panels:
+#        - title: Ready Node Launch Attempts
+#          type: graph
+#          span: 4
+#          leftYAxisLabel: "events / min"
+#          targets:
+#            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.default.ready, '1m'), 'BHS1')
+#        - title: Error Node Launch Attempts
+#          type: graph
+#          span: 4
+#          leftYAxisLabel: "events / min"
+#          targets:
+#            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.default.error.*), '1m'), 'BHS1')
+#        - title: Time to Ready
+#          type: graph
+#          span: 4
+#          leftYAxisLabel: "time"
+#          y_formats:
+#            - s
+#            - none
+#          targets:
+#            - target: alias(scale(stats.timers.nodepool.launch.provider.default.ready.mean, '0.001'), 'BHS1')
+#        - title: Test Nodes (BHS1)
+#          type: graph
+#          span: 4
+#          stack: true
+#          leftYAxisLabel: "nodes"
+#          targets:
+#            - target: alias(stats.gauges.nodepool.provider.default.nodes.building, 'Building')
+#            - target: alias(stats.gauges.nodepool.provider.default.nodes.ready, 'Available')
+#            - target: alias(stats.gauges.nodepool.provider.default.nodes.used, 'In Use')
+#            - target: alias(stats.gauges.nodepool.provider.default.nodes.delete, 'Deleting')
+#            - target: alias(stats.gauges.nodepool.provider.default.max_servers, 'Max')
+#        - title: Test Nodes (GRA1)
+#          type: graph
+#          span: 4
+#          stack: true
+#          leftYAxisLabel: "nodes"
+#          targets:
+#            - target: alias(stats.gauges.nodepool.provider.ovh-gra1.nodes.building, 'Building')
+#            - target: alias(stats.gauges.nodepool.provider.ovh-gra1.nodes.ready, 'Available')
+#            - target: alias(stats.gauges.nodepool.provider.ovh-gra1.nodes.used, 'In Use')
+#            - target: alias(stats.gauges.nodepool.provider.ovh-gra1.nodes.delete, 'Deleting')
+#            - target: alias(stats.gauges.nodepool.provider.ovh-gra1.max_servers, 'Max')
+#    - title: Images
+#      showTitle: true
+#      height: 250px
+#      panels:
+#        - title: Image Uploads
+#          type: graph
+#          span: 4
+#          leftYAxisLabel: "time"
+#          y_formats:
+#            - s
+#            - none
+#          targets:
+#            - target: alias(scale(averageSeries(stats.timers.nodepool.image_update.*.default.mean), '0.001'), 'BHS1')
