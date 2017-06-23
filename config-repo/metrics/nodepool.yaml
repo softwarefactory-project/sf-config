@@ -1,0 +1,184 @@
+dashboard:
+  title: 'Nodepool'
+  rows:
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            # - target: sumSeries(stats.gauges.nodepool.provider.$provider-*.nodes.building)
+            - query: SELECT sum("value") FROM /^nodepool.provider.*.nodes.building/ WHERE $timeFilter GROUP BY time($__interval)
+              rawQuery: true
+          type: singlestat
+          valueName: current
+        - title: Ready
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            # - target: sumSeries(stats.gauges.nodepool.provider.$provider-*.nodes.ready)
+            - query: SELECT sum("value") FROM /^nodepool.provider.*.nodes.ready/ WHERE $timeFilter GROUP BY time($__interval)
+              rawQuery: true
+          type: singlestat
+          valueName: current
+        - title: In Use
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            # - target: sumSeries(stats.gauges.nodepool.provider.$provider-*.nodes.used)
+            - query: SELECT sum("value") FROM /^nodepool.provider.*.nodes.used/ WHERE $timeFilter GROUP BY time($__interval)
+              rawQuery: true
+          type: singlestat
+          valueName: current
+        - title: Deleting
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            # - target: sumSeries(stats.gauges.nodepool.provider.$provider-*.nodes.delete)
+            - query: SELECT sum("value") FROM /^nodepool.provider.*.nodes.delete/ WHERE $timeFilter GROUP BY time($__interval)
+              rawQuery: true
+          type: singlestat
+          valueName: current
+    - title: API Operations
+      showTitle: true
+      height: 250px
+      collapse: true
+      panels:
+        - title: Create Server
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            # - target: alias(scale(stats.timers.nodepool.task.$provider.ServerCreate.mean, '0.001'), 'BHS1')
+            - query: SELECT mean("mean")*0.001 FROM /^nodepool.task.*.ServerCreate/ WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval) fill(none)
+              rawQuery: true
+        - title: Get Server
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            # - target: alias(scale(stats.timers.nodepool.task.$provider.ServerGet.mean, '0.001'), 'BHS1')
+            - query: SELECT mean("mean")*0.001 FROM /^nodepool.task.*.ServerGet/ WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval) fill(none)
+              rawQuery: true
+        - title: Delete Server
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            # - target: alias(scale(stats.timers.nodepool.task.$provider.ServerDelete.mean, '0.001'), 'BHS1')
+            - query: SELECT mean("mean")*0.001 FROM /^nodepool.task.*.ServerDelete/ WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval) fill(none)
+              rawQuery: true
+        - title: List Servers
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            # - target: alias(scale(stats.timers.nodepool.task.$provider.ServerList.mean, '0.001'), 'BHS1')
+            - query: SELECT mean("mean")*0.001 FROM /^nodepool.task.*.ServerList/ WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval) fill(none)
+              rawQuery: true
+    - title: Node Launches
+      showTitle: true
+      collapse: true
+      height: 250px
+      panels:
+        - title: Test Nodes
+          type: graph
+          span: 6
+          stack: false
+          leftYAxisLabel: "nodes"
+          targets:
+            # - target: alias(stats.gauges.nodepool.provider.$provider.nodes.building, 'Building')
+            # - target: alias(stats.gauges.nodepool.provider.$provider.nodes.ready, 'Available')
+            # - target: alias(stats.gauges.nodepool.provider.$provider.nodes.used, 'In Use')
+            # - target: alias(stats.gauges.nodepool.provider.$provider.nodes.delete, 'Deleting')
+            # - target: alias(stats.gauges.nodepool.provider.$provider.max_servers, 'Max')
+            - query: SELECT last("value") FROM /^nodepool.provider.*.nodes.building/ WHERE $timeFilter GROUP BY time($__interval) fill(previous)
+              rawQuery: true
+              alias: 'Building'
+            - query: SELECT last("value") FROM /^nodepool.provider.*.nodes.ready/ WHERE $timeFilter GROUP BY time($__interval) fill(previous)
+              rawQuery: true
+              alias: 'Available'
+            - query: SELECT last("value") FROM /^nodepool.provider.*.nodes.used/ WHERE $timeFilter GROUP BY time($__interval) fill(previous)
+              rawQuery: true
+              alias: 'In Use'
+            - query: SELECT last("value") FROM /^nodepool.provider.*.nodes.delete/ WHERE $timeFilter GROUP BY time($__interval) fill(previous)
+              rawQuery: true
+              alias: 'Deleting'
+            - query: SELECT last("value") FROM /^nodepool.provider.*.max_servers/ WHERE $timeFilter GROUP BY time($__interval) fill(previous)
+              rawQuery: true
+              alias: 'Max'
+        - title: Ready Node Launch Attempts
+          type: graph
+          span: 6
+          leftYAxisLabel: "events / min"
+          targets:
+            # - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.$provider.ready, '1m'), 'BHS1')
+            - query: SELECT count("value") FROM /^nodepool.launch.provider.*.ready/ WHERE $timeFilter GROUP BY time(1m) fill(null)
+              rawQuery: true
+        - title: Time to Ready
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            #- target: alias(scale(stats.timers.nodepool.launch.provider.$provider.ready.mean, '0.001'), 'BHS1')
+            - query: SELECT mean("mean") * 0.001 FROM /^nodepool.launch.provider.*.ready/ WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval) fill(0)
+              rawQuery: true
+        - title: Error Node Launch Attempts
+          type: graph
+          span: 6
+          leftYAxisLabel: "events / min"
+          targets:
+            # - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.$provider.error.*), '1m'), 'BHS1')
+            - query: SELECT count("value") FROM /^nodepool.launch.provider.*.error*/ WHERE $timeFilter GROUP BY time(1m) fill(null)
+              rawQuery: true
+    - title: Images
+      showTitle: true
+      collapse: true
+      height: 250px
+      panels:
+        - title: Image Build
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - query: SELECT mean("mean") * 0.001 FROM /^nodepool_dib_image_build*/ WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval) fill(0)
+              rawQuery: true
+        - title: Image Uploads
+          type: graph
+          span: 6
+          leftYAxisLabel: time
+          y_formats:
+            - s
+            - none
+          targets:
+            # - target: alias(scale(averageSeries(stats.timers.nodepool.image_update.*.$provider.mean), '0.001'), 'BHS1')
+            - query: SELECT mean("mean") * 0.001 FROM /^nodepool_image_update_*/ WHERE "metric_type" = 'timing' AND $timeFilter GROUP BY time($__interval) fill(0)
+              rawQuery: true
