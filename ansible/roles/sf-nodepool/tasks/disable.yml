@@ -16,7 +16,6 @@
         - /var/www/nodepool-log
         - /var/lib/nodepool
         - /etc/nodepool
-        - /var/log/nodepool
 
     - name: Remove packages
       yum:

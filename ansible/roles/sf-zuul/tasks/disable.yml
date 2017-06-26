@@ -23,7 +23,6 @@
         - /etc/httpd/conf.d/zuul.conf
         - /var/lib/zuul
         - /etc/zuul
-        - /var/log/zuul
 
     - name: Remove packages
       yum:

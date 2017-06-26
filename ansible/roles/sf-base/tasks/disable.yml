@@ -4,7 +4,6 @@
         path: "{{ item }}"
         state: absent
       with_items:
-        - /var/log/software-factory
         - /var/lib/cauth
         - /var/lib/edeploy
         - /etc/pki/ca-trust/source/anchors/localCA.pem

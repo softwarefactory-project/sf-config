@@ -7,7 +7,6 @@
         - /etc/cauth
         - /etc/httpd/conf.d/cauth.site
         - /var/lib/cauth/keys/privkey.pem
-        - /var/log/cauth
 
     - name: Remove packages
       yum:

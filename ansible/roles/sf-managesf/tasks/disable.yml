@@ -14,7 +14,6 @@
         - /var/lib/managesf
         - /etc/managesf
         - /etc/httpd/managesf_htpasswd
-        - /var/log/managesf
 
     - name: Remove packages
       yum:
