@@ -333,6 +333,14 @@ def update_sfconfig(data):
         data['backup']['scp_backup_max_retention_secs'] = 864000
         dirty = True
 
+    # 2.6.0: expose elasticsearch HEAP size
+    if 'elasticsearch' not in data:
+        data['elasticsearch'] = {}
+        dirty = True
+    if 'heap_size' not in data['elasticsearch']:
+        data['elasticsearch']['heap_size'] = '512m'
+        dirty = True
+
     return dirty
 
 
@@ -701,6 +709,11 @@ DNS.1 = %s
 
     if "koji_host" in sfconfig["network"] and sfconfig["network"]["koji_host"]:
         glue["koji_host"] = sfconfig["network"]["koji_host"]
+
+    if "elasticsearch" in sfconfig:
+        if 'heap_size' in sfconfig['elasticsearch']:
+            hs = sfconfig['elasticsearch']['heap_size']
+            glue['elasticsearch_heap_size'] = hs
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
