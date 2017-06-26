@@ -348,6 +348,13 @@ def update_sfconfig(data):
                     del gerrit_connection['disabled']
                 data['zuul']['gerrit_connections'].append(gerrit_connection)
         del data["gerrit_connections"]
+
+    # 2.6.0: expose elasticsearch HEAP size
+    if 'elasticsearch' not in data:
+        data['elasticsearch'] = {}
+        dirty = True
+    if 'heap_size' not in data['elasticsearch']:
+        data['elasticsearch']['heap_size'] = '512m'
         dirty = True
 
     return dirty
@@ -744,6 +751,11 @@ DNS.1 = %s
     glue["zuul_default_log_site"] = zuul_config.get("default_log_site",
                                                     "sflogs")
     glue["zuul_extra_gerrits"] = zuul_config.get("gerrit_connections", [])
+
+    if "elasticsearch" in sfconfig:
+        if 'heap_size' in sfconfig['elasticsearch']:
+            hs = sfconfig['elasticsearch']['heap_size']
+            glue['elasticsearch_heap_size'] = hs
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
