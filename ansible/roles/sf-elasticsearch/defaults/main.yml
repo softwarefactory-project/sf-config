@@ -10,3 +10,4 @@ elasticsearch_repo_gpgkey: http://packages.elastic.co/GPG-KEY-elasticsearch
 elasticsearch_repo_gpgcheck: 1
 
 elasticsearch_heap_size: 512m
+elasticsearch_replicas: 0
