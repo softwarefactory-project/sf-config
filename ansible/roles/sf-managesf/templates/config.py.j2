@@ -61,7 +61,7 @@ logging = {
 
 # Authorization configurations
 auth = {
-    'host': 'auth.{{ fqdn }}',
+    'host': '{{ cauth_host }}',
 }
 
 services = [
@@ -84,7 +84,7 @@ mysql = {
 }
 
 managesf = {
-    'host': 'managesf.{{ fqdn }}',
+    'host': '{{ managesf_host }}',
     'sshkey_update_path': '/var/lib/managesf/.ssh/jenkins_rsa',
     'sshkey_priv_path': '/var/lib/managesf/.ssh/id_rsa',
     'backup_dir': '/var/lib/managesf/',
@@ -107,7 +107,7 @@ gerrit = {
     'user': 'gerrit',
     'admin_user': 'admin',
     'admin_password': '{{ authentication['admin_password'] }}',
-    'host': 'gerrit.{{ fqdn }}',
+    'host': '{{ gerrit_host }}',
     'url': '{{ gateway_url }}/',
     'top_domain': '{{ fqdn }}',
     'ssh_port': 29418,
@@ -122,7 +122,7 @@ gerrit = {
 
 {% if 'jenkins' in roles %}
 jenkins = {
-    'api_url': 'http://jenkins.{{ fqdn }}:8080/jenkins/',
+    'api_url': '{{ jenkins_internal_url }}',
     'user': 'jenkins',
     'password': '{{ jenkins_password }}'
 }
@@ -130,7 +130,7 @@ jenkins = {
 
 {% if 'nodepool' in roles %}
 nodepool = {
-    'host': 'nodepool.{{ fqdn }}',
+    'host': '{{ nodepool_launcher_host }}',
     'user': 'root',
     'key': '/var/lib/managesf/.ssh/id_rsa',
 }
@@ -139,7 +139,7 @@ nodepool = {
 {% if 'storyboard' in roles %}
 storyboard = {
     'base_url': '{{ gateway_url }}',
-    'url': 'http://storyboard.{{ fqdn }}:20000/v1/',
+    'url': '{{ storyboard_internal_url }}',
     'host': 'storyboard',
     'service_token': '{{ storyboard_service_token }}',
     'db_host': '{{ storyboard_mysql_host }}',
