@@ -533,6 +533,7 @@ DNS.1 = %s
 
     if "cauth" in arch["roles"]:
         get_or_generate_cauth_keys()
+        glue["cauth_host"] = get_hostname("cauth")
 
     if "gateway" in arch["roles"]:
         get_or_generate_localCA()
@@ -562,6 +563,7 @@ DNS.1 = %s
         }
 
     if "managesf" in arch["roles"]:
+        glue["managesf_host"] = get_hostname("managesf")
         glue["managesf_internal_url"] = "http://%s:%s" % (
             get_hostname("managesf"), defaults["managesf_port"])
         glue["managesf_mysql_host"] = get_hostname("mysql")
@@ -633,6 +635,9 @@ DNS.1 = %s
             'password': secrets['nodepool_mysql_password'],
         }
 
+    if "nodepool-launcher" in arch["roles"]:
+        glue["nodepool_launcher_host"] = get_hostname("nodepool-launcher")
+
     if "nodepool-builder" in arch["roles"]:
         glue["nodepool_builder_host"] = get_hostname("nodepool-builder")
 
@@ -689,6 +694,9 @@ DNS.1 = %s
 
     if "storyboard" in arch["roles"]:
         glue["storyboard_mysql_host"] = glue["mysql_host"]
+        glue["storyboard_host"] = get_hostname("storyboard")
+        glue["storyboard_internal_url"] = "http://%s:%s/v1/" % (
+            glue["storyboard_host"], defaults["storyboard_http_port"])
         glue["mysql_databases"]["storyboard"] = {
             'hosts': ["localhost", get_hostname("storyboard")],
             'user': 'storyboard',

@@ -6,6 +6,8 @@ role_actions:
 
 storyboard_service_token: "CHANGE_ME"
 
+storyboard_http_port: 20000
+
 storyboard_mysql_host: "mysql.example.com"
 storyboard_mysql_port: 3306
 storyboard_mysql_db: "storyboard"
