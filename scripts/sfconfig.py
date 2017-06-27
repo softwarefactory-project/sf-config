@@ -730,7 +730,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 name = "sf-%s" % service_name
                 # Replace meta role by real role
                 if name in host["rolesname"]:
-                    host["rolesname"].remove(name)
+                    host["rolesname"] = list(filter(
+                        lambda x: x != name, host["rolesname"]))
                     # Ensure base role is in rolesname list
                     if "sf-%s" % role_name not in host["rolesname"]:
                         host["rolesname"].append("sf-%s" % role_name)
