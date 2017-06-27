@@ -1,0 +1,11 @@
+---
+- name: "Setup hydrant config"
+  template: src=hydrant.yaml.j2 dest=/etc/hydrant/hydrant.yaml
+  notify: [restart hydrant]
+
+- name: Start service
+  systemd:
+      name: hydrant
+      state: started
+      daemon_reload: yes
+      enabled: yes
