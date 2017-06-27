@@ -333,7 +333,7 @@ def update_sfconfig(data):
         data['backup']['scp_backup_max_retention_secs'] = 864000
         dirty = True
 
-    # 2.6.0: expose elasticsearch HEAP size
+    # 2.6.0: expose elasticsearch config 
     if 'elasticsearch' not in data:
         data['elasticsearch'] = {}
         dirty = True
@@ -342,6 +342,14 @@ def update_sfconfig(data):
         dirty = True
     if 'replicas' not in data['elasticsearch']:
         data['elasticsearch']['replicas'] = 0
+        dirty = True
+
+    # 2.6.0: expose logstash config 
+    if 'logstash' not in data:
+        data['logstash'] = {}
+        dirty = True
+    if 'retention_days' not in data['logstash']:
+        data['logstash']['retention_days'] = 60
         dirty = True
 
     return dirty
@@ -720,6 +728,11 @@ DNS.1 = %s
         if 'replicas' in sfconfig['elasticsearch']:
             r = sfconfig['elasticsearch']['replicas']
             glue['elasticsearch_replicas'] = r
+
+    if "logstash" in sfconfig:
+        if 'retention_days' in sfconfig['logstash']:
+            rd = sfconfig['logstash']['retention_days']
+            glue['logstash_retention_days'] = rd
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))

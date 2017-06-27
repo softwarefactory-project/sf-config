@@ -1,0 +1,10 @@
+---
+client:
+  hosts:
+    - elasticsearch:9200
+  timeout: 30
+
+logging:
+  loglevel: INFO
+  logformat: default
+  blacklist: ['elasticsearch', 'urllib3']
