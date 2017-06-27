@@ -29,6 +29,12 @@
     insertafter: "^# network.host:"
     line: "network.host{{':'}} elasticsearch.{{ fqdn }}"
   register: listenaddr
+- name: Set Elasticsearch indexes replica count
+  lineinfile:
+    dest: /etc/elasticsearch/elasticsearch.yml
+    regexp: "^index.number_of_replicas{{':'}}.*$"
+    line: "index.number_of_replicas{{':'}} {{ elasticsearch_replicas }}"
+  register: replicas
 - name: Set Eleasticsearch JAVA HEAP Size
   lineinfile:
     dest: /etc/sysconfig/elasticsearch
@@ -40,4 +46,4 @@
     name: elasticsearch
     state: restarted
     enabled: yes
-  when: listenaddr|changed or heapsize|changed
+  when: listenaddr|changed or heapsize|changed or replicas|changed
