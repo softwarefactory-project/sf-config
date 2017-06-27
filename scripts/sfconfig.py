@@ -349,7 +349,7 @@ def update_sfconfig(data):
                 data['zuul']['gerrit_connections'].append(gerrit_connection)
         del data["gerrit_connections"]
 
-    # 2.6.0: expose elasticsearch HEAP size
+    # 2.6.0: expose elasticsearch config
     if 'elasticsearch' not in data:
         data['elasticsearch'] = {}
         dirty = True
@@ -358,6 +358,14 @@ def update_sfconfig(data):
         dirty = True
     if 'replicas' not in data['elasticsearch']:
         data['elasticsearch']['replicas'] = 0
+        dirty = True
+
+    # 2.6.0: expose logstash config
+    if 'logstash' not in data:
+        data['logstash'] = {}
+        dirty = True
+    if 'retention_days' not in data['logstash']:
+        data['logstash']['retention_days'] = 60
         dirty = True
 
     return dirty
@@ -677,6 +685,9 @@ DNS.1 = %s
             "path": "/var/www/logs",
         })
 
+    if "elasticsearch" in arch["roles"]:
+        glue["elasticsearch_host"] = get_hostname("elasticsearch")
+
     if "pages" in arch["roles"]:
         glue["pages_host"] = get_hostname("pages")
         glue["pages"] = {
@@ -762,6 +773,11 @@ DNS.1 = %s
         if 'replicas' in sfconfig['elasticsearch']:
             glue['elasticsearch_replicas'] = sfconfig[
                     'elasticsearch']['replicas']
+
+    if "logstash" in sfconfig:
+        if 'retention_days' in sfconfig['logstash']:
+            glue['logstash_retention_days'] = sfconfig[
+                    'logstash']['retention_days']
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
