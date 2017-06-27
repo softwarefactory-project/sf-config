@@ -17,6 +17,14 @@
     group: logstash
   when: logfile.stat.exists
 
+- template:
+    src: templates/curator.yml.j2
+    dest: /etc/logstash/curator.yml
+
+- template:
+    src: templates/delete_old_indices.yml.j2
+    dest: /etc/logstash/delete_old_indices.yml
+
 - name: "Enable logstash"
   service:
     name: logstash
@@ -28,3 +36,11 @@
     name: logstash
     state: restarted
   when: config|changed
+
+- name: "Setup delete old logstash indexes CRON"
+  cron:
+    name: "Delete old logstash indexes"
+    minute: 0
+    hour: 0
+    day: '*'
+    job: "/bin/curator --config /etc/logstash/curator.yml /etc/logstash/delete_old_indices.yml"
