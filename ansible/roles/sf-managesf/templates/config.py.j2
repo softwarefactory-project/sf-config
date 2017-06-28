@@ -120,6 +120,13 @@ gerrit = {
 }
 {% endif %}
 
+{% if 'zuul' in roles %}
+zuul = {
+    'dburi': 'mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}',
+    'status_url': '{{ zuul_internal_url }}/status.json',
+}
+{% endif %}
+
 {% if 'jenkins' in roles %}
 jenkins = {
     'api_url': '{{ jenkins_api_url }}',
@@ -160,4 +167,17 @@ htpasswd = {
 
 policy = {
     'policy_file': '/etc/managesf/policy.yaml',
+}
+
+# Activate API v2 here
+# list endpoints to implement, and services these endpoints must interact with
+
+api = {
+    'v2': {
+        'builds': [
+{% if 'zuul' in roles %}
+            'SFZuul',
+{% endif %}
+        ],
+    }
 }
