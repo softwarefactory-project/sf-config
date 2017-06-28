@@ -19,6 +19,8 @@ cron:
   check: '*/15 * * * *'
 
 targets:
+  - name: zuul
+    assign-via-gearman: True
   - name: default
 
 labels: []
