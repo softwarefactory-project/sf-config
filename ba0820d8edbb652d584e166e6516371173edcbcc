@@ -84,6 +84,23 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_28824a53",
+        "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T13:50:00Z",
+      "side": 1,
+      "message": "/etc/httpd/conf.modules.d/00-tkt.conf and\n/etc/httpd/conf.d/auth_pubtkt.conf prevents httpd to start",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_a2a3204f",
         "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
         "patchSetId": 11
@@ -160,6 +177,115 @@
       "side": 1,
       "message": "The package is still called zuul.spec, but the scl_prefix rename the output rpm with the scl name as prefix, e.g. rh-python35. This is to allow one package to be build with different scl, e.g. in the futur it will be rh-python36.",
       "parentUuid": "9aa53dc9_a2ba006d",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_88c15683",
+        "filename": "ansible/roles/sf-zuul3/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T13:50:00Z",
+      "side": 1,
+      "message": "It fails here /var/www/static is missing.",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_886f1692",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T13:50:00Z",
+      "side": 1,
+      "message": "systemctl reload rh-python35-zuul-scheduler does not work and the scheduler exit with. I guess the MAINPID targets the scl enable command. So this is the same for the executor.",
+      "range": {
+        "startLine": 19,
+        "startChar": 37,
+        "endLine": 19,
+        "endChar": 45
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_e840e209",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T13:50:00Z",
+      "side": 1,
+      "message": "rh-python35-zuul-scheduler",
+      "range": {
+        "startLine": 19,
+        "startChar": 16,
+        "endLine": 19,
+        "endChar": 30
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_c8451e18",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T13:50:00Z",
+      "side": 1,
+      "message": "rh-python35-zuul-executor",
+      "range": {
+        "startLine": 23,
+        "startChar": 16,
+        "endLine": 23,
+        "endChar": 29
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_a84bfa2a",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T13:50:00Z",
+      "side": 1,
+      "message": "rh-python35-zuul-merger",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 27
+      },
       "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
