@@ -142,6 +142,29 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_e80ea2e4",
+        "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-28T15:12:32Z",
+      "side": 1,
+      "message": "This file is missing on the second node.",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 61
+      },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_a2ba006d",
         "filename": "ansible/roles/sf-zuul3/defaults/main.yml",
         "patchSetId": 11
