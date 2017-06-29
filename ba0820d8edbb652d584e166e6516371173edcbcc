@@ -101,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_a83f7a24",
+        "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-29T04:02:14Z",
+      "side": 1,
+      "message": "I\u0027ve added mod_auth_pubtkt to base install",
+      "parentUuid": "9aa53dc9_28824a53",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_a2a3204f",
         "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
         "patchSetId": 11
@@ -165,6 +183,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_883cb630",
+        "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-29T04:02:14Z",
+      "side": 1,
+      "message": "I\u0027ve added sf-config to base install",
+      "parentUuid": "9aa53dc9_e80ea2e4",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_a2ba006d",
         "filename": "ansible/roles/sf-zuul3/defaults/main.yml",
         "patchSetId": 11
@@ -223,6 +259,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_684972d0",
+        "filename": "ansible/roles/sf-zuul3/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-29T04:02:14Z",
+      "side": 1,
+      "message": "I\u0027ve added sf-web-assets to the install",
+      "parentUuid": "9aa53dc9_88c15683",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_886f1692",
         "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
         "patchSetId": 11
@@ -269,6 +323,42 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_4846aec0",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-29T04:02:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_e840e209",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_88239605",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-29T04:02:14Z",
+      "side": 1,
+      "message": "Good catch! I modified the service file to use type\u003dforking and set correct pidfile locations in zuul.conf",
+      "parentUuid": "9aa53dc9_886f1692",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_c8451e18",
         "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
         "patchSetId": 11
@@ -292,6 +382,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_28124ab5",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-29T04:02:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_c8451e18",
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_a84bfa2a",
         "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
         "patchSetId": 11
@@ -309,6 +417,24 @@
         "endLine": 28,
         "endChar": 27
       },
+      "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_081786a4",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-06-29T04:02:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_a84bfa2a",
       "revId": "ba0820d8edbb652d584e166e6516371173edcbcc",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
