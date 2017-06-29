@@ -5,13 +5,13 @@ driver=gerrit
 server=localhost
 user=jenkins
 
-{% for conn in gerrit_connections %}{% if not conn.disabled|default(False) %}
+{% for conn in zuul_extra_gerrits|default([]) %}
 [connection {{ conn.name }}]
 driver=gerrit
 server=localhost
 user=jenkins
 
-{% endif %}{% endfor %}
+{% endfor %}
 
 [connection sqlreporter]
 driver=sql

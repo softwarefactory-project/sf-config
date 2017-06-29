@@ -333,6 +333,12 @@ def update_sfconfig(data):
         data['backup']['scp_backup_max_retention_secs'] = 864000
         dirty = True
 
+    # 2.6.0: move gerrit_connections to zuul section
+    if "gerrit_connections" in data:
+        data.get('zuul', {})["gerrit_connections"] = data["gerrit_connections"]
+        del data["gerrit_connections"]
+        dirty = True
+
     return dirty
 
 
@@ -730,6 +736,9 @@ DNS.1 = %s
                                glue["gateway_url"]
     if zuul_config.get('default_log_site'):
         glue["zuul_default_log_site"] = zuul_config.get('default_log_site')
+
+    if zuul_config.get("gerrit_connections"):
+        glue["zuul_extra_gerrits"] = zuul_config["gerrit_connections"]
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))

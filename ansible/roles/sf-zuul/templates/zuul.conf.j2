@@ -94,7 +94,7 @@ baseurl={{ gerrit_pub_url }}
 user=jenkins
 sshkey=/var/lib/zuul/.ssh/id_rsa
 
-{% for conn in gerrit_connections %}{% if "disabled" not in conn or not conn["disabled"] %}
+{% for conn in zuul_extra_gerrits|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gerrit
 server={{ conn['hostname'] }}
@@ -102,7 +102,7 @@ baseurl={{ conn['puburl'] }}
 user={{ conn['username'] }}
 sshkey=/var/lib/zuul/.ssh/id_rsa
 
-{% endif %}{% endfor %}
+{% endfor %}
 
 [connection smtp]
 driver=smtp
