@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    New options in sfconfig.yaml to configure external log servers.
