@@ -164,6 +164,23 @@ logs:
     # using a tempurl key
     swift_logsexport_send_tempurl_key: False
 
+zuul:
+  # Set external log server to be used in zuul-jobs scp publisher site
+  external_logservers: []
+  #  - name: logs.example.com
+  #    # host: logs.example.com  # host is optional, default to name when missing
+  #    user: loguser
+  #    path: /var/www/logs/sftests.com/
+
+  # Use external log server for console-log publisher
+  #  Default is 'logs' (hosted internally)
+  default_log_site: ""
+
+  # Set custom zuul log url, the url will be expaned using the build parameters
+  #  Default is: https://fqdn/logs/{build.parameters[LOG_PATH]}
+  log_url: ""
+
+
 gerritbot:
     disabled: True
     ircserver: irc.freenode.net
