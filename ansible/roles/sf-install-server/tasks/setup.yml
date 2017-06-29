@@ -23,6 +23,7 @@
       - {name: trigger_backup.sh}
       - {name: export_backup_swift.sh}
       - {name: export_backup_scp.sh}
+      - {name: export_backup_rsync.sh}
 
 - name: Install auto_backup.conf
   template:
@@ -40,40 +41,64 @@
   with_items:
       - {name: backup_gerrit, job: /usr/local/bin/trigger_backup.sh, hour: "1", minute: "0"}
 
-- name: Install crontab for Swift export nightly jobs
-  cron:
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    user: root
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-  with_items:
+- block:
+  - name: Install crontab for Swift export nightly jobs
+    cron:
+      name: "{{ item.name }}"
+      job: "{{ item.job }}"
+      user: root
+      hour: "{{ item.hour }}"
+      minute: "{{ item.minute }}"
+    with_items:
       - {name: auto_backup, job: /usr/local/bin/export_backup_swift.sh, hour: "5", minute: "0"}
-  when: backup_method == "swift"
-
-- name: Install crontab for scp export nightly jobs
-  cron:
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    user: root
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-  with_items:
-      - {name: auto_backup_scp, job: /usr/local/bin/export_backup_scp.sh, hour: "5", minute: "0"}
-  when: backup_method == "scp"
-
-- name: Disable Swift export nightly job if using scp
-  cron:
-    name: "{{ item.name }}"
-    state: absent
-  with_items:
+  - name: Disable other nightly export job if using Swift
+    cron:
+      name: "{{ item.name }}"
+      state: absent
+    with_items:
       - {name: auto_backup_scp}
+      - {name: auto_backup_rsync}
+
   when: backup_method == "swift"
 
-- name: Disable scp export nightly job if using Swift
-  cron:
-    name: "{{ item.name }}"
-    state: absent
-  with_items:
+- block:
+  - name: Install crontab for scp export nightly jobs
+    cron:
+      name: "{{ item.name }}"
+      job: "{{ item.job }}"
+      user: root
+      hour: "{{ item.hour }}"
+      minute: "{{ item.minute }}"
+    with_items:
+      - {name: auto_backup_scp, job: /usr/local/bin/export_backup_scp.sh, hour: "5", minute: "0"}
+  - name: Disable other nightly export job if using scp
+    cron:
+      name: "{{ item.name }}"
+      state: absent
+    with_items:
       - {name: auto_backup}
+      - {name: auto_backup_rsync}
+
   when: backup_method == "scp"
+
+- block:
+  - name: Install crontab for rsync export nightly jobs
+    cron:
+      name: "{{ item.name }}"
+      job: "{{ item.job }}"
+      user: root
+      hour: "{{ item.hour }}"
+      minute: "{{ item.minute }}"
+    with_items:
+      - {name: auto_backup_rsync, job: /usr/local/bin/export_backup_rsync.sh, hour: "5", minute: "0"}
+  - name: Disable other nightly export job if using rsync
+    cron:
+      name: "{{ item.name }}"
+      state: absent
+    with_items:
+      - {name: auto_backup}
+      - {name: auto_backup_scp}
+
+  when: backup_method == "rsync"
+
+

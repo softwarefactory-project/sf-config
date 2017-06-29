@@ -1,0 +1,3 @@
+---
+features:
+  - Two new backup export methods have been added SCP and RSYNC.
