@@ -333,6 +333,14 @@ def update_sfconfig(data):
         data['backup']['scp_backup_max_retention_secs'] = 864000
         dirty = True
 
+    if 'zuul' not in data:
+        data['zuul'] = {
+            'external_logservers': [],
+            'default_log_site': "sflogs",
+            'log_url': "",
+        }
+        dirty = True
+
     return dirty
 
 
@@ -413,6 +421,7 @@ def generate_role_vars(arch, sfconfig, args):
             'jobs_zmq_publishers': [],
             'loguser_authorized_keys': [],
             'pagesuser_authorized_keys': [],
+            'logservers': [],
     }
 
     def get_hostname(role):
@@ -643,12 +652,12 @@ DNS.1 = %s
 
     if "logserver" in arch["roles"]:
         glue["logserver_host"] = get_hostname("logserver")
-        glue["logservers"] = [{
-            "name": "logs",
+        glue["logservers"].append({
+            "name": "sflogs",
             "host": glue["logserver_host"],
             "user": "loguser",
             "path": "/var/www/logs",
-        }]
+        })
 
     if "pages" in arch["roles"]:
         glue["pages_host"] = get_hostname("pages")
@@ -710,6 +719,21 @@ DNS.1 = %s
 
     if "koji_host" in sfconfig["network"] and sfconfig["network"]["koji_host"]:
         glue["koji_host"] = sfconfig["network"]["koji_host"]
+
+    # Extra zuul settings
+    zuul_config = sfconfig.get("zuul", {})
+    for logserver in zuul_config.get("external_logserver", []):
+        server = {
+            "name": logserver["name"],
+            "host": logserver.get("host", logserver["name"]),
+            "user": logserver.get("user", "zuul"),
+            "path": logserver["path"],
+        }
+        glue["logservers"].append(server)
+    glue["zuul_log_url"] = zuul_config.get(
+        "log_url", "%s/logs/{build.parameters[LOG_PATH]}" % glue["gateway_url"])
+    glue["zuul_default_log_site"] = zuul_config.get("default_log_site",
+                                                    "sflogs")
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
