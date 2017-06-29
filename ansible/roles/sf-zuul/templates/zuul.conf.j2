@@ -14,7 +14,7 @@ state_dir=/var/lib/zuul
 status_url={{ zuul_pub_url }}
 job_name_in_report=true
 report_times=true
-url_pattern=https://{{ fqdn }}/logs/{build.parameters[LOG_PATH]}
+url_pattern={{ zuul_log_url }}
 
 [merger]
 git_dir=/var/lib/zuul/git

@@ -29,7 +29,7 @@
     name: console-log
     publishers:
       - scp:
-          site: 'logs'
+          site: '{{ zuul_default_log_site|default('logs') }}'
           files:
             - target: '$LOG_PATH'
               copy-console: true
@@ -39,7 +39,7 @@
     name: artifacts-dir
     publishers:
       - scp:
-          site: 'logs'
+          site: '{{ zuul_default_log_site|default('logs') }}'
           files:
             - target: '$LOG_PATH'
               source: 'artifacts/**'
