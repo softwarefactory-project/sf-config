@@ -16,6 +16,24 @@
       "revId": "069c05d9dd96dd8432390b8947652fb4b1cc70b1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_cb9d185b",
+        "filename": "ansible/roles/sf-install-server/files/export_backup_rsync.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-29T14:42:20Z",
+      "side": 1,
+      "message": "With the rsync method no. Data are synced to the remote location and nothing more. I think we can assume the remote location is protected and nobody other than granted will access it. And also for the scp export method I think that is superfluous.\n\nFor the retention mechanic I don\u0027t have a simple solution to do that with rsync. Maybe adding a file with the date on the remote location to let a witness when the sync is done. Then a custom script (not provided by SF) can snapshot the synced tree by creating an archive ?\n\nThe reason for the rsync method is to decrease the bandwidth needed to export the backup everyday and also we plan to add ElasticSearch data in the backup ...\n\nAlso the recovery can be really straightforward on the remote node where data are keep in synced:\n- The sf-release RPM packaged is installed on the node\n- The sf-config RPM is installed\n- Then sfconfig --recover-from-bdir",
+      "parentUuid": "9aa53dc9_0bbf80d1",
+      "revId": "069c05d9dd96dd8432390b8947652fb4b1cc70b1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
