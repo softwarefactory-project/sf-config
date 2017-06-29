@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_cb8758d6",
+        "filename": "ansible/roles/sf-gerrit/tasks/update.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-29T16:51:07Z",
+      "side": 1,
+      "message": "If we want it deactivates the replication when calling sfconfig with \"--disable-external-resources\" we shoud remove the localconfig vs upstreamconfig check. Also it seams safe to at least reload the replication plugin.",
+      "range": {
+        "startLine": 49,
+        "startChar": 31,
+        "endLine": 49,
+        "endChar": 78
+      },
+      "revId": "8fb25f00322ad068ee6e30b82259c23918f5e586",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
