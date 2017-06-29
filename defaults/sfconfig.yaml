@@ -95,15 +95,6 @@ authentication:
             name: name
             uid: sub
 
-
-gerrit_connections:
-    - name: "external_gerrit"
-      hostname: external-gerrit-hostname
-      puburl: https://external-gerrit-host-name/r/
-      username: external-gerrit-user-name
-      disabled: True
-
-
 theme:
     loginpage_custom_footer: ""
     # Right topmenu entry, next to the login/logout button
@@ -180,6 +171,12 @@ zuul:
   #  Default is: https://fqdn/logs/{build.parameters[LOG_PATH]}
   log_url: ""
 
+  # Set external gerrit connections to act as third party CI
+  gerrit_connections: []
+  #  - name: "external_gerrit"
+  #    hostname: external-gerrit-hostname
+  #    puburl: https://external-gerrit-host-name/r/
+  #    username: external-gerrit-user-name
 
 gerritbot:
     disabled: True
