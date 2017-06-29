@@ -8,7 +8,14 @@
 # Start mysql
 - hosts: mysql
   tasks:
-    - service: name=mariadb state=started
+    - yum:
+        name: "mariadb-server"
+        state: present
+        disablerepo: "{{ yum_disable_repo|default(omit) }}"
+        enablerepo: "{{ yum_enable_repo|default(omit) }}"
+    - service:
+        name: mariadb
+        state: started
 
 # Call restore task
 {% for host in inventory %}

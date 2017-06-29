@@ -893,12 +893,16 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
 
 
 def extract_backup(backup_file):
-    bdir = "/var/lib/software-factory/backup"
-    if os.path.isfile("%s/.recovered" % bdir):
-        return
+    bdir = '/var/lib/software-factory/backup'
     os.makedirs(bdir, 0o700)
     # Extract backup file
+    print "Extracting the archive %s in %s" %(backup_file, bdir)
     execute(["tar", "-xpf", backup_file, "-C", bdir])
+    print "Archive extracted"
+
+
+def bootstrap_backup():
+    bdir = '/var/lib/software-factory/backup'
     # Install sfconfig and arch in place
     shutil.copy("%s/install-server/etc/software-factory/sfconfig.yaml" % bdir,
                 "/etc/software-factory/sfconfig.yaml")
@@ -909,7 +913,7 @@ def extract_backup(backup_file):
     execute(["rsync", "-a",
              "%s/install-server/var/lib/software-factory/" % bdir,
              "/var/lib/software-factory/"])
-    open("%s/.recovered" % bdir, "w").close()
+    print "Bootstrap data prepared from the backup. Done."
 
 
 def usage():
@@ -934,6 +938,8 @@ def usage():
                    help="Do not execute Ansible playbook")
     # special actions
     p.add_argument("--recover", help="Deploy a backup file")
+    p.add_argument("--recover-from-bdir", action='store_true',
+                   help="Deploy from the default backup directory")
     p.add_argument("--disable", action='store_true', help="Turn off services")
     p.add_argument("--erase", action='store_true', help="Erase data")
     p.add_argument("--upgrade", action='store_true', help="Run upgrade task")
@@ -973,6 +979,10 @@ def main():
 
     if args.recover and os.path.isfile(args.recover):
         extract_backup(args.recover)
+        bootstrap_backup()
+
+    if args.recover_from_bdir:
+        bootstrap_backup()
 
     # Make sure the yaml files are updated
     sfconfig = yaml_load(args.sfconfig)
@@ -982,7 +992,8 @@ def main():
     if clean_arch(sfarch):
         save_file(sfarch, args.arch)
 
-    if args.recover and len(sfarch["inventory"]) > 1:
+    if ((args.recover or args.recover_from_bdir) and
+            len(sfarch["inventory"]) > 1):
         print("Make sure ip addresses in %s are correct" % args.arch)
         raw_input("Press enter to continue")
 
@@ -1009,7 +1020,7 @@ def main():
     if args.erase:
         return execute(["ansible-playbook",
                         "/var/lib/software-factory/ansible/sf_erase.yml"])
-    if not args.skip_apply and args.recover:
+    if not args.skip_apply and (args.recover or args.recover_from_bdir):
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_recover.yml"])
     if not args.skip_apply and args.upgrade:
