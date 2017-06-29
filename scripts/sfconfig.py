@@ -236,10 +236,6 @@ def update_sfconfig(data):
         del data['authentication']['launchpad']
         dirty = True
 
-    if 'gerrit_connections' not in data:
-        data['gerrit_connections'] = []
-        dirty = True
-
     if 'periodic_update' not in data['mirrors']:
         data['mirrors']['periodic_update'] = False
         dirty = True
@@ -339,6 +335,19 @@ def update_sfconfig(data):
             'default_log_site': "sflogs",
             'log_url': "",
         }
+        dirty = True
+
+    if 'gerrit_connections' not in data['zuul']:
+        data['zuul']['gerrit_connections'] = []
+        dirty = True
+
+    if "gerrit_connections" in data:
+        for gerrit_connection in data["gerrit_connections"]:
+            if not gerrit_connection["disabled"]:
+                if 'disabled' in gerrit_connection:
+                    del gerrit_connection['disabled']
+                data['zuul']['gerrit_connections'].append(gerrit_connection)
+        del data["gerrit_connections"]
         dirty = True
 
     return dirty
@@ -734,6 +743,7 @@ DNS.1 = %s
         "log_url", "%s/logs/{build.parameters[LOG_PATH]}" % glue["gateway_url"])
     glue["zuul_default_log_site"] = zuul_config.get("default_log_site",
                                                     "sflogs")
+    glue["zuul_extra_gerrits"] = zuul_config.get("gerrit_connections", [])
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
