@@ -1,8 +1,33 @@
 ---
-- name: "Install package"
+- name: "Install package for zuul-server"
   yum:
     name: "{{ item }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  with_items: "{{ zuul_packages }}"
+  with_items:
+    - httpd
+    - zuul-webui
+    - zuul-server
+  when: "'zuul-server' in zuul_services"
+
+- name: "Install package for zuul-merger"
+  yum:
+    name: "{{ item }}"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  with_items:
+    - httpd
+    - zuul-merger
+  when: "'zuul-merger' in zuul_services"
+
+- name: "Install package for zuul-launcher"
+  yum:
+    name: "{{ item }}"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  with_items:
+    - zuul-launcher
+  when: "'zuul-launcher' in zuul_services"

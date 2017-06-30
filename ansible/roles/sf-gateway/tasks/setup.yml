@@ -1,4 +1,6 @@
 ---
+- include: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
+
 - name: Remove un-needed files
   file:
       path: "{{ item }}"
