@@ -54,14 +54,6 @@
         content: '{{ {"roles": roles}| to_yaml }}'
       when: "'zuul-launcher' in zuul_services"
 
-# TODO: remove this when managesf job apiV2 is ready
-- name: Create /var/www/logs/results
-  file:
-    path: /var/www/logs/results
-    state: directory
-    owner: zuul
-    mode: 0755
-
 - block:
     - name: Create /var/www/zuul
       file:
