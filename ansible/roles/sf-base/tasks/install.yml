@@ -23,15 +23,16 @@
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
   with_items:
-    - cloud-init
-    - cloud-utils-growpart
     - git
     - monit
     - ntp
     - patch
     - postfix
+    - rsyslog
     - tmux
     - vim-enhanced
+    - sf-config
+    - libsemanage-python # Needed by seboolean module
 
 - name: Set permissive selinux
   lineinfile:
