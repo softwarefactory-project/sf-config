@@ -5,6 +5,7 @@
 [{{ role }}]
 {% for host in roles[role] %}
 {{ host['hostname'] }}{% if 'install-server' in host['roles'] %} ansible_connection=local{% endif %}
+
 {% endfor %}
 
 {% endfor %}

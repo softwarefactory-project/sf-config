@@ -51,6 +51,8 @@
 # Setup all components
 {% for host in inventory %}
 - hosts: {{ host['hostname'] }}
+  vars:
+    host_public_url: {{ host["public_url"] }}
   roles:
 {% for role in host['rolesname'] %}{% if role != 'sf-mysql' %}
     - name: "{{ role }}"

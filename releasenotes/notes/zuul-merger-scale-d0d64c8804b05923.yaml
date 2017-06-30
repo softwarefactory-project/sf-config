@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The zuul-merger role can now be deployed on multiple hosts. Additional hosts
+    need a public ip, or using the 'host_public_url' setting, a valid url.

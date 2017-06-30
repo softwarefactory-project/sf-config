@@ -18,9 +18,14 @@
   when: "ansible_selinux.status == 'enabled' and 'zuul-server' in zuul_services"
 
 - name: Setup apache site zuul.conf
-  template: src=zuul.site.j2 dest=/etc/httpd/conf.d/zuul.conf mode=0444
+  template: src=zuul-server.httpd.conf.j2 dest=/etc/httpd/conf.d/zuul.conf mode=0444
   notify: apache reload
-  when: "'zuul-server' in zuul_services or 'zuul-merger' in zuul_services"
+  when: "'zuul-server' in zuul_services"
+
+- name: Setup apache zuul-merger.conf
+  template: src=zuul-merger.httpd.conf.j2 dest=/etc/httpd/conf.d/zuul-merger.conf mode=0444
+  notify: apache reload
+  when: "'zuul-merger' in zuul_services"
 
 - block:
   - name: Create config-check directory

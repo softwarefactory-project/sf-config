@@ -14,6 +14,6 @@
 install-server ssh-rsa {{ hostvars[host['hostname']].ansible_ssh_host_key_rsa_public }}
 {% endif %}
 # Below are virtual hosts for each roles
-{% for role in host['roles'] %}
+{% for role in host['roles'] %}{% if role not in scalable_roles %}
 {{ role }}.{{ fqdn }} ssh-rsa {{ hostvars["%s.%s" % (host['name'], fqdn)].ansible_ssh_host_key_rsa_public }}
-{% endfor %}{% endfor %}
+{% endif %}{% endfor %}{% endfor %}
