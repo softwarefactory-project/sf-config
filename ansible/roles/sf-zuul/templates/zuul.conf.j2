@@ -28,6 +28,7 @@ append_hostname=true
 log_config=/etc/zuul/launcher-logging.conf
 jenkins_jobs=/etc/zuul/jobs/
 workspace_root=/var/lib/zuul/jobs/
+# TODO: remove this when managesf job apiV2 is ready
 results_dir=/var/www/logs/results/
 private_key_file=/var/lib/zuul/.ssh/id_rsa
 username=zuul
@@ -98,6 +99,7 @@ sshkey=/var/lib/zuul/.ssh/id_rsa
 [connection {{ conn['name'] }}]
 driver=gerrit
 server={{ conn['hostname'] }}
+port={{ conn['port']|default(29418) }}
 baseurl={{ conn['puburl'] }}
 user={{ conn['username'] }}
 sshkey=/var/lib/zuul/.ssh/id_rsa

@@ -740,6 +740,30 @@ DNS.1 = %s
     if zuul_config.get("gerrit_connections"):
         glue["zuul_extra_gerrits"] = zuul_config["gerrit_connections"]
 
+    # Zuul known hosts
+    glue["zuul_ssh_known_hosts"] = []
+    if "gerrit" in arch["roles"]:
+        glue["zuul_ssh_known_hosts"].append(
+            {
+                "host_packed": "[%s]:29418" % glue["gerrit_host"],
+                "host": glue["gerrit_host"],
+                "port": "29418",
+            }
+        )
+    for extra_gerrit in glue.get("zuul_extra_gerrits", []):
+        if extra_gerrit.get("port", 29418) == 22:
+            host_packed = extra_gerrit["hostname"]
+        else:
+            host_packed = "[%s]:%s" % (extra_gerrit["hostname"],
+                                       extra_gerrit.get("port", 29418))
+        glue["zuul_ssh_known_hosts"].append(
+            {
+                "host_packed": host_packed,
+                "host": extra_gerrit["hostname"],
+                "port": extra_gerrit.get("port", 29418)
+            }
+        )
+
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
     glue.update(secrets)
