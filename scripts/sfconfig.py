@@ -87,6 +87,14 @@ def load_refarch(filename, domain=None, install_server_ip=None):
         elif "ip" not in host:
             fail("%s: host '%s' needs an ip" % (filename, host["name"]))
 
+        if "public_url" not in host:
+            if "gateway" in host["roles"]:
+                host["public_url"] = "https://%s" % domain
+            else:
+                host["public_url"] = "http://%s" % host["ip"]
+        else:
+            host["public_url"] = host["public_url"].rstrip("/")
+
         host["hostname"] = "%s.%s" % (host["name"], arch["domain"])
         # aliases is a list of cname for this host.
         aliases = set((host['name'],))
@@ -98,9 +106,10 @@ def load_refarch(filename, domain=None, install_server_ip=None):
                 aliases.add(arch['domain'])
             elif role == "cauth":
                 aliases.add("auth.%s" % arch['domain'])
-            # Add role name virtual name (as cname)
-            aliases.add("%s.%s" % (role, arch["domain"]))
-            aliases.add(role)
+            elif role not in ("zuul", "zuul-merger", "zuul-launcher"):
+                # Add role name virtual name (as cname)
+                aliases.add("%s.%s" % (role, arch["domain"]))
+                aliases.add(role)
         arch["hosts_file"][host["ip"]] = [host["hostname"]] + list(aliases)
 
     # Check roles
@@ -616,10 +625,10 @@ DNS.1 = %s
             glue["zuul_offline_node_when_complete"] = False
         glue["zuul_pub_url"] = "%s/zuul/" % glue["gateway_url"]
         glue["zuul_internal_url"] = "http://%s:%s/" % (
-            get_hostname("zuul"), defaults["zuul_port"])
+            get_hostname("zuul-server"), defaults["zuul_port"])
         glue["zuul_mysql_host"] = glue["mysql_host"]
         glue["mysql_databases"]["zuul"] = {
-            'hosts': ["localhost", get_hostname("zuul")],
+            'hosts': ["localhost", get_hostname("zuul-server")],
             'user': 'zuul',
             'password': secrets['zuul_mysql_password'],
         }
@@ -637,7 +646,7 @@ DNS.1 = %s
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
         glue["nodepool_mysql_host"] = glue["mysql_host"]
         glue["mysql_databases"]["nodepool"] = {
-            'hosts': ["localhost", get_hostname("nodepool")],
+            'hosts': ["localhost", get_hostname("nodepool-launcher")],
             'user': 'nodepool',
             'password': secrets['nodepool_mysql_password'],
         }
