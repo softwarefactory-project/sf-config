@@ -40,9 +40,6 @@
 - name: Create /var/www/zuul
   file: path=/var/www/zuul state=directory
 
-- name: Create /var/www/logs/results
-  file: path=/var/www/logs/results state=directory owner=zuul mode=0755
-
 - name: Symlink zuul image
   file: src=/usr/share/javascript/zuul/images/ dest=/var/www/zuul/images state=link
 
