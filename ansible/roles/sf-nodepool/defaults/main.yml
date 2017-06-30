@@ -19,7 +19,6 @@ nodepool_packages:
   - nodepool
   - nodepool-launcher
   - nodepool-builder
-  - nodepool-elements
   - sf-elements
 
 nodepool_providers:
