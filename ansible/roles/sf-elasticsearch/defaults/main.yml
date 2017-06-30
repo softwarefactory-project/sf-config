@@ -3,6 +3,8 @@ role_actions:
   - install
   - setup
   - disable
+  - backup
+  - restore
 
 elasticsearch_repo_name: elasticsearch
 elasticsearch_repo_desc: Elasticsearch repository
