@@ -21,6 +21,7 @@
         state: absent
       with_items:
         - /etc/httpd/conf.d/zuul.conf
+        - /etc/httpd/conf.d/zuul-merger.conf
         - /var/lib/zuul
         - /etc/zuul
 
