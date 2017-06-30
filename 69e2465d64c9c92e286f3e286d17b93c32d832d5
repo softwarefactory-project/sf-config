@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_deb5d47e",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-30T16:57:20Z",
+      "side": 1,
+      "message": "I don\u0027t see support for disabling a connection in the zuul.conf.j2 template then you should del the key from gerrit_connection.",
+      "range": {
+        "startLine": 342,
+        "startChar": 43,
+        "endLine": 342,
+        "endChar": 59
+      },
+      "revId": "69e2465d64c9c92e286f3e286d17b93c32d832d5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
