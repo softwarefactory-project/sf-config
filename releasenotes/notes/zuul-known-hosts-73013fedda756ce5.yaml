@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The zuul ssh known_hosts file is now properly set with all gerrit sources
+    host keys, which simplify third-party-CI setup.
