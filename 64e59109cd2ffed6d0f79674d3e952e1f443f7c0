@@ -111,6 +111,30 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_fe1c1879",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:46:49Z",
+      "side": 1,
+      "message": "Er, stray double quotes:\n\n- name: Reload zuul-scheduler service\n  service:\n    name: rh-python35-zuul-scheduler\n    state: reloaded\n    enabled: yes\n  when:\n    - \u0027zuul-scheduler\u0027 in zuul3_services\n    - localconfig.stdout !\u003d upstreamconfig.stdout",
+      "parentUuid": "9aa53dc9_5e58a456",
+      "range": {
+        "startLine": 20,
+        "startChar": 8,
+        "endLine": 20,
+        "endChar": 92
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_3e55e01c",
         "filename": "ansible/tasks/create_config-repo.yml",
         "patchSetId": 14
