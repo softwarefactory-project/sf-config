@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_5efc243e",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-30T16:50:57Z",
+      "side": 1,
+      "message": "nit: sflogs",
+      "revId": "1d113e6c9318c0785db90946acb8f81d927b9742",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_3ef9604e",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-30T16:50:57Z",
+      "side": 1,
+      "message": "It make sense to set it to \u0027sflogs\u0027 here.",
+      "range": {
+        "startLine": 177,
+        "startChar": 21,
+        "endLine": 177,
+        "endChar": 22
+      },
+      "revId": "1d113e6c9318c0785db90946acb8f81d927b9742",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_fe99b820",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-30T16:50:57Z",
+      "side": 1,
+      "message": "Adding the new external_logservers section is missing.",
+      "revId": "1d113e6c9318c0785db90946acb8f81d927b9742",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_5e9304fb",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-06-30T16:50:57Z",
+      "side": 1,
+      "message": "Maybe set a default here too ?",
+      "revId": "1d113e6c9318c0785db90946acb8f81d927b9742",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
