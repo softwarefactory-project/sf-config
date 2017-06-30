@@ -98,6 +98,7 @@ sshkey=/var/lib/zuul/.ssh/id_rsa
 [connection {{ conn['name'] }}]
 driver=gerrit
 server={{ conn['hostname'] }}
+port={{ conn['port']|default(29418) }}
 baseurl={{ conn['puburl'] }}
 user={{ conn['username'] }}
 sshkey=/var/lib/zuul/.ssh/id_rsa
