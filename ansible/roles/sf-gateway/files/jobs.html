@@ -1,0 +1,97 @@
+<!--
+Copyright 2017 Red Hat
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jobs Dashboard</title>
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/js/angular.min.js"></script>
+    <script src="/static/js/topmenu.js"></script>
+    <script src="jobs.js"></script>
+</head>
+<body ng-app="zuulDashboard" ng-controller="mainController">
+  <div class="container-fluid">
+  <h1><a ng-click="ShowJobList()">Jobs dashboard</a></h1>
+  <div ng-if="jobsList" class="panel panel-primary">
+    <div class="panel-heading">Jobs list</div>
+    <div class="panel-body"><table class="table table-hover table-condensed">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Last success</th>
+            <th>Last failure</th>
+            <th>Last duration</th>
+            <th>Run count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="job in jobsList" ng-click="ShowJob(job)" ng-class="rowClassJobs(job)">
+            <td>{{ job.name }}</td>
+            <td>{{ job.last_success_date }}</td>
+            <td>{{ job.last_failure_date }}</td>
+            <td>{{ job.last_duration }} seconds</td>
+            <td>{{ job.exec_count }}</td>
+          </tr>
+        </tbody>
+    </table></div>
+  </div>
+  <div ng-if="jobInfo" class="panel panel-primary">
+    <div class="panel-heading">Job {{ jobInfo.name }}</div>
+    <div class="panel-body"><table class="table table-hover table-condensed">
+        <thead>
+          <tr>
+            <th width="20px">id</th>
+<!--             <th>Score</th> -->
+            <th>Pipeline</th>
+            <th>Project</th>
+            <th>Change</th>
+            <th>Log url</th>
+            <th>Node name</th>
+            <th>Duration</th>
+            <th>Start time</th>
+            <th>End time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="run in jobInfo.results" ng-class="rowClassRuns(run)">
+            <td>{{ run.id }}</td>
+<!--             <td>{{ run.score }}</td> -->
+            <td>{{ run.pipeline }}</td>
+            <td>{{ run.repository }}</td>
+            <td><a href="{{ run.change_url }}">{{ run.change_id }}</a></td>
+            <td><a href="{{ run.log_url }}">{{ run.log_url }}</a></td>
+            <td>{{ run.node_name }}</td>
+            <td>{{ run.duration }} seconds</td>
+            <td>{{ run.start_time }}</td>
+            <td>{{ run.end_time }}</td>
+          </tr>
+        </tbody>
+    </table></div>
+  </div>
+  <span ng-if="jobInfo">
+    <a ng-click="ShowJobList()">Return to jobs list</a>
+  </span>
+  <span style="float: right">
+    <label>Limit number of results</label>
+    <input ng-if="jobInfo" type="number" name="limit" min="50" ng-model="formdata.limit" ng-change="ShowJob(jobInfo)">
+    <input ng-if="jobsList" type="number" name="limit" min="50" ng-model="formdata.limit" ng-change="ShowJobList()">
+  </span>
+  </div>
+</body>
+</html>
