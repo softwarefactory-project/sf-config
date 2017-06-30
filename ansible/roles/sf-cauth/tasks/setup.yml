@@ -1,4 +1,6 @@
 ---
+- include: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
+
 - name: Hash admin password
   shell: python <<<"{{hash_code}}'{{authentication.admin_password}}'{{hash_code_end}}"
   register: admin_password_hashed

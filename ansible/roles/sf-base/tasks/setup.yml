@@ -8,8 +8,11 @@
     - /usr/libexec/software-factory
     - /usr/share/software-factory
 
-- name: "sf: create sql directory"
-  file: path=/var/lib/software-factory/sql state=directory mode=0700
+- name: "sf: create sf directory"
+  file: path={{ item }} state=directory mode=0700
+  with_items:
+    - /var/lib/software-factory/sql
+    - /var/log/software-factory
 
 - name: "system: disable DNS lookup in sshd"
   lineinfile:
@@ -27,9 +30,6 @@
   when:
     - ansible_virtualization_role != "guest"
     - ansible_selinux["mode"] != "permissive"
-
-- name: "sf: create log directory"
-  file: path=/var/log/software-factory state=directory mode=0700
 
 - name: "system: manage sysctl"
   sysctl:
@@ -104,30 +104,6 @@
 - name: "rsyslog: manage service"
   service: name=rsyslog state=restarted
   when: rsyslog_config|changed
-
-- name: "auth: ensure /var/lib/cauth/keys exists"
-  file:
-    path: "/var/lib/cauth/keys"
-    state: directory
-
-- name: "auth: install pubkey.pem"
-  copy:
-      content: "{{ cauth_pubkey }}"
-      dest: "/var/lib/cauth/keys/pubkey.pem"
-      mode: 0444
-      setype: httpd_sys_content_t
-
-- name: "auth: install tkt apache module configuration"
-  copy:
-      content: "LoadModule auth_pubtkt_module modules/mod_auth_pubtkt.so\n"
-      dest: /etc/httpd/conf.modules.d/00-tkt.conf
-      mode: 0444
-
-- name: "auth: install tkt apache pubtkt configuration"
-  copy:
-      content: "TKTAuthPublicKey /var/lib/cauth/keys/pubkey.pem\n"
-      dest: /etc/httpd/conf.d/auth_pubtkt.conf
-      mode: 0444
 
 - name: "Set ntp server"
   template: src=ntp.conf.j2 dest=/etc/ntp.conf
