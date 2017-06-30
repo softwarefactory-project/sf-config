@@ -175,6 +175,7 @@ zuul:
   gerrit_connections: []
   #  - name: "external_gerrit"
   #    hostname: external-gerrit-hostname
+  #    port: 29418
   #    puburl: https://external-gerrit-host-name/r/
   #    username: external-gerrit-user-name
 
