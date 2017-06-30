@@ -1,0 +1,279 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_de43946b",
+        "filename": "ansible/roles/sf-nodepool3/meta/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "Nit, this probably doesn\u0027t work with 1.9 and 2.1.x will be EOL\u0027d when Ansible 2.4 is out.",
+      "range": {
+        "startLine": 6,
+        "startChar": 23,
+        "endLine": 6,
+        "endChar": 26
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_be48d088",
+        "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "I don\u0027t have a strong opinion on this but after seeing it a few times it bothered me so I figured I would mention it. \n\nIdeally we should not be mixing syntax for improving readability.\n\nFor example, sometimes you use full YAML:\n\n    - name: Install os-client-config\n      template:\n        src: clouds.yaml.j2\n        dest: /var/lib/nodepool/.config/openstack/clouds.yaml\n        owner: nodepool\n        group: nodepool\n        mode: 0400\n\nAnd then right after you use a \"shortened\" ansible syntax, with an in-line value assignment:\n\n    # This:\n    - name: Ensure /root/.config/openstack exists\n      file: path\u003d/root/.config/openstack state\u003ddirectory\n\n    # Should read like this:\n    - name: Ensure /root/.config/openstack exists\n      file:\n        path: /root/.config/openstack\n        state: directory",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_9e5e2c44",
+        "filename": "ansible/roles/sf-zuul3/meta/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "Ditto",
+      "range": {
+        "startLine": 6,
+        "startChar": 23,
+        "endLine": 6,
+        "endChar": 26
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_7e5b6855",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "Why use with_items if there\u0027s only one element ?\n\nIf you\u0027re concerned about line width you can do (for example):\n\n- name: Update zuul main.yaml\n  command: \u003e\n    cp zuulv3/main.yaml \"{{ zuul3_conf_dir }}/main.yaml\"\n  args:\n    chdir: /root/config",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 58
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_5e58a456",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "Reloads and restarts should likely be written as handlers and notified so that they aren\u0027t needlessly reloaded.\n\nAlso, when using \"and\" conditionals, they can be written like this for improved readability (especially if you have more conditions):\n\n- name: Reload zuul-scheduler service\n  service:\n    name: rh-python35-zuul-scheduler\n    state: reloaded\n    enabled: yes\n  when:\n    - \"\u0027zuul-scheduler\u0027 in zuul3_services\n    - localconfig.stdout !\u003d upstreamconfig.stdout\"",
+      "range": {
+        "startLine": 20,
+        "startChar": 8,
+        "endLine": 20,
+        "endChar": 92
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_3e55e01c",
+        "filename": "ansible/tasks/create_config-repo.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "Good job on using the block but this feels like it should be part of another commit ?",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_1e31fc0b",
+        "filename": "scripts/create_project_resources.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "Doesn\u0027t look related to this commit ?",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_fe3538f7",
+        "filename": "scripts/sf-nodepool-conf-merger.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "Can nodepool v2 and v3 run side by side ? Should we import nodepool and then check nodepool.__version__ or something ?",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_de3a74e7",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "While \"internal\", can this occur over WAN if you scale out the infrastructure ? Should we remove the assumption that it is over http if it can be https ?",
+      "range": {
+        "startLine": 675,
+        "startChar": 38,
+        "endLine": 675,
+        "endChar": 51
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_be3fb0d5",
+        "filename": "zuul-jobs/playbooks/base/post.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "This probably wouldn\u0027t work ?",
+      "range": {
+        "startLine": 4,
+        "startChar": 78,
+        "endLine": 4,
+        "endChar": 95
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_9e250cc4",
+        "filename": "zuul-jobs/playbooks/tox/post.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "synchronize (although it was probably copied from upstream)",
+      "range": {
+        "startLine": 3,
+        "startChar": 36,
+        "endLine": 3,
+        "endChar": 48
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_7e2248bb",
+        "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "This probably needs to be updated",
+      "range": {
+        "startLine": 7,
+        "startChar": 25,
+        "endLine": 7,
+        "endChar": 36
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_5e2f84a1",
+        "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-06-30T20:41:32Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 8,
+        "startChar": 25,
+        "endLine": 8,
+        "endChar": 36
+      },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
