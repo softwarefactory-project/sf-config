@@ -15,6 +15,7 @@
     path: "{{ item }}"
     state: directory
   with_items:
+    - /var/www/jobs
     - /var/www/sf
     - /var/www/dashboard
     - /var/www/dashboards_data
@@ -50,7 +51,7 @@
 - name: Install config files
   copy:
     src: "{{ item.name }}"
-    dest: "{{ item.path }}/{{ item.name }}"
+    dest: "{{ item.path }}/{{ item.real_name|default(item.name) }}"
     mode: "{{ item.mode|default(0444) }}"
   with_items:
     - {name: base64helper, path: /usr/local/sbin, mode: '0755'}
@@ -61,6 +62,8 @@
     - {name: welcome.html, path: /var/www/sf}
     - {name: welcome.js, path: /var/www/sf}
     - {name: gerrit_dashboard.js, path: /var/www/static/js}
+    - {name: jobs.js, path: /var/www/jobs}
+    - {name: jobs.html, path: /var/www/jobs, real_name: index.html}
 
 - name: Install gerrit dashboard
   copy:

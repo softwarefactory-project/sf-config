@@ -22,13 +22,11 @@
             {% if 'gerrit' in roles %}
                 <li><a href="/r/" target="_top">Gerrit</a></li>
             {% endif %}
+                <li><a href="/jobs/" target="_top">Jobs</a></li>
             {% if 'jenkins' in roles %}
                 <li><a href="/jenkins/" target="_top">Jenkins</a></li>
             {% endif %}
                 <li><a href="/zuul/" target="_top">Zuul</a></li>
-            {% if 'zuul-launcher' in roles %}
-                <li><a href="/logs/results/" target="_top">Jobs</a></li>
-            {% endif %}
             {% if 'storyboard' in roles %}
                 <li><a href="/storyboard/" target="_top">Storyboard</a></li>
             {% endif %}

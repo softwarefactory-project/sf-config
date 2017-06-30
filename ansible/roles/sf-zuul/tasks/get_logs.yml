@@ -16,6 +16,6 @@
 - name: "Fetch zuul logs results"
   synchronize:
     mode: pull
-    src: "/var/www/logs/results"
+    src: "/var/www/logs/"
     dest: "{{ log_dest }}/results"
   ignore_errors: true
