@@ -22,6 +22,24 @@
       "revId": "69e2465d64c9c92e286f3e286d17b93c32d832d5",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_3e03a011",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-01T04:08:23Z",
+      "side": 1,
+      "message": "Good catch, I removed the key if present.",
+      "parentUuid": "9aa53dc9_deb5d47e",
+      "revId": "69e2465d64c9c92e286f3e286d17b93c32d832d5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
