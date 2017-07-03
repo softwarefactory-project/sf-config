@@ -28,8 +28,16 @@
     regexp: "^network.host{{':'}} elasticsearch.{{ fqdn }}"
     insertafter: "^# network.host:"
     line: "network.host{{':'}} elasticsearch.{{ fqdn }}"
+  register: listenaddr
+- name: Set Eleasticsearch JAVA HEAP Size
+  lineinfile:
+    dest: /etc/sysconfig/elasticsearch
+    regexp: "^.*ES_HEAP_SIZE=.*$"
+    line: "ES_HEAP_SIZE={{ elasticsearch_heap_size }}"
+  register: heapsize
 - name: Elasticsearch service started and enabled
   service:
     name: elasticsearch
-    state: started
+    state: restarted
     enabled: "yes"
+  when: listenaddr|changed or heapsize|changed
