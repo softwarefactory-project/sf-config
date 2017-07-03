@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_e1347d4b",
+        "filename": "defaults/arch.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T06:02:47Z",
+      "side": 0,
+      "message": "Do not remove this file",
+      "revId": "31f229eccf0e23f6e81dd4a19da159f6fb204eca",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

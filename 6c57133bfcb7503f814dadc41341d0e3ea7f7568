@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_212b85ed",
+        "filename": "ansible/roles/sf-cauth/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T06:02:47Z",
+      "side": 1,
+      "message": "extra line to be removed",
+      "revId": "6c57133bfcb7503f814dadc41341d0e3ea7f7568",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_01308155",
+        "filename": "ansible/roles/sf-gerritbot/tasks/get_logs.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T06:02:47Z",
+      "side": 1,
+      "message": "Missing empty lines between tasks",
+      "revId": "6c57133bfcb7503f814dadc41341d0e3ea7f7568",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
