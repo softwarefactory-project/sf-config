@@ -5,6 +5,10 @@
 
     RewriteMap base64helper "prg:/usr/local/sbin/base64helper"
 
+    <If "%{HTTP:Authorization} =~ m#^Basic (.*)$# && unbase64($1) =~ m#^.*:password$#">
+        RequestHeader unset Authorization
+    </If>
+
     # Disable caching of static files
     <LocationMatch "/static">
         CacheDisable on
