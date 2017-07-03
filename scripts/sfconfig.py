@@ -369,6 +369,9 @@ def update_sfconfig(data):
     if 'heap_size' not in data['elasticsearch']:
         data['elasticsearch']['heap_size'] = '512m'
         dirty = True
+    if 'replicas' not in data['elasticsearch']:
+        data['elasticsearch']['replicas'] = 0
+        dirty = True
 
     return dirty
 
@@ -793,6 +796,9 @@ DNS.1 = %s
         if 'heap_size' in sfconfig['elasticsearch']:
             glue['elasticsearch_heap_size'] = sfconfig[
                     'elasticsearch']['heap_size']
+        if 'replicas' in sfconfig['elasticsearch']:
+            glue['elasticsearch_replicas'] = sfconfig[
+                    'elasticsearch']['replicas']
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
