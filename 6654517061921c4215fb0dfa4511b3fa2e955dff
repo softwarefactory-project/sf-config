@@ -22,6 +22,24 @@
       "revId": "6654517061921c4215fb0dfa4511b3fa2e955dff",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_9c3754e3",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T11:10:19Z",
+      "side": 1,
+      "message": "Good catch!",
+      "parentUuid": "9aa53dc9_a15e7543",
+      "revId": "6654517061921c4215fb0dfa4511b3fa2e955dff",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
