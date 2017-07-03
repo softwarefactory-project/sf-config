@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_9c6514e3",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T11:27:31Z",
+      "side": 1,
+      "message": "Would be more simple to write:\nglue[\"elasticsearch_replicas\"] \u003d sfconfig[\"elasticsearch\"].get(\"replicas\", 0)",
+      "revId": "2cda7943c1a55d25a7a89e0649304bd3762f4518",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
