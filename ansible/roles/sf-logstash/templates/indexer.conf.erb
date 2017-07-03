@@ -12,7 +12,6 @@ input {
 output {
   elasticsearch {
     hosts => ['elasticsearch.{{ fqdn }}']
-    manage_template => false
     flush_size => 1024
   }
 }
