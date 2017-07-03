@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_7c0370b9",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-03T13:42:38Z",
+      "side": 1,
+      "message": "\\o/ LGTM let\u0027s try it on the prod tomorrow.",
+      "revId": "f412a2130572b7c03f655fe88f38fbafb7cc59fc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
