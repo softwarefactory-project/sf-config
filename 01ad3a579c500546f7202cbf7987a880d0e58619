@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_5c5f8c0e",
+        "filename": "ansible/roles/sf-logstash/files/curator.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T11:29:31Z",
+      "side": 1,
+      "message": "uses {{ elasticsearch_host }}:9200",
+      "revId": "01ad3a579c500546f7202cbf7987a880d0e58619",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_3c9ba8cb",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T11:29:31Z",
+      "side": 1,
+      "message": "Ditto: glue[\"logstash_retention_days\"] \u003d sfconfig[\"logstash\"].get(\"logstash_retention_days\", 60)",
+      "revId": "01ad3a579c500546f7202cbf7987a880d0e58619",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
