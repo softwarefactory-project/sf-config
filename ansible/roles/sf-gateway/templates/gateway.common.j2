@@ -73,6 +73,38 @@
         RewriteRule /r/gitweb.*$ /r/#/admin/projects/%1,branches [QSD,R,L,NE]
     </LocationMatch>
 
+    <LocationMatch "^/(api/.*|r/.*/git-receive-pack)$">
+        AuthType Basic
+        AuthName "Gerrit API"
+        AuthUserFile /etc/httpd/managesf_htpasswd
+        require valid-user
+
+        Order Allow,Deny
+        Allow from {{ fqdn }}
+
+        # Grant access based on password authentication or IP address
+        Satisfy any
+
+        # Helper to send a fake authorization header to Gerrit
+        RewriteCond %{REMOTE_USER} (.+)
+        RewriteRule .* - [E=B64:${base64helper:%{REMOTE_USER}},NE]
+        RequestHeader set Authorization "Basic %{B64}e"
+
+        # Requests from localhost get admin permission
+        RewriteCond %{REMOTE_HOST} ^.*.{{ fqdn }}$
+        RewriteRule .* - [E=B64:${base64helper:admin},NE]
+        RequestHeader set Authorization "Basic %{B64}e"
+    </LocationMatch>
+
+    # Gerrit API fake auth requires password to set at 'password'
+    # Don't give a chance to a user to change it
+    <LocationMatch "^/r/accounts/.*/password.http">
+      <limit PUT DELETE>
+        Order Allow,Deny
+        Allow from {{ fqdn }}
+      </limit>
+    </LocationMatch>
+
 {% endif %}
 {% if 'grafana' in roles %}
     <LocationMatch "^/grafana/">
@@ -233,40 +265,6 @@
         Allow from All
         Satisfy Any
     </Location>
-
-{% endif %}
-{% if 'gerrit' in roles %}
-    <LocationMatch "^/api">
-        AuthType Basic
-        AuthName "Gerrit API"
-        AuthUserFile /etc/httpd/managesf_htpasswd
-        require valid-user
-
-        Order Allow,Deny
-        Allow from {{ fqdn }}
-
-        # Grant access based on password authentication or IP address
-        Satisfy any
-
-        # Helper to send a fake authorization header to Gerrit
-        RewriteCond %{REMOTE_USER} (.+)
-        RewriteRule .* - [E=B64:${base64helper:%{REMOTE_USER}},NE]
-        RequestHeader set Authorization "Basic %{B64}e"
-
-        # Requests from localhost get admin permission
-        RewriteCond %{REMOTE_HOST} ^.*.{{ fqdn }}$
-        RewriteRule .* - [E=B64:${base64helper:admin},NE]
-        RequestHeader set Authorization "Basic %{B64}e"
-    </LocationMatch>
-
-    # Gerrit API fake auth requires password to set at 'password'
-    # Don't give a chance to a user to change it
-    <LocationMatch "^/r/accounts/.*/password.http">
-      <limit PUT DELETE>
-        Order Allow,Deny
-        Allow from {{ fqdn }}
-      </limit>
-    </LocationMatch>
 
 {% endif %}
 {% if authentication["authenticated_only"] %}
