@@ -1,10 +1,11 @@
+---
 - name: Disable service
   service:
     name: "{{ item }}"
     state: stopped
-    enabled: no
+    enabled: "no"
   with_items: "{{ nodepool_services }}"
-  ignore_errors: yes
+  ignore_errors: "yes"
 
 - block:
     - name: Remove files

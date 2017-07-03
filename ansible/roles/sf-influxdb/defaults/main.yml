@@ -1,3 +1,4 @@
+---
 role_actions:
   - disable
   - install
@@ -15,4 +16,4 @@ influxdb_repo_gpgkey: https://repos.influxdata.com/influxdb.key
 influxdb_repo_gpgcheck: 1
 
 service_name: influxdb
-use_letsencrypt: False
+use_letsencrypt: false

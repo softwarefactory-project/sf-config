@@ -11,5 +11,5 @@
       service:
         name: rsyncd
         state: stopped
-        enabled: no
+        enabled: "no"
   when: sf_previous_version == "2.5.0"

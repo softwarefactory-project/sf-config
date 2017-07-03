@@ -4,5 +4,5 @@
     mode: pull
     src: "/var/www/logs"
     dest: "{{ backup_dest }}/"
-    delete: yes
+    delete: "yes"
     rsync_opts: --relative

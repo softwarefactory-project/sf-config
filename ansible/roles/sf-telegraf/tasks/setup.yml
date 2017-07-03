@@ -20,8 +20,8 @@
     regexp: '  #? ?{{ item.name }} =.*'
     replace: '  {{ item.name }} = "{{ item.value }}"'
   with_items:
-      - {name: username, value: '{{ telegraf_influxdb_user }}'}
-      - {name: password, value: '{{ telegraf_influxdb_password }}'}
+    - {name: username, value: '{{ telegraf_influxdb_user }}'}
+    - {name: password, value: '{{ telegraf_influxdb_password }}'}
   notify: Restart telegraf
 
 - name: Configure inputs for network
@@ -40,6 +40,6 @@
 
 - name: Start service
   service:
-      name: telegraf
-      state: started
-      enabled: yes
+    name: telegraf
+    state: started
+    enabled: "yes"

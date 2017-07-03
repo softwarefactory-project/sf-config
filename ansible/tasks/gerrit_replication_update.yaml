@@ -6,7 +6,7 @@
 - name: Check if replication.config changed
   command: diff /root/config/gerrit/replication.config /etc/gerrit/replication.config
   register: diffstat
-  no_log: True
+  no_log: true
   when: rstat.stat.exists == True
   failed_when: diffstat.rc > 1
 - name: Update Gerrit replication.config

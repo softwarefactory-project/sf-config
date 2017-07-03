@@ -3,16 +3,23 @@
   include: "{{ sf_tasks_dir }}/create_user.yml user_name=loguser shell=/bin/sh"
 
 - name: Create logs directory
-  file: path=/var/www/logs state=directory owner=loguser group=apache mode=0755
+  file:
+    path: /var/www/logs
+    state: directory
+    owner: loguser
+    group: apache
+    mode: 0755
 
 - name: Authorize loguser sshkey
   authorized_key:
-      user: loguser
-      key: "{{ item }}"
+    user: loguser
+    key: "{{ item }}"
   with_items: "{{ loguser_authorized_keys }}"
 
 - name: Install httpd conf.d logserver
-  copy: src=logserver.conf dest=/etc/httpd/conf.d/logserver.conf
+  copy:
+    src: logserver.conf
+    dest: /etc/httpd/conf.d/logserver.conf
   register: httpd_conf
 
 - name: Install index header
@@ -21,11 +28,17 @@
     dest: /var/www/static/index-header.html
 
 - name: Reload httpd
-  service: name=httpd state=reloaded enabled=yes
+  service:
+    name: httpd
+    state: reloaded
+    enabled: "yes"
   when: httpd_conf|changed
 
 - name: Start services
-  service: name={{ item }} state=started enabled=yes
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: "yes"
   with_items:
     - sshd
     - httpd

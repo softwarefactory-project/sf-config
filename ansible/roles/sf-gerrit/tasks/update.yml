@@ -1,12 +1,16 @@
 ---
-- file: path=/var/lib/software-factory/state/gerrit_config state=touch
+- file:
+    path: /var/lib/software-factory/state/gerrit_config
+    state: touch
 
 - name: Check local config
   command: cat /var/lib/software-factory/state/gerrit_config
   register: localconfig
 
 - name: Check upstream config
-  command: chdir=/root/config git log --oneline gerrit/commentlinks.yaml
+  command: git log --oneline gerrit/commentlinks.yaml
+  args:
+    chdir: /root/config
   register: upstreamconfig
 
 - include_vars: /root/config/gerrit/commentlinks.yaml
@@ -21,9 +25,13 @@
     mode: 0644
 
 - name: Reload gerrit service
-  service: name=gerrit state=restarted
+  service:
+    name: gerrit
+    state: restarted
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Write config repo sha1 matching current configuration
-  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/state/gerrit_config
+  copy:
+    content: "{{ upstreamconfig.stdout }}"
+    dest: /var/lib/software-factory/state/gerrit_config
   when: localconfig.stdout != upstreamconfig.stdout

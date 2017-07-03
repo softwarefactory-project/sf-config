@@ -2,7 +2,10 @@
 - stat: path=/root/config
   register: config
 
-- git: repo=http://{{ fqdn }}/r/config dest=/root/config force=yes
+- git:
+    repo: "http://{{ fqdn }}/r/config"
+    dest: /root/config
+    force: "yes"
   when: config.stat.isdir is not defined
 
 - name: Get local config sha1
@@ -11,7 +14,9 @@
 
 - name: Update config repository
   when: localsha.stdout != hostvars["localhost"].configsha.stdout
-  command: chdir=/root/config {{ item }}
+  command: "{{ item }}"
+  args:
+    chdir: /root/config
   with_items:
     # The git config replaces the http address in remote.origin.url.
     - git config -f .git/config --replace-all remote.origin.url http://{{ fqdn }}/r/config

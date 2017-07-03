@@ -1,7 +1,7 @@
 %global         sum The Software Factory configuration sfconfig
 
 Name:           sf-config
-Version:        2.5.0
+Version:        2.6.0
 Release:        1%{?dist}
 Summary:        %{sum}
 
@@ -24,7 +24,8 @@ Requires:       python-jinja2
 
 %install
 # The sfconfig.py
-install -p -D -m 0755 scripts/sfconfig.py %{buildroot}%{_bindir}/sfconfig.py
+install -p -D -m 0755 scripts/sfconfig.py %{buildroot}%{_bindir}/sfconfig
+ln -s sfconfig %{buildroot}%{_bindir}/sfconfig.py
 # retro compat until 2.5.0 is released
 install -p -D -m 0755 scripts/yaml-merger.py %{buildroot}/usr/local/bin/yaml-merger.py
 # /etc/software-factory
@@ -39,11 +40,14 @@ mv ansible config-repo defaults refarch scripts templates %{buildroot}%{_dataroo
 
 %files
 /usr/local/bin/yaml-merger.py
-%{_bindir}/sfconfig.py
+%{_bindir}/sfconfig*
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
 %changelog
+* Mon Jul 03 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.6.0-1
+- Symlink sfconfig.py and sfconfig to support smooth transition
+
 * Fri Apr 14 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.5.0-1
 - Initial packaging

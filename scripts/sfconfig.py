@@ -407,12 +407,12 @@ def get_sf_version():
     except IOError:
         return "master"
 
+
 def get_previous_version():
     try:
         return open("/var/lib/software-factory/.version").read().strip()
     except IOError:
         return "2.5.0"
-
 
 
 def generate_role_vars(arch, sfconfig, args):
@@ -443,8 +443,7 @@ def generate_role_vars(arch, sfconfig, args):
             'jobs_zmq_publishers': [],
             'loguser_authorized_keys': [],
             'pagesuser_authorized_keys': [],
-            'logservers': [],
-    }
+            'logservers': []}
 
     def get_hostname(role):
         if len(arch["roles"][role]) != 1:
@@ -753,7 +752,8 @@ DNS.1 = %s
         }
         glue["logservers"].append(server)
     glue["zuul_log_url"] = zuul_config.get(
-        "log_url", "%s/logs/{build.parameters[LOG_PATH]}" % glue["gateway_url"])
+        "log_url",
+        "%s/logs/{build.parameters[LOG_PATH]}" % glue["gateway_url"])
     glue["zuul_default_log_site"] = zuul_config.get("default_log_site",
                                                     "sflogs")
     glue["zuul_extra_gerrits"] = zuul_config.get("gerrit_connections", [])
@@ -868,7 +868,8 @@ def extract_backup(backup_file):
     # Install sfconfig and arch in place
     shutil.copy("%s/install-server/etc/software-factory/sfconfig.yaml" % bdir,
                 "/etc/software-factory/sfconfig.yaml")
-    shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" % bdir,
+    shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" %
+                bdir,
                 "/etc/software-factory/arch.yaml")
     # Copy bootstrap data
     execute(["rsync", "-a",

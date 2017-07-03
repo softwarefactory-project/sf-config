@@ -1,3 +1,4 @@
+---
 # Config repository associated jobs
 - job:
     name: 'config-check'

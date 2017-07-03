@@ -8,18 +8,20 @@
 
 - name: "Check version installed"
   command: cat /var/www/etherpad-lite/.norpmversion
-  no_log: yes
-  ignore_errors: yes
+  no_log: "yes"
+  ignore_errors: "yes"
   register: etherpad_installed_version
 
 - block:
     - name: "Remove previous installation"
-      file: path=/var/www/etherpad-lite state=absent
+      file:
+        path: /var/www/etherpad-lite
+        state: absent
 
     - name: "Extract release"
       unarchive:
         src: "{{ etherpad_source_url }}"
-        remote_src: True
+        remote_src: true
         dest: "/var/www/"
 
     - name: "Rename directory"

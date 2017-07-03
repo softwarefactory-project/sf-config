@@ -1,3 +1,5 @@
 ---
 - name: restart ochlero
-  service: name=ochlero state=restarted
+  service:
+    name: ochlero
+    state: restarted
