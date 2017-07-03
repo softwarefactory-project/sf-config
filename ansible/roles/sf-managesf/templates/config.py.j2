@@ -108,7 +108,7 @@ gerrit = {
     'admin_user': 'admin',
     'admin_password': '{{ authentication['admin_password'] }}',
     'host': '{{ gerrit_host }}',
-    'url': '{{ gateway_url }}/',
+    'url': '{{ gerrit_internal_url }}',
     'top_domain': '{{ fqdn }}',
     'ssh_port': 29418,
     'sshkey_priv_path': '/var/lib/managesf/.ssh/gerrit_admin_rsa',
