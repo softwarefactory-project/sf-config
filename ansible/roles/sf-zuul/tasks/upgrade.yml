@@ -4,6 +4,6 @@
       service:
         name: zuul
         state: stopped
-        enabled: no
-      ignore_errors: yes
+        enabled: "no"
+      ignore_errors: "yes"
   when: sf_previous_version == "2.5.0"

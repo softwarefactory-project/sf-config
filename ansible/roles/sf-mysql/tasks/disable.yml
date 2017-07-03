@@ -2,9 +2,9 @@
 - name: Disable services
   service:
     name: mariadb
-    enabled: no
+    enabled: "no"
     state: stopped
-  ignore_errors: yes
+  ignore_errors: "yes"
 
 - block:
     - name: Remove mysql data

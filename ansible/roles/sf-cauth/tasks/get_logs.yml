@@ -1,9 +1,16 @@
 ---
 - name: "Fetch cauth logs"
-  synchronize: mode=pull src=/var/log/cauth/ dest="{{ log_dest }}/log"
-  ignore_errors: True
+  synchronize:
+    mode: pull
+    src: /var/log/cauth/
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
+
 - name: "Fetch cauth config"
-  synchronize: mode=pull src="/etc/cauth/{{ item }}" dest="{{ log_dest }}/{{ item }}"
+  synchronize:
+    mode: pull
+    src: "/etc/cauth/{{ item }}"
+    dest: "{{ log_dest }}/{{ item }}"
   with_items:
     - config.py
-  ignore_errors: True
+  ignore_errors: true

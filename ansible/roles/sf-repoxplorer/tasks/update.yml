@@ -1,5 +1,7 @@
 ---
-- file: path=/var/lib/software-factory/state/repoxplorer_config state=touch
+- file:
+    path: /var/lib/software-factory/state/repoxplorer_config
+    state: touch
 
 - name: "Check local repoxplorer config"
   command: cat /var/lib/software-factory/state/repoxplorer_config
@@ -22,5 +24,7 @@
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: "Write config repo sha1 matching current repoxplorer configuration"
-  copy: content="{{ upstreamconfig.stdout }}" dest=/var/lib/software-factory/state/repoxplorer_config
+  copy:
+    content: "{{ upstreamconfig.stdout }}"
+    dest: /var/lib/software-factory/state/repoxplorer_config
   when: localconfig.stdout != upstreamconfig.stdout

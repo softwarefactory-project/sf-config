@@ -1,10 +1,21 @@
 ---
 - name: "Fetch zuul logs"
-  synchronize: mode=pull src=/var/log/zuul/ dest="{{ log_dest }}/log"
-  ignore_errors: True
+  synchronize:
+    mode: pull
+    src: /var/log/zuul/
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
+
 - name: "Fetch zuul config"
-  synchronize: mode=pull src="/etc/zuul/" dest="{{ log_dest }}/etc"
-  ignore_errors: True
+  synchronize:
+    mode: pull
+    src: "/etc/zuul/"
+    dest: "{{ log_dest }}/etc"
+  ignore_errors: true
+
 - name: "Fetch zuul logs results"
-  synchronize: mode=pull src="/var/www/logs/results" dest="{{ log_dest }}/results"
-  ignore_errors: True
+  synchronize:
+    mode: pull
+    src: "/var/www/logs/results"
+    dest: "{{ log_dest }}/results"
+  ignore_errors: true

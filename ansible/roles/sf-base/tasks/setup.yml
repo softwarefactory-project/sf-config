@@ -1,6 +1,9 @@
 ---
 - name: "sf: create basic directories"
-  file: path={{ item }} state=directory mode=0755
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
   with_items:
     - /var/lib/software-factory/state
     - /etc/software-factory
@@ -9,7 +12,10 @@
     - /usr/share/software-factory
 
 - name: "sf: create sf directory"
-  file: path={{ item }} state=directory mode=0700
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0700
   with_items:
     - /var/lib/software-factory/sql
     - /var/log/software-factory
@@ -22,7 +28,10 @@
   register: sshd_config
 
 - name: "system: restart sshd"
-  service: name=sshd state=restarted enabled=yes
+  service:
+    name: sshd
+    state: restarted
+    enabled: "yes"
   when: sshd_config|changed
 
 - name: "system: setenforce 0"
@@ -53,32 +62,52 @@
   when: ansible_virtualization_role != "guest"
 
 - name: "system: make sure auditd is enabled"
-  systemd: name=auditd enabled=yes state=started
+  systemd:
+    name: auditd
+    enabled: "yes"
+    state: started
   when: ansible_virtualization_role != "guest"
 
 - name: "system: manage /etc/hosts"
-  template: src="{{ sf_templates_dir }}/etc-hosts.j2" dest=/etc/hosts mode=0644
+  template:
+    src: "{{ sf_templates_dir }}/etc-hosts.j2"
+    dest: /etc/hosts
+    mode: 0644
 
 - name: "system: install /usr/local/bin/resources.sh"
-  template: src=resources.sh.j2 dest=/usr/local/bin/resources.sh mode=0555
+  template:
+    src: resources.sh.j2
+    dest: /usr/local/bin/resources.sh
+    mode: 0555
 
 - name: "system: remove unused ip address if present"
-  known_hosts: name='[192.168.135.101]:29418' state=absent
+  known_hosts:
+    name: '[192.168.135.101]:29418'
+    state: absent
 
 - name: "system: remove unused localhost entry if present"
-  known_hosts: name='[localhost]:29418' state=absent
+  known_hosts:
+    name: '[localhost]:29418'
+    state: absent
 
 - name: "system: disable root password login"
-  user: name=root password="*"
+  user:
+    name: root
+    password: "*"
 
 - name: "system: remove requiretty from sudoers"
-  lineinfile: dest=/etc/sudoers state=absent regexp="^Defaults.*requiretty"
+  lineinfile:
+    dest: /etc/sudoers
+    state: absent
+    regexp: "^Defaults.*requiretty"
 
 - name: "system: set /etc/ssh/ssh_known_hosts for all inventory"
   template:
-    src=global_known_hosts.j2
-    dest=/etc/ssh/ssh_known_hosts
-    owner=root group=root mode=0644
+    src: global_known_hosts.j2
+    dest: /etc/ssh/ssh_known_hosts
+    owner: root
+    group: root
+    mode: 0644
 
 - name: "system: allow install-server to connect"
   authorized_key:
@@ -86,7 +115,10 @@
     key: "{{ service_rsa_pub }}"
 
 - name: "system: allow apache to connect database"
-  seboolean: name={{ item }} state=yes persistent=yes
+  seboolean:
+    name: "{{ item }}"
+    state: "yes"
+    persistent: "yes"
   when: ansible_selinux.status == "enabled"
   with_items:
     - httpd_can_network_connect
@@ -94,35 +126,44 @@
     - logging_syslogd_can_sendmail
 
 - name: "system: install wait4 scripts"
-  copy: src={{ item }} dest=/usr/libexec/{{ item }} mode=0555
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/libexec/{{ item }}"
+    mode: 0555
   with_items: [wait4port, wait4mariadb, wait4gerrit]
 
 - name: "rsyslog: configure ommail (mail output module)"
-  template: src=mail-ssh-login.j2 dest=/etc/rsyslog.d/mail-ssh-login.conf
+  template:
+    src: mail-ssh-login.j2
+    dest: /etc/rsyslog.d/mail-ssh-login.conf
   register: rsyslog_config
 
 - name: "rsyslog: manage service"
-  service: name=rsyslog state=restarted
+  service:
+    name: rsyslog
+    state: restarted
   when: rsyslog_config|changed
 
 - name: "Set ntp server"
-  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
   register: ntp_config
 
 - name: "ntpd: manage service"
   service:
-      name: ntpd
-      enabled: true
-      state: restarted
+    name: ntpd
+    enabled: true
+    state: restarted
   when: ntp_config|changed
 
 - name: "Add localCA to pki trust"
   copy:
-      content: "{{ localCA_pem }}"
-      dest: "/etc/pki/ca-trust/source/anchors/localCA.pem"
-      mode: 0644
-      owner: root
-      group: root
+    content: "{{ localCA_pem }}"
+    dest: "/etc/pki/ca-trust/source/anchors/localCA.pem"
+    mode: 0644
+    owner: root
+    group: root
   register: new_crt
 
 - name: "Trust crt"
@@ -131,11 +172,11 @@
 
 - name: "Update CA list for python-requests"
   copy:
-      src: /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt
-      dest: "{{ item }}/cacert.pem"
-      mode: 0444
-      owner: root
-      group: root
+    src: /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt
+    dest: "{{ item }}/cacert.pem"
+    mode: 0444
+    owner: root
+    group: root
   when: new_crt|changed
   with_items:
     - /usr/lib/python2.7/site-packages/requests/

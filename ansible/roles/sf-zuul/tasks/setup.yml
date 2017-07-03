@@ -5,67 +5,87 @@
 
 - name: Authorize zuul localhost connection for config-update jobs
   authorized_key:
-      user: zuul
-      key: "{{ jenkins_rsa_pub }}"
+    user: zuul
+    key: "{{ jenkins_rsa_pub }}"
   when: "'zuul-launcher' in zuul_services"
 
 - name: Apply selinux port labelling
   seport:
-      ports: "{{ zuul_port }}"
-      proto: tcp
-      setype: http_port_t
-      state: present
+    ports: "{{ zuul_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
   when: "ansible_selinux.status == 'enabled' and 'zuul-server' in zuul_services"
 
 - name: Setup apache site zuul.conf
-  template: src=zuul-server.httpd.conf.j2 dest=/etc/httpd/conf.d/zuul.conf mode=0444
+  template:
+    src: zuul-server.httpd.conf.j2
+    dest: /etc/httpd/conf.d/zuul.conf
+    mode: 0444
   notify: apache reload
   when: "'zuul-server' in zuul_services"
 
 - name: Setup apache zuul-merger.conf
-  template: src=zuul-merger.httpd.conf.j2 dest=/etc/httpd/conf.d/zuul-merger.conf mode=0444
+  template:
+    src: zuul-merger.httpd.conf.j2
+    dest: /etc/httpd/conf.d/zuul-merger.conf
+    mode: 0444
   notify: apache reload
   when: "'zuul-merger' in zuul_services"
 
 - block:
-  - name: Create config-check directory
-    file: path=/var/lib/zuul/defconf state=directory
+    - name: Create config-check directory
+      file:
+        path: /var/lib/zuul/defconf
+        state: directory
 
-  - name: Install config-check service default configuration
-    template:
-      src: "config-check/{{ item }}.j2"
-      dest: "/var/lib/zuul/defconf/{{ item|replace('defconf-', '') }}"
-    with_items:
-      - defconf-nodepool.yaml
-      - defconf-zuul.conf
-      - defconf-repoxplorer.py
+    - name: Install config-check service default configuration
+      template:
+        src: "config-check/{{ item }}.j2"
+        dest: "/var/lib/zuul/defconf/{{ item|replace('defconf-', '') }}"
+      with_items:
+        - defconf-nodepool.yaml
+        - defconf-zuul.conf
+        - defconf-repoxplorer.py
 
-  - name: Dump current architecture for config-check test
-    copy:
-      dest: /var/lib/zuul/defconf/arch.yaml
-      content: '{{ {"roles": roles}| to_yaml }}'
-  when: "'zuul-launcher' in zuul_services"
+    - name: Dump current architecture for config-check test
+      copy:
+        dest: /var/lib/zuul/defconf/arch.yaml
+        content: '{{ {"roles": roles}| to_yaml }}'
+      when: "'zuul-launcher' in zuul_services"
 
 # TODO: remove this when managesf job apiV2 is ready
 - name: Create /var/www/logs/results
-  file: path=/var/www/logs/results state=directory owner=zuul mode=0755
+  file:
+    path: /var/www/logs/results
+    state: directory
+    owner: zuul
+    mode: 0755
 
 - block:
-  - name: Create /var/www/zuul
-    file: path=/var/www/zuul state=directory
+    - name: Create /var/www/zuul
+      file:
+        path: /var/www/zuul
+        state: directory
 
-  - name: Symlink zuul image
-    file: src=/usr/share/javascript/zuul/images/ dest=/var/www/zuul/images state=link
+    - name: Symlink zuul image
+      file:
+        src: /usr/share/javascript/zuul/images/
+        dest: /var/www/zuul/images
+        state: link
 
-  - name: Symlink zuul static assets
-    file: src=/usr/share/javascript/zuul/ dest=/var/www/static/zuul state=link
+    - name: Symlink zuul static assets
+      file:
+        src: /usr/share/javascript/zuul/
+        dest: /var/www/static/zuul
+        state: link
 
-  - name: Install index.html for zuul
-    copy:
-      src: zuul.index.html
-      dest: /var/www/zuul/index.html
-      mode: 0444
-  when: "'zuul-server' in zuul_services"
+    - name: Install index.html for zuul
+      copy:
+        src: zuul.index.html
+        dest: /var/www/zuul/index.html
+        mode: 0444
+      when: "'zuul-server' in zuul_services"
 
 - block:
     - name: Ensure known_hosts file exists
@@ -80,7 +100,7 @@
       command: "ssh-keygen -f /var/lib/zuul/.ssh/known_hosts -F {{ item.host_packed }}"
       with_items: "{{zuul_ssh_known_hosts}}"
       register: zuul_known_hosts_results
-      ignore_errors: yes
+      ignore_errors: "yes"
 
     # This is a bit tricky since ssh-keyscan doesn't output the correct host format when port != 22
     - name: Scan the missing zuul sources
@@ -94,7 +114,9 @@
   when: "'zuul-server' in zuul_services or 'zuul-merger' in zuul_services"
 
 - name: "Copy logging configuration"
-  template: src={{ item }}.j2 dest=/etc/zuul/{{ item }}
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/zuul/{{ item }}"
   with_items:
     - server-logging.conf
     - gearman-logging.conf
@@ -103,17 +125,30 @@
   notify: restart zuul if already started
 
 - name: "Setup sysconfig"
-  template: src=sysconfig.j2 dest=/etc/sysconfig/zuul
+  template:
+    src: sysconfig.j2
+    dest: /etc/sysconfig/zuul
   notify: restart zuul if already started
 
 - name: "Setup configuration"
-  template: src=zuul.conf.j2 dest=/etc/zuul/zuul.conf mode=0440 group=zuul
+  template:
+    src: zuul.conf.j2
+    dest: /etc/zuul/zuul.conf
+    mode: 0440
+    group: zuul
   notify: restart zuul if already started
 
 - name: "Copy gearman-check script"
-  copy: src=gearman-check dest=/usr/local/bin/gearman-check mode=0555
+  copy:
+    src: gearman-check
+    dest: /usr/local/bin/gearman-check
+    mode: 0555
   when: "'zuul-server' in zuul_services"
 
 - name: "Setup gearman-check cron"
-  cron: name=gearman-check-cron job=/usr/local/bin/gearman-check minute=0 hour=0
+  cron:
+    name: gearman-check-cron
+    job: /usr/local/bin/gearman-check
+    minute: 0
+    hour: 0
   when: "'zuul-server' in zuul_services"

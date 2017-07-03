@@ -3,14 +3,18 @@
 
 - name: Apply selinux port labelling
   seport:
-      ports: 9001
-      proto: tcp
-      setype: http_port_t
-      state: present
+    ports: 9001
+    proto: tcp
+    setype: http_port_t
+    state: present
   when: ansible_selinux.status == "enabled"
 
 - name: "Create directory"
-  file: path={{ item }} owner=etherpad group=etherpad state=directory
+  file:
+    path: "{{ item }}"
+    owner: etherpad
+    group: etherpad
+    state: directory
   with_items:
     - /var/www/etherpad-lite
     - /var/log/etherpad
@@ -22,26 +26,33 @@
     strip: 1
 
 - name: "Copy run.sh"
-  copy: src=run.sh dest=/var/www/etherpad-lite/run.sh mode=0555
+  copy:
+    src: run.sh
+    dest: /var/www/etherpad-lite/run.sh
+    mode: 0555
 
 - name: "Copy custom pad.css"
-  copy: src=pad.css dest=/var/www/etherpad-lite/src/static/custom/pad.css
+  copy:
+    src: pad.css
+    dest: /var/www/etherpad-lite/src/static/custom/pad.css
 
 - name: "Setup settings.json"
-  template: src=settings.json.j2 dest=/var/www/etherpad-lite/settings.json
+  template:
+    src: settings.json.j2
+    dest: /var/www/etherpad-lite/settings.json
   notify: [restart etherpad]
 
 - name: Install service file
   copy:
-      src: etherpad.service
-      dest: /lib/systemd/system/etherpad.service
-      owner: root
-      group: root
-      mode: 0644
+    src: etherpad.service
+    dest: /lib/systemd/system/etherpad.service
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Start service
   systemd:
-      name: etherpad
-      state: started
-      daemon_reload: yes
-      enabled: yes
+    name: etherpad
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"

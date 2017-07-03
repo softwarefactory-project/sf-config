@@ -9,8 +9,8 @@
       service:
         name: nodepool
         state: stopped
-        enabled: no
-      ignore_errors: yes
+        enabled: "no"
+      ignore_errors: "yes"
 
     - name: Add comment column
       command: mysql nodepool -e "alter table node add column comment varchar(255)"

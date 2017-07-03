@@ -1,3 +1,4 @@
+---
 role_actions:
   - stop
   - install
@@ -33,7 +34,7 @@ gerrit_pub_url: "https://example.com/r/"
 zuul_pub_url: "https://example.com/zuul/"
 zuul_internal_url: "http://localhost:{{ zuul_port }}/"
 
-zuul_offline_node_when_complete: True
+zuul_offline_node_when_complete: true
 
 zuul_loglevel: INFO
 zuul_gear_loglevel: WARNING

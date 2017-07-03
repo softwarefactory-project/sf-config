@@ -1,7 +1,8 @@
 ---
 
 - name: Check if fqdn has been changed
-  stat: path=/root/fqdn_changed
+  stat:
+    path: /root/fqdn_changed
   register: fqdn_changed
 
 # This isn't required after restoring a backup with a different fqdn, only if
@@ -14,14 +15,16 @@
     - systemctl restart gerrit
 
 - name: Remove outdated /usr/share/httpd/.ssh/known_hosts
-  file: path=/usr/share/httpd/.ssh/known_hosts state=absent
+  file:
+    path: /usr/share/httpd/.ssh/known_hosts
+    state: absent
   when: fqdn_changed.stat.exists
 
 - name: Update config repo with correct fqdn
   when: fqdn_changed.stat.exists
   command: chdir=/root/config {{ item }}
   # Error if change is already in git repo (added before backup)
-  ignore_errors: yes
+  ignore_errors: "yes"
   with_items:
     - sed -i -e 's/host=.*/host={{ fqdn }}/g' .gitreview
     - sed -i -e 's#zuul-cloner http://.*/r#zuul-cloner http://{{ fqdn }}/r#g' jobs/_default_jobs.yaml
@@ -32,12 +35,18 @@
 
 - name: Restart zuul service
   when: fqdn_changed.stat.exists
-  service: name=zuul-server state=restarted
+  service:
+    name: zuul-server
+    state: restarted
 
 - name: Restart zuul-merger service
   when: fqdn_changed.stat.exists
-  service: name=zuul-merger state=restarted
+  service:
+    name: zuul-merger
+    state: restarted
 
 - name: Remove /root/fqdn_changed
   when: fqdn_changed.stat.exists
-  file: path=/root/fqdn_changed state=absent
+  file:
+    path: /root/fqdn_changed
+    state: absent

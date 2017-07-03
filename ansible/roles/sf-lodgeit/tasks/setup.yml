@@ -33,4 +33,7 @@
   notify: restart lodgeit
 
 - name: Install static link
-  file: dest=/var/www/static/lodgeit src=/usr/lib/python2.7/site-packages/lodgeit/static state=link
+  file:
+    dest: /var/www/static/lodgeit
+    src: /usr/lib/python2.7/site-packages/lodgeit/static
+    state: link
