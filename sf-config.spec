@@ -1,7 +1,7 @@
 %global         sum The Software Factory configuration sfconfig
 
 Name:           sf-config
-Version:        2.5.0
+Version:        2.6.0
 Release:        1%{?dist}
 Summary:        %{sum}
 
@@ -21,12 +21,15 @@ Requires:       python-jinja2
 %autosetup -n %{name}-%{version}
 
 %build
+export PBR_VERSION=%{version}
+%{__python2} setup.py build
 
 %install
-# The sfconfig.py
-install -p -D -m 0755 scripts/sfconfig.py %{buildroot}%{_bindir}/sfconfig.py
-# retro compat until 2.5.0 is released
-install -p -D -m 0755 scripts/yaml-merger.py %{buildroot}/usr/local/bin/yaml-merger.py
+export PBR_VERSION=%{version}
+%{__python2} setup.py install --skip-build --root %{buildroot}
+# Backward compatible sfconfig.py
+ln -s %{_bindir}/sfconfig %{buildroot}%{_bindir}/sfconfig.py
+sed -i 's#^import sys$#import sys; sys.path.insert(0, "/usr/lib/python2.7/site-packages/")#'  %{buildroot}%{_bindir}/sfconfig
 # /etc/software-factory
 install -p -D -m 0644 defaults/arch.yaml %{buildroot}%{_sysconfdir}/software-factory/arch.yaml
 install -p -D -m 0644 defaults/sfconfig.yaml %{buildroot}%{_sysconfdir}/software-factory/sfconfig.yaml
@@ -38,12 +41,16 @@ install -p -d %{buildroot}%{_datarootdir}/sf-config
 mv ansible config-repo defaults refarch scripts templates %{buildroot}%{_datarootdir}/sf-config/
 
 %files
-/usr/local/bin/yaml-merger.py
-%{_bindir}/sfconfig.py
+%{python2_sitelib}/*
+%{_bindir}/sfconfig*
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
 %changelog
+* Mon Jul 03 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.6.0-1
+- Switch to real python module
+- Add sfconfig command
+
 * Fri Apr 14 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.5.0-1
 - Initial packaging
