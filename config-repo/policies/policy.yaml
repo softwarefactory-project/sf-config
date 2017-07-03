@@ -1,3 +1,4 @@
+---
 # Default rules that should not be changed, but can be used as building blocks for more complex rules
 'admin_or_service': 'rule:is_admin or rule:is_service'
 'admin_api': 'rule:is_admin'

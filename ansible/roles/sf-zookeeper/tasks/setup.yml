@@ -2,4 +2,7 @@
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=zookeeper"
 
 - name: Start and enable the service
-  service: name=zookeeper state=started enabled=yes
+  service:
+    name: zookeeper
+    state: started
+    enabled: "yes"

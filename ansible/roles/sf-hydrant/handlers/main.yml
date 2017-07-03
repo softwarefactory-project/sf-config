@@ -1,3 +1,5 @@
 ---
 - name: restart hydrant
-  service: name=hydrant state=restarted
+  service:
+    name: hydrant
+    state: restarted

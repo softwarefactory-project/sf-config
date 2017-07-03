@@ -1,8 +1,8 @@
 ---
 - name: Set character_set_server to utf8
   lineinfile:
-      dest: /etc/my.cnf
-      line: "character_set_server = utf8"
+    dest: /etc/my.cnf
+    line: "character_set_server = utf8"
 
 - name: Set wait_timeout to 2 weeks
   ini_file:
@@ -12,12 +12,15 @@
     value: 1209600
 
 - name: Start service
-  service: name=mariadb enabled=yes state=started
+  service:
+    name: mariadb
+    enabled: "yes"
+    state: started
 
 - name: Check mysql root password
   shell: "/usr/bin/mysqladmin -u root -p{{ mysql_root_password }} status"
   register: mysql_root_password_set
-  ignore_errors: True
+  ignore_errors: true
 
 - name: Set mysql root password
   shell: "/usr/bin/mysqladmin -u root password {{ mysql_root_password }}"
@@ -34,22 +37,25 @@
 
 - name: Setup root user client.cnf
   template:
-    src:  "client.cnf.j2"
+    src: "client.cnf.j2"
     dest: "/root/.my.cnf"
     mode: "0400"
 
 - name: ensure anonymous users are not in the database
-  mysql_user: name='' host={{ item }} state=absent
+  mysql_user:
+    name: ''
+    host: "{{ item }}"
+    state: absent
   with_items:
     - localhost
     - "{{ ansible_hostname }}"
 
 - name: remove useless databases if present
   mysql_db:
-      name: "{{ item }}"
-      state: absent
+    name: "{{ item }}"
+    state: absent
   with_items:
-      - test
+    - test
 
 - name: Create databases
   shell: "mysql < /var/lib/software-factory/sql/databases.sql"

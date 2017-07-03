@@ -1,3 +1,4 @@
+---
 description: "One instances per service sample 10 nodes deployment"
 inventory:
   - name: mysql

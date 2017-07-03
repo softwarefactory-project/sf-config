@@ -1,12 +1,13 @@
+---
 - name: Disable services
   service:
     name: '{{ item }}'
     state: stopped
-    enabled: no
+    enabled: "no"
   with_first_found:
-      - '{{ service_real_name }}'
-      - '{{ service_name }}'
-  ignore_errors: yes
+    - '{{ service_real_name }}'
+    - '{{ service_name }}'
+  ignore_errors: "yes"
 
 - block:
     - name: Remove files
@@ -17,7 +18,7 @@
         - '/etc/{{ service_name }}'
         - '/var/lib/{{ service_name }}'
         - '/var/log/{{ service_name }}'
-      ignore_errors: yes
+      ignore_errors: "yes"
 
     - name: Remove packages
       yum:

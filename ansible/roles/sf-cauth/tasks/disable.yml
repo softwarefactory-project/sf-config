@@ -1,3 +1,4 @@
+---
 - block:
     - name: Remove files
       file:

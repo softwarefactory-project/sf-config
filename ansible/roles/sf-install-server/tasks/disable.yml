@@ -1,8 +1,9 @@
+---
 - name: Disable services
   service:
     name: rsyncd
     state: stopped
-    enabled: no
+    enabled: "no"
 
 - block:
     - name: Remove crontabs

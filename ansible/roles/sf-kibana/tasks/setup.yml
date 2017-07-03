@@ -2,15 +2,16 @@
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=kibana"
 
 - name: Ensure Kibana access to ElasticSearch
-  lineinfile: dest=/opt/kibana/config/kibana.yml
-              regexp="^elasticsearch.url{{':'}}.*"
-              line="elasticsearch.url{{':'}} \"http://elasticsearch.{{ fqdn }}:9200\""
+  lineinfile:
+    dest: /opt/kibana/config/kibana.yml
+    regexp: "^elasticsearch.url{{':'}}.*"
+    line: "elasticsearch.url{{':'}} \"http://elasticsearch.{{ fqdn }}:9200\""
   register: kibanaconf
 
 - name: "Look for top menu patch"
   command: grep -q "loadTopmenu" /opt/kibana/optimize/bundles/kibana.bundle.js
   register: top_menu
-  ignore_errors: yes
+  ignore_errors: "yes"
 
 - name: Add top menu
   lineinfile:
@@ -19,8 +20,13 @@
   when: top_menu.rc == 1
 
 - name: Kibana service started and enabled
-  service: name=kibana state=started enabled=yes
+  service:
+    name: kibana
+    state: started
+    enabled: "yes"
 
 - name: Restart kibana after the configuration changed
-  service: name=kibana state=restarted
+  service:
+    name: kibana
+    state: restarted
   when: kibanaconf|changed

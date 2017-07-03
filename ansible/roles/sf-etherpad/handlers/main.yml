@@ -1,3 +1,5 @@
 ---
 - name: restart etherpad
-  service: name=etherpad state=restarted
+  service:
+    name: etherpad
+    state: restarted

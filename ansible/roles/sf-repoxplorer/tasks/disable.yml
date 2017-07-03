@@ -1,12 +1,13 @@
+---
 - name: Disable services
   service:
     name: "{{ item }}"
     state: stopped
-    enabled: no
+    enabled: "no"
   with_items:
     - repoxplorer
     - repoxplorer-webui
-  ignore_errors: yes
+  ignore_errors: "yes"
 
 - block:
     - name: Remove files

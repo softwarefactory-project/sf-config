@@ -17,21 +17,21 @@
     group: gerrit
     mode: "{{ item.mode }}"
   with_items:
-    - { name: patchset-created,
-        path: /var/lib/gerrit/hooks,
-        mode: '0740' }
-    - { name: change-merged,
-        path: /var/lib/gerrit/hooks,
-        mode: '0740' }
-    - { name: gerrit.config,
-        path: /etc/gerrit,
-        mode: '0644' }
-    - { name: secure.config,
-        path: /etc/gerrit,
-        mode: '0600' }
-    - { name: gerrit,
-        path: /etc/sysconfig,
-        mode: '0444' }
+    - {name: patchset-created,
+       path: /var/lib/gerrit/hooks,
+       mode: '0740'}
+    - {name: change-merged,
+       path: /var/lib/gerrit/hooks,
+       mode: '0740'}
+    - {name: gerrit.config,
+       path: /etc/gerrit,
+       mode: '0644'}
+    - {name: secure.config,
+       path: /etc/gerrit,
+       mode: '0600'}
+    - {name: gerrit,
+       path: /etc/sysconfig,
+       mode: '0444'}
   notify: [restart gerrit]
 
 - name: "Install static configuration files for gerrit"
@@ -42,9 +42,9 @@
     owner: gerrit
     group: gerrit
   with_items:
-    - { name: replication.config }
-    - { name: GerritSiteHeader.html }
-    - { name: GerritSite.css }
+    - {name: replication.config}
+    - {name: GerritSiteHeader.html}
+    - {name: GerritSite.css}
 
 - name: "Install initialization and migration scripts"
   template:
@@ -66,42 +66,43 @@
 
 - name: "Copy gerrit service key"
   copy:
-      content: "{{ hostvars[inventory_hostname][item.name] }}"
-      dest: "/etc/gerrit/{{ item.file }}"
-      mode: "{{ item.mode }}"
-      owner: gerrit
-      group: gerrit
+    content: "{{ hostvars[inventory_hostname][item.name] }}"
+    dest: "/etc/gerrit/{{ item.file }}"
+    mode: "{{ item.mode }}"
+    owner: gerrit
+    group: gerrit
   with_items:
-      - {name: gerrit_service_rsa, file: ssh_host_rsa_key, mode: "0400"}
-      - {name: gerrit_service_rsa_pub, file: ssh_host_rsa_key.pub, mode: "0444"}
+    - {name: gerrit_service_rsa, file: ssh_host_rsa_key, mode: "0400"}
+    - {name: gerrit_service_rsa_pub, file: ssh_host_rsa_key.pub, mode: "0444"}
 
 - name: "Copy gerrit admin key"
   copy:
-      content: "{{ gerrit_admin_rsa }}"
-      dest: "/root/.ssh/gerrit_admin"
-      mode: "0400"
+    content: "{{ gerrit_admin_rsa }}"
+    dest: "/root/.ssh/gerrit_admin"
+    mode: "0400"
 
 - name: "Copy gerrit admin pub key"
   copy:
-      content: "{{ gerrit_admin_rsa_pub }}"
-      dest: "/root/.ssh/gerrit_admin.pub"
-      mode: "0444"
+    content: "{{ gerrit_admin_rsa_pub }}"
+    dest: "/root/.ssh/gerrit_admin.pub"
+    mode: "0444"
 
 - name: "Allow gerrit to connect to himself for self replication test"
   authorized_key:
-      user: gerrit
-      key: "{{ gerrit_service_rsa_pub }}"
+    user: gerrit
+    key: "{{ gerrit_service_rsa_pub }}"
 
 - name: Apply selinux port labelling
   seport:
-      ports: "{{ gerrit_port }}"
-      proto: tcp
-      setype: http_port_t
-      state: present
+    ports: "{{ gerrit_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
   when: ansible_selinux.status == "enabled"
 
 - name: "Test if gerrit All-Projects exists"
-  stat: path=/var/lib/gerrit/git/All-Projects.git
+  stat:
+    path: /var/lib/gerrit/git/All-Projects.git
   register: gerrit_allprojects
 
 - name: "Test if gerrit is running"
@@ -122,7 +123,10 @@
   when: _gerrit.rc == 3
 
 - name: "Start service"
-  service: name=gerrit state=started enabled=yes
+  service:
+    name: gerrit
+    state: started
+    enabled: "yes"
 
 - name: "Add initial user"
   shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'

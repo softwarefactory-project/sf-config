@@ -1,3 +1,4 @@
+---
 role_actions:
   - disable
   - install
@@ -16,4 +17,4 @@ service_name: telegraf
 telegraf_influxdb_user: telegraf
 telegraf_influxdb_password: CHANGE_ME
 
-use_letsencrypt: False
+use_letsencrypt: false

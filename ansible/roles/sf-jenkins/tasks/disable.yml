@@ -3,7 +3,7 @@
   service:
     name: jenkins
     state: stopped
-    enabled: no
+    enabled: "no"
 
 - block:
     - name: Remove files

@@ -32,8 +32,8 @@
   systemd:
     name: "{{ item }}"
     state: started
-    daemon_reload: yes
-    enabled: yes
+    daemon_reload: "yes"
+    enabled: "yes"
   with_items:
     - repoxplorer-webui
     - repoxplorer

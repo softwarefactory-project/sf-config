@@ -6,18 +6,18 @@
 
 - name: "Inject swift url"
   replace: dest="{{ item }}" regexp='MIRROR2SWIFT_URL' replace='"{{mirrors.swift_mirror_url}}"'
-  with_fileglob: [ /var/lib/mirror2swift/*.yaml ]
+  with_fileglob: [/var/lib/mirror2swift/*.yaml]
 
 - name: "Inject swift tempurl key"
   replace: dest="{{ item }}" regexp='MIRROR2SWIFT_TEMPURL_KEY' replace='"{{mirrors.swift_mirror_tempurl_key}}"'
-  with_fileglob: [ /var/lib/mirror2swift/*.yaml ]
+  with_fileglob: [/var/lib/mirror2swift/*.yaml]
 
 - name: "Inject swift object ttl"
   replace: dest="{{ item }}" regexp='MIRROR2SWIFT_TTL' replace='{{mirrors.swift_mirror_ttl}}'
-  with_fileglob: [ /var/lib/mirror2swift/*.yaml ]
+  with_fileglob: [/var/lib/mirror2swift/*.yaml]
 
-#TODO: Implement baseline based update, only run mirror2swift on added mirror
-#- name: "Update mirrors"
-#  become: true
-#  become_user: mirror2swift
-#  command: mirror2swift /var/lib/mirror2swift/config.yaml
+# TODO: Implement baseline based update, only run mirror2swift on added mirror
+# - name: "Update mirrors"
+#   become: true
+#   become_user: mirror2swift
+#   command: mirror2swift /var/lib/mirror2swift/config.yaml

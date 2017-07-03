@@ -1,3 +1,4 @@
+---
 role_actions:
   - install
   - setup
@@ -14,7 +15,7 @@ storyboard_mysql_db: "storyboard"
 storyboard_mysql_user: "storyboard"
 storyboard_mysql_password: "CHANGE_ME"
 
-storyboard_email_notification: True
+storyboard_email_notification: true
 storyboard_rabbitmq_password: "CHANGE_ME"
 
 storyboard_api_workers: 1

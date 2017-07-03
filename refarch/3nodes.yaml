@@ -1,3 +1,4 @@
+---
 description: "Minimal 3 nodes sample deployment"
 inventory:
   - name: managesf

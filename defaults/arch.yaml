@@ -1,1 +1,19 @@
-../refarch/minimal.yaml
+---
+description: "Minimal Software Factory deployment"
+inventory:
+  - name: managesf
+    ip: 192.168.135.101
+    roles:
+      - install-server
+      - mysql
+      - gateway
+      - cauth
+      - managesf
+      - gitweb
+      - gerrit
+      - logserver
+      - zuul-server
+      - zuul-launcher
+      - zuul-merger
+      - nodepool-launcher
+      - jenkins

@@ -7,8 +7,8 @@
     state: directory
     mode: 0755
   with_items:
-      - "/etc/monit"
-      - "/etc/monit.d"
+    - "/etc/monit"
+    - "/etc/monit.d"
 
 - name: "monit: manage monitrc"
   template:
@@ -34,4 +34,7 @@
     - restart monit
 
 - name: "monit: start service"
-  service: name=monit enabled=yes state=started
+  service:
+    name: monit
+    enabled: "yes"
+    state: started

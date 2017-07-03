@@ -1,3 +1,4 @@
+---
 role_actions:
   - disable
   - install
@@ -38,14 +39,13 @@ telegraf_influxdb_password: CHANGE_ME
 service_name: grafana
 service_real_name: grafana-server
 
-grafana_data_source: {
-    isDefault: yes,
-    database: telegraf,
-    name: influxdb,
-    type: influxdb,
-    user: '{{ telegraf_influxdb_user }}',
-    password: '{{ telegraf_influxdb_password }}',
-    url: 'https://{{ influxdb_host }}:8086',
-    access: proxy,
-    basicAuth: false
-}
+grafana_data_source:
+  isDefault: "yes"
+  database: telegraf
+  name: influxdb
+  type: influxdb
+  user: '{{ telegraf_influxdb_user }}'
+  password: '{{ telegraf_influxdb_password }}'
+  url: 'https://{{ influxdb_host }}:8086'
+  access: proxy
+  basicAuth: false

@@ -1,5 +1,9 @@
+---
 - name: Disable httpd service
-  service: name=httpd state=stopped enabled=no
+  service:
+    name: httpd
+    state: stopped
+    enabled: "no"
 
 - block:
     - name: Remove files

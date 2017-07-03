@@ -1,3 +1,4 @@
+---
 description: "Multi jenkins master sample deployment"
 inventory:
   - name: node01

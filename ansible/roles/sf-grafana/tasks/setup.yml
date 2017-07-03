@@ -17,7 +17,7 @@
     - {section: database, option: password, value: '{{ grafana_mysql_password }}'}
     - {section: users, option: allow_sign_up, value: '{{ grafana_users_allow_sign_up }}'}
     - {section: auth.anonymous, option: enabled, value: '{{ grafana_auth_anonymous_enabled }}'}
-    - {section: auth.anonymous, option: org_role , value: '{{ grafana_auth_anonymous_org_role }}'}
+    - {section: auth.anonymous, option: org_role, value: '{{ grafana_auth_anonymous_org_role }}'}
     - {section: auth.proxy, option: enabled, value: '{{ grafana_auth_proxy_enabled }}'}
     - {section: auth.proxy, option: header_name, value: '{{ grafana_auth_proxy_header_name }}'}
     - {section: auth.proxy, option: header_property, value: '{{ grafana_auth_proxy_header_property }}'}
@@ -44,38 +44,38 @@
 
 - name: Start service
   systemd:
-      name: grafana-server
-      state: started
-      daemon_reload: yes
-      enabled: yes
+    name: grafana-server
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
 
 - name: Wait for db initialization
   wait_for:
-      port: 3000
-      host: '{{ grafana_host }}'
+    port: 3000
+    host: '{{ grafana_host }}'
 
 - name: Get datasources
   uri:
-      url: '{{ grafana_internal_datasource_url }}'
-      method: GET
-      user: admin
-      password: '{{ grafana_admin_password }}'
-      force_basic_auth: yes
+    url: '{{ grafana_internal_datasource_url }}'
+    method: GET
+    user: admin
+    password: '{{ grafana_admin_password }}'
+    force_basic_auth: "yes"
   register: datasources
 
 - name: set datasource fact
   set_fact:
-      grafana_datasources: "{{ datasources.json | default([]) | map(attribute='name') | list }}"
+    grafana_datasources: "{{ datasources.json | default([]) | map(attribute='name') | list }}"
 
 - name: Configure datasource
   uri:
-      url: '{{ grafana_internal_datasource_url }}'
-      method: POST
-      user: admin
-      password: '{{ grafana_admin_password }}'
-      body: '{{ grafana_data_source | to_json }}'
-      body_format: json
-      force_basic_auth: yes
+    url: '{{ grafana_internal_datasource_url }}'
+    method: POST
+    user: admin
+    password: '{{ grafana_admin_password }}'
+    body: '{{ grafana_data_source | to_json }}'
+    body_format: json
+    force_basic_auth: "yes"
   when: grafana_data_source.name not in grafana_datasources
 
 - name: Install default dashboard

@@ -1,13 +1,13 @@
 ---
 - name: Setup configuration
   template:
-      src: lecm.conf.j2
-      dest: /etc/lecm.conf
+    src: lecm.conf.j2
+    dest: /etc/lecm.conf
 
 - name: Setup apache redirection
   template:
-      src: gateway-lecm.conf.j2
-      dest: /etc/httpd/conf.d/acme.conf
+    src: gateway-lecm.conf.j2
+    dest: /etc/httpd/conf.d/acme.conf
   register: lecmgateway
 
 - name: Check if apache is running
@@ -17,19 +17,19 @@
 
 - name: Ensure apache is up
   service:
-      name: httpd
-      enabled: yes
-      state: started
+    name: httpd
+    enabled: "yes"
+    state: started
 
 - name: Reload apache
   service:
-      name: httpd
-      state: reloaded
+    name: httpd
+    state: reloaded
   when: lecmgateway|changed and _httpd.rc == 0
 
 - name: Check if certificate exists
   stat:
-      path: '/etc/letsencrypt/pem/{{ fqdn }}.pem'
+    path: '/etc/letsencrypt/pem/{{ fqdn }}.pem'
   register: cert
 
 - name: Ensure certificate are generated

@@ -1,3 +1,4 @@
+---
 description: "All in one instance architecture"
 inventory:
   - name: managesf
