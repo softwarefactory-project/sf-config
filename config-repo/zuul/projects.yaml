@@ -1,3 +1,4 @@
+---
 # This file get appended to _layout.yaml
 projects:
   - name: zuul-demo

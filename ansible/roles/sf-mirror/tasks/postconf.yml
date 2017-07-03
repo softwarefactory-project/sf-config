@@ -17,7 +17,9 @@
 
 - name: "Add periodic pipeline to config repo"
   when: mirrors.periodic_update and pipeline|changed
-  command: chdir=/root/config {{ item }}
+  command: "{{ item }}"
+  args:
+    root: /root/config
   with_items:
     - git add zuul/_mirrors.yml jobs/_mirrors_update.yml
     - git commit -m "Add swift mirror periodic update"
@@ -26,7 +28,9 @@
 
 - name: "Remove periodic pipeline from config repo"
   when: mirrors.periodic_update == False and config_pipeline.stat.exists is defined and config_pipeline.stat.exists == True
-  command: chdir=/root/config {{ item }}
+  command: "{{ item }}"
+  args:
+    root: /root/config
   with_items:
     - git rm zuul/_mirrors.yml jobs/_mirrors_update.yml
     - git commit -m "Remove swift mirror periodic update"

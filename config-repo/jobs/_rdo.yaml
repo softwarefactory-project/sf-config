@@ -1,3 +1,4 @@
+---
 # These are default jobs to run test on a all in on RDO deployment
 
 - builder:
@@ -18,8 +19,8 @@
       - postbuildscript:
           builders:
             - fetch-rdo-artifacts
-          script-only-if-succeeded: False
-          script-only-if-failed: False
+          script-only-if-succeeded: false
+          script-only-if-failed: false
 
 - builder:
     name: nested-cloud-prepare

@@ -1,11 +1,11 @@
 ---
 - name: Ensure /root/.ssh exists
   file:
-      path: /root/.ssh
-      owner: root
-      group: root
-      mode: 0700
-      state: directory
+    path: /root/.ssh
+    owner: root
+    group: root
+    mode: 0700
+    state: directory
 
 - name: Check if ssh_known_hosts exist
   stat: path=/root/.ssh/known_hosts
@@ -13,11 +13,11 @@
 
 - name: Create ssh known_hosts config file
   file:
-      path: /root/.ssh/known_hosts
-      owner: root
-      group: root
-      mode: 0600
-      state: touch
+    path: /root/.ssh/known_hosts
+    owner: root
+    group: root
+    mode: 0600
+    state: touch
   when: ssh_known_hosts.stat.exists == False
 
 - name: Get all server hostnames
@@ -40,7 +40,7 @@
 
 - name: Populate ssh_know_hosts
   lineinfile:
-      dest: /root/.ssh/known_hosts
-      line: "{{ item.stdout }}"
+    dest: /root/.ssh/known_hosts
+    line: "{{ item.stdout }}"
   with_items: "{{ public_ssh_host_keys.results }}"
-  no_log: True
+  no_log: true

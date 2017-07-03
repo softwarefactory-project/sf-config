@@ -1,3 +1,6 @@
 ---
 - name: restart umurmurd
-  service: name=umurmurd state=restarted enabled=yes
+  service:
+    name: umurmurd
+    state: restarted
+    enabled: "yes"

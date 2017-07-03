@@ -1,13 +1,15 @@
 ---
 - name: Check gerritbot configuration
-  stat: path=/etc/gerritbot/channels.yaml
+  stat:
+    path: /etc/gerritbot/channels.yaml
   register: dst_channels
 
 - name: Check config-repo configuration
   shell: cat /root/config/gerritbot/*.yaml > /root/config/gerritbot/.channels.yaml
 
 - name: Check config-repo merged file
-  stat: path=/root/config/gerritbot/.channels.yaml
+  stat:
+    path: /root/config/gerritbot/.channels.yaml
   register: src_channels
 
 - name: Update gerritbot channels configuration
@@ -16,4 +18,6 @@
 
 - name: Restart gerritbot
   when: dst_channels.stat.exists == false or dst_channels.stat.md5 != src_channels.stat.md5
-  service: name=gerritbot state=restarted
+  service:
+    name: gerritbot
+    state: restarted

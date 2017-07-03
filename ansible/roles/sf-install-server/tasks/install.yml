@@ -14,7 +14,7 @@
 
 - name: check if serverspec if installed
   stat:
-      path: '/usr/local/share/gems/gems/serverspec-{{ serverspec_version }}/lib/serverspec'
+    path: '/usr/local/share/gems/gems/serverspec-{{ serverspec_version }}/lib/serverspec'
   register: serverspec
 
 - name: Install serverspec

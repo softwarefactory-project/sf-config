@@ -2,7 +2,12 @@
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=storyboard"
 
 - name: "Install storyboard.conf"
-  template: src={{ item }}.j2 dest=/etc/storyboard/{{ item }} owner=storyboard group=storyboard mode=0400
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/storyboard/{{ item }}"
+    owner: storyboard
+    group: storyboard
+    mode: 0400
   with_items:
     - storyboard.conf
     - superuser.yaml
@@ -11,9 +16,9 @@
 
 - name: "Install storyboard sysconfig file"
   template:
-      src: storyboard.j2
-      dest: /etc/sysconfig/storyboard
-      mode: 0644
+    src: storyboard.j2
+    dest: /etc/sysconfig/storyboard
+    mode: 0644
 
 - name: "Setup database"
   command: storyboard-db-manage upgrade head
@@ -26,7 +31,7 @@
 
 - name: Start service
   service:
-      name: "{{ item }}"
-      state: started
-      enabled: yes
+    name: "{{ item }}"
+    state: started
+    enabled: "yes"
   with_items: "{{ storyboard_services }}"

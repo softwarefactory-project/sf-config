@@ -6,19 +6,19 @@
 
 - name: "auth: install pubkey.pem"
   copy:
-      content: "{{ cauth_pubkey }}"
-      dest: "/var/lib/cauth/keys/pubkey.pem"
-      mode: 0444
-      setype: httpd_sys_content_t
+    content: "{{ cauth_pubkey }}"
+    dest: "/var/lib/cauth/keys/pubkey.pem"
+    mode: 0444
+    setype: httpd_sys_content_t
 
 - name: "auth: install tkt apache module configuration"
   copy:
-      content: "LoadModule auth_pubtkt_module modules/mod_auth_pubtkt.so\n"
-      dest: /etc/httpd/conf.modules.d/00-tkt.conf
-      mode: 0444
+    content: "LoadModule auth_pubtkt_module modules/mod_auth_pubtkt.so\n"
+    dest: /etc/httpd/conf.modules.d/00-tkt.conf
+    mode: 0444
 
 - name: "auth: install tkt apache pubtkt configuration"
   copy:
-      content: "TKTAuthPublicKey /var/lib/cauth/keys/pubkey.pem\n"
-      dest: /etc/httpd/conf.d/auth_pubtkt.conf
-      mode: 0444
+    content: "TKTAuthPublicKey /var/lib/cauth/keys/pubkey.pem\n"
+    dest: /etc/httpd/conf.d/auth_pubtkt.conf
+    mode: 0444

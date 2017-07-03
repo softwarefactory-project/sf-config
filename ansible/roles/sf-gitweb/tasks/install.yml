@@ -10,4 +10,4 @@
   copy:
     src: "/var/www/git/static/{{ gitweb_theme }}.css"
     dest: "/var/www/git/static/gitweb.css"
-    remote_src: True
+    remote_src: true

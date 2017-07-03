@@ -1,7 +1,15 @@
 ---
 - name: "Fetch nodepool logs"
-  synchronize: mode=pull src=/var/log/nodepool/ dest="{{ log_dest }}/log"
-  ignore_errors: True
+  synchronize:
+    mode: pull
+    src: /var/log/nodepool/
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
+
 - name: "Fetch nodepool config"
-  synchronize: mode=pull src="/etc/nodepool/" dest="{{ log_dest }}/etc" rsync_opts="--exclude scripts"
-  ignore_errors: True
+  synchronize:
+    mode: pull
+    src: "/etc/nodepool/"
+    dest: "{{ log_dest }}/etc"
+    rsync_opts: "--exclude scripts"
+  ignore_errors: true

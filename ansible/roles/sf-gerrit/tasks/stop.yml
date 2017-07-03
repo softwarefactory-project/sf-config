@@ -1,3 +1,5 @@
 ---
 - name: "Stop gerrit"
-  service: name=gerrit state=stopped
+  service:
+    name: gerrit
+    state: stopped

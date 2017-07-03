@@ -1,3 +1,4 @@
+---
 # This file is managed by ansible, don't edit
 # This is the definition of the default jobs
 
@@ -21,8 +22,8 @@ pipelines:
     manager: IndependentPipelineManager
     precedence: low
     require:
-      open: True
-      current-patchset: True
+      open: true
+      current-patchset: true
     trigger:
       gerrit:
         - event: patchset-created
@@ -50,8 +51,8 @@ pipelines:
     manager: DependentPipelineManager
     precedence: normal
     require:
-      open: True
-      current-patchset: True
+      open: true
+      current-patchset: true
       approval:
         - verified: [1, 2]
           username: jenkins

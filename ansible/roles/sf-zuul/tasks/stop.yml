@@ -1,7 +1,9 @@
 ---
 - name: "Stop the services"
-  service: name={{ item }} state=stopped
+  service:
+    name: "{{ item }}"
+    state: stopped
   with_items:
-    - zuul
+    - zuul-server
     - zuul-merger
     - zuul-launcher

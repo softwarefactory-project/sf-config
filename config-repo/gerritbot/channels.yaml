@@ -1,8 +1,9 @@
-#irc-channel-name:
-#    events:
-#      - patchset-created
-#      - change-merged
-#    projects:
-#      - myproject
-#    branches:
-#      - master
+---
+# irc-channel-name:
+#     events:
+#       - patchset-created
+#       - change-merged
+#     projects:
+#       - myproject
+#     branches:
+#       - master

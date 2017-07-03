@@ -1,10 +1,17 @@
 ---
 - name: "Fetch managesf logs"
-  synchronize: mode=pull src=/var/log/managesf/ dest="{{ log_dest }}/log"
-  ignore_errors: True
+  synchronize:
+    mode: pull
+    src: /var/log/managesf/
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
+
 - name: "Fetch managesf config"
-  synchronize: mode=pull src="/etc/managesf/{{ item }}" dest="{{ log_dest }}/{{ item }}"
+  synchronize:
+    mode: pull
+    src: "/etc/managesf/{{ item }}"
+    dest: "{{ log_dest }}/{{ item }}"
   with_items:
     - config.py
     - policy.yaml
-  ignore_errors: True
+  ignore_errors: true

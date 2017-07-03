@@ -2,13 +2,24 @@
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=mosquitto"
 
 - name: init ACL file
-  template: src=acl.conf.j2 dest=/etc/mosquitto/acl.conf mode=0440 owner=mosquitto group=mosquitto
+  template:
+    src: acl.conf.j2
+    dest: /etc/mosquitto/acl.conf
+    mode: 0440
+    owner: mosquitto
+    group: mosquitto
 
-- stat: path=/etc/mosquitto/passwords
+- stat:
+    path: /etc/mosquitto/passwords
   register: p
 
 - name: init passwords file if necessary
-  file: path=/etc/mosquitto/passwords state=touch owner=mosquitto group=mosquitto mode=0440
+  file:
+    path: /etc/mosquitto/passwords
+    state: touch
+    owner: mosquitto
+    group: mosquitto
+    mode: 0440
   when: p.stat.exists is defined and not p.stat.exists
 
 - name: update password file
@@ -28,8 +39,13 @@
   register: mosquittoconf
 
 - name: MQTT service started and enabled
-  service: name=mosquitto state=started enabled=yes
+  service:
+    name: mosquitto
+    state: started
+    enabled: "yes"
 
 - name: Restart MQTT after the configuration changed
-  service: name=mosquitto state=restarted
+  service:
+    name: mosquitto
+    state: restarted
   when: mosquittoconf|changed

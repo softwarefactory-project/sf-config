@@ -1,4 +1,7 @@
 ---
 - name: "Fetch storyboard logs"
-  synchronize: mode=pull src=/var/log/storyboard/ dest="{{ log_dest }}/log"
-  ignore_errors: True
+  synchronize:
+    mode: pull
+    src: /var/log/storyboard/
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true

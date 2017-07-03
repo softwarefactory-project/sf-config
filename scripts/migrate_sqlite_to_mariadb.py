@@ -76,7 +76,7 @@ if __name__ == '__main__':
     pull_data(MANAGESF_SQLITE_PATH_URL,
               managesf_conf.sqlalchemy['url'],
               ['users', ])
-    #pull auth mappings date from cauth
+    # pull auth mappings date from cauth
     try:
         pull_data(CAUTH_SQLITE_PATH_URL,
                   cauth_conf.sqlalchemy['url'],
