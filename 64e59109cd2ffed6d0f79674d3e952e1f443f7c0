@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_61774d03",
+        "filename": "ansible/roles/sf-nodepool3/meta/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_de43946b",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_be48d088",
         "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
         "patchSetId": 14
@@ -36,6 +54,24 @@
       "writtenOn": "2017-06-30T20:41:32Z",
       "side": 1,
       "message": "I don\u0027t have a strong opinion on this but after seeing it a few times it bothered me so I figured I would mention it. \n\nIdeally we should not be mixing syntax for improving readability.\n\nFor example, sometimes you use full YAML:\n\n    - name: Install os-client-config\n      template:\n        src: clouds.yaml.j2\n        dest: /var/lib/nodepool/.config/openstack/clouds.yaml\n        owner: nodepool\n        group: nodepool\n        mode: 0400\n\nAnd then right after you use a \"shortened\" ansible syntax, with an in-line value assignment:\n\n    # This:\n    - name: Ensure /root/.config/openstack exists\n      file: path\u003d/root/.config/openstack state\u003ddirectory\n\n    # Should read like this:\n    - name: Ensure /root/.config/openstack exists\n      file:\n        path: /root/.config/openstack\n        state: directory",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_21602535",
+        "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "I\u0027ve removed all the shortened syntax here: https://softwarefactory-project.io/r/8788",
+      "parentUuid": "9aa53dc9_be48d088",
       "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -65,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_01652144",
+        "filename": "ansible/roles/sf-zuul3/meta/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_9e5e2c44",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_7e5b6855",
         "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
         "patchSetId": 14
@@ -82,6 +136,24 @@
         "endLine": 15,
         "endChar": 58
       },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_e1591d90",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "9aa53dc9_7e5b6855",
       "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -135,6 +207,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_c15e1976",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "It\u0027s easier to directly reload or restart service because zuul-merger doesn\u0027t support reload.\n\nI fixed the when condition.",
+      "parentUuid": "9aa53dc9_fe1c1879",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_3e55e01c",
         "filename": "ansible/tasks/create_config-repo.yml",
         "patchSetId": 14
@@ -146,6 +236,24 @@
       "writtenOn": "2017-06-30T20:41:32Z",
       "side": 1,
       "message": "Good job on using the block but this feels like it should be part of another commit ?",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_a1543554",
+        "filename": "ansible/tasks/create_config-repo.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_3e55e01c",
       "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -169,6 +277,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_21eee58b",
+        "filename": "scripts/create_project_resources.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "This is actually used by the create_zuul-jobs task",
+      "parentUuid": "9aa53dc9_1e31fc0b",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_fe3538f7",
         "filename": "scripts/sf-nodepool-conf-merger.py",
         "patchSetId": 14
@@ -180,6 +306,24 @@
       "writtenOn": "2017-06-30T20:41:32Z",
       "side": 1,
       "message": "Can nodepool v2 and v3 run side by side ? Should we import nodepool and then check nodepool.__version__ or something ?",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_81513165",
+        "filename": "scripts/sf-nodepool-conf-merger.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "Nodepool v2 and v3 can\u0027t run side by side, and we shouldn\u0027t import nodepool since nodepoolv3 will be py3 only.",
+      "parentUuid": "9aa53dc9_fe3538f7",
       "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -209,6 +353,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_21c70514",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "Good point, though sfconfig doesn\u0027t support internal network over WAN. Services needs to run on the same network as the gateway. Though this could be supported, with dynamic firewalling and ssl setups.",
+      "parentUuid": "9aa53dc9_de3a74e7",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_be3fb0d5",
         "filename": "zuul-jobs/playbooks/base/post.yaml",
         "patchSetId": 14
@@ -226,6 +388,24 @@
         "endLine": 4,
         "endChar": 95
       },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_01cc0134",
+        "filename": "zuul-jobs/playbooks/base/post.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "This is kind of temporary until it\u0027s better supported in zuul. The LOGSERVER is replaced at deployment time by the correct hostname.",
+      "parentUuid": "9aa53dc9_be3fb0d5",
       "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -255,6 +435,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_e1d0fdcb",
+        "filename": "zuul-jobs/playbooks/tox/post.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_9e250cc4",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_7e2248bb",
         "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
         "patchSetId": 14
@@ -278,6 +476,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_c1d5f9b9",
+        "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "good catch.",
+      "parentUuid": "9aa53dc9_7e2248bb",
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_5e2f84a1",
         "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
         "patchSetId": 14
@@ -295,6 +511,24 @@
         "endLine": 8,
         "endChar": 36
       },
+      "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_a1db15ed",
+        "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-03T07:56:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_5e2f84a1",
       "revId": "64e59109cd2ffed6d0f79674d3e952e1f443f7c0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
