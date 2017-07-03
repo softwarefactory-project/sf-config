@@ -5,6 +5,11 @@
 
     RewriteMap base64helper "prg:/usr/local/sbin/base64helper"
 
+    # Prevent default 'password' password usage
+    <If "%{HTTP:Authorization} =~ m#^Basic (.*)$# && unbase64($1) =~ m#^.*:password$#">
+        RequestHeader unset Authorization
+    </If>
+
     # Disable caching of static files
     <LocationMatch "/static">
         CacheDisable on
@@ -73,6 +78,31 @@
         RewriteRule /r/gitweb.*$ /r/#/admin/projects/%1,branches [QSD,R,L,NE]
     </LocationMatch>
 
+    <LocationMatch "^/(api/.*|r/.*/git-(receive|upload)-pack)$">
+        # /api/ and /r/.*/git-*-pack may needs gerrit http password
+        <If "%{HTTP:Authorization} =~ m#^Basic #">
+            # Verify against managesf manage password
+            AuthType Basic
+            AuthName "Gerrit API"
+            AuthUserFile /etc/httpd/managesf_htpasswd
+            require valid-user
+
+            # If user is valid, replace password by gerrit http 'password'
+            RewriteCond %{REMOTE_USER} (.+)
+            RewriteRule .* - [E=B64:${base64helper:%{REMOTE_USER}},NE]
+            RequestHeader set Authorization "Basic %{B64}e"
+        </If>
+    </LocationMatch>
+
+    # Gerrit API fake auth requires password to set at 'password'
+    # Don't give a chance to a user to change it
+    <LocationMatch "^/r/accounts/.*/password.http">
+      <limit PUT DELETE>
+        Order Allow,Deny
+        Allow from {{ fqdn }}
+      </limit>
+    </LocationMatch>
+
 {% endif %}
 {% if 'grafana' in roles %}
     <LocationMatch "^/grafana/">
@@ -98,12 +128,12 @@
         ProxyRequests Off
 
 {% if 'gerrit' in roles %}
-        ProxyPass /r/ {{ gerrit_internal_url }} nocanon retry=0
-        ProxyPassReverse /r/ {{ gerrit_internal_url }}
+        ProxyPass /r/ {{ gerrit_internal_url }}/r/ nocanon retry=0
+        ProxyPassReverse /r/ {{ gerrit_internal_url }}/r/
 
         # Requires internal authentication in Gerrit (without SSO)
-        ProxyPass /api/ {{ gerrit_internal_url }} nocanon
-        ProxyPassReverse /api/ {{ gerrit_internal_url }}
+        ProxyPass /api/ {{ gerrit_internal_url }}/r/ nocanon
+        ProxyPassReverse /api/ {{ gerrit_internal_url }}/r/
 
 {% endif %}
 {% if 'jenkins' in roles %}
@@ -233,40 +263,6 @@
         Allow from All
         Satisfy Any
     </Location>
-
-{% endif %}
-{% if 'gerrit' in roles %}
-    <LocationMatch "^/api">
-        AuthType Basic
-        AuthName "Gerrit API"
-        AuthUserFile /etc/httpd/managesf_htpasswd
-        require valid-user
-
-        Order Allow,Deny
-        Allow from {{ fqdn }}
-
-        # Grant access based on password authentication or IP address
-        Satisfy any
-
-        # Helper to send a fake authorization header to Gerrit
-        RewriteCond %{REMOTE_USER} (.+)
-        RewriteRule .* - [E=B64:${base64helper:%{REMOTE_USER}},NE]
-        RequestHeader set Authorization "Basic %{B64}e"
-
-        # Requests from localhost get admin permission
-        RewriteCond %{REMOTE_HOST} ^.*.{{ fqdn }}$
-        RewriteRule .* - [E=B64:${base64helper:admin},NE]
-        RequestHeader set Authorization "Basic %{B64}e"
-    </LocationMatch>
-
-    # Gerrit API fake auth requires password to set at 'password'
-    # Don't give a chance to a user to change it
-    <LocationMatch "^/r/accounts/.*/password.http">
-      <limit PUT DELETE>
-        Order Allow,Deny
-        Allow from {{ fqdn }}
-      </limit>
-    </LocationMatch>
 
 {% endif %}
 {% if authentication["authenticated_only"] %}

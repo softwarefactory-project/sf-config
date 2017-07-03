@@ -12,7 +12,7 @@ role_actions:
 gerrit_port: 8000
 
 gerrit_pub_url: "https://example.com/r/"
-gerrit_internal_url: "http://localhost:{{ gerrit_port }}/r/"
+gerrit_internal_url: "http://localhost:{{ gerrit_port }}"
 
 managesf_internal_url: "http://localhost:20001"
 

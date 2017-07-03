@@ -616,7 +616,7 @@ DNS.1 = %s
     if "gerrit" in arch["roles"]:
         glue["gerrit_host"] = get_hostname("gerrit")
         glue["gerrit_pub_url"] = "%s/r/" % glue["gateway_url"]
-        glue["gerrit_internal_url"] = "http://%s:%s/r/" % (
+        glue["gerrit_internal_url"] = "http://%s:%s" % (
             get_hostname("gerrit"), defaults["gerrit_port"])
         glue["gerrit_email"] = "gerrit@%s" % sfconfig["fqdn"]
         glue["gerrit_mysql_host"] = glue["mysql_host"]
