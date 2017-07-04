@@ -34,6 +34,24 @@
       "revId": "22db898e8dd4d190bc80bb1476d98f5cdeda5996",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_178d5f31",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-04T11:43:27Z",
+      "side": 1,
+      "message": "The simplification is OK. Let\u0027s do that.\nOtherwise no after info/refs it is the query string that is not evaluated by location match.",
+      "parentUuid": "9aa53dc9_97928f56",
+      "revId": "22db898e8dd4d190bc80bb1476d98f5cdeda5996",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
