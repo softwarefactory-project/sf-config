@@ -46,8 +46,8 @@ def yaml_dump(content, fileobj):
 def save_file(content, filename):
     os.rename(filename, "%s.orig" % filename)
     yaml_dump(content, open(filename, "w"))
-    print "Updated %s (old version saved to %s)" % (filename,
-                                                    "%s.orig" % filename)
+    print("Updated %s (old version saved to %s)" % (filename,
+                                                    "%s.orig" % filename))
 
 
 def execute(argv):
@@ -795,10 +795,10 @@ DNS.1 = %s
     if "elasticsearch" in sfconfig:
         if 'heap_size' in sfconfig['elasticsearch']:
             glue['elasticsearch_heap_size'] = sfconfig[
-                    'elasticsearch']['heap_size']
+                'elasticsearch']['heap_size']
         if 'replicas' in sfconfig['elasticsearch']:
             glue['elasticsearch_replicas'] = sfconfig[
-                    'elasticsearch']['replicas']
+                'elasticsearch']['replicas']
 
     # Save secrets to new secrets file
     yaml_dump(secrets, open("%s/secrets.yaml" % args.lib, "w"))
