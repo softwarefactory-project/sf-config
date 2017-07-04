@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_d7aff792",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-04T11:23:47Z",
+      "side": 1,
+      "message": "To match that rule when I\u0027m calling:\ngit push origin master:refs/for/master\nwith origin: url \u003d https://admin:59ZvPojlhwAP@sftests.com/r/config\n\nI need:\n\u003cLocationMatch \"^/(api/.*|r/.*/(info/refs|git-(receive|upload)-pack))$\"\u003e\n\nIt seems the current rule does not work as the git client performs two calls:\nGET /r/config/info/refs?service\u003dgit-receive-pack (this one does not match due to the querystring not evaluated)\nPOST /r/config/git-receive-pack",
+      "revId": "22db898e8dd4d190bc80bb1476d98f5cdeda5996",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
