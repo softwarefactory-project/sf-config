@@ -45,6 +45,29 @@
       "revId": "64a96274aaadcdcdb1ffead23992ee458d2fcac5",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_72aa791b",
+        "filename": "zuul-jobs/zuul.d/_default-pipelines.yaml",
+        "patchSetId": 17
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-05T16:44:26Z",
+      "side": 1,
+      "message": "This make the scheduler fails when starting and loading its config.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 17
+      },
+      "revId": "64a96274aaadcdcdb1ffead23992ee458d2fcac5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
