@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_f257a9c8",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-05T09:02:47Z",
+      "side": 1,
+      "message": "print(), like that python3 flake8 works too.",
+      "revId": "bbc75e3db2d91adf76fa85e7d1bed1ed4c3e26e3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_d25ca5ef",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-05T09:02:47Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "bbc75e3db2d91adf76fa85e7d1bed1ed4c3e26e3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_b272417b",
+        "filename": "scripts/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-05T09:02:47Z",
+      "side": 1,
+      "message": "Why not adding support for directory to the --recover option?",
+      "revId": "bbc75e3db2d91adf76fa85e7d1bed1ed4c3e26e3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
