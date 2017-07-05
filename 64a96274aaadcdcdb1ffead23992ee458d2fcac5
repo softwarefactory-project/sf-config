@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_527415fc",
+        "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-05T16:13:43Z",
+      "side": 1,
+      "message": "This job is supposed to be generic as a parent for the others right ? So no nodes should be defined. It seems that if no node is defined then it run on the zuul executor.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 23
+      },
+      "revId": "64a96274aaadcdcdb1ffead23992ee458d2fcac5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_12656d44",
+        "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
+        "patchSetId": 17
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-05T16:13:43Z",
+      "side": 1,
+      "message": "Here by default this linter job will be executed on the centos-7 but better to run it locally no ?",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 17
+      },
+      "revId": "64a96274aaadcdcdb1ffead23992ee458d2fcac5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
