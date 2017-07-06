@@ -63,6 +63,13 @@ def encode_image(path):
     return base64.b64encode(open(path).read())
 
 
+def get_default(d, key, default):
+    val = d.get(key, default)
+    if not val:
+        val = default
+    return val
+
+
 def render_template(dest, template, data):
     with open(dest, "w") as out:
         loader = FileSystemLoader(os.path.dirname(template))
@@ -772,11 +779,12 @@ DNS.1 = %s
             "path": logserver["path"],
         }
         glue["logservers"].append(server)
-    glue["zuul_log_url"] = zuul_config.get(
+    glue["zuul_log_url"] = get_default(
+        zuul_config,
         "log_url",
         "%s/logs/{build.parameters[LOG_PATH]}" % glue["gateway_url"])
-    glue["zuul_default_log_site"] = zuul_config.get("default_log_site",
-                                                    "sflogs")
+    glue["zuul_default_log_site"] = get_default(
+        zuul_config, "default_log_site", "sflogs")
     glue["zuul_extra_gerrits"] = zuul_config.get("gerrit_connections", [])
 
     # Zuul known hosts
