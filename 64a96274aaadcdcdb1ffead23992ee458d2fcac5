@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_8d104050",
+        "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-06T04:41:07Z",
+      "side": 1,
+      "message": "Nodes seems to be mandatory, but it can be over-ridden by job child definitions.\n\nLet\u0027s keep it like that for now.",
+      "parentUuid": "9aa53dc9_527415fc",
+      "revId": "64a96274aaadcdcdb1ffead23992ee458d2fcac5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_12656d44",
         "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
         "patchSetId": 17
@@ -48,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_6d1dfc65",
+        "filename": "zuul-jobs/zuul.d/_base-jobs.yaml",
+        "patchSetId": 17
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-06T04:41:07Z",
+      "side": 1,
+      "message": "zuul3 doesn\u0027t support non-nodepool environment. When the nodepool drivers are merged, we\u0027ll be able to run job locally, but it will still be bound to a node label.",
+      "parentUuid": "9aa53dc9_12656d44",
+      "revId": "64a96274aaadcdcdb1ffead23992ee458d2fcac5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_72aa791b",
         "filename": "zuul-jobs/zuul.d/_default-pipelines.yaml",
         "patchSetId": 17
@@ -65,6 +101,24 @@
         "endLine": 43,
         "endChar": 17
       },
+      "revId": "64a96274aaadcdcdb1ffead23992ee458d2fcac5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_ad13045c",
+        "filename": "zuul-jobs/zuul.d/_default-pipelines.yaml",
+        "patchSetId": 17
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-06T04:41:07Z",
+      "side": 1,
+      "message": "I merged both pipeline and adds the github bits only if github is enabled.",
+      "parentUuid": "9aa53dc9_72aa791b",
       "revId": "64a96274aaadcdcdb1ffead23992ee458d2fcac5",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
