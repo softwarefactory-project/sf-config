@@ -26,7 +26,7 @@ app = {
     'root': 'managesf.controllers.root.RootController',
     'modules': ['managesf'],
     'template_path': '%(confdir)s/managesf/templates',
-    'debug': False,
+    'debug': {% if managesf_loglevel == 'DEBUG' %}True{% else %}False{% endif %},
 }
 
 logging = {
