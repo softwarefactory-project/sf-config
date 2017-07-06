@@ -179,5 +179,10 @@ api = {
             'SFZuul',
 {% endif %}
         ],
+        'jobs': [
+{% if 'zuul' in roles %}
+            'SFZuul',
+{% endif %}
+        ],
     }
 }
