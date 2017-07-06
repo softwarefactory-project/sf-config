@@ -6,9 +6,13 @@ resources:
       issue-tracker: SFStoryboard
       source-repositories:
         - config
+        - zuul-jobs
   repos:
     config:
       description: Config repository (Do not delete it)
+      acl: config-acl
+    zuul-jobs:
+      description: ZuulV3 jobs
       acl: config-acl
   acls:
     config-acl:
