@@ -26,6 +26,7 @@ required_roles = (
     "gerrit",
 )
 
+bdir = '/var/lib/software-factory/backup'
 
 def fail(msg):
     print >>sys.stderr, msg
@@ -900,24 +901,34 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                     arch)
 
 
-def extract_backup(backup_file):
-    bdir = "/var/lib/software-factory/backup"
-    if os.path.isfile("%s/.recovered" % bdir):
-        return
-    os.makedirs(bdir, 0o700)
+def extract_backup(backup):
+    if not os.path.isdir(bdir):
+        os.makedirs(bdir, 0o700)
     # Extract backup file
-    execute(["tar", "-xpf", backup_file, "-C", bdir])
+    print("Extracting the archive %s in %s" % (backup, bdir))
+    execute(["tar", "-xpf", backup, "-C", bdir])
+    print("Archive extracted")
+
+
+def copy_backup(backup):
+    if backup != bdir:
+        print("Copying the tree %s in %s" % (backup, bdir))
+        execute(["rsync", "-a", "--delete",
+                 "%s/" % backup.rstrip('/'), bdir])
+        print("Tree copied")
+
+
+def bootstrap_backup():
     # Install sfconfig and arch in place
     shutil.copy("%s/install-server/etc/software-factory/sfconfig.yaml" % bdir,
                 "/etc/software-factory/sfconfig.yaml")
-    shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" %
-                bdir,
+    shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" % bdir,
                 "/etc/software-factory/arch.yaml")
     # Copy bootstrap data
     execute(["rsync", "-a",
              "%s/install-server/var/lib/software-factory/" % bdir,
              "/var/lib/software-factory/"])
-    open("%s/.recovered" % bdir, "w").close()
+    print("Boostrap data prepared from the backup. Done.")
 
 
 def usage():
@@ -941,7 +952,8 @@ def usage():
     p.add_argument("--skip-apply", default=False, action='store_true',
                    help="Do not execute Ansible playbook")
     # special actions
-    p.add_argument("--recover", help="Deploy a backup file")
+    p.add_argument("--recover", nargs='?', const=bdir, metavar='BACKUP_PATH',
+                   help="Deploy a backup")
     p.add_argument("--disable", action='store_true', help="Turn off services")
     p.add_argument("--erase", action='store_true', help="Erase data")
     p.add_argument("--upgrade", action='store_true', help="Run upgrade task")
@@ -979,8 +991,16 @@ def main():
         # Remove previously created link to sfconfig.yaml
         os.unlink(allyaml)
 
-    if args.recover and os.path.isfile(args.recover):
-        extract_backup(args.recover)
+    if args.recover:
+        if os.path.isfile(args.recover):
+            extract_backup(args.recover)
+        elif os.path.isdir(args.recover):
+            copy_backup(args.recover)
+        else:
+            print('Backup archive or directory was not found')
+            sys.exit(1)
+
+        bootstrap_backup()
 
     # Make sure the yaml files are updated
     sfconfig = yaml_load(args.sfconfig)
