@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_eddc6c48",
+        "filename": "ansible/tasks/create_zuul-jobs.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-06T10:33:59Z",
+      "side": 1,
+      "message": "jobs-base instead",
+      "range": {
+        "startLine": 50,
+        "startChar": 80,
+        "endLine": 50,
+        "endChar": 89
+      },
+      "revId": "b113d85be76119f2a25da91825a7b608849f46d1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_4d69188b",
+        "filename": "config-repo/resources/resources.yaml",
+        "patchSetId": 19
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-06T10:33:59Z",
+      "side": 1,
+      "message": "Nits: The definition scheme will be different on a new SF and an updated one with an already existing config repo.\n\nHere with have the definition in the default resources files and stacked in the internal project but with ansible / tasks / create_zuul-jobs.yml we get a resources/_zuul-jobs.yaml. But well no worries just a remark.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "b113d85be76119f2a25da91825a7b608849f46d1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
