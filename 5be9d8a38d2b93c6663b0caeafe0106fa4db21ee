@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa53dc9_31d86e53",
+        "filename": "ansible/roles/sf-gateway/files/jobs.html",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-07T14:40:59Z",
+      "side": 1,
+      "message": "Better displaying the change number here.",
+      "range": {
+        "startLine": 77,
+        "startChar": 47,
+        "endLine": 77,
+        "endChar": 54
+      },
+      "revId": "5be9d8a38d2b93c6663b0caeafe0106fa4db21ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_11dd6a42",
+        "filename": "ansible/roles/sf-gateway/files/jobs.html",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-07-07T14:40:59Z",
+      "side": 1,
+      "message": "This can be removed IMO as we have the duration and in that case displaying the duration after start time will be better.",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 39
+      },
+      "revId": "5be9d8a38d2b93c6663b0caeafe0106fa4db21ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
