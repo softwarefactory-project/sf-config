@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "9aa53dc9_f148c689",
+        "filename": "ansible/roles/sf-gateway/files/jobs.html",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-10T01:49:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa53dc9_31d86e53",
+      "revId": "5be9d8a38d2b93c6663b0caeafe0106fa4db21ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9aa53dc9_11dd6a42",
         "filename": "ansible/roles/sf-gateway/files/jobs.html",
         "patchSetId": 5
@@ -42,6 +60,24 @@
         "endLine": 82,
         "endChar": 39
       },
+      "revId": "5be9d8a38d2b93c6663b0caeafe0106fa4db21ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_d15ee244",
+        "filename": "ansible/roles/sf-gateway/files/jobs.html",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-10T01:49:29Z",
+      "side": 1,
+      "message": "Why not removing start_time then? I think it\u0027s fine to keep these information.",
+      "parentUuid": "9aa53dc9_11dd6a42",
       "revId": "5be9d8a38d2b93c6663b0caeafe0106fa4db21ee",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
