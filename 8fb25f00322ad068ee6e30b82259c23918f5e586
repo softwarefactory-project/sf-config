@@ -22,6 +22,24 @@
       "revId": "8fb25f00322ad068ee6e30b82259c23918f5e586",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa53dc9_17267a68",
+        "filename": "ansible/roles/sf-gerrit/tasks/update.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-07-11T08:31:50Z",
+      "side": 1,
+      "message": "I think it would work by adding echo \"{{ gerrit_replication }}\" to the \u0027check upstream config\u0027 task",
+      "parentUuid": "9aa53dc9_cb8758d6",
+      "revId": "8fb25f00322ad068ee6e30b82259c23918f5e586",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
