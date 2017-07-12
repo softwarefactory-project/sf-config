@@ -1,5 +1,13 @@
     DocumentRoot /var/www/
 
+    Alias /icons/ "/usr/share/httpd/icons/"
+
+    <Directory "/usr/share/httpd/icons">
+        Options Indexes MultiViews FollowSymlinks
+	AllowOverride None
+	Require all granted
+    </Directory>
+
     RewriteEngine On
     RewriteRule ^/$ /{{ welcome_page_path }} [R]
 
@@ -179,6 +187,9 @@
 {% if 'logserver' in roles and gateway_host != logserver_host %}
         ProxyPass /logs/ http://{{ logserver_host }}/logs/
         ProxyPassReverse /logs/ http://{{ logserver_host }}/logs/
+
+        ProxyPass /logs-raw/ http://{{ logserver_host }}/logs-raw/
+        ProxyPassReverse /logs-raw/ http://{{ logserver_host }}/logs-raw/
 
 {% endif %}
         ProxyPreserveHost On
