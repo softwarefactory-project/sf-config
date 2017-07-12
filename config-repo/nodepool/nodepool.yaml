@@ -4,13 +4,14 @@ diskimages: []
 #    elements:
 #      - centos-minimal
 #      - nodepool-minimal
+#      - sf-jenkins-worker
 #      - sf-zuul-worker
 #    env-vars:
 #      DIB_CHECKSUM: '1'
 
 labels: []
-#  - name: centos-7
-#    image: centos-7
+#  - name: dib-centos-7
+#    image: dib-centos-7
 #    min-ready: 1
 #    providers:
 #      - name: default
@@ -27,7 +28,7 @@ providers: []
 #    networks:
 #      - name: slave-net-name
 #    images:
-#      - name: centos-7
+#      - name: dib-centos-7
 #        diskimage: dib-centos-7
 #        username: jenkins
 #        min-ram: 1024

@@ -1,6 +1,17 @@
 ---
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa"
 
+- name: Install jenkins/zuul public ssh key
+  copy:
+    content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
+    dest: "/var/lib/nodepool/.ssh/{{ item }}.pub"
+    mode: 0444
+    owner: nodepool
+    group: nodepool
+  with_items:
+    - jenkins_rsa
+    - zuul_rsa
+
 - name: Install config
   template:
     src: "{{ item }}.j2"

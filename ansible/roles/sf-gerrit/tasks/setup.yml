@@ -42,8 +42,8 @@
     owner: gerrit
     group: gerrit
   with_items:
-    - { name: GerritSiteHeader.html }
-    - { name: GerritSite.css }
+    - {name: GerritSiteHeader.html}
+    - {name: GerritSite.css}
 
 - name: "Check for replication.config"
   stat:

@@ -25,42 +25,42 @@
     mode: 0644
 
 - block:
-  - stat:
-      path: /root/config/gerrit/replication.config
-    register: rstat
+    - stat:
+        path: /root/config/gerrit/replication.config
+      register: rstat
 
-  - name: Check if replication.config changed
-    command: diff /root/config/gerrit/replication.config /etc/gerrit/replication.config
-    register: diffstat
-    no_log: True
-    when: rstat.stat.exists == True
-    failed_when: diffstat.rc > 1
+    - name: Check if replication.config changed
+      command: diff /root/config/gerrit/replication.config /etc/gerrit/replication.config
+      register: diffstat
+      no_log: true
+      when: rstat.stat.exists == True
+      failed_when: diffstat.rc > 1
 
-  - name: Update Gerrit replication.config
-    command: cp /root/config/gerrit/replication.config /etc/gerrit/
-    when:
-      - rstat.stat.exists == True
-      - diffstat.rc == 1
+    - name: Update Gerrit replication.config
+      command: cp /root/config/gerrit/replication.config /etc/gerrit/
+      when:
+        - rstat.stat.exists == True
+        - diffstat.rc == 1
 
-  - name: Reload the replication plugin
-    command: ssh -p 29418 admin@{{ fqdn }} gerrit plugin reload replication
-    when:
-      - rstat.stat.exists == True
-      - diffstat.rc == 1
+    - name: Reload the replication plugin
+      command: ssh -p 29418 admin@{{ fqdn }} gerrit plugin reload replication
+      when:
+        - rstat.stat.exists == True
+        - diffstat.rc == 1
 
-  - name: Restart the replication
-    command: ssh -p 29418 admin@{{ fqdn }} replication start --all
-    when:
-      - rstat.stat.exists == True
-      - diffstat.rc == 1
+    - name: Restart the replication
+      command: ssh -p 29418 admin@{{ fqdn }} replication start --all
+      when:
+        - rstat.stat.exists == True
+        - diffstat.rc == 1
   when: gerrit_replication and localconfig.stdout != upstreamconfig.stdout
 
 - block:
-  - name: Copy initial replication.config
-    copy:
-      src: replication.config
-      dest: /etc/gerrit
-      mode: 0644
+    - name: Copy initial replication.config
+      copy:
+        src: replication.config
+        dest: /etc/gerrit
+        mode: 0644
   when: not gerrit_replication and localconfig.stdout != upstreamconfig.stdout
 
 - name: Reload gerrit service

@@ -1,5 +1,13 @@
     DocumentRoot /var/www/
 
+    Alias /icons/ "/usr/share/httpd/icons/"
+
+    <Directory "/usr/share/httpd/icons">
+        Options Indexes MultiViews FollowSymlinks
+	AllowOverride None
+	Require all granted
+    </Directory>
+
     RewriteEngine On
     RewriteRule ^/$ /{{ welcome_page_path }} [R]
 
