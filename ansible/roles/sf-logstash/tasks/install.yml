@@ -9,7 +9,7 @@
 
 - name: "Install logstash package"
   yum:
-    name: logstash
+    name: "java-1.8.0-openjdk, logstash"
     state: present
     disablerepo: "*"
     enablerepo: "{{ logstash_repo_name }}"
