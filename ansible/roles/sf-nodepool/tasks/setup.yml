@@ -1,6 +1,17 @@
 ---
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=jenkins_rsa"
 
+- name: Install jenkins/zuul public ssh key
+  copy:
+    content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
+    dest: "/var/lib/nodepool/.ssh/{{ item }}.pub"
+    mode: 0444
+    owner: nodepool
+    group: nodepool
+  with_items:
+    - jenkins_rsa
+    - zuul_rsa
+
 - name: Install config
   template:
     src: "{{ item }}.j2"
@@ -52,16 +63,10 @@
     state: reloaded
     enabled: "yes"
 
-- name: Ensure /var/www/html exists
+- name: Ensure /usr/local/share/sf-jenkins-slave-tools/ exists
   file:
-    path: /var/www/html
+    path: /usr/local/share/sf-jenkins-slave-tools/
     state: directory
-
-- name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log
-  file:
-    path: /var/www/html/nodepool-log
-    src: /var/www/nodepool-log
-    state: link
 
 - name: Setup sysconfig
   template:

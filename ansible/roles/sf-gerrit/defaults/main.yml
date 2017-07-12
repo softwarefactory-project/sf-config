@@ -18,7 +18,7 @@ managesf_internal_url: "http://localhost:20001"
 
 gerrit_email: "gerrit@example.com"
 
-gerrit_replication: True
+gerrit_replication: true
 
 # Define service and admin user ssh keys to manage them
 gerrit_service_rsa: ""
