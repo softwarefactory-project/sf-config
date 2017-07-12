@@ -63,6 +63,11 @@
     src: /var/www/nodepool-log
     state: link
 
+- name: Ensure /usr/local/share/sf-jenkins-slave-tools/ exists
+  file:
+    path: /usr/local/share/sf-jenkins-slave-tools/
+    state: directory
+
 - name: Setup sysconfig
   template:
     src: sysconfig.j2
