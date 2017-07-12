@@ -1,0 +1,42 @@
+---
+description: "The softwarefactory-project.io architecture"
+inventory:
+  - ip: 192.168.240.5
+    name: managesf
+    roles:
+      - install-server
+      - mysql
+      - rabbitmq
+      - gateway
+      - managesf
+      - etherpad
+      - lodgeit
+      - gerrit
+      - gerritbot
+      - zuul-server
+      - zuul-merger
+      - zuul-launcher
+      - nodepool-launcher
+      - jenkins
+      - murmur
+      - mirror
+      - kibana
+      - cauth
+      - storyboard
+      - storyboard-webclient
+      - repoxplorer
+      - firehose
+
+  - ip: 192.168.240.6
+    name: elk
+    roles:
+      - logserver
+      - elasticsearch
+      - job-logs-gearman-client
+      - job-logs-gearman-worker
+      - logstash
+
+  - ip: 192.168.240.7
+    name: nodepool-builder
+    roles:
+      - nodepool-builder
