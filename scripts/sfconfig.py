@@ -429,8 +429,7 @@ def clean_arch(data):
             dirty = True
 
     # Remove deployments related information
-    for deploy_key in ("cpu", "disk", "mem", "hostid", "rolesname",
-                       "hostname"):
+    for deploy_key in ("cpu", "mem", "hostid", "rolesname", "hostname"):
         for host in data["inventory"]:
             if deploy_key in host:
                 del host[deploy_key]

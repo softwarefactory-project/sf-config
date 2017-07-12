@@ -2,7 +2,7 @@
 description: "All in one instance architecture"
 inventory:
   - name: managesf
-    ip: 192.168.135.101
+    ip: 192.168.0.10
     roles:
       - install-server
       - mysql
@@ -36,6 +36,3 @@ inventory:
       - hydrant
       - influxdb
       - grafana
-    mem: 8
-    cpu: 4
-    disk: 20
