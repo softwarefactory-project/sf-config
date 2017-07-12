@@ -1,0 +1,62 @@
+---
+description: "A production ready architecture"
+inventory:
+  - ip: 192.168.0.10
+    name: gateway
+    roles:
+      - install-server
+      - mysql
+      - rabbitmq
+      - gateway
+      - managesf
+      - etherpad
+      - lodgeit
+      - gerrit
+      - gerritbot
+      - zuul-server
+      - zuul-launcher
+      - nodepool
+      - jenkins
+      - murmur
+      - mirror
+      - kibana
+      - cauth
+      - storyboard
+      - storyboard-webclient
+      - repoxplorer
+      - firehose
+
+  - ip: 192.168.0.11
+    name: elk
+    roles:
+      - elasticsearch
+      - job-logs-gearman-client
+      - job-logs-gearman-worker
+      - logstash
+
+  - ip: 192.168.0.12
+    name: nb01
+    roles:
+      - nodepool-builder
+
+  - ip: 192.168.0.13
+    name: zm01
+    public_url: http://zm01.fqdn
+    roles:
+      - zuul-merger
+
+  - ip: 192.168.0.14
+    name: zm02
+    public_url: http://zm02.fqdn
+    roles:
+      - zuul-merger
+
+  - ip: 192.168.0.15
+    name: zuul3
+    public_url: http://zuul3.fqdn
+    roles:
+      - zuul3-scheduler
+      - zuul3-merger
+      - zuul3-executor
+      - nodepool3-launcher
+      - nodepool3-builder
