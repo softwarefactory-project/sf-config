@@ -3,7 +3,7 @@
 import yaml
 import argparse
 
-DEFAULT_ACL="""
+DEFAULT_ACL = """
 [access "refs/*"]
   owner = group {repo}-core
 [access "refs/heads/*"]

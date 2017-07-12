@@ -28,6 +28,7 @@ required_roles = (
 
 bdir = '/var/lib/software-factory/backup'
 
+
 def fail(msg):
     print >>sys.stderr, msg
     exit(1)
@@ -738,7 +739,6 @@ DNS.1 = %s
             "providers", [])
         get_or_generate_ssh_key("nodepool_rsa")
 
-
     if "logserver" in arch["roles"]:
         glue["logserver_host"] = get_hostname("logserver")
         glue["logservers"].append({
@@ -864,8 +864,8 @@ DNS.1 = %s
 
     if "logstash" in sfconfig:
         if 'retention_days' in sfconfig['logstash']:
-            glue['logstash_retention_days'] = sfconfig[
-                    'logstash']['retention_days']
+            glue['logstash_retention_days'] = \
+                sfconfig['logstash']['retention_days']
 
     # Extra zuul3 settings
     zuul3_config = sfconfig.get("zuul3", {})

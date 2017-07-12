@@ -22,6 +22,11 @@
     dest: /etc/httpd/conf.d/logserver.conf
   register: httpd_conf
 
+- name: Ensure /var/www/static exist
+  file:
+    path: /var/www/static
+    state: directory
+
 - name: Install index header
   copy:
     content: '<script type="text/javascript" src="/static/js/topmenu.js"></script>'
