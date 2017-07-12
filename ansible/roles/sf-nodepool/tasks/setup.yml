@@ -52,16 +52,10 @@
     state: reloaded
     enabled: "yes"
 
-- name: Ensure /var/www/html exists
+- name: Ensure /usr/local/share/sf-jenkins-slave-tools/ exists
   file:
-    path: /var/www/html
+    path: /usr/local/share/sf-jenkins-slave-tools/
     state: directory
-
-- name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log
-  file:
-    path: /var/www/html/nodepool-log
-    src: /var/www/nodepool-log
-    state: link
 
 - name: Setup sysconfig
   template:
