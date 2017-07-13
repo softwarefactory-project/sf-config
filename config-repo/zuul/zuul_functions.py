@@ -7,7 +7,9 @@ def set_node_reuse(item, job, params):
 
 
 def set_node_options(item, job, params):
-    if job.name in ('config-check', 'config-update', 'sf-mirror-update'):
+    if job.name in ('config-check', 'config-update',
+                    'sf-mirror-update',
+                    'pages-render', 'pages-update'):
         # Prevent putting master node offline
         params['OFFLINE_NODE_WHEN_COMPLETE'] = '0'
         return
