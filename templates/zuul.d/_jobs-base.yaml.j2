@@ -1,8 +1,9 @@
 ---
 - job:
     name: base
-    pre-run: base/pre
-    post-run: base/post
+    pre-run: playbooks/base/pre
+    post-run:
+      - playbooks/base/post
     roles:
       - zuul: zuul-jobs
     success-url: {{ zuul3_success_log_url }}
@@ -13,11 +14,20 @@
     nodes:
       - name: main
         label: dib-centos-7
+    # Set attempts to 1 until it's working well
+    attempts: 1
+    timeout: 1800
+
+- job:
+    name: base-test
+    parent: base
+    pre-run: playbooks/base-test/pre
+    post-run: playbooks/base-test/post
 
 - job:
     name: linters
     parent: base
-    run: linters/run
+    run: playbooks/linters/run
 
 - project:
     name: zuul-jobs

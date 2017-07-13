@@ -6,3 +6,22 @@
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   with_items: "{{ zuul3_packages }}"
+
+- block:
+    - name: "Get libpython path"
+      shell: ls /opt/rh/rh-python35/root/lib64/libpython*
+      register: libpython_files
+
+    - name: "Fix LD_LIBRARY_PATH issues with bwrap"
+      file:
+        src: "{{ item }}"
+        dest: "/usr/lib64/{{ item|basename }}"
+        state: link
+      with_items: "{{ libpython_files.stdout_lines }}"
+
+    - name: "Fix python3.5 lib64 path"
+      file:
+        src: /opt/rh/rh-python35/root/lib64/python3.5
+        dest: /usr/lib64/python3.5
+        state: link
+  when: "'zuul-executor' in zuul3_services"

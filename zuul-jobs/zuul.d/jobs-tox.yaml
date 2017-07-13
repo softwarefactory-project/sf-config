@@ -2,19 +2,20 @@
 - job:
     name: tox
     parent: base
-    post-run: tox/post
+    post-run:
+      - playbooks/tox/post
 
 - job:
     name: tox-linters
     parent: tox
-    run: tox/linters
+    run: playbooks/tox/linters
 
 - job:
     name: tox-py27
     parent: tox
-    run: tox/py27
+    run: playbooks/tox/py27
 
 - job:
     name: tox-py34
     parent: tox
-    run: tox/py34
+    run: playbooks/tox/py34
