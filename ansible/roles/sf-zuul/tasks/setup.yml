@@ -52,6 +52,44 @@
       copy:
         dest: /var/lib/zuul/defconf/arch.yaml
         content: '{{ {"roles": roles}| to_yaml }}'
+
+    - name: Ensure /var/lib/zuul/jenkins exists
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0700
+        owner: zuul
+      with_items:
+        - /var/lib/zuul/jenkins
+        - /var/lib/zuul/jenkins/secrets
+      when: "'jenkins' in roles"
+
+    - name: Fetch Jenkins Secrets on the install-server
+      command: "rsync -r {{ jenkins_host }}:/var/lib/jenkins/{{ item }} /var/lib/software-factory/jenkins/{{ item }}"
+      delegate_to: localhost
+      with_items:
+        - credentials.xml
+        - secrets/
+      when: "'jenkins' in roles"
+
+    - name: Copy Jenkins Secrets to zuul-launcher home directory
+      command: "rsync -r /var/lib/software-factory/jenkins/ {{ zuul_launcher_host }}:/var/lib/zuul/jenkins/"
+      delegate_to: localhost
+      when: "'jenkins' in roles"
+
+    - name: Ensure jenkins secrets key exists
+      file:
+        path: "/var/lib/zuul/jenkins/{{ item }}"
+        state: touch
+        owner: zuul
+        mode: 0400
+      with_items:
+        - credentials.xml
+        - secrets/master.key
+        - secrets/hudson.util.Secret
+        - secrets/org.jenkinsci.plugins.plaincredentials.impl.FileCredentialsImpl
+      when: "'jenkins' in roles"
+
   when: "'zuul-launcher' in zuul_services"
 
 - block:

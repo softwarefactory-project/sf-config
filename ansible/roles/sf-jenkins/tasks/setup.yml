@@ -33,6 +33,7 @@
     - {name: /var/lib/jenkins/defconf, mode: '0500'}
     - {name: /var/lib/jenkins/plugins}
     - {name: /var/lib/jenkins/init.groovy.d}
+    - {name: /var/lib/jenkins/secrets, mode: '0700'}
 
 - name: Install jenkins-remove-offline cron
   template:

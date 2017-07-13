@@ -18,6 +18,7 @@
     mode: 0700
   with_items:
     - /var/lib/software-factory/sql
+    - /var/lib/software-factory/jenkins
     - /var/log/software-factory
 
 - name: "system: disable DNS lookup in sshd"
