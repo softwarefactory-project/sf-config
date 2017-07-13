@@ -734,6 +734,9 @@ DNS.1 = %s
     if "zuul3-executor" in arch["roles"]:
         glue["zuul3_executor_host"] = get_hostname("zuul3-executor")
 
+    if "zuul3-web" in arch["roles"]:
+        glue["zuul3_web_host"] = get_hostname("zuul3-web")
+
     if "nodepool3" in arch["roles"]:
         glue["nodepool3_providers"] = sfconfig.get("nodepool3", {}).get(
             "providers", [])
@@ -840,6 +843,14 @@ DNS.1 = %s
                 "port": "29418",
             }
         )
+    for logserver in zuul_config.get("external_logserver", []):
+        glue["zuul_ssh_known_hosts"].append(
+            {
+                "host_packed": logserver.get("hostname", logserver["name"]),
+                "host": logserver.get("hostname", logserver["name"]),
+                "port": "22",
+            }
+        )
     for extra_gerrit in glue.get("zuul_extra_gerrits", []):
         if extra_gerrit.get("port", 29418) == 22:
             host_packed = extra_gerrit["hostname"]
@@ -851,6 +862,15 @@ DNS.1 = %s
                 "host_packed": host_packed,
                 "host": extra_gerrit["hostname"],
                 "port": extra_gerrit.get("port", 29418)
+            }
+        )
+
+    if "logserver" in arch["roles"]:
+        glue["zuul_ssh_known_hosts"].append(
+            {
+                "host_packed": glue["logserver_host"],
+                "host": glue["logserver_host"],
+                "port": 22
             }
         )
 
@@ -899,6 +919,14 @@ DNS.1 = %s
                 "host_packed": host_packed,
                 "host": extra_gerrit["hostname"],
                 "port": extra_gerrit.get("port", 29418)
+            }
+        )
+    if "logserver" in arch["roles"]:
+        glue["zuul3_ssh_known_hosts"].append(
+            {
+                "host_packed": glue["logserver_host"],
+                "host": glue["logserver_host"],
+                "port": 22
             }
         )
     for github_connection in zuul3_config.get("github_connections", []):
@@ -959,7 +987,8 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
         ensure_role_services("nodepool", ["launcher", "builder"])
         ensure_role_services("zuul", ["server", "merger", "launcher"])
         ensure_role_services("nodepool3", ["launcher", "builder"])
-        ensure_role_services("zuul3", ["scheduler", "merger", "executor"])
+        ensure_role_services("zuul3", ["scheduler", "merger", "executor",
+                                       "web"])
 
         # if firehose role is in the arch, install ochlero where needed
         if firehose:

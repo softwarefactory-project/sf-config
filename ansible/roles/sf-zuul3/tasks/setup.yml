@@ -87,6 +87,7 @@
     - scheduler-logging.conf
     - merger-logging.conf
     - executor-logging.conf
+    - web-logging.conf
   notify: restart zuul3 if already started
 
 - name: "Setup sysconfig"
