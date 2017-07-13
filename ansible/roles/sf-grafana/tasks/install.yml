@@ -12,4 +12,4 @@
     name: grafana
     state: present
     disablerepo: "*"
-    enablerepo: "{{ grafana_repo_name }}"
+    enablerepo: "{{ grafana_repo_name }},base,updates"
