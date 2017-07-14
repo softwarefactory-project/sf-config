@@ -41,6 +41,14 @@
     enabled: "yes"
   when: "'zuul-merger' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
 
+# Zuul-web doesn't support reload, restart is needed
+- name: Restart zuul-web service
+  service:
+    name: rh-python35-zuul-web
+    state: restarted
+    enabled: "yes"
+  when: "'zuul-web' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
+
 - name: Write config repo sha1 matching current configuration
   copy:
     content: "{{ upstreamconfig.stdout }}"
