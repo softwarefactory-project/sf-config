@@ -73,6 +73,21 @@
         TKTAuthLoginURL /auth/login
         TKTAuthDebug 1
         require valid-user
+
+        # Set the retlog env var if the query string starts
+        # with "back=/r/|" - '#' is replaced by '|' by cauth
+        # in order to have the full location (with hash) return
+        # in the Location header.
+        RewriteCond %{QUERY_STRING} back=/r/\| [NC]
+        RewriteRule ^.*back=/r/\|(.*)$ - [E=retloc:/r/#$1,L]
+
+        # Set the back argument content as it in retloc env var
+        RewriteCond %{QUERY_STRING} back= [NC]
+        RewriteRule ^.*back=(.*)$ - [E=retloc:$1,L]
+
+        # Set the response header Location using retloc env var
+        Header set Location "https://{{ fqdn }}%{retloc}e" env=retloc
+
     </LocationMatch>
 
     # Redirect a gerrit page that give an easy access to gitweb
