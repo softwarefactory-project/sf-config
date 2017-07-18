@@ -8,8 +8,5 @@
     rsync_opts: --relative
   with_items:
     - /var/lib/gerrit/git
-    - /etc/gerrit/replication.config
-    - /etc/gerrit/ssh_host_rsa_key.pub
-    - /etc/gerrit/ssh_host_rsa_key
     - /var/lib/gerrit/.ssh
-    - /etc/httpd/managesf_htpasswd
+    - /etc/gerrit/replication.config

@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        2.6.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -37,15 +37,21 @@ install -p -D -m 0644 defaults/logo-topmenu.png %{buildroot}%{_sysconfdir}/softw
 # /usr/share/sf-config
 install -p -d %{buildroot}%{_datarootdir}/sf-config
 mv ansible config-repo zuul-jobs defaults refarch scripts templates %{buildroot}%{_datarootdir}/sf-config/
+# /var/lib/software-factory/backup
+install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 
 %files
 /usr/local/bin/yaml-merger.py
 %{_bindir}/sfconfig*
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
+%dir %attr(0700, root, root) /var/lib/software-factory/backup
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
 %changelog
+* Tue Jul 18 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.6.0-2
+- Add /var/lib/software-factory/backup directory creation
+
 * Mon Jul 03 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.6.0-1
 - Symlink sfconfig.py and sfconfig to support smooth transition
 

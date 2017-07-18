@@ -4,3 +4,15 @@
   synchronize:
     src: "{{ backup_src }}/"
     dest: /
+
+- name: "Restore files ownership"
+  file:
+    path: "{{ item.path }}"
+    owner: "jenkins"
+    group: "jenkins"
+    recurse: "{{ item.recurse|default('yes') }}"
+    state: "{{ item.state|default('directory') }}"
+  with_items:
+    - {path: "/var/lib/jenkins/jobs"}
+    - {path: "/var/lib/jenkins/secrets"}
+    - {path: "/var/lib/jenkins/credentials.xml", state: "file", recurse: "no"}
