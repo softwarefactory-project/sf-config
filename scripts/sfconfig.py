@@ -1051,12 +1051,13 @@ def copy_backup(backup):
         print("Tree copied")
 
 
-def bootstrap_backup():
+def bootstrap_backup(use_new_arch=False):
     # Install sfconfig and arch in place
     shutil.copy("%s/install-server/etc/software-factory/sfconfig.yaml" % bdir,
                 "/etc/software-factory/sfconfig.yaml")
-    shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" %
-                bdir, "/etc/software-factory/arch.yaml")
+    if not use_new_arch:
+        shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" %
+                    bdir, "/etc/software-factory/arch.yaml")
     # Copy bootstrap data
     execute(["rsync", "-a",
              "%s/install-server/var/lib/software-factory/" % bdir,
@@ -1090,6 +1091,8 @@ def usage():
     # special actions
     p.add_argument("--recover", nargs='?', const=bdir, metavar='BACKUP_PATH',
                    help="Deploy a backup")
+    p.add_argument("--use-new-arch", action='store_true',
+                   help="When restoring a backup, keep the arch setup by heat")
     p.add_argument("--disable", action='store_true', help="Turn off services")
     p.add_argument("--erase", action='store_true', help="Erase data")
     p.add_argument("--upgrade", action='store_true', help="Run upgrade task")
@@ -1136,7 +1139,7 @@ def main():
             print('Backup archive or directory was not found')
             sys.exit(1)
 
-        bootstrap_backup()
+        bootstrap_backup(args.use_new_arch)
 
     # Make sure the yaml files are updated
     sfconfig = yaml_load(args.sfconfig)
@@ -1146,7 +1149,7 @@ def main():
     if clean_arch(sfarch):
         save_file(sfarch, args.arch)
 
-    if args.recover and len(sfarch["inventory"]) > 1:
+    if not args.use_new_arch and args.recover and len(sfarch["inventory"]) > 1:
         print("Make sure ip addresses in %s are correct" % args.arch)
         raw_input("Press enter to continue")
 
@@ -1173,15 +1176,15 @@ def main():
     if args.erase:
         return execute(["ansible-playbook",
                         "/var/lib/software-factory/ansible/sf_erase.yml"])
-    if not args.skip_apply and args.recover:
-        execute(["ansible-playbook",
-                 "/var/lib/software-factory/ansible/sf_recover.yml"])
     if not args.skip_apply and args.upgrade:
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_upgrade.yml"])
     if not args.skip_install:
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_install.yml"])
+    if not args.skip_apply and args.recover:
+        execute(["ansible-playbook",
+                 "/var/lib/software-factory/ansible/sf_recover.yml"])
     if not args.skip_setup:
         execute(["ansible-playbook",
                  "/var/lib/software-factory/ansible/sf_setup.yml"])

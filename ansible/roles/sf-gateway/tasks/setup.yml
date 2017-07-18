@@ -19,6 +19,7 @@
     - /var/www/sf
     - /var/www/dashboard
     - /var/www/dashboards_data
+    - /etc/letsencrypt
 
 - name: "Install sf-update-dashboard command"
   copy:

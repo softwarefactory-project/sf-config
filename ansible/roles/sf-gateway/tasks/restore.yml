@@ -6,8 +6,7 @@
 
 - name: "Restore files ownership"
   file:
-    path: "/var/www/html/pages"
-    owner: "pagesuser"
-    group: "apache"
-    recurse: "yes"
-    state: "directory"
+    path: "/etc/httpd/managesf_htpasswd"
+    owner: "managesf"
+    group: "gerrit"
+    mode: "0640"
