@@ -3,3 +3,11 @@
   synchronize:
     src: "{{ backup_src }}/"
     dest: /
+
+- name: "Restore files ownership"
+  file:
+    path: "/var/lib/zookeeper/version-2"
+    owner: "zookeeper"
+    group: "zookeeper"
+    recurse: "yes"
+    state: "directory"

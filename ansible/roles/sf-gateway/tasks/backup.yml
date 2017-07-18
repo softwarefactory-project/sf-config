@@ -7,6 +7,5 @@
     delete: "yes"
     rsync_opts: --relative
   with_items:
-    - /var/lib/jenkins/jobs
-    - /var/lib/jenkins/credentials.xml
-    - /var/lib/jenkins/secrets
+    - /etc/letsencrypt/
+    - /etc/httpd/managesf_htpasswd

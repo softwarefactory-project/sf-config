@@ -3,3 +3,11 @@
   synchronize:
     src: "{{ backup_src }}/"
     dest: /
+
+- name: "Restore files ownership"
+  file:
+    path: "/var/www/logs"
+    owner: "loguser"
+    group: "loguser"
+    recurse: "yes"
+    state: "directory"

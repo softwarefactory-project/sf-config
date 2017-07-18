@@ -5,6 +5,8 @@ role_actions:
   - setup
   - get_logs
   - disable
+  - backup
+  - restore
 
 gateway_host: localhost
 nodepool_builder_host: ""
