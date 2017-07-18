@@ -1,5 +1,24 @@
 ---
 - stat:
+    path: /root/config/zuulV3
+  register: zuulv3_config_dir
+
+- block:
+    - name: Create defalut zuulV3 config
+      command: "{{ item }}"
+      args:
+        chdir: /root/config
+      with_items:
+        - git fetch --all
+        - git reset --hard origin/master --
+        - git clean -f -x -d
+        - cp -R /usr/share/sf-config/config-repo/zuulV3/ .
+        - git add zuulV3
+        - git commit -m 'Add zuulV3 configuration'
+        - git push git+ssh://gerrit/config master
+  when: zuulv3_config_dir.stat.exists != True
+
+- stat:
     path: /root/zuul-jobs
   register: zuul_jobs_done
 
