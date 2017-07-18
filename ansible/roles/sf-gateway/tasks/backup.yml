@@ -7,5 +7,5 @@
     delete: "yes"
     rsync_opts: --relative
   with_items:
-    - /var/lib/gerrit/git
-    - /var/lib/gerrit/.ssh
+    - /etc/letsencrypt/
+    - /etc/httpd/managesf_htpasswd

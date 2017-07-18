@@ -12,3 +12,14 @@
   synchronize:
     src: "{{ backup_src }}/"
     dest: /
+
+- name: "Restore files ownership"
+  file:
+    path: "{{ item }}"
+    owner: "gerrit"
+    group: "gerrit"
+    recurse: "yes"
+    state: "directory"
+  with_items:
+    - /var/lib/gerrit/git
+    - /var/lib/gerrit/.ssh

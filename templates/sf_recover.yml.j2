@@ -5,6 +5,14 @@
     - name: "Signal journald"
       command: "logger sf_recover.yml: started"
 
+    - name: "Ensure role directory exists"
+      file: path="/var/lib/software-factory/backup/{{'{{'}} item {{'}}'}}" state=directory
+      with_items:
+{% for host in inventory %}{% for role in host['rolesname'] %}
+        - {{ role|replace('sf-', '') }}
+{% endfor %}{% endfor %}
+
+
 # Start mysql
 - hosts: mysql
   tasks:

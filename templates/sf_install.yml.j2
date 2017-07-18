@@ -10,6 +10,13 @@
     - {name: "sf-telegraf", action: "install"}
 {% endif %}
 
+# Install lecm if needed
+- hosts: gateway
+  roles:
+    - name: "sf-lecm"
+      action: "install"
+      when: "network.use_letsencrypt"
+
 # Install all components
 {% for host in inventory %}
 - hosts: {{ host['hostname'] }}
