@@ -1007,10 +1007,12 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
         ensure_role_services("zuul3", ["scheduler", "merger", "executor",
                                        "web"])
 
-        # if firehose role is in the arch, install ochlero where needed
+        # if firehose role is in the arch, install publishers where needed
         if firehose:
-            if "zuul" in host["roles"] or "nodepool" in host["roles"]:
+            if "zuul" in host["roles"] or "nodepool" in host["roles"] or "zuul3" in host["roles"]:
                 host["rolesname"].append("sf-ochlero")
+            if "gerrit" in host["roles"]:
+                host["rolesname"].append("sf-germqtt")
 
     # Check for conflicts
     for conflict in (("nodepool3", "nodepool"), ("zuul3", "zuul")):
@@ -1019,6 +1021,10 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 raise RuntimeError("%s: can't install both %s and %s" % (
                     host["hostname"], conflict[0], conflict[1]
                 ))
+    if 'hydrant' in arch["roles"] and not firehose:
+        raise RuntimeError("'hydrant' role needs 'firehose'")
+    if 'hydrant' in arch["roles"] and 'elasticsearch' not in arch["roles"]:
+        raise RuntimeError("'hydrant' role needs 'elasticsearch'")
 
     templates = "%s/templates" % share
 
