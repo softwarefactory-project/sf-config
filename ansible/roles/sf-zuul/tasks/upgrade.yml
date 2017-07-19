@@ -7,3 +7,8 @@
         enabled: "no"
       ignore_errors: "yes"
   when: sf_previous_version == "2.5.0"
+
+- name: Ensure state is removed
+  file:
+    path: /var/lib/software-factory/state/zuul_config
+    state: absent
