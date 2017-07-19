@@ -1019,6 +1019,10 @@ def generate_inventory_and_playbooks(arch, ansible_root, share):
                 raise RuntimeError("%s: can't install both %s and %s" % (
                     host["hostname"], conflict[0], conflict[1]
                 ))
+    if 'hydrant' in arch["roles"] and not firehose:
+        raise RuntimeError("'hydrant' role needs 'firehose'")
+    if 'hydrant' in arch["roles"] and 'elasticsearch' not in arch["roles"]:
+        raise RuntimeError("'hydrant' role needs 'elasticsearch'")
 
     templates = "%s/templates" % share
 
