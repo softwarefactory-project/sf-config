@@ -41,3 +41,6 @@ zuul_gear_loglevel: WARNING
 zuul_root_loglevel: WARNING
 
 zuul_log_url: "{{ gateway_url }}/logs/{build.parameters[LOG_PATH]}"
+
+# Enable zuul jenkins credencials support
+zuul_jenkins_credencials: true
