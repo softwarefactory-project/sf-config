@@ -676,6 +676,7 @@ DNS.1 = %s
                 len(sfconfig["nodepool"]["providers"]) == 1 and
                 not sfconfig["nodepool"]["providers"][0]["auth_url"])):
             glue["zuul_offline_node_when_complete"] = False
+        get_or_generate_ssh_key("jenkins_rsa")
         glue["zuul_pub_url"] = "%s/zuul/" % glue["gateway_url"]
         glue["zuul_internal_url"] = "http://%s:%s/" % (
             get_hostname("zuul-server"), defaults["zuul_port"])
