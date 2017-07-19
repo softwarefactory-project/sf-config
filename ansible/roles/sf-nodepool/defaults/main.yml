@@ -40,3 +40,5 @@ nodepool_mysql_user: "nodepool"
 nodepool_mysql_password: "CHANGE_ME"
 
 nodepool_disable_providers: false
+
+nodepool_zuul_launcher_target: true
