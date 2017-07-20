@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Jenkins service is automatically disabled and no longer supported.

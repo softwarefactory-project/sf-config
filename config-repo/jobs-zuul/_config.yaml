@@ -14,8 +14,6 @@
           cp ~zuul/defconf/repoxplorer.py build/repoxplorer/config.py
 
           cd config
-          echo "[+] Checking jobs"
-          jenkins-jobs test jobs/ -o ../build/
 
           echo "[+] Checking zuul"
           /usr/share/sf-config/scripts/yaml-merger.py zuul | tee ../build/zuul/layout.yaml
