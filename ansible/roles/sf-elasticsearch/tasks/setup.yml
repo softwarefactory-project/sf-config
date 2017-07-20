@@ -47,3 +47,9 @@
     state: restarted
     enabled: "yes"
   when: listenaddr|changed or heapsize|changed or replicas|changed
+- name: Start service
+  systemd:
+    name: elasticsearch
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"

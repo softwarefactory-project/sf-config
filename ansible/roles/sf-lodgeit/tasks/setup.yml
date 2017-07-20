@@ -37,3 +37,10 @@
     dest: /var/www/static/lodgeit
     src: /usr/lib/python2.7/site-packages/lodgeit/static
     state: link
+
+- name: Start service
+  systemd:
+    name: lodgeit
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
