@@ -15,5 +15,6 @@
     - /etc/software-factory/logo-topmenu.png
     - /etc/software-factory/logo-favicon.ico
     - /var/lib/software-factory/bootstrap-data
+    - /var/lib/software-factory/jenkins
     - /root/config
     - /etc/software-factory/arch-backup.yaml
