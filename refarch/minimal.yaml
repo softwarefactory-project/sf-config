@@ -16,4 +16,3 @@ inventory:
       - zuul-launcher
       - zuul-merger
       - nodepool-launcher
-      - jenkins

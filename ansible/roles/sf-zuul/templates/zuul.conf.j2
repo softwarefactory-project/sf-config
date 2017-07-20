@@ -30,7 +30,7 @@ jenkins_jobs=/etc/zuul/jobs/
 workspace_root=/var/lib/zuul/jobs/
 private_key_file=/var/lib/zuul/.ssh/id_rsa
 username=zuul
-{% if 'jenkins' in roles or zuul_jenkins_credencials %}
+{% if zuul_jenkins_credencials %}
 jenkins_secrets=/var/lib/zuul/jenkins/
 {% endif %}
 

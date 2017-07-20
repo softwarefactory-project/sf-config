@@ -400,6 +400,10 @@ def update_sfconfig(data, args):
             args.disable_external_resources
         dirty = True
 
+    if "allowed_proxy_prefixes" in data['authentication']:
+        del data['authentication']['allowed_proxy_prefixed']
+        dirty = True
+
     return dirty
 
 
@@ -420,6 +424,10 @@ def clean_arch(data):
             host['roles'].remove('nodepool')
             host['roles'].append('nodepool-launcher')
             dirty = True
+        # Remove jenkins
+        if 'jenkins' in host['roles']:
+            host['roles'].remove('jenkins')
+
     # Remove data added *IN-PLACE* by utils_refarch
     # Those are now saved in _arch.yaml instead
     for dynamic_key in ("domain", "gateway", "gateway_ip", "install",
@@ -659,17 +667,6 @@ DNS.1 = %s
         if sfconfig["network"]["disable_external_resources"]:
             glue["gerrit_replication"] = False
 
-    if "jenkins" in arch["roles"]:
-        glue["jenkins_host"] = get_hostname("jenkins")
-        glue["jenkins_internal_url"] = "http://%s:%s/jenkins/" % (
-            get_hostname("jenkins"), defaults["jenkins_http_port"])
-        glue["jenkins_api_url"] = "http://%s:%s/jenkins/" % (
-            get_hostname("jenkins"), defaults["jenkins_api_port"])
-        glue["jenkins_pub_url"] = "%s/jenkins/" % glue["gateway_url"]
-        get_or_generate_ssh_key("jenkins_rsa")
-        glue["jobs_zmq_publishers"].append(
-            "tcp://%s:8889" % glue["jenkins_host"])
-
     if "zuul" in arch["roles"]:
         if ("nodepool" not in arch["roles"] or
             len(sfconfig["nodepool"].get("providers", [])) == 0 or (
@@ -699,6 +696,7 @@ DNS.1 = %s
     if "nodepool" in arch["roles"]:
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
         glue["nodepool_mysql_host"] = glue["mysql_host"]
+        get_or_generate_ssh_key("nodepool_rsa")
         glue["mysql_databases"]["nodepool"] = {
             'hosts': ["localhost", get_hostname("nodepool-launcher")],
             'user': 'nodepool',

@@ -20,7 +20,6 @@ inventory:
       - zuul-launcher
       - nodepool-launcher
       - nodepool-builder
-      - jenkins
       - murmur
       - elasticsearch
       - job-logs-gearman-client

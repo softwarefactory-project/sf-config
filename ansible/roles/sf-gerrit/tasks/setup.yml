@@ -63,7 +63,6 @@
     dest: "/var/lib/software-factory/sql/{{ item }}"
   with_items:
     - gerrit-firstuser-init.sql
-    - gerrit-restore-user-keys.sql
 
 - name: "Add monit service check"
   copy:
@@ -143,13 +142,11 @@
   shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'
   when: gerrit_allprojects.stat.exists == False
 
-- name: "Add jenkins user"
+- name: "Add jenkins user (zuul-launcher)"
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "jenkins" "ssh-rsa {{ jenkins_rsa_pub.split()[1] }}" "jenkins@{{ fqdn }}"
-  when:
-    - '"jenkins" in roles'
-    - 'gerrit_allprojects.stat.exists == False'
+  when: gerrit_allprojects.stat.exists == False
 
-- name: "Add zuul user"
+- name: "Add zuul user (zuulv3)"
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
   when: gerrit_allprojects.stat.exists == False
 

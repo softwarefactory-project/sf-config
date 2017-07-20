@@ -36,17 +36,6 @@ authentication:
   # Enforce authentication for all services (such as etherpad and pastebin that doesn't require authentication by default)
   authenticated_only: false
 
-  # Allowed URLs or URL prefixes that are accessible via the gateway This can
-  # be used to ensure only authenticated users access the Jenkins logs on the
-  # slaves. In this case the Jenkins slaves must be accessible only from the
-  # gateway.
-  # Can be either full domains or only prefixes, for example to allow
-  # IP-ranges
-  allowed_proxy_prefixes:
-    - "198.154.188."
-    - "127.0.0.1"
-    - "sftests.com"
-
   ldap:
     disabled: true
     ldap_url: ldap://sftests.com

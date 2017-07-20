@@ -20,6 +20,19 @@
 {% endfor %}
 {% endif %}{% endfor %}
 
+    - block:
+        # Ensure jenkins is removed
+        - name: "Remove jenkins package"
+          yum:
+    	    name: jenkins
+	    state: absent
+          ignore_errors: yes
+
+        - name: "Remove jenkins directory"
+          file:
+	    path: /var/lib/jenkins
+	    state: absent
+      when: sf_previous_version == "2.6.0"
 {% endfor %}
 
 # Push config-repo changes now
@@ -38,7 +51,6 @@
       with_items:
         - { src: /usr/share/sf-config/templates/_macros.yaml.j2, dest: jobs-zuul/_macros.yaml }
         - { src: /usr/share/sf-config/config-repo/jobs-zuul/_config.yaml,  dest: jobs-zuul/_config.yaml }
-        - { src: /usr/share/sf-config/templates/_default_jobs.yaml.j2, dest: jobs/_default_jobs.yaml }
         - { src: /usr/share/sf-config/config-repo/zuul/_layout.yaml, dest: zuul/_layout.yaml }
       register: config_repo_status
 
@@ -78,7 +90,6 @@
       yum:
         name: "*"
         state: latest
-        exclude: jenkins
         disablerepo: '{{'{{'}} yum_disable_repo|default(omit) {{'}}'}}'
         enablerepo: '{{'{{'}} yum_enable_repo|default(omit) {{'}}'}}'
 
