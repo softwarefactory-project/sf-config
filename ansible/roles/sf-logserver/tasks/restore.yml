@@ -1,4 +1,7 @@
 ---
+- name: Create user
+  include: "{{ sf_tasks_dir }}/create_user.yml user_name=loguser shell=/bin/sh"
+
 - name: "Restore data"
   synchronize:
     src: "{{ backup_src }}/"
