@@ -16,3 +16,10 @@
     - {path: "/var/lib/jenkins/jobs"}
     - {path: "/var/lib/jenkins/secrets"}
     - {path: "/var/lib/jenkins/credentials.xml", state: "file", recurse: "no"}
+
+- name: "Ensure /var/lib/jenkins is owned by jenkins"
+  file:
+    path: /var/lib/jenkins
+    owner: jenkins
+    group: jenkins
+    state: directory
