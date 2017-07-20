@@ -22,7 +22,14 @@
       with_items:
         - /etc/httpd/conf.d/zuul.conf
         - /etc/httpd/conf.d/zuul-merger.conf
-        - /var/lib/zuul
+        - /var/lib/zuul/ansible
+        - /var/lib/zuul/git
+        - /var/lib/zuul/jenkins
+        - /var/lib/zuul/times
+        - /var/lib/zuul/jobs/config-check
+        - /var/lib/zuul/jobs/config-update
+        - /var/lib/zuul/.ssh/known_hosts
+        - /var/lib/zuul/.ssh/authorized_keys
         - /etc/zuul
 
     - name: Remove packages
