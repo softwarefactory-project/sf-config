@@ -23,3 +23,10 @@
   with_items:
     - /var/lib/gerrit/git
     - /var/lib/gerrit/.ssh
+
+- name: "Ensure /var/lib/gerrit is owned by gerrit"
+  file:
+    path: /var/lib/gerrit
+    owner: gerrit
+    group: gerrit
+    state: directory
