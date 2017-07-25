@@ -1,7 +1,7 @@
 ---
 - name: Disable services
   service:
-    name: "{{ item }}"
+    name: "rh-python35-{{ item }}"
     state: stopped
     enabled: "no"
   with_items: "{{ zuul3_services }}"
@@ -16,11 +16,10 @@
         - /etc/httpd/conf.d/zuul3.conf
         - "{{ zuul3_conf_dir }}"
         - "{{ zuul3_lib_dir }}"
-        - "{{ zuul3_log_dir }}"
 
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
-      with_items: "{{ zuul3_packages }}"
+      with_items: "{{ zuul3_scheduler_packages }} + {{ zuul3_merger_packages }} + {{ zuul3_executor_packages }} + {{ zuul3_web_packages }}"
   when: erase == True

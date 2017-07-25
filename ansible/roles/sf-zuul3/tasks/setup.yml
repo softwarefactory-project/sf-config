@@ -1,7 +1,7 @@
 ---
 # Use 0751 to let apache access {{ zuul3_lib_dir }}/git
 # Use /bin/sh shell to allow zuul to connect to localhost for config-update jobs
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul3_lib_dir }} home_dir_mode=0751 shell=/bin/sh"
+- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul3_lib_dir }} home_dir_mode=0751 shell=/bin/sh update_user=no"
 
 - name: Apply selinux port labelling
   seport:
@@ -50,6 +50,30 @@
         src: zuul.index.html
         dest: /var/www/zuul3/index.html
         mode: 0444
+
+    - name: Pre-Create zuul-jobs rsa key
+      become: yes
+      become_user: zuul
+      command: |
+        /opt/rh/rh-python35/root/bin/python -c 'import zuul.configloader
+        import zuul.lib.encryption
+        class ZuulJobs: pass
+        project = ZuulJobs()
+        project.name = "zuul-jobs"
+        project.private_key_file = "{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pem"
+        zuul.configloader.TenantParser._generateKeys(project)
+        zuul.configloader.TenantParser._loadKeys(project)
+        pub = open("{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pub", "w")
+        pub.write(zuul.lib.encryption.serialize_rsa_public_key(project.public_key).decode("utf-8"))
+        pub.close()'
+      args:
+        creates: "{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pub"
+
+    - name: Fetch zuul-jobs pub key on install-server
+      fetch:
+        flat: yes
+        src: "{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pub"
+        dest: "/var/lib/software-factory/certs/zuul-jobs.pub"
   when: "'zuul-scheduler' in zuul3_services"
 
 - block:
@@ -78,6 +102,24 @@
       when: item.stdout == ""
   when: "'zuul-scheduler' in zuul3_services or 'zuul-merger' in zuul3_services"
 
+- block:
+    - name: "Setup ssh-keys directory"
+      file:
+        path: "{{ zuul3_conf_dir }}/ssh_keys"
+        state: directory
+        owner: zuul
+        group: zuul
+        mode: 0500
+
+    - name: "Copy logserver ssh key"
+      copy:
+        content: "{{ zuul_logserver_rsa }}"
+        dest: "{{ zuul3_conf_dir }}/ssh_keys/logserver_rsa"
+        mode: 0400
+        owner: zuul
+        group: zuul
+  when: "'zuul-executor' in zuul3_services"
+
 - name: "Setup configuration"
   template:
     src: "{{ item }}.j2"
@@ -93,7 +135,7 @@
 - name: "Setup sysconfig"
   template:
     src: sysconfig.j2
-    dest: "{{ zuul3_sysconfig}}"
+    dest: "{{ zuul3_sysconfig }}"
   notify: restart zuul3 if already started
 
 - name: "Setup configuration"
@@ -103,3 +145,20 @@
     mode: 0440
     group: zuul
   notify: restart zuul3 if already started
+
+- block:
+    - name: "Check if scheduler is running"
+      command: systemctl is-active "rh-python35-zuul-scheduler"
+      register: zuul_scheduler_service_running
+      failed_when: zuul_scheduler_service_running.rc not in [0, 3]
+
+    - name: "Manually create database to avoid concurrency issue"
+      command: |
+        /opt/rh/rh-python35/root/bin/python -c 'import zuul.cmd
+        import configparser
+        app = zuul.cmd.ZuulApp()
+        app.config = configparser.ConfigParser()
+        app.config.read("{{ zuul3_conf_dir }}/zuul.conf")
+        app.configure_connections()'
+      when: zuul_scheduler_service_running.rc == 3
+  when: "'zuul-scheduler' in zuul3_services"
