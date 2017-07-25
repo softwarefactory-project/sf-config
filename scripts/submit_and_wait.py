@@ -15,7 +15,7 @@ import sys
 
 def execute(cmd):
     if globals()['debug']:
-        print "Debug: execute: %s" % cmd
+        print("Debug: execute: %s" % cmd)
     p = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     if p.wait():
         fail(p.stdout.read())
@@ -32,7 +32,8 @@ def get_ci_verify_vote(json_object):
             u'approvals' not in json_object[u'currentPatchSet']):
         return None
     for a in json_object[u'currentPatchSet'][u'approvals']:
-        if a[u'by'][u'name'] == 'Jenkins CI' and a[u"type"] == "Verified":
+        if a[u'by'][u'name'] in ('Jenkins CI', 'Zuul CI') and \
+           a[u"type"] == "Verified":
             return int(a[u'value'])
 
 
