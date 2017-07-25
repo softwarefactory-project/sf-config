@@ -19,14 +19,16 @@ class Zuul3Scheduler(Component):
     require_role = ["nodepool3", "zookeeper"]
 
     def configure(self, args, host):
-        args.glue["zuul3_pub_url"] = "%s/zuul3/" % args.glue["gateway_url"]
         args.glue["zuul3_host"] = args.glue["zuul3_scheduler_host"]
+        self.add_mysql_database(args, "zuul3")
+        self.get_or_generate_ssh_key(args, "zuul_rsa")
+        self.get_or_generate_ssh_key(args, "zuul_logserver_rsa")
+        args.glue["zuul3_pub_url"] = "%s/zuul3/" % args.glue["gateway_url"]
         args.glue["zuul3_internal_url"] = "http://%s:%s/" % (
             args.glue["zuul3_host"], args.defaults["zuul3_port"])
         args.glue["zuul3_mysql_host"] = args.glue["mysql_host"]
-        args.glue["loguser_authorized_keys"].append(args.glue["zuul_rsa_pub"])
-        self.add_mysql_database(args, "zuul3")
-        self.get_or_generate_ssh_key(args, "zuul_rsa")
+        args.glue["loguser_authorized_keys"].append(
+            args.glue["zuul_logserver_rsa_pub"])
 
         # Extra settings
         zuul3_config = args.sfconfig.get("zuul3", {})
@@ -77,3 +79,12 @@ class Zuul3Scheduler(Component):
                 "port": github_connection.get("port", 22)
             })
             args.glue["zuul3_github_connections"].append(github_connection)
+
+
+class Zuul3Web(Component):
+    role = "zuul3-web"
+    require_role = ["zuul3-scheduler"]
+
+    def configure(self, args, host):
+        args.glue["zuul3_web_url"] = "%s:%s" % (
+            args.glue["zuul3_web_host"], args.defaults["zuul3_web_port"])
