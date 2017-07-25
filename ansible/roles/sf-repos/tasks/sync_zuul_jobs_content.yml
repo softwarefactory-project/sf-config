@@ -1,0 +1,95 @@
+---
+- name: Ensure zuul-jobs sub dir
+  file:
+    path: "{{ zuul_jobs_clone_dir }}/{{ item }}"
+    state: directory
+  with_items:
+    - zuul.d
+    - playbooks
+    - playbooks/base
+    - playbooks/base-test
+    - roles
+
+- name: Sync static files
+  synchronize:
+    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/zuul-jobs/{{ item }}/"
+    dest: "{{ zuul_jobs_clone_dir }}/{{ item }}/"
+    archive: no
+    times: no
+    checksum: yes
+    delete: yes
+    perms: yes
+    recursive: yes
+  with_items:
+    - playbooks/linters
+    - roles/lint-bashate
+    - roles/lint-flake8
+    - roles/lint-yaml
+  register: _static_files
+
+- name: Sync upstream files
+  synchronize:
+    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/upstream-jobs/{{ item }}/"
+    dest: "{{ zuul_jobs_clone_dir }}/{{ item }}/"
+    archive: no
+    times: no
+    checksum: yes
+    delete: yes
+    perms: yes
+    recursive: yes
+  with_items:
+    - playbooks/python
+    - playbooks/tox
+    - playbooks/unittests
+    - roles/add-build-sshkey
+    - roles/add-fileserver
+    - roles/bindep
+    - roles/emit-ara-html
+    - roles/prepare-workspace
+    - roles/revoke-sudo
+    - roles/test-setup
+    - roles/upload-logs
+    - roles/validate-host
+  register: _upstream_files
+
+- name: Apply templates
+  template:
+    src: "zuul-jobs/{{ item }}.j2"
+    dest: "{{ zuul_jobs_clone_dir }}/{{ item }}"
+  with_items:
+    - "zuul.d/_jobs-base.yaml"
+    - "zuul.d/_pipelines.yaml"
+    - "playbooks/base/pre.yaml"
+    - "playbooks/base/post.yaml"
+    - "playbooks/base-test/pre.yaml"
+    - "playbooks/base-test/post.yaml"
+  register: _templated_files
+
+- name: Check for _sflogs_secrets file
+  stat:
+    path: "{{ zuul_jobs_clone_dir }}/zuul.d/_sflogs_secrets.yaml"
+  register: sflogs_secrets
+
+- name: "Generate sflogs ssh_private_key secret"
+  command: >
+    /usr/share/sf-config/scripts/zuul3-encrypt-secret.py \
+        /var/lib/software-factory/certs/zuul-jobs.pub ssh_private_key \
+        --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_rsa
+  register: sflogs_private_key_secret
+  when: not sflogs_secrets.stat.exists
+
+- name: Update sflogs_secrets.yaml
+  template:
+    src: "zuul-jobs/zuul.d/_sflogs_secrets.yaml.j2"
+    dest: "{{ zuul_jobs_clone_dir }}/zuul.d/_sflogs_secrets.yaml"
+  when: not sflogs_secrets.stat.exists
+
+- name: "Indicate configuration changed"
+  set_fact:
+    zuul_conf_updated: true
+  when: _static_files|changed or _upstream_files|changed or _templated_files|changed or not sflogs_secrets.stat.exists
+
+- name: "Indicate configuration didn't changed"
+  set_fact:
+    zuul_conf_updated: false
+  when: not _static_files|changed and not _upstream_files|changed and not _templated_files|changed and sflogs_secrets.stat.exists

@@ -1,5 +1,0 @@
----
-- name: Run tox
-  command: "tox -vv -e{{ envlist }}"
-  args:
-    chdir: "{{ zuul_workspace_root }}/src/{{ zuul.project.canonical_name }}"

@@ -4,7 +4,7 @@
   register: zuulv3_config_dir
 
 - block:
-    - name: Create default zuulV3 config
+    - name: Reset config repo
       command: "{{ item }}"
       args:
         chdir: /root/config
@@ -14,7 +14,7 @@
         - git clean -f -x -d
         - cp -R /usr/share/sf-config/ansible/roles/sf-repos/files/config/zuulV3/ .
         - git add zuulV3
-        - git commit -m 'Add zuulV3 configuration'
+        - git commit -m 'Add zuulV3 configuration directory'
         - git push git+ssh://gerrit/config master
   when: zuulv3_config_dir.stat.exists != True
 
@@ -69,34 +69,26 @@
       command: mktemp -d
       register: jobs_tmp
 
+    - set_fact:
+        zuul_jobs_clone_dir: "{{ jobs_tmp.stdout }}"
+
     - name: Clone the zuul-jobs repository
       git:
         repo: git+ssh://gerrit/zuul-jobs
-        dest: "{{ jobs_tmp.stdout }}"
+        dest: "{{ zuul_jobs_clone_dir }}"
 
-    - name: Sync /usr/share/sf-config/zuul-jobs
-      command: "rsync -a /usr/share/sf-config/zuul-jobs/ {{ jobs_tmp.stdout }}/"
-
-    - name: Setup default definitions
-      template:
-        src: "zuul-jobs/zuul.d/{{ item }}.j2"
-        dest: "{{ jobs_tmp.stdout }}/zuul.d/{{ item }}"
-      with_items:
-        - "_jobs-base.yaml"
-        - "_pipelines.yaml"
-
-    - name: Change logserver ip in base/posts
-      command: "sed -i 's/LOGSERVER/{{ logserver_host }}/' {{ jobs_tmp.stdout }}/playbooks/base/post.yaml"
+    - include: sync_zuul_jobs_content.yml
 
     - name: Push zuul jobs repo
       command: "git {{ item }}"
       args:
-        chdir: "{{ jobs_tmp.stdout }}"
+        chdir: "{{ zuul_jobs_clone_dir }}"
       with_items:
         - "add -A"
         - "commit -m 'Initialize zuul-jobs repository'"
         - "push git+ssh://gerrit/zuul-jobs master"
+      when: zuul_conf_updated
 
     - name: Save zuul jobs repo
-      command: "mv {{ jobs_tmp.stdout }} /root/zuul-jobs"
+      command: "mv {{ zuul_jobs_clone_dir }} /root/zuul-jobs"
   when: zuul_jobs_done.stat.exists != True
