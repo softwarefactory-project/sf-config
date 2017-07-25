@@ -14,7 +14,7 @@
   register: upstreamconfig
 
 - name: Update zuul main.yaml
-  command: cp zuulV3/main.yaml "{{ zuul3_conf_dir }}/main.yaml"
+  command: /usr/share/sf-config/scripts/zuul3-conf-merger.py zuulV3/ "{{ zuul3_conf_dir }}/main.yaml"
   args:
     chdir: /root/config
   when: "localconfig.stdout != upstreamconfig.stdout"
@@ -26,26 +26,24 @@
     enabled: "yes"
   when: "'zuul-scheduler' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
 
-- name: Reload zuul-executor service
+- name: Start zuul-executor service
   service:
     name: rh-python35-zuul-executor
-    state: reloaded
+    state: started
     enabled: "yes"
   when: "'zuul-executor' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
 
-# Zuul-merger doesn't support reload, restart is needed
-- name: Restart zuul-merger service
+- name: Start zuul-merger service
   service:
     name: rh-python35-zuul-merger
-    state: restarted
+    state: started
     enabled: "yes"
   when: "'zuul-merger' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
 
-# Zuul-web doesn't support reload, restart is needed
-- name: Restart zuul-web service
+- name: Start zuul-web service
   service:
     name: rh-python35-zuul-web
-    state: restarted
+    state: started
     enabled: "yes"
   when: "'zuul-web' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
 
