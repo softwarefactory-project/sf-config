@@ -737,6 +737,8 @@ DNS.1 = %s
 
     if "zuul3-web" in arch["roles"]:
         glue["zuul3_web_host"] = get_hostname("zuul3-web")
+        glue["zuul3_web_url"] = "%s:%s" % (glue["zuul3_web_host"],
+                                           defaults["zuul3_web_port"])
 
     if "nodepool3" in arch["roles"]:
         glue["nodepool3_providers"] = sfconfig.get("nodepool3", {}).get(

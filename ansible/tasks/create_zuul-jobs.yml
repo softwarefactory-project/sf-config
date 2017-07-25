@@ -85,6 +85,14 @@
         - "_jobs-base.yaml"
         - "_pipelines.yaml"
 
+    - name: Setup base playbooks
+      template:
+        src: "{{ sf_templates_dir }}/playbooks/base/{{ item }}.j2"
+        dest: "{{ jobs_tmp.stdout }}/playbooks/base/{{ item }}"
+      with_items:
+        - "pre.yaml"
+        - "post.yaml"
+
     - name: Change logserver ip in base/posts
       command: "sed -i 's/LOGSERVER/{{ logserver_host }}/' {{ jobs_tmp.stdout }}/playbooks/base/post.yaml"
 

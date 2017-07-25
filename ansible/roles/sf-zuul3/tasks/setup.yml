@@ -78,6 +78,25 @@
       when: item.stdout == ""
   when: "'zuul-scheduler' in zuul3_services or 'zuul-merger' in zuul3_services"
 
+- block:
+    - name: "Setup ssh-keys directory"
+      file:
+        path: "{{ zuul3_etc_dir }}/ssh_keys"
+        state: directory
+        owner: zuul
+        group: zuul
+        mode: 0500
+
+    - name: "Copy logserver ssh key"
+      copy:
+        content: "{{ hostvars[inventory_hostname]['']}}"
+        dest: "{{ zuul3_etc_dir }}/ssh_keys/logserver_rsa"
+        mode: 0400
+        owner: zuul
+        group: zuul
+  when: "'zuul-executor' in zuul3_services"
+
+
 - name: "Setup configuration"
   template:
     src: "{{ item }}.j2"

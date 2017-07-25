@@ -6,3 +6,8 @@
       gerrit:
         config-projects:
           - zuul-jobs
+#      openstack.org:
+#        untrusted-projects:
+#          - openstack-infra/zuul-jobs:
+#              include: job
+#              shadow: zuul-jobs
