@@ -1,0 +1,18 @@
+---
+- name: Update zuul-jobs default definitions
+  template:
+    src: "{{ sf_templates_dir }}/zuul.d/{{ item }}.j2"
+    dest: "/root/zuul-jobs/zuul.d/{{ item }}"
+  with_items:
+    - "_jobs-base.yaml"
+    - "_pipelines.yaml"
+  register: zuul_d_conf
+
+- name: Push zuul-jobs change
+  command: "git {{ item }}"
+  args:
+    chdir: "/root/zuul-jobs"
+  with_items:
+    - "commit -a -m 'Update zuul-jobs default definitions'"
+    - "push git+ssh://gerrit/zuul-jobs master"
+  when: zuul_d_conf|changed

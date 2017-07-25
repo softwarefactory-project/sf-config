@@ -151,6 +151,15 @@
         ProxyPassReverse /zuul/ {{ zuul_internal_url }}
 
 {% endif %}
+
+{% if 'zuul3-web' in roles %}
+        ProxyPass /zuul3/static/ http://{{ zuul3_web_url }}/static/ nocanon retry=0
+        ProxyPassReverse /zuul3/static/ http://{{ zuul3_web_url }}/static/
+
+        ProxyPass /zuul3/console-stream ws://{{ zuul3_web_url }}/console-stream nocanon retry=0
+        ProxyPassReverse /zuul3/console-stream ws://{{ zuul3_web_url }}/console-stream
+
+{% endif %}
 {% if 'zuul3' in roles %}
         ProxyPass /zuul3/ {{ zuul3_internal_url }} nocanon retry=0
         ProxyPassReverse /zuul3/ {{ zuul3_internal_url }}
