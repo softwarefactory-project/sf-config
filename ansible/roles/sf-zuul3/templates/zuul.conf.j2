@@ -1,17 +1,19 @@
 [gearman]
 server={{ zuul3_scheduler_host }}
+port={{ zuul3_gearman_port }}
 
 [zookeeper]
 hosts={{ zookeeper_host }}:2181
 
 [gearman_server]
 start=true
-log_config={{ zuul3_conf_dir }}/gearman-logging.conf
+log_config={{ zuul3_conf_dir }}/gearman-server-logging.yaml
+port={{ zuul3_gearman_port }}
 
 [scheduler]
 state_dir={{ zuul3_lib_dir }}
 tenant_config={{ zuul3_conf_dir }}/main.yaml
-log_config={{ zuul3_conf_dir }}/scheduler-logging.conf
+log_config={{ zuul3_conf_dir }}/scheduler-logging.yaml
 
 [merger]
 state_dir={{ zuul3_lib_dir }}
@@ -19,23 +21,24 @@ git_dir={{ zuul3_lib_dir }}/git/
 git_user_email=zuul@{{ fqdn }}
 git_user_name=zuul
 zuul_url={{ host_public_url }}/p
-log_config={{ zuul3_conf_dir }}/merger-logging.conf
+log_config={{ zuul3_conf_dir }}/merger-logging.yaml
 
 [executor]
 state_dir={{ zuul3_lib_dir }}
 git_dir={{ zuul3_lib_dir }}/executor/
+private_key_file={{ zuul3_lib_dir }}/.ssh/id_rsa
 finger_port=7979
-trusted_ro_dirs=/opt/:/etc/hosts:/etc/nsswitch.conf
-untrusted_ro_dirs=/opt/:/etc/hosts:/etc/nsswitch.conf
-log_config={{ zuul3_conf_dir }}/executor-logging.conf
+trusted_ro_paths=/opt/:/etc/opt/rh/rh-python35/zuul/ssh_keys
+untrusted_ro_paths=/opt/
+log_config={{ zuul3_conf_dir }}/executor-logging.yaml
 
 [web]
-listen_address=127.0.0.1
-port=9000
-log_config={{ zuul3_conf_dir }}/web-logging.conf
+listen_address=0.0.0.0
+port={{ zuul3_web_port }}
+log_config={{ zuul3_conf_dir }}/web-logging.yaml
 
 [webapp]
-listen_address=0.0.0.0
+listen_address=127.0.0.1
 port={{ zuul3_webapp_port }}
 status_url={{ zuul3_pub_url }}
 
