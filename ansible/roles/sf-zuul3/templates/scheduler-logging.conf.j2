@@ -1,5 +1,5 @@
 [loggers]
-keys=root,zuul,gear
+keys=root,zuul,gear,connection
 
 [handlers]
 keys=console,normal
@@ -19,6 +19,12 @@ level={{ zuul_root_loglevel }}
 
 [logger_zuul]
 qualname=zuul
+handlers=console,normal
+propagate=0
+level={{ zuul_loglevel }}
+
+[logger_connection]
+qualname=connection
 handlers=console,normal
 propagate=0
 level={{ zuul_loglevel }}

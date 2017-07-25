@@ -2,4 +2,4 @@
 - name: Run flake8
   shell: find . -name "*.py" | grep -v '\.tox' | xargs --no-run-if-empty flake8
   args:
-    chdir: "{{ zuul_workspace_root }}/src/{{ zuul.project.canonical_name }}"
+    chdir: "{{ zuul_work_dir }}"
