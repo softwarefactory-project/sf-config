@@ -1,0 +1,21 @@
+---
+description: "ZuulV3 service"
+inventory:
+  - name: managesf
+    ip: 192.168.0.10
+    roles:
+      - install-server
+      - mysql
+      - gateway
+      - cauth
+      - managesf
+      - gitweb
+      - gerrit
+      - logserver
+      - zookeeper
+      - zuul3-scheduler
+      - zuul3-merger
+      - zuul3-executor
+      - zuul3-web
+      - nodepool3-launcher
+      - nodepool3-builder

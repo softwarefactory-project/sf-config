@@ -5,6 +5,6 @@ SetEnv GIT_HTTP_EXPORT_ALL
   require all granted
 </Directory>
 
-AliasMatch ^/p/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$ {{ zuul3_lib_dir }}/git/$1
-AliasMatch ^/p/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ {{ zuul3_lib_dir }}/git/$1
-ScriptAlias /p/ /usr/libexec/git-core/git-http-backend/
+AliasMatch ^/p3/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$ {{ zuul3_lib_dir }}/git/$1
+AliasMatch ^/p3/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ {{ zuul3_lib_dir }}/git/$1
+ScriptAlias /p3/ /usr/libexec/git-core/git-http-backend/
