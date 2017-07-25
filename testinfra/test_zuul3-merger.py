@@ -10,13 +10,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from sfconfig.components import Component
 
-
-class Managesf(Component):
-    def configure(self, args, host):
-        self.add_mysql_database(args, "managesf")
-        self.get_or_generate_ssh_key(args, "jenkins_rsa")
-        self.get_or_generate_ssh_key(args, "zuul_rsa")
-        args.glue["managesf_internal_url"] = "http://%s:%s" % (
-            args.glue["managesf_host"], args.defaults["managesf_port"])
+class TestZuul3Merger:
+    def test_server_running_and_enabled(self, host):
+        server = host.service("rh-python35-zuul-merger")
+        assert server.is_running
+        assert server.is_enabled
