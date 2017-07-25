@@ -1,8 +1,15 @@
 SET @pubkey="{{ gerrit_admin_rsa_pub }}";
-SET @jenkinskey="{{ jenkins_rsa_pub }}";
-
-DELETE FROM account_ssh_keys WHERE  account_id=1 AND seq=1;
-DELETE FROM account_ssh_keys WHERE  account_id=1 AND seq=2;
-DELETE FROM account_ssh_keys WHERE  account_id=2;
+DELETE FROM account_ssh_keys WHERE  account_id=1;
 INSERT INTO account_ssh_keys SELECT @pubkey,'Y',1,1;
-INSERT INTO account_ssh_keys SELECT @jenkinskey,'Y',2,1;
+
+SET @jenkinskey="{{ jenkins_rsa_pub }}";
+SELECT @jenkins_id := `account_id` FROM accounts WHERE preferred_email = 'jenkins@{{ fqdn }}';
+DELETE FROM account_ssh_keys WHERE account_id = @jenkins_id;
+INSERT INTO account_ssh_keys SELECT @jenkinskey,'Y',@jenkins_id,1;
+
+{% if 'zuul3' in roles %}
+SET @zuulkey="{{ zuul_rsa_pub }}";
+SELECT @zuul_id := `account_id` FROM accounts WHERE preferred_email = 'zuul@{{ fqdn }}';
+DELETE FROM account_ssh_keys WHERE account_id = @zuul_id;
+INSERT INTO account_ssh_keys SELECT @zuulkey,'Y',@zuul_id,1;
+{% endif %}

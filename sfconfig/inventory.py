@@ -441,6 +441,13 @@ def generate(args):
            args.sfconfig['network']['use_letsencrypt']:
             host["roles"].insert(0, "lecm")
 
+        # Check for conflicts
+        for conflict in (("zuul3-merger", "zuul-merger")):
+            if conflict[0] in host["roles"] and conflict[1] in host["roles"]:
+                raise RuntimeError("%s: can't install both %s and %s" % (
+                    host["hostname"], conflict[0], conflict[1]
+                ))
+
     if 'hydrant' in args.glue["roles"] and \
        "firehose" not in args.glue["roles"]:
         raise RuntimeError("'hydrant' role needs 'firehose'")
