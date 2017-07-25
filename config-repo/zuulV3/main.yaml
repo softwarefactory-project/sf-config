@@ -1,8 +1,0 @@
----
-- tenant:
-    # Use empty name to fix bug with default status.json
-    name: ''
-    source:
-      gerrit:
-        config-projects:
-          - zuul-jobs

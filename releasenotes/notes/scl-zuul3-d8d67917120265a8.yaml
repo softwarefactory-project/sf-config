@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    ZuulV3 services are running with the rh-python35 SCL which allows to run
+    the new services on the same node as the previous one (allinone).
