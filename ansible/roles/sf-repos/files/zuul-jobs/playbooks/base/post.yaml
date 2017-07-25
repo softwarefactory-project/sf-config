@@ -1,6 +1,0 @@
----
-- hosts: all
-  tasks:
-    - name: Upload logs.
-      command: "rsync -e 'ssh -o StrictHostKeyChecking=no' -r --chmod=Duog+rx,Fuog+r {{ zuul.executor.log_root }}/ loguser@LOGSERVER:/var/www/logs/{{ zuul.uuid }}/"
-      delegate_to: 127.0.0.1
