@@ -14,17 +14,10 @@
   register: upstreamconfig
 
 - name: Update zuul main.yaml
-  command: cp zuulV3/main.yaml "{{ zuul3_conf_dir }}/main.yaml"
+  command: /usr/share/sf-config/scripts/zuul3-conf-merger.py zuulV3/ "{{ zuul3_conf_dir }}/main.yaml"
   args:
     chdir: /root/config
   when: "localconfig.stdout != upstreamconfig.stdout"
-
-- name: Reload zuul-scheduler service
-  service:
-    name: rh-python35-zuul-scheduler
-    state: reloaded
-    enabled: "yes"
-  when: "'zuul-scheduler' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
 
 - name: Reload zuul-executor service
   service:
@@ -48,6 +41,13 @@
     state: restarted
     enabled: "yes"
   when: "'zuul-web' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
+
+- name: Reload zuul-scheduler service
+  service:
+    name: rh-python35-zuul-scheduler
+    state: reloaded
+    enabled: "yes"
+  when: "'zuul-scheduler' in zuul3_services and localconfig.stdout != upstreamconfig.stdout"
 
 - name: Write config repo sha1 matching current configuration
   copy:
