@@ -3,6 +3,8 @@ role_actions:
   - stop
   - install
   - setup
+  - backup
+  - restore
   - update
   - get_logs
   - disable
@@ -13,15 +15,26 @@ zuul3_services:
   - rh-python35-zuul-executor
   - rh-python35-zuul-web
 
-zuul3_packages:
+zuul3_scheduler_packages:
   - rh-python35-zuul
-  - rh-python35-zuul-webui
   - rh-python35-zuul-scheduler
-  - rh-python35-zuul-merger
-  - rh-python35-zuul-executor
-  - rh-python35-zuul-web
+  - rh-python35-zuul-webui
   - httpd
   - sf-web-assets
+
+zuul3_merger_packages:
+  - rh-python35-zuul
+  - rh-python35-zuul-merger
+  - httpd
+
+zuul3_executor_packages:
+  - rh-python35-zuul
+  - rh-python35-zuul-executor
+  - rh-python35-ara
+
+zuul3_web_packages:
+  - rh-python35-zuul
+  - rh-python35-zuul-web
 
 zuul3_conf_dir: "/etc/opt/rh/rh-python35/zuul"
 zuul3_lib_dir: "/var/opt/rh/rh-python35/lib/zuul"
@@ -31,11 +44,13 @@ zuul3_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/zuul"
 
 zuul3_port: 8085
 zuul3_webapp_port: 8004
+zuul3_web_port: 9000
+zuul3_gearman_port: 4733
 
 zuul3_mysql_host: "mysql.example.com"
 zuul3_mysql_port: 3306
 zuul3_mysql_db: "zuul3"
-zuul3_mysql_user: "zuul"
+zuul3_mysql_user: "zuul3"
 zuul3_mysql_password: "CHANGE_ME"
 
 gerrit_pub_url: "https://example.com/r/"

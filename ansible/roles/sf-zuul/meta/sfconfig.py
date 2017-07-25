@@ -20,8 +20,6 @@ class ZuulServer(Component):
     def configure(self, args, host):
         # ZuulV2 uses jenkins key
         self.get_or_generate_ssh_key(args, "jenkins_rsa")
-        # Also create zuul_rsa for managesf req
-        self.get_or_generate_ssh_key(args, "zuul_rsa")
         # Add sqlreporter database
         args.glue["zuul_host"] = args.glue["zuul_server_host"]
         self.add_mysql_database(args, "zuul")

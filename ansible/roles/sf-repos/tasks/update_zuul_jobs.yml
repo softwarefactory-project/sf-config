@@ -1,0 +1,31 @@
+---
+- name: Update zuulV3 main.yaml
+  template:
+    src: "config/zuulV3/main.yaml.j2"
+    dest: /root/config/zuulV3/main.yaml
+  register: zuul3_main_yaml
+
+- name: Push config repo changes
+  command: "git {{ item }}"
+  args:
+    chdir: /root/config
+  with_items:
+    - add zuulV3
+    - commit -m 'Update zuulV3 configuration'
+    - push git+ssh://gerrit/config master
+  when: zuul3_main_yaml|changed
+
+- set_fact:
+    zuul_jobs_clone_dir: /root/zuul-jobs
+
+- include: sync_zuul_jobs_content.yml
+
+- name: Push zuul-jobs change
+  command: "git {{ item }}"
+  args:
+    chdir: "{{ zuul_jobs_clone_dir }}"
+  with_items:
+    - "add -A"
+    - "commit -m 'Update zuul-jobs default definitions'"
+    - "push git+ssh://gerrit/zuul-jobs master"
+  when: zuul_conf_updated
