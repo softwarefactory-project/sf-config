@@ -360,6 +360,10 @@ def update_sfconfig(data, args):
         }
         dirty = True
 
+    if 'static_nodes' not in data:
+        data['zuul']['static_nodes'] = []
+        dirty = True
+
     if 'gerrit_connections' not in data['zuul']:
         data['zuul']['gerrit_connections'] = []
         dirty = True
@@ -695,6 +699,8 @@ DNS.1 = %s
         glue["jobs_zmq_publishers"].append(
             "tcp://%s:8888" % glue["zuul_launcher_host"])
         glue["loguser_authorized_keys"].append(glue["jenkins_rsa_pub"])
+        glue["zuul_static_nodes"] = sfconfig.get(
+            'zuul', {}).get('static_nodes', [])
 
     if "nodepool" in arch["roles"]:
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])
@@ -863,6 +869,15 @@ DNS.1 = %s
                 "host_packed": host_packed,
                 "host": extra_gerrit["hostname"],
                 "port": extra_gerrit.get("port", 29418)
+            }
+        )
+
+    for static_node in glue.get("zuul_static_nodes", []):
+        glue["zuul_ssh_known_hosts"].append(
+            {
+                "host_packed": static_node.get("hostname"),
+                "host": static_node.get("hostname"),
+                "port": 22
             }
         )
 
