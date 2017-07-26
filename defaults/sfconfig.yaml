@@ -193,6 +193,13 @@ zuul:
   #    puburl: https://external-gerrit-host-name/r/
   #    username: external-gerrit-user-name
 
+  # Define static nodes
+  static_nodes: []
+  #  - name: node_name
+  #    hostname: host_name
+  #    description: node description
+  #    labels: node label
+
 zuul3:
   # Set custom zuul log url, the url will be expaned using the build parameters
   #  Default is: https://fqdn/logs/{build.uuid}/

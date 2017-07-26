@@ -695,6 +695,8 @@ DNS.1 = %s
         glue["jobs_zmq_publishers"].append(
             "tcp://%s:8888" % glue["zuul_launcher_host"])
         glue["loguser_authorized_keys"].append(glue["jenkins_rsa_pub"])
+        glue["zuul_static_nodes"] = sfconfig.get(
+            'zuul', {}).get('static_nodes', [])
 
     if "nodepool" in arch["roles"]:
         glue["nodepool_providers"] = sfconfig["nodepool"].get("providers", [])

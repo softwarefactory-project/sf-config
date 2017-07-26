@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    A new sfconfig.yaml setting enable to setup custom static nodes.

@@ -54,6 +54,13 @@ description=The pages node for rendering and publishing pages
 labels=pages
 {% endif %}
 
+{% for node in zuul_static_nodes|default([]) %}
+[node "{{ node['name'] }}"]
+host={{ node['hostname'] }}
+description={{ node['description'] }}
+labels={{ node['labels'] }}
+
+{% endfor %}
 [node "master"]
 host=localhost
 description=The master node allowed to trigger config-update
