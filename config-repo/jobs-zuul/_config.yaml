@@ -12,10 +12,15 @@
           cp ~zuul/defconf/zuul.conf build/zuul/zuul.conf
           cp ~zuul/defconf/nodepool.yaml build/nodepool/_nodepool.yaml
           cp ~zuul/defconf/repoxplorer.py build/repoxplorer/config.py
+          # Prepare a fake jenkins-job config file to force offline jobs check
+          echo -e "[jenkins]\nurl=http://localhost:99" > build/jenkins.ini
 
           cd config
           echo "[+] Checking jobs"
-          jenkins-jobs test jobs/ -o ../build/
+          jenkins-jobs --conf ../build/jenkins.ini test jobs/ > /dev/null
+
+          echo "[+] Checking jobs-zuul"
+          jenkins-jobs --conf ../build/jenkins.ini test jobs-zuul/ > /dev/null
 
           echo "[+] Checking zuul"
           /usr/share/sf-config/scripts/yaml-merger.py zuul | tee ../build/zuul/layout.yaml
