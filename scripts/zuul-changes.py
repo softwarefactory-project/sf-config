@@ -30,7 +30,7 @@ if not os.path.isfile("/etc/zuul/zuul.conf"):
 zuul_url = filter(lambda x: x.startswith("zuul_url="),
                   open("/etc/zuul/zuul.conf").readlines())[0].split('=')[1]
 # Remove /p
-zuul_status = "%s/status.json" % ('/'.join(zuul_url.split('/')[:-1]))
+zuul_status = "%s/zuul/status.json" % ('/'.join(zuul_url.split('/')[:-1]))
 dump_file = "/var/lib/zuul/zuul-queues-dump.sh"
 
 
