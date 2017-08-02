@@ -13,6 +13,41 @@
     ssl_options: '-unsafeSsl'
   when: use_letsencrypt == False
 
+# if influxdb is not installed on the gateway host
+# we need to install crt and key file on the influxdb
+# host
+- name: Create letsencrypt working directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - /etc/letsencrypt/pem
+    - /etc/letsencrypt/private
+  when: use_letsencrypt == True
+
+- name: Check if key is present
+  stat:
+    path: "{{ key }}"
+  register: keyfile
+
+- name: Check if crt is present
+  stat:
+    path: "{{ crt }}"
+  register: crtfile
+
+- name: Add crt and key files if needed
+  copy:
+    src: "{{ item.file }}"
+    dest: "{{ item.file }}"
+    mode: "{{ item.mode|default(0444) }}"
+    setype: cert_t
+    seuser: system_u
+    serole: object_r
+  when: crtfile.stat.exists == false or keyfile.stat.exists == false
+  with_items:
+    - {file: "{{ crt }}"}
+    - {file: "{{ key }}", mode: '0400'}
+
 - name: Ensure influxdb can read tls key
   acl:
     path: '{{ key }}'
@@ -89,7 +124,6 @@
 
     - name: Grant access for telegraf user
       shell: "{{ influxdb_cli }} -execute 'GRANT ALL ON \"telegraf\" TO \"telegraf\"'"
-
   ignore_errors: true
   no_log: true
   when: "'telegraf' not in users.stdout"
