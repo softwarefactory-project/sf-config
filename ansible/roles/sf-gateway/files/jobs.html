@@ -36,16 +36,25 @@ under the License.
             <th>Name</th>
             <th>Last success</th>
             <th>Last failure</th>
-            <th>Last duration</th>
+            <th>Last run</th>
             <th>Run count</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="job in jobsList" ng-click="ShowJob(job)" ng-class="rowClassJobs(job)">
+          <tr ng-repeat="job in jobsList" ng-click="ShowJobBuilds(job)" ng-class="rowClassJobs(job)">
             <td>{{ job.name }}</td>
-            <td>{{ job.last_success_date }}</td>
-            <td>{{ job.last_failure_date }}</td>
-            <td>{{ job.last_duration }} seconds</td>
+            <td>
+                <div ng-if="job.last_success_id == null">-</div>
+                <div ng-if="job.last_success_id != null">#{{ job.last_success_id }} on {{ job.last_success_start | date:'medium' }}</div>
+            </td>
+            <td>
+                <div ng-if="job.last_failure_id == null">-</div>
+                <div ng-if="job.last_failure_id != null">#{{ job.last_failure_id }} on {{ job.last_failure_start | date:'medium' }}</div>
+            </td>
+            <td>
+                <div ng-if="job.last_run_id == null">-</div>
+                <div ng-if="job.last_run_id != null">#{{ job.last_run_id }} on {{ job.last_run_start | date:'medium' }}</div>
+            </td>
             <td>{{ job.exec_count }}</td>
           </tr>
         </tbody>
@@ -89,7 +98,7 @@ under the License.
   </span>
   <span style="float: right">
     <label>Limit number of results</label>
-    <input ng-if="jobInfo" type="number" name="limit" min="50" ng-model="formdata.limit" ng-change="ShowJob(jobInfo)">
+    <input ng-if="jobInfo" type="number" name="limit" min="50" ng-model="formdata.limit" ng-change="ShowJobBuilds(jobInfo)">
     <input ng-if="jobsList" type="number" name="limit" min="50" ng-model="formdata.limit" ng-change="ShowJobList()">
   </span>
   </div>
