@@ -39,31 +39,21 @@ angular.module('zuulDashboard', []).controller('mainController', function($scope
     $scope.ShowJobList = function () {
         $scope.jobInfo = undefined;
         // Fetch job list
-        $http.get("/manage/v2/jobs/?desc=last_run&limit=" + $scope.formdata.limit)
+        $http.get("/manage/v2/jobs/?order_by=last_run&desc=true&limit=" + $scope.formdata.limit)
             .then(function success(result) {
                 for (job_pos = 0; job_pos < result.data.results.length; job_pos += 1) {
                     job = result.data.results[job_pos];
-                    if (job.last_successes.length > 0) {
-                        job.last_success_date = job.last_successes[0].end_time;
-                        job.last_success_time = Date.parse(job.last_success_date) / 1000;
-                        job.last_duration = job.last_success_time - (Date.parse(job.last_successes[0].start_time) / 1000);
-                    } else {
-                        job.last_success_time = 0;
-                    }
-                    if (job.last_failures.length > 0) {
-                        job.last_failure_date = job.last_failures[0].end_time;
-                        job.last_failure_time = Date.parse(job.last_failure_date) / 1000;
-                        if (job.last_failure_time > job.last_success_time) {
-                            job.last_duration = job.last_failure_time - (Date.parse(job.last_failures[0].start_time) / 1000);
-                        }
-                    } else {
-                        job.last_failure_time = 0;
-                    }
+                    job.last_success_start = Date.parse(job.last_success.start_time);
+                    job.last_success_id = job.last_success.id;
+                    job.last_failure_start = Date.parse(job.last_failure.start_time);
+                    job.last_failure_id = job.last_failure.id;
+                    job.last_run_start = Date.parse(job.last_run.start_time);
+                    job.last_run_id = job.last_run.id;
                 }
                 $scope.jobsList = result.data.results
             });
     }
-    $scope.ShowJob = function (job) {
+    $scope.ShowJobBuilds = function (job) {
         $scope.jobsList = undefined;
         $http.get("/manage/v2/builds/?desc=true&limit=" + $scope.formdata.limit + "&job_name=" + job["name"])
             .then(function success(result) {
