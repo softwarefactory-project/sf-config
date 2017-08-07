@@ -107,6 +107,16 @@
   notify: apache reload
   no_log: true
 
+- name: Install repoXplorer SF gateway rules
+  template:
+    src: gateway-repoxplorer.conf.j2
+    dest: /etc/httpd/conf.d/gateway-repoxplorer.conf
+    mode: 0444
+  with_items: "{{ inventory }}"
+  when: '"repoxplorer" in item["roles"]'
+  notify: apache reload
+  no_log: true
+
 - name: Load ssl module in apache configuration
   lineinfile:
     dest: /etc/httpd/conf.modules.d/00-ssl.conf
