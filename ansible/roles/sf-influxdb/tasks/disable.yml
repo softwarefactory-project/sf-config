@@ -4,7 +4,7 @@
     name: '{{ item }}'
     state: stopped
     enabled: "no"
-  with_first_found:
+  with_items:
     - '{{ service_real_name }}'
     - '{{ service_name }}'
   ignore_errors: "yes"
