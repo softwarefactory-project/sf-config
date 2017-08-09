@@ -84,6 +84,10 @@ case $1 in
         exit 0
         ;;
     apply)
+        if [ -z "$ZUUL_COMMIT" ]; then
+            echo "ZUUL_COMMIT is empty. Skip processing."
+            exit 0
+        fi
         clone=$(mktemp -d)
         git clone http://gerrit/r/config $clone
         # Be sure to use the right ref (ZUUL_COMMIT references the commit
