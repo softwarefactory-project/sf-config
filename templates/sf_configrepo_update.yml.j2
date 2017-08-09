@@ -96,3 +96,15 @@
   roles:
     - role: 'sf-gateway'
       action: 'update'
+
+- hosts: managesf
+  tasks:
+    - name: Exec resources apply
+      command: /usr/local/bin/resources.sh apply
+      register: output
+      ignore_errors: yes
+    - debug:
+        msg: "{{ output.stdout_lines }}"
+    - fail:
+        msg: "Resources apply failed ({{ output.rc }})"
+      when: "{{ output.rc != 0 }}"

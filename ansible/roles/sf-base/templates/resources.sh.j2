@@ -88,6 +88,10 @@ case $1 in
         git clone http://gerrit/r/config $clone
         # Be sure to use the right ref (ZUUL_COMMIT references the commit
         # for which the config-update job is running)
+        if [ -z "$ZUUL_COMMIT" ]; then
+            ZUUL_COMMIT="master"
+            echo "ZUUL_COMMIT was empty. Set it to master."
+        fi
         cd $clone
         git checkout $ZUUL_COMMIT
         # Check tips of the HEAD is change on resources/
