@@ -1,12 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 
-ACTION=${SSH_ORIGINAL_COMMAND:-sf_configrepo_update}
+STRINGARRAY=($SSH_ORIGINAL_COMMAND)
+ACTION="${STRINGARRAY[0]}"
+COMMIT="${STRINGARRAY[1]}"
 
 export ANSIBLE_CONFIG=/usr/share/sf-config/ansible/ansible.cfg
+export ZUUL_COMMIT="$COMMIT"
+
+if [ -n "$ZUUL_COMMIT" ]; then
+    echo "Triggered by commit: $ZUUL_COMMIT"
+else
+    echo "Triggered outside of Zuul (No ZUUL_COMMIT provided)"
+fi
 
 case $ACTION in
     sf_configrepo_update)
-        exec ansible-playbook /var/lib/software-factory/ansible/sf_configrepo_update.yml &> /var/log/software-factory/configrepo_update.log
+        set -o pipefail
+        exec ansible-playbook /var/lib/software-factory/ansible/sf_configrepo_update.yml | tee -a /var/log/software-factory/configrepo_update.log
         ;;
     sf_mirror_update)
         exec ansible-playbook -v /usr/share/sf-config/ansible/roles/sf-mirror/files/update_playbook.yml &> /var/log/software-factory/mirror_update.log
