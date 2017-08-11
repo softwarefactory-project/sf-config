@@ -1,8 +1,8 @@
 %global         sum The Software Factory configuration sfconfig
 
 Name:           sf-config
-Version:        2.6.0
-Release:        2%{?dist}
+Version:        2.7.0
+Release:        1%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -14,6 +14,10 @@ BuildArch:      noarch
 Requires:       ansible
 Requires:       python-jinja2
 
+Buildrequires:  python2-devel
+Buildrequires:  python-setuptools
+Buildrequires:  python2-pbr
+
 %description
 %{sum}
 
@@ -21,13 +25,13 @@ Requires:       python-jinja2
 %autosetup -n %{name}-%{version}
 
 %build
+export PBR_VERSION=%{version}
+%{__python2} setup.py build
 
 %install
-# The sfconfig.py
-install -p -D -m 0755 scripts/sfconfig.py %{buildroot}%{_bindir}/sfconfig
-ln -s sfconfig %{buildroot}%{_bindir}/sfconfig.py
-# retro compat until 2.5.0 is released
-install -p -D -m 0755 scripts/yaml-merger.py %{buildroot}/usr/local/bin/yaml-merger.py
+# The sfconfig module
+export PBR_VERSION=%{version}
+%{__python2} setup.py install --skip-build --root %{buildroot}
 # /etc/software-factory
 install -p -D -m 0644 defaults/arch.yaml %{buildroot}%{_sysconfdir}/software-factory/arch.yaml
 install -p -D -m 0644 defaults/sfconfig.yaml %{buildroot}%{_sysconfdir}/software-factory/sfconfig.yaml
@@ -49,6 +53,9 @@ install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 %{_datarootdir}/sf-config/
 
 %changelog
+* Tue Jul 18 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.7.0-1
+- Refactor sfconfig into a python module
+
 * Tue Jul 18 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.6.0-2
 - Add /var/lib/software-factory/backup directory creation
 
