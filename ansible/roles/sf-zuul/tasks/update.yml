@@ -24,7 +24,7 @@
   args:
     chdir: /root/config
   with_items:
-    - bash -c "/usr/local/bin/yaml-merger.py zuul | tee /etc/zuul/layout.yaml"
+    - bash -c "/usr/share/sf-config/scripts/yaml-merger.py zuul | tee /etc/zuul/layout.yaml"
     - bash -c "cp zuul/*.py /etc/zuul/ || true"
     - rsync -a --delete jobs-zuul/ /etc/zuul/jobs/
 
