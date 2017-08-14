@@ -10,6 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import copy
 import os
 
 from jinja2 import FileSystemLoader
@@ -17,17 +18,25 @@ from jinja2.environment import Environment
 
 
 def render_template(dest, template, data):
-    with open(dest, "w") as out:
-        loader = FileSystemLoader(os.path.dirname(template))
-        env = Environment(trim_blocks=True, loader=loader)
-        template = env.get_template(os.path.basename(template))
-        out.write("%s\n" % template.render(data))
-    print("[+] Created %s" % dest)
+    if os.path.exists(dest):
+        current = open(dest).read()
+    else:
+        current = ""
+    loader = FileSystemLoader(os.path.dirname(template))
+    env = Environment(trim_blocks=True, loader=loader)
+    template = env.get_template(os.path.basename(template))
+    new = template.render(data) + "\n"
+    if new != current:
+        with open(dest, "w") as out:
+            out.write(new)
+        print("[+] Wrote %s" % dest)
 
 
-def generate(arch, ansible_root, share):
+def generate(args):
+    # Copy the original arch to add host rolesname and params
+    arch = copy.deepcopy(args.sfarch)
+
     # Adds playbooks to architecture
-    firehose = "firehose" in arch["roles"]
     for host in arch["inventory"]:
         # Generate rolesname to be used for playbook rendering
         host["rolesname"] = map(lambda x: "sf-%s" % x, host["roles"])
@@ -56,8 +65,9 @@ def generate(arch, ansible_root, share):
                     # Add base role to host
                     if role_name not in host["roles"]:
                         host["roles"].append(role_name)
-                    if role_name not in arch["roles"]:
-                        arch["roles"].setdefault(role_name, []).append(host)
+                    if role_name not in args.glue["roles"]:
+                        args.glue["roles"].setdefault(role_name, []).append(
+                            host)
 
         ensure_role_services("nodepool", ["launcher", "builder"])
         ensure_role_services("zuul", ["server", "merger", "launcher"])
@@ -66,7 +76,7 @@ def generate(arch, ansible_root, share):
                                        "web"])
 
         # if firehose role is in the arch, install publishers where needed
-        if firehose:
+        if "firehose" in args.glue["roles"]:
             if "zuul" in host["roles"] or \
                "nodepool" in host["roles"] or \
                "zuul3" in host["roles"]:
@@ -81,15 +91,19 @@ def generate(arch, ansible_root, share):
                 raise RuntimeError("%s: can't install both %s and %s" % (
                     host["hostname"], conflict[0], conflict[1]
                 ))
-    if 'hydrant' in arch["roles"] and not firehose:
+    if 'hydrant' in args.glue["roles"] and \
+       "firehose" not in args.glue["roles"]:
         raise RuntimeError("'hydrant' role needs 'firehose'")
-    if 'hydrant' in arch["roles"] and 'elasticsearch' not in arch["roles"]:
+    if 'hydrant' in args.glue["roles"] and \
+       'elasticsearch' not in args.glue["roles"]:
         raise RuntimeError("'hydrant' role needs 'elasticsearch'")
 
-    templates = "%s/templates" % share
+    templates = "%s/templates" % args.share
 
     # Generate inventory
-    render_template("%s/hosts" % ansible_root,
+    arch["roles"] = args.glue["roles"]
+    arch["hosts_file"] = args.glue["hosts_file"]
+    render_template("%s/hosts" % args.ansible_root,
                     "%s/inventory.j2" % templates,
                     arch)
 
@@ -98,7 +112,7 @@ def generate(arch, ansible_root, share):
                       "sf_configrepo_update",
                       "get_logs", "sf_backup", "sf_restore", "sf_recover",
                       "sf_disable", "sf_erase"):
-        render_template("%s/%s.yml" % (ansible_root, playbooks),
+        render_template("%s/%s.yml" % (args.ansible_root, playbooks),
                         "%s/%s.yml.j2" % (templates, playbooks),
                         arch)
 
