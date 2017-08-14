@@ -24,8 +24,8 @@ import sfconfig.groupvars
 import sfconfig.inventory
 import sfconfig.upgrade
 
+import sfconfig.utils
 from sfconfig.utils import execute
-from sfconfig.utils import pread
 from sfconfig.utils import save_file
 from sfconfig.utils import yaml_dump
 from sfconfig.utils import yaml_load
@@ -65,29 +65,38 @@ def bootstrap_backup(use_new_arch=False):
     print("Boostrap data prepared from the backup. Done.")
 
 
-def usage():
+def usage(components):
     p = argparse.ArgumentParser()
+
     # inputs
     p.add_argument("--arch", default="/etc/software-factory/arch.yaml",
                    help="The architecture file")
-    p.add_argument("--sfconfig", default="/etc/software-factory/sfconfig.yaml",
+    p.add_argument("--config", default="/etc/software-factory/sfconfig.yaml",
                    help="The configuration file")
     p.add_argument("--extra", default="/etc/software-factory/custom-vars.yaml",
                    help="Extra ansible variable file")
     p.add_argument("--share", default="/usr/share/sf-config",
                    help="Templates and ansible roles")
+
     # outputs
     p.add_argument("--ansible_root",
                    default="/var/lib/software-factory/ansible",
                    help="Generated playbook output directory")
     p.add_argument("--lib", default="/var/lib/software-factory/bootstrap-data",
                    help="Deployment secrets output directory")
+
     # tunning
     p.add_argument("--skip-apply", default=False, action='store_true',
                    help="Do not execute Ansible playbook")
     p.add_argument("--disable-external-resources", default=False,
                    action='store_true',
                    help="Disable gerrit replication and nodepool providers")
+
+    # TODO: switch default to False when 2.7 is released
+    # (with zookeeper enabled in minimal arch)
+    p.add_argument("--allinone", default=True, action='store_true',
+                   help="Automatically add missing role to the first node")
+
     # special actions
     p.add_argument("--recover", nargs='?', const=bdir, metavar='BACKUP_PATH',
                    help="Deploy a backup")
@@ -102,19 +111,27 @@ def usage():
                    help="Do not call install tasks")
     p.add_argument("--skip-setup", default=False, action='store_true',
                    help="Do not call setup tasks")
-    return p.parse_args()
 
+    # Add components options
+    for component in components.values():
+        component.argparse(p)
 
-def main():
-    args = usage()
+    args = p.parse_args()
 
     if args.skip_apply:
         args.skip_install = True
         args.skip_setup = True
 
+    return args
+
+
+def main():
+    components = sfconfig.utils.load_components()
+    args = usage(components)
+
     if not args.skip_apply:
-        execute(["logger", "sfconfig.py: started"])
-        print("[%s] Running sfconfig.py" % time.ctime())
+        execute(["logger", "sfconfig: started %s" % sys.argv[1:]])
+        print("[%s] Running sfconfig" % time.ctime())
 
     # Create required directories
     allyaml = "%s/group_vars/all.yaml" % args.ansible_root
@@ -126,9 +143,6 @@ def main():
                     "%s/certs" % args.lib):
         if not os.path.isdir(dirname):
             os.makedirs(dirname, 0o700)
-    if os.path.islink(allyaml):
-        # Remove previously created link to sfconfig.yaml
-        os.unlink(allyaml)
 
     if args.recover:
         if os.path.isfile(args.recover):
@@ -141,35 +155,62 @@ def main():
 
         bootstrap_backup(args.use_new_arch)
 
-    # Make sure the yaml files are updated
-    sfmain = yaml_load(args.sfconfig)
-    sfarch = yaml_load(args.arch)
-    if sfconfig.upgrade.update_sfconfig(sfmain, args):
-        save_file(sfmain, args.sfconfig)
-    if sfconfig.upgrade.update_arch(sfarch):
-        save_file(sfarch, args.arch)
+    args.sfconfig = yaml_load(args.config)
+    args.sfarch = yaml_load(args.arch)
+    args.secrets = yaml_load("%s/secrets.yaml" % args.lib)
+    args.glue = {'sf_tasks_dir': "%s/ansible/tasks" % args.share,
+                 'sf_templates_dir': "%s/templates" % args.share,
+                 'sf_playbooks_dir': "%s" % args.ansible_root}
 
-    if not args.use_new_arch and args.recover and len(sfarch["inventory"]) > 1:
+    # Make sure the yaml files are updated
+    sfconfig.upgrade.update_sfconfig(args)
+    sfconfig.upgrade.update_arch(args)
+
+    if not args.use_new_arch and args.recover and \
+       len(args.sfarch["inventory"]) > 1:
         print("Make sure ip addresses in %s are correct" % args.arch)
         raw_input("Press enter to continue")
 
-    # Process the arch file and render playbooks
-    local_ip = pread(["ip", "route", "get", "8.8.8.8"]).split()[6]
-    arch = sfconfig.arch.load(args.arch, sfmain['fqdn'], local_ip)
-    sfconfig.inventory.generate(arch, args.ansible_root, args.share)
+    # Prepare components
+    for host in args.sfarch["inventory"]:
+        # TODO: do not force $fqdn as host domain name
+        host["hostname"] = "%s.%s" % (host["name"], args.sfconfig["fqdn"])
+
+        for role in host["roles"]:
+            # Set component_host variable by default
+            args.glue["%s_host" % role.replace('-', '_')] = host["hostname"]
+            if role not in components:
+                continue
+            components[role].prepare(args)
+
+    # Process the arch and render playbooks
+    sfconfig.arch.process(args)
+    sfconfig.inventory.generate(args)
+
+    # Generate group vars
+    sfconfig.groupvars.load(args)
+    for host in args.sfarch["inventory"]:
+        for role in host["roles"]:
+            if role not in components:
+                continue
+            components[role].configure(args, host)
+
+    # Save config/arch when needed
+    if args.save_sfconfig:
+        save_file(args.sfconfig, args.config)
+    if args.save_arch:
+        save_file(args.sfarch, args.arch)
 
     # Generate group vars
     with open(allyaml, "w") as allvars_file:
-        group_vars = sfconfig.groupvars.generate(arch, sfmain, args)
         # Add legacy content
-        group_vars.update(yaml_load(args.sfconfig))
+        args.glue.update(yaml_load(args.config))
         if os.path.isfile(args.extra):
-            group_vars.update(yaml_load(args.extra))
-        group_vars.update(arch)
-        yaml_dump(group_vars, allvars_file)
+            args.glue.update(yaml_load(args.extra))
+        args.glue.update(args.sfarch)
+        yaml_dump(args.glue, allvars_file)
 
-    print("[+] %s written!" % allyaml)
-    os.environ["ANSIBLE_CONFIG"] = "/usr/share/sf-config/ansible/ansible.cfg"
+    os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
     if args.disable:
         return execute(["ansible-playbook",
                         "/var/lib/software-factory/ansible/sf_disable.yml"])
@@ -205,7 +246,7 @@ Access dashboard: https://%s
 Login with admin user, get the admin password by running:
   awk '/admin_password/ {print $2}' /etc/software-factory/sfconfig.yaml
 
-""" % (sfmain['fqdn'], sfmain['fqdn']))
+""" % (args.sfconfig['fqdn'], args.sfconfig['fqdn']))
 
 
 if __name__ == "__main__":

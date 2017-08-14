@@ -11,9 +11,37 @@
 # under the License.
 
 import os
+import glob
 import subprocess
 import sys
 import yaml
+
+
+def load_components(share="/usr/share/sf-config"):
+    import inspect
+    import imp
+    import sfconfig.components
+
+    components = {}
+
+    for modpath in glob.glob("%s/ansible/roles/*/meta/sfconfig.py" % share):
+        role_name = modpath.split('/')[-3][3:]
+        module = imp.load_source("sfconfig.components.%s" % role_name,
+                                 modpath)
+        for clsmember in inspect.getmembers(module, inspect.isclass):
+            if issubclass(clsmember[1], sfconfig.components.Component):
+                component = clsmember[1]()
+                if not getattr(component, "role", None):
+                    component.role = role_name
+                components[component.role] = component
+    return components
+
+
+def get_default(d, key, default):
+    val = d.get(key, default)
+    if not val:
+        val = default
+    return val
 
 
 def execute(argv):
