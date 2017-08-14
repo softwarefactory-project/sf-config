@@ -90,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "3ab451fb_85f8287e",
+        "filename": "ansible/roles/sf-base/templates/resources.sh.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-08-14T09:54:49Z",
+      "side": 1,
+      "message": "Not really because it will always try to apply the diff between master and master^1 but callbacks will fails trying to create repos/groups/... that already exists as usually the config-update call will have done the job already.",
+      "parentUuid": "3ab451fb_0504187c",
+      "revId": "de56b65aa22ff78de39703f4b20106cc8803c586",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_65a07c91",
         "filename": "scripts/sf-config-update.sh",
         "patchSetId": 8
