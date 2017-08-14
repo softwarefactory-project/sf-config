@@ -5,6 +5,7 @@ role_actions:
   - update
   - get_logs
   - disable
+  - upgrade
 
 managesf_loglevel: INFO
 managesf_root_loglevel: WARNING

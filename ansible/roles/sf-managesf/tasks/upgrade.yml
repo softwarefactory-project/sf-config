@@ -1,0 +1,7 @@
+---
+- block:
+    - name: Ensure managesf service is restarted
+      service:
+        name: managesf
+        state: restarted
+      ignore_errors: "yes"
