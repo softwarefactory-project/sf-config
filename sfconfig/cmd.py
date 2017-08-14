@@ -24,8 +24,8 @@ import sfconfig.groupvars
 import sfconfig.inventory
 import sfconfig.upgrade
 
+import sfconfig.utils
 from sfconfig.utils import execute
-from sfconfig.utils import pread
 from sfconfig.utils import save_file
 from sfconfig.utils import yaml_dump
 from sfconfig.utils import yaml_load
@@ -65,7 +65,7 @@ def bootstrap_backup(use_new_arch=False):
     print("Boostrap data prepared from the backup. Done.")
 
 
-def usage():
+def usage(components):
     p = argparse.ArgumentParser()
     # inputs
     p.add_argument("--arch", default="/etc/software-factory/arch.yaml",
@@ -102,11 +102,16 @@ def usage():
                    help="Do not call install tasks")
     p.add_argument("--skip-setup", default=False, action='store_true',
                    help="Do not call setup tasks")
+
+    # Add components options
+    for component in components.values():
+        component.argparse(p)
     return p.parse_args()
 
 
 def main():
-    args = usage()
+    components = sfconfig.utils.load_components()
+    args = usage(components)
 
     if args.skip_apply:
         args.skip_install = True
@@ -154,13 +159,14 @@ def main():
         raw_input("Press enter to continue")
 
     # Process the arch file and render playbooks
-    local_ip = pread(["ip", "route", "get", "8.8.8.8"]).split()[6]
+    local_ip = sfconfig.utils.pread(
+        ["ip", "route", "get", "8.8.8.8"]).split()[6]
     arch = sfconfig.arch.load(args.arch, sfmain['fqdn'], local_ip)
     sfconfig.inventory.generate(arch, args.ansible_root, args.share)
+    group_vars = sfconfig.groupvars.generate(arch, sfmain, args, components)
 
     # Generate group vars
     with open(allyaml, "w") as allvars_file:
-        group_vars = sfconfig.groupvars.generate(arch, sfmain, args)
         # Add legacy content
         group_vars.update(yaml_load(args.sfconfig))
         if os.path.isfile(args.extra):

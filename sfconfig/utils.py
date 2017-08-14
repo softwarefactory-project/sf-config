@@ -16,6 +16,30 @@ import sys
 import yaml
 
 
+def load_components():
+    import pkgutil
+    import inspect
+    import importlib
+    import sfconfig.components
+
+    components = {}
+
+    for importer, modname, ispkg in pkgutil.iter_modules(
+            sfconfig.components.__path__, "sfconfig.components."):
+        module = importlib.import_module(modname)
+        for clsmember in inspect.getmembers(module, inspect.isclass):
+            if getattr(clsmember[1], "role", None):
+                components[clsmember[1].role] = clsmember[1]()
+    return components
+
+
+def get_default(d, key, default):
+    val = d.get(key, default)
+    if not val:
+        val = default
+    return val
+
+
 def execute(argv):
     if subprocess.Popen(argv).wait():
         raise RuntimeError("Command failed: %s" % argv)

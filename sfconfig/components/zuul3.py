@@ -1,0 +1,89 @@
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+from sfconfig.components import Component
+from sfconfig.utils import get_default
+
+
+class Zuul3Scheduler(Component):
+    role = "zuul3-scheduler"
+    require_role = ["mysql", "nodepool3", "zookeeper"]
+
+    def configure(self):
+        self.glue["zuul3_pub_url"] = "%s/zuul3/" % self.glue["gateway_url"]
+        self.glue["zuul3_host"] = self.glue["zuul3_scheduler_host"]
+        self.glue["zuul3_internal_url"] = "http://%s:%s/" % (
+            self.glue["zuul3_host"], self.defaults["zuul3_port"])
+        self.glue["zuul3_mysql_host"] = self.glue["mysql_host"]
+        self.glue["loguser_authorized_keys"].append(self.glue["zuul_rsa_pub"])
+        self.add_mysql_database("zuul3")
+        self.get_or_generate_ssh_key("zuul_rsa")
+
+        # Extra settings
+        zuul3_config = self.sfmain.get("zuul3", {})
+        self.glue["zuul3_extra_gerrits"] = zuul3_config.get(
+            "gerrit_connections", [])
+        self.glue["zuul3_success_log_url"] = get_default(
+            zuul3_config, "success_log_url",
+            "%s/logs/{build.uuid}/" % self.glue["gateway_url"]
+        )
+        self.glue["zuul3_failure_log_url"] = get_default(
+            zuul3_config, "failure_log_url",
+            "%s/logs/{build.uuid}/" % self.glue["gateway_url"]
+        )
+        self.glue["zuul3_ssh_known_hosts"] = []
+        self.glue["zuul3_github_connections"] = []
+        if "gerrit" in self.arch["roles"]:
+            self.glue["zuul3_ssh_known_hosts"].append({
+                "host_packed": "[%s]:29418" % self.glue["gerrit_host"],
+                "host": self.glue["gerrit_host"],
+                "port": "29418",
+            })
+        for extra_gerrit in self.glue.get("zuul3_extra_gerrits", []):
+            if extra_gerrit.get("port", 29418) == 22:
+                host_packed = extra_gerrit["hostname"]
+            else:
+                host_packed = "[%s]:%s" % (extra_gerrit["hostname"],
+                                           extra_gerrit.get("port", 29418))
+            self.glue["zuul3_ssh_known_hosts"].append({
+                "host_packed": host_packed,
+                "host": extra_gerrit["hostname"],
+                "port": extra_gerrit.get("port", 29418)
+            })
+        if "logserver" in self.arch["roles"]:
+            self.glue["zuul3_ssh_known_hosts"].append({
+                "host_packed": self.glue["logserver_host"],
+                "host": self.glue["logserver_host"],
+                "port": 22
+            })
+        for github_connection in zuul3_config.get("github_connections", []):
+            if github_connection.get("port", 22) == 22:
+                host_packed = github_connection.get("hostname", "github.com")
+            else:
+                host_packed = "[%s]:%s" % (github_connection["hostname"],
+                                           github_connection["port"])
+            self.glue["zuul3_ssh_known_hosts"].append({
+                "host_packed": host_packed,
+                "host": github_connection.get("hostname", "github.com"),
+                "port": github_connection.get("port", 22)
+            })
+            self.glue["zuul3_github_connections"].append(github_connection)
+
+
+class Nodepool3Launcher(Component):
+    role = "nodepool3-launcher"
+    require_roles = ["zookeeper"]
+
+    def configure(self):
+        self.glue["nodepool3_providers"] = self.sfmain.get(
+            "nodepool3", {}).get("providers", [])
+        self.get_or_generate_ssh_key("nodepool_rsa")
