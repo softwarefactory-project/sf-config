@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "3ab451fb_0504187c",
+        "filename": "ansible/roles/sf-base/templates/resources.sh.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-14T09:39:49Z",
+      "side": 1,
+      "message": "Well, on sfconfig we could add ZUUL_COMMIT\u003dmaster. But fair enough",
+      "parentUuid": "3ab451fb_c5e630e8",
+      "revId": "de56b65aa22ff78de39703f4b20106cc8803c586",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ab451fb_65a07c91",
         "filename": "scripts/sf-config-update.sh",
         "patchSetId": 8
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "What I want here is to have the command output in the job console. So I\u0027ll just tee w/o \"-a\".",
       "parentUuid": "3ab451fb_65a07c91",
+      "revId": "de56b65aa22ff78de39703f4b20106cc8803c586",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_e5080c94",
+        "filename": "scripts/sf-config-update.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-14T09:39:49Z",
+      "side": 1,
+      "message": "I see, good idea.",
+      "parentUuid": "3ab451fb_05dd3814",
       "revId": "de56b65aa22ff78de39703f4b20106cc8803c586",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
