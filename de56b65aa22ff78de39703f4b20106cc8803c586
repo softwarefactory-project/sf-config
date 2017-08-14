@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_a59d645b",
+        "filename": "ansible/roles/sf-base/templates/resources.sh.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-14T06:51:23Z",
+      "side": 1,
+      "message": "Debug leftover?",
+      "revId": "de56b65aa22ff78de39703f4b20106cc8803c586",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_85a3889e",
+        "filename": "ansible/roles/sf-base/templates/resources.sh.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-14T06:51:23Z",
+      "side": 1,
+      "message": "Maybe exit 1?",
+      "revId": "de56b65aa22ff78de39703f4b20106cc8803c586",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_65a07c91",
+        "filename": "scripts/sf-config-update.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-14T06:51:23Z",
+      "side": 1,
+      "message": "It seems like this file will grow indefinitely. If it was for debug, then maybe let\u0027s keep the \"\u003e\" for now, and we\u0027ll add logrotate setting in a follow-up?",
+      "revId": "de56b65aa22ff78de39703f4b20106cc8803c586",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
