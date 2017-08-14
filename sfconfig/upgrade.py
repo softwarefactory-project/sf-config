@@ -11,9 +11,10 @@
 # under the License.
 
 
-def update_sfconfig(data, args):
+def update_sfconfig(args):
     """ This method ensure /etc/software-factory content is upgraded """
     dirty = False
+    data = args.sfconfig
 
     # 2.6.0: add scp backup parameters
     if 'method' not in data['backup']:
@@ -33,7 +34,7 @@ def update_sfconfig(data, args):
         }
         dirty = True
 
-    if 'static_nodes' not in data:
+    if 'static_nodes' not in data['zuul']:
         data['zuul']['static_nodes'] = []
         dirty = True
 
@@ -77,11 +78,13 @@ def update_sfconfig(data, args):
             args.disable_external_resources
         dirty = True
 
-    return dirty
+    args.save_sfconfig = dirty
 
 
-def update_arch(data):
+def update_arch(args):
     dirty = False
+    data = args.sfarch
+
     for host in data['inventory']:
         # Remove legacy roles
         if 'zuul' in host['roles']:
@@ -94,9 +97,10 @@ def update_arch(data):
             dirty = True
 
     # Remove deployments related information
-    for deploy_key in ("cpu", "mem", "hostid", "rolesname", "hostname"):
+    for deploy_key in ("cpu", "mem", "hostid", "rolesname"):
         for host in data["inventory"]:
             if deploy_key in host:
                 del host[deploy_key]
                 dirty = True
-    return dirty
+
+    args.save_arch = dirty

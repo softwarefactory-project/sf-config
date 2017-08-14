@@ -1,6 +1,6 @@
-gearman-host: job-logs-gearman-client.{{ domain }}
+gearman-host: job-logs-gearman-client.{{ fqdn }}
 gearman-port: 4731
-output-host: logstash.{{ domain }}
+output-host: logstash.{{ fqdn }}
 output-port: 9999
 output-mode: tcp
 #crm114-script: /usr/local/bin/classify-log.crm
