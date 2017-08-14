@@ -6,6 +6,7 @@ inventory:
     roles:
       - install-server
       - mysql
+      - zookeeper
       - gateway
       - cauth
       - managesf
