@@ -10,89 +10,73 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from sfconfig.utils import pread
 from sfconfig.utils import fail
-from sfconfig.utils import yaml_load
 
 required_roles = (
     "install-server",
     "gateway",
     "mysql",
-    "gerrit",
 )
 
 
-def load(filename, domain=None, install_server_ip=None):
-    arch = yaml_load(filename)
-    # Update domain
-    if domain:
-        arch["domain"] = domain
+def process(args):
     # scalable_roles are the roles that can be instantiate multiple time
-    arch["scalable_roles"] = [
+    # this indicate that we don't need $role.$fqdn aliases
+    # TODO: remove this logic when $role.$fqdn are no longer used
+    args.glue["scalable_roles"] = [
         "zuul", "zuul-merger", "zuul-launcher",
         "zuul3", "zuul3-merger", "zuul3-executor",
     ]
+
     # roles is a dictwith roles name as key and host list as value
-    arch["roles"] = {}
+    args.glue["roles"] = {}
+
     # hosts_files is a dict with host ip as key and hostname list as value
-    arch["hosts_file"] = {}
-    for host in arch["inventory"]:
-        if install_server_ip and "install-server" in host["roles"]:
-            host["ip"] = install_server_ip
+    args.glue["hosts_file"] = {}
+
+    for host in args.sfarch["inventory"]:
+        if "install-server" in host["roles"]:
+            host["ip"] = pread(["ip", "route", "get", "8.8.8.8"]).split()[6]
         elif "ip" not in host:
-            fail("%s: host '%s' needs an ip" % (filename, host["name"]))
+            fail("%s: host '%s' needs an ip" % (args.arch, host["name"]))
 
         if "public_url" not in host:
             if "gateway" in host["roles"]:
-                host["public_url"] = "https://%s" % domain
+                host["public_url"] = "https://%s" % args.sfconfig["fqdn"]
             else:
                 host["public_url"] = "http://%s" % host["ip"]
         else:
             host["public_url"] = host["public_url"].rstrip("/")
 
-        host["hostname"] = "%s.%s" % (host["name"], arch["domain"])
-        # aliases is a list of cname for this host.
+        # TODO: remove this aliases logic when $role.$fqdn are no longer used
         aliases = set((host['name'],))
         for role in host["roles"]:
             # Add host to role list
-            arch["roles"].setdefault(role, []).append(host)
+            args.glue["roles"].setdefault(role, []).append(host)
             # Add extra aliases for specific roles
             if role == "gateway":
-                aliases.add(arch['domain'])
+                aliases.add(args.sfconfig["fqdn"])
             elif role == "cauth":
-                aliases.add("auth.%s" % arch['domain'])
-            elif role not in arch["scalable_roles"]:
+                aliases.add("auth.%s" % args.sfconfig["fqdn"])
+            elif role not in args.glue["scalable_roles"]:
                 # Add role name virtual name (as cname)
-                aliases.add("%s.%s" % (role, arch["domain"]))
+                aliases.add("%s.%s" % (role, args.sfconfig["fqdn"]))
                 aliases.add(role)
-        arch["hosts_file"][host["ip"]] = [host["hostname"]] + list(aliases)
+        args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
+            list(aliases)
 
     # Check roles
     for requirement in required_roles:
-        if requirement not in arch["roles"]:
+        if requirement not in args.glue["roles"]:
             fail("%s role is missing" % requirement)
-        if len(arch["roles"][requirement]) > 1:
+        if len(args.glue["roles"][requirement]) > 1:
             fail("Only one instance of %s is required" % requirement)
 
-    # Auto adds mandatory roles
-    for role in ("zuul-launcher", "logserver"):
-        if role not in arch["roles"]:
-            print("Adding missing %s role" % role)
-            host = arch["inventory"][0]
-            host["roles"].append(role)
-            arch["roles"].setdefault(role, []).append(host)
-    # Adds zookeeper if nodepool-launcher is enabled
-    if "nodepool" in arch["roles"] or "nodepool-launcher" in arch["roles"]:
-        if "zookeeper" not in arch["roles"]:
-            print("Adding missing zookeeper role")
-            host = arch["inventory"][0]
-            host["roles"].append("zookeeper")
-            arch["roles"].setdefault("zookeeper", []).append(host)
-
     # Add gateway and install-server hostname/ip for easy access
-    gateway_host = arch["roles"]["gateway"][0]
-    install_host = arch["roles"]["install-server"][0]
-    arch["gateway"] = gateway_host["hostname"]
-    arch["gateway_ip"] = gateway_host["ip"]
-    arch["install"] = install_host["hostname"]
-    arch["install_ip"] = install_host["ip"]
-    return arch
+    gateway_host = args.glue["roles"]["gateway"][0]
+    install_host = args.glue["roles"]["install-server"][0]
+    args.glue["gateway"] = gateway_host["hostname"]
+    args.glue["gateway_ip"] = gateway_host["ip"]
+    args.glue["install"] = install_host["hostname"]
+    args.glue["install_ip"] = install_host["ip"]

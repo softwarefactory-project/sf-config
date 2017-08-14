@@ -6,6 +6,7 @@ inventory:
     roles:
       - install-server
       - mysql
+      - zookeeper
       - rabbitmq
       - gateway
       - cauth
@@ -15,6 +16,7 @@ inventory:
       - gitweb
       - gerrit
       - gerritbot
+      - logserver
       - zuul-server
       - zuul-merger
       - zuul-launcher
