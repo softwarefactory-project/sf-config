@@ -17,7 +17,6 @@ required_roles = (
     "install-server",
     "gateway",
     "mysql",
-    "gerrit",
 )
 
 
