@@ -1,0 +1,15 @@
+Alias "/repoxplorer/css/jquery-ui.min.css" "/var/www/static/jquery-ui/css/jquery-ui.min.css"
+Alias "/repoxplorer/javascript/jquery-ui.min.js" "/var/www/static/jquery-ui/js/jquery-ui.min.js"
+Alias "/repoxplorer/css/bootstrap.min.css" "/var/www/static/bootstrap/css/bootstrap.min.css"
+Alias "/repoxplorer/javascript/bootstrap.min.js" "/var/www/static/bootstrap/js/bootstrap.min.js"
+Alias "/repoxplorer/css/images/" "/var/www/static/jquery-ui/images/"
+Alias "/repoxplorer/css/static/bootstrap/" "/var/www/static/bootstrap/css/static/bootstrap/"
+Alias "/repoxplorer/css/" "/var/www/static/css/"
+Alias "/repoxplorer/javascript/" "/var/www/static/js/"
+
+<IfModule mod_proxy.c>
+    ProxyPassMatch "/repoxplorer/css/(?!repoxplorer\.css).*" !
+    ProxyPassMatch "/repoxplorer/javascript/(?!repoxplorer\.js).*" !
+    ProxyPass /repoxplorer/ http://repoxplorer.{{ fqdn }}:51000/
+    ProxyPassReverse /repoxplorer/ http://repoxplorer.{{ fqdn }}:51000/
+</IfModule>

@@ -37,8 +37,3 @@
   with_items:
     - repoxplorer-webui
     - repoxplorer
-
-- name: "Install Apache gateway rule for repoxplorer"
-  template:
-    src: gateway-repoxplorer.conf.j2
-    dest: /etc/httpd/conf.d/gateway-repoxplorer.conf
