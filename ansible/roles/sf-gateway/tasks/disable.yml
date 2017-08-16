@@ -15,6 +15,7 @@
         - /var/www/dashboard
         - /var/www/dashboards_data
         - /var/www/localCA.pem
+        - /var/www/keys
         - /etc/pki/tls/certs/{{ fqdn }}.crt
         - /etc/pki/tls/certs/{{ fqdn }}-chain.crt
         - /etc/pki/tls/private/{{ fqdn }}.key
