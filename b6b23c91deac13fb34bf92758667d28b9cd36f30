@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_b0f7e0f4",
+        "filename": "ansible/roles/sf-gateway/files/menu.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T02:24:36Z",
+      "side": 1,
+      "message": "How about referer when the login is automatic (e.g. when gerrit cookie expired while cauth cookie is still valid) ?",
+      "revId": "b6b23c91deac13fb34bf92758667d28b9cd36f30",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
