@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_d0aa6c85",
+        "filename": "ansible/roles/sf-cauth/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_f0a568b5",
+        "filename": "ansible/roles/sf-gateway/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_10a1f4a9",
+        "filename": "ansible/roles/sf-gerrit/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_30c5105b",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_50c89c74",
+        "filename": "ansible/roles/sf-jenkins/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_90ce2482",
+        "filename": "ansible/roles/sf-logserver/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_70cb9873",
+        "filename": "ansible/roles/sf-logserver/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "should be defined in global glue",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_b0afe093",
+        "filename": "ansible/roles/sf-logstash/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_90950442",
+        "filename": "ansible/roles/sf-managesf/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_70927859",
+        "filename": "ansible/roles/sf-pages/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "not needed",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ab451fb_509f7c5f",
+        "filename": "ansible/roles/sf-zuul/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-16T08:48:14Z",
+      "side": 1,
+      "message": "require_roles \u003d [\"nodepool-launcher\"]",
+      "revId": "c0331ce9834e8a98ef6d2c604a0e83cd98d3f6cc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
