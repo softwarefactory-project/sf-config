@@ -19,6 +19,7 @@
     - /var/www/sf
     - /var/www/dashboard
     - /var/www/dashboards_data
+    - /var/www/keys
     - /etc/letsencrypt
 
 - name: Create extra working directories
@@ -47,6 +48,15 @@
     content: "{{ localCA_pem }}"
     dest: /var/www/localCA.pem
     mode: "0444"
+
+- name: Expose public keys
+  copy:
+    content: "{{ item.content }}"
+    dest: "/var/www/keys/{{ item.name }}"
+    mode: "0444"
+  with_items:
+    - {content: "{{ zuul_rsa_pub }}", name: "zuul_rsa.pub"}
+    - {content: "{{ localCA_pem }}", name: "localCA.pem"}
 
 - name: Add embedded TLS certificate for apache
   when: not network['use_letsencrypt']
