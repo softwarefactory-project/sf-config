@@ -67,6 +67,10 @@ function initAuth() {
         }
     }
     displaySignIn();
+    document.getElementById("login-btn").onclick = function () {
+        back=window.parent.location.href.replace(window.parent.location.origin, '')
+        window.top.location.href = "auth/login?back=" + encodeURIComponent(window.parent.location.href)
+    };
 };
 
 /** Init function
