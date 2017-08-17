@@ -62,20 +62,12 @@
       with_items:
         - /var/lib/zuul/jenkins
         - /var/lib/zuul/jenkins/secrets
-      when: "'jenkins' in roles or zuul_jenkins_credencials"
-
-    - name: Fetch Jenkins Secrets on the install-server
-      command: "rsync -r {{ jenkins_host }}:/var/lib/jenkins/{{ item }} /var/lib/software-factory/jenkins/{{ item }}"
-      delegate_to: localhost
-      with_items:
-        - credentials.xml
-        - secrets/
-      when: "'jenkins' in roles"
+      when: "zuul_jenkins_credencials"
 
     - name: Copy Jenkins Secrets to zuul-launcher home directory
       command: "rsync -r /var/lib/software-factory/jenkins/ {{ zuul_launcher_host }}:/var/lib/zuul/jenkins/"
       delegate_to: localhost
-      when: "'jenkins' in roles or zuul_jenkins_credencials"
+      when: "zuul_jenkins_credencials"
 
     - name: Ensure jenkins secrets key exists
       file:
@@ -88,7 +80,7 @@
         - secrets/master.key
         - secrets/hudson.util.Secret
         - secrets/org.jenkinsci.plugins.plaincredentials.impl.FileCredentialsImpl
-      when: "'jenkins' in roles or zuul_jenkins_credencials"
+      when: "zuul_jenkins_credencials"
 
   when: "'zuul-launcher' in zuul_services"
 
