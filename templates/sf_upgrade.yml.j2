@@ -78,7 +78,6 @@
       yum:
         name: "*"
         state: latest
-        exclude: jenkins
         disablerepo: '{{'{{'}} yum_disable_repo|default(omit) {{'}}'}}'
         enablerepo: '{{'{{'}} yum_enable_repo|default(omit) {{'}}'}}'
 

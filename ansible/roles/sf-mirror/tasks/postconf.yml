@@ -13,7 +13,7 @@
 
 - name: "Add mirror periodic update job"
   when: mirrors.periodic_update
-  template: src=_mirrors_update.yml.j2 dest=/root/config/jobs/_mirrors_update.yml
+  template: src=_mirrors_update.yml.j2 dest=/root/config/jobs-zuul/_mirrors_update.yml
 
 - name: "Add periodic pipeline to config repo"
   when: mirrors.periodic_update and pipeline|changed

@@ -1,0 +1,4 @@
+---
+deprecations:
+  - |
+    Jenkins service is no longer available.

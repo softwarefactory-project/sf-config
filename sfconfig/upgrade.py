@@ -78,6 +78,11 @@ def update_sfconfig(args):
             args.disable_external_resources
         dirty = True
 
+    # 2.7.0
+    if "allowed_proxy_prefixes" in data['authentication']:
+        del data["authentication"]
+        dirty = True
+
     args.save_sfconfig = dirty
 
 

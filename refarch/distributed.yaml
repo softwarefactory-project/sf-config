@@ -18,7 +18,6 @@ inventory:
       - zuul-server
       - zuul-launcher
       - nodepool
-      - jenkins
       - murmur
       - mirror
       - kibana
