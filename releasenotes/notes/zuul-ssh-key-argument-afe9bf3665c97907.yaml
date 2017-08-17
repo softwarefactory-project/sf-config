@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    New --zuul-ssh-key and --zuul3-ssh-key sfconfig argument enable using user
+    provided ssh key for the Zuul services.

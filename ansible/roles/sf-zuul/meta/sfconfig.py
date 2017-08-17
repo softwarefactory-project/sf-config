@@ -17,6 +17,14 @@ from sfconfig.utils import get_default
 class ZuulServer(Component):
     role = "zuul-server"
 
+    def usage(self, parser):
+        parser.add_argument("--zuul-ssh-key", metavar="KEY_PATH",
+                            help="Use existing ssh key for zuul")
+
+    def argparse(self, args):
+        if args.zuul_ssh_key:
+            self.import_ssh_key(args, "jenkins_rsa", args.zuul_ssh_key)
+
     def configure(self, args, host):
         # ZuulV2 uses jenkins key
         self.get_or_generate_ssh_key(args, "jenkins_rsa")
