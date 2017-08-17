@@ -18,6 +18,14 @@ class Zuul3Scheduler(Component):
     role = "zuul3-scheduler"
     require_role = ["nodepool3", "zookeeper"]
 
+    def usage(self, parser):
+        parser.add_argument("--zuul3-ssh-key", metavar="KEY_PATH",
+                            help="Use existing ssh key for zuulV3")
+
+    def argparse(self, args):
+        if args.zuul3_ssh_key:
+            self.import_ssh_key(args, "zuul_rsa", args.zuul3_ssh_key)
+
     def configure(self, args, host):
         args.glue["zuul3_host"] = args.glue["zuul3_scheduler_host"]
         self.add_mysql_database(args, "zuul3")

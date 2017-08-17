@@ -18,6 +18,18 @@ from sfconfig.utils import execute
 class Component(object):
     require_roles = []
 
+    def import_ssh_key(self, args, name, path):
+        if not os.path.isfile(path):
+            raise RuntimeError("%s: file doesn't exists" % path)
+
+        if not os.path.isfile("%s.pub" % path):
+            raise RuntimeError("%s: missing .pub file" % path)
+
+        with open("%s/ssh_keys/%s" % (args.lib, name), "w") as of:
+            of.write(open(path).read())
+        with open("%s/ssh_keys/%s.pub" % (args.lib, name), "w") as of:
+            of.write(open("%s.pub" % path).read())
+
     def get_or_generate_ssh_key(self, args, name):
         priv = "%s/ssh_keys/%s" % (args.lib, name)
         pub = "%s/ssh_keys/%s.pub" % (args.lib, name)
