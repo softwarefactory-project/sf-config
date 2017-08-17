@@ -6,9 +6,10 @@
       - prepare-workspace
       - shell: |
           cp $PYPIRC ~/.pypirc
+          sudo pip install --upgrade setuptools pip twine
           cd $ZUUL_PROJECT
-          python setup.py register -r pypi
-          python setup.py sdist upload -r pypi
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
     wrappers:
       - credentials-binding:
           - file:
