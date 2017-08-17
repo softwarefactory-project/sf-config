@@ -21,9 +21,6 @@ cron:
 targets:
   - name: zuul
     assign-via-gearman: True
-{% if 'jenkins' in roles %}
-  - name: default
-{% endif %}
 
 labels: []
 providers: []

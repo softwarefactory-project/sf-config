@@ -16,9 +16,6 @@
           echo -e "[jenkins]\nurl=http://localhost:99" > build/jenkins.ini
 
           cd config
-          echo "[+] Checking jobs"
-          jenkins-jobs --conf ../build/jenkins.ini test jobs/ > /dev/null
-
           echo "[+] Checking jobs-zuul"
           jenkins-jobs --conf ../build/jenkins.ini test jobs-zuul/ > /dev/null
 

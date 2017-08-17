@@ -133,11 +133,6 @@
         ProxyPassReverse /api/ {{ gerrit_internal_url }}
 
 {% endif %}
-{% if 'jenkins' in roles %}
-        ProxyPass /jenkins/ {{ jenkins_internal_url }} nocanon retry=0
-        ProxyPassReverse /jenkins/ {{ jenkins_internal_url }}
-
-{% endif %}
 {% if 'zuul' in roles %}
         ProxyPass /zuul/ {{ zuul_internal_url }} nocanon retry=0
         ProxyPassReverse /zuul/ {{ zuul_internal_url }}
@@ -212,19 +207,6 @@
 {% endif %}
     </IfModule>
 
-{% if 'jenkins' in roles %}
-    <LocationMatch "^/jenkinslogs/">
-        Order Allow,Deny
-        Allow from all
-
-        AuthType mod_auth_pubtkt
-        TKTAuthFakeBasicAuth on
-        TKTAuthLoginURL /auth/login
-        TKTAuthDebug 1
-        require valid-user
-    </LocationMatch>
-
-{% endif %}
     <Location "/dashboard">
         RewriteEngine on
         RewriteCond %{REQUEST_FILENAME} -s [OR]

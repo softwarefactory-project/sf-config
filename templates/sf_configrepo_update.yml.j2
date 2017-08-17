@@ -13,11 +13,6 @@
   tasks:
     - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/update_configrepo.yaml"
 
-- hosts: jenkins
-  roles:
-    - role: 'sf-jenkins'
-      action: 'update'
-
 {% if 'pages' in roles %}
 - hosts: pages
   roles:

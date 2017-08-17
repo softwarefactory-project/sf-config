@@ -7,11 +7,6 @@ role_actions:
   - disable
   - upgrade
 
-jenkins_password: "CHANGE_ME"
-
-jenkins_host: "example.com"
-jenkins_api_url: "http://{{ jenkins_host }}:8080/jenkins/"
-
 nodepool_services:
   - nodepool-launcher
   - nodepool-builder

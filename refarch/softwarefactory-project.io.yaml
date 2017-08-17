@@ -19,7 +19,6 @@ inventory:
       - zuul-merger
       - zuul-launcher
       - nodepool-launcher
-      - jenkins
       - murmur
       - mirror
       - kibana

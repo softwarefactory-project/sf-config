@@ -36,11 +36,6 @@
     - name: Sync /usr/share/sf-config/config-repo/ in the config repo
       command: rsync -av /usr/share/sf-config/config-repo/ {{ conf_tmp.stdout }}/
 
-    - name: Copy default JJB definitions in /usr/share/sf-config/config-repo/
-      template:
-        src: "{{ sf_templates_dir }}/_default_jobs.yaml.j2"
-        dest: "{{ conf_tmp.stdout }}/jobs/_default_jobs.yaml"
-
     - name: Copy default zuul-launcher macros
       template:
         src: "{{ sf_templates_dir }}/_macros.yaml.j2"
