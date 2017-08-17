@@ -10,6 +10,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import os
+
 from sfconfig.components import Component
 from sfconfig.utils import get_default
 
@@ -17,6 +19,22 @@ from sfconfig.utils import get_default
 class Zuul3Scheduler(Component):
     role = "zuul3-scheduler"
     require_role = ["nodepool3", "zookeeper"]
+
+    def usage(self, parser):
+        parser.add_argument("--zuul3-ssh-key", metavar="KEY_PATH",
+                            help="Use existing ssh key for zuulV3")
+
+    def argparse(self, args):
+        if not args.zuul3_ssh_key:
+            return
+
+        if not os.path.isfile(args.zuul3_ssh_key):
+            raise RuntimeError("%s: file doesn't exists" % args.zuul3_ssh_key)
+
+        if not os.path.isfile("%s.pub" % args.zuul3_ssh_key):
+            raise RuntimeError("%s: missing .pub file" % args.zuul3_ssh_key)
+
+        self.import_ssh_key("zuul_rsa", args.zuul3_ssh_key)
 
     def configure(self, args, host):
         args.glue["zuul3_pub_url"] = "%s/zuul3/" % args.glue["gateway_url"]
