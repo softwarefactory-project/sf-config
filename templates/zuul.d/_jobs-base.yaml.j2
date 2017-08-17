@@ -1,6 +1,7 @@
 ---
 - job:
     name: base
+    parent: null
     pre-run: playbooks/base/pre
     post-run:
       - playbooks/base/post
@@ -16,7 +17,6 @@
         label: dib-centos-7
     # Set attempts to 1 until it's working well
     attempts: 1
-    timeout: 1800
 
 - job:
     name: base-test
