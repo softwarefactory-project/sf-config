@@ -3,6 +3,8 @@
     # Use empty name to fix bug with default status.json
     name: ''
     source:
+{% if 'gerrit' in roles %}
       gerrit:
         config-projects:
           - zuul-jobs
+{% endif %}

@@ -4,7 +4,7 @@
   register: zuulv3_config_dir
 
 - block:
-    - name: Create default zuulV3 config
+    - name: Reset config repo
       command: "{{ item }}"
       args:
         chdir: /root/config
@@ -12,10 +12,21 @@
         - git fetch --all
         - git reset --hard origin/master --
         - git clean -f -x -d
-        - cp -R /usr/share/sf-config/config-repo/zuulV3/ .
-        - git add zuulV3
-        - git commit -m 'Add zuulV3 configuration'
-        - git push git+ssh://gerrit/config master
+        - mkdir zuulV3
+
+    - name: Setup zuulV3 main.yaml
+      template:
+        src: "{{ sf_templates_dir }}/zuulV3-main.yaml.j2"
+        dest: /root/config/zuulV3/main.yaml
+
+    - name: Push config repo changes
+      command: "git {{ item }}"
+      args:
+        chdir: /root/config
+      with_items:
+        - add zuulV3
+        - commit -m 'Add zuulV3 configuration'
+        - push git+ssh://gerrit/config master
   when: zuulv3_config_dir.stat.exists != True
 
 - stat:

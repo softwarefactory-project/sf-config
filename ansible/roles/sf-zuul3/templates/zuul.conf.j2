@@ -25,8 +25,8 @@ log_config={{ zuul3_conf_dir }}/merger-logging.conf
 state_dir={{ zuul3_lib_dir }}
 git_dir={{ zuul3_lib_dir }}/executor/
 finger_port=7979
-trusted_ro_dirs=/opt/:/etc/hosts:/etc/nsswitch.conf
-untrusted_ro_dirs=/opt/:/etc/hosts:/etc/nsswitch.conf
+trusted_ro_paths=/opt/
+untrusted_ro_paths=/opt/
 log_config={{ zuul3_conf_dir }}/executor-logging.conf
 
 [web]
