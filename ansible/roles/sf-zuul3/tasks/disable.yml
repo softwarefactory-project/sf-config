@@ -22,5 +22,5 @@
       yum:
         name: "{{ item }}"
         state: absent
-      with_items: "{{ zuul3_packages }}"
+      with_items: "{{ zuul3_scheduler_packages }} + {{ zuul3_merger_packages }} + {{ zuul3_executor_packages }} + {{ zuul3_web_packages }}"
   when: erase == True
