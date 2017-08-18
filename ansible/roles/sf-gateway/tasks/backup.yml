@@ -1,5 +1,5 @@
 ---
-- name: "Backup data"
+- name: Backup data
   synchronize:
     mode: pull
     src: "{{ item }}"
@@ -9,3 +9,13 @@
   with_items:
     - /etc/letsencrypt/
     - /etc/httpd/managesf_htpasswd
+
+- name: Backup extra directories
+  synchronize:
+    mode: pull
+    src: "{{ item.path }}"
+    dest: "{{ backup_dest }}/"
+    delete: "yes"
+    rsync_opts: --relative
+  with_items: "{{ gateway_directories }}"
+  when: gateway_directories
