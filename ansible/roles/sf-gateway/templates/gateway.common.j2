@@ -4,8 +4,8 @@
 
     <Directory "/usr/share/httpd/icons">
         Options Indexes MultiViews FollowSymlinks
-	AllowOverride None
-	Require all granted
+        AllowOverride None
+        Require all granted
     </Directory>
 
     RewriteEngine On
@@ -27,6 +27,14 @@
     <Directory "/usr/share/doc/">
         Require all granted
     </Directory>
+    {% for directory in gateway_directories -%}
+    Alias "/{{ directory.name }}" "{{ directory.path }}"
+    <Directory {{ directory.path }}>
+    {% for option in directory.options %}
+    {{ option }}
+    {% endfor -%}
+    </Directory>
+    {% endfor -%}
     <Directory /var/www>
         AllowOverride None
         Order allow,deny

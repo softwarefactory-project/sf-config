@@ -18,3 +18,10 @@ welcome_page_path: "sf/welcome.html"
 gateway_topmenu_logo_data: ""
 gateway_favicon_data: ""
 gateway_splash_image_data: ""
+
+gateway_directories: ""
+#  - name: dir_name
+#    path: dir_path
+#    options:
+#        - "option 1"
+#        - "option 2"

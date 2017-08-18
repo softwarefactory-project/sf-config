@@ -21,6 +21,13 @@
     - /var/www/dashboards_data
     - /etc/letsencrypt
 
+- name: Create extra working directories
+  file:
+    path: "{{ item.path }}"
+    state: directory
+  with_items: "{{ gateway_directories }}"
+  when: gateway_directories
+
 - name: "Install sf-update-dashboard command"
   copy:
     src: sf-update-dashboard.py

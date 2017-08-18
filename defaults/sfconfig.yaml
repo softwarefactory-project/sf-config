@@ -104,6 +104,14 @@ theme:
   # Right topmenu entry, next to the login/logout button
   topmenu_custom_entry: '<li><a href="/docs/" target="_top">Get started</a></li>'
 
+# add httpd directories
+gateway_directories: ""
+#  - name: dir_name
+#    path: dir_path
+#    options:
+#        - "option 1"
+#        - "option 2"
+
 backup:
   disabled: true
   method: swift
