@@ -6,7 +6,7 @@
 - hosts: localhost
   tasks:
     - name: Get config sha1
-      command: git ls-remote -h http://{{ '{{' }} fqdn {{ '}}' }}/r/config.git
+      command: git ls-remote -h https://{{ '{{' }} fqdn {{ '}}' }}/r/config.git
       register: configsha
 
 - hosts: all

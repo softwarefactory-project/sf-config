@@ -72,7 +72,7 @@
       - shell: |
           set -e
           rm -Rf ./*
-          zuul-cloner http://gerrit/r $ZUUL_PROJECT
+          zuul-cloner https://gerrit/r $ZUUL_PROJECT
           echo "Detect and render"
           if [ -f "$ZUUL_PROJECT/pelicanconf.py" ]; then
               pushd $ZUUL_PROJECT
@@ -93,7 +93,7 @@
           set -e
           rm -Rf ./*
           mkdir pages
-          zuul-cloner http://gerrit/r $ZUUL_PROJECT
+          zuul-cloner https://gerrit/r $ZUUL_PROJECT
           echo "Detect, render and publish"
           if [ -f "$ZUUL_PROJECT/pelicanconf.py" ]; then
               pushd $ZUUL_PROJECT

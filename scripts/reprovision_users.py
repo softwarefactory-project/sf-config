@@ -24,7 +24,7 @@ if __name__ == '__main__':
             os.remove('/tmp/users_provision.json')
         except OSError:
             pass
-        o = requests.get('http://%s/manage/project/membership/' % url,
+        o = requests.get('https://%s/manage/project/membership/' % url,
                          cookies=cookie)
         with open('/tmp/users_provision.json', 'w') as f:
             json.dump(o.json(), f)
@@ -41,7 +41,7 @@ if __name__ == '__main__':
             data = json.dumps(_user,
                               default=lambda o: o.__dict__)
             headers = headers = {"Content-type": "application/json"}
-            requests.post('http://%s/manage/services_users/' % url,
+            requests.post('https://%s/manage/services_users/' % url,
                           data=data, headers=headers,
                           cookies=cookie)
         os.remove('/tmp/users_provision.json')
