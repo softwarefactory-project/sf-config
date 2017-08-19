@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ab14d0d_fbfe6f04",
+        "filename": "config-repo/jobs/_python.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-19T02:36:34Z",
+      "side": 1,
+      "message": "Twine is already packaged in sf, how about using yum install python2-twine ?",
+      "revId": "5037bc1d1e02dbe8ac083ee79714db800ca5e9f2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
