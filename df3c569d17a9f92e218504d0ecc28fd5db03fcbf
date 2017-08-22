@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ab14d0d_be81f5fd",
+        "filename": "ansible/roles/sf-zuul/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-08-22T19:23:17Z",
+      "side": 1,
+      "message": "you should clean the jenkins reference here",
+      "range": {
+        "startLine": 36,
+        "startChar": 29,
+        "endLine": 36,
+        "endChar": 36
+      },
+      "revId": "df3c569d17a9f92e218504d0ecc28fd5db03fcbf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
