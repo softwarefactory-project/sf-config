@@ -23,6 +23,17 @@ def encode_image(path):
 
 
 class Gateway(Component):
+    def usage(self, parser):
+        parser.add_argument("--disable-fqdn-redirection", action="store_true",
+                            help="Do not redirect direct gateway access "
+                            "to fqdn")
+
+    def argparse(self, args):
+        if args.disable_fqdn_redirection:
+            args.glue["gateway_force_fqdn_redirection"] = False
+        else:
+            args.glue["gateway_force_fqdn_redirection"] = True
+
     def get_or_generate_localCA(self, args):
         ca_file = "%s/certs/localCA.pem" % args.lib
         ca_key_file = "%s/certs/localCAkey.pem" % args.lib

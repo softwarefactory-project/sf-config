@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Add --disable-fqdn-redirection sfconfig argument to disable fqdn redirection
+    when gateway is accessed with ip address.
