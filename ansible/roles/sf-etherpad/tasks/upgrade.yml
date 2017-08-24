@@ -1,0 +1,15 @@
+---
+- block:
+    - name: "Remove source based installation"
+      file:
+        path: "/var/www/etherpad-lite"
+        state: absent
+
+    - name: "Change /var/log/etherpad permission"
+      file:
+        path: "/var/log/etherpad"
+        owner: "etherpad"
+        group: "etherpad"
+        recurse: "yes"
+        state: "directory"
+  when: sf_previous_version == "2.6.0"
