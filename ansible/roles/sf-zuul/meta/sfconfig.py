@@ -38,7 +38,7 @@ class ZuulServer(Component):
 
         # Extra settings
         zuul_config = args.sfconfig.get("zuul", {})
-        for logserver in zuul_config.get("external_logserver", []):
+        for logserver in zuul_config.get("external_logservers", []):
             server = {
                 "name": logserver["name"],
                 "host": logserver.get("host", logserver["name"]),
