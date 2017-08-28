@@ -14,7 +14,7 @@
   register: upstreamconfig
 
 - name: Compute httpd virt host definitions for pages
-  command: /usr/local/bin/resources2pages.py /var/lib/pagesuser/ {{ fqdn }}
+  command: "/usr/local/bin/resources2pages.py /var/lib/pagesuser/ {{ fqdn }} {{ managesf_host }} {{ page_host }}"
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Write config repo sha1 matching current configuration
