@@ -178,7 +178,6 @@ def main():
 
     # Prepare components
     for host in args.sfarch["inventory"]:
-        # TODO: do not force $fqdn as host domain name
         if "hostname" not in host:
             host["hostname"] = "%s.%s" % (host["name"], args.sfconfig["fqdn"])
 

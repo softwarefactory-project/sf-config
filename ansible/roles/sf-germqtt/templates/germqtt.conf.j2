@@ -3,7 +3,7 @@ pidfile = /var/run/germqtt.pid
 
 [gerrit]
 username=jenkins
-hostname=gerrit.{{ fqdn }}
+hostname={{ gerrit_host }}
 key=/usr/share/germqtt/.ssh/id_rsa
 
 [mqtt]

@@ -96,7 +96,7 @@ dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mys
 
 [connection gerrit]
 driver=gerrit
-server=gerrit.{{ fqdn }}
+server={{ gerrit_host }}
 # baseurl is only use to fetch git refs on diff url than server.
 # Using baseurl we cannot modify url zuul report to user
 baseurl={{ gerrit_pub_url }}

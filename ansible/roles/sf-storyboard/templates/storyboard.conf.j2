@@ -41,7 +41,7 @@ enable = False
 
 {% if storyboard_email_notification %}
 [notifications]
-rabbit_host=rabbitmq.{{ fqdn }}
+rabbit_host={{ rabbitmq_host }}
 rabbit_login_method = AMQPLAIN
 rabbit_userid = storyboard
 rabbit_password = {{ storyboard_rabbitmq_password }}
