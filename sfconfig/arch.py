@@ -21,14 +21,6 @@ required_roles = (
 
 
 def process(args):
-    # scalable_roles are the roles that can be instantiate multiple time
-    # this indicate that we don't need $role.$fqdn aliases
-    # TODO: remove this logic when $role.$fqdn are no longer used
-    args.glue["scalable_roles"] = [
-        "zuul", "zuul-merger", "zuul-launcher",
-        "zuul3", "zuul3-merger", "zuul3-executor",
-    ]
-
     # roles is a dictwith roles name as key and host list as value
     args.glue["roles"] = {}
 
@@ -49,22 +41,17 @@ def process(args):
         else:
             host["public_url"] = host["public_url"].rstrip("/")
 
-        # TODO: remove this aliases logic when $role.$fqdn are no longer used
-        aliases = set((host['name'],))
+        # Add host to hosts_file
+        args.glue["hosts_file"][host["ip"]] = [host["hostname"]]
+
+        # Add host to role list
         for role in host["roles"]:
-            # Add host to role list
             args.glue["roles"].setdefault(role, []).append(host)
-            # Add extra aliases for specific roles
-            if role == "gateway":
-                aliases.add(args.sfconfig["fqdn"])
-            elif role == "cauth":
-                aliases.add("auth.%s" % args.sfconfig["fqdn"])
-            elif role not in args.glue["scalable_roles"]:
-                # Add role name virtual name (as cname)
-                aliases.add("%s.%s" % (role, args.sfconfig["fqdn"]))
-                aliases.add(role)
-        args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
-            list(aliases)
+            if role == "gerrit":
+                args.glue["hosts_file"][host["ip"]].append("gerrit")
+            elif role == "gateway":
+                args.glue["hosts_file"][host["ip"]].append(
+                    args.sfconfig["fqdn"])
 
     # Check roles
     for requirement in required_roles:

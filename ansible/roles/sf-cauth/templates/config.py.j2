@@ -82,7 +82,7 @@ auth = {
     },
     {% endif %}
     'localdb': {
-        'managesf_url': 'http://managesf.{{ fqdn }}',
+        'managesf_url': 'http://{{ managesf_host }}',
     },
     {% if not authentication['openid']['disabled'] %}
     'openid': {
@@ -150,5 +150,5 @@ sqlalchemy = {
 }
 
 managesf = {
-    'url'           : 'http://managesf.{{ fqdn }}',
+    'url'           : 'http://{{ managesf_host }}',
 }

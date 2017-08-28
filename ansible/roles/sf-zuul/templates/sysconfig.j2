@@ -1,4 +1,4 @@
 {% if 'influxdb' in roles %}
-STATSD_HOST=influxdb.{{ fqdn }}
+STATSD_HOST={{ influxdb_host }}
 STATSD_PORT=8125
 {% endif %}

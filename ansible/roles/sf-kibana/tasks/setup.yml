@@ -5,7 +5,7 @@
   lineinfile:
     dest: /opt/kibana/config/kibana.yml
     regexp: "^elasticsearch.url{{':'}}.*"
-    line: "elasticsearch.url{{':'}} \"http://elasticsearch.{{ fqdn }}:9200\""
+    line: "elasticsearch.url{{':'}} \"http://{{ elasticsearch_host }}:9200\""
   register: kibanaconf
 
 - name: "Look for top menu patch"

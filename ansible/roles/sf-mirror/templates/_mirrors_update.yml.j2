@@ -6,7 +6,7 @@
     builders:
       - shell: |
           echo "Updating configuration using $ZUUL_COMMIT"
-          ssh root@managesf.{{fqdn}} sf_mirror_update
+          ssh root@{{ install_server_host }} sf_mirror_update
     triggers:
       - zuul
     node: master

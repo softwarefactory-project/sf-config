@@ -7,13 +7,6 @@
   tasks:
     - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/ssh_populate_known_hosts.yml"
 
-
-# TODO: Fix fqdn update to work on distributed arch
-- hosts: managesf
-  gather_facts: no
-  tasks:
-    - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/update_fqdn_step1.yaml"
-
 # Setup install-server ssh keys
 - hosts: localhost
   connection: local
@@ -64,11 +57,9 @@
 
 {% endfor %}
 
-# TODO: Fix fqdn update to work on distributed arch
 - hosts: managesf
   gather_facts: no
   tasks:
-    - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/update_fqdn_step2.yaml"
     - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/create_config-repo.yml"
 {% if 'zuul3' in roles %}
     - include: "{{'{{'}} sf_tasks_dir {{'}}'}}/create_zuul-jobs.yml"
