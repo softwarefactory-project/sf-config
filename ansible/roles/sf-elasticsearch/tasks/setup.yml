@@ -25,9 +25,9 @@
 - name: Ensure Elasticsearch listen to all addresses
   lineinfile:
     dest: /etc/elasticsearch/elasticsearch.yml
-    regexp: "^network.host{{':'}} elasticsearch.{{ fqdn }}"
+    regexp: "^network.host{{':'}} {{ elasticsearch_host }}"
     insertafter: "^# network.host:"
-    line: "network.host{{':'}} elasticsearch.{{ fqdn }}"
+    line: "network.host{{':'}} {{ elasticsearch_host }}"
   register: listenaddr
 - name: Set Elasticsearch indexes replica count
   lineinfile:

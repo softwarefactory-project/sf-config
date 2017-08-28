@@ -1,7 +1,7 @@
 # This file is managed by ansible, don't edit
 # It's the serverspec hosts.yaml file.
 {% for host in inventory %}
-{{ host['name'] }}:
+{{ host['hostname'] }}:
   :roles:
     - base
     - postfix
