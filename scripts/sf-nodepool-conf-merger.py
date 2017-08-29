@@ -9,6 +9,11 @@ def merge(inp, _nodepool):
     conf = yaml.safe_load(open(_nodepool))
     user = yaml.safe_load(open(inp))
 
+    if "rh-python35" in _nodepool:
+        cache_dir = "/var/opt/rh/rh-python35/cache/nodepool"
+    else:
+        cache_dir = "/var/cache/nodepool"
+
     for provider in user['providers']:
         if inp.endswith("nodepool.yaml"):
             # This syntax is nodepool2 only
@@ -19,8 +24,8 @@ def merge(inp, _nodepool):
 
     for dib in user['diskimages']:
         envvars = dib.setdefault('env-vars', {})
-        envvars['TMPDIR'] = '/var/cache/nodepool/dib_tmp'
-        envvars['DIB_IMAGE_CACHE'] = '/var/cache/nodepool/dib_cache'
+        envvars['TMPDIR'] = "%s/dib_tmp" % cache_dir
+        envvars['DIB_IMAGE_CACHE'] = "%s/dib_cache" % cache_dir
         envvars['DIB_GRUB_TIMEOUT'] = '0'
         envvars['DIB_CHECKSUM'] = '1'
         # Make sure env-vars are str
