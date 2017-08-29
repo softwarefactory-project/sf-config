@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: Check new Nodepool config checksum
-  shell: git log --oneline nodepool/ && md5sum /etc/nodepool/_nodepool.yaml
+  shell: git log --oneline nodepool/ && md5sum "{{ nodepool3_conf_dir }}/_nodepool.yaml"
   args:
     chdir: /root/config
   register: upstreamconfig
@@ -19,26 +19,28 @@
     chdir: /root/config
   when: localconfig.stdout != upstreamconfig.stdout
   with_items:
-    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepoolV3.yaml /etc/nodepool/nodepool.yaml
-    - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ /etc/nodepool/scripts/
-    - rsync -avi --delete nodepool/elements/ /etc/nodepool/elements/
+    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepoolV3.yaml "{{ nodepool3_conf_dir }}/nodepool.yaml"
+    - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ "{{ nodepool3_conf_dir }}/scripts/"
+    - rsync -avi --delete nodepool/elements/ "{{ nodepool3_conf_dir }}/elements/"
 
+# TODO: fix me when nodepool is running on a remote node, include_vars load local path...
 - name: Load nodepool configuration
   include_vars:
-    file: /etc/nodepool/nodepool.yaml
+    file: "{{ nodepool3_conf_dir }}/nodepool.yaml"
     name: nodepool3_config
 
 - name: Update builder-logging.conf
   template:
     src: "{{ item }}.j2"
-    dest: /etc/nodepool/{{ item }}
+    dest: "{{ nodepool3_conf_dir }}/{{ item }}"
   with_items: [launcher-logging.conf, builder-logging.conf]
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Restart service
   service:
-    name: "{{ item }}"
+    name: "rh-python35-{{ item }}"
     state: restarted
+    enabled: "yes"
   with_items: "{{ nodepool3_services }}"
   when: localconfig.stdout != upstreamconfig.stdout
 
