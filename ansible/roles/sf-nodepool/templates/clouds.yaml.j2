@@ -1,5 +1,5 @@
 clouds:
-{% for provider in nodepool.providers %}
+{% for provider in nodepool_providers|default([]) + nodepool3_providers|default([]) %}
   {{ provider['name'] }}:
     auth:
       username: {{ provider['username'] }}
