@@ -539,7 +539,7 @@ def generate(args):
                 host["roles"].append("germqtt")
 
     # Check for conflicts
-    for conflict in (("nodepool3", "nodepool"), ("zuul3", "zuul")):
+    for conflict in (("zuul3", "zuul")):
         for host in arch["inventory"]:
             if conflict[0] in host["roles"] and conflict[1] in host["roles"]:
                 raise RuntimeError("%s: can't install both %s and %s" % (

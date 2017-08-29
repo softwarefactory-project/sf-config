@@ -22,6 +22,8 @@ inventory:
       - zuul-launcher
       - nodepool-launcher
       - nodepool-builder
+      - nodepool3-launcher
+      - nodepool3-builder
       - jenkins
       - murmur
       - elasticsearch

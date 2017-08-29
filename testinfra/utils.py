@@ -10,15 +10,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from sfconfig.components import Component
+import yaml
+
+GROUP_VAR_PATH = "/var/lib/software-factory/ansible/group_vars/all.yaml"
 
 
-class Nodepool3Launcher(Component):
-    role = "nodepool3-launcher"
-    require_roles = ["zookeeper"]
-
-    def configure(self, args, host):
-        args.glue["nodepool3_providers"] = args.sfconfig.get(
-            "nodepool3", {}).get("providers", [])
-        self.get_or_generate_ssh_key(args, "nodepool_rsa")
-        self.get_or_generate_ssh_key(args, "zuul_rsa")
+class Base:
+    def enabled_roles(self):
+        group_vars = yaml.load(open(GROUP_VAR_PATH))
+        return group_vars["roles"]
