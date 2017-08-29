@@ -1,10 +1,10 @@
 ---
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa"
+- include: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa home_dir={{ nodepool3_lib_dir }} update_user=no"
 
 - name: Install jenkins/zuul public ssh key
   copy:
     content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
-    dest: "/var/lib/nodepool/.ssh/{{ item }}.pub"
+    dest: "{{ nodepool3_lib_dir }}/.ssh/{{ item }}.pub"
     mode: 0444
     owner: nodepool
     group: nodepool
@@ -15,7 +15,7 @@
 - name: Install config
   template:
     src: "{{ item }}.j2"
-    dest: "/etc/nodepool/{{ item }}"
+    dest: "{{ nodepool3_conf_dir }}/{{ item }}"
     owner: "root"
     group: "nodepool"
     mode: "0440"
@@ -23,24 +23,24 @@
     - _nodepool.yaml
     - secure.conf
 
+- name: Create .config/openstack directory
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ nodepool3_lib_dir }}/.config/openstack"
+    - /root/.config/openstack
+
 - name: Install os-client-config
   template:
     src: clouds.yaml.j2
-    dest: /var/lib/nodepool/.config/openstack/clouds.yaml
+    dest: "{{ item }}"
     owner: nodepool
     group: nodepool
     mode: 0400
-
-- name: Ensure /root/.config/openstack exists
-  file:
-    path: /root/.config/openstack
-    state: directory
-
-- name: Install os-client-config for root user
-  template:
-    src: clouds.yaml.j2
-    dest: /root/.config/openstack/clouds.yaml
-    mode: 0400
+  with_items:
+    - "{{ nodepool3_lib_dir }}/.config/openstack/clouds.yaml"
+    - /root/.config/openstack/clouds.yaml
 
 - name: Create nodepool image build log directory
   file:
@@ -79,21 +79,21 @@
 - name: Setup sysconfig
   template:
     src: sysconfig.j2
-    dest: /etc/sysconfig/nodepool
+    dest: "{{ nodepool3_sysconfig }}"
   notify: nodepool3 restart
 
 - name: Setup authorized keys
   copy:
     content: "{{ zuul_rsa_pub }}"
-    dest: /etc/nodepool/scripts/authorized_keys
+    dest: "{{ nodepool3_conf_dir }}/scripts/authorized_keys"
 
 - name: Setup localCA
   copy:
     content: "{{ localCA_pem }}"
-    dest: /etc/nodepool/scripts/localCA.pem
+    dest: "{{ nodepool3_conf_dir }}/scripts/localCA.pem"
 
 - name: Start service
   service:
-    name: "{{ item }}"
+    name: "rh-python35-{{ item }}"
     enabled: "yes"
   with_items: "{{ nodepool3_services }}"
