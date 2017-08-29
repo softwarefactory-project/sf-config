@@ -3,12 +3,18 @@
   group:
     name: "{{ group_name|default(user_name) }}"
 
+- name: "Check if user exists"
+  command: "grep '^{{ user_name }}:' /etc/passwd"
+  register: user_exists
+  failed_when: user_exists.rc not in [0, 1]
+
 - name: "Create user"
   user:
     name: "{{ user_name }}"
     group: "{{ group_name|default(user_name) }}"
     shell: "{{ shell|default('/sbin/nologin') }}"
     home: "{{ home_dir|default('/var/lib/' + user_name) }}"
+  when: user_exists.rc == 1 or update_user|default(true) != 'no'
 
 - name: "Create home dir"
   file:

@@ -15,13 +15,12 @@
       with_items:
         - /etc/httpd/conf.d/nodepool3_log.conf
         - /var/www/nodepool3-log
-        - /var/lib/nodepool
-        - /etc/nodepool
-        - /var/log/nodepool
+        - "{{ nodepool3_lib_dir }}"
+        - "{{ nodepool3_conf_dir }}"
 
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
-      with_items: "{{ nodepool3_packages }}"
+      with_items: "{{ nodepool3_launcher_packages }} + {{ nodepool3_builder_packages }}"
   when: erase == True
