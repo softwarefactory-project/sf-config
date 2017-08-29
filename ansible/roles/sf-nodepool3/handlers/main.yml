@@ -1,6 +1,6 @@
 ---
 - name: nodepool3 restart
   service:
-    name: "{{ item }}"
+    name: "rh-python35-{{ item }}"
     state: restarted
   with_items: "{{ nodepool3_services }}"
