@@ -10,15 +10,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from sfconfig.components import Component
 
-
-class Nodepool3Launcher(Component):
-    role = "nodepool3-launcher"
-    require_roles = ["zookeeper"]
-
-    def configure(self, args, host):
-        args.glue["nodepool3_providers"] = args.sfconfig.get(
-            "nodepool3", {}).get("providers", [])
-        self.get_or_generate_ssh_key(args, "nodepool_rsa")
-        self.get_or_generate_ssh_key(args, "zuul_rsa")
+class TestNodepool3Builder:
+    def test_service_running_and_enabled(self, host):
+        srv = host.service("rh-python35-nodepool-builder")
+        assert srv.is_running
+        assert srv.is_enabled
