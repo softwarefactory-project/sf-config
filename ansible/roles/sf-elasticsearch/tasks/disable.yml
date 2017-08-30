@@ -13,6 +13,7 @@
         state: absent
       with_items:
         - /var/lib/elasticsearch/elasticsearch
+        - "/etc/yum.repos.d/{{ elasticsearch_repo_name }}.repo"
 
     - name: Remove packages
       yum:

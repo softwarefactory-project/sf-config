@@ -13,6 +13,7 @@
       with_items:
         - /var/lib/jenkins
         - /etc/jenkins_jobs
+        - "/etc/yum.repos.d/{{ jenkins_repo_name }}.repo"
 
     - name: Remove packages
       yum:

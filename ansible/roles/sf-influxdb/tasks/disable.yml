@@ -18,6 +18,7 @@
         - '/etc/{{ service_name }}'
         - '/var/lib/{{ service_name }}'
         - '/var/log/{{ service_name }}'
+        - "/etc/yum.repos.d/{{ influxdb_repo_name }}.repo"
 
     - name: Remove packages
       yum:
