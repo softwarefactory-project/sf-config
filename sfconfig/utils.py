@@ -38,6 +38,14 @@ def load_components(share="/usr/share/sf-config"):
     return components
 
 
+def list_testinfra(share="/usr/share/sf-config"):
+    testinfra = {}
+
+    for modpath in glob.glob("%s/testinfra/test_*.py" % share):
+        testinfra[modpath.split('_')[-1][:-3]] = modpath
+    return testinfra
+
+
 def get_default(d, key, default):
     val = d.get(key, default)
     if not val:
