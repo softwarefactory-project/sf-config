@@ -88,6 +88,8 @@ def usage(components):
     # tunning
     p.add_argument("--skip-apply", default=False, action='store_true',
                    help="Do not execute Ansible playbook")
+    p.add_argument("--skip-test", default=False, action='store_true',
+                   help="Do not execute testinfra")
     p.add_argument("--disable-external-resources", default=False,
                    action='store_true',
                    help="Disable gerrit replication and nodepool providers")
@@ -243,6 +245,21 @@ def main():
         execute([
             "ansible-playbook",
             "/var/lib/software-factory/ansible/sf_postconf.yml"])
+
+    if not args.skip_apply and not args.skip_test:
+        testinfra_tests = sfconfig.utils.list_testinfra()
+        for host in args.sfarch["inventory"]:
+            testinfra = ["testinfra"]
+            to_run = False
+            if "install-server" not in host["roles"]:
+                testinfra.append("--connection=ssh")
+                testinfra.append("--hosts=%s" % host["hostname"])
+            for role in host["roles"]:
+                if role in testinfra_tests:
+                    testinfra.append(testinfra_tests[role])
+                    to_run = True
+            if to_run:
+                execute(testinfra)
 
     if not args.skip_apply:
         execute(["logger", "sfconfig.py: ended"])
