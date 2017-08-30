@@ -1,0 +1,19 @@
+---
+- name: Disable service
+  service:
+    name: etherpad
+    state: stopped
+    enabled: "no"
+  ignore_errors: "yes"
+
+- block:
+    - name: Remove files
+      file:
+        path: "/var/lib/etherpad"
+        state: absent
+
+    - name: Remove packages
+      yum:
+        name: etherpad
+        state: absent
+  when: erase == True
