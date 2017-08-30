@@ -120,10 +120,6 @@ def usage(components):
 
     args = p.parse_args()
 
-    if args.skip_apply:
-        args.skip_install = True
-        args.skip_setup = True
-
     return args
 
 
@@ -218,33 +214,7 @@ def main():
         args.glue.update(args.sfarch)
         yaml_dump(args.glue, allvars_file)
 
-    os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
-    if args.disable:
-        return execute(["ansible-playbook",
-                        "/var/lib/software-factory/ansible/sf_disable.yml"])
-    if args.erase:
-        return execute(["ansible-playbook",
-                        "/var/lib/software-factory/ansible/sf_erase.yml"])
-    if not args.skip_apply and args.upgrade:
-        execute(["ansible-playbook",
-                 "/var/lib/software-factory/ansible/sf_upgrade.yml"])
-    if not args.skip_install:
-        execute(["ansible-playbook",
-                 "/var/lib/software-factory/ansible/sf_install.yml"])
-    if not args.skip_apply and args.recover:
-        execute(["ansible-playbook",
-                 "/var/lib/software-factory/ansible/sf_recover.yml"])
-    if not args.skip_setup:
-        execute(["ansible-playbook",
-                 "/var/lib/software-factory/ansible/sf_setup.yml"])
-    if not args.skip_apply:
-        execute([
-            "ansible-playbook",
-            "/var/lib/software-factory/ansible/sf_configrepo_update.yml"])
-    if not args.skip_apply:
-        execute([
-            "ansible-playbook",
-            "/var/lib/software-factory/ansible/sf_postconf.yml"])
+    sfconfig.inventory.run(args)
 
     if not args.skip_apply and not args.skip_test:
         testinfra_tests = sfconfig.utils.list_testinfra()
