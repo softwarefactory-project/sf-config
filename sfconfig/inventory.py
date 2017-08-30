@@ -116,13 +116,6 @@ def generate(args):
                         "%s/%s.yml.j2" % (templates, playbooks),
                         arch)
 
-    # Generate server spec hosts file
-    if not os.path.isdir("/etc/serverspec"):
-        os.mkdir("/etc/serverspec")
-    render_template("/etc/serverspec/hosts.yaml",
-                    "%s/serverspec.yml.j2" % templates,
-                    arch)
-
     # Generate /etc/hosts file
     render_template("/etc/hosts",
                     "%s/etc-hosts.j2" % templates,

@@ -9,14 +9,4 @@
     - git
     - git-review
     - python2-sfmanager
-    - rubygem-rake
-    - rubygems
-
-- name: check if serverspec if installed
-  stat:
-    path: '/usr/local/share/gems/gems/serverspec-{{ serverspec_version }}/lib/serverspec'
-  register: serverspec
-
-- name: Install serverspec
-  shell: 'gem install serverspec -v {{ serverspec_version }}'
-  when: serverspec.stat.exists == False
+    - python-testinfra

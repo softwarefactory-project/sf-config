@@ -29,5 +29,3 @@ backup_scp_backup_port: "{{ backup.scp_backup_port }}"
 backup_scp_backup_user: "{{ backup.scp_backup_user }}"
 backup_scp_backup_directory: "{{ backup.scp_backup_directory }}"
 backup_scp_backup_max_retention_secs: "{{ backup.scp_backup_max_retention_secs }}"
-
-serverspec_version: 2.25.0
