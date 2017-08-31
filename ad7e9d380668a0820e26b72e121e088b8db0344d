@@ -22,6 +22,24 @@
       "revId": "ad7e9d380668a0820e26b72e121e088b8db0344d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_6fd851f0",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-08-31T00:46:58Z",
+      "side": 1,
+      "message": "This is because sfconfig --upgrade is executed after the new release is installed, so we need the previous version. That bug is fixed in a follow-up patch, this is just a safety measure for now.",
+      "parentUuid": "fabf19d9_4f77cd02",
+      "revId": "ad7e9d380668a0820e26b72e121e088b8db0344d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
