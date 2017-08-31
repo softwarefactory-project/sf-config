@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_99109baa",
+        "filename": "ansible/roles/sf-nodepool3/defaults/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-08-31T18:33:18Z",
+      "side": 1,
+      "message": "It\u0027s strange to have some services called rh-python35-nodepool-*, why are you doing that ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 11,
+        "endChar": 32
+      },
+      "revId": "71f53ace8497dcf12d8b6779104594466750bf17",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_7926e717",
+        "filename": "ansible/roles/sf-nodepool3/defaults/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-08-31T18:33:18Z",
+      "side": 1,
+      "message": "same comment, why having these paths ? only /opt ?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 65
+      },
+      "revId": "71f53ace8497dcf12d8b6779104594466750bf17",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
