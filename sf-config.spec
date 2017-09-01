@@ -40,7 +40,7 @@ install -p -D -m 0644 defaults/logo-splash.png %{buildroot}%{_sysconfdir}/softwa
 install -p -D -m 0644 defaults/logo-topmenu.png %{buildroot}%{_sysconfdir}/software-factory/logo-topmenu.png
 # /usr/share/sf-config
 install -p -d %{buildroot}%{_datarootdir}/sf-config
-mv ansible config-repo zuul-jobs defaults refarch scripts templates testinfra %{buildroot}%{_datarootdir}/sf-config/
+mv ansible defaults refarch scripts templates testinfra %{buildroot}%{_datarootdir}/sf-config/
 # /var/lib/software-factory/backup
 install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 

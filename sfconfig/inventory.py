@@ -46,9 +46,6 @@ def host_play(host, roles=[], params={}, tasks=[]):
         tasks = [tasks]
 
     host_play = {'hosts': host['hostname']}
-    if "install-server" in host.get("roles", []) or \
-       host['hostname'] in ('localhost', 'install-server'):
-        host_play['connection'] = 'local'
     if roles:
         host_play['roles'] = []
         for role in roles:
@@ -64,62 +61,60 @@ def host_play(host, roles=[], params={}, tasks=[]):
 
 def disable(args, pb):
     action = {'action': 'disable', 'erase': False}
+
+    # Disable all but mysql and install-server
     for host in args.inventory:
         host_roles = [role for role in host["roles"] if
                       role not in ("mysql", "install-server")]
         pb.append(host_play(host, host_roles, action))
-    if 'influxdb' in args.glue['roles']:
-        pb.append(host_play('all', 'telegraf', action))
+
+    # Then disable mysql and install-server
     pb.append(host_play('mysql', 'mysql', action))
     pb.append(host_play('install-server', 'install-server', action))
+
+    # Last disable base from all
     pb.append(host_play('all', 'base', action))
 
 
 def erase(args, pb):
+    action = {'action': 'disable', 'erase': True}
+
+    # First get confirmation
     prompt = "WARNING: this playbook will *DESTROY* software factory " \
              "data , press ENTER to continue or CTRL-C to abort"
-    action = {'action': 'disable', 'erase': True}
-    pb.append(host_play('localhost', tasks={
+    pb.append(host_play('install-server', tasks={
         'pause': {'prompt': prompt},
         'when': 'sfconfig_batch is not defined'}))
+
+    # Erase all but mysql and install-server
     for host in args.inventory:
         host_roles = [role for role in host["roles"] if
                       role not in ("mysql", "install-server")]
         pb.append(host_play(host, host_roles, action))
+
+    # Then erase mysql and install-server
     pb.append(host_play('mysql', 'mysql', action))
     pb.append(host_play('install-server', 'install-server', action))
+
+    # Last erase base from all
     pb.append(host_play('all', 'base', action))
-    # TODO: move this in base disable ?
-    pb.append(host_play('all', tasks={
-        'file': {'path': "{{ item }}",
-                 'state': 'absent'},
-        'with_items': [
-            "/var/lib/software-factory/sql",
-            "/var/lib/software-factory/state",
-            "/var/lib/software-factory/.version",
-            "/var/lib/software-factory/bootstrap-data/secrets.yaml",
-            "/var/lib/software-factory/ansible"
-        ]}))
 
 
 def disable_action(args):
     pb = []
     playbook_name = "sfconfig"
-    if args.disable:
-        playbook_name += "_disable"
-        disable(args, pb)
-    elif args.erase:
+    if args.erase:
         playbook_name += "_erase"
         erase(args, pb)
+    elif args.disable:
+        playbook_name += "_disable"
+        disable(args, pb)
     return playbook_name, pb
 
 
 def upgrade(args, pb):
-    # Store current installed packages list
-    pb.append(host_play('all', tasks={'name': 'Store installed packages list',
-                                      'shell': 'rpm -qa | sort > '
-                                               '/var/lib/software-factory/'
-                                               'package_installed'}))
+    # Call pre upgrade task
+    pb.append(host_play('all', 'upgrade', {'action': 'pre'}))
 
     # First turn off all component except gerrit
     for host in args.inventory:
@@ -128,63 +123,15 @@ def upgrade(args, pb):
         pb.append(host_play(host, roles, {'action': 'disable',
                                           'erase': False}))
 
-    # Push config-repo changes now
-    # TODO: move this in a role
-    pb.append(host_play('localhost', tasks=[
-        {'name': 'Ensure zuul-jobs exists',
-         'file': {'path': '/root/config/jobs-zuul', 'state': 'directory'}},
-        {'name': "Ensure defaults files are updated (prefixed by '_')",
-         'template': {'src': "{{ item.src }}",
-                      'dest': "/root/config/{{ item.dest }}"},
-         'with_items': [
-             {'src': '/usr/share/sf-config/templates/_macros.yaml.j2',
-              'dest': 'jobs-zuul/_macros.yaml'},
-             {'src': '/usr/share/sf-config/config-repo/jobs-zuul/_config.yaml',
-              'dest': 'jobs-zuul/_config.yaml'},
-             {'src': '/usr/share/sf-config/templates/_default_jobs.yaml.j2',
-              'dest': 'jobs/_default_jobs.yaml'},
-             {'src': '/usr/share/sf-config/config-repo/zuul/_layout.yaml',
-              'dest': 'zuul/_layout.yaml'}
-         ],
-         'register': 'config_repo_status'},
-        {'block': [
-            {'name': 'Nothing to do (yet)',
-             'command': '/bin/true'}],
-         'when': 'sf_previous_version == "2.6"'},
-        {'name': 'Push config-repo updates',
-         'command': 'chdir=/root/config {{ item }}',
-         'with_items': [
-             'git add jobs-zuul/_macros.yaml jobs-zuul/_config.yaml',
-             'git commit -a -m "Update default configuration '
-             '(from {{ sf_previous_version }} to {{ sf_version }})"',
-             'git push git+ssh://gerrit/config master',
-         ]}
-    ]))
+    # Upgrade repositories
+    pb.append(host_play('install-server', 'repos', {'action': 'upgrade'}))
 
     # Turn off gerrit
     pb.append(host_play('gerrit', tasks={'service': {'name': 'gerrit',
                                                      'state': 'stopped'}}))
 
     # Install new release and update packages
-    # TODO: move this in a role
-    pb.append(host_play('all', tasks=[
-        {'name': 'Install new release repo',
-         'yum': {
-             'name': 'https://softwarefactory-project.io/repos/'
-                     'sf-release-{{ sf_version }}.rpm',
-             'state': 'present'
-         },
-         'when': 'sf_version != "master"'},
-        {'name': 'Update packages',
-         'yum': {
-             'name': '*',
-             'state': 'latest',
-             'exclude': 'jenkins',
-             'update_cache': 'yes',
-             'disablerepo': '{{ yum_disable_repo|default(omit) }}',
-             'enablerepo': '{{ yum_enable_repo|default(omit) }}'
-         }}
-    ]))
+    pb.append(host_play('all', 'upgrade', {'action': 'packages'}))
 
     # Start role upgrade
     action = {'action': 'upgrade'}
@@ -196,18 +143,13 @@ def upgrade(args, pb):
 
 def install(args, pb):
     action = {'action': 'install'}
-    roles = ['base']
-    if 'influxdb' in args.glue['roles']:
-        roles.append('telegraf')
-    pb.append(host_play('all', roles, action))
-    if args.sfconfig['network']['use_letsencrypt']:
-        pb.append(host_play('gateway', 'lecm', action))
+    pb.append(host_play('all', 'base', action))
     for host in args.inventory:
         pb.append(host_play(host, host['roles'], action))
 
 
 def recover(args, pb):
-    pb.append(host_play('localhost', tasks=[
+    pb.append(host_play('install-server', tasks=[
         notify_journald("recover started"),
         {'name': 'Ensure role directory exists',
          'file': {
@@ -238,50 +180,40 @@ def recover(args, pb):
                                                 '/backup/%s' % role})
         pb.append(play)
 
-    pb.append(host_play('localhost', tasks=notify_journald("recover ended")))
+    pb.append(host_play('install-server',
+                        tasks=notify_journald("recover ended")))
 
 
 def setup(args, pb):
     action = {'action': 'setup'}
     # Setup install-server ssh keys
-    pb.append(host_play('localhost', 'ssh', action))
+    pb.append(host_play('install-server', 'ssh', action))
 
-    # Setup sf-base role on all hosts
-    roles = ['postfix', 'base', 'monit']
-    if 'influxdb' in args.glue['roles']:
-        roles.append('telegraf')
-    pb.append(host_play('all', roles, action))
+    # Setup base role on all hosts
+    pb.append(host_play('all', ['postfix', 'base', 'monit'], action))
 
-    # Setup sf-mysql role before all components
+    # Setup mysql role before all components
     pb.append(host_play('mysql', 'mysql', action))
 
-    # Setup lecm if needed
-    if args.sfconfig['network']['use_letsencrypt']:
-        pb.append(host_play('gateway', 'lecm', action))
-
-    # Setup all components
+    # Setup all components except mysql
     for host in args.inventory:
         host_roles = [role for role in host["roles"] if
                       role != 'mysql']
         pb.append(host_play(host, host_roles, action))
 
     # Create config projects
-    tasks = [{'include': "{{ sf_tasks_dir }}/create_config-repo.yml"}]
-    if 'zuul3' in args.glue['roles']:
-        tasks.append({'include': "{{ sf_tasks_dir }}/create_zuul-jobs.yml"})
-    pb.append(host_play('localhost', tasks=tasks, params=action))
+    pb.append(host_play('install-server', 'repos', action))
 
 
 def config_update(args, pb):
     # Check config repo HEAD and update /root/config copy for each services
-    pb.append(host_play('localhost', tasks={
+    pb.append(host_play('install-server', tasks={
         'name': 'Get config sha1',
-        'command': 'git ls-remote -h http://{{ fqdn }}/r/config.git',
+        'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
         'register': 'configsha'
     }))
-    pb.append(host_play('all', tasks={
-        'include': '{{ sf_tasks_dir }}/update_configrepo.yaml'
-    }))
+    pb.append(host_play('all', 'repos', {'action': 'fetch_config_repo'}))
+
     role_order = ["gerrit", "jenkins", "pages", "gerritbot",
                   "zuul", "nodepool", "zuul3", "nodepool3"]
     for role in args.glue["roles"]:
@@ -315,8 +247,7 @@ def postconf(args, pb):
 
 def enable_action(args):
     pb = []
-    pb.append(host_play('localhost', tasks={
-        'include': '{{ sf_tasks_dir }}/ssh_populate_known_hosts.yml'}))
+    pb.append(host_play('install-server', 'ssh', {'action': 'populate_hosts'}))
     playbook_name = "sfconfig"
     if args.upgrade:
         playbook_name += "_upgrade"
@@ -337,7 +268,7 @@ def enable_action(args):
     postconf(args, pb)
 
     # Store deployed version to be used by upgrade playbook
-    pb.append(host_play('localhost', tasks={
+    pb.append(host_play('install-server', tasks={
         'name': 'Write current version',
         'copy': {
             'dest': "/var/lib/software-factory/.version",
@@ -358,7 +289,7 @@ def enable_action(args):
                     testinfra.append(testinfra_tests[role])
                     to_run = True
             if to_run:
-                pb.append(host_play('localhost', tasks={
+                pb.append(host_play('install-server', tasks={
                     'name': 'Validate deployment with testinfra',
                     'command': " ".join(testinfra),
                     'register': 'result',
@@ -384,63 +315,23 @@ def run(args):
 
 
 def get_logs(args, pb):
-    # TODO: move this into a role
+    # Create /root/sf-logs directories
     tasks = [
         {'file': {'path': '/root/sf-logs', 'state': 'absent'},
          'name': 'Cleanup sf-logs directory'},
         {'file': {'mode': 448, 'path': '/root/sf-logs', 'state': 'directory'},
          'name': 'Create sf-logs directory'},
-        {'ignore_errors': True,
-         'name': 'Copy the config repo',
-         'synchronize': {'dest': '/root/sf-logs/config-repo',
-                         'rsync_opts': '--exclude .git',
-                         'src': '/root/config'}},
-        {'ignore_errors': True,
-         'name': 'Get config repo git logs',
-         'shell': 'cd /root/config && git log --name-only > '
-         '/root/sf-logs/config-repo.git.log'},
-        {'ignore_errors': True,
-         'name': 'Synchronize sf data',
-         'synchronize': {'dest': "{{ item.dest }}",
-                         'rsync_opts': '--exclude .git',
-                         'src': "{{ item.src }}"},
-         'with_items': [{'dest': '/root/sf-logs/etc_software-factory',
-                         'src': '/etc/software-factory'},
-                        {'dest': '/root/sf-logs/var_ansible',
-                         'src': '/var/lib/software-factory/ansible'},
-                        {'dest': '/root/sf-logs/sf-bootstrap-data',
-                         'src': '/var/lib/software-factory/bootstrap-data'},
-                        {'dest': '/root/sf-logs/log_config-updates',
-                         'src': '/var/log/software-factory'}]}
     ]
     for role in args.glue["roles"]:
         tasks.append({'name': 'Create %s log storage directory' % role,
                       'file': {'path': '/root/sf-logs/%s' % role,
                                'state': 'directory'}})
-    pb.append(host_play('localhost', tasks=tasks))
-    pb.append(host_play('all', tasks=[
-        {'name': 'Check for unconfined process',
-         'shell': 'ps auxZ | grep -i "unconfin" '
-         ' > /var/log/audit/unconfined_process.txt'},
-        {'name': 'Fetch system logs',
-         'ignore_errors': True,
-         'fetch': {
-             'src': '{{ item }}',
-             'dest': '/root/sf-logs'
-         },
-         'with_items': [
-             '/var/log/messages',
-             '/var/log/audit/audit.log',
-             '/var/log/audit/unconfined_process.txt',
-             '/var/log/upgrade-bootstrap.log',
-             '/var/log/cloud-init.log',
-             '/var/log/cloud-init-output.log',
-         ]}]))
+    pb.append(host_play('install-server', tasks=tasks))
 
     for host in args.inventory:
         play = host_play(host, params={'action': 'get_logs'})
         play['roles'] = []
-        for role in host["roles"]:
+        for role in ["base"] + host["roles"]:
             play['roles'].append({'role': "sf-%s" % role,
                                   'log_dest': '/root/sf-logs/%s' % role})
         pb.append(play)
@@ -448,7 +339,7 @@ def get_logs(args, pb):
 
 def backup(args, pb):
     # Create local backup directory
-    pb.append(host_play('localhost', tasks=[
+    pb.append(host_play('install-server', tasks=[
         {'name': "Create backup directory",
          'file': {'path': '/var/lib/software-factory/backup',
                   'state': 'directory',
@@ -468,7 +359,7 @@ def backup(args, pb):
         pb.append(play)
 
     # Generate backup file
-    pb.append(host_play('localhost', tasks=[
+    pb.append(host_play('install-server', tasks=[
         {'name': "Generate backup file",
          'command': "chdir=/var/lib/software-factory/backup/ "
                     "tar czpf /var/lib/software-factory/backup.tar.gz ."},
@@ -486,7 +377,9 @@ def render_template(dest, template, data):
     loader = FileSystemLoader(os.path.dirname(template))
     env = Environment(trim_blocks=True, loader=loader)
     template = env.get_template(os.path.basename(template))
-    new = template.render(data) + "\n"
+    new = template.render(data)
+    if new[-1] != "\n":
+        new += "\n"
     if new != current:
         with open(dest, "w") as out:
             out.write(new)
@@ -538,13 +431,14 @@ def generate(args):
             if "gerrit" in host["roles"]:
                 host["roles"].append("germqtt")
 
-    # Check for conflicts
-    for conflict in (("nodepool3", "nodepool"), ("zuul3", "zuul")):
-        for host in arch["inventory"]:
-            if conflict[0] in host["roles"] and conflict[1] in host["roles"]:
-                raise RuntimeError("%s: can't install both %s and %s" % (
-                    host["hostname"], conflict[0], conflict[1]
-                ))
+        # if influxdb role is in the arch, install telegraf
+        if "influxdb" in args.glue["roles"]:
+            host["roles"].append("telegraf")
+
+        if "gateway" in host["roles"] and \
+           args.sfconfig['network']['use_letsencrypt']:
+            host["roles"].insert(0, "lecm")
+
     if 'hydrant' in args.glue["roles"] and \
        "firehose" not in args.glue["roles"]:
         raise RuntimeError("'hydrant' role needs 'firehose'")

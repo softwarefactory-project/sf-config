@@ -12,7 +12,7 @@
         - git fetch --all
         - git reset --hard origin/master --
         - git clean -f -x -d
-        - cp -R /usr/share/sf-config/config-repo/zuulV3/ .
+        - cp -R /usr/share/sf-config/ansible/roles/sf-repos/files/config/zuulV3/ .
         - git add zuulV3
         - git commit -m 'Add zuulV3 configuration'
         - git push git+ssh://gerrit/config master
@@ -31,7 +31,7 @@
         - git fetch --all
         - git reset --hard origin/master --
         - git clean -f -x -d
-        - cp /usr/share/sf-config/config-repo/nodepool/nodepoolV3.yaml nodepool/
+        - cp /usr/share/sf-config/ansible/roles/sf-repos/files/config/nodepool/nodepoolV3.yaml nodepool/
         - git add nodepool
         - git commit -m 'Add nodepoolV3 configuration'
         - git push git+ssh://gerrit/config master
@@ -79,7 +79,7 @@
 
     - name: Setup default definitions
       template:
-        src: "{{ sf_templates_dir }}/zuul.d/{{ item }}.j2"
+        src: "zuul-jobs/zuul.d/{{ item }}.j2"
         dest: "{{ jobs_tmp.stdout }}/zuul.d/{{ item }}"
       with_items:
         - "_jobs-base.yaml"
