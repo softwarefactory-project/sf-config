@@ -1,0 +1,15 @@
+---
+- name: Check for unconfined process
+  shell: ps auxZ | grep -i "unconfin"  > /var/log/audit/unconfined_process.txt
+
+- name: Fetch system logs
+  fetch:
+    dest: /root/sf-logs
+    src: '{{ item }}'
+  ignore_errors: true
+  with_items:
+    - /var/log/messages
+    - /var/log/audit/audit.log
+    - /var/log/audit/unconfined_process.txt
+    - /var/log/cloud-init.log
+    - /var/log/cloud-init-output.log
