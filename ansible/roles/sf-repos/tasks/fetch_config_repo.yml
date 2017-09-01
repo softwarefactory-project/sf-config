@@ -13,7 +13,7 @@
   register: localsha
 
 - name: Update config repository
-  when: localsha.stdout != hostvars["localhost"].configsha.stdout
+  when: localsha.stdout != hostvars[install_server].configsha.stdout
   command: "{{ item }}"
   args:
     chdir: /root/config
