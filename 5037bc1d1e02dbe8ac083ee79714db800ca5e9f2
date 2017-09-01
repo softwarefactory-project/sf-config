@@ -16,6 +16,24 @@
       "revId": "5037bc1d1e02dbe8ac083ee79714db800ca5e9f2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_d9673324",
+        "filename": "config-repo/jobs/_python.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-09-01T07:40:26Z",
+      "side": 1,
+      "message": "This is a generic job that could be used with deployments outside of ours, meaning that images on which this job might run aren\u0027t necessary based on our SF base image (also I didn\u0027t know we packaged it, which is pretty cool!)",
+      "parentUuid": "1ab14d0d_fbfe6f04",
+      "revId": "5037bc1d1e02dbe8ac083ee79714db800ca5e9f2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
