@@ -73,10 +73,5 @@ def process(args):
         if len(args.glue["roles"][requirement]) > 1:
             fail("Only one instance of %s is required" % requirement)
 
-    # Add gateway and install-server hostname/ip for easy access
-    gateway_host = args.glue["roles"]["gateway"][0]
-    install_host = args.glue["roles"]["install-server"][0]
-    args.glue["gateway"] = gateway_host["hostname"]
-    args.glue["gateway_ip"] = gateway_host["ip"]
-    args.glue["install"] = install_host["hostname"]
-    args.glue["install_ip"] = install_host["ip"]
+    # Add install-server hostname for easy access
+    args.glue["install_server"] = args.glue["roles"]["install-server"][0]

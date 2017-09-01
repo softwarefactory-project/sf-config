@@ -1,0 +1,15 @@
+---
+- name: "Install new release repo"
+  yum:
+    name: "{{ sf_release_url }}"
+    state: present
+  when: sf_version != "master"
+
+- name: "Update packages"
+  yum:
+    name: "*"
+    update_cache: "yes"
+    state: latest
+    exclude: jenkins
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'

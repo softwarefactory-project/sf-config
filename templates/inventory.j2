@@ -3,9 +3,11 @@
 {% for role in roles %}
 
 [{{ role }}]
-{% for host in roles[role] %}
-{{ host['hostname'] }}{% if 'install-server' in host['roles'] %} ansible_connection=local{% endif %}
-
+{% for host in roles[role] %}{% if 'install-server' in host['roles'] %}
+{{ host['hostname'] }} ansible_connection=local
+{% else %}
+{{ host['hostname'] }}
+{% endif %}
 {% endfor %}
 
 {% endfor %}
