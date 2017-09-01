@@ -9,7 +9,7 @@
 
     # Create the config repo
     - name: Copy default resources file
-      command: cp /usr/share/sf-config/config-repo/resources/resources.yaml /root/resources.yaml
+      command: cp /usr/share/sf-config/ansible/roles/sf-repos/files/config/resources/resources.yaml /root/resources.yaml
 
     - name: Change default admin email in default resources file
       replace:
@@ -33,18 +33,16 @@
         dest: "{{conf_tmp.stdout}}"
 
     # Prepare the config repo
-    - name: Sync /usr/share/sf-config/config-repo/ in the config repo
-      command: rsync -av /usr/share/sf-config/config-repo/ {{ conf_tmp.stdout }}/
+    - name: Copy the default config repo files
+      command: rsync -av /usr/share/sf-config/ansible/roles/sf-repos/files/config/ {{ conf_tmp.stdout }}/
 
-    - name: Copy default JJB definitions in /usr/share/sf-config/config-repo/
+    - name: Setup config repos templates
       template:
-        src: "{{ sf_templates_dir }}/_default_jobs.yaml.j2"
-        dest: "{{ conf_tmp.stdout }}/jobs/_default_jobs.yaml"
-
-    - name: Copy default zuul-launcher macros
-      template:
-        src: "{{ sf_templates_dir }}/_macros.yaml.j2"
-        dest: "{{ conf_tmp.stdout }}/jobs-zuul/_macros.yaml"
+        src: "config/{{ item }}.j2"
+        dest: "{{ conf_tmp.stdout }}/{{ item }}"
+      with_items:
+        - jobs/_default_jobs.yaml
+        - jobs-zuul/_macros.yaml
 
     - name: Copy default resources file
       command: mv /root/resources.yaml "{{ conf_tmp.stdout }}/resources/resources.yaml"

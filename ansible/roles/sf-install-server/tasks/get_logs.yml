@@ -16,8 +16,8 @@
 - name: "Fetch ansible configuration"
   synchronize:
     mode: pull
-    src: "/var/lib/software-factory/ansible"
-    dest: "{{ log_dest }}/ansible"
+    src: "/var/lib/software-factory/ansible/"
+    dest: "{{ log_dest }}/ansible/"
   ignore_errors: true
 
 - name: "Fetch yum.repos.d"
@@ -27,4 +27,11 @@
     dest: "{{ log_dest }}/yum.repos.d"
     rsync_opts:
       - "--exclude=CentOS-*.repo"
+  ignore_errors: true
+
+- name: "Fetch config-repo"
+  synchronize:
+    mode: pull
+    src: "/root/config/"
+    dest: "{{ log_dest }}/config-repo/"
   ignore_errors: true

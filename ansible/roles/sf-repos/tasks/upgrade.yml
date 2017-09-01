@@ -1,0 +1,33 @@
+---
+- name: Ensure zuul-jobs exists
+  file:
+    path: /root/config/jobs-zuul
+    state: directory
+
+- name: Ensure defaults files are updated (prefixed by '_')
+  register: config_repo_status
+  template:
+    dest: /root/config/{{ item.dest }}
+    src: '{{ item.src }}'
+  with_items:
+    - dest: jobs/_default_jobs.yaml
+      src: config/jobs/_default_jobs.yaml.j2
+    - dest: jobs-zuul/_macros.yaml
+      src: config/jobs-zuul/_macros.yaml.j2
+    - dest: jobs-zuul/_config.yaml
+      src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/jobs-zuul/_config.yaml
+    - dest: zuul/_layout.yaml
+      src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/zuul/_layout.yaml
+
+- block:
+  - name: Nothing to do (yet)
+    command: /bin/true
+  when: sf_previous_version == "2.6"
+
+- name: Push config-repo updates
+  command: chdir=/root/config {{ item }}
+  with_items:
+    - git add jobs-zuul/_macros.yaml jobs-zuul/_config.yaml
+    - git commit -a -m "Update default configuration (from {{ sf_previous_version }} to {{ sf_version }})"
+    - git push git+ssh://gerrit/config master
+  when: config_repo_status|changed

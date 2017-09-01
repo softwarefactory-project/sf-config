@@ -1,0 +1,5 @@
+---
+role_actions:
+  - setup
+  - upgrade
+  - fetch_config_repo
