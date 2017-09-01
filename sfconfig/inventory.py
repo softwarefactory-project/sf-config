@@ -104,6 +104,9 @@ def disable_action(args):
     pb = []
     playbook_name = "sfconfig"
     if args.erase:
+        if not args.glue.get("sfconfig_batch") and not args.verbose:
+            # Enable verbose mode to show the warning prompt
+            args.verbose = True
         playbook_name += "_erase"
         erase(args, pb)
     elif args.disable:
@@ -311,7 +314,22 @@ def run(args):
     write_playbook(playbook_path, playbook)
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
     if not args.skip_apply:
-        sfconfig.utils.execute(["ansible-playbook", playbook_path])
+        logfile = "/var/log/software-factory/sfconfig.log"
+        try:
+            out = None
+            if not args.verbose:
+                out = open(logfile, "w")
+            sfconfig.utils.execute(["ansible-playbook", playbook_path],
+                                   stdout=out)
+            if out:
+                out.close()
+        except RuntimeError:
+            if not args.verbose:
+                raise
+            out.close()
+            last_lines = open(logfile).readlines()[-25:]
+            sfconfig.utils.fail("ansible-playbook %s failed with:\n%s" % (
+                playbook_path, "".join(last_lines)))
 
 
 def get_logs(args, pb):

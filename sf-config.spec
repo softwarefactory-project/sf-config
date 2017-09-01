@@ -43,6 +43,7 @@ install -p -d %{buildroot}%{_datarootdir}/sf-config
 mv ansible defaults refarch scripts templates testinfra %{buildroot}%{_datarootdir}/sf-config/
 # /var/lib/software-factory/backup
 install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
+install -p -d -m 0700 %{buildroot}/var/log/software-factory/
 
 %files
 %{_bindir}/sfconfig
@@ -50,6 +51,7 @@ install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 %{python2_sitelib}/sfconfig
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
 %dir %attr(0700, root, root) /var/lib/software-factory/backup
+%dir %attr(0700, root, root) /var/log/software-factory
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 

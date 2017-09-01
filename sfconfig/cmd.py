@@ -86,6 +86,8 @@ def usage(components):
                    help="Deployment secrets output directory")
 
     # tunning
+    p.add_argument("--verbose", default=False, action='store_true',
+                   help="Show ansible output")
     p.add_argument("--skip-apply", default=False, action='store_true',
                    help="Do not execute Ansible playbook")
     p.add_argument("--skip-test", default=False, action='store_true',
@@ -216,7 +218,7 @@ def main():
 
     sfconfig.inventory.run(args)
 
-    if not args.skip_apply:
+    if not args.skip_apply and not args.disable and not args.erase:
         execute(["logger", "sfconfig.py: ended"])
         print("""%s: SUCCESS
 
