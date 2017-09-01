@@ -15,6 +15,7 @@ zuul_services:
 
 zuul_packages:
   - zuul
+  - zuul-cloner
   - zuul-webui
   - zuul-server
   - zuul-merger
