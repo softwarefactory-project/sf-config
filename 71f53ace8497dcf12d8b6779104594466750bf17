@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_99ec1b91",
+        "filename": "ansible/roles/sf-nodepool3/defaults/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-01T01:34:03Z",
+      "side": 1,
+      "message": "Well that\u0027s how scl package works, scl modifies all the rpm spec macro to include the scl prefix. This is to enable installation of multiple scl version of a single package. In our case, this let us install nodepoolV2 (not scl but python2) and nodepoolV3, we\u0027ll have nodepool-launcher (for the V2) and rh-python35-nodepool-launcher (for the V3).",
+      "parentUuid": "dac4157f_99109baa",
+      "revId": "71f53ace8497dcf12d8b6779104594466750bf17",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_7926e717",
         "filename": "ansible/roles/sf-nodepool3/defaults/main.yml",
         "patchSetId": 7
@@ -42,6 +60,24 @@
         "endLine": 34,
         "endChar": 65
       },
+      "revId": "71f53ace8497dcf12d8b6779104594466750bf17",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_79026740",
+        "filename": "ansible/roles/sf-nodepool3/defaults/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-01T01:34:03Z",
+      "side": 1,
+      "message": "dito, /etc/nodepool will be for nodepoolV2 and /etc/opt/rh/rh-python35/nodepool will be for nodepoolV3.",
+      "parentUuid": "dac4157f_7926e717",
       "revId": "71f53ace8497dcf12d8b6779104594466750bf17",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
