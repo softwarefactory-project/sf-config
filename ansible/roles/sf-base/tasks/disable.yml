@@ -19,4 +19,15 @@
       with_items:
         - python2-pysflib
         - sf-config
+
+    - name: "Remove Software Factory state data"
+      file:
+        path: "{{ item }}"
+        state: 'absent'
+      with_items:
+        - /var/lib/software-factory/sql
+        - /var/lib/software-factory/state
+        - /var/lib/software-factory/.version
+        - /var/lib/software-factory/bootstrap-data/secrets.yaml
+        - /var/lib/software-factory/ansible
   when: erase == True

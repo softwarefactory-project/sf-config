@@ -4,6 +4,7 @@ role_actions:
   - setup
   - disable
   - upgrade
+  - get_logs
 sf_release_url: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
 edeploy_server: "install-server"
 edeploy_service_port: "873"
