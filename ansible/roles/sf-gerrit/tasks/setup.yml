@@ -7,7 +7,7 @@
 - include_vars: "{{ item }}"
   with_first_found:
     - /root/config/gerrit/commentlinks.yaml
-    - /usr/share/sf-config/config-repo/gerrit/commentlinks.yaml
+    - /usr/share/sf-config/ansible/roles/sf-repos/files/config/gerrit/commentlinks.yaml
 
 - name: "Install configuration files"
   template:
@@ -151,7 +151,6 @@
 
 - name: "Add zuul user"
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
-  when: gerrit_allprojects.stat.exists == False
 
 - name: "Set ACL"
   command: /usr/share/sf-config/scripts/gerrit-set-default-acl.sh

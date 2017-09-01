@@ -1,0 +1,3 @@
+---
+- name: 'Store installed packages list'
+  shell: 'rpm -qa | sort > /var/lib/software-factory/package_installed'
