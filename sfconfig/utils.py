@@ -53,8 +53,8 @@ def get_default(d, key, default):
     return val
 
 
-def execute(argv):
-    if subprocess.Popen(argv).wait():
+def execute(argv, stdout=None):
+    if subprocess.Popen(argv, stdout=stdout).wait():
         raise RuntimeError("Command failed: %s" % argv)
 
 

@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new --verbose is added to sfconfig to print ansible output, by default it's
+    now disabled and logged in /var/log/software-factory/sfconfig.log.
