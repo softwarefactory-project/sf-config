@@ -30,7 +30,7 @@ def loadConfig(config_path):
 
     final_data = {}
     for path in paths:
-        data = yaml.load(open(path))
+        data = yaml.safe_load(open(path))
         if not data:
             continue
         # Merge document
