@@ -1,0 +1,5 @@
+---
+security:
+  - |
+    The zuul-merger script used to merge the zuul configuration was using the
+    insecure yaml.load instead of yaml.safe_load.
