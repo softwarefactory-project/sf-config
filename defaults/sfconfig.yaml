@@ -232,6 +232,9 @@ zuul3:
   #      api_token: XXX # See https://help.github.com/articles/creating-an-access-token-for-command-line-use/
   #      webhook_token: XXX # See https://developer.github.com/webhooks/securing/>
 
+  # To use openstack-infra/zuul-jobs, review.openstack.org needs to be added to gerrit_connections list too
+  upstream_zuul_jobs: false
+
 gerritbot:
   disabled: true
   ircserver: irc.freenode.net
