@@ -36,20 +36,17 @@
     delete: yes
     perms: yes
     recursive: yes
-  with_items:
-    - playbooks/python
-    - playbooks/tox
-    - playbooks/unittests
-    - roles/add-build-sshkey
-    - roles/add-fileserver
-    - roles/bindep
-    - roles/emit-ara-html
-    - roles/prepare-workspace
-    - roles/revoke-sudo
-    - roles/test-setup
-    - roles/upload-logs
-    - roles/validate-host
+  with_items: "{{ repos_upstream_paths }}"
   register: _upstream_files
+  when: not zuul3_upstream_zuul_jobs
+
+- name: Remove upstream files
+  file:
+    path: "{{ zuul_jobs_clone_dir }}/{{ item }}"
+    state: absent
+  with_items: "{{ repos_upstream_paths }}"
+  register: _upstream_files_removed
+  when: zuul3_upstream_zuul_jobs
 
 - name: Apply templates
   template:
@@ -84,9 +81,18 @@
 - name: "Indicate configuration changed"
   set_fact:
     zuul_conf_updated: true
-  when: _static_files|changed or _upstream_files|changed or _templated_files|changed or not sflogs_secrets.stat.exists
+  when: _static_files|changed or
+        _upstream_files|changed or
+        _upstream_files_removed|changed or
+        _templated_files|changed or
+        not sflogs_secrets.stat.exists
 
 - name: "Indicate configuration didn't changed"
   set_fact:
     zuul_conf_updated: false
-  when: not _static_files|changed and not _upstream_files|changed and not _templated_files|changed and sflogs_secrets.stat.exists
+  when:
+    - not _static_files|changed
+    - not _upstream_files|changed
+    - not _upstream_files_removed|changed
+    - not _templated_files|changed
+    - sflogs_secrets.stat.exists
