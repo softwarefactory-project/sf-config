@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    A new sfconfig argument is added to simplify third-party-ci configuration,
+    "--zuul3-gerrit-connections name#hostname#port#puburl#username"
+  - |
+    A new sfconfig option and argument is added to re-use the
+    openstack.org/openstack-infra/zuul-jobs collections,
+    "--zuul3-upstream-zuul-jobs"
