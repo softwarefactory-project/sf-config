@@ -7,9 +7,11 @@
       gerrit:
         config-projects:
           - zuul-jobs
-#      openstack.org:
-#        untrusted-projects:
-#          - openstack-infra/zuul-jobs:
-#              include: job
-#              shadow: zuul-jobs
+{% endif %}
+{% if zuul3_upstream_zuul_jobs %}
+      {{ openstack_connection_name }}:
+        untrusted-projects:
+          - openstack-infra/zuul-jobs:
+              include: job
+              shadow: zuul-jobs
 {% endif %}
