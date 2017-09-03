@@ -3,3 +3,17 @@ role_actions:
   - setup
   - upgrade
   - fetch_config_repo
+
+repos_upstream_paths:
+  - playbooks/python
+  - playbooks/tox
+  - playbooks/unittests
+  - roles/add-build-sshkey
+  - roles/add-fileserver
+  - roles/bindep
+  - roles/emit-ara-html
+  - roles/prepare-workspace
+  - roles/revoke-sudo
+  - roles/test-setup
+  - roles/upload-logs
+  - roles/validate-host
