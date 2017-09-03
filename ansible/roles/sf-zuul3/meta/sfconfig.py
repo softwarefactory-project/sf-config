@@ -12,6 +12,11 @@
 
 from sfconfig.components import Component
 from sfconfig.utils import get_default
+from sfconfig.utils import fail
+
+
+EXT_GERRIT = "openstack#review.openstack.org#29418#" \
+             "https://review.openstack.org/r/#username"
 
 
 class Zuul3Scheduler(Component):
@@ -21,10 +26,81 @@ class Zuul3Scheduler(Component):
     def usage(self, parser):
         parser.add_argument("--zuul3-ssh-key", metavar="KEY_PATH",
                             help="Use existing ssh key for zuulV3")
+        parser.add_argument("--zuul3-upstream-zuul-jobs", action="store_true",
+                            help="Use openstack-infra/zuul-jobs")
+        parser.add_argument("--zuul3-external-gerrit",
+                            metavar="name#hostname#port#puburl#username",
+                            help="Enable a remote gerrit, "
+                            "e.g.: --zuul3-third-party-ci %s" % EXT_GERRIT)
 
     def argparse(self, args):
         if args.zuul3_ssh_key:
             self.import_ssh_key(args, "zuul_rsa", args.zuul3_ssh_key)
+
+        if args.zuul3_upstream_zuul_jobs is not None:
+            if args.sfconfig["zuul3"]["upstream_zuul_jobs"] != \
+               args.zuul3_upstream_zuul_jobs:
+                # Update sfconfig.yaml value
+                args.sfconfig["zuul3"][
+                    "upstream_zuul_jobs"] = args.zuul3_upstream_zuul_jobs
+                args.save_sfconfig = True
+
+        if args.zuul3_external_gerrit:
+            values = args.zuul3_external_gerrit.split('#')
+            try:
+                name, hostname, port, puburl, username = values
+                port = int(port)
+            except ValueError as e:
+                fail("Invalid zuul3-external-gerrit argument, e.g.: %s" %
+                     EXT_GERRIT)
+            if name == "gerrit":
+                fail("Can't use 'gerrit' name for external connections")
+            # Update gerrit_connection if necessary
+            args.updated = False
+            for connection in args.sfconfig.get("zuul3", {}).get(
+                    "gerrit_connections", []):
+                def update_value(key, value):
+                    print("%s: updating %s to %s" % (name, key, value))
+                    connection[key] = value
+                    args.updated = True
+                    args.save_sfconfig = True
+                if connection["name"] == name:
+                    if connection.get("hostname") != hostname:
+                        update_value("hostname", hostname)
+                    if connection.get("port") and \
+                       int(connection["port"]) != port:
+                        update_value("port", port)
+                    if connection.get("puburl") != puburl:
+                        update_value("puburl", puburl)
+                    if connection.get("username") != username:
+                        update_value("username", username)
+                    break
+            if not args.updated:
+                # Else insert a new connection
+                args.sfconfig.setdefault("zuul3", {}).setdefault(
+                    "gerrit_connections", []).append({
+                        'name': name,
+                        'hostname': hostname,
+                        'port': port,
+                        'puburl': puburl,
+                        'username': username
+                    })
+                args.save_sfconfig = True
+
+    def prepare(self, args):
+        super(Zuul3Scheduler, self).prepare(args)
+        self.openstack_connection_name = None
+        if args.sfconfig["zuul3"]["upstream_zuul_jobs"]:
+            # Check review.openstack.org is configured
+            for connection in args.sfconfig.get("zuul3", {}).get(
+                    "gerrit_connections", []):
+                if connection["hostname"] == "review.openstack.org":
+                    self.openstack_connection_name = connection["name"]
+                    break
+            if not self.openstack_connection_name:
+                fail("To use upstream zuul_jobs, review.openstack.org needs to"
+                     " be configured, e.g.: --zuul3-external-gerrit %s" %
+                     EXT_GERRIT)
 
     def configure(self, args, host):
         args.glue["zuul3_host"] = args.glue["zuul3_scheduler_host"]
@@ -37,9 +113,12 @@ class Zuul3Scheduler(Component):
         args.glue["zuul3_mysql_host"] = args.glue["mysql_host"]
         args.glue["loguser_authorized_keys"].append(
             args.glue["zuul_logserver_rsa_pub"])
+        args.glue["openstack_connection_name"] = self.openstack_connection_name
 
         # Extra settings
         zuul3_config = args.sfconfig.get("zuul3", {})
+        args.glue["zuul3_upstream_zuul_jobs"] = zuul3_config[
+            "upstream_zuul_jobs"]
         args.glue["zuul3_extra_gerrits"] = zuul3_config.get(
             "gerrit_connections", [])
         args.glue["zuul3_success_log_url"] = get_default(
