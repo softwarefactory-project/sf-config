@@ -78,6 +78,11 @@ def update_sfconfig(args):
             args.disable_external_resources
         dirty = True
 
+    if "upstream_zuul_jobs" not in data.get("zuul3", {}):
+        data.setdefault("zuul3", {})
+        data["zuul3"]["upstream_zuul_jobs"] = False
+        dirty = True
+
     args.save_sfconfig = dirty
 
 
