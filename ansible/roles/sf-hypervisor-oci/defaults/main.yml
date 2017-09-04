@@ -1,0 +1,12 @@
+---
+role_actions:
+  - install
+  - setup
+  - disable
+
+hypervisor_oci_packages:
+  - runc
+  - git
+  - yamllint
+  - bashate
+  - python-flake8
