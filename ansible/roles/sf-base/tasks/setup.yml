@@ -51,10 +51,10 @@
     line: "        StrictHostKeyChecking no"
     insertafter: "^Host *$"
 
-- name: Set selinux mode
+- name: "system: ensure SELinux is enforcing"
   selinux:
     policy: targeted
-    state: permissive
+    state: enforcing
   when: ansible_virtualization_type != "podman"
 
 - name: Set sysctl values
