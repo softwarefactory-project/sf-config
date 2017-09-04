@@ -3,6 +3,14 @@
 
 - include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
 
+- name: Set cauth log labels
+  file:
+    path: /var/log/cauth
+    setype: httpd_log_t
+    owner: apache
+    group: apache
+    mode: "0750"
+
 - name: Install cauth config files
   template:
       src: "{{ item.name }}.j2"

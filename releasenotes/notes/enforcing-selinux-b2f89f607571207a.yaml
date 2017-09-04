@@ -1,0 +1,3 @@
+---
+features:
+  - Software Factory instances are now running with SELinux enforcing mode.
