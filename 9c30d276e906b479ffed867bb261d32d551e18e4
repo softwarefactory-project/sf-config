@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_9f163b54",
+        "filename": "scripts/zuul3-conf-merger.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-04T12:49:34Z",
+      "side": 1,
+      "message": "It seems like this is prevented line 42.",
+      "parentUuid": "dac4157f_ff177752",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_df1cb379",
         "filename": "scripts/zuul3-encrypt-secret.py",
         "patchSetId": 18
@@ -30,6 +48,24 @@
       "writtenOn": "2017-09-04T12:34:53Z",
       "side": 1,
       "message": "this couldn\u0027t be kept upstream?",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_7f0c8742",
+        "filename": "scripts/zuul3-encrypt-secret.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-04T12:49:34Z",
+      "side": 1,
+      "message": "no because upstream version is using the http interface which is not ready when we want to generate the sflogs secret. Moreover, the upstream version is printing a full secret block while this one only print the encrypted data to be used in _sflogs_secrets.yaml.j2 template.",
+      "parentUuid": "dac4157f_df1cb379",
       "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
