@@ -44,8 +44,8 @@ zuul3_share_dir: "/opt/rh/rh-python35/root/usr/share/javascript/zuul"
 zuul3_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/zuul"
 
 zuul3_port: 8085
-zuul3_webapp_port: 8004
-zuul3_web_port: 9000
+zuul3_webapp_port: 8003
+zuul3_web_port: 9003
 zuul3_gearman_port: 4733
 
 zuul3_mysql_host: "mysql.example.com"

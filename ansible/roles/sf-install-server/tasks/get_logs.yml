@@ -24,9 +24,8 @@
   synchronize:
     mode: pull
     src: "/etc/yum.repos.d/"
-    dest: "{{ log_dest }}/yum.repos.d"
-    rsync_opts:
-      - "--exclude=CentOS-*.repo"
+    dest: "{{ log_dest }}/yum-repos.d"
+    rsync_opts: --exclude=CentOS-*.repo
   ignore_errors: true
 
 - name: "Fetch config-repo"
