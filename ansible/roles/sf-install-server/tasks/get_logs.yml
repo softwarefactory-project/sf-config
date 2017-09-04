@@ -6,6 +6,14 @@
     dest: "{{ log_dest }}/etc/"
   ignore_errors: true
 
+- name: "Fetch repository configuration"
+  synchronize:
+    mode: pull
+    src: /etc/yum.repos.d/
+    dest: "{{ log_dest }}/yum-repos.d/"
+    rsync_opts: --exclude="CentOS-*.repo"
+  ignore_errors: true
+
 - name: "Fetch logs"
   synchronize:
     mode: pull
