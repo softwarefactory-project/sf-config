@@ -50,11 +50,11 @@
     enabled: "yes"
   when: sshd_config|changed
 
-- name: "system: setenforce 0"
-  command: setenforce 0
-  when:
-    - ansible_virtualization_role != "guest"
-    - ansible_selinux["mode"] != "permissive"
+- name: "system: enable SELinux"
+  selinux:
+    policy: targeted
+    state: enforcing
+  when: ansible_virtualization_role != "guest"
 
 - name: "system: manage sysctl"
   sysctl:
