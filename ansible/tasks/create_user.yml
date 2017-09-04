@@ -32,6 +32,7 @@
     mode: 0700
     owner: "{{ user_name }}"
     group: "{{ group_name|default(user_name) }}"
+    setype: ssh_home_t
 
 - name: "Add ssh key"
   when: ssh_key|default(None)

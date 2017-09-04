@@ -33,17 +33,18 @@
     - tmux
     - vim-enhanced
     - sf-config
+    - sf-selinux
     # Needed by ansible selinux module
     - libsemanage-python
     - policycoreutils-python
     # Needed for wait4 scripts
     - nmap-ncat
 
-- name: Set permissive selinux
+- name: Set enforcing selinux
   lineinfile:
     dest: /etc/selinux/config
     regexp: '^SELINUX='
-    line: 'SELINUX=permissive'
+    line: 'SELINUX=enforcing'
 
 - name: Remove selinux autorelabel
   file:
