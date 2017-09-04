@@ -1,0 +1,20 @@
+---
+- name: Create user
+  include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul shell=/bin/bash update_user=no"
+
+- name: Enable root ssh access to nodepool
+  authorized_key:
+    user: root
+    key: "{{ nodepool_rsa_pub }}"
+
+- name: Enable zuul ssh access to zuul
+  authorized_key:
+    user: zuul
+    key: "{{ zuul_rsa_pub }}"
+
+- name: Ensure /var/lib/zuul/src exists
+  file:
+    path: /var/lib/zuul/src
+    owner: zuul
+    group: zuul
+    state: directory
