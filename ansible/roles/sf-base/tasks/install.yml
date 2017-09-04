@@ -32,15 +32,16 @@
     - tmux
     - vim-enhanced
     - sf-config
+    - sf-selinux
     # Needed by ansible selinux module
     - libsemanage-python
     - policycoreutils-python
 
-- name: Set permissive selinux
+- name: Set enforcing selinux
   lineinfile:
     dest: /etc/selinux/config
     regexp: '^SELINUX='
-    line: 'SELINUX=permissive'
+    line: 'SELINUX=enforcing'
 
 - name: Enable selinux autorelabel
   file:
