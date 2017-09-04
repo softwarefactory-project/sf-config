@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_ff177752",
+        "filename": "scripts/zuul3-conf-merger.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-09-04T12:34:53Z",
+      "side": 1,
+      "message": "this allows tenants with similar names. Is this prevented somewhere else ? Or is this actually supported ?",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_df1cb379",
+        "filename": "scripts/zuul3-encrypt-secret.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-09-04T12:34:53Z",
+      "side": 1,
+      "message": "this couldn\u0027t be kept upstream?",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
