@@ -119,7 +119,7 @@ class Zuul3Scheduler(Component):
         zuul3_config = args.sfconfig.get("zuul3", {})
         args.glue["zuul3_upstream_zuul_jobs"] = zuul3_config[
             "upstream_zuul_jobs"]
-        args.glue["zuul3_extra_gerrits"] = zuul3_config.get(
+        args.glue["zuul3_gerrit_connections"] = zuul3_config.get(
             "gerrit_connections", [])
         args.glue["zuul3_success_log_url"] = get_default(
             zuul3_config, "success_log_url",
@@ -131,13 +131,18 @@ class Zuul3Scheduler(Component):
         )
         args.glue["zuul3_ssh_known_hosts"] = []
         args.glue["zuul3_github_connections"] = []
+
+        # Add local gerrit if available
         if "gerrit" in args.glue["roles"]:
-            args.glue["zuul3_ssh_known_hosts"].append({
-                "host_packed": "[%s]:29418" % args.glue["gerrit_host"],
-                "host": args.glue["gerrit_host"],
-                "port": "29418",
+            args.glue.setdefault("zuul3_gerrit_connections", []).append({
+                'name': 'gerrit',
+                'port': 29418,
+                'server': args.glue["gerrit_host"],
+                'puburl': args.glue["gerrit_pub_url"],
+                'user': 'zuul'
             })
-        for extra_gerrit in args.glue.get("zuul3_extra_gerrits", []):
+
+        for extra_gerrit in args.glue.get("zuul3_gerrit_connections", []):
             if extra_gerrit.get("port", 29418) == 22:
                 host_packed = extra_gerrit["hostname"]
             else:
