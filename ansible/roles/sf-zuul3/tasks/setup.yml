@@ -94,7 +94,7 @@
     - name: Check if the zuul sources are already defined
       command: "ssh-keygen -f {{ zuul3_lib_dir }}/.ssh/known_hosts -F {{ item.host_packed }}"
       with_items: "{{ zuul3_ssh_known_hosts }}"
-      register: zuul_known_hosts_results
+      register: _zuul3_known_hosts_results
       ignore_errors: "yes"
 
     # This is a bit tricky since ssh-keyscan doesn't output the correct host format when port != 22
@@ -104,12 +104,23 @@
         grep '^{{ item.item.host }}' |
         awk '{ print "{{ item.item.host_packed }} " $2 " " $3 }' >>
         {{ zuul3_lib_dir }}/.ssh/known_hosts
-      with_items: "{{ zuul_known_hosts_results.results }}"
+      with_items: "{{ _zuul3_known_hosts_results.results }}"
       when: item.stdout == ""
+
+    - name: Check zuul user can connect to gerrit connections
+      become_user: zuul
+      command: >
+        ssh -i {{ zuul3_lib_dir }}/.ssh/id_rsa
+            -o UserKnownHostsFile={{ zuul3_lib_dir }}/.ssh/known_hosts
+            -p {{ item.port|default(29418) }}
+            {{ item.username }}@{{ item.hostname }}
+      register: _zuul3_connection_test
+      failed_when: _zuul3_connection_test.stderr.find("Welcome to Gerrit Code Review") == -1
+      with_items: "{{ zuul3_gerrit_connections }}"
 
     - include: create_logging.yml _logfile="scheduler"
     - include: create_logging.yml _logfile="gearman-server"
-  when: "'zuul-scheduler' in zuul3_services or 'zuul-merger' in zuul3_services"
+  when: "'zuul-scheduler' in zuul3_services or 'zuul-merger' in zuul3_services or 'zuul-executor' in zuul3_services"
 
 - block:
     - include: create_logging.yml _logfile="executor"
