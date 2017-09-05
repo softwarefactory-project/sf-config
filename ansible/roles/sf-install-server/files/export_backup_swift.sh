@@ -81,16 +81,22 @@ for backup in $backups; do
     fi
 done
 
-# Get SF backup via managesf
-sfmanager system backup_get
-
+# Create backup
+ansible-playbook /var/lib/software-factory/ansible/sf_backup.yml -e create_tarball=$(pwd)/sf_backup.tar.gz
 # Encrypt backup
 [ -e sf_backup.tar.gz.gpg ] && rm sf_backup.tar.gz.gpg
 gpg --homedir /root/.gnupg/ -e -r sfadmin --trust-model always sf_backup.tar.gz
+# Rename to include timestamp
+mv sf_backup.tar.gz.gpg sf_backup_${epoch}.tar.gz.gpg
 # Upload backup
-swift upload $SWIFT_CONTAINER sf_backup.tar.gz.gpg --object-name sf_backup_${epoch}.tar.gz.gpg &> /dev/null
+swift upload $SWIFT_CONTAINER sf_backup_${epoch}.tar.gz.gpg --object-name sf_backup_${epoch}.tar.gz.gpg &> /dev/null
+
 if [ "$?" != "0" ]; then
     echo "Error when uploading the backup sf_backup_${epoch}.tar.gz in container $SWIFT_CONTAINER ! exit."
     exit 1
 fi
+
+# Remove local file
+rm sf_backup_${epoch}.tar.gz.gpg
+
 echo "sf_backup_${epoch}.tar.gz has been uploaded."

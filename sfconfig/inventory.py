@@ -364,10 +364,8 @@ def backup(args, pb):
     pb.append(host_play('install-server', tasks=[
         {'name': "Generate backup file",
          'command': "chdir=/var/lib/software-factory/backup/ "
-                    "tar czpf /var/lib/software-factory/backup.tar.gz ."},
-        {'name': "Copy backup to managesf",
-         'command': 'scp /var/lib/software-factory/backup.tar.gz '
-                    '{{ managesf_host }}:/var/lib/managesf/sf_backup.tar.gz'}
+                    "tar czpf {{ create_tarball }} .",
+         'when': 'create_tarball is defined'}
     ]))
 
 

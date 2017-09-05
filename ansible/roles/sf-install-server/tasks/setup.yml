@@ -27,7 +27,6 @@
     dest: "/usr/local/bin/{{ item.name }}"
     mode: 0500
   with_items:
-    - {name: trigger_backup.sh}
     - {name: export_backup_swift.sh}
     - {name: export_backup_scp.sh}
 
@@ -37,50 +36,51 @@
     dest: /etc/auto_backup.conf
     mode: 0440
 
-- name: Install crontab for backup nightly jobs
+- name: Disable backup crontab
   cron:
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
+    name: "{{ item }}"
+    state: "absent"
     user: root
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
   with_items:
-    - {name: backup_gerrit, job: /usr/local/bin/trigger_backup.sh, hour: "1", minute: "0"}
+    - backup_gerrit # old legacy sfmanager backup_start command
+    - auto_backup
+    - auto_backup_scp
+  when: backup_disabled
 
-- name: Install crontab for Swift export nightly jobs
-  cron:
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    user: root
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-  with_items:
-    - {name: auto_backup, job: /usr/local/bin/export_backup_swift.sh, hour: "5", minute: "0"}
-  when: backup_method == "swift"
+- block:
+    - name: Install crontab for Swift export nightly jobs
+      cron:
+        name: auto_backup
+        job: /usr/local/bin/export_backup_swift.sh
+        user: root
+        hour: 5
+        minute: 0
+      when: backup_method == "swift"
 
-- name: Install crontab for scp export nightly jobs
-  cron:
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    user: root
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-  with_items:
-    - {name: auto_backup_scp, job: /usr/local/bin/export_backup_scp.sh, hour: "5", minute: "0"}
-  when: backup_method == "scp"
+    - name: Install crontab for scp export nightly jobs
+      cron:
+        name: auto_backup_scp
+        job: /usr/local/bin/export_backup_scp.sh
+        user: root
+        hour: 5
+        minute: 0
+      when: backup_method == "scp"
 
-- name: Disable Swift export nightly job if using scp
-  cron:
-    name: "{{ item.name }}"
-    state: absent
-  with_items:
-    - {name: auto_backup_scp}
-  when: backup_method == "swift"
+    - name: Disable Swift export nightly job if using scp
+      cron:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - auto_backup_scp
+        - backup_gerrit
+      when: backup_method == "swift"
 
-- name: Disable scp export nightly job if using Swift
-  cron:
-    name: "{{ item.name }}"
-    state: absent
-  with_items:
-    - {name: auto_backup}
-  when: backup_method == "scp"
+    - name: Disable scp export nightly job if using Swift
+      cron:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - auto_backup_scp
+        - backup_gerrit
+      when: backup_method == "scp"
+  when: not backup_disabled
