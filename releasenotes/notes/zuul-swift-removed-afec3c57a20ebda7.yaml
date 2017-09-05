@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The zuul-swift-upload is no longer supported and logs swift settings are
+    removed from sfconfig.yaml.

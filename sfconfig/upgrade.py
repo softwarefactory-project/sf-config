@@ -78,10 +78,23 @@ def update_sfconfig(args):
             args.disable_external_resources
         dirty = True
 
+    # 2.7: refactor logs settings
+    for key in ("disabled", "container", "logserver_prefix", "authurl",
+                "x_storage_url", "username", "password", "tenantname",
+                "authversion", "x_tempurl_key", "send_tempurl_key"):
+        if "swift_logsexport_%s" % key in data['logs']:
+            key = "swift_logsexport_%s" % key
+        if key in data['logs']:
+            del data['logs'][key]
+            dirty = True
+
+    if 'logs' in data:
+        del data['logs']
+        dirty = True
+
     if "expiry" not in data["logs"]:
         data["logs"]["expiry"] = 60
         dirty = True
-
     args.save_sfconfig = dirty
 
 
