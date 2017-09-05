@@ -17,10 +17,44 @@
 
           cd config
           echo "[+] Checking jobs"
-          jenkins-jobs --conf ../build/jenkins.ini test jobs/ > /dev/null
+          jenkins-jobs --conf ../build/jenkins.ini test jobs/ -o ../build > /dev/null
+
+          echo "[+] Checking all jobs have an assigned node"
+          pushd ../build
+          set +e
+          err=0
+          for file in * ; do
+            grep assignedNode $file > /dev/null
+            if [ $? -ne 0 ]; then
+              echo "ERROR: Job $file does not have an assigned node"
+              err=1
+            fi
+          if [ $err -eq 1 ]; then
+             exit 1
+          fi
+          set -e
+          done
+          popd
 
           echo "[+] Checking jobs-zuul"
-          jenkins-jobs --conf ../build/jenkins.ini test jobs-zuul/ > /dev/null
+          jenkins-jobs --conf ../build/jenkins.ini test jobs-zuul/ > -o ../build_zuul /dev/null
+
+          echo "[+] Checking all Zuul jobs have an assigned node"
+          pushd ../build_zuul
+          set +e
+          err=0
+          for file in * ; do
+            grep assignedNode $file > /dev/null
+            if [ $? -ne 0 ]; then
+              echo "ERROR: Job $file does not have an assigned node"
+              err=1
+            fi
+          if [ $err -eq 1 ]; then
+             exit 1
+          fi
+          set -e
+          done
+          popd
 
           echo "[+] Checking zuul"
           /usr/share/sf-config/scripts/yaml-merger.py zuul | tee ../build/zuul/layout.yaml
