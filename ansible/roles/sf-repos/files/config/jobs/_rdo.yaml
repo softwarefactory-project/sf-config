@@ -61,7 +61,6 @@
           cd $ZUUL_PROJECT && ./run_functional-tests.sh
     publishers:
       - fetch-rdo-artifacts
-      - zuul-swift-upload
     triggers:
       - zuul
     node: '{node}'
