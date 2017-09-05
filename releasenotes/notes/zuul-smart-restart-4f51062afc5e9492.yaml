@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    sfconfig won't restart zuul services if jobs are running, it will wait up
+    to 10 minutes before giving up and sending a mail to an adminstrator to
+    request a manual restart. This prevent loosing pipeline queues when changing
+    operator setting such as zuul_log_level or when adding an external gerrit.
+fixes:
+  - |
+    The zuul-launcher service is no longer hard restarted, instead a graceful
+    command is performed before to prevent leaking nodepool attached instance.

@@ -136,7 +136,7 @@
   template:
     src: sysconfig.j2
     dest: "{{ zuul3_sysconfig }}"
-  notify: restart zuul3 if already started
+  notify: restart zuul3
 
 - name: "Setup configuration"
   template:
@@ -144,8 +144,7 @@
     dest: "{{ zuul3_conf_dir }}/zuul.conf"
     mode: 0440
     group: zuul
-# TODO fix notify: graceful reload for crit service, etc...
-#  notify: restart zuul3 if already started
+  notify: restart zuul3
 
 - block:
     - name: "Check if scheduler is running"
