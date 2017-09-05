@@ -21,6 +21,10 @@
   with_items:
     - rm -Rf /var/lib/jenkins/.cache/jenkins_jobs
     - jenkins-jobs -l debug --ignore-cache update --delete-old jobs/
+  register: _jenkins_jobs_update
+  until: _jenkins_jobs_update.rc == 0
+  retries: 3
+  delay: 1
 
 - name: Write config repo sha1 matching current configuration
   copy:
