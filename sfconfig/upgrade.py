@@ -78,6 +78,10 @@ def update_sfconfig(args):
             args.disable_external_resources
         dirty = True
 
+    if 'logs' in data:
+        del data['logs']
+        dirty = True
+
     args.save_sfconfig = dirty
 
 

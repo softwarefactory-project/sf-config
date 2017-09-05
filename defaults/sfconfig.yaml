@@ -155,6 +155,13 @@ nodepool3:
       region_name: regionOne
       regions: []
 
+elasticsearch:
+  heap_size: 512m
+  replicas: 0
+
+logstash:
+  retention_days: 60
+
 logs:
   disabled: true
   swift_logsexport_container: logs
