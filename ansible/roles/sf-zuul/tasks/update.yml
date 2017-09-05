@@ -44,7 +44,7 @@
   register: localconfig
 
 - name: Check upstream config
-  command: git log --oneline zuul/ jobs-zuul/
+  command: git log -n 3 --oneline zuul/ jobs-zuul/
   args:
     chdir: /root/config
   register: upstreamconfig
@@ -54,14 +54,20 @@
     name: zuul-server
     state: reloaded
     enabled: "yes"
-  when: "'zuul-server' in zuul_services and (localconfig.stdout != upstreamconfig.stdout or ('pages' in roles and pagesconfig|changed))"
+  when:
+    - "'zuul-server' in zuul_services"
+    - "localconfig.stdout != upstreamconfig.stdout or
+      ('pages' in roles and pagesconfig|changed)"
 
 - name: Reload zuul-launcher service
   service:
     name: zuul-launcher
     state: reloaded
     enabled: "yes"
-  when: "'zuul-launcher' in zuul_services and (localconfig.stdout != upstreamconfig.stdout or ('pages' in roles and pagesconfig|changed))"
+  when:
+    - "'zuul-launcher' in zuul_services"
+    - "localconfig.stdout != upstreamconfig.stdout or
+      ('pages' in roles and pagesconfig|changed)"
 
 # Zuul-merger doesn't support reload, restart is needed
 - name: Restart zuul-merger service
@@ -69,7 +75,10 @@
     name: zuul-merger
     state: restarted
     enabled: "yes"
-  when: "'zuul-merger' in zuul_services and (localconfig.stdout != upstreamconfig.stdout or ('pages' in roles and pagesconfig|changed))"
+  when:
+    - "'zuul-merger' in zuul_services"
+    - "localconfig.stdout != upstreamconfig.stdout or
+      ('pages' in roles and pagesconfig|changed)"
 
 - name: Write config repo sha1 matching current configuration
   copy:

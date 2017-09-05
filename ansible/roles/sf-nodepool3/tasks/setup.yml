@@ -80,7 +80,7 @@
   template:
     src: sysconfig.j2
     dest: "{{ nodepool3_sysconfig }}"
-  notify: nodepool3 restart
+  notify: restart nodepool3
 
 - name: Setup authorized keys
   copy:

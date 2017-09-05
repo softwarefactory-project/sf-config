@@ -1,6 +1,11 @@
 ---
-- name: nodepool restart
-  service:
-    name: "{{ item }}"
-    state: restarted
-  with_items: "{{ nodepool_services }}"
+- name: restart nodepool
+  command: >
+    /usr/share/sf-config/scripts/smart-restart.py nodepool
+        --url {{ nodepool_internal_url }}
+        --sender root@{{ fqdn }}
+        --mail {{ network.admin_mail_forward }}
+        {{ nodepool_services|join(" ") }}
+  register: _nodepool_restart_script
+  failed_when: _nodepool_restart_script.rc not in [0, 3]
+  changed_when: _nodepool_restart_script.rc == 3
