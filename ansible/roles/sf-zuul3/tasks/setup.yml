@@ -101,6 +101,16 @@
       with_items: "{{ zuul_known_hosts_results.results }}"
       when: item.stdout == ""
 
+    - name: Check zuul user can connect to gerrit connections
+      become_user: zuul
+      command: >
+        ssh -i {{ zuul3_lib_dir }}/.ssh/id_rsa
+            -p {{ item.port|default(29418) }}
+            {{ item.user }}@{{ item.hostname }}
+      register: _zuul3_connection_test
+      failed_when: _zuul3_connection_test.stderr.find("Welcome to Gerrit Code Review") == -1
+      with_items: "{{ zuul3_gerrit_connections }}"
+
     - include: create_logging.yml _logfile="scheduler"
     - include: create_logging.yml _logfile="gearman-server"
   when: "'zuul-scheduler' in zuul3_services or 'zuul-merger' in zuul3_services"
