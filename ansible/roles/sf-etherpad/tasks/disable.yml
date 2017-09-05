@@ -9,8 +9,11 @@
 - block:
     - name: Remove files
       file:
-        path: "/var/lib/etherpad"
+        path: "{{ item }}"
         state: absent
+      with_items:
+        - /var/lib/etherpad
+        - /var/log/etherpad
 
     - name: Remove packages
       yum:
