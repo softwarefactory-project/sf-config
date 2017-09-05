@@ -128,18 +128,15 @@
 
     - name: Check if the zuul sources are already defined
       command: "ssh-keygen -f /var/lib/zuul/.ssh/known_hosts -F {{ item.host_packed }}"
-      with_items: "{{zuul_ssh_known_hosts}}"
-      register: zuul_known_hosts_results
+      with_items: "{{ zuul_ssh_known_hosts }}"
+      register: _zuul_known_hosts_results
       ignore_errors: "yes"
 
-    # This is a bit tricky since ssh-keyscan doesn't output the correct host format when port != 22
     - name: Scan the missing zuul sources
       shell: >
-        ssh-keyscan -T 10 -p {{ item.item.port }} {{ item.item.host }} |
-        grep '^{{ item.item.host }}' |
-        awk '{ print "{{ item.item.host_packed }} " $2 " " $3 }' >>
+        ssh-keyscan -T 10 -p {{ item.item.port }} {{ item.item.host }} >>
         /var/lib/zuul/.ssh/known_hosts
-      with_items: "{{ zuul_known_hosts_results.results }}"
+      with_items: "{{ _zuul_known_hosts_results.results }}"
       when: item.stdout == ""
   when: "'zuul-server' in zuul_services or 'zuul-merger' in zuul_services"
 
