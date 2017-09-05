@@ -20,8 +20,10 @@
       src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/zuul/_layout.yaml
 
 - block:
-    - name: Nothing to do (yet)
-      command: /bin/true
+    - name: Remove legacy zuulv3/main.yaml
+      file:
+        path: /root/config/zuulV3/main.yaml
+        state: absent
   when: sf_previous_version < 2.7
 
 - name: Push config-repo updates

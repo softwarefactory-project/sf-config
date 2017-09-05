@@ -57,11 +57,13 @@
   register: nodepool_log_http_conf
 
 - name: Ensure httpd is running on nodepool-builder host
-  when: nodepool_log_http_conf|changed and 'nodepool-builder' in nodepool_services
   service:
     name: httpd
     state: reloaded
     enabled: "yes"
+  when:
+    - nodepool_log_http_conf|changed
+    - "'nodepool-builder' in nodepool_services"
 
 - name: Ensure /usr/local/share/sf-jenkins-slave-tools/ exists
   file:
@@ -72,7 +74,7 @@
   template:
     src: sysconfig.j2
     dest: /etc/sysconfig/nodepool
-  notify: nodepool restart
+  notify: restart nodepool
 
 - name: Setup authorized keys
   copy:
@@ -83,9 +85,3 @@
   copy:
     content: "{{ localCA_pem }}"
     dest: /etc/nodepool/scripts/localCA.pem
-
-- name: Start service
-  service:
-    name: "{{ item }}"
-    enabled: "yes"
-  with_items: "{{ nodepool_services }}"
