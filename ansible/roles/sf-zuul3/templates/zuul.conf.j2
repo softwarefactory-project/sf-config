@@ -46,16 +46,7 @@ status_url={{ zuul3_pub_url }}
 driver=sql
 dburi=mysql+pymysql://{{ zuul3_mysql_user }}:{{ zuul3_mysql_password}}@{{ zuul3_mysql_host }}/{{ zuul3_mysql_db }}
 
-[connection gerrit]
-driver=gerrit
-server={{ gerrit_host }}
-# baseurl is only use to fetch git refs on diff url than server.
-# Using baseurl we cannot modify url zuul report to user
-baseurl={{ gerrit_pub_url }}
-user=zuul
-sshkey={{ zuul3_lib_dir }}/.ssh/id_rsa
-
-{% for conn in zuul3_extra_gerrits|default([]) %}
+{% for conn in zuul3_gerrit_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gerrit
 port={{ conn['port']|default('29418') }}
