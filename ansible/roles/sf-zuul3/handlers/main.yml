@@ -1,4 +1,11 @@
 ---
-- name: restart zuul3 if already started
-  shell: systemctl is-active rh-python35-{{ item }} && systemctl restart rh-python35-{{ item }} || true
-  with_items: "{{ zuul3_services }}"
+- name: restart zuul3
+  command: >
+    /usr/share/sf-config/scripts/smart-restart.py zuul3
+        --url {{ zuul3_internal_url }}
+        --sender root@{{ fqdn }}
+        --mail {{ network.admin_mail_forward }}
+        {{ zuul3_services|join(" ") }}
+  register: zuul_restart_script
+  failed_when: zuul_restart_script.rc not in [0, 3]
+  changed_when: zuul_restart_script.rc == 3
