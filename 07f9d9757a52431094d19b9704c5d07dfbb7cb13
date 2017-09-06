@@ -52,6 +52,24 @@
       "revId": "07f9d9757a52431094d19b9704c5d07dfbb7cb13",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_481d8765",
+        "filename": "ansible/roles/sf-install-server/tasks/install.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T03:39:40Z",
+      "side": 1,
+      "message": "Make sense. Or maybe creating a sf-config-validation sub-package with only testinfra code ?. But well it is a detail.",
+      "parentUuid": "dac4157f_4d06b921",
+      "revId": "07f9d9757a52431094d19b9704c5d07dfbb7cb13",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
