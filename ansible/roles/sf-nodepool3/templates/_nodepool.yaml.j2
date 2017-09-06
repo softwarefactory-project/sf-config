@@ -1,5 +1,8 @@
-elements-dir: /etc/nodepool/elements:/usr/share/sf-elements:/usr/share/nodepool/elements
-images-dir: /var/lib/nodepool/dib
+elements-dir: {{ nodepool3_conf_dir }}/elements:/usr/share/sf-elements:/usr/share/nodepool/elements
+images-dir: {{ nodepool3_lib_dir }}/dib
+
+webapp:
+  port: {{ nodepool3_webapp_port }}
 
 zookeeper-servers:
   - host: {{ zookeeper_host }}

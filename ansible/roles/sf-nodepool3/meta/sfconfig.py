@@ -21,3 +21,7 @@ class Nodepool3Launcher(Component):
         args.glue["nodepool3_providers"] = args.sfconfig.get(
             "nodepool3", {}).get("providers", [])
         self.get_or_generate_ssh_key(args, "nodepool_rsa")
+        self.get_or_generate_ssh_key(args, "zuul_rsa")
+        args.glue["nodepool3_internal_url"] = "http://%s:%s" % (
+            args.glue["nodepool3_launcher_host"],
+            args.defaults["nodepool3_webapp_port"])

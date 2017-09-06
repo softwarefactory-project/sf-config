@@ -25,6 +25,8 @@ class NodepoolLauncher(Component):
         args.glue["nodepool_providers"] = args.sfconfig["nodepool"].get(
             "providers", [])
         args.glue["nodepool_host"] = args.glue["nodepool_launcher_host"]
+        self.get_or_generate_ssh_key(args, "nodepool_rsa")
+        self.get_or_generate_ssh_key(args, "jenkins_rsa")
         self.add_mysql_database(args, "nodepool")
         if args.sfconfig["network"]["disable_external_resources"]:
             args.glue["nodepool_disable_providers"] = True
