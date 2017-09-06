@@ -43,6 +43,41 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_a85b032e",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T05:52:58Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "dac4157f_88139f5c",
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_c8563706",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T05:52:58Z",
+      "side": 1,
+      "message": "Ok so it can make sense to use the config_repo_status var here there. I don\u0027t see where it is used actually.",
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_08ff8f02",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 8
