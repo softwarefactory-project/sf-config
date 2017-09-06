@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_6d097d31",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T03:26:17Z",
+      "side": 1,
+      "message": "Why not using config_repo_status var ?",
+      "range": {
+        "startLine": 153,
+        "startChar": 8,
+        "endLine": 153,
+        "endChar": 49
+      },
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_08ff8f02",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T03:26:17Z",
+      "side": 1,
+      "message": "This can complete roles/sf-install-server/tasks/get_logs.yml ?",
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_e8033b0c",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T03:26:17Z",
+      "side": 1,
+      "message": "Maybe a role can contain in defaults/main.yml a role dep list to make code a bit more generic.",
+      "range": {
+        "startLine": 548,
+        "startChar": 0,
+        "endLine": 553,
+        "endChar": 66
+      },
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
