@@ -34,6 +34,24 @@
       "revId": "07f9d9757a52431094d19b9704c5d07dfbb7cb13",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_4d06b921",
+        "filename": "ansible/roles/sf-install-server/tasks/install.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T03:07:07Z",
+      "side": 1,
+      "message": "I mean right now, the sf-config package is installed on all instances, not only the one running the sfconfig command. This is because some role relies on /usr/share/sf-config/scripts being present.\n\nIf/When sf-config is only installed where sfconfig is being executed, then it would make sens to have testinfra as a req.",
+      "parentUuid": "dac4157f_ad167553",
+      "revId": "07f9d9757a52431094d19b9704c5d07dfbb7cb13",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
