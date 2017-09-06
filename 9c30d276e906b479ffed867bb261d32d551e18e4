@@ -2,6 +2,274 @@
   "comments": [
     {
       "key": {
+        "uuid": "dac4157f_88ca7f4e",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "Awesome !",
+      "range": {
+        "startLine": 159,
+        "startChar": 39,
+        "endLine": 159,
+        "endChar": 43
+      },
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_883f1f25",
+        "filename": "ansible/roles/sf-repos/tasks/setup_zuul_jobs.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "nit but \"reset config repo\" is a bit worrying :D Could you replace by: \"Add zuulV3 directory to the config repo\". Also it seems that only an empty README will be added could you add a sentence defining the meaning of that directory ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 12,
+        "endLine": 7,
+        "endChar": 29
+      },
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_a810a3a9",
+        "filename": "ansible/roles/sf-repos/tasks/setup_zuul_jobs.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "Could it be done only once in update_zuul_jobs ?",
+      "range": {
+        "startLine": 72,
+        "startChar": 2,
+        "endLine": 93,
+        "endChar": 61
+      },
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_8826ff14",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/playbooks/base-test/post.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "Ok I understand better here we define a new host in the job context inventory that is the log server of SF.",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_6823ab06",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/playbooks/base-test/post.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "If an additional logserver is defined in SF what will be the process to use it ? defining a custom playbook in config/zuulV3 ?",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_4820e7f7",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/playbooks/base/post.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "What the purpose of having base and base-test I only see a - prepare-workspace call as the diff here. Could you explain ?",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_a88783d6",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "This file is not a template now :)",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_c882b7c8",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "Could you use the same layout\npre-run:\n  - playbooks/...",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_e87d7be8",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "Is it seconds here ? and is it timeout for a job ? In that 30 minutes really short.",
+      "range": {
+        "startLine": 11,
+        "startChar": 13,
+        "endLine": 11,
+        "endChar": 17
+      },
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_886ddf34",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_pipelines.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "You may want to remove the tabulations here.",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_686a8b1c",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_pipelines.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "Interesting :)",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_4877c702",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_sflogs_secrets.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "Is the yaml key missing ?",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_287493fb",
+        "filename": "ansible/roles/sf-ssh/tasks/setup.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "You should maybe add the zuul_rsa_key too here for the sake of consistency ?",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_c8599790",
+        "filename": "ansible/roles/sf-zuul3/templates/zuul.conf.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T10:58:00Z",
+      "side": 1,
+      "message": "No var for that path ?",
+      "range": {
+        "startLine": 31,
+        "startChar": 23,
+        "endLine": 31,
+        "endChar": 51
+      },
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_ff177752",
         "filename": "scripts/zuul3-conf-merger.py",
         "patchSetId": 18
