@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_88139f5c",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T03:40:43Z",
+      "side": 1,
+      "message": "Because those are supposed to be \"upgrade\" tasks, such as what was needed to convert legacy nodepool configuration to the new one to support dib.",
+      "parentUuid": "dac4157f_6d097d31",
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_08ff8f02",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 8
@@ -36,6 +54,24 @@
       "writtenOn": "2017-09-06T03:26:17Z",
       "side": 1,
       "message": "This can complete roles/sf-install-server/tasks/get_logs.yml ?",
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_68104b4f",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T03:40:43Z",
+      "side": 1,
+      "message": "Yes, it\u0027s done in a follow-up patch.",
+      "parentUuid": "dac4157f_08ff8f02",
       "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -59,6 +95,24 @@
         "endLine": 553,
         "endChar": 66
       },
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_08266fba",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T03:40:43Z",
+      "side": 1,
+      "message": "Well it\u0027s already the case, a sfconfig.py meta component can define \"required role\". A follow up patch could fix that, though it\u0027s mostly cosmetic so...",
+      "parentUuid": "dac4157f_e8033b0c",
       "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
