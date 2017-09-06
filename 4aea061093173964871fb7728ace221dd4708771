@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_08d30f3a",
+        "filename": "ansible/roles/sf-nodepool3/handlers/main.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T08:04:45Z",
+      "side": 1,
+      "message": "The host group vars doesn\u0027t actually the rh-python35 prefix, it\u0027s just \"nodepool-builder\" service.",
+      "parentUuid": "dac4157f_6893aba4",
+      "revId": "4aea061093173964871fb7728ace221dd4708771",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_68f60bd9",
         "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
         "patchSetId": 16
@@ -36,6 +54,24 @@
       "writtenOn": "2017-09-06T07:52:05Z",
       "side": 1,
       "message": "Maybe you can rsync the config file on the install-server in /var/lib/software-factory/ansible/facts ?",
+      "revId": "4aea061093173964871fb7728ace221dd4708771",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_e8d7bb21",
+        "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T08:04:45Z",
+      "side": 1,
+      "message": "Probably yes, as a follow-up though.",
+      "parentUuid": "dac4157f_68f60bd9",
       "revId": "4aea061093173964871fb7728ace221dd4708771",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -65,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_a8e1c300",
+        "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T08:04:45Z",
+      "side": 1,
+      "message": "this is actually needed.",
+      "parentUuid": "dac4157f_e8ed7b26",
+      "revId": "4aea061093173964871fb7728ace221dd4708771",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_c8f2b706",
         "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
         "patchSetId": 16
@@ -76,6 +130,24 @@
       "writtenOn": "2017-09-06T07:52:05Z",
       "side": 1,
       "message": "Nodepool3 auto reload its conf right ?",
+      "revId": "4aea061093173964871fb7728ace221dd4708771",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_c8dcf748",
+        "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T08:04:45Z",
+      "side": 1,
+      "message": "yes, like nodepool2",
+      "parentUuid": "dac4157f_c8f2b706",
       "revId": "4aea061093173964871fb7728ace221dd4708771",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
