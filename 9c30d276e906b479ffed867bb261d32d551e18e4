@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_48fc673e",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "Indeed, thanks to tobias actually!",
+      "parentUuid": "dac4157f_88ca7f4e",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_883f1f25",
         "filename": "ansible/roles/sf-repos/tasks/setup_zuul_jobs.yml",
         "patchSetId": 18
@@ -48,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_68d84bf0",
+        "filename": "ansible/roles/sf-repos/tasks/setup_zuul_jobs.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "oh indeed, good idea.",
+      "parentUuid": "dac4157f_883f1f25",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_a810a3a9",
         "filename": "ansible/roles/sf-repos/tasks/setup_zuul_jobs.yml",
         "patchSetId": 18
@@ -65,6 +101,24 @@
         "endLine": 93,
         "endChar": 61
       },
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_88db9fed",
+        "filename": "ansible/roles/sf-repos/tasks/setup_zuul_jobs.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "Well this is different than update, here we set the /root/zuul-jobs directory.",
+      "parentUuid": "dac4157f_a810a3a9",
       "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -105,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_48e587a6",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/playbooks/base-test/post.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "Additional logserver should be used with additional post jobs or a different base jobs.",
+      "parentUuid": "dac4157f_6823ab06",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_4820e7f7",
         "filename": "ansible/roles/sf-repos/templates/zuul-jobs/playbooks/base/post.yaml.j2",
         "patchSetId": 18
@@ -139,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_28e253a0",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "Yes, but it makes the ansible |changed logic easier",
+      "parentUuid": "dac4157f_a88783d6",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_c882b7c8",
         "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
         "patchSetId": 18
@@ -150,6 +240,24 @@
       "writtenOn": "2017-09-06T10:58:00Z",
       "side": 1,
       "message": "Could you use the same layout\npre-run:\n  - playbooks/...",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_08ee6f8b",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "It\u0027s how upstream define it\u0027s base job so...",
+      "parentUuid": "dac4157f_c882b7c8",
       "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -179,6 +287,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_e8f21b6f",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "It\u0027s second, and 30 minutes should be enough for most job, longer one just have to define a longer timeout!",
+      "parentUuid": "dac4157f_e87d7be8",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_886ddf34",
         "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_pipelines.yaml.j2",
         "patchSetId": 18
@@ -190,6 +316,24 @@
       "writtenOn": "2017-09-06T10:58:00Z",
       "side": 1,
       "message": "You may want to remove the tabulations here.",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_c8e757ab",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_pipelines.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "Heh indeed, nasty emacs :)",
+      "parentUuid": "dac4157f_886ddf34",
       "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -230,6 +374,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_a8ec2390",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_sflogs_secrets.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "It\u0027s part of the stdout, that\u0027s because of indentation.",
+      "parentUuid": "dac4157f_4877c702",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_287493fb",
         "filename": "ansible/roles/sf-ssh/tasks/setup.yml",
         "patchSetId": 18
@@ -241,6 +403,24 @@
       "writtenOn": "2017-09-06T10:58:00Z",
       "side": 1,
       "message": "You should maybe add the zuul_rsa_key too here for the sake of consistency ?",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_88027f3d",
+        "filename": "ansible/roles/sf-ssh/tasks/setup.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "We need to discuss how the config-update job will work with zuulv3.",
+      "parentUuid": "dac4157f_287493fb",
       "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -264,6 +444,24 @@
         "endLine": 31,
         "endChar": 51
       },
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_68ff2b35",
+        "filename": "ansible/roles/sf-zuul3/templates/zuul.conf.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T11:20:54Z",
+      "side": 1,
+      "message": "This is actually no longer needed since the ssh key is in the repos now.",
+      "parentUuid": "dac4157f_c8599790",
       "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
