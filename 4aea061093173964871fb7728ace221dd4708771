@@ -43,6 +43,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_e88c5b37",
+        "filename": "ansible/roles/sf-nodepool3/handlers/main.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T08:30:15Z",
+      "side": 1,
+      "message": "Ok I\u0027m seeing that in ensure_role_services function. Well so defaults are wrong compared to that template.",
+      "parentUuid": "dac4157f_08d30f3a",
+      "revId": "4aea061093173964871fb7728ace221dd4708771",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_68f60bd9",
         "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
         "patchSetId": 16
