@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_c8a4f709",
+        "filename": "config-repo/jobs/_python.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T06:47:50Z",
+      "side": 1,
+      "message": "So why not doing:\nsudo yum install -y python2-twine || sudo pip install --upgrade setuptools pip twine",
+      "revId": "715516440b8dcb4bee232faa22a9e6a2cadf03d1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
