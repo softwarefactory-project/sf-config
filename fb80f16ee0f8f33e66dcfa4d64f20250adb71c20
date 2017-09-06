@@ -78,6 +78,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_2848135b",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T06:00:53Z",
+      "side": 1,
+      "message": "https://softwarefactory-project.io/r/#/c/9518/8/ansible/roles/sf-repos/tasks/upgrade.yml see it there ok.",
+      "parentUuid": "dac4157f_c8563706",
+      "revId": "fb80f16ee0f8f33e66dcfa4d64f20250adb71c20",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_08ff8f02",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 8
