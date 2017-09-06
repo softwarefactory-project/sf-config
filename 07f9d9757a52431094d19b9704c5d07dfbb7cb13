@@ -16,6 +16,24 @@
       "revId": "07f9d9757a52431094d19b9704c5d07dfbb7cb13",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_ad167553",
+        "filename": "ansible/roles/sf-install-server/tasks/install.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T02:56:49Z",
+      "side": 1,
+      "message": "I think it\u0027s fine to only install it on the install-server.",
+      "parentUuid": "dac4157f_ed1c6d79",
+      "revId": "07f9d9757a52431094d19b9704c5d07dfbb7cb13",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
