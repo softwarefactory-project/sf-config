@@ -16,6 +16,24 @@
       "revId": "715516440b8dcb4bee232faa22a9e6a2cadf03d1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_4890e795",
+        "filename": "config-repo/jobs/_python.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-06T07:04:11Z",
+      "side": 1,
+      "message": "Hum, then at least let\u0027s use \"pip --user\"...\n\nWell we shouldn\u0027t spend to much time on this since zuulv3 already features a upload-pypi job.",
+      "parentUuid": "dac4157f_c8a4f709",
+      "revId": "715516440b8dcb4bee232faa22a9e6a2cadf03d1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
