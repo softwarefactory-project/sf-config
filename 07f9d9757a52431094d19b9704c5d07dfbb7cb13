@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_ed1c6d79",
+        "filename": "ansible/roles/sf-install-server/tasks/install.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-06T02:46:41Z",
+      "side": 1,
+      "message": "Should it be installed as dep by sf-config package as the payload is provided by sf-config ?",
+      "revId": "07f9d9757a52431094d19b9704c5d07dfbb7cb13",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
