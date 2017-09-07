@@ -16,6 +16,24 @@
       "revId": "efde8e780c5e82a2b7f4bf925cc018972d82387f",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_b3ba586d",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-07T08:57:43Z",
+      "side": 1,
+      "message": "Because it is used just bellow by the expiry settings...",
+      "parentUuid": "dac4157f_b3ec9890",
+      "revId": "efde8e780c5e82a2b7f4bf925cc018972d82387f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
