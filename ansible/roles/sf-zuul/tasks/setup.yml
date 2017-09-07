@@ -90,6 +90,11 @@
         - secrets/org.jenkinsci.plugins.plaincredentials.impl.FileCredentialsImpl
       when: "'jenkins' in roles or zuul_jenkins_credencials"
 
+    - name: Install zuul-cancel-jobs script
+      template:
+        src: zuul-cancel-jobs.py.j2
+        dest: /usr/local/bin/zuul-cancel-jobs.py
+        mode: 0755
   when: "'zuul-launcher' in zuul_services"
 
 - block:

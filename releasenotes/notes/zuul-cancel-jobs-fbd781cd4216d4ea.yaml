@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A zuul-cancel-jobs.py script is available on the zuul-launcher node to
+    manually cancel a job. It needs a job number that can be obtained using
+    the status.json data.
