@@ -140,6 +140,8 @@ nodepool3:
       regions: []
 
 logs:
+  # 2 months log expiry
+  expiry: 60
   disabled: true
   swift_logsexport_container: logs
   swift_logsexport_logserver_prefix: http://logs.sftests.com:8080/v1/AUTH_test/logs
