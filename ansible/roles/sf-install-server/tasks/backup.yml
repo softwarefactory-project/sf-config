@@ -10,11 +10,7 @@
     delete: "yes"
     rsync_opts: --relative
   with_items:
-    - /etc/software-factory/sfconfig.yaml
-    - /etc/software-factory/logo-splash.png
-    - /etc/software-factory/logo-topmenu.png
-    - /etc/software-factory/logo-favicon.ico
     - /var/lib/software-factory/bootstrap-data
     - /var/lib/software-factory/jenkins
     - /root/config
-    - /etc/software-factory/arch-backup.yaml
+    - /etc/software-factory
