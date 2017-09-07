@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_f3f2106f",
+        "filename": "ansible/roles/sf-install-server/tasks/backup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-07T08:41:32Z",
+      "side": 0,
+      "message": "You can remove the task above.",
+      "revId": "f0c670326f7be0dbe6c60196817a27614eec696a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
