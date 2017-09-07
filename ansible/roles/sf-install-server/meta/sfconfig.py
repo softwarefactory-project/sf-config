@@ -22,11 +22,12 @@ def get_sf_version():
 
 def get_previous_version():
     try:
-        ver = open("/var/lib/software-factory/.version").read().strip()
+        ver = float(open("/var/lib/software-factory/.version").read().strip())
         if ver == '':
             raise IOError
-    except IOError:
-        ver = "2.6"
+    except:
+        print("WARNING: couldn't read previous version, defaulting to 2.6")
+        ver = 2.6
     return ver
 
 

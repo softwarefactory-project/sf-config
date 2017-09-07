@@ -12,7 +12,7 @@
         name: rsyncd
         state: stopped
         enabled: "no"
-  when: sf_previous_version == "2.5.0"
+  when: sf_previous_version < 2.6
 
 - block:
     - name: Remove deprecated backup scripts
@@ -35,4 +35,4 @@
         - {name: backup_gerrit}
         - {name: auto_backup}
         - {name: auto_backup_scp}
-  when: sf_previous_version == "2.6.0"
+  when: sf_previous_version < 2.7

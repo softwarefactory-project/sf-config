@@ -15,4 +15,4 @@
     - name: Add comment column
       command: mysql nodepool -e "alter table node add column comment varchar(255)"
       delegate_to: 127.0.0.1
-  when: sf_previous_version == "2.5.0"
+  when: sf_previous_version < 2.6

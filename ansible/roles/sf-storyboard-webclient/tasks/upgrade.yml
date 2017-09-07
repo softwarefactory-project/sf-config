@@ -4,4 +4,4 @@
       file:
         path: "/var/www/storyboard"
         state: absent
-  when: sf_previous_version == "2.5.0"
+  when: sf_previous_version < 2.5

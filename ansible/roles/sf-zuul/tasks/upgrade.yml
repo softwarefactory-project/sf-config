@@ -6,7 +6,7 @@
         state: stopped
         enabled: "no"
       ignore_errors: "yes"
-  when: sf_previous_version == "2.5.0"
+  when: sf_previous_version < 2.6
 
 - name: Ensure state is removed
   file:

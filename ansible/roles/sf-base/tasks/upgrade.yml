@@ -12,4 +12,4 @@
         - /var/lib/software-factory/nodepool_config
         - /var/lib/software-factory/repoxplorer_config
         - /var/lib/software-factory/zuul_config
-  when: sf_previous_version == "2.5.0"
+  when: sf_previous_version < 2.6
