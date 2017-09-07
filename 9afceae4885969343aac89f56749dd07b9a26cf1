@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_33c1a82f",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-07T07:45:53Z",
+      "side": 0,
+      "message": "The two tasks bellow are only needed on upgrade.",
+      "revId": "9afceae4885969343aac89f56749dd07b9a26cf1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
