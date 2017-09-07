@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_1304647c",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-07T07:56:45Z",
+      "side": 1,
+      "message": "This can be remove too.",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 42
+      },
+      "revId": "e2e4717eccd0bcf5f5920d13f0351abc819521f4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
