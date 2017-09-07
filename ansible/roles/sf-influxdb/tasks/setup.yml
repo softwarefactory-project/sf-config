@@ -1,60 +1,16 @@
 ---
-- name: Define crt and key path if letsencrypt
-  set_fact:
-    crt: '/etc/letsencrypt/pem/{{ fqdn }}.pem'
-    key: '/etc/letsencrypt/private/{{ fqdn }}.key'
-    ssl_options: ''
-  when: use_letsencrypt == True
-
-- name: Define crt and key path if self-signed
-  set_fact:
-    crt: '/etc/pki/tls/certs/{{ fqdn }}.crt'
-    key: '/etc/pki/tls/private/{{ fqdn }}.key'
-    ssl_options: '-unsafeSsl'
-  when: use_letsencrypt == False
-
-# if influxdb is not installed on the gateway host
-# we need to install crt and key file on the influxdb
-# host
-- name: Create letsencrypt working directories
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items:
-    - /etc/letsencrypt/pem
-    - /etc/letsencrypt/private
-  when: use_letsencrypt == True
-
-- name: Check if key is present
-  stat:
-    path: "{{ key }}"
-  register: keyfile
-
-- name: Check if crt is present
-  stat:
-    path: "{{ crt }}"
-  register: crtfile
-
 - name: Add crt and key files if needed
   copy:
-    src: "{{ item.file }}"
-    dest: "{{ item.file }}"
+    content: "{{ item.content }}"
+    dest: "/etc/influxdb/{{ item.dest }}"
     mode: "{{ item.mode|default(0444) }}"
+    owner: influxdb
     setype: cert_t
     seuser: system_u
     serole: object_r
-  when: crtfile.stat.exists == false or keyfile.stat.exists == false
   with_items:
-    - {file: "{{ crt }}"}
-    - {file: "{{ key }}", mode: '0400'}
-
-- name: Ensure influxdb can read tls key
-  acl:
-    path: '{{ key }}'
-    entity: influxdb
-    etype: user
-    permissions: r
-    state: present
+    - {content: "{{ influxdb_crt}}", dest: "influxdb.crt"}
+    - {content: "{{ influxdb_key }}", dest: "influxdb.key", mode: '0400'}
 
 - name: Configure influxdb to use tls
   ini_file:
@@ -65,8 +21,8 @@
   with_items:
     - {section: http, option: auth-enabled, value: 'true'}
     - {section: http, option: https-enabled, value: 'true'}
-    - {section: http, option: https-certificate, value: '"{{ crt }}"'}
-    - {section: http, option: https-private-key, value: '"{{ key }}"'}
+    - {section: http, option: https-certificate, value: '"/etc/influxdb/influxdb.crt"'}
+    - {section: http, option: https-private-key, value: '"/etc/influxdb/influxdb.key"'}
   notify: restart influxdb
 
 - name: Start service
