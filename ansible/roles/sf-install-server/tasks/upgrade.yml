@@ -13,3 +13,26 @@
         state: stopped
         enabled: "no"
   when: sf_previous_version == "2.5.0"
+
+- block:
+    - name: Remove deprecated backup scripts
+      file:
+        path: "/usr/local/bin/{{ item.name }}"
+        state: absent
+      with_items:
+        - {name: trigger_backup.sh}
+        - {name: export_backup_swift.sh}
+        - {name: export_backup_scp.sh}
+    - name: Remove deprecated auto_backup.conf
+      file:
+        path: /etc/auto_backup.conf
+        state: absent
+    - name: Remove crontab for backup nightly jobs
+      cron:
+        name: "{{ item.name }}"
+        state: absent
+      with_items:
+        - {name: backup_gerrit}
+        - {name: auto_backup}
+        - {name: auto_backup_scp}
+  when: sf_previous_version == "2.6.0"

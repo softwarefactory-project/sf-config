@@ -16,16 +16,6 @@ def update_sfconfig(args):
     dirty = False
     data = args.sfconfig
 
-    # 2.6.0: add scp backup parameters
-    if 'method' not in data['backup']:
-        data['backup']['method'] = 'swift'
-        data['backup']['scp_backup_host'] = 'remoteserver.sftests.com'
-        data['backup']['scp_backup_port'] = 22
-        data['backup']['scp_backup_user'] = 'root'
-        data['backup']['scp_backup_directory'] = '/var/lib/remote_backup'
-        data['backup']['scp_backup_max_retention_secs'] = 864000
-        dirty = True
-
     if 'zuul' not in data:
         data['zuul'] = {
             'external_logservers': [],
@@ -76,6 +66,11 @@ def update_sfconfig(args):
        args.disable_external_resources:
         data['network']['disable_external_resources'] = \
             args.disable_external_resources
+        dirty = True
+
+    # 2.7.0: remove useless backup config section
+    if 'backup' in data:
+        del data['backup']
         dirty = True
 
     args.save_sfconfig = dirty
