@@ -16,7 +16,6 @@
 import argparse
 import os
 import sys
-import shutil
 import time
 
 import sfconfig.arch
@@ -51,15 +50,13 @@ def copy_backup(backup):
         print("Tree copied")
 
 
-def bootstrap_backup(use_new_arch=False):
-    # Install sfconfig and arch in place
-    shutil.copy("%s/install-server/etc/software-factory/sfconfig.yaml" % bdir,
-                "/etc/software-factory/sfconfig.yaml")
-    if not use_new_arch:
-        shutil.copy("%s/install-server/etc/software-factory/arch-backup.yaml" %
-                    bdir, "/etc/software-factory/arch.yaml")
+def bootstrap_backup():
+    # Copy software-factory conf
+    execute(["rsync", "-a", "--exclude", "arch.yaml",
+             "%s/install-server/etc/software-factory/" % bdir,
+             "/etc/software-factory/"])
     # Copy bootstrap data
-    execute(["rsync", "-a",
+    execute(["rsync", "-a", "--exclude", "arch.yaml",
              "%s/install-server/var/lib/software-factory/" % bdir,
              "/var/lib/software-factory/"])
     print("Boostrap data prepared from the backup. Done.")
@@ -102,8 +99,6 @@ def usage(components):
     # special actions
     p.add_argument("--recover", nargs='?', const=bdir, metavar='BACKUP_PATH',
                    help="Deploy a backup")
-    p.add_argument("--use-new-arch", action='store_true',
-                   help="When restoring a backup, keep the arch setup by heat")
     p.add_argument("--disable", action='store_true', help="Turn off services")
     p.add_argument("--erase", action='store_true', help="Erase data")
     p.add_argument("--upgrade", action='store_true', help="Run upgrade task")
@@ -151,7 +146,7 @@ def main():
             print('Backup archive or directory was not found')
             sys.exit(1)
 
-        bootstrap_backup(args.use_new_arch)
+        bootstrap_backup()
 
     args.sfconfig = yaml_load(args.config)
     args.sfarch = yaml_load(args.arch)
@@ -164,11 +159,6 @@ def main():
     # Make sure the yaml files are updated
     sfconfig.upgrade.update_sfconfig(args)
     sfconfig.upgrade.update_arch(args)
-
-    if not args.use_new_arch and args.recover and \
-       len(args.sfarch["inventory"]) > 1:
-        print("Make sure ip addresses in %s are correct" % args.arch)
-        raw_input("Press enter to continue")
 
     # Parse components options
     for component in components.values():
