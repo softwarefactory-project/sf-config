@@ -7,3 +7,6 @@ role_actions:
   - disable
 
 loguser_authorized_keys: []
+
+# 2 months log expiry
+logs_expiry: 60
