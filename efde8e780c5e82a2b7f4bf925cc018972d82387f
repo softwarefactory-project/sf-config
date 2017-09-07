@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac4157f_b3ec9890",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-07T08:45:16Z",
+      "side": 1,
+      "message": "Why not just deleting data[\u0027logs\u0027] then adding it empty ?",
+      "revId": "efde8e780c5e82a2b7f4bf925cc018972d82387f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
