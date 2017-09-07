@@ -24,8 +24,21 @@
     - {section: auth.proxy, option: auto_sign_up, value: '{{ grafana_auth_proxy_auto_sign_up }}'}
     - {section: auth.basic, option: enabled, value: '{{ grafana_auth_basic_enabled }}'}
     - {section: security, option: admin_password, value: '{{ grafana_admin_password }}'}
-  notify: restart grafana
+  register: _grafana_ini
   no_log: true
+
+- name: Check if grafana is running
+  command: systemctl is-active -q grafana-server
+  register: _grafana_service
+  failed_when: grafana_service.rc not in [0, 3]
+
+- name: Restart service if required
+  service:
+    name: grafana-server
+    state: restarted
+  when:
+    - _grafana_service.rc == 0
+    - _grafana_ini|changed
 
 - name: Fix systemd file to wait for mysql
   ini_file:
