@@ -78,6 +78,11 @@ def update_sfconfig(args):
             args.disable_external_resources
         dirty = True
 
+    # 2.7.0: remove useless backup config section
+    if 'backup' in data:
+        del data['backup']
+        dirty = True
+
     args.save_sfconfig = dirty
 
 
