@@ -1,0 +1,13 @@
+#!/bin/sh
+
+RETENTION_DAYS="{{ logs_expiry }}"
+
+# Remove sha ref
+find /var/www/logs/[a-z0-9][a-z0-9]/$(python -c "print '[a-z0-9]' * 40") \
+    -maxdepth 0 -mindepth 0 -mtime +${RETENTION_DAYS} -type d -exec rm -R {} \;
+# Remove patchset
+find /var/www/logs/[0-9][0-9]/[0-9][0-9]*/[0-9][0-9]* \
+    -maxdepth 0 -mindepth 0 -mtime +${RETENTION_DAYS} -type d -exec rm -R {} \;
+# Remove periodic run
+find /var/www/logs/periodic* \
+    -maxdepth 2 -mindepth 2 -mtime +${RETENTION_DAYS} -type d -exec rm -R {} \;
