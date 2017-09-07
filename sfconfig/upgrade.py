@@ -78,6 +78,10 @@ def update_sfconfig(args):
             args.disable_external_resources
         dirty = True
 
+    if "expiry" not in data["logs"]:
+        data["logs"]["expiry"] = 60
+        dirty = True
+
     args.save_sfconfig = dirty
 
 
