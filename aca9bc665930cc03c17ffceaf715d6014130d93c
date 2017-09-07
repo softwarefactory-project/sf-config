@@ -78,6 +78,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_7379602f",
+        "filename": "scripts/smart-restart.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-07T07:13:36Z",
+      "side": 1,
+      "message": "Really I thought it targeted the end user too, one can need to stop or restart zuul outside of a sfconfig run. But well ok.",
+      "parentUuid": "dac4157f_93951442",
+      "revId": "aca9bc665930cc03c17ffceaf715d6014130d93c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_f3be90d3",
         "filename": "scripts/smart-restart.py",
         "patchSetId": 1
@@ -119,6 +137,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_937cf421",
+        "filename": "scripts/smart-restart.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-07T07:13:36Z",
+      "side": 1,
+      "message": "As you want.",
+      "parentUuid": "dac4157f_73928059",
+      "revId": "aca9bc665930cc03c17ffceaf715d6014130d93c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_d3b38c09",
         "filename": "scripts/smart-restart.py",
         "patchSetId": 1
@@ -154,6 +190,24 @@
       "side": 1,
       "message": "I\u0027m not sure to understand, this script is doing a restart, why call it shutdown?",
       "parentUuid": "dac4157f_d3b38c09",
+      "revId": "aca9bc665930cc03c17ffceaf715d6014130d93c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_d3814cfd",
+        "filename": "scripts/smart-restart.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-07T07:13:36Z",
+      "side": 1,
+      "message": "As stop is supposed to be handled by the action option and this when you stop the service that you have that login. restart is stop then start.",
+      "parentUuid": "dac4157f_1388e421",
       "revId": "aca9bc665930cc03c17ffceaf715d6014130d93c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -230,6 +284,24 @@
       "side": 1,
       "message": "It\u0027s because the ansible task is doing a \u0027changed_when return code \u003d\u003d 3\u0027. I\u0027ll add this extra bit if you want.",
       "parentUuid": "dac4157f_93e75412",
+      "revId": "aca9bc665930cc03c17ffceaf715d6014130d93c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_b386d811",
+        "filename": "scripts/smart-restart.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-07T07:13:36Z",
+      "side": 1,
+      "message": "I prefer that\u0027s not obvious.",
+      "parentUuid": "dac4157f_339c0869",
       "revId": "aca9bc665930cc03c17ffceaf715d6014130d93c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
