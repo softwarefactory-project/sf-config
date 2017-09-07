@@ -22,7 +22,7 @@
 - block:
     - name: Nothing to do (yet)
       command: /bin/true
-  when: sf_previous_version == "2.6"
+  when: sf_previous_version < 2.7
 
 - name: Push config-repo updates
   command: chdir=/root/config {{ item }}
