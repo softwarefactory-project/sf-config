@@ -1,0 +1,6 @@
+---
+deprecations:
+  - The export-backup feature has been removed. The new backup/restore
+    documentation reflect that change. Software Factory, now, only
+    provides a local backup playbook and a recover command. Backup
+    data extraction should be managed by the operator.
