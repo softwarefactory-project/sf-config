@@ -13,27 +13,6 @@
 from sfconfig.components import Component
 
 
-def get_sf_version():
-    try:
-        return open("/etc/sf-release").read().strip()
-    except IOError:
-        return "master"
-
-
-def get_previous_version():
-    try:
-        ver = open("/var/lib/software-factory/.version").read().strip()
-        if ver == '':
-            raise IOError
-    except IOError:
-        ver = "2.6"
-    return ver
-
-
-class InstallServer(Component):
+class Influxdb(Component):
     def configure(self, args, host):
-        self.get_or_generate_CA(args)
-        self.get_or_generate_ssh_key(args, "service_rsa")
-
-        args.glue["sf_version"] = get_sf_version()
-        args.glue["sf_previous_version"] = get_previous_version()
+        self.get_or_generate_cert(args, "influxdb", host["hostname"])

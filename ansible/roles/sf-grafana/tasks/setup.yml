@@ -24,8 +24,21 @@
     - {section: auth.proxy, option: auto_sign_up, value: '{{ grafana_auth_proxy_auto_sign_up }}'}
     - {section: auth.basic, option: enabled, value: '{{ grafana_auth_basic_enabled }}'}
     - {section: security, option: admin_password, value: '{{ grafana_admin_password }}'}
-  notify: restart grafana
+  register: _grafana_ini
   no_log: true
+
+- name: Check if grafana is running
+  command: systemctl is-active -q grafana-server
+  register: _grafana_service
+  failed_when: _grafana_service.rc not in [0, 3]
+
+- name: Restart service if required
+  service:
+    name: grafana-server
+    state: restarted
+  when:
+    - _grafana_service.rc == 0
+    - _grafana_ini|changed
 
 - name: Fix systemd file to wait for mysql
   ini_file:
@@ -33,7 +46,6 @@
     section: Service
     option: ExecStartPre
     value: /usr/libexec/wait4mariadb
-  register: grafana_service
 
 - name: Install sf top menu
   lineinfile:
@@ -41,42 +53,6 @@
     insertafter: '<body ng-cloak>'
     line: '        <script type="text/javascript" src="/static/js/topmenu.js"></script>'
   notify: restart grafana
-
-- name: Start service
-  systemd:
-    name: grafana-server
-    state: started
-    daemon_reload: "yes"
-    enabled: "yes"
-
-- name: Wait for db initialization
-  wait_for:
-    port: 3000
-    host: '{{ grafana_host }}'
-
-- name: Get datasources
-  uri:
-    url: '{{ grafana_internal_datasource_url }}'
-    method: GET
-    user: admin
-    password: '{{ grafana_admin_password }}'
-    force_basic_auth: "yes"
-  register: datasources
-
-- name: set datasource fact
-  set_fact:
-    grafana_datasources: "{{ datasources.json | default([]) | map(attribute='name') | list }}"
-
-- name: Configure datasource
-  uri:
-    url: '{{ grafana_internal_datasource_url }}'
-    method: POST
-    user: admin
-    password: '{{ grafana_admin_password }}'
-    body: '{{ grafana_data_source | to_json }}'
-    body_format: json
-    force_basic_auth: "yes"
-  when: grafana_data_source.name not in grafana_datasources
 
 - name: Install default dashboard
   template:
@@ -86,3 +62,10 @@
     group: root
     mode: 0444
   notify: restart grafana
+
+- name: Start service
+  systemd:
+    name: grafana-server
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
