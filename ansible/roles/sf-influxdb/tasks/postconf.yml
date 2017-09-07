@@ -1,0 +1,48 @@
+---
+- name: Wait for db initialization
+  wait_for:
+    port: 8086
+    host: '{{ influxdb_host }}'
+
+- name: Set influxdb cli fact
+  set_fact:
+    influxdb_cli: 'influx -ssl -unsafeSsl'
+
+- name: Check if admin password is set
+  shell: '{{ influxdb_cli }} -execute "SHOW USERS"'
+  register: admin_password
+  ignore_errors: true
+  no_log: true
+
+- name: Create admin user
+  shell: "{{ influxdb_cli }} -execute \"CREATE USER admin WITH PASSWORD '{{ influxdb_admin_password }}' WITH ALL PRIVILEGES\""
+  when: "'create admin user' in admin_password.stdout"
+  no_log: true
+
+- name: Set influxdb cli fact
+  set_fact:
+    influxdb_cli: '{{ influxdb_cli }} -username admin -password {{ influxdb_admin_password }}'
+
+- name: Check if telegraf db exists
+  shell: '{{ influxdb_cli }} -execute "SHOW DATABASES"'
+  register: databases
+  no_log: true
+
+- name: Create telegraf db
+  shell: '{{ influxdb_cli }} -execute "CREATE DATABASE telegraf"'
+  when: "'telegraf' not in databases.stdout"
+
+- name: Check if telegraf user exists
+  shell: '{{ influxdb_cli }} -execute "SHOW USERS"'
+  register: users
+  no_log: true
+
+- block:
+    - name: Create telegraf user
+      shell: "{{ influxdb_cli }} -execute \"CREATE USER telegraf WITH PASSWORD '{{ telegraf_influxdb_password }}'\""
+
+    - name: Grant access for telegraf user
+      shell: "{{ influxdb_cli }} -execute 'GRANT ALL ON \"telegraf\" TO \"telegraf\"'"
+  ignore_errors: true
+  no_log: true
+  when: "'telegraf' not in users.stdout"
