@@ -22,6 +22,19 @@
     dest: /etc/httpd/conf.d/logserver.conf
   register: httpd_conf
 
+- name: Install purge-logs script
+  template:
+    src: purge-logs.sh.j2
+    dest: /usr/local/bin/purge-logs.sh
+    mode: 0755
+
+- name: Install purge-logs expiry
+  cron:
+    name: purge-logs
+    job: /usr/local/bin/purge-logs.sh
+    hour: 5
+    minute: 0
+
 - name: Ensure /var/www/static exist
   file:
     path: /var/www/static

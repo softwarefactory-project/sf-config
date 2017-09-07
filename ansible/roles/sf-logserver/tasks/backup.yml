@@ -5,4 +5,7 @@
     src: "/var/www/logs"
     dest: "{{ backup_dest }}/"
     delete: "yes"
-    rsync_opts: --relative
+    rsync_opts:
+      - "--relative"
+      - "--exclude=ara-report"
+      - "--exclude=ara"
