@@ -31,3 +31,4 @@ class LogServer(Component):
                 "host": args.glue["logserver_host"],
                 "port": 22
             })
+        args.glue["logs_expiry"] = args.sfconfig["logs"]["expiry"]
