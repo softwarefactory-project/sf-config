@@ -125,6 +125,24 @@
     },
     {
       "key": {
+        "uuid": "dac4157f_d3a4ac09",
+        "filename": "ansible/roles/sf-repos/tasks/setup_zuul_jobs.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-07T00:44:19Z",
+      "side": 1,
+      "message": "My feeling is that can be slightly refactored to avoid code duplication. But I won\u0027t block on that.",
+      "parentUuid": "dac4157f_88db9fed",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dac4157f_8826ff14",
         "filename": "ansible/roles/sf-repos/templates/zuul-jobs/playbooks/base-test/post.yaml.j2",
         "patchSetId": 18
@@ -299,6 +317,24 @@
       "side": 1,
       "message": "It\u0027s second, and 30 minutes should be enough for most job, longer one just have to define a longer timeout!",
       "parentUuid": "dac4157f_e87d7be8",
+      "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dac4157f_b3a938e2",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 18
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-07T00:44:19Z",
+      "side": 1,
+      "message": "In that case does another base job need to be written ? or timeout defined in a children job will be inherited ?",
+      "parentUuid": "dac4157f_e8f21b6f",
       "revId": "9c30d276e906b479ffed867bb261d32d551e18e4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
