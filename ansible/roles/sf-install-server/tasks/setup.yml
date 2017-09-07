@@ -21,66 +21,25 @@
     src: gitconfig.j2
     dest: /root/.gitconfig
 
-- name: Install backup trigger job
-  copy:
-    src: "{{ item.name }}"
-    dest: "/usr/local/bin/{{ item.name }}"
-    mode: 0500
+- name: Remove deprecated backup scripts
+  file:
+    path: "/usr/local/bin/{{ item.name }}"
+    state: absent
   with_items:
     - {name: trigger_backup.sh}
     - {name: export_backup_swift.sh}
     - {name: export_backup_scp.sh}
 
-- name: Install auto_backup.conf
-  template:
-    src: auto_backup.conf.j2
-    dest: /etc/auto_backup.conf
-    mode: 0440
+- name: Remove deprecated auto_backup.conf
+  file:
+    path: /etc/auto_backup.conf
+    state: absent
 
-- name: Install crontab for backup nightly jobs
-  cron:
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    user: root
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-  with_items:
-    - {name: backup_gerrit, job: /usr/local/bin/trigger_backup.sh, hour: "1", minute: "0"}
-
-- name: Install crontab for Swift export nightly jobs
-  cron:
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    user: root
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-  with_items:
-    - {name: auto_backup, job: /usr/local/bin/export_backup_swift.sh, hour: "5", minute: "0"}
-  when: backup_method == "swift"
-
-- name: Install crontab for scp export nightly jobs
-  cron:
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    user: root
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-  with_items:
-    - {name: auto_backup_scp, job: /usr/local/bin/export_backup_scp.sh, hour: "5", minute: "0"}
-  when: backup_method == "scp"
-
-- name: Disable Swift export nightly job if using scp
+- name: Remove crontab for backup nightly jobs
   cron:
     name: "{{ item.name }}"
     state: absent
   with_items:
-    - {name: auto_backup_scp}
-  when: backup_method == "swift"
-
-- name: Disable scp export nightly job if using Swift
-  cron:
-    name: "{{ item.name }}"
-    state: absent
-  with_items:
+    - {name: backup_gerrit}
     - {name: auto_backup}
-  when: backup_method == "scp"
+    - {name: auto_backup_scp}

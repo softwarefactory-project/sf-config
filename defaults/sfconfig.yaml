@@ -112,22 +112,6 @@ gateway_directories: ""
 #        - "option 1"
 #        - "option 2"
 
-backup:
-  disabled: true
-  method: swift
-  os_auth_url:
-  os_auth_version:
-  os_tenant_name:
-  os_username:
-  os_password:
-  swift_backup_container: sfbackups
-  swift_backup_max_retention_secs: 864000
-  scp_backup_host: remoteserver.sftests.com
-  scp_backup_port: 22
-  scp_backup_user: root
-  scp_backup_directory: /var/lib/remote_backup
-  scp_backup_max_retention_secs: 864000
-
 mirrors:
   # Set periodic update using time format, e.g. daily = '0 0 * * *'
   periodic_update: false
