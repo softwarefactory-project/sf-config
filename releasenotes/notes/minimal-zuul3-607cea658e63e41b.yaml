@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The Zuul and Nodepool v3 services are now part of the minimal reference
+    architecture.

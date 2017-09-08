@@ -22,6 +22,7 @@ inventory:
       - zuul-launcher
       - zuul3-scheduler
       - zuul3-executor
+      - zuul3-merger
       - zuul3-web
       - nodepool-launcher
       - nodepool-builder
