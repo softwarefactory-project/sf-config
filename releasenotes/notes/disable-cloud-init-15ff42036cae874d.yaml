@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Cloud-init services are now disabled after first deployment to prevent
+    ssh authorized keys modification.
