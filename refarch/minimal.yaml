@@ -16,5 +16,8 @@ inventory:
       - zuul-server
       - zuul-launcher
       - zuul-merger
+      - zuul3-scheduler
+      - zuul3-executor
       - nodepool-launcher
+      - nodepool3-launcher
       - jenkins
