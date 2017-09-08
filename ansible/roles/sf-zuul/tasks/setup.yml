@@ -104,12 +104,6 @@
         dest: /var/www/zuul/images
         state: link
 
-    - name: Symlink zuul static assets
-      file:
-        src: /usr/share/javascript/zuul/
-        dest: /var/www/static/zuul
-        state: link
-
     - name: Install index.html for zuul
       copy:
         src: zuul.index.html
