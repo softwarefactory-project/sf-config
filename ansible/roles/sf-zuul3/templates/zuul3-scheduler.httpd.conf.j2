@@ -13,7 +13,8 @@ NameVirtualHost *:{{ zuul3_port }}
   RewriteEngine on
   RewriteRule ^/status.json$ http://127.0.0.1:{{ zuul3_webapp_port }}/status.json [P]
   RewriteRule ^/status/(.*) http://127.0.0.1:{{ zuul3_webapp_port }}/status/$1 [P]
-  RewriteRule ^/keys/(.*) http://127.0.0.1:{{ zuul3_webapp_port }}/keys/$1 [P]
+  # Use a '/fake/' tenant prefix until zuulv3 tenant support is correctly integrated
+  RewriteRule ^/keys/(.*) http://127.0.0.1:{{ zuul3_webapp_port }}/fake/keys/$1 [P]
 
   AddOutputFilterByType DEFLATE application/json
 </VirtualHost>
