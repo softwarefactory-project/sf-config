@@ -45,4 +45,4 @@
   cron:
     name: "Renew let's encrypt with lecm"
     special_time: weekly
-    job: lecm --renew
+    job: /usr/bin/lecm --renew
