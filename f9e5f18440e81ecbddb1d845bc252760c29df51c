@@ -22,6 +22,24 @@
       "revId": "f9e5f18440e81ecbddb1d845bc252760c29df51c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_b77b687b",
+        "filename": "ansible/roles/sf-storyboard-webclient/tasks/upgrade.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-08T03:46:51Z",
+      "side": 1,
+      "message": "oops, indeed. Though it\u0027s not an issue because we don\u0027t support 2.5 -\u003e 2.7. That block could actually be removed",
+      "parentUuid": "9abe1de1_f781e04e",
+      "revId": "f9e5f18440e81ecbddb1d845bc252760c29df51c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
