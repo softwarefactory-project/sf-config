@@ -16,6 +16,16 @@
     content: 'PS1="[\u@\h.{{ fqdn }} \W]# "'
     dest: /etc/profile.d/prompt.sh
 
+- name: "system: disable cloud-init"
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items:
+    - cloud-init
+    - cloud-init-local
+  failed_when: false
+
 - name: "sf: create sf directory"
   file:
     path: "{{ item }}"
