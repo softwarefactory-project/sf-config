@@ -17,20 +17,27 @@
     state: present
   when: "ansible_selinux.status == 'enabled' and 'zuul-server' in zuul_services"
 
-- name: Setup apache site zuul.conf
-  template:
-    src: zuul-server.httpd.conf.j2
-    dest: /etc/httpd/conf.d/zuul.conf
-    mode: 0444
-  notify: apache reload
-  when: "'zuul-server' in zuul_services"
+- block:
+    - name: Setup apache site zuul.conf
+      template:
+        src: zuul-server.httpd.conf.j2
+        dest: /etc/httpd/conf.d/zuul.conf
+        mode: 0444
+      notify: apache reload
+      when: "'zuul-server' in zuul_services"
 
-- name: Setup apache zuul-merger.conf
-  template:
-    src: zuul-merger.httpd.conf.j2
-    dest: /etc/httpd/conf.d/zuul-merger.conf
-    mode: 0444
-  notify: apache reload
+    - name: Setup apache zuul-merger.conf
+      template:
+        src: zuul-merger.httpd.conf.j2
+        dest: /etc/httpd/conf.d/zuul-merger.conf
+        mode: 0444
+      notify: apache reload
+
+    - name: Ensure apache is enabled
+      service:
+        name: httpd
+        state: started
+        enabled: yes
   when: "'zuul-merger' in zuul_services"
 
 - block:
