@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The httpd service is now enabled on zuul-merger to mitigate httpd not starting
+    on merger reboot.
