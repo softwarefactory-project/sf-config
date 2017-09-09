@@ -3,6 +3,12 @@
 # Use /bin/sh shell to allow zuul to connect to localhost for config-update jobs
 - include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul3_lib_dir }} home_dir_mode=0751 shell=/bin/sh update_user=no"
 
+- name: Install zuul3 shortcut
+  copy:
+    src: zuul3.sh
+    dest: /usr/bin/zuul3
+    mode: 0755
+
 - name: Apply selinux port labelling
   seport:
     ports: "{{ zuul3_port }}"
