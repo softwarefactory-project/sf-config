@@ -19,6 +19,12 @@ EXT_GERRIT = "openstack#review.openstack.org#29418#" \
              "https://review.openstack.org/r/#username"
 
 
+KNOWN_GERRITS = {
+    "openstack.org": ["openstack", "review.openstack.org", "29418"],
+    "wikimedia.org": ["wikimedia", "gerrit.wikimedia.org", "29418"],
+}
+
+
 class Zuul3Scheduler(Component):
     role = "zuul3-scheduler"
     require_role = ["nodepool3", "zookeeper"]
@@ -31,7 +37,7 @@ class Zuul3Scheduler(Component):
         parser.add_argument("--zuul3-external-gerrit",
                             metavar="name#hostname#port#puburl#username",
                             help="Enable a remote gerrit, "
-                            "e.g.: --zuul3-third-party-ci %s" % EXT_GERRIT)
+                            "e.g.: --zuul3-external-gerrit %s" % EXT_GERRIT)
 
     def argparse(self, args):
         if args.zuul3_ssh_key:
@@ -48,8 +54,15 @@ class Zuul3Scheduler(Component):
         if args.zuul3_external_gerrit:
             values = args.zuul3_external_gerrit.split('#')
             try:
-                name, hostname, port, puburl, username = values
-                port = int(port)
+                if len(values) == 2:
+                    # Resolve shortcuts
+                    name, hostname, port = KNOWN_GERRITS.get(values[0])
+                    if name is None:
+                        raise RuntimeError("%s: unknown gerrit" % values[0])
+                    username = values[1]
+                else:
+                    name, hostname, port, puburl, username = values
+                    port = int(port)
             except ValueError:
                 fail("Invalid zuul3-external-gerrit argument, it needs to be "
                      "in this format: %s" % EXT_GERRIT)
