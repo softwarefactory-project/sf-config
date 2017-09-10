@@ -19,6 +19,11 @@ EXT_GERRIT = "openstack#review.openstack.org#29418#" \
              "https://review.openstack.org/r/#username"
 
 
+KNOWN_GERRITS = {
+    "openstack.org": ["openstack", "review.openstack.org", "29418"],
+    "wikimedia.org": ["wikimedia", "gerrit.wikimedia.org", "29418"],
+}
+
 class Zuul3Scheduler(Component):
     role = "zuul3-scheduler"
     require_role = ["nodepool3", "zookeeper"]
@@ -48,6 +53,12 @@ class Zuul3Scheduler(Component):
         if args.zuul3_external_gerrit:
             values = args.zuul3_external_gerrit.split('#')
             try:
+                if len(values) == 2:
+                    # Resolve shortcuts
+                    name, hostname, port = KNOWN_GERRITS.get(values[0])
+                    if name is None:
+                        raise RuntimeError("%s: unknown gerrit" % values[0])
+                    username = values[1]
                 name, hostname, port, puburl, username = values
                 port = int(port)
             except ValueError:
