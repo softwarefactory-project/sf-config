@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_fdc65f15",
+        "filename": "ansible/roles/sf-nodepool/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-11T15:19:30Z",
+      "side": 1,
+      "message": "You should keep the enable \"yes\". We have a disable task that set enable to \"no\" so that\u0027s safe and not sure the rpm systemd macro systemd_post enable service when the package is installed.",
+      "revId": "5874193a7b3819d07c04ae37f7fcea0def7d232a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_ddcb9b1d",
+        "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-11T15:19:30Z",
+      "side": 1,
+      "message": "Why setting the enable in the update task and not in the setup on like usual ?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 16
+      },
+      "revId": "5874193a7b3819d07c04ae37f7fcea0def7d232a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_ddf27b6f",
+        "filename": "ansible/roles/sf-repos/tasks/upgrade.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-11T15:19:30Z",
+      "side": 1,
+      "message": "This will need to be updated to support https://softwarefactory-project.io/r/#/c/9607/",
+      "revId": "5874193a7b3819d07c04ae37f7fcea0def7d232a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
