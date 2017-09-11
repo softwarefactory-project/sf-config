@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9abe1de1_406204da",
+        "filename": "ansible/roles/sf-nodepool/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-11T20:17:10Z",
+      "side": 1,
+      "message": "See my comment on update, it\u0027s better to start/enable after update is performed. Similarly to the zuul services.",
+      "parentUuid": "9abe1de1_fdc65f15",
+      "revId": "5874193a7b3819d07c04ae37f7fcea0def7d232a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_ddcb9b1d",
         "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
         "patchSetId": 11
@@ -42,6 +60,24 @@
     },
     {
       "key": {
+        "uuid": "9abe1de1_80681cbc",
+        "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-11T20:17:10Z",
+      "side": 1,
+      "message": "This is because, otherwise nodepool will start before the configuration has been written. The issue is that nodepool and nodepool3 are using the same port for the webapp by default, and starting nodepool in setup makes one of the two services fail to start.",
+      "parentUuid": "9abe1de1_ddcb9b1d",
+      "revId": "5874193a7b3819d07c04ae37f7fcea0def7d232a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_ddf27b6f",
         "filename": "ansible/roles/sf-repos/tasks/upgrade.yml",
         "patchSetId": 11
@@ -53,6 +89,24 @@
       "writtenOn": "2017-09-11T15:19:30Z",
       "side": 1,
       "message": "This will need to be updated to support https://softwarefactory-project.io/r/#/c/9607/",
+      "revId": "5874193a7b3819d07c04ae37f7fcea0def7d232a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_205f1010",
+        "filename": "ansible/roles/sf-repos/tasks/upgrade.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-11T20:17:10Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "9abe1de1_ddf27b6f",
       "revId": "5874193a7b3819d07c04ae37f7fcea0def7d232a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
