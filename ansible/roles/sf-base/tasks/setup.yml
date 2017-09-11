@@ -11,9 +11,9 @@
     - /usr/libexec/software-factory
     - /usr/share/software-factory
 
-- name: "system: add fqdn to prompt"
+- name: "system: add FQDN to prompt"
   copy:
-    content: 'PS1="[\u@\h.{{ fqdn }} \W]# "'
+    src: prompt.sh
     dest: /etc/profile.d/prompt.sh
 
 - name: "system: disable cloud-init"
