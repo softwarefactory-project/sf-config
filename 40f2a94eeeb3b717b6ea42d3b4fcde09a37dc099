@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_5d866bba",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-11T15:38:43Z",
+      "side": 1,
+      "message": "Should it be when: \"\u0027zuul-merger\u0027 in zuul_services or \u0027zuul-server in zuul_services\u0027\" ?",
+      "revId": "40f2a94eeeb3b717b6ea42d3b4fcde09a37dc099",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
