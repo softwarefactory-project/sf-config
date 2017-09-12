@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_c00bb47c",
+        "filename": "ansible/roles/sf-zuul3/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-12T12:48:59Z",
+      "side": 1,
+      "message": "Would you like to replace --zuul3-third-party-ci by --zuul3-external-gerrit in the example ?",
+      "revId": "9ed9cb9b900314de907a9b87478830da5ab02eba",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_a010c0a9",
+        "filename": "ansible/roles/sf-zuul3/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-12T12:48:59Z",
+      "side": 1,
+      "message": "Would you mind use a \u0027else\u0027 block ?",
+      "revId": "9ed9cb9b900314de907a9b87478830da5ab02eba",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
