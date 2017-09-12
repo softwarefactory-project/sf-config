@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new sfconfig.yaml logserver expiry option enable old logs purge
+    configuration, default to 2 months.
