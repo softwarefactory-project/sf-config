@@ -22,6 +22,8 @@ gateway_splash_image_data: ""
 gateway_directories: ""
 #  - name: dir_name
 #    path: dir_path
+#    owner: apache
+#    group: apache
 #    options:
 #        - "option 1"
 #        - "option 2"
