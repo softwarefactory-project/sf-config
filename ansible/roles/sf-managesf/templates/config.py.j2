@@ -120,10 +120,13 @@ gerrit = {
 }
 {% endif %}
 
-{% if 'zuul' in roles %}
+{% if 'zuul3' in roles %}
 zuul = {
-    'dburi': 'mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}',
-    'status_url': '{{ zuul_internal_url }}/status.json',
+    'dburi': 'mysql+pymysql://{{ zuul3_mysql_user }}:{{ zuul3_mysql_password}}@{{ zuul3_mysql_host }}/{{ zuul3_mysql_db }}',
+    'status_url': '{{ zuul3_internal_url }}/status.json',
+    'ssh_host': '{{ zuul3_host }}',
+    'ssh_user': 'root',
+    'ssh_key': '/var/lib/managesf/.ssh/id_rsa',
 }
 {% endif %}
 
@@ -175,12 +178,12 @@ policy = {
 api = {
     'v2': {
         'builds': [
-{% if 'zuul' in roles %}
+{% if 'zuul3' in roles %}
             'SFZuul',
 {% endif %}
         ],
         'jobs': [
-{% if 'zuul' in roles %}
+{% if 'zuul3' in roles %}
             'SFZuul',
 {% endif %}
         ],
