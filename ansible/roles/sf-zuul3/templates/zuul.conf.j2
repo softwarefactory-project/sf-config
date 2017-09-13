@@ -47,6 +47,7 @@ driver=sql
 dburi=mysql+pymysql://{{ zuul3_mysql_user }}:{{ zuul3_mysql_password}}@{{ zuul3_mysql_host }}/{{ zuul3_mysql_db }}
 
 {% for conn in zuul3_gerrit_connections|default([]) %}
+
 [connection {{ conn['name'] }}]
 driver=gerrit
 port={{ conn['port']|default('29418') }}
