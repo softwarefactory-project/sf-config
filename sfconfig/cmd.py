@@ -120,9 +120,18 @@ def usage(components):
     return args
 
 
+def is_root():
+    if os.geteuid() != 0:
+        return False
+    return True
+
+
 def main():
     components = sfconfig.utils.load_components()
     args = usage(components)
+
+    if not is_root():
+        sys.exit(Popen(["sudo"] + sys.argv).wait())
 
     if not args.skip_apply:
         execute(["logger", "sfconfig: started %s" % sys.argv[1:]])
