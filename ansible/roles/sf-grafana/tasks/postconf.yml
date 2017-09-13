@@ -1,0 +1,29 @@
+---
+- name: Wait for db initialization
+  wait_for:
+    port: 3000
+    host: '{{ grafana_host }}'
+
+- name: Get datasources
+  uri:
+    url: '{{ grafana_internal_datasource_url }}'
+    method: GET
+    user: admin
+    password: '{{ grafana_admin_password }}'
+    force_basic_auth: "yes"
+  register: datasources
+
+- name: set datasource fact
+  set_fact:
+    grafana_datasources: "{{ datasources.json | default([]) | map(attribute='name') | list }}"
+
+- name: Configure datasource
+  uri:
+    url: '{{ grafana_internal_datasource_url }}'
+    method: POST
+    user: admin
+    password: '{{ grafana_admin_password }}'
+    body: '{{ grafana_data_source | to_json }}'
+    body_format: json
+    force_basic_auth: "yes"
+  when: grafana_data_source.name not in grafana_datasources

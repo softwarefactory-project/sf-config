@@ -11,6 +11,7 @@
 # under the License.
 
 import os
+import random
 
 from sfconfig.utils import execute
 
@@ -38,6 +39,87 @@ class Component(object):
             execute(["ssh-keygen", "-t", "rsa", "-N", "", "-f", priv, "-q"])
         args.glue[name] = open(priv).read()
         args.glue["%s_pub" % name] = open(pub).read()
+
+    def get_or_generate_CA(self, args):
+        args.ca_file = "%s/certs/localCA.pem" % args.lib
+        args.ca_key_file = "%s/certs/localCAkey.pem" % args.lib
+        args.ca_srl_file = "%s/certs/localCA.srl" % args.lib
+
+        if not os.path.isfile(args.ca_file):
+            # Generate a random OU subject to be able to trust multiple sf CA
+            ou = ''.join(random.choice('0123456789abcdef') for n in range(6))
+            execute(["openssl", "req", "-nodes", "-days", "3650", "-new",
+                     "-x509", "-subj", "/C=FR/O=SoftwareFactory/OU=%s" % ou,
+                     "-keyout", args.ca_key_file, "-out", args.ca_file])
+
+        if not os.path.isfile(args.ca_srl_file):
+            open(args.ca_srl_file, "w").write("00\n")
+
+        args.glue["localCA_pem"] = open(args.ca_file).read()
+
+    def get_or_generate_cert(self, args, name, common_name):
+        cert_cnf = "%s/certs/%s.cnf" % (args.lib, name)
+        cert_key = "%s/certs/%s.key" % (args.lib, name)
+        cert_req = "%s/certs/%s.req" % (args.lib, name)
+        cert_crt = "%s/certs/%s.crt" % (args.lib, name)
+        cert_pem = "%s/certs/%s.pem" % (args.lib, name)
+
+        def xunlink(filename):
+            if os.path.isfile(filename):
+                os.unlink(filename)
+
+        if os.path.isfile(cert_cnf) and \
+                open(cert_cnf).read().find("DNS.1 = %s\n" %
+                                           args.sfconfig["fqdn"]) == -1:
+            # if FQDN changed, remove all certificates
+            for fn in [cert_cnf, cert_req, cert_crt]:
+                xunlink(fn)
+
+        # Then manage certificate request
+        if not os.path.isfile(cert_cnf):
+            open(cert_cnf, "w").write("""[req]
+req_extensions = v3_req
+distinguished_name = req_distinguished_name
+
+[ req_distinguished_name ]
+commonName_default = %s
+
+[ v3_req ]
+subjectAltName=@alt_names
+
+[alt_names]
+DNS.1 = %s
+""" % (common_name, common_name))
+
+        if not os.path.isfile(cert_key):
+            if os.path.isfile(cert_req):
+                xunlink(cert_req)
+            execute(["openssl", "genrsa", "-out", cert_key, "2048"])
+
+        if not os.path.isfile(cert_req):
+            if os.path.isfile(cert_crt):
+                xunlink(cert_crt)
+            execute(["openssl", "req", "-new", "-subj",
+                     "/C=FR/O=SoftwareFactory/CN=%s" % args.sfconfig["fqdn"],
+                     "-extensions", "v3_req", "-config", cert_cnf,
+                     "-key", cert_key, "-out", cert_req])
+
+        if not os.path.isfile(cert_crt):
+            if os.path.isfile(cert_pem):
+                xunlink(cert_pem)
+            execute(["openssl", "x509", "-req", "-days", "3650", "-sha256",
+                     "-extensions", "v3_req", "-extfile", cert_cnf,
+                     "-CA", args.ca_file, "-CAkey", args.ca_key_file,
+                     "-CAserial", args.ca_srl_file,
+                     "-in", cert_req, "-out", cert_crt])
+
+        if not os.path.isfile(cert_pem):
+            open(cert_pem, "w").write("%s\n%s\n" % (
+                open(cert_key).read(), open(cert_crt).read()))
+
+        args.glue["%s_crt" % name] = open(cert_crt).read()
+        args.glue["%s_key" % name] = open(cert_key).read()
+        args.glue["%s_chain" % name] = args.glue["%s_crt" % name]
 
     def add_mysql_database(self, args, name, hosts=[],
                            user=None, password=None):

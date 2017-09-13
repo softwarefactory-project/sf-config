@@ -33,6 +33,7 @@ def get_previous_version():
 
 class InstallServer(Component):
     def configure(self, args, host):
+        self.get_or_generate_CA(args)
         self.get_or_generate_ssh_key(args, "service_rsa")
 
         args.glue["sf_version"] = get_sf_version()
