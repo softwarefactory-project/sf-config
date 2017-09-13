@@ -16,6 +16,24 @@
       "revId": "40f2a94eeeb3b717b6ea42d3b4fcde09a37dc099",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_8b771dd4",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-13T16:11:27Z",
+      "side": 1,
+      "message": "Indeed, nice catch!",
+      "parentUuid": "9abe1de1_5d866bba",
+      "revId": "40f2a94eeeb3b717b6ea42d3b4fcde09a37dc099",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
