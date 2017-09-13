@@ -31,6 +31,10 @@
           /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepool.yaml ../build/nodepool/nodepool.yaml v2
           nodepool -c ../build/nodepool/nodepool.yaml config-validate
 
+          echo "[+] Checking nodepool3"
+          /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepoolV3.yaml ../build/nodepool/nodepool.yaml
+          nodepool3 -c ../build/nodepool/nodepool.yaml config-validate
+
           echo "[+] Checking gerrit replication"
           git config -f gerrit/replication.config -l > /dev/null
 
