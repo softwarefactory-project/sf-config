@@ -80,12 +80,12 @@
     state: link
   when: "'zuul' in roles"
 
-- name: Symlink zuul3 static file
-  file:
-    src: /opt/rh/rh-python35/root/usr/share/javascript/zuul
-    dest: /var/www/static/zuul3
-    state: link
-  when: "'zuul3' in roles"
+- name: Inject top-menu to zuul3 static page
+  lineinfile:
+    path: "{{ item }}"
+    line: '    <script type="text/javascript" src="/static/js/topmenu.js"></script>'
+    insertafter: '<head>'
+  with_fileglob: /opt/rh/rh-python35/root/usr/share/zuul/*.html
 
 - name: Install gerrit dashboard
   copy:

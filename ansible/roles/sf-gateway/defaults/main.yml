@@ -7,6 +7,7 @@ role_actions:
   - disable
   - backup
   - restore
+  - upgrade
 
 gateway_host: localhost
 nodepool_builder_host: ""
