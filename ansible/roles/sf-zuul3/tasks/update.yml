@@ -19,11 +19,19 @@
       args:
         chdir: /root/config
 
+    - name: Check if zuul-scheduler is running
+      command: systemctl -q is-active rh-python35-zuul-scheduler
+      register: _zuul3_scheduler
+      failed_when: _zuul3_scheduler.rc not in [0, 3]
+      when: "'zuul-scheduler' in zuul3_services"
+
     - name: Reload zuul-scheduler service
       service:
         name: rh-python35-zuul-scheduler
         state: reloaded
-      when: "'zuul-scheduler' in zuul3_services"
+      when:
+        - "'zuul-scheduler' in zuul3_services"
+        - _zuul3_scheduler.rc == 0
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Ensure service are started and enabled

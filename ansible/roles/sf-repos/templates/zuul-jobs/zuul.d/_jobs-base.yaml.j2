@@ -13,13 +13,15 @@
     attempts: 1
     secrets:
       - site_sflogs
-    nodes:
-      - name: main
-        label: centos-oci
+    nodeset:
+      nodes:
+        - name: main
+          label: centos-oci
 
 - job:
     name: linters
     parent: base
+    description: A bash8, pip8, yamllint linter check.
     run: playbooks/linters/run
 
 - project:

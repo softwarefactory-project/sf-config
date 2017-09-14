@@ -53,6 +53,10 @@ install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
+%post
+# Freeze the arch so that it doesn't get auto-updated on upgrade
+echo >> %{_sysconfdir}/software-factory/arch.yaml
+
 %changelog
 * Tue Jul 18 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.7.0-1
 - Refactor sfconfig into a python module

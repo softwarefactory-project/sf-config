@@ -6,6 +6,7 @@ role_actions:
   - backup
   - restore
   - update
+  - upgrade
   - get_logs
   - disable
 
