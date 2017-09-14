@@ -17,14 +17,6 @@
     state: present
   when: "ansible_selinux.status == 'enabled' and 'zuul-scheduler' in zuul3_services"
 
-- name: Setup apache site zuul.conf
-  template:
-    src: zuul3-scheduler.httpd.conf.j2
-    dest: /etc/httpd/conf.d/zuul3-scheduler.conf
-    mode: 0444
-  notify: apache reload
-  when: "'zuul-scheduler' in zuul3_services"
-
 - name: Setup apache zuul3-merger.conf
   template:
     src: zuul3-merger.httpd.conf.j2
@@ -34,29 +26,6 @@
   when: "'zuul-merger' in zuul3_services"
 
 - block:
-    - name: Create /var/www/zuul3
-      file:
-        path: /var/www/zuul3
-        state: directory
-
-    - name: Symlink zuul image
-      file:
-        src: "{{ zuul3_share_dir }}/images/"
-        dest: /var/www/zuul3/images
-        state: link
-
-    - name: Symlink zuul static assets
-      file:
-        src: "{{ zuul3_share_dir }}/"
-        dest: /var/www/static/zuul
-        state: link
-
-    - name: Install index.html for zuul
-      copy:
-        src: zuul.index.html
-        dest: /var/www/zuul3/index.html
-        mode: 0444
-
     - name: Pre-Create zuul-jobs rsa key
       become: yes
       become_user: zuul

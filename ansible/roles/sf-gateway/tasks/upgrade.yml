@@ -1,0 +1,7 @@
+---
+- block:
+    - name: Remove /var/www/zuul3
+      file:
+        path: /var/www/zuul3
+        state: absent
+  when: sf_previous_version < 2.7
