@@ -39,7 +39,9 @@ def loadConfig(config_path):
                     path, tenant
                 ))
             tenant = tenant.get('tenant')
-            tenant_conf = tenants.setdefault(tenant.get('name', ''), {})
+            if not tenant.get('name'):
+                tenant["name"] = "local"
+            tenant_conf = tenants.setdefault(tenant['name'], {})
             for source in tenant['source'].keys():
                 source_conf = tenant_conf.setdefault(source, {})
                 for project_type in tenant['source'][source]:

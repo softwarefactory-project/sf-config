@@ -153,16 +153,26 @@
 {% endif %}
 
 {% if 'zuul3-web' in roles %}
-        ProxyPass /zuul3/static/ http://{{ zuul3_web_url }}/static/ nocanon retry=0
-        ProxyPassReverse /zuul3/static/ http://{{ zuul3_web_url }}/static/
+        # Redirect all the static file to /zuul3-static/
+        Alias "/zuul3/static" "/opt/rh/rh-python35/root/usr/share/zuul"
+        AliasMatch "^/zuul3/.*/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
+        AliasMatch "^/zuul3/.*.html" "/opt/rh/rh-python35/root/usr/share/zuul/index.html"
+        <Directory /opt/rh/rh-python35/root/usr/share/zuul>
+            Require all granted
+            Order allow,deny
+            Allow from all
+        </Directory>
 
-        ProxyPass /zuul3/console-stream ws://{{ zuul3_web_url }}/console-stream nocanon retry=0
-        ProxyPassReverse /zuul3/console-stream ws://{{ zuul3_web_url }}/console-stream
+        # TODO: fix the top-menu link go to the local status page.
+        # Redirect to local tenant status by default
+        # RewriteRule ^/zuul3$ /zuul3/local/status.html [R]
 
-{% endif %}
-{% if 'zuul3' in roles %}
-        ProxyPass /zuul3/ {{ zuul3_internal_url }} nocanon retry=0
-        ProxyPassReverse /zuul3/ {{ zuul3_internal_url }}
+        # Console-stream needs a special proxy-pass for websocket
+        ProxyPassMatch /zuul3/(.*)/console-stream ws://{{ zuul3_web_url }}/$1/console-stream nocanon retry=0
+
+        # Then only the json calls are sent to the zuul-web endpoints
+        ProxyPassMatch ^/zuul3/(.*.json)$ http://{{ zuul3_web_url }}/$1 nocanon retry=0
+        ProxyPassReverse /zuul3/ http://{{ zuul3_web_url }}/
 
 {% endif %}
 {% if 'storyboard' in roles %}
