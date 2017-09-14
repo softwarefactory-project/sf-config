@@ -1,7 +1,6 @@
 ---
 - tenant:
-    # Use empty name to fix bug with default status.json
-    name: ''
+    name: 'local'
     source:
 {% if 'gerrit' in roles %}
       gerrit:

@@ -17,14 +17,6 @@
     state: present
   when: "ansible_selinux.status == 'enabled' and 'zuul-scheduler' in zuul3_services"
 
-- name: Setup apache site zuul.conf
-  template:
-    src: zuul3-scheduler.httpd.conf.j2
-    dest: /etc/httpd/conf.d/zuul3-scheduler.conf
-    mode: 0444
-  notify: apache reload
-  when: "'zuul-scheduler' in zuul3_services"
-
 - name: Setup apache zuul3-merger.conf
   template:
     src: zuul3-merger.httpd.conf.j2

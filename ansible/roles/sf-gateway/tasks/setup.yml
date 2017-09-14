@@ -73,6 +73,20 @@
     - {name: jobs.js, path: /var/www/jobs}
     - {name: jobs.html, path: /var/www/jobs, real_name: index.html}
 
+- name: Symlink zuul static file
+  file:
+    src: /usr/share/javascript/zuul/
+    dest: /var/www/static/zuul
+    state: link
+  when: "'zuul' in roles"
+
+- name: Inject top-menu to zuul3 static page
+  lineinfile:
+    path: "{{ item }}"
+    line: '    <script type="text/javascript" src="/static/js/topmenu.js"></script>'
+    insertafter: '<head>'
+  with_fileglob: /opt/rh/rh-python35/root/usr/share/zuul/*.html
+
 - name: Install gerrit dashboard
   copy:
     src: dashboard.index.html
