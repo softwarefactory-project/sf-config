@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_a6d578ba",
+        "filename": "ansible/roles/sf-base/files/prompt.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-09-14T14:34:02Z",
+      "side": 1,
+      "message": "PS1\u003d\"\\[\\u@$(hostname -f) will be better",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 36
+      },
+      "revId": "c8ee934ce0280cd7da0b972d9e3cba14c8a99d6d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
