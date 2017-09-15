@@ -124,6 +124,9 @@ gerrit = {
 zuul = {
     'dburi': 'mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}',
     'status_url': '{{ zuul_internal_url }}/status.json',
+    'ssh_host': '{{ zuul_host }}',
+    'ssh_user': 'root',
+    'ssh_key': '/var/lib/managesf/.ssh/id_rsa',
 }
 {% endif %}
 
