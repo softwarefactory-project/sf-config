@@ -79,6 +79,13 @@ baseurl={{ gerrit_pub_url }}
 user=jenkins
 sshkey=/var/lib/zuul/.ssh/id_rsa
 
+[connection managesf]
+driver=gerrit
+server=gerrit.{{ fqdn }}
+baseurl={{ gerrit_pub_url }}
+user=SF_SERVICE_USER
+sshkey=/var/lib/zuul/.ssh/id_rsa
+
 {% for conn in zuul_extra_gerrits|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gerrit
