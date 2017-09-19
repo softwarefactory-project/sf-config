@@ -1,6 +1,16 @@
 ---
 - name: Create user
-  include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul shell=/bin/bash update_user=no"
+  include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul update_user=no"
+
+- name: Check zuul shell
+  command: grep zuul /etc/passwd
+  register: _zuul_passwd
+  failed_when: _zuul_passwd.rc not in [0, 1]
+  changed_when: false
+
+- name: Set zuul shell to bash
+  command: chsh -s /bin/bash zuul
+  when: _zuul_passwd.stdout.find("/bin/bash") == -1
 
 - name: Enable root ssh access to nodepool
   authorized_key:
