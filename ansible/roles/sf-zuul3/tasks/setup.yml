@@ -1,7 +1,6 @@
 ---
 # Use 0751 to let apache access {{ zuul3_lib_dir }}/git
-# Use /bin/sh shell to allow zuul to connect to localhost for config-update jobs
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul3_lib_dir }} home_dir_mode=0751 shell=/bin/sh update_user=no"
+- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul3_lib_dir }} home_dir_mode=0751 update_user=no"
 
 - name: Install zuul3 shortcut
   copy:
@@ -36,6 +35,28 @@
         content: "db_path = 'repoxplorer/'"
         dest: /opt/sf/defconf-repoxplorer.py
   when: "'zuul-executor' in zuul3_services"
+
+- name: Symlink SCL to zuul3
+  file:
+    src: "{{ item.src }}/zuul"
+    dest: "{{ item.dest }}/zuul3"
+    state: link
+  with_items:
+    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
+    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
+    - {src: /etc/opt/rh/rh-python35, dest: /etc}
+  when: "'zuul' in roles"
+
+- name: Symlink SCL to zuul
+  file:
+    src: "{{ item.src }}/zuul"
+    dest: "{{ item.dest }}/zuul"
+    state: link
+  with_items:
+    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
+    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
+    - {src: /etc/opt/rh/rh-python35, dest: /etc}
+  when: "'zuul' not in roles"
 
 - name: Apply selinux port labelling
   seport:

@@ -7,6 +7,28 @@
     dest: /usr/bin/nodepool3
     mode: 0755
 
+- name: Symlink SCL to nodepool3
+  file:
+    src: "{{ item.src }}/nodepool"
+    dest: "{{ item.dest }}/nodepool3"
+    state: link
+  with_items:
+    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
+    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
+    - {src: /etc/opt/rh/rh-python35, dest: /etc}
+  when: "'nodepool' in roles"
+
+- name: Symlink SCL to nodepool
+  file:
+    src: "{{ item.src }}/nodepool"
+    dest: "{{ item.dest }}/nodepool"
+    state: link
+  with_items:
+    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
+    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
+    - {src: /etc/opt/rh/rh-python35, dest: /etc}
+  when: "'nodepool' not in roles"
+
 - name: Install jenkins/zuul public ssh key
   copy:
     content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
