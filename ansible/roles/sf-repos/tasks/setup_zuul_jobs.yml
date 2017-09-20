@@ -19,8 +19,8 @@
   when: zuulv3_config_dir.stat.exists != True
 
 - stat:
-    path: /root/config/nodepool/nodepoolV3.yaml
-  register: nodepoolv3_config_file
+    path: /root/config/nodepoolV3
+  register: nodepoolv3_config_dir
 
 - block:
     - name: Create default nodepoolV3 config
@@ -31,11 +31,28 @@
         - git fetch --all
         - git reset --hard origin/master --
         - git clean -f -x -d
-        - cp /usr/share/sf-config/ansible/roles/sf-repos/files/config/nodepool/nodepoolV3.yaml nodepool/
+        - cp -R /usr/share/sf-config/ansible/roles/sf-repos/files/config/nodepoolV3/ .
         - git add nodepool
         - git commit -m 'Add nodepoolV3 configuration'
         - git push git+ssh://gerrit/config master
-  when: nodepoolv3_config_file.stat.exists != True
+  when: nodepoolv3_config_dir.stat.exists != True
+
+- block:
+    - name: Update _local_hypervisor_oci configuration
+      template:
+        src: "config/nodepoolV3/_local_hypervisor_oci.yaml.j2"
+        dest: "/root/config/nodepoolV3/_local_hypervisor_oci.yaml"
+      register: _local_hypervisor_oci_config
+
+    - name: Push config repo change
+      command: "git {{ item }}"
+      args:
+        chdir: "/root/config"
+      with_items:
+        - "add nodepoolV3/_local_hypervisor_oci.yaml"
+        - "commit -m 'nodepool3: Update hypervisor_oci config'"
+        - "push git+ssh://gerrit/config master"
+      when: _local_hypervisor_oci_config|changed
 
 - stat:
     path: /root/zuul-jobs
