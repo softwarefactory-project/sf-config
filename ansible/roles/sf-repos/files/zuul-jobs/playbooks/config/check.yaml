@@ -1,0 +1,95 @@
+---
+- hosts: slave
+  tasks:
+    - name: include arch.yaml
+      include_vars:
+        file: /opt/sf/arch.yaml
+        name: arch
+
+    - name: Create build directory
+      file:
+        path: "{{ zuul.project.src_dir }}/build"
+        state: directory
+
+    - name: Check gerrit replication
+      command: git config -f gerrit/replication.config -l
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Check gerrit commentlinks
+      command: python -c "import yaml; 'commentlinks' in yaml.safe_load(open('gerrit/commentlinks.yaml'))"
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Check dashboards
+      command: /usr/local/bin/sf-update-dashboard --check --input dashboards/
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Check policy file
+      command: python -c "import yaml; yaml.safe_load(open('policies/policy.yaml'))"
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Validate repoxplorer configuration
+      block:
+        - name: Install fake repoxplorer config.py
+          copy:
+            remote_src: true
+            src: /opt/sf/defconf-repoxplorer.py
+            dest: "{{ zuul.project.src_dir }}/build/repoxplorer.py"
+
+        - name: Check syntax errors in repoxplorer definition files
+          command: >
+            repoxplorer-config-validate --config build/repoxplorer/config.py
+          args:
+            chdir: "{{ zuul.project.src_dir }}"
+      when: '"repoxplorer" in arch.roles'
+
+    - name: Validate nodepool configuration
+      block:
+        - name: Install fake _nodepool.yaml
+          copy:
+            remote_src: true
+            src: /opt/sf/defconf-nodepool.yaml
+            dest: "{{ zuul.project.src_dir }}/build/_nodepool.yaml"
+
+        - name: Merge nodepool config repo files
+          command: >
+            /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py
+                nodepoolV3/ build/nodepool.yaml
+          args:
+            chdir: "{{ zuul.project.src_dir }}"
+
+        - name: Run nodepool config-validate
+          command: >
+            /opt/rh/rh-python35/root/bin/nodepool -c build/nodepool.yaml
+                config-validate
+          args:
+            chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Validate zuul configuration
+      block:
+        - name: Install fake zuul.conf
+          copy:
+            remote_src: true
+            src: /opt/sf/defconf-zuul.conf
+            dest: "{{ zuul.project.src_dir }}/build/zuul.conf"
+
+        - name: Merge zuul config repo files
+          command: >
+            /usr/share/sf-config/scripts/zuul3-conf-merger.py
+                zuulV3/ build/zuul.yaml
+          args:
+            chdir: "{{ zuul.project.src_dir }}"
+
+        - name: Validate zuul config syntax
+          command: >
+            /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
+          args:
+            chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Check resources changes
+      command: /usr/local/bin/resources.sh validate
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
