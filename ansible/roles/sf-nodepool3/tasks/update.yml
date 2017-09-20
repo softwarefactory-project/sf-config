@@ -25,7 +25,7 @@
 
 - name: Fetch nodepool.yaml configuration
   fetch:
-    flat: yes
+    flat: "yes"
     src: "{{ nodepool3_conf_dir }}/nodepool.yaml"
     dest: /var/lib/software-factory/state/nodepoolV3.yaml
 

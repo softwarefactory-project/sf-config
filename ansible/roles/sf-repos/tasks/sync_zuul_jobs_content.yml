@@ -13,29 +13,31 @@
   synchronize:
     src: "/usr/share/sf-config/ansible/roles/sf-repos/files/zuul-jobs/{{ item }}/"
     dest: "{{ zuul_jobs_clone_dir }}/{{ item }}/"
-    archive: no
-    times: no
-    checksum: yes
-    delete: yes
-    perms: yes
-    recursive: yes
+    archive: "no"
+    times: "no"
+    checksum: "yes"
+    delete: "yes"
+    perms: "yes"
+    recursive: "yes"
   with_items:
     - playbooks/linters
+    - playbooks/config
     - roles/lint-bashate
     - roles/lint-flake8
     - roles/lint-yaml
+    - roles/run-config-update
   register: _static_files
 
 - name: Sync upstream files
   synchronize:
     src: "/usr/share/sf-config/ansible/roles/sf-repos/files/upstream-jobs/{{ item }}/"
     dest: "{{ zuul_jobs_clone_dir }}/{{ item }}/"
-    archive: no
-    times: no
-    checksum: yes
-    delete: yes
-    perms: yes
-    recursive: yes
+    archive: "no"
+    times: "no"
+    checksum: "yes"
+    delete: "yes"
+    perms: "yes"
+    recursive: "yes"
   with_items: "{{ repos_upstream_paths }}"
   register: _upstream_files
   when: not zuul3_upstream_zuul_jobs
@@ -62,21 +64,41 @@
 - name: Check for _sflogs_secrets file
   stat:
     path: "{{ zuul_jobs_clone_dir }}/zuul.d/_sflogs_secrets.yaml"
-  register: sflogs_secrets
+  register: _sflogs_secrets
 
 - name: "Generate sflogs ssh_private_key secret"
   command: >
     /usr/share/sf-config/scripts/zuul3-encrypt-secret.py \
         /var/lib/software-factory/certs/zuul-jobs.pub ssh_private_key \
         --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_logserver_rsa
-  register: sflogs_private_key_secret
-  when: not sflogs_secrets.stat.exists
+  register: _sflogs_private_key_secret
+  when: not _sflogs_secrets.stat.exists
 
 - name: Update sflogs_secrets.yaml
   template:
     src: "zuul-jobs/zuul.d/_sflogs_secrets.yaml.j2"
     dest: "{{ zuul_jobs_clone_dir }}/zuul.d/_sflogs_secrets.yaml"
-  when: not sflogs_secrets.stat.exists
+  when: not _sflogs_secrets.stat.exists
+
+- name: Check for _install_server_secrets file
+  stat:
+    path: "{{ zuul_jobs_clone_dir }}/zuul.d/_install_server_secrets.yaml"
+  register: _install_server_secrets
+
+- name: install server secret
+  block:
+    - name: "Generate install_server ssh_private_key secret"
+      command: >
+        /usr/share/sf-config/scripts/zuul3-encrypt-secret.py \
+            /var/lib/software-factory/certs/zuul-jobs.pub ssh_private_key \
+            --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_worker_rsa
+      register: _install_server_private_key_secret
+
+    - name: Update install_server_secrets.yaml
+      template:
+        src: "zuul-jobs/zuul.d/_install_server_secrets.yaml.j2"
+        dest: "{{ zuul_jobs_clone_dir }}/zuul.d/_install_server_secrets.yaml"
+  when: not _install_server_secrets.stat.exists
 
 - name: "Indicate configuration changed"
   set_fact:
@@ -85,7 +107,8 @@
         _upstream_files|changed or
         _upstream_files_removed|changed or
         _templated_files|changed or
-        not sflogs_secrets.stat.exists
+        not _sflogs_secrets.stat.exists or
+        not _install_server_secrets.stat.exists
 
 - name: "Indicate configuration didn't changed"
   set_fact:
@@ -95,4 +118,5 @@
     - not _upstream_files|changed
     - not _upstream_files_removed|changed
     - not _templated_files|changed
-    - sflogs_secrets.stat.exists
+    - _sflogs_secrets.stat.exists
+    - _install_server_secrets.stat.exists
