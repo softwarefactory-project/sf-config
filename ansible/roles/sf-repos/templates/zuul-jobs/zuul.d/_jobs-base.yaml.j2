@@ -27,3 +27,29 @@
     check:
       jobs:
         - linters
+
+{% if 'zuul' not in roles %}
+- job:
+    name: config-check
+    parent: base
+    run: playbooks/config/check
+
+- job:
+    name: config-update
+    parent: base
+    run: playbooks/config/update
+    secrets:
+      - site_install_server
+
+- project:
+    name: config
+    check:
+      jobs:
+        - config-check
+    gate:
+      jobs:
+        - config-check
+    post:
+      jobs:
+        - config-update
+{% endif %}
