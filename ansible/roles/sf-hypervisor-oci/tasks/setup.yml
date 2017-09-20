@@ -2,6 +2,11 @@
 - name: Create user
   include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul shell=/bin/bash update_user=no"
 
+- name: Dump current architecture for config-check test
+  copy:
+    dest: /var/lib/zuul/.arch.yaml
+    content: '{{ {"roles": roles}| to_yaml }}'
+
 - name: Enable root ssh access to nodepool
   authorized_key:
     user: root

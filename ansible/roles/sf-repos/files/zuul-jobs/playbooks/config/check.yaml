@@ -1,0 +1,29 @@
+---
+- hosts: all
+  tasks:
+    - debug:
+       msg: "{{ zuul | zuul_legacy_vars }}"
+
+    - name: Checking gerrit replication
+      command: git config -f gerrit/replication.config -l
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Checking gerrit commentlinks
+      command: python -c "import yaml; 'commentlinks' in yaml.safe_load(open('gerrit/commentlinks.yaml'))"
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+
+    - name: Check dashboards
+      command: /usr/local/bin/sf-update-dashboard --check --input dashboards/
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+
+# - name check if repoexplorer is available in arch.yaml
+#   TODO
+# - name: Checking syntax errors in repoxplorer definition files
+#   command: repoxplorer-config-validate --config ../build/repoxplorer/config.py
+#   when:
+
+#    - name: Checking resources changes
+#      command: /usr/local/bin/resources.sh validate
