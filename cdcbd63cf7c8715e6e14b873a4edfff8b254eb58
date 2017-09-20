@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_000ac7d2",
+        "filename": "ansible/roles/sf-zuul/templates/zuul.conf.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-20T11:55:15Z",
+      "side": 1,
+      "message": "As far as I understand the option will not be necessarily for rdo cnx to upstream. But here this is set and for each zuul_extra_gerrits. Should it be handled with strip_branch_ref\u003d{{ conn[\u0027strip_branch_ref\u0027] }} instead ?",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 18
+      },
+      "revId": "cdcbd63cf7c8715e6e14b873a4edfff8b254eb58",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
