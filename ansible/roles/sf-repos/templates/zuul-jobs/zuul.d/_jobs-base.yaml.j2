@@ -23,6 +23,10 @@
     parent: base
     description: A bash8, pip8, yamllint linter check.
     run: playbooks/linters/run
+    nodeset:
+      nodes:
+        - name: main
+          label: local-centos-oci
 
 - project:
     name: zuul-jobs
