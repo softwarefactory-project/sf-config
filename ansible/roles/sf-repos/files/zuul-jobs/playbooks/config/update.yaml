@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - role: run-config-update
+      fileserver: "{{ site_install_server }}"

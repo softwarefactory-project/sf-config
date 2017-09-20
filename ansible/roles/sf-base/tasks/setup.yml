@@ -20,11 +20,11 @@
   service:
     name: "{{ item }}"
     state: stopped
-    enabled: no
+    enabled: "no"
   with_items:
     - cloud-init
     - cloud-init-local
-  failed_when: false
+  failed_when: "False"
 
 - name: "sf: create sf directory"
   file:
@@ -140,7 +140,7 @@
     dest: /etc/httpd/conf/httpd.conf
     regexp: "^DocumentRoot "
     line: "DocumentRoot \"/var/www\""
-  when: httpd_conf.stat.exists == True
+  when: httpd_conf.stat.exists == "True"
 
 - name: "system: allow apache to connect database"
   seboolean:
