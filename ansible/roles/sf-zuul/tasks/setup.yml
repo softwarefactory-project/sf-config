@@ -29,7 +29,7 @@
       service:
         name: httpd
         state: started
-        enabled: yes
+        enabled: "yes"
   when: "'zuul-server' in zuul_services"
 
 - block:
@@ -44,7 +44,7 @@
       service:
         name: httpd
         state: started
-        enabled: yes
+        enabled: "yes"
   when: "'zuul-merger' in zuul_services"
 
 - block:
