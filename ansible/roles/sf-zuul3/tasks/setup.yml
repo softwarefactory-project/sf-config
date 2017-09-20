@@ -9,6 +9,34 @@
     dest: /usr/bin/zuul3
     mode: 0755
 
+- name: Prepare config-check files in /opt/sf
+  block:
+    - name: Create /opt/sf directory
+      file:
+        path: /opt/sf
+        state: directory
+
+    - name: Dump current architecture for config-check test
+      copy:
+        dest: /opt/sf/arch.yaml
+        content: '{{ {"roles": roles}| to_yaml }}'
+
+    - name: Setup _nodepool.yaml for config-check test
+      template:
+        src: /usr/share/sf-config/ansible/roles/sf-nodepool3/templates/_nodepool.yaml.j2
+        dest: /opt/sf/defconf-nodepool.yaml
+
+    - name: Setup zuul.conf for config-check test
+      template:
+        src: fake_zuul.conf.j2
+        dest: /opt/sf/defconf-zuul.conf
+
+    - name: Setup repoxplorer config.py
+      copy:
+        content: "db_path = 'repoxplorer/'"
+        dest: /opt/sf/defconf-repoxplorer.py
+  when: "'zuul-executor' in zuul3_services"
+
 - name: Apply selinux port labelling
   seport:
     ports: "{{ zuul3_port }}"
@@ -27,7 +55,7 @@
 
 - block:
     - name: Pre-Create zuul-jobs rsa key
-      become: yes
+      become: "yes"
       become_user: zuul
       command: |
         /opt/rh/rh-python35/root/bin/python -c 'import zuul.configloader
@@ -46,7 +74,7 @@
 
     - name: Fetch zuul-jobs pub key on install-server
       fetch:
-        flat: yes
+        flat: "yes"
         src: "{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pub"
         dest: "/var/lib/software-factory/certs/zuul-jobs.pub"
   when: "'zuul-scheduler' in zuul3_services"

@@ -42,7 +42,8 @@ def merge(inp, _nodepool):
             # This syntax is nodepool2 only
             for image in provider['images']:
                 image['private-key'] = '/var/lib/nodepool/.ssh/id_rsa'
-        if not provider.get("image-type"):
+        if provider.get("driver", "openstack") == "openstack" and \
+           not provider.get("image-type"):
             provider["image-type"] = "raw"
 
     for dib in user.get('diskimages', []):
