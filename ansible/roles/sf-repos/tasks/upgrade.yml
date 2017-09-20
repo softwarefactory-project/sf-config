@@ -4,6 +4,11 @@
     path: /root/config/jobs-zuul
     state: directory
 
+- name: Ensure nodpeoolV3 exists
+  file:
+    path: /root/config/nodepoolV3
+    state: directory
+
 - name: Ensure defaults files are updated (prefixed by '_')
   register: config_repo_status
   template:
@@ -18,6 +23,8 @@
       src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/jobs-zuul/_config.yaml
     - dest: zuul/_layout.yaml
       src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/zuul/_layout.yaml
+    - src: config/nodepoolV3/_local_hypervisor_oci.yaml.j2
+      dest: nodepoolV3/_local_hypervisor_oci.yaml
 
 - block:
     - name: Remove legacy zuulv3/main.yaml
@@ -29,7 +36,7 @@
 - name: Push config-repo updates
   command: chdir=/root/config {{ item }}
   with_items:
-    - git add jobs-zuul/_macros.yaml jobs-zuul/_config.yaml
+    - git add jobs-zuul/_macros.yaml jobs-zuul/_config.yaml nodepoolV3/_local_hypervisor_oci.yaml
     - git commit -a -m "Update default configuration (from {{ sf_previous_version }} to {{ sf_version }})"
     - git push git+ssh://gerrit/config master
   when: config_repo_status|changed

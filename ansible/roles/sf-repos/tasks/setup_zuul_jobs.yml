@@ -19,8 +19,8 @@
   when: zuulv3_config_dir.stat.exists != True
 
 - stat:
-    path: /root/config/nodepool/nodepoolV3.yaml
-  register: nodepoolv3_config_file
+    path: /root/config/nodepoolV3
+  register: nodepoolv3_config_dir
 
 - block:
     - name: Create default nodepoolV3 config
@@ -31,11 +31,11 @@
         - git fetch --all
         - git reset --hard origin/master --
         - git clean -f -x -d
-        - cp /usr/share/sf-config/ansible/roles/sf-repos/files/config/nodepool/nodepoolV3.yaml nodepool/
+        - cp -R /usr/share/sf-config/ansible/roles/sf-repos/files/config/nodepoolV3/ .
         - git add nodepool
         - git commit -m 'Add nodepoolV3 configuration'
         - git push git+ssh://gerrit/config master
-  when: nodepoolv3_config_file.stat.exists != True
+  when: nodepoolv3_config_dir.stat.exists != True
 
 - stat:
     path: /root/zuul-jobs

@@ -20,4 +20,5 @@ inventory:
       - zuul3-executor
       - nodepool-launcher
       - nodepool3-launcher
+      - hypervisor-oci
       - jenkins
