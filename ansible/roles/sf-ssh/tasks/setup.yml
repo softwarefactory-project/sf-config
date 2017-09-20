@@ -5,5 +5,8 @@
 - name: "Allow jenkins/zuul to run sf-config-update"
   authorized_key:
     user: root
-    key: "{{ jenkins_rsa_pub }}"
+    key: "{{ item }}"
     key_options: 'command="/usr/share/sf-config/scripts/sf-config-update.sh",no-port-forwarding,no-x11-forwarding,no-agent-forwarding,no-pty'
+  with_items:
+    - "{{ jenkins_rsa_pub }}"
+    - "{{ zuul_worker_rsa_pub }}"

@@ -25,7 +25,7 @@
 
 - name: Fetch nodepool.yaml configuration
   fetch:
-    flat: yes
+    flat: "yes"
     src: /etc/nodepool/nodepool.yaml
     dest: /var/lib/software-factory/state/nodepool.yaml
 
@@ -45,7 +45,7 @@
   service:
     name: "{{ item }}"
     state: started
-    enabled: yes
+    enabled: "yes"
   with_items: "{{ nodepool_services }}"
 
 - name: Write config repo checksum matching current configuration
