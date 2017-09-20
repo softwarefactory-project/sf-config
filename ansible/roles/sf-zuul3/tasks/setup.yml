@@ -9,6 +9,16 @@
     dest: /usr/bin/zuul3
     mode: 0755
 
+- name: Create /opt/sf directory
+  file:
+    path: /opt/sf
+    state: directory
+
+- name: Dump current architecture for config-check test
+  copy:
+    dest: /opt/sf/arch.yaml
+    content: '{{ {"roles": roles}| to_yaml }}'
+
 - name: Apply selinux port labelling
   seport:
     ports: "{{ zuul3_port }}"
