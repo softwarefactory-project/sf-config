@@ -120,6 +120,7 @@ class Zuul3Scheduler(Component):
         self.add_mysql_database(args, "zuul3")
         self.get_or_generate_ssh_key(args, "zuul_rsa")
         self.get_or_generate_ssh_key(args, "zuul_logserver_rsa")
+        self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
         args.glue["zuul3_pub_url"] = "%s/zuul3/" % args.glue["gateway_url"]
         args.glue["zuul3_internal_url"] = "http://%s:%s/" % (
             args.glue["zuul3_host"], args.defaults["zuul3_port"])

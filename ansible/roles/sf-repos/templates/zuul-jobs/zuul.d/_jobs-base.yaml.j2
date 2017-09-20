@@ -36,3 +36,42 @@
     gate:
       jobs:
         - linters
+
+{% if 'zuul' not in roles %}
+- semaphore:
+    name: semaphore-config-update
+    max: 1
+
+- job:
+    name: config-check
+    parent: base
+    run: playbooks/config/check
+    nodeset:
+      nodes:
+        - name: main
+          label: local-centos-oci
+
+- job:
+    name: config-update
+    parent: base
+    run: playbooks/config/update
+    secrets:
+      - site_install_server
+    semaphore: semaphore-config-update
+    nodeset:
+      nodes:
+        - name: main
+          label: local-centos-oci
+
+- project:
+    name: config
+    check:
+      jobs:
+        - config-check
+    gate:
+      jobs:
+        - config-check
+    post:
+      jobs:
+        - config-update
+{% endif %}
