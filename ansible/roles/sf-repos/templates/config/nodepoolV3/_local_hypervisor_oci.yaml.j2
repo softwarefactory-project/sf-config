@@ -1,0 +1,16 @@
+# This file is managed by sfconfig, do not edit manually
+{% if 'hypervisor-oci' in roles %}
+
+labels:
+  - name: local-centos-oci
+
+providers:
+  - name: oci
+    driver: oci
+    hypervisor: {{ hypervisor_oci_host }}
+    pools:
+      - name: main
+        max-servers: 10
+        labels:
+          - name: local-centos-oci
+{% endif %}

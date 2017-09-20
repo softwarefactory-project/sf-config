@@ -43,6 +43,7 @@
       with_items:
         - jobs/_default_jobs.yaml
         - jobs-zuul/_macros.yaml
+        - nodepoolV3/_local_hypervisor_oci.yaml
 
     - name: Copy default resources file
       command: mv /root/resources.yaml "{{ conf_tmp.stdout }}/resources/resources.yaml"
