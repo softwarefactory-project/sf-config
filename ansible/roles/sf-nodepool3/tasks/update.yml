@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: Check new Nodepool config checksum
-  shell: git log -n 3 --oneline nodepool/nodepoolV3.yaml && md5sum "{{ nodepool3_conf_dir }}/_nodepool.yaml"
+  shell: git log -n 3 --oneline nodepoolV3/ && md5sum "{{ nodepool3_conf_dir }}/_nodepool.yaml"
   args:
     chdir: /root/config
   register: upstreamconfig
@@ -19,7 +19,7 @@
     chdir: /root/config
   when: localconfig.stdout != upstreamconfig.stdout
   with_items:
-    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepoolV3.yaml "{{ nodepool3_conf_dir }}/nodepool.yaml"
+    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepoolV3/ "{{ nodepool3_conf_dir }}/nodepool.yaml"
     - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ "{{ nodepool3_conf_dir }}/scripts/"
     - rsync -avi --delete nodepool/elements/ "{{ nodepool3_conf_dir }}/elements/"
 

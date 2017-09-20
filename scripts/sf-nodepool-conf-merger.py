@@ -5,7 +5,31 @@ import sys
 import yaml
 
 
+def yaml_merge_load(inp):
+    paths = []
+    for root, dirs, files in os.walk(inp, topdown=True):
+        paths.extend([os.path.join(root, path) for path in files])
+
+    # Keeps only .yaml files
+    paths = filter(lambda x: x.endswith('.yaml') or x.endswith('.yml'), paths)
+
+    user = {}
+    for path in paths:
+        data = yaml.safe_load(open(path))
+        if not data:
+            continue
+        for key, value in data.items():
+            user.setdefault(key, []).append(value)
+    return user
+
+
 def merge(inp, _nodepool):
+    if os.path.isfile(inp):
+        user = yaml.safe_load(open(inp))
+    elif os.path.isdir(inp):
+        user = yaml_merge_load(inp)
+    else:
+        raise RuntimeError("%s: unknown source" % inp)
     conf = yaml.safe_load(open(_nodepool))
     user = yaml.safe_load(open(inp))
 
