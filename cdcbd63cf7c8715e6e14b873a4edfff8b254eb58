@@ -22,6 +22,30 @@
       "revId": "cdcbd63cf7c8715e6e14b873a4edfff8b254eb58",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_4000bfaa",
+        "filename": "ansible/roles/sf-zuul/templates/zuul.conf.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2017-09-20T12:02:06Z",
+      "side": 1,
+      "message": "It\u0027s required for any connection to Gerrit \u003e\u003d 2.13 (so RDO to upstream Gerrit is the first example).",
+      "parentUuid": "9abe1de1_000ac7d2",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 18
+      },
+      "revId": "cdcbd63cf7c8715e6e14b873a4edfff8b254eb58",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
