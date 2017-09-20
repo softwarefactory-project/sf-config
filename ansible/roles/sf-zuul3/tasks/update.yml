@@ -38,7 +38,7 @@
   service:
     name: "rh-python35-{{ item }}"
     state: started
-    enabled: yes
+    enabled: "yes"
   with_items: "{{ zuul3_services }}"
 
 - name: Write config repo sha1 matching current configuration
