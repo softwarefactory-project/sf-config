@@ -152,6 +152,7 @@ pipelines:
       sqlreporter:
         score: -1
 
+{% if 'zuul3' not in roles %}
 projects:
   - name: config
     check:
@@ -160,3 +161,4 @@ projects:
       - config-check
     post:
       - config-update
+{% endif %}
