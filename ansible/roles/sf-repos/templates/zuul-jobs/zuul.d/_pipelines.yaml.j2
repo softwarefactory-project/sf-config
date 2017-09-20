@@ -23,13 +23,17 @@
           action: comment
           comment: (?i)^\s*recheck\s*$
 {% endfor %}
-{% if zuul3_github_connections %}
     start:
+{% if zuul3_github_connections %}
 {% for github_connection in zuul3_github_connections %}
       {{ github_connection.name }}:
         status: 'pending'
         comment: false
 {% endfor %}
+{% endif %}
+{% if 'gerrit' in roles %}
+      gerrit:
+        verified: 0
 {% endif %}
     success:
 {% for github_connection in zuul3_github_connections %}
