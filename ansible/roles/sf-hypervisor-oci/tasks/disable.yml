@@ -7,6 +7,10 @@
   command: "runc delete --force {{ item }}"
   with_items: "{{ oci_containers.stdout_lines }}"
 
+- name: Unmount rootfs bind mount
+  command: umount /var/lib/nodepool/oci/host-rootfs
+  ignore_errors: "yes"
+
 - block:
     - name: Remove files
       file:
