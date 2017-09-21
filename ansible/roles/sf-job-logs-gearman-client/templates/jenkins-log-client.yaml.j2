@@ -1,4 +1,8 @@
+{% if 'jenkins' in roles %}
+source-url: https://{{ fqdn }}/jenkins
+{% else %}
 source-url: https://{{ fqdn }}
+{% endif %}
 
 # List of zmq event inputs.
 zmq-publishers:
@@ -9,6 +13,12 @@ zmq-publishers:
 subunit-files: []
 # List of files to source logs from.
 source-files:
+{% if 'jenkins' in roles %}
+  - name: consoleText
+    tags:
+      - console
+{% else %}
   - name: console.html
     tags:
       - console
+{% endif %}
