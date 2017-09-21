@@ -52,6 +52,24 @@
       "revId": "40ea5321a2e6b5f533be1484baa799d5523f7ab1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_e043536b",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-21T14:44:37Z",
+      "side": 1,
+      "message": "That\u0027s correct, we won\u0027t expose the scheduler anymore, all trafic is sent to zuul3_web_url.",
+      "parentUuid": "9abe1de1_204a6b84",
+      "revId": "40ea5321a2e6b5f533be1484baa799d5523f7ab1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
