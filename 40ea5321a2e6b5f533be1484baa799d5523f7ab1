@@ -34,6 +34,24 @@
       "revId": "40ea5321a2e6b5f533be1484baa799d5523f7ab1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_204a6b84",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-21T14:37:06Z",
+      "side": 1,
+      "message": "Ok great. I\u0027ll test the new version then. btw the rule I proposed won\u0027t I guess in allinone arch because the zuul3 scheduler is listening to 127.0.0.1. Not the case for other services 0.0.0.0.\ntcp        0      0 127.0.0.1:8004          0.0.0.0:*               LISTEN      29846/python3",
+      "parentUuid": "9abe1de1_6081838f",
+      "revId": "40ea5321a2e6b5f533be1484baa799d5523f7ab1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
