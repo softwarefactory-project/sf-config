@@ -78,6 +78,7 @@ server=gerrit.{{ fqdn }}
 baseurl={{ gerrit_pub_url }}
 user=jenkins
 sshkey=/var/lib/zuul/.ssh/id_rsa
+strip_branch_ref=1
 
 {% for conn in zuul_extra_gerrits|default([]) %}
 [connection {{ conn['name'] }}]
@@ -87,6 +88,7 @@ port={{ conn['port']|default(29418) }}
 baseurl={{ conn['puburl'] }}
 user={{ conn['username'] }}
 sshkey=/var/lib/zuul/.ssh/id_rsa
+strip_branch_ref=1
 
 {% endfor %}
 
