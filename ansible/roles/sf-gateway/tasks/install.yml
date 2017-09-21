@@ -5,3 +5,19 @@
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: "Install zuul webui"
+  yum:
+    name: "zuul-webui"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  when: "'zuul' in roles"
+
+- name: "Install zuul3 webui"
+  yum:
+    name: "rh-python35-zuul-webui"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  when: "'zuul3' in roles"
