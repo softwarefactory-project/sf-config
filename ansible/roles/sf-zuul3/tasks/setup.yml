@@ -101,6 +101,20 @@
       with_items: "{{ _zuul3_known_hosts_results.results }}"
       when: item.stdout == ""
 
+    # When zuulv2 in arch, home dir for zuulv3 will remain /var/lib/zuul
+    # And when into the SF CI zuul-cloner is installed the user zuul is created
+    # with its home /var/lib/zuul ... so we copy the known_hosts there.
+    - name: Check if /var/lib/zuul/.ssh exists
+      stat:
+        path: /var/lib/zuul/.ssh
+      register: zuul_v2_ssh_dir
+    
+    - name: Copy known_hosts in zuul2 home if exists
+      copy:
+        src: "{{ zuul3_lib_dir }}/.ssh/known_hosts"
+        dest: /var/lib/zuul/.ssh/known_hosts
+      when: zuul_v2_ssh_dir.stat.isdir
+
     - name: Check zuul user can connect to gerrit connections
       become_user: zuul
       command: >
