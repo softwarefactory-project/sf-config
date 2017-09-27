@@ -33,10 +33,6 @@ SCRIPT
 
 case $1 in
     validate)
-        [ -z "$ZUUL_URL" -o -z "$ZUUL_REF" ] && {
-            echo "ZUUL_URL and ZUUL_REF need to set. Exit."
-            exit 1
-        }
         # Check tips of the HEAD is change on resources/
         HEAD_SHA=$(git --no-pager log --no-merges --format='%H' -n 1 HEAD)
         HEAD_RESOURCES_SHA=$(git --no-pager log --no-merges --format='%H' -n 1 HEAD -- resources)
@@ -45,10 +41,32 @@ case $1 in
             echo "Nothing to validate on the resources."
             exit 0
         fi
-        http_code=$(curl -s -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
-         -H "Content-Type: application/json" \
-         -d '{"zuul_url": "'$ZUUL_URL'/config", "zuul_ref": "'$ZUUL_REF'"}' \
-         -X POST $ENDPOINT -o $VALIDATED_OUTPUT)
+	# Here we expect to get ZUUL_URL and ZUUL_REF set by Zuul
+	# Managesf will by itself fetch the data in the git repo using both.
+	# This way will become legacy will ZuulV3 where the no merger exists
+	# anymore.
+        if [ -n "$ZUUL_URL" -a -n "$ZUUL_REF" ]; then
+            http_code=$(curl -s -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
+             -H "Content-Type: application/json" \
+             -d '{"zuul_url": "'$ZUUL_URL'/config", "zuul_ref": "'$ZUUL_REF'"}' \
+             -X POST $ENDPOINT -o $VALIDATED_OUTPUT)
+	# New workflow is to read resources/*.yaml and build a dict with the raw
+	# content and send it via a JSON POST to managesf.
+        else
+            python <<SCRIPT
+import os
+import yaml
+import json
+
+data = dict([(os.path.join('resources', f), file(os.path.join('resources', f)).read())
+	     for f in os.listdir('resources') if f.endswith('.yaml') or f.endswith('.yml')])
+json.dump({'data': data}, file('data.json', 'w'))
+SCRIPT
+            http_code=$(curl -s -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
+             -H "Content-Type: application/json" \
+             -d @data.json -X POST $ENDPOINT -o $VALIDATED_OUTPUT)
+            rm -f data.json
+        fi
         cat $VALIDATED_OUTPUT | python -m json.tool
         [ "$http_code" != "200" ] && {
             echo "Resource modifications validation failed (API return code: $http_code)."
