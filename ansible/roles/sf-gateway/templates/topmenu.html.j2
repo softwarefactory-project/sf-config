@@ -22,7 +22,9 @@
             {% if 'gerrit' in roles %}
                 <li><a href="/r/" target="_top">Gerrit</a></li>
             {% endif %}
+            {% if 'zuul' in roles %}
                 <li><a href="/jobs/" target="_top">Jobs</a></li>
+            {% endif %}
             {% if 'jenkins' in roles %}
                 <li><a href="/jenkins/" target="_top">Jenkins</a></li>
             {% endif %}
