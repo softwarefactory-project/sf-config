@@ -7,6 +7,17 @@
     dest: /usr/bin/nodepool3
     mode: 0755
 
+- name: Ensure working directories exist
+  file:
+    path: "{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: nodepool
+    group: nodepool
+    state: directory
+  with_items:
+    - {name: /var/lib/nodepool, mode: "0750"}
+    - {name: /var/lib/nodepool/.ssh, mode: "0700"}
+
 - name: Install jenkins/zuul public ssh key
   copy:
     content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
