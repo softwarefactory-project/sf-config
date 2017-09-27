@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_d940460a",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-09-27T13:31:39Z",
+      "side": 1,
+      "message": "Here we could try to exit(Popen([\"sudo\"] + sys.argv).wait())  instead ;)",
+      "revId": "bcc069a9486e60ec52ea32aabee99b6e39cb919c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
