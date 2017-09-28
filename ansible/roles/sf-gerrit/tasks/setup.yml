@@ -23,7 +23,7 @@
     - {name: change-merged,
        path: /var/lib/gerrit/hooks,
        mode: '0740'}
-    - {name: gerrit.config,
+    - {name: gerrit.config,shell-default-shell
        path: /etc/gerrit,
        mode: '0644'}
     - {name: secure.config,
