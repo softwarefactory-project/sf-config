@@ -23,8 +23,11 @@
 
     - name: Checking syntax errors in repoxplorer definition files
       command: repoxplorer-config-validate --config ../build/repoxplorer/config.py
+      args:
+        chdir: "{{ zuul.project.src_dir }}
       when: '"repoxplorer" in arch.roles'
 
-#    TODO: fix "ERROR: ZUUL_URL and ZUUL_REF need to set"
-#    - name: Checking resources changes
-#      command: /usr/local/bin/resources.sh validate
+    - name: Checking resources changes
+      command: /usr/local/bin/resources.sh validate
+      args:
+        chdir: "{{ zuul.project.src_dir }}
