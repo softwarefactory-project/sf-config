@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_f498b16c",
+        "filename": "ansible/roles/sf-repos/files/zuul-jobs/playbooks/config/check.yaml",
+        "patchSetId": 12
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-29T12:51:09Z",
+      "side": 1,
+      "message": "Nodepool and zuul conf check are missing compare to the legacy check job.",
+      "revId": "0ede6c7553fa39a91352059a3e86e6a9f6d701eb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_d49dad5a",
+        "filename": "ansible/roles/sf-repos/files/zuul-jobs/playbooks/config/update.yaml",
+        "patchSetId": 12
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-29T12:51:09Z",
+      "side": 1,
+      "message": "why not \"installserver\" ? \"fileserver\" is misleading IMO.",
+      "range": {
+        "startLine": 5,
+        "startChar": 6,
+        "endLine": 5,
+        "endChar": 16
+      },
+      "revId": "0ede6c7553fa39a91352059a3e86e6a9f6d701eb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
