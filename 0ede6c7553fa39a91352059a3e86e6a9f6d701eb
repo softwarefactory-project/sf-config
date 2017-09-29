@@ -39,6 +39,23 @@
       "revId": "0ede6c7553fa39a91352059a3e86e6a9f6d701eb",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_34dd0915",
+        "filename": "ansible/roles/sf-repos/templates/zuul-jobs/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 12
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-09-29T14:13:59Z",
+      "side": 1,
+      "message": "Ok that\u0027s the reason. Within this patch we still have zuulv2 in the arch. I\u0027ll try the other way with the condition in sf-repos/files/config/zuul/_layout.yaml and removing that condition here in that file.",
+      "revId": "0ede6c7553fa39a91352059a3e86e6a9f6d701eb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
