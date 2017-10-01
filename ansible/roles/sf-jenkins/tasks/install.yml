@@ -21,6 +21,12 @@
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
 
+# 2.7: we need to remove pbr<2 cap because rdo-pike pulls pbr-3
+- name: Remove incorrect pbr cap requirement
+  file:
+    path: /usr/lib/python2.7/site-packages/python_jenkins-0.4.8-py2.7.egg-info/requires.txt
+    state: absent
+
 - name: Cleanup unused files/directories
   file:
     path: "{{ item }}"

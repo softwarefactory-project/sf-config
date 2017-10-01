@@ -5,6 +5,13 @@
     state: present
   when: sf_version != "master"
 
+# 2.7: We need to remove python2-alabaster now because it is replaced by
+#      python2-sphinx-theme-alabaster in rdo-pike
+- name: Remove python-alabaster
+  yum:
+    name: python2-alabaster
+    state: absent
+
 - name: "Update packages"
   yum:
     name: "*"
