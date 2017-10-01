@@ -1,0 +1,7 @@
+---
+- block:
+    - name: Remove python-alabaster
+      yum:
+        name: python2-alabaster
+        state: absent
+  when: sf_previous_version < 2.7

@@ -4,6 +4,7 @@ role_actions:
   - setup
   - get_logs
   - disable
+  - upgrade
 
 hash_code: |
     import crypt, random, string, sys
