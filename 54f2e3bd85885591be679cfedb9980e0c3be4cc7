@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_2f2b74ed",
+        "filename": "ansible/roles/sf-repos/files/zuul-jobs/playbooks/config/check.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-10-02T10:17:10Z",
+      "side": 1,
+      "message": "We should still handle the validation of nodepoolv2 and zuulv2 configurations because during the migration zuulV2 and nodepoolv2 confs are going to be modified step by step to V3 so better to keep a validator IMO.",
+      "revId": "54f2e3bd85885591be679cfedb9980e0c3be4cc7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
