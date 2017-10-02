@@ -16,6 +16,24 @@
       "revId": "54f2e3bd85885591be679cfedb9980e0c3be4cc7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_0a52de13",
+        "filename": "ansible/roles/sf-repos/files/zuul-jobs/playbooks/config/check.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-10-02T19:15:38Z",
+      "side": 1,
+      "message": "I added the validator for {zuul/nodepool}V2",
+      "parentUuid": "9abe1de1_2f2b74ed",
+      "revId": "54f2e3bd85885591be679cfedb9980e0c3be4cc7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
