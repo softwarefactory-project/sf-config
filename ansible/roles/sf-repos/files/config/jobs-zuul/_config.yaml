@@ -49,6 +49,9 @@
           fi
 
           echo "[+] Checking resources changes"
+          # Managesf validate can now use directly the local clone
+          unset ZUUL_REF
+          unset ZUUL_URL
           /usr/local/bin/resources.sh validate
     publishers:
       - console-log
