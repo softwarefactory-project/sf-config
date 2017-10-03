@@ -12,3 +12,10 @@
     src: "{{ zuul3_conf_dir }}"
     dest: "{{ log_dest }}/etc"
   ignore_errors: true
+
+- name: "Fetch zuul known_hosts"
+  synchronize:
+    mode: pull
+    src: "{{ zuul3_lib_dir }}/.ssh/known_hosts"
+    dest: "{{ log_dest }}/known_hosts"
+  ignore_errors: true
