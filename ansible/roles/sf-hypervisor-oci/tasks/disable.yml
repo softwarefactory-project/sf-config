@@ -4,24 +4,24 @@
     path: /usr/bin/runc
   register: _runc_binary
 
-- block:
-    - name: List running containers
-      command: runc list -q
-      register: oci_containers
-      ignore_errors: "yes"
-
-    - name: Delete runC containers
-      command: "runc delete --force {{ item }}"
-      with_items: "{{ oci_containers.stdout_lines }}"
-      ignore_errors: "yes"
-  when: _runc_binary.stat.exists
-
 - name: Unmount rootfs bind mount
   command: umount /var/lib/nodepool/oci/host-rootfs
   register: _umount_oci
   failed_when: _umount_oci.rc not in [0, 32]
 
 - block:
+    - name: List running containers
+      command: runc list -q
+      register: oci_containers
+      ignore_errors: "yes"
+      when: _runc_binary.stat.exists
+
+    - name: Delete runC containers
+      command: "runc delete --force {{ item }}"
+      with_items: "{{ oci_containers.stdout_lines }}"
+      ignore_errors: "yes"
+      when: _runc_binary.stat.exists
+
     - name: Remove files
       file:
         path: "{{ item }}"
