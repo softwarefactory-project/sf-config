@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_4590c9ec",
+        "filename": "ansible/roles/sf-base/files/prompt.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-10-04T21:36:15Z",
+      "side": 1,
+      "message": "if \u0027\\h\u0027 is equivalent to $(hostname -f) in that case better to have \u0027\\h\u0027. Is it the fqdn ?",
+      "revId": "9b6056fa0182cf4d055efe75171981d3b868c720",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
