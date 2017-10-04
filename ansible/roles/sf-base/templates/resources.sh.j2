@@ -72,33 +72,28 @@ SCRIPT
             echo "Resource modifications validation failed (API return code: $http_code)."
             exit 1
         }
-        [ -d "$WORKSPACE/config/.git" ] && {
-            cd $WORKSPACE/config
-            git log -1 --no-merges
-            if git log -1 --no-merges | grep "sf-resources: allow-delete" > /dev/null; then
-                delete_authorized="true"
-            else
-                delete_authorized="false"
-            fi
-            if cat $VALIDATED_OUTPUT | grep "is going to be deleted" > /dev/null; then
-                if [ "$delete_authorized" == "false" ]; then
-                    echo
-                    echo "Resources deletion(s) have been detected."
-                    echo "The commit msg tag: 'sf-resources: allow-delete' has not been detected."
-                    echo "The change won't be validated until you include the tag 'sf-resources: allow-delete'"
-                    echo "in the commit message."
-                    exit 1
-                fi
-            fi
-            if git log -1 --no-merges | grep "sf-resources: skip-apply" > /dev/null; then
+        git log -1 --no-merges
+        if git log -1 --no-merges | grep "sf-resources: allow-delete" > /dev/null; then
+            delete_authorized="true"
+        else
+            delete_authorized="false"
+        fi
+        if cat $VALIDATED_OUTPUT | grep "is going to be deleted" > /dev/null; then
+            if [ "$delete_authorized" == "false" ]; then
                 echo
-                echo "The commit msg tag: 'sf-resources: skip-apply' has been detected."
-                echo "The approval of this patch won't trigger the creation of the resources above."
-                echo "The purpose of this commit is usually to re-sync config/resources with the reality."
+                echo "Resources deletion(s) have been detected."
+                echo "The commit msg tag: 'sf-resources: allow-delete' has not been detected."
+                echo "The change won't be validated until you include the tag 'sf-resources: allow-delete'"
+                echo "in the commit message."
+                exit 1
             fi
-        } || {
-            echo "Script ran outside of a job workspace."
-        }
+        fi
+        if git log -1 --no-merges | grep "sf-resources: skip-apply" > /dev/null; then
+            echo
+            echo "The commit msg tag: 'sf-resources: skip-apply' has been detected."
+            echo "The approval of this patch won't trigger the creation of the resources above."
+            echo "The purpose of this commit is usually to re-sync config/resources with the reality."
+        fi
         exit 0
         ;;
     apply)
