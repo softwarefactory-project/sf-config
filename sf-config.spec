@@ -33,7 +33,6 @@ export PBR_VERSION=%{version}
 export PBR_VERSION=%{version}
 %{__python2} setup.py install --skip-build --root %{buildroot}
 # /etc/software-factory
-install -p -D -m 0644 defaults/arch.yaml %{buildroot}%{_sysconfdir}/software-factory/arch.yaml
 install -p -D -m 0644 defaults/sfconfig.yaml %{buildroot}%{_sysconfdir}/software-factory/sfconfig.yaml
 install -p -D -m 0644 defaults/logo-favicon.ico %{buildroot}%{_sysconfdir}/software-factory/logo-favicon.ico
 install -p -D -m 0644 defaults/logo-splash.png %{buildroot}%{_sysconfdir}/software-factory/logo-splash.png
@@ -53,11 +52,11 @@ install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
-%post
-# Freeze the arch so that it doesn't get auto-updated on upgrade
-echo >> %{_sysconfdir}/software-factory/arch.yaml
-
 %changelog
+* Thu Oct 05 2017 Fabien Boucher <tdecacqu@redhat.com> - 2.7.0-2
+- No longer provide arch.yaml in /etc/software-factory
+- No longer define arch.yaml as a config file
+
 * Tue Jul 18 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.7.0-1
 - Refactor sfconfig into a python module
 

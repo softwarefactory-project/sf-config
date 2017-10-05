@@ -17,6 +17,7 @@ import argparse
 import os
 import sys
 import time
+import shutil
 
 import sfconfig.arch
 import sfconfig.groupvars
@@ -147,6 +148,23 @@ def main():
             sys.exit(1)
 
         bootstrap_backup()
+
+    # Install the default arch.yaml file if not exist
+    if not os.path.isfile('/etc/software-factory/arch.yaml'):
+        # arch.yaml is no longer provided in /etc/software-factory
+        # a pkg upgrade will simply move the file to arch.yaml.rpmsave
+        # so here if we find a .rpmsave we use it to restore arch.yaml
+        if os.path.isfile('/etc/software-factory/arch.yaml.rpmsave'):
+            shutil.copyfile(
+                '/etc/software-factory/arch.yaml.rpmsave',
+                '/etc/software-factory/arch.yaml')
+            print('Found /etc/software-factory/arch.yaml.rpmsave')
+        # Here we use the default arch.yaml
+        else:
+            shutil.copyfile(
+                '%s/defaults/arch.yaml' % args.share,
+                '/etc/software-factory/arch.yaml')
+        print('Set the default arch in /etc/software-factory/arch.yaml')
 
     args.sfconfig = yaml_load(args.config)
     args.sfarch = yaml_load(args.arch)
