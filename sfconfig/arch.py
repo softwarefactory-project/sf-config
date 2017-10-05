@@ -10,8 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from sfconfig.utils import pread
 from sfconfig.utils import fail
+from sfconfig.utils import pread
+from sfconfig.utils import yaml_dump
+from sfconfig.utils import yaml_load
 
 required_roles = (
     "install-server",
@@ -29,6 +31,15 @@ def process(args):
         "zuul3", "zuul3-merger", "zuul3-executor",
     ]
 
+    # update ip address of the install-server in /etc/software-factory/arch.yaml
+    filename = '/etc/software-factory/arch.yaml'
+    content = yaml_load(filename)
+
+    ip_addr = pread(["ip", "route", "get", "8.8.8.8"]).split()[6]
+    content['inventory'][0]['ip'] = ip_addr
+
+    yaml_dump(content, open(filename, "w"))
+
     # roles is a dictwith roles name as key and host list as value
     args.glue["roles"] = {}
 
@@ -37,7 +48,7 @@ def process(args):
 
     for host in args.sfarch["inventory"]:
         if "install-server" in host["roles"]:
-            host["ip"] = pread(["ip", "route", "get", "8.8.8.8"]).split()[6]
+            host["ip"] = ip_addr
         elif "ip" not in host:
             fail("%s: host '%s' needs an ip" % (args.arch, host["name"]))
 
