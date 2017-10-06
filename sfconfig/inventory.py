@@ -360,16 +360,6 @@ def backup(args, pb):
                                                  '/backup/%s' % role})
         pb.append(play)
 
-    # Generate backup file
-    pb.append(host_play('install-server', tasks=[
-        {'name': "Generate backup file",
-         'command': "chdir=/var/lib/software-factory/backup/ "
-                    "tar czpf /var/lib/software-factory/backup.tar.gz ."},
-        {'name': "Copy backup to managesf",
-         'command': 'scp /var/lib/software-factory/backup.tar.gz '
-                    '{{ managesf_host }}:/var/lib/managesf/sf_backup.tar.gz'}
-    ]))
-
 
 def render_template(dest, template, data):
     if os.path.exists(dest):
