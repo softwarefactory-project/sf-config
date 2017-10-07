@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        2.7.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -53,11 +53,26 @@ install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
+%pre
+# Upgrade context
+if [ $1 -gt 1 ]; then
+  # Save the arch file in the rpm-state directory
+  mkdir -p %{_localstatedir}/lib/rpm-state/%{name}/
+  cp /etc/software-factory/arch.yaml %{_localstatedir}/lib/rpm-state/%{name}/arch.yaml
+fi
+
 %post
-# Freeze the arch so that it doesn't get auto-updated on upgrade
-echo >> %{_sysconfdir}/software-factory/arch.yaml
+# Upgrade context
+if [ $1 -gt 1 ]; then
+  # Restore the arch file from the rpm-state directory
+  cp %{_localstatedir}/lib/rpm-state/%{name}/arch.yaml /etc/software-factory/arch.yaml
+fi
 
 %changelog
+* Thu Oct 05 2017 Fabien Boucher <tdecacqu@redhat.com> - 2.7.0-2
+- Make sure previous version of the arch.yaml is kept bypassing the
+  rpm config style behavior.
+
 * Tue Jul 18 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.7.0-1
 - Refactor sfconfig into a python module
 
