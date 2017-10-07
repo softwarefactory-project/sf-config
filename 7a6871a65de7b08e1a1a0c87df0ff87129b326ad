@@ -1,0 +1,9 @@
+Code-Review+2: Matthieu Huin <mhuin@redhat.com>
+Code-Review+2: Nicolas HICHER <nhicher@redhat.com>
+Workflow+1: Nicolas HICHER <nhicher@redhat.com>
+Verified+2: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-by: Jenkins CI <jenkins@softwarefactory-project.io>
+Submitted-at: Sat, 07 Oct 2017 14:32:41 +0000
+Reviewed-on: https://softwarefactory-project.io/r/9766
+Project: software-factory/sf-config
+Branch: refs/heads/master
