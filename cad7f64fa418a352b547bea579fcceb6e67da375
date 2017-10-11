@@ -22,6 +22,30 @@
       "revId": "cad7f64fa418a352b547bea579fcceb6e67da375",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_f2455c17",
+        "filename": "scripts/build-image.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-10-11T21:52:08Z",
+      "side": 1,
+      "message": "copy/paste error \u003d), thanks for the review",
+      "parentUuid": "9abe1de1_72e4ac3a",
+      "range": {
+        "startLine": 3,
+        "startChar": 20,
+        "endLine": 3,
+        "endChar": 23
+      },
+      "revId": "cad7f64fa418a352b547bea579fcceb6e67da375",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
