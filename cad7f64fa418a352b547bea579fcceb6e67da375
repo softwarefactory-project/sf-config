@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_72e4ac3a",
+        "filename": "scripts/build-image.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2017-10-11T20:26:31Z",
+      "side": 1,
+      "message": "yum install yum ? :)",
+      "range": {
+        "startLine": 3,
+        "startChar": 20,
+        "endLine": 3,
+        "endChar": 23
+      },
+      "revId": "cad7f64fa418a352b547bea579fcceb6e67da375",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
