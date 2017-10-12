@@ -261,11 +261,10 @@ def enable_action(args):
         recover(args, pb)
     if not args.skip_setup:
         setup(args, pb)
+        config_update(args, pb)
+        postconf(args, pb)
     else:
         playbook_name += "_nosetup"
-
-    config_update(args, pb)
-    postconf(args, pb)
 
     # Store deployed version to be used by upgrade playbook
     pb.append(host_play('install-server', tasks={
