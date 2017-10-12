@@ -247,7 +247,9 @@ def postconf(args, pb):
 
 def enable_action(args):
     pb = []
-    pb.append(host_play('install-server', 'ssh', {'action': 'populate_hosts'}))
+    if not args.skip_populate_hosts:
+        pb.append(host_play('install-server', 'ssh',
+                            {'action': 'populate_hosts'}))
     playbook_name = "sfconfig"
     if args.upgrade:
         playbook_name += "_upgrade"
@@ -261,11 +263,10 @@ def enable_action(args):
         recover(args, pb)
     if not args.skip_setup:
         setup(args, pb)
+        config_update(args, pb)
+        postconf(args, pb)
     else:
         playbook_name += "_nosetup"
-
-    config_update(args, pb)
-    postconf(args, pb)
 
     # Store deployed version to be used by upgrade playbook
     pb.append(host_play('install-server', tasks={

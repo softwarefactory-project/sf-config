@@ -87,6 +87,8 @@ def usage(components):
                    help="Do not execute Ansible playbook")
     p.add_argument("--skip-test", default=False, action='store_true',
                    help="Do not execute testinfra")
+    p.add_argument("--skip-populate-hosts", default=False, action='store_true',
+                   help="Do not execute ssh populate hosts")
     p.add_argument("--disable-external-resources", default=False,
                    action='store_true',
                    help="Disable gerrit replication and nodepool providers")
