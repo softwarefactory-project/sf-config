@@ -113,7 +113,7 @@
       copy:
         src: "{{ zuul3_lib_dir }}/.ssh/known_hosts"
         dest: /var/lib/zuul/.ssh/known_hosts
-      when: zuul_v2_ssh_dir.stat.isdir
+      when: zuul_v2_ssh_dir.stat.isdir is defined and zuul_v2_ssh_dir.stat.isdir
 
     - name: Check zuul user can connect to gerrit connections
       become_user: zuul
