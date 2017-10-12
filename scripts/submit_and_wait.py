@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Licensed under the Apache License, Version 2.0
 #
-# Submit change and wait for Jenkins CI vote
+# Submit change and wait for CI vote
 # --approve also vote +2 and wait for change to be merged
 # --failure make the script succeed when CI vote -1
 
@@ -43,7 +43,7 @@ def wait_for_merge(query, retry):
             return
         retry -= 1
         time.sleep(1)
-    fail("Change dind't merged: %s" % execute(query))
+    fail("Change wasn't merged: %s" % execute(query))
 
 
 def main():
@@ -94,7 +94,7 @@ def main():
             current_ref = current_ref[:-1]
         sha = open(".git/%s" % current_ref).read()
 
-    # Give Jenkins some time to start test
+    # Give CI agent some time to start test
     time.sleep(2)
 
     cmd = "ssh -p 29418 %s gerrit" % ghost
@@ -114,28 +114,28 @@ def main():
     retry = args.delay
     while retry > 0:
         q = execute("%s %s" % (cmd, query))
-        # Get Jenkins CI Verify vote
+        # Get CI agent's Verify vote
         ci_note = get_ci_verify_vote(json.loads(q.split('\n')[0]))
         if ci_note > 0:
             if args.failure:
-                fail("Jenkins CI voted %d in --failure mode")
+                fail("CI agent voted %d in --failure mode")
             if (args.approve and ci_note == 2) or not args.approve:
                 if args.approve:
                     # Wait until status:MERGED when approved
                     wait_for_merge("%s %s" % (cmd, query), retry)
-                # Jenkins CI voted +1/+2
+                # CI agent voted +1/+2
                 exit(0)
         elif ci_note is not None and ci_note < 0:
             if args.failure:
                 # Ignore CI failure
                 exit(0)
-            fail("Jenkins CI voted %d" % ci_note)
+            fail("CI agent voted %d" % ci_note)
         retry -= 1
         time.sleep(1)
     if args.approve and ci_note == 1:
-        fail("Jenkins CI didn't +2 approved change")
+        fail("CI agent didn't +2 approved change")
     if ci_note is None:
-        fail("Jenkins CI didn't vote")
-    fail("Jenkins CI vote 0")
+        fail("CI agent didn't vote")
+    fail("CI agent voted 0")
 
 main()
