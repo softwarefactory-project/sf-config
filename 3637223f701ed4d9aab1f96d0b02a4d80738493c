@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9abe1de1_fdf2cd05",
+        "filename": "scripts/build-image.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-10-12T15:41:19Z",
+      "side": 1,
+      "message": "Just to be sure to have the same version of sfconfig at the beginning and at the end of the script if a new version of sf-config is merged during the build",
+      "parentUuid": "9abe1de1_b2092434",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 63
+      },
+      "revId": "3637223f701ed4d9aab1f96d0b02a4d80738493c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_7d347ddd",
         "filename": "scripts/build-image.sh",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "9abe1de1_ddf709f4",
+        "filename": "scripts/build-image.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-10-12T15:41:19Z",
+      "side": 1,
+      "message": "Yes, I will work on your review",
+      "parentUuid": "9abe1de1_7d347ddd",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 122
+      },
+      "revId": "3637223f701ed4d9aab1f96d0b02a4d80738493c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_1d522114",
         "filename": "scripts/build-image.sh",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2017-10-12T14:59:15Z",
       "side": 1,
       "message": "I don\u0027t think the arch defined by --arch will be copied in /etc/software-factory/ so when someone will use the image and performing only a sfconfig then the default minimal arch will be used. Is it what we want ? or should we instead cp /usr/share/sf-config/refarch/allinone.yaml in /etc/software-factory/arch.yaml and just run sfconfig --skip-setup --skip-test ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 29,
+        "endLine": 13,
+        "endChar": 114
+      },
+      "revId": "3637223f701ed4d9aab1f96d0b02a4d80738493c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_bddd7572",
+        "filename": "scripts/build-image.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-10-12T15:41:19Z",
+      "side": 1,
+      "message": "the goal is to have all the packages, not to force a allinone installation, that what I using this arch and leave the minimal arch in /etc/software-factory",
+      "parentUuid": "9abe1de1_1d522114",
       "range": {
         "startLine": 13,
         "startChar": 29,
