@@ -27,8 +27,8 @@
           cp zuul/*.py ../build/zuul/ || true
           zuul-server -c ../build/zuul/zuul.conf -l ../build/zuul/layout.yaml -t
 
-          echo "[+] Checking nodepool"
-          /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepool.yaml ../build/nodepool/nodepool.yaml
+          echo "[+] Checking nodepool [v2]"
+          /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepool.yaml ../build/nodepool/nodepool.yaml v2
           nodepool -c ../build/nodepool/nodepool.yaml config-validate
 
           echo "[+] Checking gerrit replication"
