@@ -48,25 +48,25 @@
 
     - name: Validate nodepoolV2 configuration
       block:
-        - name: Create build/nodepool directory
+        - name: Create build/nodepool directory [v2]
           file:
             path: "{{ zuul.project.src_dir }}/build/nodepool"
             state: directory
 
-        - name: Install nodepool.yaml
+        - name: Install nodepool.yaml [v2]
           copy:
             remote_src: true
             src: /var/lib/zuul/defconf-nodepool.yaml
             dest: "{{ zuul.project.src_dir }}/build/nodepool.yaml"
 
-        - name: Merge nodepool config repo files
+        - name: Merge nodepool config repo files [v2]
           command: >
             /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepool.yaml
-                ../build/nodepool/nodepool.yaml
+                ../build/nodepool/nodepool.yaml v2
           args:
             chdir: "{{ zuul.project.src_dir }}"
 
-        - name: Run nodepool config-validate
+        - name: Run nodepool config-validate [v2]
           command: >
             nodepool -c ../build/nodepool/nodepool.yaml config-validate
           args:
@@ -75,20 +75,20 @@
 
     - name: Validate nodepoolV3 configuration
       block:
-        - name: Install fake _nodepool.yaml
+        - name: Install fake _nodepool.yaml [v3]
           copy:
             remote_src: true
             src: /opt/sf/defconf-nodepool.yaml
             dest: "{{ zuul.project.src_dir }}/build/_nodepool.yaml"
 
-        - name: Merge nodepool config repo files
+        - name: Merge nodepool config repo files [v3]
           command: >
             /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py
-                nodepoolV3/ build/nodepool.yaml
+                nodepoolV3/ build/nodepool.yaml v3
           args:
             chdir: "{{ zuul.project.src_dir }}"
 
-        - name: Run nodepool config-validate
+        - name: Run nodepool config-validate [v3]
           command: >
             /opt/rh/rh-python35/root/bin/nodepool -c build/nodepool.yaml
                 config-validate
