@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_f8a41b09",
+        "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-10-15T20:09:25Z",
+      "side": 1,
+      "message": "I suggest we removed the when condition.",
+      "revId": "1bb10b75167bb556e58562748cbb1c09999b7544",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_18a0eff3",
+        "filename": "ansible/roles/sf-nodepool3/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-10-15T20:09:25Z",
+      "side": 1,
+      "message": "This block may be prematured, it could be added later when zuulV2 is fully removed. It seems like more confusing than anything.",
+      "revId": "1bb10b75167bb556e58562748cbb1c09999b7544",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_d8a957e1",
+        "filename": "ansible/roles/sf-zuul3/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-10-15T20:09:25Z",
+      "side": 1,
+      "message": "Ditto",
+      "revId": "1bb10b75167bb556e58562748cbb1c09999b7544",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
