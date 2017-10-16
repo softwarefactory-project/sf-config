@@ -17,6 +17,15 @@
     - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
     - {src: /etc/opt/rh/rh-python35, dest: /etc}
 
+- name: add nodepool3 to sudoers
+  copy:
+    src: /etc/opt/rh/rh-python35/sudoers.d/nodepool
+    dest: /etc/sudoers.d/nodepool3
+    owner: root
+    group: root
+    mode: 0640
+    remote_src: yes
+
 - name: Install jenkins/zuul public ssh key
   copy:
     content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
