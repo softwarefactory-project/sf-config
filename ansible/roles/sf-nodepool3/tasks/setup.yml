@@ -16,6 +16,7 @@
     - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
     - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
     - {src: /etc/opt/rh/rh-python35, dest: /etc}
+    - {src: /etc/opt/rh/rh-python35/sudoers.d, dest: /etc/sudoers.d}
 
 - name: Install jenkins/zuul public ssh key
   copy:
