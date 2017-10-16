@@ -128,6 +128,9 @@ nodepool:
       password: secret
       region_name: regionOne
       regions: []
+      # These must be set when using a keystone v3 auth endpoint
+      # user_domain_name: Default
+      # project_domain_name: Default
 
 nodepool3:
   providers:
@@ -138,6 +141,9 @@ nodepool3:
       password: secret
       region_name: regionOne
       regions: []
+      # These must be set when using a keystone v3 auth endpoint
+      # user_domain_name: Default
+      # project_domain_name: Default
 
 elasticsearch:
   heap_size: 512m

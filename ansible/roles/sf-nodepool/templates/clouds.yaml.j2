@@ -10,6 +10,12 @@ clouds:
       auth_url: {{ provider['auth_url'] }}
 {% endif %}
       project_name: {{ provider['project_name'] }}
+{% if provider.get("user_domain_name") %}
+      user_domain_name: {{ provider['user_domain_name'] }}
+{% endif %}
+{% if provider.get("project_domain_name") %}
+      project_domain_name: {{ provider['project_domain_name'] }}
+{% endif %}
 {% if provider.get("region_name") %}
     region_name: {{ provider["region_name"] }}
 {% endif %}
