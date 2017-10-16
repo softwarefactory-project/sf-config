@@ -137,6 +137,8 @@ nodepool3:
       username: username
       password: secret
       region_name: regionOne
+      user_domain_name: Default
+      project_domain_name: Default
       regions: []
 
 elasticsearch:

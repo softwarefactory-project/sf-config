@@ -34,6 +34,18 @@
     file: /var/lib/software-factory/state/nodepoolV3.yaml
     name: nodepool3_config
 
+- name: Update clouds.yaml
+  template:
+    src: clouds.yaml.j2
+    dest: "{{ item }}"
+    owner: nodepool
+    group: nodepool
+    mode: 0400
+  with_items:
+    - "{{ nodepool3_lib_dir }}/.config/openstack/clouds.yaml"
+    - /root/.config/openstack/clouds.yaml
+  notify: restart nodepool3
+
 - name: Update logging.conf
   template:
     src: "{{ item }}.j2"
