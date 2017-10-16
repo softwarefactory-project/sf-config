@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9abe1de1_e32470b0",
+        "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-10-16T21:45:45Z",
+      "side": 1,
+      "message": "So nodepool is looking for its .config/....yaml in its home dir. It will be a big issue when both nodepool2 and nodepool3 will be activated as they share the same user name so the same home dir. Do you know if shade/cloud-config is looking for *.yaml files or just cloud.yaml.",
+      "range": {
+        "startLine": 45,
+        "startChar": 6,
+        "endLine": 45,
+        "endChar": 61
+      },
+      "revId": "262a0222da826ff65167d8f683301ee9d21b732c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_0320849a",
+        "filename": "ansible/roles/sf-nodepool3/tasks/update.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-10-16T21:45:45Z",
+      "side": 1,
+      "message": "It will collapse with nodepool2 setup task (that also add this facility) when both are enabled. So better to remove that line.",
+      "range": {
+        "startLine": 46,
+        "startChar": 6,
+        "endLine": 46,
+        "endChar": 41
+      },
+      "revId": "262a0222da826ff65167d8f683301ee9d21b732c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_c33a8ccd",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-10-16T21:45:45Z",
+      "side": 1,
+      "message": "Could it be let empty ? or lowercase only ?",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 34
+      },
+      "revId": "262a0222da826ff65167d8f683301ee9d21b732c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
