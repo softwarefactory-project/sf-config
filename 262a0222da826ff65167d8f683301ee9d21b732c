@@ -68,6 +68,30 @@
       "revId": "262a0222da826ff65167d8f683301ee9d21b732c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9abe1de1_439b1cca",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-10-17T08:51:47Z",
+      "side": 1,
+      "message": "I based the value on the one in RDOcloud, which I assume is the default one.",
+      "parentUuid": "9abe1de1_c33a8ccd",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 34
+      },
+      "revId": "262a0222da826ff65167d8f683301ee9d21b732c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
