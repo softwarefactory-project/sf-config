@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    sfconfig's nodepool/nodepool3 sections get new OpenStack domain-related options,
+    these are necessary when using version 3 and above of keystone's authentication
+    API.
