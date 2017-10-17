@@ -39,7 +39,7 @@
 - name: Install os-client-config for root user
   template:
     src: clouds.yaml.j2
-    dest: /root/.config/openstack/clouds.yaml
+    dest: /root/.config/openstack/nodepool2-clouds.yaml
     mode: 0400
 
 - name: Create image build log directory

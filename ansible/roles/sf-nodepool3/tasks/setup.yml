@@ -56,7 +56,7 @@
     mode: 0400
   with_items:
     - "{{ nodepool3_lib_dir }}/.config/openstack/clouds.yaml"
-    - /root/.config/openstack/clouds.yaml
+    - /root/.config/openstack/nodepool3-clouds.yaml
 
 - name: Create nodepool image build log directory
   file:
