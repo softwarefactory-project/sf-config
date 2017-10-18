@@ -46,33 +46,6 @@
             chdir: "{{ zuul.project.src_dir }}"
       when: '"repoxplorer" in arch.roles'
 
-    - name: Validate nodepoolV2 configuration
-      block:
-        - name: Create build/nodepool directory [v2]
-          file:
-            path: "{{ zuul.project.src_dir }}/build/nodepool"
-            state: directory
-
-        - name: Install nodepool.yaml [v2]
-          copy:
-            remote_src: true
-            src: /var/lib/zuul/defconf-nodepool.yaml
-            dest: "{{ zuul.project.src_dir }}/build/nodepool.yaml"
-
-        - name: Merge nodepool config repo files [v2]
-          command: >
-            /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepool.yaml
-                ../build/nodepool/nodepool.yaml v2
-          args:
-            chdir: "{{ zuul.project.src_dir }}"
-
-        - name: Run nodepool config-validate [v2]
-          command: >
-            nodepool -c ../build/nodepool/nodepool.yaml config-validate
-          args:
-            chdir: "{{ zuul.project.src_dir }}"
-      when: '"nodepool-launcher" in arch.roles'
-
     - name: Validate nodepoolV3 configuration
       block:
         - name: Install fake _nodepool.yaml [v3]
@@ -95,38 +68,6 @@
           args:
             chdir: "{{ zuul.project.src_dir }}"
       when: '"nodepool3-launcher" in arch.roles'
-
-    - name: Validate zuulV2 configuration
-      block:
-        - name: Create build/zuul directory
-          file:
-            path: "{{ zuul.project.src_dir }}/build/zuul"
-            state: directory
-
-        - name: Install zuul.conf
-          copy:
-            remote_src: true
-            src: /var/lib/zuul/defconf/defconf-zuul.conf
-            dest: "{{ zuul.project.src_dir }}/build/zuul/zuul.conf"
-
-        - name: Prepare zuul config repo files
-          shell: /usr/share/sf-config/scripts/yaml-merger.py zuul | tee build/zuul/layout.yaml
-          args:
-            chdir: "{{ zuul.project.src_dir }}"
-
-        - name: Copy *.py files to build/zuul directory
-          synchronize:
-            src: zuul/
-            dest: build/zuul/
-          args:
-            chdir: "{{ zuul.project.src_dir }}"
-
-        - name: Validate zuul config syntax
-          command: >
-            zuul-server -c build/zuul/zuul.conf -l build/zuul/layout.yaml -t
-          args:
-            chdir: "{{ zuul.project.src_dir }}"
-      when: '"zuul-server" in arch.roles'
 
     - name: Validate zuulV3 configuration
       block:
