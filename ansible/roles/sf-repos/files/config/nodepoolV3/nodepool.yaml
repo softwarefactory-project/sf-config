@@ -17,7 +17,6 @@ providers: []
 #    cloud: default
 #    clean-floating-ips: true
 #    image-name-format: '{image_name}-{timestamp}'
-#    image-type: raw
 #    boot-timeout: 120
 #    rate: 10.0
 #    diskimages:
