@@ -1,3 +1,4 @@
+HOME=/var/opt/rh/rh-python35/lib/zuul/
 GEARMAN_PORT={{ zuul3_gearman_port }}
 {% if 'statsd' in roles %}
 STATSD_HOST=statsd.{{ fqdn }}
