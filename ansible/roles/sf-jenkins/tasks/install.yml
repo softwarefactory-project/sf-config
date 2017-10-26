@@ -48,10 +48,15 @@
   with_items: "{{ jenkins_plugins }}"
   when: jenkins_cache_url != ""
 
+# TODO: "validate_certs: no" was added to fix an issue with ansible 2.4.0
+# the validation fails if urllib3-pike is present on the deployment
+# should be removed when ansible 2.4.2 will be available on centos 7
+# issue: https://github.com/ansible/ansible/pull/32053
 - name: "Download plugin"
   get_url:
     url: "{{ jenkins_plugins_url }}/{{ item.name }}/{{ item.version }}/{{ item.name }}.hpi"
     dest: "/var/lib/jenkins/plugins/{{ item.name }}.hpi"
     checksum: "{{ item.checksum }}"
+    validate_certs: no
   with_items: "{{ jenkins_plugins }}"
   when: jenkins_cache_url == ""
