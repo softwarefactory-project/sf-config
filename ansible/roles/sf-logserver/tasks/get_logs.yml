@@ -1,0 +1,9 @@
+- name: "Fetch logserver content"
+  synchronize:
+    mode: pull
+    src: /var/www/logs
+    dest: "{{ log_dest }}/log"
+    rsync_opts:
+      - "--exclude=ara-report"
+      - "--exclude=ara"
+  ignore_errors: true
