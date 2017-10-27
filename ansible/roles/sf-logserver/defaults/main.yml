@@ -5,6 +5,7 @@ role_actions:
   - backup
   - restore
   - disable
+  - get_logs
 
 loguser_authorized_keys: []
 

@@ -1,0 +1,6 @@
+- name: "Fetch logserver content"
+  synchronize:
+    mode: pull
+    src: /var/www/logs
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
