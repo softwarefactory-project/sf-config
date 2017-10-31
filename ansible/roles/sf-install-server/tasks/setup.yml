@@ -5,6 +5,14 @@
     dest: /root/.ansible.cfg
     remote_src: true
 
+- name: Create /var/log/software-factory directory
+  file:
+    path: /var/log/software-factory
+    owner: root
+    group: root
+    mode: 0700
+    state: directory
+
 - name: Initalize version control for yaml files
   shell: git init .; git add *; git commit -m 'init'
   args:
