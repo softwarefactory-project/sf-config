@@ -147,3 +147,21 @@
         to: {{ network.admin_mail_forward }}
         subject: 'Release of {change.project} failed'
       sqlreporter:
+
+- pipeline:
+    name: periodic
+    post-review: true
+    description: Jobs in this queue are triggered daily.
+    manager: independent
+    precedence: low
+    trigger:
+      timer:
+        - time: '0 0 * * *'
+    success:
+      sqlreporter:
+    failure:
+      smtp:
+        from: zuul@{{ fqdn }}
+        to: {{ network.admin_mail_forward }}
+        subject: 'Periodic job failed'
+      sqlreporter:

@@ -8,6 +8,11 @@
   set_fact:
     log_path: "{{ zuul.newrev[-2:] }}/{{ zuul.newrev }}/{{ zuul.pipeline }}/{{ zuul.job }}/{{ zuul.build[:7] }}"
 
+- name: Set log path for a periodic job
+  when: zuul.change is not defined and zuul.newrev is not defined
+  set_fact:
+    log_path: "{{ zuul.pipeline }}/{{ zuul.job }}/{{ zuul.build[:7] }}"
+
 - name: Create log directories
   file:
     path: "{{zuul_logserver_root}}/{{ log_path }}"
