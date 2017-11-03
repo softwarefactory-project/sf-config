@@ -42,7 +42,7 @@
     regexp: '^SELINUX='
     line: 'SELINUX=permissive'
 
-- name: Enable selinux autorelabel
+- name: Remove selinux autorelabel
   file:
     path: /.autorelabel
-    state: touch
+    state: absent
