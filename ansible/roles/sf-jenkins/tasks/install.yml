@@ -6,6 +6,7 @@
     baseurl: "{{ jenkins_repo_url }}"
     gpgkey: "{{ jenkins_repo_gpgkey }}"
     gpgcheck: "{{ jenkins_repo_gpgcheck }}"
+    exclude: "jenkins-2*"
 
 - name: "Install package"
   yum:
