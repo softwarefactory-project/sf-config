@@ -1,0 +1,7 @@
+---
+tox_environment: {}
+tox_envlist: venv
+tox_executable: tox
+tox_extra_args: -vv
+
+zuul_work_dir: "{{ zuul.project.src_dir }}"

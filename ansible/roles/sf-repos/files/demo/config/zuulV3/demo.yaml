@@ -1,0 +1,9 @@
+---
+- tenant:
+    name: 'local'
+    source:
+      gerrit:
+        untrusted-projects:
+          - demo-project
+          - demo-project-distgit
+
