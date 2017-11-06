@@ -1,3 +1,2 @@
 - hosts: all
-  roles:
-    - fetch-testr-output
+  roles: []

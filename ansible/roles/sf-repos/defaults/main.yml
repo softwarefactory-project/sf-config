@@ -12,8 +12,10 @@ repos_upstream_paths:
   - roles/add-fileserver
   - roles/bindep
   - roles/emit-ara-html
+  - roles/ensure-tox
   - roles/prepare-workspace
   - roles/revoke-sudo
   - roles/test-setup
+  - roles/tox
   - roles/upload-logs
   - roles/validate-host
