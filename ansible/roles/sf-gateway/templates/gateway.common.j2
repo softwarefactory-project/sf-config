@@ -163,9 +163,7 @@
             Allow from all
         </Directory>
 
-        # TODO: fix the top-menu link go to the local status page.
-        # Redirect to local tenant status by default
-        # RewriteRule ^/zuul3$ /zuul3/local/status.html [R]
+        RewriteRule ^/zuul3/$ /zuul3/tenants.html [R]
 
         # Console-stream needs a special proxy-pass for websocket
         ProxyPassMatch /zuul3/(.*)/console-stream ws://{{ zuul3_web_url }}/$1/console-stream nocanon retry=0
