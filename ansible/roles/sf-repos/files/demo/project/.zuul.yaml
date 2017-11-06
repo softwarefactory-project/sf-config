@@ -1,0 +1,10 @@
+---
+- project:
+    name: demo-project
+    check:
+      jobs:
+        - tox-py27
+        - demo-rpmbuild
+    gate:
+      jobs:
+        - tox-py27
