@@ -155,6 +155,7 @@
 {% if 'zuul3-web' in roles %}
         # Redirect all the static file to /zuul3-static/
         Alias "/zuul3/static" "/opt/rh/rh-python35/root/usr/share/zuul"
+        AliasMatch "^/zuul3/.*/images/(.*).png" "/opt/rh/rh-python35/root/usr/share/zuul/images/$1.png"
         AliasMatch "^/zuul3/.*/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
         AliasMatch "^/zuul3/.*.html" "/opt/rh/rh-python35/root/usr/share/zuul/index.html"
         <Directory /opt/rh/rh-python35/root/usr/share/zuul>
@@ -163,9 +164,7 @@
             Allow from all
         </Directory>
 
-        # TODO: fix the top-menu link go to the local status page.
-        # Redirect to local tenant status by default
-        # RewriteRule ^/zuul3$ /zuul3/local/status.html [R]
+        RewriteRule ^/zuul3/$ /zuul3/tenants.html [R]
 
         # Console-stream needs a special proxy-pass for websocket
         ProxyPassMatch /zuul3/(.*)/console-stream ws://{{ zuul3_web_url }}/$1/console-stream nocanon retry=0
