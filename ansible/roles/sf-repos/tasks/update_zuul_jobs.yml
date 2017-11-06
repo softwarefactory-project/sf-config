@@ -27,7 +27,7 @@
     - "reset --hard origin/master --"
     - "clean -f -x -d"
 
-- include: sync_zuul_jobs_content.yml
+- include_tasks: sync_zuul_jobs_content.yml
 
 - name: Push zuul-jobs change
   command: "git {{ item }}"

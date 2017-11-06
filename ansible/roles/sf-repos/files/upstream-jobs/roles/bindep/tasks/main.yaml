@@ -18,15 +18,15 @@
     bindep_command: "{{ bindep_command_type.stdout }}"
   when: bindep_command_type|succeeded and not bindep_command_type|skipped
 
-- include: install.yaml
+- include_tasks: install.yaml
   when: bindep_command is not defined
 
-- include: find.yaml
+- include_tasks: find.yaml
   when: bindep_file is not defined
 
 - name: Define bindep_command fact
   set_fact:
     bindep_run: "{{ bindep_command }} -b -f {{ bindep_file }} {{ bindep_profile }}"
 
-- include: packages.yaml
+- include_tasks: packages.yaml
   when: bindep_file is defined

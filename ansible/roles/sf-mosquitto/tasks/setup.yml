@@ -1,5 +1,5 @@
 ---
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=mosquitto"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=mosquitto"
 
 - name: init ACL file
   template:

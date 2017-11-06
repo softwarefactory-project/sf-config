@@ -1,6 +1,6 @@
 ---
 - name: Create user
-  include: "{{ sf_tasks_dir }}/create_user.yml user_name=umurmurd"
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=umurmurd"
 
 - name: Install config file
   template:

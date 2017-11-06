@@ -13,6 +13,6 @@
       {{ openstack_connection_name }}:
         untrusted-projects:
           - openstack-infra/zuul-jobs:
-              include: job
+              include_tasks: job
               shadow: zuul-jobs
 {% endif %}

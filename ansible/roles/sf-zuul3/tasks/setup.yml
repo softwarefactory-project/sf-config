@@ -1,6 +1,6 @@
 ---
 # Use 0751 to let apache access {{ zuul3_lib_dir }}/git
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul3_lib_dir }} home_dir_mode=0751 update_user=no"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul3_lib_dir }} home_dir_mode=0751 update_user=no"
 
 - name: Install zuul3 shortcut
   copy:
@@ -135,20 +135,20 @@
       failed_when: _zuul3_connection_test.stderr.find("Welcome to Gerrit Code Review") == -1
       with_items: "{{ zuul3_gerrit_connections }}"
 
-    - include: create_logging.yml _logfile="scheduler"
-    - include: create_logging.yml _logfile="gearman-server"
+    - include_tasks: create_logging.yml _logfile="scheduler"
+    - include_tasks: create_logging.yml _logfile="gearman-server"
   when: "'zuul-scheduler' in zuul3_services or 'zuul-merger' in zuul3_services or 'zuul-executor' in zuul3_services"
 
 - block:
-    - include: create_logging.yml _logfile="executor"
+    - include_tasks: create_logging.yml _logfile="executor"
   when: "'zuul-executor' in zuul3_services"
 
 - block:
-    - include: create_logging.yml _logfile="merger"
+    - include_tasks: create_logging.yml _logfile="merger"
   when: "'zuul-merger' in zuul3_services"
 
 - block:
-    - include: create_logging.yml _logfile="web"
+    - include_tasks: create_logging.yml _logfile="web"
   when: "'zuul-web' in zuul3_services"
 
 - name: "Setup sysconfig"

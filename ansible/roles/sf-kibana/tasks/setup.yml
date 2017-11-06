@@ -1,5 +1,5 @@
 ---
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=kibana"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=kibana"
 
 - name: Ensure Kibana access to ElasticSearch
   lineinfile:

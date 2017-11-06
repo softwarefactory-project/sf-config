@@ -1,5 +1,5 @@
 ---
-- include: "{{ sf_tasks_dir }}/update_configrepo.yaml"
+- include_tasks: "{{ sf_tasks_dir }}/update_configrepo.yaml"
   when: mirrors.periodic_update
 
 - name: "Check for current periodic pipeline"

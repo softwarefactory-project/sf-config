@@ -1,5 +1,5 @@
 ---
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=managesf ssh_key=service_rsa"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=managesf ssh_key=service_rsa"
 
 - name: "Create config directory"
   file:
