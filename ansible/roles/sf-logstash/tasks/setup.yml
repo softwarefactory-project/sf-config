@@ -1,5 +1,5 @@
 ---
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=logstash"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=logstash"
 
 - name: "Install logstash configuration"
   template:

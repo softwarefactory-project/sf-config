@@ -1,5 +1,5 @@
 ---
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=joblogsworker"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=joblogsworker"
 
 - name: "Install log gearman worker configuration"
   template:

@@ -1,7 +1,7 @@
 ---
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=jenkins ssh_key=jenkins_rsa"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=jenkins ssh_key=jenkins_rsa"
 
-- include: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
+- include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
 
 - name: Create /etc/jenkins_jobs
   file:

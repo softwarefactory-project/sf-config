@@ -94,7 +94,7 @@
         repo: git+ssh://gerrit/zuul-jobs
         dest: "{{ zuul_jobs_clone_dir }}"
 
-    - include: sync_zuul_jobs_content.yml
+    - include_tasks: sync_zuul_jobs_content.yml
 
     - name: Push zuul jobs repo
       command: "git {{ item }}"

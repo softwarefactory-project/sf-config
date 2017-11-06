@@ -1,5 +1,5 @@
 ---
-- include: "{{ sf_tasks_dir }}/create_user.yml user_name=etherpad"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=etherpad"
 
 - name: Apply selinux port labelling
   seport:

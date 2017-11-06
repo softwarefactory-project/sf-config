@@ -1,6 +1,6 @@
 ---
 - name: Create user
-  include: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul-worker home_dir=/home/zuul-worker shell=/bin/bash"
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul-worker home_dir=/home/zuul-worker shell=/bin/bash"
 
 - name: Enable root ssh access to nodepool
   authorized_key:

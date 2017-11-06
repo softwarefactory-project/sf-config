@@ -60,7 +60,7 @@ def host_play(host, roles=[], params={}, tasks=[]):
 
 
 def disable(args, pb):
-    action = {'action': 'disable', 'erase': False}
+    action = {'role_action': 'disable', 'erase': False}
 
     # Disable all but mysql and install-server
     for host in args.inventory:
@@ -77,7 +77,7 @@ def disable(args, pb):
 
 
 def erase(args, pb):
-    action = {'action': 'disable', 'erase': True}
+    action = {'role_action': 'disable', 'erase': True}
 
     # First get confirmation
     prompt = "WARNING: this playbook will *DESTROY* software factory " \
@@ -114,27 +114,27 @@ def disable_action(args):
 
 def upgrade(args, pb):
     # Call pre upgrade task
-    pb.append(host_play('all', 'upgrade', {'action': 'pre'}))
+    pb.append(host_play('all', 'upgrade', {'role_action': 'pre'}))
 
     # First turn off all component except gerrit
     for host in args.inventory:
         roles = [role for role in host["roles"] if
                  role not in ("mysql", "gerrit")]
-        pb.append(host_play(host, roles, {'action': 'disable',
+        pb.append(host_play(host, roles, {'role_action': 'disable',
                                           'erase': False}))
 
     # Upgrade repositories
-    pb.append(host_play('install-server', 'repos', {'action': 'upgrade'}))
+    pb.append(host_play('install-server', 'repos', {'role_action': 'upgrade'}))
 
     # Turn off gerrit
     pb.append(host_play('gerrit', tasks={'service': {'name': 'gerrit',
                                                      'state': 'stopped'}}))
 
     # Install new release and update packages
-    pb.append(host_play('all', 'upgrade', {'action': 'packages'}))
+    pb.append(host_play('all', 'upgrade', {'role_action': 'packages'}))
 
     # Start role upgrade
-    action = {'action': 'upgrade'}
+    action = {'role_action': 'upgrade'}
     pb.append(host_play('install-server', 'install-server', action))
     pb.append(host_play('all', 'base', action))
     for host in args.inventory:
@@ -142,7 +142,7 @@ def upgrade(args, pb):
 
 
 def install(args, pb):
-    action = {'action': 'install'}
+    action = {'role_action': 'install'}
     pb.append(host_play('all', 'base', action))
     for host in args.inventory:
         pb.append(host_play(host, host['roles'], action))
@@ -172,7 +172,7 @@ def recover(args, pb):
 
     # Call restore task
     for host in args.inventory:
-        play = host_play(host, params={'action': 'restore'})
+        play = host_play(host, params={'role_action': 'restore'})
         play['roles'] = []
         for role in host["roles"]:
             play['roles'].append({'role': "sf-%s" % role,
@@ -185,7 +185,7 @@ def recover(args, pb):
 
 
 def setup(args, pb):
-    action = {'action': 'setup'}
+    action = {'role_action': 'setup'}
     # Setup install-server ssh keys
     pb.append(host_play('install-server', 'ssh', action))
 
@@ -212,7 +212,7 @@ def config_update(args, pb):
         'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
         'register': 'configsha'
     }))
-    pb.append(host_play('all', 'repos', {'action': 'fetch_config_repo'}))
+    pb.append(host_play('all', 'repos', {'role_action': 'fetch_config_repo'}))
 
     role_order = ["gerrit", "jenkins", "pages", "gerritbot",
                   "zuul", "nodepool", "zuul3", "nodepool3"]
@@ -226,7 +226,7 @@ def config_update(args, pb):
         for role in role_order:
             if role in host["roles"]:
                 host_roles.append(role)
-        pb.append(host_play(host, host_roles, {'action': 'update'}))
+        pb.append(host_play(host, host_roles, {'role_action': 'update'}))
 
     # Call resources apply
     pb.append(host_play('managesf', tasks=[
@@ -242,14 +242,14 @@ def config_update(args, pb):
 
 def postconf(args, pb):
     for host in args.inventory:
-        pb.append(host_play(host, host["roles"], {'action': 'postconf'}))
+        pb.append(host_play(host, host["roles"], {'role_action': 'postconf'}))
 
 
 def enable_action(args):
     pb = []
     if not args.skip_populate_hosts:
         pb.append(host_play('install-server', 'ssh',
-                            {'action': 'populate_hosts'}))
+                            {'role_action': 'populate_hosts'}))
     playbook_name = "sfconfig"
     if args.upgrade:
         playbook_name += "_upgrade"
@@ -332,7 +332,7 @@ def get_logs(args, pb):
     pb.append(host_play('install-server', tasks=tasks))
 
     for host in args.inventory:
-        play = host_play(host, params={'action': 'get_logs'})
+        play = host_play(host, params={'role_action': 'get_logs'})
         play['roles'] = []
         for role in ["base"] + host["roles"]:
             play['roles'].append({'role': "sf-%s" % role,
@@ -353,7 +353,7 @@ def backup(args, pb):
 
     # Call backup task
     for host in args.inventory:
-        play = host_play(host, params={'action': 'backup'})
+        play = host_play(host, params={'role_action': 'backup'})
         play['roles'] = []
         for role in host["roles"]:
             play['roles'].append({'role': "sf-%s" % role,
