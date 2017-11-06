@@ -1,0 +1,40 @@
+---
+- hosts: main
+  tasks:
+    - name: "Get version"
+      shell: git describe --tags 2> /dev/null || git log -n 1 --oneline | awk '{ print $1 }'
+      args:
+        chdir: "src/{{ zuul.project.canonical_hostname }}/demo-project"
+      register: demo_project_version
+
+    - name: "Generate HEAD.tgz"
+      shell: >
+        ln -s demo-project demo-project-{{ demo_project_version.stdout }} && \
+        tar czhf demo-project-distgit/HEAD.tgz demo-project-{{ demo_project_version.stdout }}
+      args:
+        chdir: "src/{{ zuul.project.canonical_hostname }}/"
+
+    - name: "Update spec file"
+      command: >
+        sed -i src/{{ zuul.project.canonical_hostname }}/demo-project-distgit/demo-project.spec \
+                -e 's/^Version:.*/Version: {{ demo_project_version.stdout }}/'
+                -e 's/^Source0:.*/Source0: HEAD.tgz/'
+
+    - name: "Get absolute distgit path"
+      command: pwd
+      register: pwd_command
+      args:
+        chdir: "src/{{ zuul.project.canonical_hostname }}/demo-project-distgit"
+
+    - name: "Set pwd"
+      set_fact:
+        pwd: "{{ pwd_command.stdout }}"
+
+    - name: "Run rpmbuild"
+      command: >
+        rpmbuild --define "_sourcedir {{pwd}}" --define "_specdir {{pwd}}" \
+                --define "_builddir {{pwd}}" --define "_srcrpmdir {{pwd}}" \
+                --define "_rpmdir {{pwd}}" --define "_buildrootdir {{pwd}}/.build" \
+                --define "_tmppath {{pwd}}" -ba demo-project.spec
+      args:
+        chdir: "src/{{ zuul.project.canonical_hostname }}/demo-project-distgit"

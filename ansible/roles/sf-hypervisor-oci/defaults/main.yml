@@ -10,4 +10,6 @@ hypervisor_oci_packages:
   - yamllint
   - bashate
   - python-flake8
+  - python-tox
   - traceroute
+  - rpm-build

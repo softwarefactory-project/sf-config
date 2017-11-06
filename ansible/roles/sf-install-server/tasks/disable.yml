@@ -23,6 +23,8 @@
         - /etc/auto_backup.conf
         - /root/config
         - /root/zuul-jobs
+        - /root/demo-project
+        - /root/demo-project-distgit
         - /root/.ssh/known_hosts
 
     - name: Remove packages

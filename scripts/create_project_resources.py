@@ -26,7 +26,7 @@ DEFAULT_ACL = """
 
 def usage():
     p = argparse.ArgumentParser()
-    p.add_argument("--repo")
+    p.add_argument("--repo", action='append')
     p.add_argument("--core")
     p.add_argument("output")
     return p.parse_args()
@@ -34,27 +34,34 @@ def usage():
 
 def main():
     args = usage()
+    name = args.repo[0]
 
     resources = {
         'repos': {
-            args.repo: {
-                'description': 'The %s repository' % args.repo,
-                'acl': '%s-acl' % args.repo
+            name: {
+                'description': 'The %s repository' % name,
+                'acl': '%s-acl' % name
             }
         },
         'acls': {
-            '%s-acl' % args.repo: {
-                'file': DEFAULT_ACL.format(repo=args.repo),
-                'groups': ['%s-core' % args.repo]
+            '%s-acl' % name: {
+                'file': DEFAULT_ACL.format(repo=name),
+                'groups': ['%s-core' % name]
             }
         },
         'groups': {
-            '%s-core' % args.repo: {
-                'description': 'The %s core group' % args.repo,
+            '%s-core' % name: {
+                'description': 'The %s core group' % name,
                 'members': [args.core]
             }
         }
     }
+    if len(args.repo) > 1:
+        for repo in args.repo[1:]:
+            resources['repos'][repo] = {
+                'description': 'The %s repository' % repo,
+                'acl': '%s-acl' % name
+            }
     with open(args.output, "w") as of:
         yaml.safe_dump({'resources': resources}, of, default_flow_style=False)
 
