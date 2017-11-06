@@ -163,17 +163,14 @@
             Allow from all
         </Directory>
 
-        # TODO: fix the top-menu link go to the local status page.
-        # Redirect to local tenant status by default
-        # RewriteRule ^/zuul3$ /zuul3/local/status.html [R]
+        RewriteRule ^/zuul3/$ /zuul3/tenants.html [R]
 
         # Console-stream needs a special proxy-pass for websocket
-        ProxyPassMatch /zuul3/(.*)/console-stream ws://{{ zuul3_web_url }}/$1/console-stream nocanon retry=0
+        ProxyPassMatch /zuul3/(.*)/console-stream ws://{{ zuul3_web_url }}/$1/console-stream nocanon retry=0 disablereuse=on
 
         # Then only the json calls are sent to the zuul-web endpoints
-        ProxyPassMatch ^/zuul3/(.*.json)$ http://{{ zuul3_web_url }}/$1 nocanon retry=0
-        ProxyPassMatch ^/zuul3/keys/(.*.pub)$ http://{{ zuul3_web_url }}/$1 nocanon retry=0
-        ProxyPassReverse /zuul3/ http://{{ zuul3_web_url }}/
+        ProxyPassMatch ^/zuul3/(.*.json)$ http://{{ zuul3_web_url }}/$1 nocanon  retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul3/keys/(.*.pub)$ http://{{ zuul3_web_url }}/$1 nocanon  retry=0 disablereuse=on
 
 {% endif %}
 {% if 'storyboard' in roles %}
