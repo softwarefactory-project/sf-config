@@ -1,0 +1,18 @@
+---
+- job:
+    name: demo-rpmbuild
+    parent: base
+    description: Build the demo-project rpm
+    run: build-rpm.yaml
+    required-projects:
+      - demo-project
+      - demo-project-distgit
+
+- project:
+    name: demo-project-distgit
+    check:
+      jobs:
+        - demo-rpmbuild
+    gate:
+      jobs:
+        - demo-rpmbuild

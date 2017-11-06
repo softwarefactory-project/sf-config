@@ -1,0 +1,108 @@
+---
+- name: Create demo user
+  command: >
+    sfmanager user create --username demo --password demo
+        --email demo@{{ fqdn }} --fullname "Demo User"
+  # TODO: fix sfmanager to not fail when user already exists
+  ignore_errors: yes
+
+- name: Logging to create user
+  command: sfmanager --auth demo:demo sf_user list
+
+- name: Check if repository exists
+  command: python -c "import requests; print('demo-project' in requests.get('{{ managesf_internal_url }}/resources').json().get('resources', {}).get('repos', {}))"
+  register: demo_resource
+
+- block:
+    - name: Copy demo resources file
+      copy:
+        src: "demo/config/{{ item }}"
+        dest: "/root/config/{{ item }}"
+      with_items:
+        - zuulV3/demo.yaml
+
+    - name: Provision demo resources in config repo
+      command: "{{ item }}"
+      args:
+        chdir: "/root/config"
+      with_items:
+        - /usr/share/sf-config/scripts/create_project_resources.py --repo demo-project --repo demo-project-distgit --core demo@{{ fqdn }} resources/demo.yaml
+        - /usr/local/bin/resources.sh direct_apply /root/empty_resources.yaml resources/demo.yaml
+        - git add resources/demo.yaml zuulV3/demo.yaml
+        - git commit -m 'Provision demo resources'
+        - git push git+ssh://gerrit/config master
+  when: demo_resource.stdout == 'False'
+
+- stat:
+    path: /root/demo-project
+  register: demo_project_done
+
+- block:
+    - name: Create a temporary clone directory
+      command: mktemp -d
+      register: demo_tmp
+
+    - name: Clone the demo-project repository
+      git:
+        repo: git+ssh://gerrit/demo-project
+        dest: "{{ demo_tmp.stdout }}"
+
+    - name: Copy demo project files
+      copy:
+        src: "demo/project/{{ item }}"
+        dest: "{{ demo_tmp.stdout }}/{{ item }}"
+      with_items:
+        - .zuul.yaml
+        - setup.py
+        - setup.cfg
+        - tox.ini
+        - demo.py
+
+    - name: Push demo project repo
+      command: "git {{ item }}"
+      args:
+        chdir: "{{ demo_tmp.stdout }}"
+      with_items:
+        - "add -A"
+        - "commit -m 'Initialize demo-project repository'"
+        - "push git+ssh://gerrit/demo-project master"
+
+    - name: Save zuul jobs repo
+      command: "mv {{ demo_tmp.stdout }} /root/demo-project"
+  when: demo_project_done.stat.exists != True
+
+- stat:
+    path: /root/demo-project-distgit
+  register: demo_project_distgit_done
+
+- block:
+    - name: Create a temporary clone directory
+      command: mktemp -d
+      register: demo_distgit_tmp
+
+    - name: Clone the demo-project-distgit repository
+      git:
+        repo: git+ssh://gerrit/demo-project-distgit
+        dest: "{{ demo_distgit_tmp.stdout }}"
+
+    - name: Copy demo project files
+      copy:
+        src: "demo/project-distgit/{{ item }}"
+        dest: "{{ demo_distgit_tmp.stdout }}/{{ item }}"
+      with_items:
+        - .zuul.yaml
+        - demo-project.spec
+        - build-rpm.yaml
+
+    - name: Push demo project distgit repo
+      command: "git {{ item }}"
+      args:
+        chdir: "{{ demo_distgit_tmp.stdout }}"
+      with_items:
+        - "add -A"
+        - "commit -m 'Initialize demo-project-distgit repository'"
+        - "push git+ssh://gerrit/demo-project-distgit master"
+
+    - name: Save zuul jobs repo
+      command: "mv {{ demo_distgit_tmp.stdout }} /root/demo-project-distgit"
+  when: demo_project_distgit_done.stat.exists != True
