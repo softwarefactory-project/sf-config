@@ -2,16 +2,16 @@
 {% if 'hypervisor-oci' in roles %}
 
 labels:
-  - name: local-centos-oci
+  - name: centos-oci
 
 providers:
-  - name: internal-oci-provider
+  - name: oci-provider
     driver: oci
     hypervisor: {{ hypervisor_oci_host }}
     pools:
       - name: main
         max-servers: 10
         labels:
-          - name: local-centos-oci
+          - name: centos-oci
             username: zuul-worker
 {% endif %}

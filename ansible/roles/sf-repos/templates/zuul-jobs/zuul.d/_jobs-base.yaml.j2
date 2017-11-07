@@ -26,7 +26,7 @@
     nodeset:
       nodes:
         - name: main
-          label: local-centos-oci
+          label: centos-oci
 
 - project:
     name: zuul-jobs
@@ -48,9 +48,7 @@
     description: Validate the config repo.
     run: playbooks/config/check
     nodeset:
-      nodes:
-        - name: slave
-          label: local-centos-oci
+      nodes: []
 
 - job:
     name: config-update
@@ -61,9 +59,7 @@
       - site_install_server
     semaphore: semaphore-config-update
     nodeset:
-      nodes:
-        - name: slave
-          label: local-centos-oci
+      nodes: []
 
 - project:
     name: config

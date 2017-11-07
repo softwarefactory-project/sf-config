@@ -1,49 +1,48 @@
 ---
-- hosts: slave
+- hosts: localhost
   tasks:
     - name: include arch.yaml
       include_vars:
         file: /opt/sf/arch.yaml
         name: arch
 
-    - name: Create build directory
+    - name: Set speculative config path
+      set_fact:
+        config_root: "{{ zuul.executor.src_root }}/{{ zuul.project.canonical_name }}"
+
+    - name: Create build directory to merge configuration
       file:
-        path: "{{ zuul.project.src_dir }}/build"
+        path: "{{ config_root }}/build"
         state: directory
 
     - name: Check gerrit replication
       command: git config -f gerrit/replication.config -l
       args:
-        chdir: "{{ zuul.project.src_dir }}"
+        chdir: "{{ config_root }}"
 
+    # Use "env -" to remove zuul-executor environment that modifies python runtime (e.g. defines a 'zuul' python module)
     - name: Check gerrit commentlinks
-      command: python -c "import yaml; 'commentlinks' in yaml.safe_load(open('gerrit/commentlinks.yaml'))"
+      command: env - python -c "import yaml; 'commentlinks' in yaml.safe_load(open('gerrit/commentlinks.yaml'))"
       args:
-        chdir: "{{ zuul.project.src_dir }}"
+        chdir: "{{ config_root }}"
 
     - name: Check dashboards
-      command: /usr/local/bin/sf-update-dashboard --check --input dashboards/
+      command: env - python2 /usr/local/bin/sf-update-dashboard --check --input dashboards/
       args:
-        chdir: "{{ zuul.project.src_dir }}"
+        chdir: "{{ config_root }}"
 
     - name: Check policy file
-      command: python -c "import yaml; yaml.safe_load(open('policies/policy.yaml'))"
+      command: env - python -c "import yaml; yaml.safe_load(open('policies/policy.yaml'))"
       args:
-        chdir: "{{ zuul.project.src_dir }}"
+        chdir: "{{ config_root }}"
 
     - name: Validate repoxplorer configuration
       block:
-        - name: Install fake repoxplorer config.py
-          copy:
-            remote_src: true
-            src: /opt/sf/defconf-repoxplorer.py
-            dest: "{{ zuul.project.src_dir }}/build/repoxplorer.py"
-
         - name: Check syntax errors in repoxplorer definition files
           command: >
-            repoxplorer-config-validate --config build/repoxplorer/config.py
+            env - repoxplorer-config-validate --config /opt/sf/defconf-repoxplorer.py
           args:
-            chdir: "{{ zuul.project.src_dir }}"
+            chdir: "{{ config_root }}"
       when: '"repoxplorer" in arch.roles'
 
     - name: Validate nodepoolV3 configuration
@@ -52,21 +51,21 @@
           copy:
             remote_src: true
             src: /opt/sf/defconf-nodepool.yaml
-            dest: "{{ zuul.project.src_dir }}/build/_nodepool.yaml"
+            dest: "{{ config_root }}/build/_nodepool.yaml"
 
         - name: Merge nodepool config repo files [v3]
           command: >
-            /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py
+            env - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py
                 nodepoolV3/ build/nodepool.yaml v3
           args:
-            chdir: "{{ zuul.project.src_dir }}"
+            chdir: "{{ config_root }}"
 
         - name: Run nodepool config-validate [v3]
           command: >
-            /opt/rh/rh-python35/root/bin/nodepool -c build/nodepool.yaml
+            env - /opt/rh/rh-python35/root/bin/nodepool -c build/nodepool.yaml
                 config-validate
           args:
-            chdir: "{{ zuul.project.src_dir }}"
+            chdir: "{{ config_root }}"
       when: '"nodepool3-launcher" in arch.roles'
 
     - name: Validate zuulV3 configuration
@@ -75,23 +74,23 @@
           copy:
             remote_src: true
             src: /opt/sf/defconf-zuul.conf
-            dest: "{{ zuul.project.src_dir }}/build/zuul.conf"
+            dest: "{{ config_root }}/build/zuul.conf"
 
         - name: Merge zuul config repo files
           command: >
-            /usr/share/sf-config/scripts/zuul3-conf-merger.py
+            env - /usr/share/sf-config/scripts/zuul3-conf-merger.py
                 zuulV3/ build/zuul.yaml
           args:
-            chdir: "{{ zuul.project.src_dir }}"
+            chdir: "{{ config_root }}"
 
         - name: Validate zuul config syntax
           command: >
-            /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
+            env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
           args:
-            chdir: "{{ zuul.project.src_dir }}"
+            chdir: "{{ config_root }}"
       when: '"zuul3-scheduler" in arch.roles'
 
     - name: Check resources changes
-      command: /usr/local/bin/resources.sh validate
+      command: env - /usr/local/bin/resources.sh validate
       args:
-        chdir: "{{ zuul.project.src_dir }}"
+        chdir: "{{ config_root }}"
