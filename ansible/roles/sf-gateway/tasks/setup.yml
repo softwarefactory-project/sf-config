@@ -25,6 +25,9 @@
   file:
     path: "{{ item.path }}"
     state: directory
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    recurse: "yes"
   with_items: "{{ gateway_directories }}"
   when: gateway_directories
 
@@ -107,8 +110,6 @@
   template:
     src: "{{ item.name }}.j2"
     dest: "{{item.dest }}/{{ item.name }}"
-    owner: "{{ item.owner | default('root') }}"
-    group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default(0444) }}"
   with_items:
     - {name: gateway.common, dest: /etc/httpd/conf.d}
