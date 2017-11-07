@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ad32947_36f198ce",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-11-07T07:22:30Z",
+      "side": 1,
+      "message": "Ins\u0027t that setup in sf-base setup already?",
+      "revId": "9596f56b5a2b202123d7e96c196d2187870f241d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7ad32947_16ee9cec",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-11-07T07:22:30Z",
+      "side": 1,
+      "message": "no need to set owner/group to root, it should be the default case",
+      "revId": "9596f56b5a2b202123d7e96c196d2187870f241d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
