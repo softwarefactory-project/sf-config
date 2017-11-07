@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The Zuul MQTT driver is automatically configured when the mosquitto
+    component is enabled. The default topic can be updated with the
+    custom-vars, ``zuul_mqtt_start_topic``, ``zuul_mqtt_success_topic``
+    and ``zuul_mqtt_failure_topic``.

@@ -66,3 +66,7 @@ nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
 nodepool_webapp_port: 8006
 
 zuul_periodic_pipeline_mail_rcpt: root@localhost
+
+zuul_mqtt_start_topic: "zuul/{pipeline}/start/{project}/{branch}"
+zuul_mqtt_failure_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
+zuul_mqtt_success_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
