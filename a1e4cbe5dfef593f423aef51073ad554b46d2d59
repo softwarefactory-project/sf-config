@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ad32947_56cbf472",
+        "filename": "ansible/roles/sf-logserver/tasks/get_logs.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-11-07T07:29:58Z",
+      "side": 1,
+      "message": "rsync_opts:\n  - \"--exclude\u003dara-report\"\n  - \"--exclude\u003dara\"",
+      "revId": "a1e4cbe5dfef593f423aef51073ad554b46d2d59",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
