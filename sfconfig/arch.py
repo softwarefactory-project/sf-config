@@ -27,6 +27,7 @@ def process(args):
     args.glue["scalable_roles"] = [
         "zuul", "zuul-merger", "zuul-launcher",
         "zuul3", "zuul3-merger", "zuul3-executor",
+        "hypervisor-oci",
     ]
 
     # roles is a dictwith roles name as key and host list as value
