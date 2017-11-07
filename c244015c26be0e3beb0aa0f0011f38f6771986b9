@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7ad32947_591d670e",
+        "filename": "ansible/roles/sf-hypervisor-oci/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-11-07T23:48:41Z",
+      "side": 1,
+      "message": "host[\"roles\"] only contains the role defined in the arch file, do you remember having base listed in the arch file?",
+      "parentUuid": "7ad32947_99a9bfe2",
+      "revId": "c244015c26be0e3beb0aa0f0011f38f6771986b9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7ad32947_59ac47ed",
         "filename": "testinfra/test_hypervisor-oci.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2017-11-07T16:26:14Z",
       "side": 1,
       "message": "If sf-base is not in the role list for that hypervisor-oci the test will always fail because curl won\u0027t be able to resolv http://managesf.sftests.com:20001. But I guess using the IP:20001 the access will work. So I would have changed the url to use the IP directly. wdyt ?",
+      "revId": "c244015c26be0e3beb0aa0f0011f38f6771986b9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7ad32947_391aab18",
+        "filename": "testinfra/test_hypervisor-oci.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-11-07T23:48:41Z",
+      "side": 1,
+      "message": "sf-base is always deployed early in the generated playbook.",
+      "parentUuid": "7ad32947_59ac47ed",
       "revId": "c244015c26be0e3beb0aa0f0011f38f6771986b9",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
