@@ -44,6 +44,10 @@
       gerrit:
         verified: 1
 {% endif %}
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
       sqlreporter:
     failure:
 {% for github_connection in zuul_github_connections %}
@@ -55,6 +59,10 @@
         verified: -1
 {% endif %}
       sqlreporter:
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
 
 - pipeline:
     name: gate
@@ -100,6 +108,10 @@
         Verified: 2
         submit: true
 {% endif %}
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
       sqlreporter:
     failure:
 {% if 'gerrit' in roles %}
@@ -107,6 +119,10 @@
         Verified: -2
 {% endif %}
       sqlreporter:
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
     window-floor: 20
     window-increase-factor: 2
 
@@ -124,12 +140,20 @@
 {% endif %}
     success:
       sqlreporter:
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in post pipeline: {change.project}'
       sqlreporter:
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
 
 - pipeline:
     name: release
@@ -145,12 +169,20 @@
 {% endif %}
     success:
       sqlreporter:
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in release pipeline: {change.project}'
       sqlreporter:
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
 
 - pipeline:
     name: periodic
@@ -163,9 +195,17 @@
         - time: '0 0 * * *'
     success:
       sqlreporter:
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in periodic pipeline: {change.project}'
       sqlreporter:
+{% if 'mosquitto' in roles %}
+      mqtt:
+        topic: zuul
+{% endif %}

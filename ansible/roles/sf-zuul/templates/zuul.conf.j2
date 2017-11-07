@@ -104,3 +104,11 @@ server=localhost
 port=25
 default_from=zuul@{{ fqdn }}
 default_to=admin@{{ fqdn }}
+{% if 'mosquitto' in roles %}
+
+[connection mqtt]
+driver=mqtt
+server={{ moquitto_host }}
+user=SF_SERVICE_USER
+password={{ sf_service_user_password }}
+{% endif %}

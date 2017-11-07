@@ -32,3 +32,10 @@ poll_delay={{ conn['poll_delay']|default('7200') }}
 [connection smtp]
 driver=smtp
 server=localhost
+
+{% if 'mosquitto' in roles %}
+[connection mqtt]
+driver=mosquitto
+server=localhost
+
+{% endif %}
