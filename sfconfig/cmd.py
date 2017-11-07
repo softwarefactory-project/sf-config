@@ -206,6 +206,13 @@ def main():
         args.glue.update(args.sfarch)
         yaml_dump(args.glue, allvars_file)
 
+    # Validate role settings
+    for host in args.sfarch["inventory"]:
+        for role in host["roles"]:
+            if role not in components:
+                continue
+            components[role].validate(args, host)
+
     sfconfig.inventory.run(args)
 
     if not args.skip_apply:
