@@ -24,3 +24,10 @@ port={{ conn['port']|default('22') }}
 [connection smtp]
 driver=smtp
 server=localhost
+
+{% if 'mosquitto' in roles %}
+[connection mqtt]
+driver=mosquitto
+server=localhost
+
+{% endif %}
