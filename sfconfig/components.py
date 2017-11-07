@@ -170,3 +170,6 @@ DNS.1 = %s
 
     def configure(self, args, host):
         pass
+
+    def validate(self, args, host):
+        pass
