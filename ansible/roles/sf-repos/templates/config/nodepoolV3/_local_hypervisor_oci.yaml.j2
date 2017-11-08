@@ -2,7 +2,10 @@
 {% if 'hypervisor-oci' in roles %}
 
 labels:
-  - name: centos-oci
+  - name: hypervisor-oci
+{% for host in inventory %}
+  - name: hypervisor-oci-{{ host['name'] }}
+{% endfor %}
 
 providers:
 {% for host in inventory %}
@@ -14,7 +17,9 @@ providers:
       - name: main
         max-servers: {{ host.get('max-servers', 10) }}
         labels:
-          - name: centos-oci
+          - name: hypervisor-oci
+            username: zuul-worker
+          - name: hypervisor-oci-{{ host['name'] }}
             username: zuul-worker
 
 {% endif %}
