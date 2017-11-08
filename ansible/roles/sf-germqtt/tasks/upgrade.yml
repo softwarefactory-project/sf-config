@@ -1,0 +1,6 @@
+---
+- name: Remove key material written to /usr
+  file:
+    path: /usr/share/germqtt/.ssh
+    state: absent
+  when: sf_previous_version < 2.7

@@ -1,5 +1,5 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=germqtt home_dir=/usr/share/germqtt ssh_key=jenkins_rsa"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=germqtt home_dir=/var/lib/germqtt ssh_key=jenkins_rsa"
 
 - name: "Setup configuration"
   template:
@@ -7,12 +7,16 @@
     dest: /etc/germqtt/germqtt.conf
     mode: 0440
     group: germqtt
+  register: germqtt_conf
+
+- name: Restart service
+  service:
+    name: germqtt
+    state: restarted
+  when: germqtt_conf|changed
 
 - name: Start service
-  systemd:
-    name: "{{ item }}"
+  service:
+    name: germqtt
     state: started
-    daemon_reload: "yes"
-    enabled: "yes"
-  with_items:
-    - germqtt
+  when: not germqtt_conf|changed
