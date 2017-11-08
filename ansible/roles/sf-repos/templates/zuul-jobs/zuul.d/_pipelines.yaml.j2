@@ -10,7 +10,7 @@
       gerrit:
         - event: patchset-created
         - event: comment-added
-          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify|retrigger)
 {% endif %}
 {% for github_connection in zuul3_github_connections %}
     {{ github_connection.name }}:
