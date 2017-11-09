@@ -11,8 +11,17 @@
 # under the License.
 
 import utils
+import yaml
 
 
 class TestHypervisorOCI(utils.Base):
     def test_slaves_are_running(self, host):
         assert host.check_output("runc list -q")
+
+    def test_slaves_are_isolated(self, host):
+        group_vars = yaml.safe_load(open(
+            "/var/lib/software-factory/ansible/group_vars/all.yaml"))
+        if group_vars.get("enable_insecure_slaves") is not True:
+            # Make sure managesf internal url access fails
+            assert host.run("curl %s" % group_vars[
+                "managesf_internal_url"]).rc == 7
