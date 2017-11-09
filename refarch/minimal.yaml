@@ -17,4 +17,3 @@ inventory:
       - zuul3-executor
       - zuul3-web
       - nodepool3-launcher
-      - hypervisor-oci

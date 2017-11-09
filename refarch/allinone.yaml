@@ -27,7 +27,6 @@ inventory:
       - nodepool-builder
       - nodepool3-launcher
       - nodepool3-builder
-      - hypervisor-oci
       - jenkins
       - murmur
       - elasticsearch
