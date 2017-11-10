@@ -22,15 +22,6 @@ import os
 import time
 
 
-if not os.path.isfile("/etc/zuul/zuul.conf"):
-    print "This script needs to be run from zuul node"
-    exit(1)
-
-# Read zuul_url from zuul.conf
-zuul_url = filter(lambda x: x.startswith("zuul_url="),
-                  open("/etc/zuul/zuul.conf").readlines())[0].split('=')[1]
-# Remove /p
-zuul_status = "%s/zuul/status.json" % ('/'.join(zuul_url.split('/')[:-1]))
 dump_file = "/var/lib/zuul/zuul-queues-dump.sh"
 
 
@@ -59,17 +50,17 @@ def dump(args):
                     )
                     if ";" in cmd or "|" in cmd:
                         raise RuntimeError("Forbidden char in [%s]" % cmd)
-                    print cmd
+                    print(cmd)
                     of.write("%s\n" % cmd)
     of.write("curl %s 2>&1 | grep 'zuul_version' > /dev/null\n" % args.url)
     of.write("echo SUCCESS: zuul queues restored\n")
     of.close()
-    os.chmod(args.dump_file, 0755)
+    os.chmod(args.dump_file, 0o755)
 
 
 def load(args):
     if not os.path.isfile(args.dump_file):
-        print "%s: no such file, please dump first" % args.dump_file
+        print("%s: no such file, please dump first" % args.dump_file)
     if os.stat(args.dump_file).st_mtime + 172800 < time.time():
         if not args.force:
             raise RuntimeError("%s is too old, use --force to use it" %
@@ -80,7 +71,7 @@ def load(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--force', action="store_const", const=True)
-    parser.add_argument('--url', default=zuul_status)
+    parser.add_argument('--url', default="https://localhost/zuul/status.json")
     parser.add_argument('--dump_file', default=dump_file)
     parser.add_argument('action', choices=("dump", "load"))
     args = parser.parse_args()
