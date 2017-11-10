@@ -7,6 +7,8 @@
 - name: Unmount rootfs bind mount
   command: umount /var/lib/nodepool/oci/host-rootfs
   register: _umount_oci
+  until: _umount_oci.rc == 32
+  delay: 0.1
   failed_when: _umount_oci.rc not in [0, 32]
 
 - block:
