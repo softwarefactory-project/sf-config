@@ -60,7 +60,8 @@ dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mys
 {% for conn in zuul_gerrit_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gerrit
-port={{ conn['port']|default('29418') }}
+# Bogus port
+port=29419
 server={{ conn['hostname'] }}
 baseurl={{ conn['puburl'] }}
 user={{ conn['username'] }}
