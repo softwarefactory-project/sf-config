@@ -20,3 +20,9 @@
   template:
     src: gitconfig.j2
     dest: /root/.gitconfig
+
+- name: Enforce secure mode in /etc/software-factory
+  file:
+    path: /etc/software-factory
+    mode: 0700
+    owner: root
