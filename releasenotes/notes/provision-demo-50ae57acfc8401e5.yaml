@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Add a --provision-demo sfconfig argument to create demo projects and user.

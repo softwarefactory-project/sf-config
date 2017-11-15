@@ -14,6 +14,13 @@ from sfconfig.components import Component
 
 
 class Gerrit(Component):
+    def usage(self, parser):
+        parser.add_argument("--provision-demo", action='store_true',
+                            help="Provision demo projects")
+
+    def argparse(self, args):
+        args.glue["provision_demo"] = args.provision_demo
+
     def configure(self, args, host):
         self.get_or_generate_ssh_key(args, "gerrit_service_rsa")
         self.get_or_generate_ssh_key(args, "gerrit_admin_rsa")
