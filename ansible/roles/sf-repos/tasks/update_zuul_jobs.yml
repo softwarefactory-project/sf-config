@@ -1,20 +1,4 @@
 ---
-- name: Update zuulV3 _main.yaml
-  template:
-    src: "config/zuulV3/_main.yaml.j2"
-    dest: /root/config/zuulV3/_main.yaml
-  register: zuul3_main_yaml
-
-- name: Push config repo changes
-  command: "git {{ item }}"
-  args:
-    chdir: /root/config
-  with_items:
-    - add zuulV3
-    - commit -m 'Update zuulV3 configuration'
-    - push git+ssh://gerrit/config master
-  when: zuul3_main_yaml|changed
-
 - set_fact:
     zuul_jobs_clone_dir: /root/zuul-jobs
 

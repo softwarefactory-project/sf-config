@@ -92,6 +92,11 @@ def update_sfconfig(args):
         data["zuul3"]["upstream_zuul_jobs"] = False
         dirty = True
 
+    if "default_nodeset_name" not in data["zuul3"]:
+        data["zuul3"]["default_nodeset_name"] = "container"
+        data["zuul3"]["default_nodeset_label"] = "centos-oci"
+        dirty = True
+
     args.save_sfconfig = dirty
 
 

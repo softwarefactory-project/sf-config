@@ -5,6 +5,8 @@
   when: "'zuul3' in roles"
 
 # Ensure repo content template are updated
+- include_tasks: update_config_repo.yml
+  when: "'zuul3' in roles"
 - include_tasks: update_zuul_jobs.yml
   when: "'zuul3' in roles"
 

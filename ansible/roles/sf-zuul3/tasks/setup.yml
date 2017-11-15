@@ -46,6 +46,12 @@
     - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
     - {src: /etc/opt/rh/rh-python35, dest: /etc}
 
+# TODO: fix package
+- name: Removed unsued layout.yaml file
+  file:
+    path: /etc/opt/rh/rh-python35/zuul/layout.yaml
+    state: absent
+
 - name: Apply selinux port labelling
   seport:
     ports: "{{ zuul3_port }}"
@@ -63,7 +69,7 @@
   when: "'zuul-merger' in zuul3_services"
 
 - block:
-    - name: Pre-Create zuul-jobs rsa key
+    - name: Pre-Create config project rsa key
       become: "yes"
       become_user: zuul
       command: |
@@ -71,21 +77,21 @@
         import zuul.lib.encryption
         class ZuulJobs: pass
         project = ZuulJobs()
-        project.name = "zuul-jobs"
-        project.private_key_file = "{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pem"
+        project.name = "config"
+        project.private_key_file = "{{ zuul3_lib_dir }}/keys/gerrit/config.pem"
         zuul.configloader.TenantParser._generateKeys(project)
         zuul.configloader.TenantParser._loadKeys(project)
-        pub = open("{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pub", "w")
+        pub = open("{{ zuul3_lib_dir }}/keys/gerrit/config.pub", "w")
         pub.write(zuul.lib.encryption.serialize_rsa_public_key(project.public_key).decode("utf-8"))
         pub.close()'
       args:
-        creates: "{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pub"
+        creates: "{{ zuul3_lib_dir }}/keys/gerrit/config.pub"
 
-    - name: Fetch zuul-jobs pub key on install-server
+    - name: Fetch config project pub key on install-server
       fetch:
         flat: "yes"
-        src: "{{ zuul3_lib_dir }}/keys/gerrit/zuul-jobs.pub"
-        dest: "/var/lib/software-factory/certs/zuul-jobs.pub"
+        src: "{{ zuul3_lib_dir }}/keys/gerrit/config.pub"
+        dest: "/var/lib/software-factory/certs/config.pub"
   when: "'zuul-scheduler' in zuul3_services"
 
 - block:
