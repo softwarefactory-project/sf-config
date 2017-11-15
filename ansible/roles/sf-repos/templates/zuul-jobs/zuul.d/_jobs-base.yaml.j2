@@ -3,9 +3,9 @@
     name: base
     parent: null
     description: The base job.
-    pre-run: playbooks/base/pre
+    pre-run: playbooks/base/pre.yaml
     post-run:
-      - playbooks/base/post
+      - playbooks/base/post.yaml
     roles:
       - zuul: zuul-jobs
     timeout: 1800
@@ -22,7 +22,7 @@
     name: linters
     parent: base
     description: A bash8, pip8, yamllint linter check.
-    run: playbooks/linters/run
+    run: playbooks/linters/run.yaml
     nodeset:
       nodes:
         - name: main
@@ -46,7 +46,7 @@
     name: config-check
     parent: base
     description: Validate the config repo.
-    run: playbooks/config/check
+    run: playbooks/config/check.yaml
     nodeset:
       nodes: []
 
@@ -54,7 +54,7 @@
     name: config-update
     parent: base
     description: Deploy config repo update.
-    run: playbooks/config/update
+    run: playbooks/config/update.yaml
     secrets:
       - site_install_server
     semaphore: semaphore-config-update
