@@ -5,9 +5,9 @@
 {% if 'gerrit' in roles %}
       gerrit:
         config-projects:
-          - zuul-jobs
-        untrusted-projects:
           - config
+        untrusted-projects:
+          - zuul-jobs
 {% endif %}
 {% if zuul3_upstream_zuul_jobs %}
       {{ openstack_connection_name }}:
