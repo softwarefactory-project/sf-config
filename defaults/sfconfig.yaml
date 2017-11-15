@@ -188,6 +188,8 @@ zuul:
   #    labels: node label
 
 zuul3:
+  default_nodeset_name: container
+  default_nodeset_label: centos-oci
   # Set custom zuul log url, the url will be expaned using the build parameters
   #  Default is: https://fqdn/logs/{build.uuid}/
   success_log_url: ""
