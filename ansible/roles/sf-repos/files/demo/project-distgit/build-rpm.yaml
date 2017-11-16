@@ -1,5 +1,5 @@
 ---
-- hosts: main
+- hosts: container
   tasks:
     - name: "Get version"
       shell: git describe --tags 2> /dev/null || git log -n 1 --oneline | awk '{ print $1 }'
