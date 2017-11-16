@@ -214,6 +214,17 @@ def config_update(args, pb):
     }))
     pb.append(host_play('all', 'repos', {'role_action': 'fetch_config_repo'}))
 
+    # Call resources apply
+    pb.append(host_play('managesf', tasks=[
+        {'name': 'Exec resources apply',
+         'command': '/usr/local/bin/resources.sh apply',
+         'register': 'output',
+         'ignore_errors': 'yes'},
+        {'debug': {'msg': '{{ output.stdout_lines }}'}},
+        {'fail': {'msg': 'Resources apply failed {{ output.rc }}'},
+         'when': 'output.rc != 0'}
+    ]))
+
     role_order = ["gerrit", "jenkins", "pages", "gerritbot",
                   "zuul", "nodepool", "zuul3", "nodepool3"]
     for role in args.glue["roles"]:
@@ -227,17 +238,6 @@ def config_update(args, pb):
             if role in host["roles"]:
                 host_roles.append(role)
         pb.append(host_play(host, host_roles, {'role_action': 'update'}))
-
-    # Call resources apply
-    pb.append(host_play('managesf', tasks=[
-        {'name': 'Exec resources apply',
-         'command': '/usr/local/bin/resources.sh apply',
-         'register': 'output',
-         'ignore_errors': 'yes'},
-        {'debug': {'msg': '{{ output.stdout_lines }}'}},
-        {'fail': {'msg': 'Resources apply failed {{ output.rc }}'},
-         'when': 'output.rc != 0'}
-    ]))
 
 
 def postconf(args, pb):
