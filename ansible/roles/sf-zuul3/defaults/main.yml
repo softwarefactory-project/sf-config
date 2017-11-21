@@ -60,3 +60,8 @@ zuul3_internal_url: "http://localhost:{{ zuul3_port }}/"
 
 zuul3_loglevel: INFO
 zuul3_root_loglevel: WARNING
+
+# We need those variables to generate config-check nodepool.yaml file
+nodepool3_conf_dir: "/etc/opt/rh/rh-python35/nodepool"
+nodepool3_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
+nodepool3_webapp_port: 8006

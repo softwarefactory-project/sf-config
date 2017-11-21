@@ -13,7 +13,7 @@
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
 {% endif %}
 {% for github_connection in zuul3_github_connections %}
-    {{ github_connection.name }}:
+      {{ github_connection.name }}:
         - event: pull_request
           action:
             - opened
