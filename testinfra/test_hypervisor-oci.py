@@ -23,5 +23,5 @@ class TestHypervisorOCI(utils.Base):
             "/var/lib/software-factory/ansible/group_vars/all.yaml"))
         if group_vars.get("enable_insecure_slaves") is not True:
             # Make sure managesf internal url access fails
-            assert host.run("curl %s" % group_vars[
-                "managesf_internal_url"]).rc == 7
+            assert host.run("curl --connect-timeout 3 %s" % group_vars[
+                "managesf_internal_url"]).rc in (7, 28)

@@ -3,6 +3,12 @@
 # Use /bin/sh shell to allow zuul to connect to localhost for config-update jobs
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=jenkins_rsa home_dir_mode=0751 shell=/bin/sh"
 
+# Fix an issue with incorect pbr requirement
+- name: Ensure python-jenkins requirement.txt is removed
+  file:
+    path: /usr/lib/python2.7/site-packages/python_jenkins-0.4.8-py2.7.egg-info/requires.txt
+    state: absent
+
 - name: Authorize zuul localhost connection for config-update jobs
   authorized_key:
     user: zuul
