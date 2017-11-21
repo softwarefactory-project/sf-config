@@ -12,6 +12,11 @@
     name: python2-alabaster
     state: absent
 
+- name: Remove epel-release
+  yum:
+    name: epel-release
+    state: absent
+
 - name: "Update packages"
   yum:
     name: "*"

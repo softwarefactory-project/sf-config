@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        2.7.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -11,7 +11,7 @@ Source0:        https://github.com/softwarefactory-project/software-factory/arch
 
 BuildArch:      noarch
 
-Requires:       ansible
+Requires:       ansible >= 2.4.1
 Requires:       python-jinja2
 
 Buildrequires:  python2-devel
@@ -69,6 +69,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Tue Nov 21 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.7.0-3
+- Require ansible >= 2.4.1
+
 * Thu Oct 05 2017 Fabien Boucher <tdecacqu@redhat.com> - 2.7.0-2
 - Make sure previous version of the arch.yaml is kept bypassing the
   rpm config style behavior.
