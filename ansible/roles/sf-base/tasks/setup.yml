@@ -11,6 +11,23 @@
     - /usr/libexec/software-factory
     - /usr/share/software-factory
 
+- name: "system: check for python3 scl"
+  stat:
+    path: /opt/rh/rh-python35
+  register: _python35_installed
+
+- name: "system: symlink libpython3.5"
+  file:
+    src: "/opt/rh/rh-python35/root/{{ item }}"
+    dest: "/usr/{{ item }}"
+    state: link
+  when: _python35_installed.stat.exists
+  with_items:
+    - "lib64/libpython3.5m.so"
+    - "lib64/libpython3.5m.so.rh-python35-1.0"
+    - "lib64/python3.5"
+    - "lib/python3.5"
+
 - name: "system: add FQDN to prompt"
   copy:
     src: prompt.sh
@@ -89,6 +106,7 @@
     src: "{{ sf_templates_dir }}/etc-hosts.j2"
     dest: /etc/hosts
     mode: 0644
+  when: manage_etc_hosts|default(true)
 
 - name: "system: install /usr/local/bin/resources.sh"
   template:

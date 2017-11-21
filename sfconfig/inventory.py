@@ -119,7 +119,7 @@ def upgrade(args, pb):
     # First turn off all component except gerrit
     for host in args.inventory:
         roles = [role for role in host["roles"] if
-                 role not in ("mysql", "gerrit")]
+                 role not in ("mysql", "gerrit", "hypervisor-oci")]
         pb.append(host_play(host, roles, {'role_action': 'disable',
                                           'erase': False}))
 
@@ -190,7 +190,16 @@ def setup(args, pb):
     pb.append(host_play('install-server', 'ssh', action))
 
     # Setup base role on all hosts
-    pb.append(host_play('all', ['postfix', 'base', 'monit'], action))
+    for host in args.inventory:
+        roles_action = {'role_action': 'setup'}
+        if "hypervisor-oci" in host["roles"] and \
+           args.glue.get("enable_insecure_slave") is True:
+            host_roles = ["postfix", "base", "monit"]
+            roles_action['manage_etc_hosts'] = True
+        else:
+            host_roles = ["base"]
+            roles_action['manage_etc_hosts'] = False
+        pb.append(host_play(host, host_roles, roles_action))
 
     # Setup mysql role before all components
     pb.append(host_play('mysql', 'mysql', action))
@@ -212,7 +221,8 @@ def config_update(args, pb):
         'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
         'register': 'configsha'
     }))
-    pb.append(host_play('all', 'repos', {'role_action': 'fetch_config_repo'}))
+    pb.append(host_play('all:!hypervisor-oci',
+                        'repos', {'role_action': 'fetch_config_repo'}))
 
     # Call resources apply
     pb.append(host_play('managesf', tasks=[
@@ -426,7 +436,10 @@ def generate(args):
 
         # if influxdb role is in the arch, install telegraf
         if "influxdb" in args.glue["roles"]:
-            host["roles"].append("telegraf")
+            if ("hypervisor-oci" not in host["roles"] or
+                ("hypervisor-oci" in host["roles"] and
+                 args.glue.get("enable_insecure_slaves") is True)):
+                host["roles"].append("telegraf")
 
         if "gateway" in host["roles"] and \
            args.sfconfig['network']['use_letsencrypt']:
