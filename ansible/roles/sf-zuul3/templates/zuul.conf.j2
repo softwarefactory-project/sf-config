@@ -38,7 +38,7 @@ port={{ zuul3_web_port }}
 log_config={{ zuul3_conf_dir }}/web-logging.yaml
 
 [webapp]
-listen_address=127.0.0.1
+listen_address=0.0.0.0
 port={{ zuul3_webapp_port }}
 status_url={{ zuul3_pub_url }}
 
@@ -60,11 +60,21 @@ sshkey={{ zuul3_lib_dir }}/.ssh/id_rsa
 {% for conn in zuul3_github_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=github
+{% if conn.get('app_key') %}
+# Github App
+app_id={{ conn.get('app_id') }}
+app_key={{ zuul3_lib_dir }}/.ssh/github_{{ conn['name'] }}_rsa
+{% else %}
+# Github Webhook
+sshkey={{ zuul3_lib_dir }}/.ssh/id_rsa
+api_token={{ conn['api_token'] }}
+{% endif %}
+webhook_token={{ conn['webhook_token'] }}
+server={{ conn['hostname']|default('github.com') }}
+# canonical_hostname=?
+verify_ssl={{ conn['verify_ssl']|default(True) }}
 git_host={{ conn['hostname']|default('github.com') }}
 port={{ conn['port']|default('22') }}
-api_token={{ conn['api_token'] }}
-webhook_token={{ conn['webhook_token'] }}
-sshkey={{ zuul3_lib_dir }}/.ssh/id_rsa
 
 {% endfor %}
 

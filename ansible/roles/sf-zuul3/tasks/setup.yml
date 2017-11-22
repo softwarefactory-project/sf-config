@@ -127,6 +127,16 @@
       failed_when: _zuul3_connection_test.stderr.find("Welcome to Gerrit Code Review") == -1
       with_items: "{{ zuul3_gerrit_connections }}"
 
+    - name: Install github private key
+      copy:
+        content: "{{ item.app_key }}"
+        dest: "{{ zuul3_lib_dir }}/.ssh/github_{{ item.name }}_rsa"
+        mode: 0400
+        owner: zuul
+        group: zuul
+      with_items: "{{ zuul3_github_connections }}"
+      when: item.app_key
+
     - include_tasks: create_logging.yml _logfile="scheduler"
     - include_tasks: create_logging.yml _logfile="gearman-server"
   when: "'zuul-scheduler' in zuul3_services or 'zuul-merger' in zuul3_services or 'zuul-executor' in zuul3_services"
