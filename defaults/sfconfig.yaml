@@ -209,9 +209,13 @@ zuul3:
   github_connections: []
   #    - name: "github"
   #      hostname: github.com
-  #      port: 22
+  #      webhook_token: XXX # see https://developer.github.com/webhooks/securing/>
+  #      # GitHub App settings
+  #      app_id: XXX # See https://softwarefactory-project.io/docs/operator/zuul3_operator.html#zuul-github-app-operator
+  #      app_key: | # In Github this is known as Private key and it must be collected when generated
+  #        Key content here
+  #      # Github Webhook settings
   #      api_token: XXX # See https://help.github.com/articles/creating-an-access-token-for-command-line-use/
-  #      webhook_token: XXX # See https://developer.github.com/webhooks/securing/>
 
   # To use openstack-infra/zuul-jobs, review.openstack.org needs to be added to gerrit_connections list too
   upstream_zuul_jobs: false

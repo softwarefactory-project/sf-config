@@ -124,6 +124,9 @@ class Zuul3Scheduler(Component):
         args.glue["zuul3_pub_url"] = "%s/zuul3/" % args.glue["gateway_url"]
         args.glue["zuul3_internal_url"] = "http://%s:%s/" % (
             args.glue["zuul3_host"], args.defaults["zuul3_port"])
+        args.glue["zuul3_webapp_url"] = "http://%s:%s" % (
+            args.glue["zuul3_scheduler_host"],
+            args.defaults["zuul3_webapp_port"])
         args.glue["zuul3_mysql_host"] = args.glue["mysql_host"]
         args.glue["loguser_authorized_keys"].append(
             args.glue["zuul_logserver_rsa_pub"])

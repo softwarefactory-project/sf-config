@@ -97,6 +97,11 @@ def update_sfconfig(args):
         data["zuul3"]["default_nodeset_label"] = "centos-oci"
         dirty = True
 
+    for github_connection in data['zuul3'].get('github_connections'):
+        if "app_key" not in github_connection:
+            github_connection["app_key"] = None
+            dirty = True
+
     args.save_sfconfig = dirty
 
 
