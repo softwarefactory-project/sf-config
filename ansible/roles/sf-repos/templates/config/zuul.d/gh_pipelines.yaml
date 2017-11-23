@@ -1,0 +1,76 @@
+# This pipelines definition is deactivated by default. To activate
+# un-comment, then make sure to replace values as explained below.
+
+# Make sure to replace myorg-zuulapp by the real application name.
+# Make sure to replace sftests.com by your Software Factory instance hostname.
+
+#---
+#- pipeline:
+#    name: check-github.com
+#    description: |
+#      Newly uploaded patchsets enter this pipeline to receive an
+#      initial +/-1 Verified vote.
+#    manager: independent
+#    trigger:
+#      github.com:
+#        - event: pull_request
+#          action:
+#            - opened
+#            - changed
+#            - reopened
+#        - event: pull_request
+#          action: comment
+#          comment: (?i)^\s*recheck\s*$
+#    start:
+#      github.com:
+#        status: 'pending'
+#        status-url: "https://sftests.com/zuul3/{tenant.name}/status.html"
+#        comment: false
+#    success:
+#      github.com:
+#        status: 'success'
+#      sqlreporter:
+#    failure:
+#      github.com:
+#        status: 'failure'
+#      sqlreporter:
+#
+#- pipeline:
+#    name: gate-github.com
+#    description: |
+#      Changes that have been approved by core developers are enqueued
+#      in order in this pipeline, and if they pass tests, will be
+#      merged.
+#    success-message: Build succeeded (gate pipeline).
+#    failure-message: Build failed (gate pipeline).
+#    manager: dependent
+#    precedence: high
+#    require:
+#      github.com:
+#        review:
+#          - permission: write
+#        status: "myorg-zuulapp[bot]:local/check-github.com:success"
+#        open: True
+#        current-patchset: True
+#    trigger:
+#      github.com:
+#        - event: pull_request_review
+#          action: submitted
+#          state: approved
+#        - event: pull_request
+#          action: status
+#          status: "myorg-zuulapp[bot]:local/check-github.com:success"
+#    start:
+#      github.com:
+#        status: 'pending'
+#        status-url: "https://sftests.com/zuul3/{tenant.name}/status.html"
+#        comment: false
+#    success:
+#      github.com:
+#        status: 'success'
+#        merge: true
+#      sqlreporter:
+#    failure:
+#      github.com:
+#        status: 'failure'
+#      sqlreporter:
