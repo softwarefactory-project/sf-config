@@ -196,7 +196,7 @@ def setup(args, pb):
            args.glue.get("enable_insecure_slaves") is True:
             host_roles = ["postfix", "base", "monit"]
             roles_action['manage_etc_hosts'] = True
-        else:
+        elif "hypervisor-oci" in host["roles"]:
             host_roles = ["base"]
             roles_action['manage_etc_hosts'] = False
         pb.append(host_play(host, host_roles, roles_action))
