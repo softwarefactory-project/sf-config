@@ -221,9 +221,22 @@ def config_update(args, pb):
         'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
         'register': 'configsha'
     }))
-    role_order = ["gerrit", "jenkins", "pages", "gerritbot",
-                  "zuul", "nodepool", "zuul3", "nodepool3"]
-    pb.append(host_play(':'.join(role_order + ["managesf"]),
+    # The list of role that have an update task in order
+    role_to_update = [
+        "gerrit", "jenkins", "pages", "gerritbot", "managesf", "mirror",
+        "repoxplorer",
+        "zuul-server", "zuul-merger",
+        "nodepool-launcher", "nodepool-builder",
+        "zuul3-scheduler", "zuul3-merger", "zuul3-executor", "zuul3-web",
+        "nodepool3-launcher", "nodepool3-builder",
+    ]
+    # The list of role enabled in this deployment
+    roles_configured = []
+    for role in role_to_update:
+        if role in args.glue["roles"]:
+            roles_configured.append(role)
+    # Add the fetch_config_repo task so that the host update it's config clone
+    pb.append(host_play(':'.join(roles_configured),
                         'repos', {'role_action': 'fetch_config_repo'}))
 
     # Call resources apply
@@ -237,14 +250,10 @@ def config_update(args, pb):
          'when': 'output.rc != 0'}
     ]))
 
-    for role in args.glue["roles"]:
-        if role not in role_order:
-            role_order.append(role)
-
     # Update all components
-    for host in args.inventory:
+    for host in args.sfarch["inventory"]:
         host_roles = []
-        for role in role_order:
+        for role in roles_configured:
             if role in host["roles"]:
                 host_roles.append(role)
         pb.append(host_play(host, host_roles, {'role_action': 'update'}))
