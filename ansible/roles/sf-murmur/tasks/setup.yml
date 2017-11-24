@@ -10,3 +10,10 @@
     group: umurmurd
     mode: 0440
   notify: restart umurmurd
+
+- name: Start service
+  systemd:
+    name: umurmurd
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
