@@ -3,6 +3,7 @@
   yum:
     name: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
     state: present
+    validate_certs: no
   when: sf_version != "master"
 
 # 2.7: We need to remove python2-alabaster now because it is replaced by
