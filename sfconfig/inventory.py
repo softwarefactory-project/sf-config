@@ -191,12 +191,11 @@ def setup(args, pb):
 
     # Setup base role on all hosts
     for host in args.inventory:
-        roles_action = {'role_action': 'setup'}
+        roles_action = {'role_action': 'setup', 'manage_etc_hosts': True}
+        host_roles = ["postfix", "base", "monit"]
         if "hypervisor-oci" in host["roles"] and \
-           args.glue.get("enable_insecure_slaves") is True:
-            host_roles = ["postfix", "base", "monit"]
-            roles_action['manage_etc_hosts'] = True
-        else:
+           args.glue.get("enable_insecure_slaves") is not True:
+            # This host is running on isolated network
             host_roles = ["base"]
             roles_action['manage_etc_hosts'] = False
         pb.append(host_play(host, host_roles, roles_action))
