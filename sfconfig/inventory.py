@@ -220,9 +220,18 @@ def config_update(args, pb):
         'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
         'register': 'configsha'
     }))
-    role_order = ["gerrit", "jenkins", "pages", "gerritbot",
-                  "zuul", "nodepool", "zuul3", "nodepool3"]
-    pb.append(host_play(':'.join(role_order + ["managesf"]),
+    # The list of role to run update task
+    roles_order = ["gerrit", "jenkins", "pages", "gerritbot",
+                   "gateway", "managesf", "mirror", "repoxplorer",
+                   "zuul", "nodepool", "zuul3", "nodepool3"]
+    # The extra list of host group to run fetch-config-repo
+    roles_group = [
+        "zuul-server", "zuul-merger",
+        "nodepool-launcher", "nodepool-builder",
+        "zuul3-scheduler", "zuul3-merger", "zuul3-executor", "zuul3-web",
+        "nodepool3-launcher", "nodepool3-builder",
+    ]
+    pb.append(host_play(':'.join(roles_order + roles_group),
                         'repos', {'role_action': 'fetch_config_repo'}))
 
     # Call resources apply
@@ -236,14 +245,10 @@ def config_update(args, pb):
          'when': 'output.rc != 0'}
     ]))
 
-    for role in args.glue["roles"]:
-        if role not in role_order:
-            role_order.append(role)
-
     # Update all components
     for host in args.inventory:
         host_roles = []
-        for role in role_order:
+        for role in roles_order:
             if role in host["roles"]:
                 host_roles.append(role)
         pb.append(host_play(host, host_roles, {'role_action': 'update'}))
