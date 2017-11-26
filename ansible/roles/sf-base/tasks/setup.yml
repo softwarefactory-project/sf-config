@@ -136,14 +136,6 @@
     state: absent
     regexp: "^Defaults.*requiretty"
 
-- name: "system: set /etc/ssh/ssh_known_hosts for all inventory"
-  template:
-    src: global_known_hosts.j2
-    dest: /etc/ssh/ssh_known_hosts
-    owner: root
-    group: root
-    mode: 0644
-
 - name: "system: allow install-server to connect"
   authorized_key:
     user: root
