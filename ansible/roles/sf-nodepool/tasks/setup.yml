@@ -1,5 +1,5 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=jenkins_rsa"
 
 - name: Install jenkins/zuul public ssh key
   copy:
