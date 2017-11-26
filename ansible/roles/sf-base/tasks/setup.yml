@@ -68,6 +68,12 @@
     enabled: "yes"
   when: sshd_config|changed
 
+- name: "system: disable StrictHostKeyChecking"
+  lineinfile:
+    dest: /etc/ssh/ssh_config
+    line: "        StrictHostKeyChecking no"
+    insertafter: "^Host *$"
+
 - name: "system: setenforce 0"
   command: setenforce 0
   when:
@@ -135,14 +141,6 @@
     dest: /etc/sudoers
     state: absent
     regexp: "^Defaults.*requiretty"
-
-- name: "system: set /etc/ssh/ssh_known_hosts for all inventory"
-  template:
-    src: global_known_hosts.j2
-    dest: /etc/ssh/ssh_known_hosts
-    owner: root
-    group: root
-    mode: 0644
 
 - name: "system: allow install-server to connect"
   authorized_key:
