@@ -7,6 +7,12 @@
     user: root
     key: "{{ nodepool_rsa_pub }}"
 
+# TODO: remove this after 3.0 release
+- name: Enable root ssh access to nodepoolV2 user
+  authorized_key:
+    user: root
+    key: "{{ jenkins_rsa_pub }}"
+
 - name: Enable zuul ssh access to zuul-worker
   authorized_key:
     user: zuul-worker
