@@ -28,3 +28,9 @@ class Cauth(Component):
         args.glue["cauth_privkey"] = open(priv_file).read()
         args.glue["cauth_pubkey"] = open(pub_file).read()
         self.add_mysql_database(args, "cauth")
+
+    def validate(self, args, host):
+        if not args.sfconfig["authentication"]["ldap"]["disabled"] and \
+           not args.sfconfig["authentication"]["active_directory"]["disabled"]:
+            print("Ldap and ActiveDirectory can't be enabled at the same time")
+            exit(1)
