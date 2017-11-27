@@ -54,6 +54,14 @@ authentication:
     ldap_account_username_attribute: cn
     ldap_account_mail_attribute: mail
     ldap_account_surname_attribute: sn
+    # If ldap_account_domain is set, a config more friendly to Active
+    # Directory will be created.
+    # ldap_account_domain: domain.sftests.com
+    # ldap_url: ldap://pdc.sftests.com
+    # ldap_account_base: ou=people,dc=domain,dc=sftests,dc=com
+    # ldap_account_username_attribute: sAMAccountName
+    # ldap_account_mail_attribute: mail
+    # ldap_account_surname_attribute: name
 
   oauth2:
     # Currently supported OAuth2 providers are github, google, bitbucket

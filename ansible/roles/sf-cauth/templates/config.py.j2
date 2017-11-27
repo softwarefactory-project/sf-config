@@ -52,12 +52,23 @@ logging = {
 # Authorization configurations
 auth = {
     {% if not authentication['ldap']['disabled'] %}
-    'ldap': {
-        'host': '{{ authentication['ldap']['ldap_url'] }}',
-        'dn': '{{ authentication['ldap']['ldap_account_username_attribute'] }}=%(username)s,' + '{{ authentication['ldap']['ldap_account_base'] }}',
-        'sn': '{{ authentication['ldap']['ldap_account_surname_attribute'] }}',
-        'mail': '{{ authentication['ldap']['ldap_account_mail_attribute'] }}',
-    },
+        {% if 'ldap_account_domain' in authentication['ldap'] %}
+        'ldap': {
+            'host': '{{ authentication['ldap']['ldap_url'] }}',
+            'dn': '%(username)s@' + '{{ authentication['ldap']['ldap_account_domain'] }}',
+            'basedn': '{{ authentication['ldap']['ldap_account_base'] }}',
+            'sfilter': '(&(objectClass=user)({{ authentication['ldap']['ldap_account_username_attribute'] }}=%(username)s))',
+            'sn': '{{ authentication['ldap']['ldap_account_surname_attribute'] }}',
+            'mail': '{{ authentication['ldap']['ldap_account_mail_attribute'] }}',
+        },
+        {% else %}
+        'ldap': {
+            'host': '{{ authentication['ldap']['ldap_url'] }}',
+            'dn': '{{ authentication['ldap']['ldap_account_username_attribute'] }}=%(username)s,' + '{{ authentication['ldap']['ldap_account_base'] }}',
+            'sn': '{{ authentication['ldap']['ldap_account_surname_attribute'] }}',
+            'mail': '{{ authentication['ldap']['ldap_account_mail_attribute'] }}',
+        },
+        {% endif %}
     {% endif %}
     {% if not authentication['oauth2']['github']['disabled'] %}
     'github': {
