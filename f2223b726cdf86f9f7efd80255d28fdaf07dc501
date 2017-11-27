@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fae47921_41ad7c87",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_github-gate.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-11-27T09:02:01Z",
+      "side": 1,
+      "message": "Do you want to merge that into our \"official\" repo?",
+      "revId": "f2223b726cdf86f9f7efd80255d28fdaf07dc501",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
