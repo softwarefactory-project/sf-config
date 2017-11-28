@@ -15,8 +15,6 @@ inventory:
       - gerrit
       - gitweb
       - gerritbot
-      - zuul-server
-      - zuul-launcher
       - nodepool
       - jenkins
       - murmur
@@ -27,6 +25,7 @@ inventory:
       - storyboard-webclient
       - repoxplorer
       - firehose
+      - zuul3-web
 
   - name: elk
     ip: 192.168.0.11
@@ -40,27 +39,25 @@ inventory:
   - name: nb01
     ip: 192.168.0.12
     roles:
-      - nodepool-builder
+      - nodepool3-builder
+
+  - name: ze01
+    ip: 192.168.0.13
+    roles:
+      - zuul3-executor
 
   - name: zm01
-    ip: 192.168.0.13
-    public_url: http://zm01.fqdn
-    roles:
-      - zuul-merger
-
-  - name: zm02
     ip: 192.168.0.14
-    public_url: http://zm02.fqdn
     roles:
-      - zuul-merger
+      - zuul3-merger
 
-  - name: zuul3
+  - name: zs
     ip: 192.168.0.15
     public_url: http://zuul3.fqdn
     roles:
       - zuul3-scheduler
-      - zuul3-merger
-      - zuul3-executor
-      - zuul3-web
+
+  - name: nl01
+    ip: 192.168.0.16
+    roles:
       - nodepool3-launcher
-      - nodepool3-builder
