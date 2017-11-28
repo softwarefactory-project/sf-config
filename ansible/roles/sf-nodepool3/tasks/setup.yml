@@ -17,6 +17,34 @@
     - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
     - {src: /etc/opt/rh/rh-python35, dest: /etc}
 
+- name: check for nodepoolv2 user directory
+  command: grep -q "\/var\/lib\/nodepool:" /etc/passwd
+  failed_when: false
+  changed_when: false
+  register: nodepoolv2_user_home
+
+- name: setup nodepool_rsa for nodepoolv2 created user
+  block:
+    - name: Create .ssh directory
+      file:
+        dest: /var/lib/nodepool/.ssh
+        state: directory
+        mode: 0700
+        owner: nodepool
+        group: nodepool
+
+    - name: Copy the key
+      copy:
+        content: "{{ hostvars[inventory_hostname][item.key] }}"
+        dest: "/var/lib/nodepool/.ssh/{{ item.name }}"
+        mode: "{{ item.mode }}"
+        owner: "nodepool"
+        group: "nodepool"
+      with_items:
+        - {key: "nodepool_rsa", name: "id_rsa", mode: "0400"}
+        - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
+  when: nodepoolv2_user_home.rc == 0
+
 - name: add nodepool3 to sudoers
   copy:
     src: /etc/opt/rh/rh-python35/sudoers.d/nodepool
