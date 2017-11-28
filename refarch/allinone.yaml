@@ -17,29 +17,26 @@ inventory:
       - gerrit
       - gerritbot
       - logserver
-      - zuul-server
-      - zuul-merger
-      - zuul-launcher
       - zuul3-scheduler
       - zuul3-executor
       - zuul3-web
-      - nodepool-launcher
-      - nodepool-builder
       - nodepool3-launcher
       - nodepool3-builder
-      - jenkins
       - murmur
       - elasticsearch
-      - job-logs-gearman-client
-      - job-logs-gearman-worker
+        # TODO: fix AnsibleUndefinedVariable: 'jobs_zmq_publishers' is undefined
+        #      - job-logs-gearman-client
+        #      - job-logs-gearman-worker
       - logstash
       - kibana
       - mirror
       - storyboard
       - storyboard-webclient
       - repoxplorer
-      - firehose
-      - pages
+        # TODO: re-enable firehose with zuul mqtt driver or post-run mqtt.yml playbook
+        #      - firehose
+        # TODO: re-enable when page support is implemented in zuulv3
+        #      - pages
       - hydrant
       - influxdb
       - grafana
