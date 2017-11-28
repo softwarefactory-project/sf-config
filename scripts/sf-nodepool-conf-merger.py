@@ -62,6 +62,20 @@ def merge(inp, _nodepool, np_version):
     conf['labels'] = user.get('labels', [])
     conf['providers'] = user.get('providers', [])
     conf['diskimages'] = user.get('diskimages', [])
+    for extra_labels in user.get('extra-labels', []):
+        added = False
+        for provider in conf['providers']:
+            if provider['name'] != extra_labels['provider']:
+                continue
+            for pool in provider.get('pools', []):
+                if pool['name'] == extra_labels['pool']:
+                    pool['labels'].extend(extra_labels['labels'])
+                    added = True
+                    break
+            if added:
+                break
+        if not added:
+            raise RuntimeError("%s: couldn't find provider" % extra_labels)
     return yaml.dump(conf, default_flow_style=False)
 
 
