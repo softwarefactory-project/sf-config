@@ -6,5 +6,6 @@
         - tox-py27
         - demo-rpmbuild
     gate:
+      queue: demo-integrated
       jobs:
         - tox-py27
