@@ -31,6 +31,7 @@ finger_port=7979
 trusted_ro_paths=/opt/
 untrusted_ro_paths=/opt/
 log_config={{ zuul3_conf_dir }}/executor-logging.yaml
+log_stream_file=/var/tmp/zuul-console/{log_uuid}.log
 
 [web]
 listen_address=0.0.0.0
