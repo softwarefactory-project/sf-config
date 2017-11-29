@@ -7,7 +7,7 @@ labels:
 providers:
 {% for host in inventory %}
 {% if 'hypervisor-oci' in host['roles'] %}
-  - name: oci-provider-{{ loop.index0 }}
+  - name: oci-provider-{{ host['name'] }}
     driver: oci
     hypervisor: {{ host['hostname'] }}
     pools:
