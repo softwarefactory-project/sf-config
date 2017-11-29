@@ -83,11 +83,12 @@
           args:
             chdir: "{{ config_root }}"
 
-        - name: Validate zuul config syntax
-          command: >
-            env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
-          args:
-            chdir: "{{ config_root }}"
+        # This is no longer available in zuul, see I4a9d9473ce028e0b0cd32a8c48598c1682e1c329
+        # - name: Validate zuul config syntax
+        #   command: >
+        #     env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
+        #   args:
+        #     chdir: "{{ config_root }}"
       when: '"zuul3-scheduler" in arch.roles'
 
     - name: Check resources changes
