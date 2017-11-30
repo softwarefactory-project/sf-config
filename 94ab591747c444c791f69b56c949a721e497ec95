@@ -22,6 +22,30 @@
       "revId": "94ab591747c444c791f69b56c949a721e497ec95",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7ad8896b_ce864365",
+        "filename": "refarch/distributed.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2017-11-30T15:22:39Z",
+      "side": 1,
+      "message": "No yet, I have to improve the heat template to manage another network.",
+      "parentUuid": "dae975fb_94a3aa4f",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "94ab591747c444c791f69b56c949a721e497ec95",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
