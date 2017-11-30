@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dae975fb_94a3aa4f",
+        "filename": "refarch/distributed.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-11-30T09:21:49Z",
+      "side": 1,
+      "message": "Afaik it should be on another network. Is it used by the heat deployment ? Is the heat deployment create another network for this role ?",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "94ab591747c444c791f69b56c949a721e497ec95",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
