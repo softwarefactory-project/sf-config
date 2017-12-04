@@ -23,15 +23,18 @@
   changed_when: false
   register: nodepoolv2_user_home
 
-- name: setup nodepool_rsa for nodepoolv2 created user
+- name: setup nodepool_rsa and cloud.yaml for nodepoolv2 created user
   block:
-    - name: Create .ssh directory
+    - name: Create .ssh and .config directories
       file:
-        dest: /var/lib/nodepool/.ssh
+        dest: "{{ item }}"
         state: directory
         mode: 0700
         owner: nodepool
         group: nodepool
+      with_items:
+        - /var/lib/nodepool/.ssh
+        - /var/lib/nodepool/.config/openstack
 
     - name: Copy the key
       copy:
@@ -43,6 +46,14 @@
       with_items:
         - {key: "nodepool_rsa", name: "id_rsa", mode: "0400"}
         - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
+
+    - name: Install os-client-config
+      template:
+        src: clouds.yaml.j2
+        dest: /var/lib/nodepool/.config/openstack/clouds.yaml
+        owner: nodepool
+        group: nodepool
+        mode: 0400
   when: nodepoolv2_user_home.rc == 0
 
 - name: add nodepool3 to sudoers
