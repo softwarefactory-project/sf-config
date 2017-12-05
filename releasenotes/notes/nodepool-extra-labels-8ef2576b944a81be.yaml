@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new 'extra-labels' nodepool configuration items allows adding labels to
+    a provider defined in a different files.
