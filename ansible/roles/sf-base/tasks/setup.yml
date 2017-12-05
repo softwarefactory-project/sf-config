@@ -6,10 +6,17 @@
     mode: 0755
   with_items:
     - /var/lib/software-factory/state
-    - /etc/software-factory
     - /usr/share/software-factory
     - /usr/libexec/software-factory
     - /usr/share/software-factory
+
+- name: "sf: ensure /etc/software-factory exists"
+  file:
+    path: /etc/software-factory
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
 
 - name: "system: check for python3 scl"
   stat:
