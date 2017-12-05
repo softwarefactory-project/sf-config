@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad58531_d0a5c2b5",
+        "filename": "ansible/roles/sf-zuul3/templates/zuul.conf.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-12-05T05:16:02Z",
+      "side": 1,
+      "message": "Why adding a new line here?",
+      "revId": "42e4b771022f3e6d2b033525ba158c0abb586822",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
