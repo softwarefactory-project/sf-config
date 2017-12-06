@@ -1,6 +1,7 @@
 clouds:
 {% for provider in nodepool_providers|default([]) + nodepool3_providers|default([]) %}
   {{ provider['name'] }}:
+    api_timeout: {{ provider['api_timeout'] | default(60) }}
     auth:
       username: {{ provider['username'] }}
       password: {{ provider['password'] }}
