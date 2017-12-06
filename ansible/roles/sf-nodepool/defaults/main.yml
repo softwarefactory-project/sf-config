@@ -22,8 +22,10 @@ nodepool_packages:
   - nodepool-builder
   - sf-elements
 
+nodepool_cache_ttl: 5
 nodepool_providers:
   - name: default
+    api_timeout: 60
     auth_url: http://localhost:35357/v2.0
     project_name: tenantname
     username: username

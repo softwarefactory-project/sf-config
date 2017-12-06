@@ -20,8 +20,10 @@ nodepool3_builder_packages:
   - sf-elements
   - httpd
 
+nodepool3_cache_ttl: 5
 nodepool3_providers:
   - name: default
+    api_timeout: 60
     auth_url: http://localhost:35357/v2.0
     project_name: tenantname
     username: username
