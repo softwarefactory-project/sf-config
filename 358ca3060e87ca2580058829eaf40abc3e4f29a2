@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ae2911b_af6d35ce",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/gh_pipelines.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2017-12-07T17:57:36Z",
+      "side": 1,
+      "message": "it\u0027s a template, how about replacing it by {{ fqdn }} ?",
+      "revId": "358ca3060e87ca2580058829eaf40abc3e4f29a2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
