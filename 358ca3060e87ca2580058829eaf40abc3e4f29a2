@@ -16,6 +16,24 @@
       "revId": "358ca3060e87ca2580058829eaf40abc3e4f29a2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae2911b_0f00c9a9",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/gh_pipelines.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2017-12-08T10:30:25Z",
+      "side": 1,
+      "message": "We should discuss the integration of that in SF. I\u0027ll raise a grooming about this subject soon.",
+      "parentUuid": "3ae2911b_af6d35ce",
+      "revId": "358ca3060e87ca2580058829eaf40abc3e4f29a2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
