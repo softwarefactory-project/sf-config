@@ -5,3 +5,10 @@
     src: "/etc/mosquitto/"
     dest: "{{ log_dest }}/etc"
   ignore_errors: true
+
+- name: "Fetch mosquitto log"
+  synchronize:
+    mode: pull
+    src: "/var/lib/software-factory/mosquitto_sub.log"
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
