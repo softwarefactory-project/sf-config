@@ -7,7 +7,6 @@ inventory:
       - install-server
       - mysql
       - zookeeper
-      - rabbitmq
       - gateway
       - cauth
       - managesf
@@ -30,8 +29,6 @@ inventory:
       - logstash
       - kibana
       - mirror
-      - storyboard
-      - storyboard-webclient
       - repoxplorer
         # TODO: re-enable when page support is implemented in zuulv3
         #      - pages
