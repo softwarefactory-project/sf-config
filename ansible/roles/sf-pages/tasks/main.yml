@@ -1,3 +1,0 @@
----
-- include_tasks: "{{ role_action }}.yml"
-  when: role_action in role_actions

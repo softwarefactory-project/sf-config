@@ -1,0 +1,1 @@
+pagesuser ALL=(root) NOPASSWD: /bin/systemctl reload httpd
