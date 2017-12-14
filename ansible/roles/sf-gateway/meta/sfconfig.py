@@ -39,6 +39,7 @@ class Gateway(Component):
             "/etc/software-factory/logo-favicon.ico")
         args.glue["gateway_splash_image_data"] = encode_image(
             "/etc/software-factory/logo-splash.png")
+        args.glue["pagesuser_authorized_keys"] = []
         if "koji_host" in args.sfconfig["network"] and \
            args.sfconfig["network"]["koji_host"]:
             args.glue["koji_host"] = args.sfconfig["network"]["koji_host"]

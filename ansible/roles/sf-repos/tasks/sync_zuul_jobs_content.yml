@@ -24,6 +24,8 @@
     - roles/lint-bashate
     - roles/lint-flake8
     - roles/lint-yaml
+    - roles/fetch-pages
+    - roles/upload-pages
   register: _static_files
 
 - name: Sync upstream files

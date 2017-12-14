@@ -1,0 +1,28 @@
+- name: Create project pages directory
+  file:
+    path: "{{ zuul_pagesserver_root }}/{{ zuul.project.name }}"
+    state: directory
+    recurse: yes
+    mode: 0775
+
+- name: Create vhost file
+  template:
+    src: templates/vhost.conf.j2
+    dest: "/etc/httpd/pages.d/pages-{{ zuul.project.name | regex_replace('/', '_') }}.conf"
+    mode: 0644
+  register: vhost
+
+- name: Upload website to publication server
+  synchronize:
+    src: "{{ zuul.executor.log_root }}/pages/"
+    dest: "{{ zuul_pagesserver_root }}/{{ zuul.project.name }}/"
+    delete: yes
+    recursive: yes
+  no_log: true
+
+# pageuser is authorized to reload
+# httpd via sudo. Not using become and systemd
+# facility as it fails to match the sudoerd rule
+- name: Reload httpd configuration
+  command: sudo /bin/systemctl reload httpd
+  when: vhost|changed

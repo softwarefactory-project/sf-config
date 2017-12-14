@@ -1,0 +1,17 @@
+- name: Set pages fetching path on the executor
+  set_fact:
+    pages_path: "{{ zuul.executor.log_root }}/pages"
+
+- name: Ensure local pages dir
+  file:
+    path: "{{ pages_path }}"
+    state: directory
+  delegate_to: localhost
+
+- name: Collect pages on the executor
+  synchronize:
+    dest: "{{ pages_path }}"
+    mode: pull
+    src: "{{ pages_artifacts_dir }}"
+    verify_host: true
+  no_log: true

@@ -188,6 +188,8 @@
     state: started
   when: groups['gerrit'] != groups['gateway']
 
+- include_tasks: setup_pages.yml
+
 - name: Start service
   systemd:
     name: httpd
