@@ -1,0 +1,46 @@
+---
+- name: Create pages user
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=pagesuser shell=/bin/sh"
+
+- name: Create pages directory
+  file:
+    path: /var/www/pages
+    state: directory
+    owner: pagesuser
+    group: apache
+    mode: 0755
+
+- name: Create vhosts pages directory
+  file:
+    path: /etc/httpd/pages.d
+    state: directory
+    owner: pagesuser
+    group: apache
+    mode: 0755
+
+- name: Install /var/www/pages config
+  copy:
+    src: files/pages.conf
+    dest: /etc/httpd/conf.d/pages.conf
+    mode: 0444
+  notify: apache reload
+
+- name: Add pages.d to httpd configuration
+  lineinfile:
+    dest: /etc/httpd/conf/httpd.conf
+    line: "IncludeOptional pages.d/*.conf"
+    insertafter: "^IncludeOptional conf.d/.*$"
+    state: present
+  notify: apache reload
+
+- name: Install sudo conf for pagesuser
+  copy:
+    src: files/pagesuser
+    dest: /etc/sudoers.d/pagesuser
+    mode: 0640
+
+- name: Authorize pagesuser sshkey
+  authorized_key:
+    user: pagesuser
+    key: "{{ item }}"
+  with_items: "{{ pagesuser_authorized_keys }}"
