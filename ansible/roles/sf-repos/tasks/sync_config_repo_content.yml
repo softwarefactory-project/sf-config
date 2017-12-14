@@ -49,6 +49,7 @@
     - playbooks/base/pre.yaml
     - playbooks/base/post.yaml
     - zuul.d/_jobs-base.yaml
+    - zuul.d/_jobs-pages.yaml
     - zuul.d/_pipelines.yaml
     - zuulV3/_main.yaml
     - nodepoolV3/_local_hypervisor_oci.yaml
@@ -93,6 +94,25 @@
         dest: "{{ config_clone_dir }}/zuul.d/_secret_install_server.yaml"
   when: not _secret_install_server.stat.exists
 
+- name: Check for _secret_pages file
+  stat:
+    path: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
+  register: _secret_sfpages
+
+- block:
+    - name: "Generate sfpages ssh_private_key secret"
+      command: >
+        /usr/share/sf-config/scripts/zuul3-encrypt-secret.py \
+            /var/lib/software-factory/certs/config.pub ssh_private_key \
+            --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_gatewayserver_rsa
+      register: _sfpages_private_key_secret
+
+    - name: Update secret_sfpages.yaml
+      template:
+        src: "config/zuul.d/_secret_sfpages.yaml.j2"
+        dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
+  when: not _secret_sfpages.stat.exists
+
 - name: "Indicate config repo changed"
   set_fact:
     config_repo_updated: true
@@ -101,6 +121,7 @@
         not _zuulv3_config_dir.stat.exists or
         not _nodepoolv3_config_dir.stat.exists or
         not _secret_sflogs.stat.exists or
+        not _secret_sfpages.stat.exists or
         not _secret_install_server.stat.exists
 
 - name: "Indicated config repo didn't changed"
@@ -112,4 +133,5 @@
     - _zuulv3_config_dir.stat.exists
     - _nodepoolv3_config_dir.stat.exists
     - _secret_sflogs.stat.exists
+    - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists
