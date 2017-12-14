@@ -1,0 +1,11 @@
+---
+- name: Check for buildset artifacts
+  stat:
+    path: "{{ zuul.executor.log_root }}/buildset"
+  register: _buildset_artifacts
+
+- name: Define buildset artifacts location
+  delegate_to: localhost
+  zuul_return:
+    data:
+      buildset_artifacts_url: "{{ zuul_log_url }}/{{ log_path }}/buildset"
