@@ -33,8 +33,6 @@ inventory:
       - storyboard
       - storyboard-webclient
       - repoxplorer
-        # TODO: re-enable when page support is implemented in zuulv3
-        #      - pages
       - firehose
       - hydrant
       - influxdb

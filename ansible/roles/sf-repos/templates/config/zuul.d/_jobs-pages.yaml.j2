@@ -1,0 +1,26 @@
+---
+- job:
+    name: build-and-publish-pages
+    parent: base
+    description: Base build and publish pages job
+    run: playbooks/pages/build.yaml
+    post-run:
+      - playbooks/pages/fetch.yaml
+      - playbooks/pages/publish.yaml
+    secrets:
+      - site_pages
+    allowed-projects:
+      - config
+    vars:
+      src_dir: /
+      fqdn: {{ fqdn }}
+
+- job:
+    name: build-pages
+    parent: base
+    description: Pages build
+    run: playbooks/pages/build.yaml
+    post-run:
+      - playbooks/pages/fetch.yaml
+    vars:
+      src_dir: /

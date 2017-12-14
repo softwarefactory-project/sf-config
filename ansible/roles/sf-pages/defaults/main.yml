@@ -1,9 +1,0 @@
----
-role_actions:
-  - install
-  - setup
-  - backup
-  - restore
-  - update
-
-pagesuser_authorized_keys: []

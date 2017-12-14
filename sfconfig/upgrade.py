@@ -119,6 +119,8 @@ def update_arch(args):
             host['roles'].remove('nodepool')
             host['roles'].append('nodepool-launcher')
             dirty = True
+        if 'pages' in host['roles']:
+            host['roles'].remove('pages')
 
     # Remove deployments related information
     for deploy_key in ("cpu", "mem", "hostid", "rolesname"):

@@ -1,0 +1,46 @@
+---
+- hosts: all
+  tasks:
+    - name: "Get workspace directory"
+      command: pwd
+      register: pwd_command
+      args:
+        chdir: "src/{{ zuul.project.canonical_hostname }}/"
+
+    - name: "Set workspace"
+      set_fact:
+        workspace: "{{ pwd_command.stdout }}"
+        source: "{{ pwd_command.stdout }}/{{ zuul.project.name }}/{{ src_dir }}"
+
+    - name: "Ensure pages-artifacts exists"
+      file:
+        path: "{{ workspace }}/pages-artifacts"
+        state: directory
+
+    - name: "Check sphinx content"
+      stat:
+        path: "{{ source }}/conf.py"
+      register: sphinx
+
+    - name: "Build sphinx site"
+      command: "sphinx-build -b html . {{ workspace }}/pages-artifacts/"
+      args:
+        chdir: "{{ source }}"
+      when: sphinx.stat.exists
+
+    - name: "Check pelican content"
+      stat:
+        path: "{{ source }}/pelicanconf.py"
+      register: pelican
+
+    - name: "Build pelican site"
+      command: "pelican content -o {{ workspace }}/pages-artifacts/"
+      args:
+        chdir: "{{ source }}"
+      when: pelican.stat.exists
+
+    - name: "Copy {{ zuul.project.name }}/{{ src_dir }} to pages-artifacts/"
+      shell: "cp -Rf {{ workspace }}/{{ zuul.project.name }}/{{ src_dir }}/* {{ workspace }}/pages-artifacts/"
+      when:
+        - not sphinx.stat.exists
+        - not pelican.stat.exists
