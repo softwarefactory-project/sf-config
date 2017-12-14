@@ -22,17 +22,3 @@
         content: "{{ upstreamconfig.stdout }}"
         dest: /var/lib/software-factory/state/dashboards_config
   when: localconfig.stdout != upstreamconfig.stdout
-
-- name: Fetch virt host pages definitions from the pages node
-  synchronize:
-    src: /var/lib/pagesuser/httpd_pages.conf
-    dest: /etc/httpd/conf.d/pages.conf
-  delegate_to: "{{ pages_host }}"
-  register: pagesconfig
-  when: "'pages' in roles"
-
-- name: "Reload httpd as pages conf changed"
-  systemd:
-    name: httpd
-    state: reloaded
-  when: pagesconfig|changed

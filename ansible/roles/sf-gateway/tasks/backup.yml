@@ -9,6 +9,8 @@
   with_items:
     - /etc/letsencrypt/
     - /etc/httpd/managesf_htpasswd
+    - /etc/httpd/pages.d/
+    - /var/www/pages/
 
 - name: Backup extra directories
   synchronize:
