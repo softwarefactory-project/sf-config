@@ -1,0 +1,22 @@
+---
+- hosts: all
+  tasks:
+    - name: "Get workspace directory"
+      command: pwd
+      register: pwd_command
+      args:
+        chdir: "src/{{ zuul.project.canonical_hostname }}/"
+
+    - name: "Set workspace"
+      set_fact:
+        workspace: "{{ pwd_command.stdout }}"
+
+    - name: "Ensure pages-artifacts exists"
+      file:
+        path: "{{ workspace }}/pages-artifacts"
+        state: directory
+
+    - name: "Build sphinx"
+      command: "sphinx-build -b html . {{ workspace }}/pages-artifacts/"
+      args:
+        chdir: "{{ workspace }}/{{ zuul.project.name }}/{{ src_dir }}"
