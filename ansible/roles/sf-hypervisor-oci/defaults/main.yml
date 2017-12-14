@@ -13,3 +13,5 @@ hypervisor_oci_packages:
   - python-tox
   - traceroute
   - rpm-build
+  - python2-pelican
+  - python2-sphinx
