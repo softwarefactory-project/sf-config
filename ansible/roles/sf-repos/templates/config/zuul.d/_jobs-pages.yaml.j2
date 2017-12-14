@@ -1,0 +1,33 @@
+---
+- job:
+    name: build-and-publish-pages
+    parent: base
+    description: Base build and publish pages job
+    post-run:
+      - playbooks/pages/fetch.yaml
+      - playbooks/pages/publish.yaml
+    secrets:
+      - site_pages
+    allowed-projects:
+      - config
+    vars:
+      src_dir: /
+      fqdn: {{ fqdn }}
+
+- job:
+    name: build-and-publish-sphinx-pages
+    parent: build-and-publish-pages
+    description: Sphinx pages build and publish
+    run: playbooks/pages/sphinx.yaml
+    allowed-projects:
+      - config
+
+- job:
+    name: build-sphinx-pages
+    parent: base
+    description: Sphinx pages build
+    run: playbooks/pages/sphinx.yaml
+    post-run:
+      - playbooks/pages/fetch.yaml
+    vars:
+      src_dir: /
