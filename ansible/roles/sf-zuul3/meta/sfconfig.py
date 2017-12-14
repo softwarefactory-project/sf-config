@@ -120,6 +120,7 @@ class Zuul3Scheduler(Component):
         self.add_mysql_database(args, "zuul3")
         self.get_or_generate_ssh_key(args, "zuul_rsa")
         self.get_or_generate_ssh_key(args, "zuul_logserver_rsa")
+        self.get_or_generate_ssh_key(args, "zuul_gatewayserver_rsa")
         self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
         args.glue["zuul3_pub_url"] = "%s/zuul3/" % args.glue["gateway_url"]
         args.glue["zuul3_internal_url"] = "http://%s:%s/" % (
@@ -130,6 +131,8 @@ class Zuul3Scheduler(Component):
         args.glue["zuul3_mysql_host"] = args.glue["mysql_host"]
         args.glue["loguser_authorized_keys"].append(
             args.glue["zuul_logserver_rsa_pub"])
+        args.glue["pagesuser_authorized_keys"].append(
+            args.glue["zuul_gatewayserver_rsa_pub"])
         args.glue["openstack_connection_name"] = self.openstack_connection_name
 
         args.glue["zuul3_periodic_pipeline_mail_rcpt"] = args.sfconfig[

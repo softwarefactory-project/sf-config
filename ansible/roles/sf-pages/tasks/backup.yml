@@ -1,8 +1,0 @@
----
-- name: "Backup data"
-  synchronize:
-    mode: pull
-    src: "/var/www/html/pages"
-    dest: "{{ backup_dest }}/"
-    delete: "yes"
-    rsync_opts: --relative
