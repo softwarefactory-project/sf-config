@@ -20,6 +20,7 @@
     recursive: "yes"
   with_items:
     - playbooks/linters
+    - roles/buildset-artifacts-location
     - roles/lint-bashate
     - roles/lint-flake8
     - roles/lint-yaml
