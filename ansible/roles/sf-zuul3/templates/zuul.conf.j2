@@ -2,6 +2,11 @@
 server={{ zuul3_scheduler_host }}
 port={{ zuul3_gearman_port }}
 
+{% if 'influxdb' in roles %}
+[statsd]
+server={{ influxdb_host }}
+{% endif %}
+
 [zookeeper]
 hosts={{ zookeeper_host }}:2181
 
