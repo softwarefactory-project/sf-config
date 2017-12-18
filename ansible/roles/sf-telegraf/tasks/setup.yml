@@ -24,7 +24,13 @@
     - {name: password, value: '{{ telegraf_influxdb_password }}'}
   notify: Restart telegraf
 
-- name: Configure inputs for network
+- name: Configure hostname
+  replace:
+    dest: /etc/telegraf/telegraf.conf
+    regexp: '  hostname = ""'
+    replace: '  hostname = "{{ ansible_fqdn }}"'
+
+- name: Configure inputs plugins
   replace:
     dest: /etc/telegraf/telegraf.conf
     regexp: '^#? ?\[\[inputs.net\]\]'
@@ -35,7 +41,7 @@
   copy:
     src: statsd.conf
     dest: /etc/telegraf/telegraf.d/statsd.conf
-  when: ansible_fqdn == '{{ influxdb_host }}'
+  when: ansible_fqdn == influxdb_host
   notify: Restart telegraf
 
 - name: Start service
