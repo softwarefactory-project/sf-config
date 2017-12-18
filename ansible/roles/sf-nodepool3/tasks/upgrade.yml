@@ -1,0 +1,9 @@
+---
+# Make sure nodepool3 is stopped and let sfconfig
+# restart in the right order zookeeper then nodepool
+- name: Stop services
+  service:
+    name: "{{ item }}"
+    state: stopped
+  with_items: "{{ nodepool3_services }}"
+  ignore_errors: "yes"

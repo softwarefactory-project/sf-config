@@ -5,6 +5,7 @@ role_actions:
   - update
   - get_logs
   - disable
+  - upgrade
 
 nodepool3_services:
   - rh-python35-nodepool-launcher
