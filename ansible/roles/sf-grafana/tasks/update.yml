@@ -1,0 +1,30 @@
+---
+- name: Create metrics_config file
+  file:
+    path: /var/lib/software-factory/state/metrics_config
+    state: touch
+  changed_when: False
+
+- name: Check local metrics config
+  command: cat /var/lib/software-factory/state/metrics_config
+  register: localconfig
+
+- name: Check upstream metrics config
+  command: git log -n 3 --oneline metrics/
+  args:
+    chdir: /root/config
+  register: upstreamconfig
+
+- name: Update metrics dashboards
+  shell: >
+    find . -not -path '*/\.*' -regextype posix-egrep -regex
+    '.*.(yaml|yml)$' | xargs -I yml grafana-dashboard update yml
+  args:
+    chdir: "/root/config/metrics"
+  when: localconfig.stdout != upstreamconfig.stdout
+
+- name: Write config repo sha1 matching current metrics configuration
+  copy:
+    content: "{{ upstreamconfig.stdout }}"
+    dest: /var/lib/software-factory/state/metrics_config
+  when: localconfig.stdout != upstreamconfig.stdout
