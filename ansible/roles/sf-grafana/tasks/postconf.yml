@@ -27,3 +27,57 @@
     body_format: json
     force_basic_auth: "yes"
   when: grafana_data_source.name not in grafana_datasources
+
+- name: Create grafyaml config directory
+  file:
+    path: /etc/grafyaml
+    state: directory
+
+- name: Get all api keys
+  uri:
+    url: '{{ grafana_internal_apikey_url }}'
+    method: GET
+    user: admin
+    password: '{{ grafana_admin_password }}'
+    force_basic_auth: "yes"
+  register: apikeys
+
+- name: Create a list with all api key names
+  set_fact:
+    apikeys_names: "{{ apikeys.json | map(attribute='name') | list }}"
+  when: apikeys.json is defined
+
+- name: Create api key and configuration file for grafyaml
+  block:
+    - name: Create api for grafyaml service
+      uri:
+        url: '{{ grafana_internal_apikey_url }}'
+        method: POST
+        user: admin
+        password: '{{ grafana_admin_password }}'
+        force_basic_auth: "yes"
+        body: '{{ grafyaml_apikey_data | to_json }}'
+        body_format: json
+      register: apikey
+
+    - set_fact:
+        grafyaml_apikey: '{{ apikey.json.key }}'
+
+    - name: Copy grafyaml_apikey in secrets.yaml
+      lineinfile:
+        path: /var/lib/software-factory/bootstrap-data/secrets.yaml
+        regexp: '^grafyaml_apikey'
+        line: 'grafyaml_apikey: {{ grafyaml_apikey }}'
+  when: apikeys_names is not defined or grafyaml_apikey_data.name not in apikeys_names
+
+- include_vars:
+    file: /var/lib/software-factory/bootstrap-data/secrets.yaml
+  when: grafyaml_apikey is not defined
+
+- name: Configure grafyaml
+  template:
+    src: grafyaml.conf.j2
+    dest: /etc/grafyaml/grafyaml.conf
+    owner: root
+    group: root
+    mode: 0444
