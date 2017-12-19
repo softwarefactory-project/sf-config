@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa0d59b9_4d6fed92",
+        "filename": "ansible/roles/sf-zuul3/templates/zuul.conf.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2017-12-19T08:02:57Z",
+      "side": 1,
+      "message": "Use {{ influxdb_host }} instead.",
+      "revId": "e9135081f73d7bb3a08136777230fefeb8fe7b6f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
