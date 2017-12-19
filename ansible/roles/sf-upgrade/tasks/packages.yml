@@ -18,6 +18,16 @@
     name: epel-release
     state: absent
 
+# 2.7 only
+- name: Remove python2-paramiko to use python-paramiko from extras instead
+  yum:
+    name: python2-paramiko
+    state: absent
+- name: Quickly re-install ansible afterward
+  yum:
+    name: ansible
+    state: present
+
 - name: "Update packages"
   yum:
     name: "*"
