@@ -1,5 +1,5 @@
 ---
-- name: "Add the grafana RPM repository"
+- name: Add the grafana RPM repository
   yum_repository:
     name: "{{ grafana_repo_name }}"
     description: "{{ grafana_repo_desc }}"
@@ -7,9 +7,17 @@
     gpgkey: "{{ grafana_repo_gpgkey }}"
     gpgcheck: "{{ grafana_repo_gpgcheck }}"
 
-- name: "Install package"
+- name: Install package
   yum:
     name: grafana
     state: present
     disablerepo: "*"
     enablerepo: "{{ grafana_repo_name }},base,updates"
+
+- name: Install grafyaml
+  yum:
+    name: grafyaml
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  delegate_to: '{{ install_server_host }}'
