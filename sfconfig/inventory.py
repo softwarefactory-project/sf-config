@@ -224,7 +224,7 @@ def config_update(args, pb):
     # The list of role to run update task
     roles_order = ["gerrit", "jenkins", "pages", "gerritbot",
                    "gateway", "managesf", "mirror", "repoxplorer",
-                   "zuul", "nodepool", "zuul3", "nodepool3"]
+                   "zuul", "nodepool", "zuul3", "nodepool3", "grafana"]
     # The extra list of host group to run fetch-config-repo
     roles_group = [
         "zuul-server", "zuul-merger",
