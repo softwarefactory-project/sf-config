@@ -18,6 +18,10 @@
     name: epel-release
     state: absent
 
+# 2.7 only
+- name: Remove python2-paramiko to use python-paramiko from extras instead
+  shell: rpm -e --nodeps python2-paramiko && yum install -y python-paramiko
+
 - name: "Update packages"
   yum:
     name: "*"
