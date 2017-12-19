@@ -7,7 +7,7 @@
   synchronize:
     src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/zuulV3/
     dest: "{{ config_clone_dir }}/zuulV3"
-  when: _zuulv3_config_dir.stat.exists != True
+  when: not _zuulv3_config_dir.stat.exists
 
 - stat:
     path: "{{ config_clone_dir }}/nodepoolV3"
@@ -17,7 +17,17 @@
   synchronize:
     src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/nodepoolV3/
     dest: "{{ config_clone_dir }}/nodepoolV3"
-  when: _nodepoolv3_config_dir.stat.exists != True
+  when: not _nodepoolv3_config_dir.stat.exists
+
+- stat:
+    path: "{{ config_clone_dir }}/metrics"
+  register: _metrics_config_dir
+
+- name: Add default metrics configuration directory
+  synchronize:
+    src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/metrics/
+    dest: "{{ config_clone_dir }}/metrics"
+  when: not _metrics_config_dir.stat.exists
 
 - name: Ensure config sub dir
   file:
@@ -121,6 +131,7 @@
         _config_template_files|changed or
         not _zuulv3_config_dir.stat.exists or
         not _nodepoolv3_config_dir.stat.exists or
+        not _metrics_config_dir.stat.exists or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
         not _secret_install_server.stat.exists
@@ -133,6 +144,7 @@
     - not _config_template_files|changed
     - _zuulv3_config_dir.stat.exists
     - _nodepoolv3_config_dir.stat.exists
+    - _metrics_config_dir.stat.exists
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists
