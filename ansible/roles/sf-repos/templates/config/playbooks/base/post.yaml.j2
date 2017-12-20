@@ -10,3 +10,5 @@
     - role: upload-logs
       zuul_log_url: "https://{{ fqdn }}/logs"
       zuul_logserver_root: /var/www/logs
+    - role: buildset-artifacts-location
+      zuul_log_url: "https://{{ fqdn }}/logs"
