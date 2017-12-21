@@ -44,3 +44,5 @@ zuul_log_url: "{{ gateway_url }}/logs/{build.parameters[LOG_PATH]}"
 
 # Enable zuul jenkins credencials support
 zuul_jenkins_credencials: true
+
+zuul_periodic_pipeline_mail_rcpt: root@localhost

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Include default smtp mail publisher when periodic or post pipeline jobs fail.
+    Change the recipient with the 'periodic_pipeline_mail_rcpt' setting
+    in sfconfig.yaml

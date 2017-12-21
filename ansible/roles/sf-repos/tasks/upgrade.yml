@@ -22,7 +22,7 @@
     - dest: jobs-zuul/_config.yaml
       src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/jobs-zuul/_config.yaml
     - dest: zuul/_layout.yaml
-      src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/zuul/_layout.yaml
+      src: config/zuul/_layout.yaml.j2
     - src: config/nodepoolV3/_local_hypervisor_oci.yaml.j2
       dest: nodepoolV3/_local_hypervisor_oci.yaml
 

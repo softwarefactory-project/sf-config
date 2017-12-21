@@ -125,6 +125,10 @@
     success:
       sqlreporter:
     failure:
+      smtp:
+        from: "zuul@{{ fqdn }}"
+        to: "{{ zuul3_periodic_pipeline_mail_rcpt }}"
+        subject: '[Zuul] Job failed in post pipeline: {change.project}'
       sqlreporter:
 
 - pipeline:
@@ -143,9 +147,9 @@
       sqlreporter:
     failure:
       smtp:
-        from: zuul@{{ fqdn }}
-        to: {{ network.admin_mail_forward }}
-        subject: 'Release of {change.project} failed'
+        from: "zuul@{{ fqdn }}"
+        to: "{{ zuul3_periodic_pipeline_mail_rcpt }}"
+        subject: '[Zuul] Job failed in release pipeline: {change.project}'
       sqlreporter:
 
 - pipeline:
@@ -161,7 +165,7 @@
       sqlreporter:
     failure:
       smtp:
-        from: zuul@{{ fqdn }}
-        to: {{ network.admin_mail_forward }}
-        subject: 'Periodic job failed'
+        from: "zuul@{{ fqdn }}"
+        to: "{{ zuul3_periodic_pipeline_mail_rcpt }}"
+        subject: '[Zuul] Job failed in periodic pipeline: {change.project}'
       sqlreporter:
