@@ -42,6 +42,9 @@ class ZuulServer(Component):
         args.glue["zuul_internal_url"] = "http://%s:%s/" % (
             args.glue["zuul_server_host"], args.defaults["zuul_port"])
 
+        args.glue["zuul_periodic_pipeline_mail_rcpt"] = args.sfconfig[
+            "zuul"]["periodic_pipeline_mail_rcpt"]
+
         # Extra settings
         zuul_config = args.sfconfig.get("zuul", {})
         for logserver in zuul_config.get("external_logservers", []):

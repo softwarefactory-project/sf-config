@@ -132,6 +132,9 @@ class Zuul3Scheduler(Component):
             args.glue["zuul_logserver_rsa_pub"])
         args.glue["openstack_connection_name"] = self.openstack_connection_name
 
+        args.glue["zuul3_periodic_pipeline_mail_rcpt"] = args.sfconfig[
+            "zuul3"]["periodic_pipeline_mail_rcpt"]
+
         # Extra settings
         zuul3_config = args.sfconfig.get("zuul3", {})
         args.glue["zuul3_upstream_zuul_jobs"] = zuul3_config[
