@@ -19,8 +19,10 @@ cron:
   check: '*/15 * * * *'
 
 targets:
+{% if 'zuul-launcher' in roles and nodepool_zuul_launcher_target|default(True) %}
   - name: zuul
     assign-via-gearman: True
+{% endif %}
 {% if 'jenkins' in roles %}
   - name: default
 {% endif %}
