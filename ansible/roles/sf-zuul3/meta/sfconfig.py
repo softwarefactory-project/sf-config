@@ -25,6 +25,13 @@ KNOWN_GERRITS = {
 }
 
 
+def check_keys(list, *args):
+    """Check for the presence of a dictionary in list based on key-Value
+    tuples"""
+    keyvalues = zip(args[0::2], args[1::2])
+    return any(all(element[k] == v for k, v in keyvalues) for element in list)
+
+
 class Zuul3Scheduler(Component):
     role = "zuul3-scheduler"
     require_role = ["nodepool3", "zookeeper"]
@@ -152,15 +159,19 @@ class Zuul3Scheduler(Component):
         args.glue["zuul3_ssh_known_hosts"] = []
         args.glue["zuul3_github_connections"] = []
 
-        # Add local gerrit if available
+        # Add local gerrit if available, and not already present
         if "gerrit" in args.glue["roles"]:
-            args.glue.setdefault("zuul3_gerrit_connections", []).append({
-                'name': 'gerrit',
-                'port': 29418,
-                'hostname': args.glue["gerrit_host"],
-                'puburl': args.glue["gerrit_pub_url"],
-                'username': 'zuul'
-            })
+            args.glue.setdefault("zuul3_gerrit_connections", [])
+            if not check_keys(args.glue["zuul3_gerrit_connections"],
+                              'name',
+                              'gerrit'):
+                args.glue["zuul3_gerrit_connections"].append({
+                    'name': 'gerrit',
+                    'port': 29418,
+                    'hostname': args.glue["gerrit_host"],
+                    'puburl': args.glue["gerrit_pub_url"],
+                    'username': 'zuul'
+                })
 
         for extra_gerrit in args.glue.get("zuul3_gerrit_connections", []):
             if extra_gerrit.get("port", 29418) == 22:
