@@ -10,6 +10,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import copy
+
 from sfconfig.components import Component
 from sfconfig.utils import get_default
 from sfconfig.utils import fail
@@ -142,8 +144,8 @@ class Zuul3Scheduler(Component):
         zuul3_config = args.sfconfig.get("zuul3", {})
         args.glue["zuul3_upstream_zuul_jobs"] = zuul3_config[
             "upstream_zuul_jobs"]
-        args.glue["zuul3_gerrit_connections"] = zuul3_config.get(
-            "gerrit_connections", [])
+        args.glue["zuul3_gerrit_connections"] = copy.copy(zuul3_config.get(
+            "gerrit_connections", []))
         args.glue["zuul3_success_log_url"] = get_default(
             zuul3_config, "success_log_url",
             "%s/logs/{build.uuid}/" % args.glue["gateway_url"]
