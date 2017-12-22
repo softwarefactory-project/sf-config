@@ -119,6 +119,17 @@ def update_sfconfig(args):
         }
         dirty = True
 
+    # Check for duplicate gerrit connection bug
+    to_delete = 0
+    for connection in data["zuul3"].get("gerrit_connections", []):
+        print("Warning: Gerrit connection named 'gerrit' is reserved for "
+              "the internal gerrit")
+        if connection["name"] == "gerrit":
+            to_delete = connection
+    if to_delete:
+        data["zuul3"]["gerrit_connections"].remove(to_delete)
+        dirty = True
+
     args.save_sfconfig = dirty
 
 
