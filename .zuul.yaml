@@ -1,0 +1,6 @@
+---
+- project:
+    name: software-factory/sf-config
+    check:
+      jobs:
+        - ansible-lint
