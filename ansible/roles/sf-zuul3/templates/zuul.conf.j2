@@ -12,11 +12,13 @@ port={{ zuul3_gearman_port }}
 
 [scheduler]
 state_dir={{ zuul3_lib_dir }}
+command_socket={{ zuul3_lib_dir }}/scheduler.socket
 tenant_config={{ zuul3_conf_dir }}/main.yaml
 log_config={{ zuul3_conf_dir }}/scheduler-logging.yaml
 
 [merger]
 state_dir={{ zuul3_lib_dir }}
+command_socket={{ zuul3_lib_dir }}/merger.socket
 git_dir={{ zuul3_lib_dir }}/git/
 git_user_email=zuul@{{ fqdn }}
 git_user_name=zuul
@@ -25,6 +27,7 @@ log_config={{ zuul3_conf_dir }}/merger-logging.yaml
 
 [executor]
 state_dir={{ zuul3_lib_dir }}
+command_socket={{ zuul3_lib_dir }}/executor.socket
 git_dir={{ zuul3_lib_dir }}/executor/
 private_key_file={{ zuul3_lib_dir }}/.ssh/id_rsa
 finger_port=7979
@@ -33,8 +36,14 @@ untrusted_ro_paths=/opt/
 log_config={{ zuul3_conf_dir }}/executor-logging.yaml
 log_stream_file=/var/tmp/zuul-console/{log_uuid}.log
 
+[fingergw]
+state_dir={{ zuul3_lib_dir }}
+command_socket={{ zuul3_lib_dir }}/fingergw.socket
+listen_address=0.0.0.0
+
 [web]
 listen_address=0.0.0.0
+command_socket={{ zuul3_lib_dir }}/web.socket
 port={{ zuul3_web_port }}
 log_config={{ zuul3_conf_dir }}/web-logging.yaml
 
