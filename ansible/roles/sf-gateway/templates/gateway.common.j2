@@ -160,6 +160,9 @@
 
 {% endif %}
 {% if 'zuul3-web' in roles %}
+        # Fix relative url
+        Alias "/zuul3/static/js" "/var/www/static/js"
+        Alias "/zuul3/static/bootstrap" "/var/www/static/bootstrap"
         # Redirect all the static file to /zuul3-static/
         Alias "/zuul3/static" "/opt/rh/rh-python35/root/usr/share/zuul"
         AliasMatch "^/zuul3/.*/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
