@@ -49,7 +49,15 @@
   with_items:
     - cloud-init
     - cloud-init-local
+    - cloud-config
+    - cloud-final
   failed_when: "False"
+
+- name: "system: enable haveged"
+  service:
+    name: haveged
+    state: started
+    enabled: "yes"
 
 - name: "sf: create sf directory"
   file:
