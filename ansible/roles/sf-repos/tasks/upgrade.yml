@@ -27,11 +27,28 @@
       dest: nodepoolV3/_local_hypervisor_oci.yaml
 
 - block:
+    # does this need to register config_repo_status too?
     - name: Remove legacy zuulv3/main.yaml
       file:
         path: /root/config/zuulV3/main.yaml
         state: absent
   when: sf_previous_version < 2.7
+
+- block:
+    - name: submit policies updates
+      register: config_repo_status
+      blockinfile:
+        path: /root/config/policies/policy.yaml
+        marker: "# -- generic policies added with release 3.0 --"
+        block: |
+          # zuul API
+          'zuul.tenants:get': 'rule:any'
+          'zuul.tenant.status:get': 'rule:any'
+          'zuul.tenant.jobs:get': 'rule:any'
+          'zuul.tenant.builds:get': 'rule:any'
+          'zuul.tenant.console-stream:get': 'rule:any'
+          'zuul.status:get': 'rule:any'
+  when: sf_previous_version < 3.0
 
 - name: Push config-repo updates
   command: chdir=/root/config {{ item }}

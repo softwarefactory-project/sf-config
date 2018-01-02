@@ -124,6 +124,7 @@ gerrit = {
 zuul = {
     'dburi': 'mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}',
     'status_url': '{{ zuul_internal_url }}/status.json',
+    'api_root_url': '{{ zuul3_webapp_url }}/'
 }
 {% endif %}
 
