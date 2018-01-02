@@ -120,10 +120,12 @@ gerrit = {
 }
 {% endif %}
 
-{% if 'zuul' in roles %}
+{% if 'zuul3' in roles %}
+# dburi, status_url to be deprecated in a future change
 zuul = {
-    'dburi': 'mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}',
-    'status_url': '{{ zuul_internal_url }}/status.json',
+    'dburi': 'mysql+pymysql://{{ zuul3_mysql_user }}:{{ zuul3_mysql_password}}@{{ zuul3_mysql_host }}/{{ zuul3_mysql_db }}',
+    'status_url': '{{ zuul3_internal_url }}/status.json',
+    'api_root_url': '{{ zuul3_webapp_url }}/'
 }
 {% endif %}
 
@@ -175,12 +177,12 @@ policy = {
 api = {
     'v2': {
         'builds': [
-{% if 'zuul' in roles %}
+{% if 'zuul3' in roles %}
             'SFZuul',
 {% endif %}
         ],
         'jobs': [
-{% if 'zuul' in roles %}
+{% if 'zuul3' in roles %}
             'SFZuul',
 {% endif %}
         ],
