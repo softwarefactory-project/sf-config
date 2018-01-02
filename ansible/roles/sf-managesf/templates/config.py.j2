@@ -120,6 +120,12 @@ gerrit = {
 }
 {% endif %}
 
+{% if 'zuul' in roles %}
+zuul = {
+    'api_root_url': '{{ zuul_webapp_url }}/'
+}
+{% endif %}
+
 {% if 'storyboard' in roles %}
 storyboard = {
     'base_url': '{{ gateway_url }}',
