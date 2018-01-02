@@ -61,6 +61,12 @@
     - /var/lib/software-factory/jenkins
     - /var/log/software-factory
 
+- name: "system: make sure rsyslogd is started"
+  service:
+    name: rsyslog
+    state: started
+    enabled: "yes"
+
 - name: "system: disable DNS lookup in sshd"
   lineinfile:
     dest: /etc/ssh/sshd_config
