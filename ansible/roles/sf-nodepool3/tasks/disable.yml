@@ -1,7 +1,7 @@
 ---
 - name: Disable service
   service:
-    name: "{{ item }}"
+    name: "rh-python35-{{ item }}"
     state: stopped
     enabled: "no"
   with_items: "{{ nodepool3_services }}"
