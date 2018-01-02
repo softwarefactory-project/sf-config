@@ -62,3 +62,12 @@
 'managesf.node:add_authorized_key': 'rule:admin_or_service'
 'managesf.node:image-start-update': 'rule:admin_or_service'
 'managesf.node:image-update-status': 'rule:admin_or_service'
+# zuul API
+'zuul.tenants:get': 'rule:any'
+'zuul.tenant.status:get': 'rule:any'
+'zuul.tenant.jobs:get': 'rule:any'
+'zuul.tenant.builds:get': 'rule:any'
+'zuul.tenant.console-stream:get': 'rule:any'
+'zuul.status:get': 'rule:any'
+'zuul.status.change:get': 'rule:any'
+'zuul.project.public_keys:get': 'rule:any'
