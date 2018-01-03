@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: Check new Nodepool config checksum
-  shell: git log -n 3 --oneline nodepoolV3/ && md5sum "{{ nodepool3_conf_dir }}/_nodepool.yaml"
+  shell: git log -n 3 --oneline nodepoolV3/ nodepool/elements/ && md5sum "{{ nodepool3_conf_dir }}/_nodepool.yaml"
   args:
     chdir: /root/config
   register: upstreamconfig
