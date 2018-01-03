@@ -10,3 +10,4 @@
     - git-review
     - python2-sfmanager
     - python-testinfra
+    - rh-python35-zuul-jobs
