@@ -21,6 +21,10 @@
     <LocationMatch "/static">
         CacheDisable on
     </LocationMatch>
+    Alias "/docs/zuul-jobs" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-zuul-jobs-doc-{{ _zuul_job_version.stdout.split('-')[5] }}/html"
+    <Directory "/opt/rh/rh-python35/root/usr/share/doc/">
+        Require all granted
+    </Directory>
     Alias "/docs/managesf" "/usr/share/doc/managesf/"
     Alias "/docs/sfmanager" "/usr/share/doc/python-sfmanager/"
     Alias "/docs/" "/usr/share/doc/software-factory/"
