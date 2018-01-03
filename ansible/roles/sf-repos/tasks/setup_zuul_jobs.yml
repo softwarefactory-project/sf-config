@@ -31,6 +31,12 @@
       command: mktemp -d
       register: jobs_tmp
 
+    - name: Set correct temporary mode to prevent change from rsync
+      file:
+        path: "{{ jobs_tmp.stdout }}"
+        mode: 0755
+        state: directory
+
     - set_fact:
         zuul_jobs_clone_dir: "{{ jobs_tmp.stdout }}"
 
