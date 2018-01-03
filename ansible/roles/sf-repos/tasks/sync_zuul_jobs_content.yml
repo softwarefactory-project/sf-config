@@ -1,81 +1,32 @@
 ---
-- name: Ensure zuul-jobs sub dir
-  file:
-    path: "{{ zuul_jobs_clone_dir }}/{{ item }}"
-    state: directory
-  with_items:
-    - zuul.d
-    - playbooks
-    - roles
-
-- name: Sync static files
+- name: Sync files
   synchronize:
-    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/zuul-jobs/{{ item }}/"
-    dest: "{{ zuul_jobs_clone_dir }}/{{ item }}/"
-    archive: "no"
-    times: "no"
-    checksum: "yes"
+    src: "/opt/rh/rh-python35/root/usr/share/zuul-jobs/"
+    dest: "{{ zuul_jobs_clone_dir }}/"
     delete: "yes"
-    perms: "yes"
-    recursive: "yes"
-  with_items:
-    - playbooks/linters
-    - roles/buildset-artifacts-location
-    - roles/lint-bashate
-    - roles/lint-flake8
-    - roles/lint-yaml
+    rsync_opts:
+      - --exclude=.git
+      - --exclude=.gitreview
+      - --exclude=README
   register: _static_files
 
-- name: Sync upstream files
-  synchronize:
-    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/upstream-jobs/{{ item }}/"
-    dest: "{{ zuul_jobs_clone_dir }}/{{ item }}/"
-    archive: "no"
-    times: "no"
-    checksum: "yes"
-    delete: "yes"
-    perms: "yes"
-    recursive: "yes"
-  with_items: "{{ repos_upstream_paths }}"
-  register: _upstream_files
-  when: not zuul3_upstream_zuul_jobs
-
-- name: Sync upstream configuration
+- name: Add README
   copy:
-    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/upstream-jobs/{{ item }}"
-    dest: "{{ zuul_jobs_clone_dir }}/{{ item }}"
-  with_items:
-    - zuul.d/_upstream-jobs.yaml
-    - zuul.d/_local-jobs.yaml
-  register: _upstream_conf
-  when: not zuul3_upstream_zuul_jobs
-
-- name: Remove upstream files
-  file:
-    path: "{{ zuul_jobs_clone_dir }}/{{ item }}"
-    state: absent
-  with_items: "{{ repos_upstream_paths }}"
-  register: _upstream_files
-  when: zuul3_upstream_zuul_jobs
-
-- name: Remove upstream conf
-  file:
-    path: "{{ zuul_jobs_clone_dir }}/zuul.d/_upstream-jobs.yaml"
-    state: absent
-  register: _upstream_conf
-  when: zuul3_upstream_zuul_jobs
+    content: |
+      This a copy of openstack-infra/zuul-jobs, do not edit directly
+      Documentation is available at https://{{ fqdn }}/docs/zuul-jobs/
+    dest: "{{ zuul_jobs_clone_dir }}/README"
+  register: _readme_file
 
 - name: "Indicate configuration changed"
   set_fact:
     zuul_conf_updated: true
   when: _static_files|changed or
-        _upstream_files|changed or
-        _upstream_conf|changed
+        _readme_file|changed
 
 - name: "Indicate configuration didn't changed"
   set_fact:
     zuul_conf_updated: false
   when:
     - not _static_files|changed
-    - not _upstream_files|changed
-    - not _upstream_conf|changed
+    - not _readme_file|changed

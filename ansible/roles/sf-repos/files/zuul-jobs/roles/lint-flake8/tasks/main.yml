@@ -1,5 +1,0 @@
----
-- name: Run flake8
-  shell: find . -name "*.py" | grep -v '\.tox' | xargs --no-run-if-empty flake8
-  args:
-    chdir: "{{ zuul_work_dir }}"
