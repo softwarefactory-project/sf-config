@@ -6,8 +6,10 @@
       gerrit:
         config-projects:
           - config
+{% if not zuul3_upstream_zuul_jobs %}
         untrusted-projects:
           - zuul-jobs
+{% endif %}
 {% endif %}
 {% if zuul3_upstream_zuul_jobs %}
       {{ openstack_connection_name }}:

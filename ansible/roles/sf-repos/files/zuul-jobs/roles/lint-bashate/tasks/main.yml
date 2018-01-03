@@ -1,5 +1,0 @@
----
-- name: Run bashate
-  shell: find . -name "*.sh" | grep -v '\.tox' | xargs --no-run-if-empty bashate
-  args:
-    chdir: "{{ zuul_work_dir }}"
