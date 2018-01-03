@@ -65,3 +65,5 @@ zuul3_root_loglevel: WARNING
 nodepool3_conf_dir: "/etc/opt/rh/rh-python35/nodepool"
 nodepool3_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
 nodepool3_webapp_port: 8006
+
+zuul3_periodic_pipeline_mail_rcpt: root@localhost

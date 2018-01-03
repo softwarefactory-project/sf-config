@@ -97,9 +97,14 @@ def update_sfconfig(args):
         data["zuul3"]["default_nodeset_label"] = "centos-oci"
         dirty = True
 
-    for github_connection in data['zuul3'].get('github_connections'):
+    for github_connection in data['zuul3'].get('github_connections', []):
         if "app_key" not in github_connection:
             github_connection["app_key"] = None
+            dirty = True
+
+    for ci_service in ('zuul', 'zuul3'):
+        if "periodic_pipeline_mail_rcpt" not in data[ci_service]:
+            data[ci_service]['periodic_pipeline_mail_rcpt'] = "root@localhost"
             dirty = True
 
     args.save_sfconfig = dirty
