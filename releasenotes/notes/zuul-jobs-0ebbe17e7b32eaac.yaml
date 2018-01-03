@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The local zuul-jobs repository is now a full copy of the upstream project.
+    Any local changes to the zuul-jobs repository will be discarded during the upgrade.

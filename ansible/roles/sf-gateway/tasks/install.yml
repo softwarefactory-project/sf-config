@@ -1,10 +1,18 @@
 ---
 - name: "Install requirements"
   yum:
-    name: "sf-web-assets, sf-docs, httpd, mod_ssl, mod_wsgi, mod_auth_pubtkt"
+    name: "{{ item }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  with_items:
+    - sf-web-assets
+    - sf-docs
+    - httpd
+    - mod_ssl
+    - mod_wsgi
+    - mod_auth_pubtkt
+    - rh-python35-zuul-jobs-doc
 
 - name: "Install zuul webui"
   yum:

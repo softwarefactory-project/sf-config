@@ -1,5 +1,0 @@
----
-- name: Run yamllint
-  shell: find . -name "*.yml" -or -name "*.yaml" | grep -v '\.tox' | xargs --no-run-if-empty yamllint -d relaxed
-  args:
-    chdir: "{{ zuul_work_dir }}"

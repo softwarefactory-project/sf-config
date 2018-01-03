@@ -9,7 +9,7 @@
     path: /root/config/nodepoolV3
     state: directory
 
-- name: Ensure defaults files are updated (prefixed by '_')
+- name: Ensure zuulv2 defaults files are updated
   register: config_repo_status
   template:
     dest: /root/config/{{ item.dest }}
@@ -23,6 +23,14 @@
       src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/jobs-zuul/_config.yaml
     - dest: zuul/_layout.yaml
       src: config/zuul/_layout.yaml.j2
+  when: "zuul-server" in roles
+
+- name: Ensure zuulv3 defaults files are updated
+  register: config_repo_status
+  template:
+    dest: /root/config/{{ item.dest }}
+    src: '{{ item.src }}'
+  with_items:
     - src: config/nodepoolV3/_local_hypervisor_oci.yaml.j2
       dest: nodepoolV3/_local_hypervisor_oci.yaml
 

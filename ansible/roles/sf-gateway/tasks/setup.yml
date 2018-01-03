@@ -106,6 +106,10 @@
   with_items:
     - /etc/httpd/managesf_htpasswd
 
+- name: Read zuul-job version
+  command: rpm -q rh-python35-zuul-jobs-doc
+  register: _zuul_job_version
+
 - name: Install templates
   template:
     src: "{{ item.name }}.j2"
