@@ -16,6 +16,24 @@
       "revId": "3bc4c301e96439b2794afaa0cca1f21c954c5699",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da1255d7_6faf45e4",
+        "filename": "ansible/roles/sf-zuul3/meta/sfconfig.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-04T10:07:28Z",
+      "side": 1,
+      "message": "Alternatively, we could verify there are no duplicate in the \"validate()\" method so that we fail early in case the user added duplicated connection.",
+      "parentUuid": "da1255d7_afa41d08",
+      "revId": "3bc4c301e96439b2794afaa0cca1f21c954c5699",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
