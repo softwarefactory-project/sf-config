@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ba076199_68d183fb",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-05T16:55:08Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "ba076199_683aa3cf",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba076199_a81f7b5a",
         "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
         "patchSetId": 7
@@ -30,6 +48,24 @@
       "writtenOn": "2018-01-05T04:00:47Z",
       "side": 1,
       "message": "nit: it\u0027s better to use zuul.project.src_dir",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_48cebf5b",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-05T16:55:08Z",
+      "side": 1,
+      "message": "I tried with src_dir but it is not obvious to dectect the workspace as I don\u0027t know how the is the scheme of the project name for instance when it contain a name space. So I kept cononical_hostname.",
+      "parentUuid": "ba076199_a81f7b5a",
       "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "ba076199_28db8b1d",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-05T16:55:08Z",
+      "side": 1,
+      "message": "Not sure to understand here, that\u0027s already what I do ? :)",
+      "parentUuid": "ba076199_8824b7af",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba076199_e82573ae",
         "filename": "ansible/roles/sf-repos/files/zuul-jobs/roles/upload-pages/tasks/main.yaml",
         "patchSetId": 7
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "ba076199_08d8c71c",
+        "filename": "ansible/roles/sf-repos/files/zuul-jobs/roles/upload-pages/tasks/main.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-05T16:55:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba076199_e82573ae",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba076199_c82aaf7e",
         "filename": "ansible/roles/sf-repos/files/zuul-jobs/roles/upload-pages/templates/vhost.conf.j2",
         "patchSetId": 7
@@ -81,6 +153,24 @@
       "writtenOn": "2018-01-05T04:00:47Z",
       "side": 1,
       "message": "That isn\u0027t going to work if the certificates ins\u0027t a wildcard. It seems like let\u0027s encrypt will provide those soon (january 2018), but it\u0027s not there yet. Perhaps let\u0027s keep the https page for a follow-up?",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_e8033375",
+        "filename": "ansible/roles/sf-repos/files/zuul-jobs/roles/upload-pages/templates/vhost.conf.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-05T16:55:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba076199_c82aaf7e",
       "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
