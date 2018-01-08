@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "ba076199_88ba776d",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-08T01:05:12Z",
+      "side": 1,
+      "message": "Hum, zuul.project.src_dir should point at the project directory whenever there is a name space or not.",
+      "parentUuid": "ba076199_48cebf5b",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba076199_8824b7af",
         "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
         "patchSetId": 7
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "Not sure to understand here, that\u0027s already what I do ? :)",
       "parentUuid": "ba076199_8824b7af",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_68b0638c",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-08T01:05:12Z",
+      "side": 1,
+      "message": "Not exactly, this code may build both sphinx then pelican if the project has a conf.py and a pelicanconf.py. Instead we should look for \"site\" type and fail if it\u0027s confusing to prevent un-expected build.",
+      "parentUuid": "ba076199_28db8b1d",
       "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
