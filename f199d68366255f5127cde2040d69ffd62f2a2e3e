@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_eb8e8d26",
+        "filename": "ansible/roles/sf-managesf/templates/config.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-08T14:02:27Z",
+      "side": 1,
+      "message": "Are you sure about the statement \u0027if \u0027zuul\u0027 in roles\u0027. I just have zuul3 on my dev node and this section is missing.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 11
+      },
+      "revId": "f199d68366255f5127cde2040d69ffd62f2a2e3e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
