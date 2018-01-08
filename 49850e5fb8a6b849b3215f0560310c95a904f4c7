@@ -90,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "ba076199_48091f31",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-08T08:53:39Z",
+      "side": 1,
+      "message": "Yes it does. What I want is to find the workspace (the directory on top of the project name) so if I try to find it from the src_dir it is then more complicated (I mean not just {{ zuul.project.src_dir }}/../ if the name contains a namespace. That\u0027s why I build source and workspace from src/{{ zuul.project.canonical_hostname }}/",
+      "parentUuid": "ba076199_88ba776d",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba076199_8824b7af",
         "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
         "patchSetId": 7
@@ -137,6 +155,24 @@
       "side": 1,
       "message": "Not exactly, this code may build both sphinx then pelican if the project has a conf.py and a pelicanconf.py. Instead we should look for \"site\" type and fail if it\u0027s confusing to prevent un-expected build.",
       "parentUuid": "ba076199_28db8b1d",
+      "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_cb2aa97e",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/pages/build.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-08T08:53:39Z",
+      "side": 1,
+      "message": "Ok I\u0027ll bump the patch upstream with that change.",
+      "parentUuid": "ba076199_68b0638c",
       "revId": "49850e5fb8a6b849b3215f0560310c95a904f4c7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
