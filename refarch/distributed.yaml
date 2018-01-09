@@ -9,11 +9,12 @@ inventory:
       - mysql
       - zookeeper
       - gateway
+      - cauth
       - managesf
       - etherpad
       - lodgeit
-      - gerrit
       - gitweb
+      - gerrit
       - gerritbot
       - zuul3-scheduler
       - zuul3-executor
@@ -22,8 +23,8 @@ inventory:
       - murmur
       - mirror
       - kibana
-      - cauth
       - repoxplorer
+      - hydrant
       - firehose
       - grafana
 
@@ -32,8 +33,9 @@ inventory:
     flavor: m1.medium
     roles:
       - elasticsearch
-      - job-logs-gearman-client
-      - job-logs-gearman-worker
+        # TODO: fix AnsibleUndefinedVariable: 'jobs_zmq_publishers' is undefined
+     # - job-logs-gearman-client
+     # - job-logs-gearman-worker
       - logstash
       - logserver
       - influxdb
@@ -54,5 +56,6 @@ inventory:
   - name: hypervisor-oci
     ip: 192.168.0.15
     max-servers: 10
+    flavor: m1.small
     roles:
       - hypervisor-oci
