@@ -1,0 +1,9 @@
+---
+features:
+  - Add base Zuul V3 roles and jobs for supporting pages publication.
+    Three content type are supported Raw, Sphinx, Pelican.
+upgrade:
+  - Pages support with Zuul V2 will be removed from the arch during
+    the upgrade.
+deprecations:
+  - Pages support with Zuul V2.
