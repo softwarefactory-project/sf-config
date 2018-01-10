@@ -78,7 +78,21 @@
           'zuul.tenant.console-stream:get': 'rule:any'
           'zuul.status:get': 'rule:any'
           'zuul.status.change:get': 'rule:any'
-          'zuul.project.public_keys:get': 'rule:any'
+          'zuul.project.public_key:get': 'rule:any'
+          # nodepool API
+          'nodepool.image:list': 'rule:any'
+          'nodepool.dib-image:list': 'rule:any'
+          'nodepool.node:list': 'rule:any'
+          'nodepool.label:list': 'rule:any'
+          'nodepool.request:list': 'rule:any'
+          'nodepool.node:hold': 'rule:admin_or_service'
+          'nodepool.node:delete': 'rule:admin_or_service'
+          # nodepool Admin API
+          'nodepool.image:delete': 'rule:admin_or_service'
+          'nodepool.dib-image:build': 'rule:admin_or_service'
+          'nodepool.dib-image:delete': 'rule:admin_or_service'
+          'nodepool.node:delete': 'rule:admin_or_service'
+
   when: sf_previous_version < 3.0
 
 - name: Push config change

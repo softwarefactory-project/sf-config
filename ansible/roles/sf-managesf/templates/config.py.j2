@@ -126,6 +126,13 @@ zuul = {
 }
 {% endif %}
 
+{% if 'nodepool' in roles %}
+nodepool = {
+    'api_root_url': '{{ nodepool_internal_url }}/',
+    'admin_api_root_url': '{{ nodepool_admin_internal_url }}/',
+}
+{% endif %}
+
 {% if 'storyboard' in roles %}
 storyboard = {
     'base_url': '{{ gateway_url }}',
@@ -155,6 +162,7 @@ policy = {
 # Activate API v2 here
 # list endpoints to implement, and services these endpoints must interact with
 
+# TODO merge this with passthrough confs up there
 api = {
     'v2': {
         'builds': [
