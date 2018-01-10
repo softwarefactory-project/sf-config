@@ -127,7 +127,7 @@ zuul = {
     'status_url': '{{ zuul_internal_url }}/status.json',
     {% endif %}
     {% if 'zuul3' in roles %}
-    'api_root_url': '{{ zuul3_webapp_url }}/'
+    'api_root_url': 'http://{{ zuul3_web_url }}/'
     {% endif %}
 }
 {% endif %}
@@ -140,11 +140,17 @@ jenkins = {
 }
 {% endif %}
 
-{% if 'nodepool' in roles %}
+{% if 'nodepool' in roles or 'nodepool3' in roles %}
 nodepool = {
+{% if 'nodepool' in roles %}
     'host': '{{ nodepool_launcher_host }}',
     'user': 'root',
     'key': '/var/lib/managesf/.ssh/id_rsa',
+{% endif %}
+{% if 'nodepool3' in roles %}
+    'api_root_url': '{{ nodepool3_internal_url }}/',
+    'admin_api_root_url': '{{ nodepool3_admin_internal_url }}/',
+{% endif %}
 }
 {% endif %}
 

@@ -37,6 +37,7 @@ nodepool_log_dir: "/var/opt/rh/rh-python35/log/nodepool"
 nodepool_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/nodepool"
 
 nodepool_webapp_port: 8006
+nodepool3_admin_webapp_port: 8066
 
 nodepool_loglevel: INFO
 nodepool_root_loglevel: WARNING
