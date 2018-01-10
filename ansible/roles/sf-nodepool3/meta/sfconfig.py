@@ -25,3 +25,6 @@ class Nodepool3Launcher(Component):
         args.glue["nodepool3_internal_url"] = "http://%s:%s" % (
             args.glue["nodepool3_launcher_host"],
             args.defaults["nodepool3_webapp_port"])
+        args.glue["nodepool3_admin_internal_url"] = "http://%s:%s" % (
+            args.glue["nodepool3_launcher_host"],
+            args.defaults["nodepool3_admin_webapp_port"])

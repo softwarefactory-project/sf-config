@@ -145,6 +145,10 @@ nodepool = {
     'host': '{{ nodepool_launcher_host }}',
     'user': 'root',
     'key': '/var/lib/managesf/.ssh/id_rsa',
+{% if 'nodepool3' in roles %}
+    'api_root_url': '{{ nodepool3_internal_url }}/',
+    'admin_api_root_url': '{{ nodepool3_admin_internal_url }}/',
+{% endif %}
 }
 {% endif %}
 
