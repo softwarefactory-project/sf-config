@@ -8,6 +8,9 @@ statsd-server:
 {% endif %}
 webapp:
   port: {{ nodepool_webapp_port }}
+# Activate once nodepool distgit is ready
+#  admin_port: {{ nodepool_admin_webapp_port }}
+#  admin_listen_address: '0.0.0.0'
 
 zookeeper-servers:
   - host: {{ zookeeper_host }}
