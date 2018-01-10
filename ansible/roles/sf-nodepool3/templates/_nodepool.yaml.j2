@@ -3,6 +3,8 @@ images-dir: {{ nodepool3_lib_dir }}/dib
 
 webapp:
   port: {{ nodepool3_webapp_port }}
+  admin_port: {{ nodepool3_admin_webapp_port }}
+  admin_listen_address: '0.0.0.0'
 
 zookeeper-servers:
   - host: {{ zookeeper_host }}
