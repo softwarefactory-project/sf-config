@@ -36,6 +36,8 @@
     # Needed by ansible selinux module
     - libsemanage-python
     - policycoreutils-python
+    # Needed for wait4 scripts
+    - nmap-ncat
 
 - name: Set permissive selinux
   lineinfile:
