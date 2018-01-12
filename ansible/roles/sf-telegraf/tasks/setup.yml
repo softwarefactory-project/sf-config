@@ -37,6 +37,13 @@
     replace: '[[inputs.net]]'
   notify: Restart telegraf
 
+- name: Set owner and mode for /etc/telegraf/telegraf.conf
+  file:
+    path: /etc/telegraf/telegraf.conf
+    owner: telegraf
+    mode: 0440
+  notify: Restart telegraf
+
 - name: Setup statsd server
   copy:
     src: statsd.conf
