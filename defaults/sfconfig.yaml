@@ -55,6 +55,15 @@ authentication:
     ldap_account_mail_attribute: mail
     ldap_account_surname_attribute: sn
 
+  active_directory:
+    disabled: true
+    ldap_url: ldap://pdc.sftests.com
+    ldap_account_domain: domain.sftests.com
+    ldap_account_base: ou=people,dc=domain,dc=sftests,dc=com
+    ldap_account_username_attribute: sAMAccountName
+    ldap_account_mail_attribute: mail
+    ldap_account_surname_attribute: name
+
   oauth2:
     # Currently supported OAuth2 providers are github, google, bitbucket
     # While it is technically possible to have as many of these providers used

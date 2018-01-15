@@ -107,6 +107,18 @@ def update_sfconfig(args):
             data[ci_service]['periodic_pipeline_mail_rcpt'] = "root@localhost"
             dirty = True
 
+    if "active_directory" not in data["authentication"]:
+        data["authentication"]["active_directory"] = {
+            "disabled": True,
+            "ldap_url": "ldap://sftests.com",
+            "ldap_account_domain": "domain.sftests.com",
+            "ldap_account_base": "ou=Users,dc=domain,dc=sftests,dc=com",
+            "ldap_account_username_attribute": "sAMAccountName",
+            "ldap_account_mail_attribute": "mail",
+            "ldap_account_surname_attribute": "name",
+        }
+        dirty = True
+
     args.save_sfconfig = dirty
 
 

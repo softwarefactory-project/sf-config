@@ -51,7 +51,16 @@ logging = {
 
 # Authorization configurations
 auth = {
-    {% if not authentication['ldap']['disabled'] %}
+    {% if not authentication['active_directory']['disabled'] %}
+    'ldap': {
+        'host': '{{ authentication['active_directory']['ldap_url'] }}',
+        'dn': '%(username)s@' + '{{ authentication['active_directory']['ldap_account_domain'] }}',
+        'basedn': '{{ authentication['active_directory']['ldap_account_base'] }}',
+        'sfilter': '(&(objectClass=user)({{ authentication['active_directory']['ldap_account_username_attribute'] }}=%(username)s))',
+        'sn': '{{ authentication['active_directory']['ldap_account_surname_attribute'] }}',
+        'mail': '{{ authentication['active_directory']['ldap_account_mail_attribute'] }}',
+    },
+    {% elif not authentication['ldap']['disabled'] %}
     'ldap': {
         'host': '{{ authentication['ldap']['ldap_url'] }}',
         'dn': '{{ authentication['ldap']['ldap_account_username_attribute'] }}=%(username)s,' + '{{ authentication['ldap']['ldap_account_base'] }}',
