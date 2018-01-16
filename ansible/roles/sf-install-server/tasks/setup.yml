@@ -1,9 +1,22 @@
 ---
+- name: Check for ara.cfg
+  stat:
+    path: /var/lib/software-factory/ansible/ara.cfg
+  register: _ara_cfg
+
 - name: Setup ~/.ansible.cfg
+  copy:
+    src: /var/lib/software-factory/ansible/ara.cfg
+    dest: /root/.ansible.cfg
+    remote_src: true
+  when: _ara_cfg.stat.exists
+
+- name: Setup default ansible.cfg
   copy:
     src: /usr/share/sf-config/ansible/ansible.cfg
     dest: /root/.ansible.cfg
     remote_src: true
+  when: not _ara_cfg.stat.exists
 
 - name: Initalize version control for yaml files
   shell: git init .; git add *; git commit -m 'init'
