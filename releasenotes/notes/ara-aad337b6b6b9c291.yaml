@@ -1,0 +1,5 @@
+---
+features:
+  - Ara is automatically enable on the install-server and database is stored
+    in /var/log/software-factory/ara. Static report can be generated using the
+    "ara generate html" command.
