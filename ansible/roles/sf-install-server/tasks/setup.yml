@@ -1,7 +1,7 @@
 ---
 - name: Setup ~/.ansible.cfg
   copy:
-    src: /usr/share/sf-config/ansible/ansible.cfg
+    src: /var/lib/software-factory/ansible/ara.cfg
     dest: /root/.ansible.cfg
     remote_src: true
 

@@ -133,6 +133,7 @@ def main():
     for dirname in (args.ansible_root,
                     "%s/group_vars" % args.ansible_root,
                     "%s/facts" % args.ansible_root,
+                    "%s/ara" % args.ansible_root,
                     args.lib,
                     "%s/ssh_keys" % args.lib,
                     "%s/certs" % args.lib):
