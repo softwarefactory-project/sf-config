@@ -4,7 +4,13 @@ STRINGARRAY=($SSH_ORIGINAL_COMMAND)
 ACTION="${STRINGARRAY[0]}"
 COMMIT="${STRINGARRAY[1]}"
 
-export ANSIBLE_CONFIG=/usr/share/sf-config/ansible/ansible.cfg
+if [ -f /var/lib/software-factory/ansible/ara.cfg ]; then
+    export ARA_LOG_FILE=
+    export ARA_DIR=/var/lib/software-factory/ansible/ara/
+    export ANSIBLE_CONFIG=/var/lib/software-factory/ansible/ara.cfg
+else
+    export ANSIBLE_CONFIG=/usr/share/sf-config/ansible/ansible.cfg
+fi
 export ZUUL_COMMIT="$COMMIT"
 
 if [ -n "$ZUUL_COMMIT" ]; then
