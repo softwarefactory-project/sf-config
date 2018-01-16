@@ -319,6 +319,30 @@ def enable_action(args):
     return playbook_name, pb
 
 
+def enable_ara():
+    try:
+        import ara
+        import ConfigParser
+    except ImportError:
+        return
+
+    ara_cfg = "/var/lib/software-factory/ansible/ara.cfg"
+    if not os.path.isfile(ara_cfg):
+        ara_location = os.path.dirname(ara.__file__)
+        ansiblecfg = ConfigParser.ConfigParser()
+        ansiblecfg.read("/usr/share/sf-config/ansible/ansible.cfg")
+        ansiblecfg.set("defaults", "callback_plugins",
+                       "%s/plugins/callbacks" % ara_location)
+        ansiblecfg.set("defaults", "action_plugins",
+                       "%s/plugins/actions" % ara_location)
+        ansiblecfg.set("defaults", "library",
+                       "%s/plugins/modules" % ara_location)
+        ansiblecfg.write(open(ara_cfg, "w"))
+    os.environ["ANSIBLE_CONFIG"] = ara_cfg
+    os.environ["ARA_LOG_FILE"] = ""
+    os.environ["ARA_DIR"] = "/var/lib/software-factory/ansible/ara/"
+
+
 def run(args):
     if args.disable or args.erase:
         playbook_name, playbook = disable_action(args)
@@ -329,6 +353,7 @@ def run(args):
     write_playbook(playbook_path, playbook)
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
     if not args.skip_apply:
+        enable_ara()
         sfconfig.utils.execute(["ansible-playbook", playbook_path])
 
 
