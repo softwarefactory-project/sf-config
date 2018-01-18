@@ -15,6 +15,7 @@ jenkins_repo_url: https://softwarefactory-project.io/mirrors/repos/jenkins/
 jenkins_repo_gpgkey: https://softwarefactory-project.io/mirrors/repos/jenkins/jenkins.io.key
 jenkins_repo_gpgcheck: 1
 
+jenkins_heap_minimum: 128m
 jenkins_heap_limit: 256m
 
 jenkins_api_port: 8080
