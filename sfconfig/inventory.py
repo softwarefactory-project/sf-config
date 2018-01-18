@@ -116,10 +116,11 @@ def upgrade(args, pb):
     # Call pre upgrade task
     pb.append(host_play('all', 'upgrade', {'role_action': 'pre'}))
 
-    # First turn off all component except gerrit
+    # First turn off all component except gerrit and databases
     for host in args.inventory:
         roles = [role for role in host["roles"] if
-                 role not in ("mysql", "gerrit", "hypervisor-oci")]
+                 role not in ("mysql", "zookeeper",
+                              "gerrit", "hypervisor-oci")]
         pb.append(host_play(host, roles, {'role_action': 'disable',
                                           'erase': False}))
 
