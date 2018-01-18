@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "ba076199_f2baf5bf",
+        "filename": "ansible/roles/sf-grafana/tasks/install.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-18T01:03:07Z",
+      "side": 1,
+      "message": "I think install-server would be better, managesf can work on a dedicated host in theory",
+      "parentUuid": "ba076199_b2afdd93",
+      "revId": "7ae544c14f4711b9996c5dfb1a788a4b0490da26",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba076199_82548e54",
         "filename": "ansible/roles/sf-grafana/tasks/postconf.yml",
         "patchSetId": 9
