@@ -127,7 +127,11 @@ zuul = {
     'status_url': '{{ zuul_internal_url }}/status.json',
     {% endif %}
     {% if 'zuul3' in roles %}
-    'api_root_url': '{{ zuul3_webapp_url }}/'
+    'api_root_url': '{{ zuul3_webapp_url }}/',
+    # SSH access for direct calls to RPC client
+    'ssh_host': '{{ zuul3_host }}',
+    'ssh_user': 'root',
+    'ssh_key': '/var/lib/managesf/.ssh/id_rsa',
     {% endif %}
 }
 {% endif %}
