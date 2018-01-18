@@ -6,7 +6,7 @@ After=syslog.target
 Type=simple
 SyslogIdentifier=jenkins
 Environment="JENKINS_HOME=/var/lib/jenkins"
-ExecStart=/usr/bin/java -Xms{{ jenkins_heap_minimum }} -Xmx{{ jenkins_heap_limit }} -Dhudson.model.ParametersAction.keepUndefinedParameters=true -jar /usr/lib/jenkins/jenkins.war --webroot=/var/cache/jenkins/war --httpPort={{ jenkins_port }} --ajp13Port=-1 --prefix=/jenkins --httpListenAddress=127.0.0.1
+ExecStart=/usr/bin/java -Xms{{ jenkins_heap_minimum }} -Xmx{{ jenkins_heap_limit }} -Dhudson.model.ParametersAction.keepUndefinedParameters=true -jar /usr/lib/jenkins/jenkins.war --webroot=/var/cache/jenkins/war --httpPort={{ jenkins_port }} --ajp13Port=-1 --prefix=/jenkins --httpListenAddress=127.0.0.1 {{ jenkins_custom_parameters }}
 ExecStartPost=/usr/libexec/wait4jenkins
 User=jenkins
 
