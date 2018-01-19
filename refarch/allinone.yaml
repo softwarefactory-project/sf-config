@@ -36,4 +36,6 @@ inventory:
       - firehose
       - hydrant
       - influxdb
+      - carbon-cache
+      - graphite-api
       - grafana

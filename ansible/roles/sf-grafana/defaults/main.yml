@@ -38,11 +38,14 @@ grafana_admin_password: CHANGE_ME
 influxdb_host: influxdb.example.com
 telegraf_influxdb_user: telegraf
 telegraf_influxdb_password: CHANGE_ME
+graphite_api_host: graphite-api.example.com
+graphite_api_user: graphite-api
+graphite_api_password: CHANGE_ME
 
 service_name: grafana
 service_real_name: grafana-server
 
-grafana_data_source:
+grafana_influxdb_data_source:
   isDefault: true
   database: telegraf
   name: influxdb
@@ -52,6 +55,16 @@ grafana_data_source:
   url: 'https://{{ influxdb_host }}:8086'
   access: proxy
   basicAuth: false
+
+grafana_graphite_api_data_source:
+  isDefault: false
+  name: graphite
+  type: graphite
+  basicAuthUser: '{{ graphite_api_user }}'
+  basicAuthPassword: '{{ graphite_api_password }}'
+  url: 'https://{{ fqdn }}/graphite-api'
+  access: proxy
+  basicAuth: true
 
 grafyaml_apikey_data:
   name: 'grafyaml'
