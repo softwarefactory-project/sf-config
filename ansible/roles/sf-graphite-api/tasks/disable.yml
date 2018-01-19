@@ -1,0 +1,29 @@
+---
+- name: Disable services
+  service:
+    name: carbon-cache
+    state: stopped
+    enabled: "no"
+  ignore_errors: "yes"
+
+- block:
+    - name: Remove config files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/carbon
+        - /etc/graphite-api.yaml
+        - /etc/httpd/conf.d/graphite-api.conf
+        - /etc/httpd/graphite_api_htpasswd
+        - /var/lib/carbon
+        - /var/lib/graphite-api
+        - /var/log/carbon
+        - /var/www/graphite-api
+
+    - name: Remove packages
+      yum:
+        name: '{{ item }}'
+        state: absent
+      with_items: '{{ graphite_api_packages }}'
+  when: erase == True
