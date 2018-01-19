@@ -1,0 +1,57 @@
+---
+- name: Configure carbon
+  copy:
+    dest: '/etc/carbon/{{ item }}'
+    src: '{{ item }}'
+  with_items:
+    - storage-schemas.conf
+    - storage-aggregation.conf
+  notify: restart carbon-cache
+
+- name: Start service
+  service:
+    name: carbon-cache
+    state: started
+    enabled: "yes"
+
+- name: Configure graphite-api
+  template:
+    src: graphite-api.yaml.j2
+    dest: /etc/graphite-api.yaml
+    owner: apache
+    group: apache
+    mode: 0440
+
+- name: Create working directory
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: apache
+    group: apache
+  with_items:
+    - /var/www/graphite-api
+    - /var/lib/graphite-api
+
+- name: Create htpasswd for graphite-api
+  htpasswd:
+    path: /etc/httpd/graphite_api_htpasswd
+    name: '{{ graphite_api_user }}'
+    password: '{{ graphite_api_password }}'
+    owner: root
+    group: root
+    mode: 0440
+
+- name: Create wsgi app for graphite-api
+  lineinfile:
+    dest: /var/www/graphite-api/app.wsgi
+    line: from graphite_api.app import app as application
+    create: yes
+    owner: apache
+    group: apache
+    mode: 0440
+
+- name: Configure httpd to server graphite-api service
+  template:
+    src: graphite-api.conf.j2
+    dest: /etc/httpd/conf.d/graphite-api.conf
+  notify: apache reload

@@ -219,6 +219,11 @@
         ProxyPassReverse /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
 
 {% endif %}
+{% if 'graphite-api' in roles %}
+        ProxyPass /graphite-api/ {{ graphite_api_internal_url }}/
+        ProxyPassReverse /graphite-api/ {{ graphite_api_internal_url }}/
+
+{% endif %}
 {% if 'logserver' in roles and gateway_host != logserver_host %}
         ProxyPass /logs/ http://{{ logserver_host }}/logs/
         ProxyPassReverse /logs/ http://{{ logserver_host }}/logs/

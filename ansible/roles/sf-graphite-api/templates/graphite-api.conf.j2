@@ -1,0 +1,23 @@
+LoadModule wsgi_module modules/mod_wsgi.so
+WSGISocketPrefix /var/run/wsgi
+Listen {{ graphite_api_port }}
+<VirtualHost *:{{ graphite_api_port }}>
+    WSGIDaemonProcess graphite-api processes=5 threads=5 display-name='%{GROUP}' inactivity-timeout=120
+    WSGIProcessGroup graphite-api
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIImportScript /var/www/graphite-api/app.wsgi process-group=graphite-api application-group=%{GLOBAL}
+
+    WSGIScriptAlias /graphite-api /var/www/graphite-api/app.wsgi
+
+   <Directory /var/www/graphite-api/>
+        Order deny,allow
+        Allow from all
+        AllowOverride All
+        AuthName "Graphite-api web access"
+        AuthType Basic
+        AuthUserFile /etc/httpd/graphite_api_htpasswd
+        Require user {{ graphite_api_user }}
+        Allow from managesf.sftests.com
+        Satisfy Any
+   </Directory>
+</VirtualHost>
