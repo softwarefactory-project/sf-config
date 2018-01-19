@@ -1,0 +1,7 @@
+---
+role_actions:
+  - disable
+  - install
+  - setup
+
+carbon_cache_host: carbon-cache.example.com
