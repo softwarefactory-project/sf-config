@@ -1,0 +1,25 @@
+---
+ - name: Disable services
+   service:
+     name: carbon-cache
+     state: stopped
+     enabled: "no"
+   ignore_errors: "yes"
+
+ - block:
+     - name: Remove config files
+       file:
+         path: "{{ item }}"
+         state: absent
+       with_items:
+         - '/etc/carbon'
+         - '/var/lib/carbon'
+         - '/var/log/carbon'
+
+     - name: Remove packages
+       yum:
+         name: '{{ item }}'
+         state: absent
+       with_items:
+         - '{{ carbon_packages }}'
+   when: erase == True
