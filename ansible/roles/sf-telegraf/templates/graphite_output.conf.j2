@@ -1,0 +1,13 @@
+# Configuration for Graphite server to send metrics to
+[[outputs.graphite]]
+  ## TCP endpoint for your graphite instance.
+  ## If multiple endpoints are configured, the output will be load balanced.
+  ## Only one of the endpoints will be written to with each iteration.
+  servers = ["{{ graphite_api_host }}:2003"]
+  ## Prefix metrics name
+  prefix = "stats"
+  ## Graphite output template
+  ## see https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  template = "metric_type.measurement.field"
+  ## timeout in seconds for the write connection to graphite
+  timeout = 2
