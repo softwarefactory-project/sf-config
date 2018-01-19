@@ -1,0 +1,18 @@
+User-agent: *
+Disallow: /jenkins
+Disallow: /logs
+Disallow: /zuul3
+Disallow: /nodepool3-log
+Disallow: /paste
+Disallow: /etherpad
+Disallow: /app/kibana
+
+User-agent: HTTrack
+User-agent: puf
+User-agent: MSIECrawler
+User-agent: Nutch
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: msnbot
+Crawl-delay: 1
