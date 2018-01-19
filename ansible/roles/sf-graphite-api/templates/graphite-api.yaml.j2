@@ -1,0 +1,139 @@
+---
+
+# Graphite-API configuration, see also /etc/sysconfig/graphite-api
+
+# search_index
+#
+# The location of the search index used for searching metrics. Note that it
+# needs to be a file that is writable by the Graphite-API process.
+search_index: /var/lib/graphite-api/index
+
+
+# finders
+#
+# A list of python paths to the storage finders you want to use when fetching
+# metrics.
+finders:
+  - graphite_api.finders.whisper.WhisperFinder
+
+
+# functions
+#
+# A list of python paths to function definitions for transforming / analyzing
+# time series data.
+
+functions:
+  - graphite_api.functions.SeriesFunctions
+  - graphite_api.functions.PieFunctions
+
+
+# whisper
+#
+# The configuration information for whisper. Only relevant when using
+# WhisperFinder. Simply holds a directories key listing all directories
+# containing whisper data.
+
+whisper:
+  directories:
+    - /var/lib/carbon/whisper
+
+
+# time_zone
+#
+# The time zone to use when generating graphs. By default, Graphite-API tries
+# to detect your system timezone. If detection fails it falls back to UTC. You
+# can also manually override it if you want another value than your system's
+# timezone.
+
+#time_zone: UTC
+
+
+# carbon
+#
+# Configuration information for reading data from carbon's cache. Items:
+#
+#    hosts
+#        List of carbon-cache hosts, in the format hostname:port[:instance].
+#    timeout
+#        Socket timeout for carbon connections, in seconds.
+#    retry_delay
+#        Time to wait before trying to re-establish a failed carbon connection,
+#        in seconds.
+#    hashing_keyfunc
+#        Python path to a hashing function for metrics. If you use Carbon with
+#        consistent hashing and a custom function, you need to point to the
+#        same hashing function.
+#    carbon_prefix
+#        Prefix for carbon's internal metrics. When querying metrics starting
+#        with this prefix, requests are made to all carbon-cache instances
+#        instead of one instance selected by the key function. Default: carbon.
+#    replication_factor
+#        The replication factor of your carbon setup. Default: 1.
+
+carbon:
+  hosts:
+    - {{ graphite_api_host }}:7002
+  timeout: 1
+  retry_delay: 15
+  carbon_prefix: carbon
+  replication_factor: 1
+
+
+# sentry_dsn
+#
+# This is useful if you want to send Graphite-API's exceptions to a Sentry
+# instance for easier debugging.
+
+#sentry_dsn: https://key:secret@app.getsentry.com/12345
+
+
+# allowed_origins
+#
+# Allows you to do cross-domain (CORS) requests to the Graphite API. Say you
+# have a dashboard at dashboard.example.com that makes AJAX requests to
+# graphite.example.com, just set the value accordingly:
+
+#allowed_origins:
+#  - dashboard.example.com
+
+# You can specify as many origins as you want. A wildcard can be used to allow
+# all origins:
+
+allowed_origins:
+  - '*'
+
+
+# cache
+#
+# Lets you configure a cache for graph rendering. This is done via Flask-Cache
+# which supports a number of backends including memcache, Redis, filesystem or
+# in-memory caching.
+#
+# Cache configuration maps directly to Flask-Cache's config values. For each
+# CACHE_* config value, set the lowercased name in the cache section, without
+# the prefix. Example:
+
+#cache:
+#  type: redis
+#  redis_host: localhost
+#  default_timeout: 60
+#  key_prefix: 'graphite-api'
+
+
+# statsd
+#
+# Attaches a statsd object to the application, which can be used for
+# instrumentation. Currently Graphite-API itself doesn't use this, but some
+# backends do, like Graphite-Influxdb.
+
+#statsd:
+#    host: 'statsd_host'
+#    port: 8125  # not needed if default
+
+
+# render_errors
+#
+# If True (default), full tracebacks are returned in the HTTP response in case of application errors.
+
+render_errors: True
+

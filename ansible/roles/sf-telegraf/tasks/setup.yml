@@ -44,11 +44,18 @@
     mode: 0440
   notify: Restart telegraf
 
-- name: Setup statsd server
+- name: Setup statsd input plugin
   copy:
     src: statsd.conf
     dest: /etc/telegraf/telegraf.d/statsd.conf
   when: "'influxdb' in roles"
+  notify: Restart telegraf
+
+- name: Setup graphite output plugin
+  template:
+    src: graphite_output.conf.j2
+    dest: /etc/telegraf/telegraf.d/graphite_output.conf
+  when: "'graphite-api' in roles"
   notify: Restart telegraf
 
 - name: Start service

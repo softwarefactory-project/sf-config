@@ -1,0 +1,15 @@
+---
+role_actions:
+  - disable
+  - install
+  - setup
+
+graphite_api_host: graphite-api.example.com
+graphite_api_port: 8008
+graphite_api_internal_url: 'http://{{ graphite_api_host }}:{{ graphite_api_port }}/graphite-api'
+graphite_api_packages:
+  - graphite-api
+  - httpd
+  - mod_wsgi
+  - python-carbon
+  - python-whisper
