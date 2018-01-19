@@ -1,0 +1,5 @@
+---
+role_actions:
+  - disable
+  - install
+  - setup

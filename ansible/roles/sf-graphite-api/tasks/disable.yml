@@ -1,0 +1,27 @@
+---
+- name: Disable services
+  service:
+    name: '{{ item }}'
+    state: stopped
+    enabled: "no"
+  with_items:
+    - '{{ graphite_api_services }}'
+  ignore_errors: "yes"
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - '/etc/{{ service_name }}'
+        - '/var/lib/{{ service_name }}'
+        - '/var/log/{{ service_name }}'
+
+    - name: Remove packages
+      yum:
+        name: '{{ item }}'
+        state: absent
+      with_items:
+        - '{{ service_name }}'
+  when: erase == True
