@@ -13,20 +13,33 @@
     force_basic_auth: "yes"
   register: datasources
 
-- name: set datasource fact
+- name: set datasources fact
   set_fact:
     grafana_datasources: "{{ datasources.json | default([]) | map(attribute='name') | list }}"
 
-- name: Configure datasource
+- name: Configure influxdb datasource
   uri:
     url: '{{ grafana_internal_datasource_url }}'
     method: POST
     user: admin
     password: '{{ grafana_admin_password }}'
-    body: '{{ grafana_data_source | to_json }}'
+    body: '{{ grafana_influxdb_data_source | to_json }}'
     body_format: json
     force_basic_auth: "yes"
-  when: grafana_data_source.name not in grafana_datasources
+  when: grafana_influxdb_data_source.name not in grafana_datasources and
+        "'influxdb' in roles"
+
+- name: Configure graphite-api datasource
+  uri:
+    url: '{{ grafana_internal_datasource_url }}'
+    method: POST
+    user: admin
+    password: '{{ grafana_admin_password }}'
+    body: '{{ grafana_graphite_api_data_source | to_json }}'
+    body_format: json
+    force_basic_auth: "yes"
+  when: grafana_graphite_api_data_source.name not in grafana_datasources and
+        "'graphite-api' in roles"
 
 - name: Create grafyaml config directory
   file:

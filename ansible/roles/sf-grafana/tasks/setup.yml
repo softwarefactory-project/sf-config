@@ -62,6 +62,7 @@
     group: root
     mode: 0444
   notify: restart grafana
+  when: "'influxdb' in roles"
 
 - name: Start service
   systemd:
