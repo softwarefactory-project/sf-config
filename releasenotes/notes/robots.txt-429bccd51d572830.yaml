@@ -1,0 +1,3 @@
+---
+features:
+  - robots.txt added to the gateway httpd service
