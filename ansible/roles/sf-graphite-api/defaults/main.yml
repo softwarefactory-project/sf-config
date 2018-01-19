@@ -1,0 +1,10 @@
+---
+role_actions:
+  - disable
+  - install
+  - setup
+
+graphite_api_packages:
+  - graphite-api
+  - python-carbon
+  - python-whisper
