@@ -1,0 +1,15 @@
+---
+- name: Configure carbon
+  file:
+    dest: '/etc/carbon/{{ item }}'
+    src: '{{ item }}'
+  with_items:
+    - storage-schemas.conf
+    - storage-aggregation.conf
+  notify: restart carbon-cache
+
+- name: Start service
+  service:
+    name: carbon-cache
+    state: started
+    enabled: "yes"

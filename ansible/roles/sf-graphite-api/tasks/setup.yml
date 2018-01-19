@@ -1,0 +1,28 @@
+---
+- name: Configure graphite-api
+  template:
+    src: graphite-api.yaml.j2
+    dest: /etc/graphite-api.yaml
+    mode: 0440
+
+- name: Create working directory
+  file:
+    path: /var/www/graphite-api
+    state: directory
+    owner: apache
+    group: apache
+
+- name: Create wsgi app for graphite-api
+  lineinfile:
+    dest: /var/www/graphite-api/app.wsgi
+    line: from graphite_api.app import app as application
+    create: yes
+    owner: apache
+    group: apache
+    mode: 0440
+
+- name: Configure httpd to server graphite-api service
+  copy:
+    src: graphite-api.conf
+    dest: /etc/httpd/conf.d/graphite-api.conf
+  notify: apache reload
