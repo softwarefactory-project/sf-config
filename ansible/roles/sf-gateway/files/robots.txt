@@ -6,6 +6,8 @@ Disallow: /nodepool3-log
 Disallow: /paste
 Disallow: /etherpad
 Disallow: /app/kibana
+Disallow: /grafana
+Disallow: /graphite-api
 
 User-agent: HTTrack
 User-agent: puf
