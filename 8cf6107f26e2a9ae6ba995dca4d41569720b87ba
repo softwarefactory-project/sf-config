@@ -64,6 +64,24 @@
       "revId": "8cf6107f26e2a9ae6ba995dca4d41569720b87ba",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_634e39c3",
+        "filename": "ansible/roles/sf-gateway/files/robots.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-01-22T10:17:14Z",
+      "side": 1,
+      "message": "I\u0027m not agree with the term \u0027un-necessary load\u0027 :) Yes stats are dynamic and a crawler will generate a lot of load going over all pages but in the meantime having more potential hits on google redirecting to sf and hosted project stats would be nice. I won\u0027t -1 but search engines\u0027 crawlers, the most important ones, should be allowed to index most of the content.",
+      "parentUuid": "ba076199_883f0c25",
+      "revId": "8cf6107f26e2a9ae6ba995dca4d41569720b87ba",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
