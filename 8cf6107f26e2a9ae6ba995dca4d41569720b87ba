@@ -46,6 +46,24 @@
       "revId": "8cf6107f26e2a9ae6ba995dca4d41569720b87ba",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_883f0c25",
+        "filename": "ansible/roles/sf-gateway/files/robots.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-22T06:12:01Z",
+      "side": 1,
+      "message": "I tend to agree with Javier, I think this may cause un-necessary load.",
+      "parentUuid": "ba076199_28eee0ec",
+      "revId": "8cf6107f26e2a9ae6ba995dca4d41569720b87ba",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
