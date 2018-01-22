@@ -10,6 +10,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import sys
+
 
 def update_sfconfig(args):
     """ This method ensure /etc/software-factory content is upgraded """
@@ -138,6 +140,15 @@ def update_arch(args):
             dirty = True
         if 'pages' in host['roles']:
             host['roles'].remove('pages')
+        for deprecated in (
+                'zuul-server', 'zuul-merger', 'zuul-launcher',
+                'nodepool-launcher', 'nodepool-builder',
+                'jenkins'):
+            if deprecated in host['roles']:
+                print("Please remove the deprecated role %s"
+                      " from the architecure file before running"
+                      " again this command." % deprecated)
+                sys.exit(-1)
 
     # Remove deployments related information
     for deploy_key in ("cpu", "mem", "hostid", "rolesname"):
