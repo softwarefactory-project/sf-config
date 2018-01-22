@@ -20,3 +20,19 @@
         path: /etc/ssh/ssh_known_hosts
         state: absent
   when: sf_previous_version < 2.7
+
+- block:
+    - name: "Remove not existing services"
+      service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: "no"
+      ignore_errors: "yes"
+      with_items:
+        - zuul-server
+        - zuul-merger
+        - zuul-launcher
+        - nodepool-builder
+        - nodepool-launcher
+        - jenkins
+  when: sf_previous_version < 3.0
