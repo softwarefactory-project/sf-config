@@ -81,19 +81,24 @@
     - {name: jobs.js, path: /var/www/jobs}
     - {name: jobs.html, path: /var/www/jobs, real_name: index.html}
 
-- name: Symlink zuul static file
-  file:
-    src: /usr/share/javascript/zuul/
-    dest: /var/www/static/zuul
-    state: link
-  when: "'zuul' in roles"
-
 - name: Inject top-menu to zuul static page
   lineinfile:
     path: "{{ item }}"
     line: '    <script type="text/javascript" src="/static/js/topmenu.js"></script>'
     insertafter: '<head>'
   with_fileglob: /opt/rh/rh-python35/root/usr/share/zuul/*.html
+
+- name: Inject zuul documentation links
+  lineinfile:
+    path: "/opt/rh/rh-python35/root/usr/share/zuul/{{ item }}.html"
+    line: '    <ul class="nav navbar-nav navbar-right"><li><a href="/docs/zuul">Zuul documentation</a></li></ul>'
+    insertbefore: '<ul class="nav navbar-nav">'
+  with_items:
+    - builds
+    - index
+    - job
+    - jobs
+    - status
 
 - name: Install gerrit dashboard
   copy:
@@ -112,6 +117,11 @@
 - name: Read zuul-job version
   command: rpm -q rh-python35-zuul-jobs-doc
   register: _zuul_job_version
+  changed_when: false
+
+- name: Read zuul version
+  command: rpm -q rh-python35-zuul-doc
+  register: _zuul_version
   changed_when: false
 
 - name: Install templates
