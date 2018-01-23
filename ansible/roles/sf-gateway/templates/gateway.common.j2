@@ -22,6 +22,7 @@
         CacheDisable on
     </LocationMatch>
     Alias "/docs/zuul-jobs" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-zuul-jobs-doc-{{ _zuul_job_version.stdout.split('-')[5] }}/html"
+    Alias "/docs/zuul" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-zuul-doc-{{ _zuul_version.stdout.split('-')[4] }}/html"
     <Directory "/opt/rh/rh-python35/root/usr/share/doc/">
         Require all granted
     </Directory>
@@ -158,20 +159,20 @@
         {% endfor %}
 
 {% endif %}
-        # Fix relative url
-        Alias "/zuul/static/js" "/var/www/static/js"
-        Alias "/zuul/static/bootstrap" "/var/www/static/bootstrap"
-        # Redirect all the static file to /zuul-static/
-        Alias "/zuul/static" "/opt/rh/rh-python35/root/usr/share/zuul"
+        # Redirect all the static file to webui cache
         AliasMatch "^/zuul/.*/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
-        AliasMatch "^/zuul/.*.html" "/opt/rh/rh-python35/root/usr/share/zuul/index.html"
+        AliasMatch "^/zuul/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
+        AliasMatch "^/zuul/.*/(.*).js$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.js"
+        AliasMatch "^/zuul/(.*).js$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.js"
+        AliasMatch "^/zuul/.*/(.*).png$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.png"
+        AliasMatch "^/zuul/(.*).png$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.png"
         <Directory /opt/rh/rh-python35/root/usr/share/zuul>
             Require all granted
             Order allow,deny
             Allow from all
         </Directory>
 
-        RewriteRule ^/zuul/$ /zuul/tenants.html [R]
+        RewriteRule ^/zuul/?$ /zuul/index.html [R]
 
         # Console-stream needs a special proxy-pass for websocket
         ProxyPassMatch /zuul/(.*)/console-stream ws://{{ zuul_web_url }}/$1/console-stream nocanon retry=0 disablereuse=on
