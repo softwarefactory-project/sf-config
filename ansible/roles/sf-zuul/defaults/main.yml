@@ -19,9 +19,6 @@ zuul_services:
 zuul_scheduler_packages:
   - rh-python35-zuul
   - rh-python35-zuul-scheduler
-  - rh-python35-zuul-webui
-  - httpd
-  - sf-web-assets
 
 zuul_merger_packages:
   - rh-python35-zuul
