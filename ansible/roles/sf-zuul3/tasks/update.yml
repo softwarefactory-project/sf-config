@@ -19,6 +19,11 @@
       args:
         chdir: /root/config
 
+    - name: Copy custom python scripts
+      shell: "cp zuulV3/*.py {{ zuul3_conf_dir }}/"
+      args:
+        chdir: /root/config
+
     - name: Check if zuul-scheduler is running
       command: systemctl -q is-active rh-python35-zuul-scheduler
       register: _zuul3_scheduler
