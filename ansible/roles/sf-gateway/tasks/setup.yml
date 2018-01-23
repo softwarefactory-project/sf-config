@@ -90,6 +90,13 @@
     insertafter: '<head>'
   with_fileglob: /opt/rh/rh-python35/root/usr/share/zuul/*.html
 
+- name: Inject zuul documentation links
+  lineinfile:
+    path: "{{ item }}"
+    line: '    <ul class="nav navbar-nav navbar-right"><li><a href="/docs/zuul">Zuul documentation</a></li></ul>'
+    insertbefore: '<ul class="nav navbar-nav">'
+  with_fileglob: /opt/rh/rh-python35/root/usr/share/zuul/*.html
+
 - name: Install gerrit dashboard
   copy:
     src: dashboard.index.html
@@ -109,6 +116,10 @@
 - name: Read zuul-job version
   command: rpm -q rh-python35-zuul-jobs-doc
   register: _zuul_job_version
+
+- name: Read zuul version
+  command: rpm -q rh-python35-zuul-doc
+  register: _zuul_version
 
 - name: Install templates
   template:
