@@ -13,19 +13,5 @@
     - mod_wsgi
     - mod_auth_pubtkt
     - rh-python35-zuul-jobs-doc
-
-- name: "Install zuul webui"
-  yum:
-    name: "zuul-webui"
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  when: "'zuul' in roles"
-
-- name: "Install zuul webui"
-  yum:
-    name: "rh-python35-zuul-webui"
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  when: "'zuul' in roles"
+    - rh-python35-zuul-doc
+    - rh-python35-zuul-webui
