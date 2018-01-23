@@ -19,6 +19,15 @@
       args:
         chdir: /root/config
 
+    - name: Copy all python scripts
+      synchronize:
+        src: /root/config/zuulV3/
+        dest: "{{ zuul3_conf_dir }}"
+        delete: yes
+        rsync_opts:
+          - "--include=*.py"
+          - "--exclude=*"
+
     - name: Check if zuul-scheduler is running
       command: systemctl -q is-active rh-python35-zuul-scheduler
       register: _zuul3_scheduler
