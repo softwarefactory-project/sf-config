@@ -1,4 +1,7 @@
 ---
+- name: "Dump databases"
+  shell: mysqldump --all-databases | gzip > /var/log/mariadb/dump.gz
+
 - name: "Fetch mariadb logs"
   synchronize:
     mode: pull
