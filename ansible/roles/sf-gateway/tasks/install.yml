@@ -13,6 +13,7 @@
     - mod_wsgi
     - mod_auth_pubtkt
     - rh-python35-zuul-jobs-doc
+    - rh-python35-zuul-doc
 
 - name: "Install zuul webui"
   yum:
