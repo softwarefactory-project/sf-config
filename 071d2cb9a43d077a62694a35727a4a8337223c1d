@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_59f1e4cc",
+        "filename": "ansible/roles/sf-zuul3/tasks/update.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-23T09:25:56Z",
+      "side": 1,
+      "message": "How about:\n\nsynchronize:\n  src: /root/config\n  dest: \"{{ zuul3_conf_dir }}\"\n  rsync_opts:\n    - \"--exclude\u003d*\"\n    - \"--include\u003d*.py\"",
+      "revId": "071d2cb9a43d077a62694a35727a4a8337223c1d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
