@@ -178,7 +178,7 @@ zuul:
   #      hostname: github.com
   #      webhook_token: XXX # see https://developer.github.com/webhooks/securing/>
   #      # GitHub App settings
-  #      app_id: XXX # See https://softwarefactory-project.io/docs/operator/zuul3_operator.html#zuul-github-app-operator
+  #      app_id: XXX # See https://softwarefactory-project.io/docs/operator/zuul_operator.html#zuul-github-app-operator
   #      app_key: | # In Github this is known as Private key and it must be collected when generated
   #        Key content here
   #      # Github Webhook settings

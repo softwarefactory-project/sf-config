@@ -36,7 +36,7 @@ args=(sys.stdout,)
 level=DEBUG
 class=logging.handlers.TimedRotatingFileHandler
 formatter=normal
-args=('/var/log/nodepool/builder.log', 'H', 8, 30,)
+args=('{{ nodepool_log_dir }}/builder.log', 'H', 8, 30,)
 
 {% for image in nodepool_config.diskimages %}
 [handler_image-{{ image.name }}]

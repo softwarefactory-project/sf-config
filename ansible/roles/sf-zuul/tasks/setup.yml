@@ -1,19 +1,56 @@
 ---
-# Use 0751 to let apache access /var/lib/zuul/git
-# Use /bin/sh shell to allow zuul to connect to localhost for config-update jobs
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=jenkins_rsa home_dir_mode=0751 shell=/bin/sh"
+# Use 0751 to let apache access {{ zuul_lib_dir }}/git
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul_lib_dir }} home_dir_mode=0751 update_user=no"
 
-# Fix an issue with incorect pbr requirement
-- name: Ensure python-jenkins requirement.txt is removed
+- name: Install zuul shortcut
+  copy:
+    src: zuul.sh
+    dest: /usr/bin/zuul
+    mode: 0755
+
+- name: Prepare config-check files in /opt/sf
+  block:
+    - name: Create /opt/sf directory
+      file:
+        path: /opt/sf
+        state: directory
+
+    - name: Dump current architecture for config-check test
+      copy:
+        dest: /opt/sf/arch.yaml
+        content: '{{ {"roles": roles}| to_yaml }}'
+
+    - name: Setup _nodepool.yaml for config-check test
+      template:
+        src: /usr/share/sf-config/ansible/roles/sf-nodepool/templates/_nodepool.yaml.j2
+        dest: /opt/sf/defconf-nodepool.yaml
+
+    - name: Setup zuul.conf for config-check test
+      template:
+        src: fake_zuul.conf.j2
+        dest: /opt/sf/defconf-zuul.conf
+
+    - name: Setup repoxplorer config.py
+      copy:
+        content: "db_path = 'repoxplorer/'"
+        dest: /opt/sf/defconf-repoxplorer.py
+  when: "'zuul-executor' in zuul_services"
+
+- name: Symlink SCL to zuul
   file:
-    path: /usr/lib/python2.7/site-packages/python_jenkins-0.4.8-py2.7.egg-info/requires.txt
-    state: absent
+    src: "{{ item.src }}/zuul"
+    dest: "{{ item.dest }}/zuul3"
+    state: link
+  with_items:
+    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
+    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
+    - {src: /etc/opt/rh/rh-python35, dest: /etc}
 
-- name: Authorize zuul localhost connection for config-update jobs
-  authorized_key:
-    user: zuul
-    key: "{{ jenkins_rsa_pub }}"
-  when: "'zuul-launcher' in zuul_services"
+# TODO: fix package
+- name: Removed unsued layout.yaml file
+  file:
+    path: /etc/opt/rh/rh-python35/zuul/layout.yaml
+    state: absent
 
 - name: Apply selinux port labelling
   seport:
@@ -21,127 +58,53 @@
     proto: tcp
     setype: http_port_t
     state: present
-  when: "ansible_selinux.status == 'enabled' and 'zuul-server' in zuul_services"
+  when: "ansible_selinux.status == 'enabled' and 'zuul-scheduler' in zuul_services"
 
-- block:
-    - name: Setup apache site zuul.conf
-      template:
-        src: zuul-server.httpd.conf.j2
-        dest: /etc/httpd/conf.d/zuul.conf
-        mode: 0444
-      notify: apache reload
-
-    - name: Ensure apache is enabled
-      service:
-        name: httpd
-        state: started
-        enabled: "yes"
-  when: "'zuul-server' in zuul_services"
-
-- block:
-    - name: Setup apache zuul-merger.conf
-      template:
-        src: zuul-merger.httpd.conf.j2
-        dest: /etc/httpd/conf.d/zuul-merger.conf
-        mode: 0444
-      notify: apache reload
-
-    - name: Ensure apache is enabled
-      service:
-        name: httpd
-        state: started
-        enabled: "yes"
+- name: Setup apache zuul-merger.conf
+  template:
+    src: zuul-merger.httpd.conf.j2
+    dest: /etc/httpd/conf.d/zuul-merger.conf
+    mode: 0444
+  notify: apache reload
   when: "'zuul-merger' in zuul_services"
 
 - block:
-    - name: Create config-check directory
-      file:
-        path: /var/lib/zuul/defconf
-        state: directory
+    - name: Pre-Create config project rsa key
+      become: "yes"
+      become_user: zuul
+      command: |
+        /opt/rh/rh-python35/root/bin/python -c 'import zuul.configloader
+        import zuul.lib.encryption
+        class ZuulJobs: pass
+        project = ZuulJobs()
+        project.name = "config"
+        project.private_key_file = "{{ zuul_lib_dir }}/keys/gerrit/config.pem"
+        zuul.configloader.TenantParser._generateKeys(project)
+        zuul.configloader.TenantParser._loadKeys(project)
+        pub = open("{{ zuul_lib_dir }}/keys/gerrit/config.pub", "w")
+        pub.write(zuul.lib.encryption.serialize_rsa_public_key(project.public_key).decode("utf-8"))
+        pub.close()'
+      args:
+        creates: "{{ zuul_lib_dir }}/keys/gerrit/config.pub"
 
-    - name: Install config-check service default configuration
-      template:
-        src: "config-check/{{ item }}.j2"
-        dest: "/var/lib/zuul/defconf/{{ item|replace('defconf-', '') }}"
-      with_items:
-        - defconf-nodepool.yaml
-        - defconf-zuul.conf
-        - defconf-repoxplorer.py
-
-    - name: Dump current architecture for config-check test
-      copy:
-        dest: /var/lib/zuul/defconf/arch.yaml
-        content: '{{ {"roles": roles}| to_yaml }}'
-
-    - name: Ensure /var/lib/zuul/jenkins exists
-      file:
-        path: "{{ item }}"
-        state: directory
-        mode: 0700
-        owner: zuul
-      with_items:
-        - /var/lib/zuul/jenkins
-        - /var/lib/zuul/jenkins/secrets
-      when: "'jenkins' in roles or zuul_jenkins_credencials"
-
-    - name: Fetch Jenkins Secrets on the install-server
-      command: "rsync -r {{ jenkins_host }}:/var/lib/jenkins/{{ item }} /var/lib/software-factory/jenkins/{{ item }}"
-      delegate_to: localhost
-      with_items:
-        - credentials.xml
-        - secrets/
-      when: "'jenkins' in roles"
-
-    - name: Copy Jenkins Secrets to zuul-launcher home directory
-      command: "rsync -r /var/lib/software-factory/jenkins/ {{ zuul_launcher_host }}:/var/lib/zuul/jenkins/"
-      delegate_to: localhost
-      when: "'jenkins' in roles or zuul_jenkins_credencials"
-
-    - name: Ensure jenkins secrets key exists
-      file:
-        path: "/var/lib/zuul/jenkins/{{ item }}"
-        state: touch
-        owner: zuul
-        mode: 0400
-      with_items:
-        - credentials.xml
-        - secrets/master.key
-        - secrets/hudson.util.Secret
-        - secrets/org.jenkinsci.plugins.plaincredentials.impl.FileCredentialsImpl
-      when: "'jenkins' in roles or zuul_jenkins_credencials"
-
-  when: "'zuul-launcher' in zuul_services"
-
-- block:
-    - name: Create /var/www/zuul
-      file:
-        path: /var/www/zuul
-        state: directory
-
-    - name: Symlink zuul image
-      file:
-        src: /usr/share/javascript/zuul/images/
-        dest: /var/www/zuul/images
-        state: link
-
-    - name: Install index.html for zuul
-      copy:
-        src: zuul.index.html
-        dest: /var/www/zuul/index.html
-        mode: 0444
-  when: "'zuul-server' in zuul_services"
+    - name: Fetch config project pub key on install-server
+      fetch:
+        flat: "yes"
+        src: "{{ zuul_lib_dir }}/keys/gerrit/config.pub"
+        dest: "/var/lib/software-factory/certs/config.pub"
+  when: "'zuul-scheduler' in zuul_services"
 
 - block:
     - name: Ensure known_hosts file exists
       file:
-        path: /var/lib/zuul/.ssh/known_hosts
+        path: "{{ zuul_lib_dir }}/.ssh/known_hosts"
         owner: zuul
         group: zuul
         mode: 0600
         state: touch
 
     - name: Check if the zuul sources are already defined
-      command: "ssh-keygen -f /var/lib/zuul/.ssh/known_hosts -F {{ item.host_packed }}"
+      command: "ssh-keygen -f {{ zuul_lib_dir }}/.ssh/known_hosts -F {{ item.host_packed }}"
       with_items: "{{ zuul_ssh_known_hosts }}"
       register: _zuul_known_hosts_results
       ignore_errors: "yes"
@@ -149,47 +112,74 @@
     - name: Scan the missing zuul sources
       shell: >
         ssh-keyscan -T 10 -p {{ item.item.port }} {{ item.item.host }} >>
-        /var/lib/zuul/.ssh/known_hosts
+        {{ zuul_lib_dir }}/.ssh/known_hosts
       with_items: "{{ _zuul_known_hosts_results.results }}"
       when: item.stdout == ""
-  when: "'zuul-server' in zuul_services or 'zuul-merger' in zuul_services"
 
-- name: "Copy logging configuration"
-  template:
-    src: "{{ item }}.j2"
-    dest: "/etc/zuul/{{ item }}"
-  with_items:
-    - server-logging.conf
-    - gearman-logging.conf
-    - merger-logging.conf
-    - launcher-logging.conf
-  notify: restart zuul
+    - name: Check zuul user can connect to gerrit connections
+      become_user: zuul
+      command: >
+        ssh -i {{ zuul_lib_dir }}/.ssh/id_rsa
+            -o UserKnownHostsFile={{ zuul_lib_dir }}/.ssh/known_hosts
+            -p {{ item.port|default(29418) }}
+            {{ item.username }}@{{ item.hostname }}
+      register: _zuul_connection_test
+      failed_when: _zuul_connection_test.stderr.find("Welcome to Gerrit Code Review") == -1
+      with_items: "{{ zuul_gerrit_connections }}"
+
+    - name: Install github private key
+      copy:
+        content: "{{ item.app_key }}"
+        dest: "{{ zuul_lib_dir }}/.ssh/github_{{ item.name }}_rsa"
+        mode: 0400
+        owner: zuul
+        group: zuul
+      with_items: "{{ zuul_github_connections }}"
+      when: item.app_key
+
+    - include_tasks: create_logging.yml _logfile="scheduler"
+    - include_tasks: create_logging.yml _logfile="gearman-server"
+  when: "'zuul-scheduler' in zuul_services or 'zuul-merger' in zuul_services or 'zuul-executor' in zuul_services"
+
+- block:
+    - include_tasks: create_logging.yml _logfile="executor"
+  when: "'zuul-executor' in zuul_services"
+
+- block:
+    - include_tasks: create_logging.yml _logfile="merger"
+  when: "'zuul-merger' in zuul_services"
+
+- block:
+    - include_tasks: create_logging.yml _logfile="web"
+  when: "'zuul-web' in zuul_services"
 
 - name: "Setup sysconfig"
   template:
     src: sysconfig.j2
-    dest: /etc/sysconfig/zuul
+    dest: "{{ zuul_sysconfig }}"
   notify: restart zuul
 
 - name: "Setup configuration"
   template:
     src: zuul.conf.j2
-    dest: /etc/zuul/zuul.conf
+    dest: "{{ zuul_conf_dir }}/zuul.conf"
     mode: 0440
     group: zuul
   notify: restart zuul
 
-- name: "Copy gearman-check script"
-  copy:
-    src: gearman-check
-    dest: /usr/local/bin/gearman-check
-    mode: 0555
-  when: "'zuul-server' in zuul_services"
+- block:
+    - name: "Check if scheduler is running"
+      command: systemctl is-active "rh-python35-zuul-scheduler"
+      register: zuul_scheduler_service_running
+      failed_when: zuul_scheduler_service_running.rc not in [0, 3]
 
-- name: "Setup gearman-check cron"
-  cron:
-    name: gearman-check-cron
-    job: /usr/local/bin/gearman-check
-    minute: 0
-    hour: 0
-  when: "'zuul-server' in zuul_services"
+    - name: "Manually create database to avoid concurrency issue"
+      command: |
+        /opt/rh/rh-python35/root/bin/python -c 'import zuul.cmd
+        import configparser
+        app = zuul.cmd.ZuulApp()
+        app.config = configparser.ConfigParser()
+        app.config.read("{{ zuul_conf_dir }}/zuul.conf")
+        app.configure_connections()'
+      when: zuul_scheduler_service_running.rc == 3
+  when: "'zuul-scheduler' in zuul_services"

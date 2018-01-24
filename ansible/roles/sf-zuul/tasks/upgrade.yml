@@ -1,14 +1,15 @@
 ---
 - block:
-    - name: Ensure zuul service is disabled
-      service:
-        name: zuul
-        state: stopped
-        enabled: "no"
-      ignore_errors: "yes"
-  when: sf_previous_version < 2.6
+    - name: Remove /var/lib/zuul*
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /var/lib/zuul
+        - /var/lib/zuul3
 
-- name: Ensure state is removed
-  file:
-    path: /var/lib/software-factory/state/zuul_config
-    state: absent
+    - name: Remove zuulv2
+      yum:
+        name: "zuul"
+        state: absent
+  when: sf_previous_version < 3.0

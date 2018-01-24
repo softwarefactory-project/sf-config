@@ -17,18 +17,11 @@ class NodepoolLauncher(Component):
     role = "nodepool-launcher"
     require_roles = ["zookeeper"]
 
-    def prepare(self, args):
-        super(NodepoolLauncher, self).prepare(args)
-        args.glue["jobs_zmq_publishers"] = []
-
     def configure(self, args, host):
-        args.glue["nodepool_providers"] = args.sfconfig["nodepool"].get(
-            "providers", [])
-        args.glue["nodepool_host"] = args.glue["nodepool_launcher_host"]
-        args.glue["nodepool_internal_url"] = "http://%s:%s" % (
-            host["hostname"], args.defaults["nodepool_webapp_port"])
+        args.glue["nodepool_providers"] = args.sfconfig.get(
+            "nodepool", {}).get("providers", [])
         self.get_or_generate_ssh_key(args, "nodepool_rsa")
-        self.get_or_generate_ssh_key(args, "jenkins_rsa")
-        self.add_mysql_database(args, "nodepool")
-        if args.sfconfig["network"]["disable_external_resources"]:
-            args.glue["nodepool_disable_providers"] = True
+        self.get_or_generate_ssh_key(args, "zuul_rsa")
+        args.glue["nodepool_internal_url"] = "http://%s:%s" % (
+            args.glue["nodepool_launcher_host"],
+            args.defaults["nodepool_webapp_port"])
