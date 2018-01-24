@@ -3,7 +3,7 @@
   register: config
 
 - git:
-    repo: "http://{{ fqdn }}/r/config"
+    repo: git+ssh://gerrit/config
     dest: /root/config
     force: "yes"
   when: config.stat.isdir is not defined
