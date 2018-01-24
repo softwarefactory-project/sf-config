@@ -36,14 +36,6 @@
     - name: Copy the default config repo files
       command: rsync -av /usr/share/sf-config/ansible/roles/sf-repos/files/config/ {{ conf_tmp.stdout }}/
 
-    - name: Setup config repos templates
-      template:
-        src: "config/{{ item }}.j2"
-        dest: "{{ conf_tmp.stdout }}/{{ item }}"
-      with_items:
-        - jobs/_default_jobs.yaml
-        - jobs-zuul/_macros.yaml
-
     - name: Copy default resources file
       command: mv /root/resources.yaml "{{ conf_tmp.stdout }}/resources/resources.yaml"
 
