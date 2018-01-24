@@ -16,30 +16,6 @@ def update_sfconfig(args):
     dirty = False
     data = args.sfconfig
 
-    if 'zuul' not in data:
-        data['zuul'] = {
-            'external_logservers': [],
-            'default_log_site': "sflogs",
-            'log_url': "",
-        }
-        dirty = True
-
-    if 'static_nodes' not in data['zuul']:
-        data['zuul']['static_nodes'] = []
-        dirty = True
-
-    if 'gerrit_connections' not in data['zuul']:
-        data['zuul']['gerrit_connections'] = []
-        dirty = True
-
-    if "gerrit_connections" in data:
-        for gerrit_connection in data["gerrit_connections"]:
-            if not gerrit_connection["disabled"]:
-                if 'disabled' in gerrit_connection:
-                    del gerrit_connection['disabled']
-                data['zuul']['gerrit_connections'].append(gerrit_connection)
-        del data["gerrit_connections"]
-
     # 2.6.0: expose elasticsearch config
     if 'elasticsearch' not in data:
         data['elasticsearch'] = {}
@@ -73,6 +49,13 @@ def update_sfconfig(args):
         del data['backup']
         dirty = True
 
+    # 3.0: rename (zuul|nodepool)3 without suffix
+    for key in ('zuul', 'nodepool'):
+        if '%s3' % key in data:
+            data[key] = data['%s3' % key]
+            del data['%s3' % key]
+            dirty = True
+
     # 2.7: refactor logs settings
     for key in ("disabled", "container", "logserver_prefix", "authurl",
                 "x_storage_url", "username", "password", "tenantname",
@@ -87,25 +70,24 @@ def update_sfconfig(args):
         data["logs"]["expiry"] = 60
         dirty = True
 
-    if "upstream_zuul_jobs" not in data.get("zuul3", {}):
-        data.setdefault("zuul3", {})
-        data["zuul3"]["upstream_zuul_jobs"] = False
+    if "upstream_zuul_jobs" not in data.get("zuul", {}):
+        data.setdefault("zuul", {})
+        data["zuul"]["upstream_zuul_jobs"] = False
         dirty = True
 
-    if "default_nodeset_name" not in data["zuul3"]:
-        data["zuul3"]["default_nodeset_name"] = "container"
-        data["zuul3"]["default_nodeset_label"] = "centos-oci"
+    if "default_nodeset_name" not in data["zuul"]:
+        data["zuul"]["default_nodeset_name"] = "container"
+        data["zuul"]["default_nodeset_label"] = "centos-oci"
         dirty = True
 
-    for github_connection in data['zuul3'].get('github_connections', []):
+    for github_connection in data['zuul'].get('github_connections', []):
         if "app_key" not in github_connection:
             github_connection["app_key"] = None
             dirty = True
 
-    for ci_service in ('zuul', 'zuul3'):
-        if "periodic_pipeline_mail_rcpt" not in data[ci_service]:
-            data[ci_service]['periodic_pipeline_mail_rcpt'] = "root@localhost"
-            dirty = True
+    if "periodic_pipeline_mail_rcpt" not in data['zuul']:
+        data['zuul']['periodic_pipeline_mail_rcpt'] = "root@localhost"
+        dirty = True
 
     if "active_directory" not in data["authentication"]:
         data["authentication"]["active_directory"] = {

@@ -44,10 +44,10 @@ class Zuul3Scheduler(Component):
             self.import_ssh_key(args, "zuul_rsa", args.zuul3_ssh_key)
 
         if args.zuul3_upstream_zuul_jobs is not None:
-            if args.sfconfig["zuul3"]["upstream_zuul_jobs"] != \
+            if args.sfconfig["zuul"]["upstream_zuul_jobs"] != \
                args.zuul3_upstream_zuul_jobs:
                 # Update sfconfig.yaml value
-                args.sfconfig["zuul3"][
+                args.sfconfig["zuul"][
                     "upstream_zuul_jobs"] = args.zuul3_upstream_zuul_jobs
                 args.save_sfconfig = True
 
@@ -70,7 +70,7 @@ class Zuul3Scheduler(Component):
                 fail("Can't use 'gerrit' name for external connections")
             # Update gerrit_connection if necessary
             args.updated = False
-            for connection in args.sfconfig.get("zuul3", {}).get(
+            for connection in args.sfconfig.get("zuul", {}).get(
                     "gerrit_connections", []):
                 def update_value(key, value):
                     print("%s: updating %s to %s" % (name, key, value))
@@ -90,7 +90,7 @@ class Zuul3Scheduler(Component):
                     break
             if not args.updated:
                 # Else insert a new connection
-                args.sfconfig.setdefault("zuul3", {}).setdefault(
+                args.sfconfig.setdefault("zuul", {}).setdefault(
                     "gerrit_connections", []).append({
                         'name': name,
                         'hostname': hostname,
@@ -103,9 +103,9 @@ class Zuul3Scheduler(Component):
     def prepare(self, args):
         super(Zuul3Scheduler, self).prepare(args)
         self.openstack_connection_name = None
-        if args.sfconfig["zuul3"]["upstream_zuul_jobs"]:
+        if args.sfconfig["zuul"]["upstream_zuul_jobs"]:
             # Check review.openstack.org is configured
-            for connection in args.sfconfig.get("zuul3", {}).get(
+            for connection in args.sfconfig.get("zuul", {}).get(
                     "gerrit_connections", []):
                 if connection["hostname"] == "review.openstack.org":
                     self.openstack_connection_name = connection["name"]
@@ -136,10 +136,10 @@ class Zuul3Scheduler(Component):
         args.glue["openstack_connection_name"] = self.openstack_connection_name
 
         args.glue["zuul3_periodic_pipeline_mail_rcpt"] = args.sfconfig[
-            "zuul3"]["periodic_pipeline_mail_rcpt"]
+            "zuul"]["periodic_pipeline_mail_rcpt"]
 
         # Extra settings
-        zuul3_config = args.sfconfig.get("zuul3", {})
+        zuul3_config = args.sfconfig.get("zuul", {})
         args.glue["zuul3_upstream_zuul_jobs"] = zuul3_config[
             "upstream_zuul_jobs"]
         args.glue["zuul3_gerrit_connections"] = zuul3_config.get(
