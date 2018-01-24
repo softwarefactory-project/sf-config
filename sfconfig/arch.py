@@ -25,8 +25,7 @@ def process(args):
     # this indicate that we don't need $role.$fqdn aliases
     # TODO: remove this logic when $role.$fqdn are no longer used
     args.glue["scalable_roles"] = [
-        "zuul", "zuul-merger", "zuul-launcher",
-        "zuul3", "zuul3-merger", "zuul3-executor",
+        "zuul", "zuul-merger", "zuul-executor",
         "hypervisor-oci",
     ]
 

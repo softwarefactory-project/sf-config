@@ -1,29 +1,12 @@
-elements-dir: /etc/nodepool/elements:/usr/share/sf-elements
-images-dir: /var/lib/nodepool/dib
+elements-dir: {{ nodepool_conf_dir }}/elements:/usr/share/sf-elements
+images-dir: {{ nodepool_lib_dir }}/dib
 
-zmq-publishers:
-{% for publisher in jobs_zmq_publishers %}
-  - {{ publisher }}
-{% endfor %}
-
-gearman-servers:
-  - host: {{ zuul_server_host }}
+webapp:
+  port: {{ nodepool_webapp_port }}
 
 zookeeper-servers:
   - host: {{ zookeeper_host }}
     port: 2181
-    chroot: /nodepool2
-
-cron:
-  cleanup: '*/30 * * * *'
-  check: '*/15 * * * *'
-
-targets:
-  - name: zuul
-    assign-via-gearman: True
-{% if 'jenkins' in roles %}
-  - name: default
-{% endif %}
 
 labels: []
 providers: []

@@ -1,20 +1,18 @@
 ---
-- name: "Install package for nodepool-launcher"
-  yum:
-    name: nodepool-launcher
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  when: "'nodepool-launcher' in nodepool_services"
-
-- name: "Install package for nodepool-builder"
+- name: "Install launcher package"
   yum:
     name: "{{ item }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  with_items:
-    - httpd
-    - nodepool-builder
-    - sf-elements
-  when: "'nodepool-builder' in nodepool_services"
+  with_items: "{{ nodepool_launcher_packages }}"
+  when: '"nodepool-launcher" in nodepool_services'
+
+- name: "Install builder package"
+  yum:
+    name: "{{ item }}"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  with_items: "{{ nodepool_builder_packages }}"
+  when: '"nodepool-builder" in nodepool_services'

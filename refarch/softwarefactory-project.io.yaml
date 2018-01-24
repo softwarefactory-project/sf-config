@@ -53,9 +53,9 @@ inventory:
     disk: 80
     public_url: http://zuulv3.fqdn
     roles:
-      - zuul3-scheduler
-      - zuul3-merger
-      - zuul3-executor
-      - zuul3-web
-      - nodepool3-launcher
-      - nodepool3-builder
+      - zuul-scheduler
+      - zuul-merger
+      - zuul-executor
+      - zuul-web
+      - nodepool-launcher
+      - nodepool-builder

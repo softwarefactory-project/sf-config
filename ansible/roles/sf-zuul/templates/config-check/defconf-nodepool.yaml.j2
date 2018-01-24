@@ -1,9 +1,0 @@
-images-dir: /opt/nodepool
-gearman-servers:
-  - host: 127.0.0.1
-targets:
-  - name: default
-providers:
-{% for provider in nodepool.providers %}
-  - name: {{ provider.name }}
-{% endfor %}
