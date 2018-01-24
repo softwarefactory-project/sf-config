@@ -1,10 +1,76 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa home_dir={{ nodepool_lib_dir }} update_user=no"
+
+- name: Install nodepool shortcut
+  copy:
+    src: nodepool.sh
+    dest: /usr/bin/nodepool
+    mode: 0755
+
+- name: Symlink SCL to nodepool
+  file:
+    src: "{{ item.src }}/nodepool"
+    dest: "{{ item.dest }}/nodepool3"
+    state: link
+  with_items:
+    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
+    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
+    - {src: /etc/opt/rh/rh-python35, dest: /etc}
+
+- name: check for nodepoolv2 user directory
+  command: grep -q "\/var\/lib\/nodepool:" /etc/passwd
+  failed_when: false
+  changed_when: false
+  register: nodepoolv2_user_home
+
+- name: setup nodepool_rsa and cloud.yaml for nodepoolv2 created user
+  block:
+    - name: Create .ssh and .config directories
+      file:
+        dest: "{{ item }}"
+        state: directory
+        mode: 0700
+        owner: nodepool
+        group: nodepool
+      with_items:
+        - /var/lib/nodepool/.ssh
+        - /var/lib/nodepool/.config/openstack
+
+    - name: Copy the key
+      copy:
+        content: "{{ hostvars[inventory_hostname][item.key] }}"
+        dest: "/var/lib/nodepool/.ssh/{{ item.name }}"
+        mode: "{{ item.mode }}"
+        owner: "nodepool"
+        group: "nodepool"
+      with_items:
+        - {key: "nodepool_rsa", name: "id_rsa", mode: "0400"}
+        - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
+
+    - name: Install os-client-config
+      template:
+        src: clouds.yaml.j2
+        dest: /var/lib/nodepool/.config/openstack/clouds.yaml
+        owner: nodepool
+        group: nodepool
+        mode: 0400
+  when: nodepoolv2_user_home.rc == 0
+
+- name: add nodepool to sudoers
+  copy:
+    src: /etc/opt/rh/rh-python35/sudoers.d/nodepool
+    dest: /etc/sudoers.d/nodepool
+    owner: root
+    group: root
+    mode: 0640
+    remote_src: yes
+  when:
+    - '"nodepool-builder" in nodepool_services'
 
 - name: Install jenkins/zuul public ssh key
   copy:
     content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
-    dest: "/var/lib/nodepool/.ssh/{{ item }}.pub"
+    dest: "{{ nodepool_lib_dir }}/.ssh/{{ item }}.pub"
     mode: 0444
     owner: nodepool
     group: nodepool
@@ -15,7 +81,7 @@
 - name: Install config
   template:
     src: "{{ item }}.j2"
-    dest: "/etc/nodepool/{{ item }}"
+    dest: "{{ nodepool_conf_dir }}/{{ item }}"
     owner: "root"
     group: "nodepool"
     mode: "0440"
@@ -23,26 +89,26 @@
     - _nodepool.yaml
     - secure.conf
 
+- name: Create .config/openstack directory
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ nodepool_lib_dir }}/.config/openstack"
+    - /root/.config/openstack
+
 - name: Install os-client-config
   template:
     src: clouds.yaml.j2
-    dest: /var/lib/nodepool/.config/openstack/clouds.yaml
+    dest: "{{ item }}"
     owner: nodepool
     group: nodepool
     mode: 0400
+  with_items:
+    - "{{ nodepool_lib_dir }}/.config/openstack/clouds.yaml"
+    - /root/.config/openstack/clouds.yaml
 
-- name: Ensure /root/.config/openstack exists
-  file:
-    path: /root/.config/openstack
-    state: directory
-
-- name: Install os-client-config for root user
-  template:
-    src: clouds.yaml.j2
-    dest: /root/.config/openstack/clouds.yaml
-    mode: 0400
-
-- name: Create image build log directory
+- name: Create nodepool image build log directory
   file:
     path: /var/www/nodepool-log
     state: directory
@@ -56,32 +122,38 @@
     dest: /etc/httpd/conf.d/nodepool_log.conf
   register: nodepool_log_http_conf
 
-- name: Ensure httpd is running on nodepool-builder host
+- name: Reload http on the nodepool-builder node
   service:
     name: httpd
     state: reloaded
     enabled: "yes"
   when:
-    - nodepool_log_http_conf|changed
-    - "'nodepool-builder' in nodepool_services"
+    - 'nodepool_log_http_conf|changed'
+    - '"nodepool-builder" in nodepool_services'
 
-- name: Ensure /usr/local/share/sf-jenkins-slave-tools/ exists
+- name: Ensure /var/www/html exists
   file:
-    path: /usr/local/share/sf-jenkins-slave-tools/
+    path: /var/www/html
     state: directory
+
+- name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log
+  file:
+    path: /var/www/html/nodepool-log
+    src: /var/www/nodepool-log
+    state: link
 
 - name: Setup sysconfig
   template:
     src: sysconfig.j2
-    dest: /etc/sysconfig/nodepool
+    dest: "{{ nodepool_sysconfig }}"
   notify: restart nodepool
 
 - name: Setup authorized keys
   copy:
-    content: "{{ jenkins_rsa_pub }}"
-    dest: /etc/nodepool/scripts/authorized_keys
+    content: "{{ zuul_rsa_pub }}"
+    dest: "{{ nodepool_conf_dir }}/scripts/authorized_keys"
 
 - name: Setup localCA
   copy:
     content: "{{ localCA_pem }}"
-    dest: /etc/nodepool/scripts/localCA.pem
+    dest: "{{ nodepool_conf_dir }}/scripts/localCA.pem"

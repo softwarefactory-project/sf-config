@@ -3,24 +3,23 @@ role_actions:
   - install
   - setup
   - update
+  - upgrade
   - get_logs
   - disable
-  - upgrade
-
-jenkins_password: "CHANGE_ME"
-
-jenkins_host: "example.com"
-jenkins_api_url: "http://{{ jenkins_host }}:8080/jenkins/"
 
 nodepool_services:
-  - nodepool-launcher
-  - nodepool-builder
+  - rh-python35-nodepool-launcher
+  - rh-python35-nodepool-builder
 
-nodepool_packages:
-  - nodepool
-  - nodepool-launcher
-  - nodepool-builder
+nodepool_launcher_packages:
+  - rh-python35-nodepool
+  - rh-python35-nodepool-launcher
+
+nodepool_builder_packages:
+  - rh-python35-nodepool
+  - rh-python35-nodepool-builder
   - sf-elements
+  - httpd
 
 nodepool_cache_ttl: 5
 nodepool_providers:
@@ -32,15 +31,12 @@ nodepool_providers:
     password: secret
     region_name: regionOne
 
+nodepool_conf_dir: "/etc/opt/rh/rh-python35/nodepool"
+nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
+nodepool_log_dir: "/var/opt/rh/rh-python35/log/nodepool"
+nodepool_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/nodepool"
+
+nodepool_webapp_port: 8006
+
 nodepool_loglevel: INFO
 nodepool_root_loglevel: WARNING
-
-nodepool_mysql_host: "mysql.example.com"
-nodepool_mysql_port: 3306
-nodepool_mysql_db: "nodepool"
-nodepool_mysql_user: "nodepool"
-nodepool_mysql_password: "CHANGE_ME"
-
-nodepool_webapp_port: 8005
-
-nodepool_disable_providers: false
