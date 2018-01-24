@@ -6,12 +6,12 @@
       gerrit:
         config-projects:
           - config
-{% if not zuul3_upstream_zuul_jobs %}
+{% if not zuul_upstream_zuul_jobs %}
         untrusted-projects:
           - zuul-jobs
 {% endif %}
 {% endif %}
-{% if zuul3_upstream_zuul_jobs %}
+{% if zuul_upstream_zuul_jobs %}
       {{ openstack_connection_name }}:
         untrusted-projects:
           - openstack-infra/zuul-jobs:

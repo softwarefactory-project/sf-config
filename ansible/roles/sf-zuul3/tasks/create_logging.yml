@@ -1,6 +1,0 @@
----
-- name: "Setup configuration"
-  template:
-    src: "logging.yaml.j2"
-    dest: "{{ zuul3_conf_dir }}/{{ _logfile }}-logging.yaml"
-  notify: restart zuul3

@@ -11,8 +11,8 @@
 # under the License.
 
 
-class TestZuulMerger:
+class TestZuulExecutor:
     def test_server_running_and_enabled(self, host):
-        server = host.service("rh-python35-zuul-merger")
+        server = host.service("rh-python35-zuul-executor")
         assert server.is_running
         assert server.is_enabled

@@ -23,8 +23,7 @@ class TestZookeeper(utils.Base):
     def test_client_are_connected(self, host):
         expected_clients = 0
         for role in self.enabled_roles():
-            if role in ("nodepool-builder", "nodepool-launcher",
-                        "nodepool3-builder", "nodepool3-launcher"):
+            if role in ("nodepool-builder", "nodepool-launcher"):
                 expected_clients += 1
         skt = host.socket("tcp://2181")
         assert len(skt.clients) >= expected_clients

@@ -12,7 +12,7 @@
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
 {% endif %}
-{% for github_connection in zuul3_github_connections %}
+{% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         - event: pull_request
           action:
@@ -24,8 +24,8 @@
           comment: (?i)^\s*recheck\s*$
 {% endfor %}
     start:
-{% if zuul3_github_connections %}
-{% for github_connection in zuul3_github_connections %}
+{% if zuul_github_connections %}
+{% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         status: 'pending'
         comment: false
@@ -36,7 +36,7 @@
         verified: 0
 {% endif %}
     success:
-{% for github_connection in zuul3_github_connections %}
+{% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         status: 'success'
 {% endfor %}
@@ -46,7 +46,7 @@
 {% endif %}
       sqlreporter:
     failure:
-{% for github_connection in zuul3_github_connections %}
+{% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         status: 'failure'
 {% endfor %}
@@ -127,7 +127,7 @@
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
-        to: "{{ zuul3_periodic_pipeline_mail_rcpt }}"
+        to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in post pipeline: {change.project}'
       sqlreporter:
 
@@ -148,7 +148,7 @@
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
-        to: "{{ zuul3_periodic_pipeline_mail_rcpt }}"
+        to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in release pipeline: {change.project}'
       sqlreporter:
 
@@ -166,6 +166,6 @@
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
-        to: "{{ zuul3_periodic_pipeline_mail_rcpt }}"
+        to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in periodic pipeline: {change.project}'
       sqlreporter:

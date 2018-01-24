@@ -13,7 +13,7 @@ inventory:
       - gitweb
       - gerrit
       - logserver
-      - zuul3-scheduler
-      - zuul3-executor
-      - zuul3-web
-      - nodepool3-launcher
+      - zuul-scheduler
+      - zuul-executor
+      - zuul-web
+      - nodepool-launcher
