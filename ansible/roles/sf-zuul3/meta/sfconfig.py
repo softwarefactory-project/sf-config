@@ -31,7 +31,7 @@ class Zuul3Scheduler(Component):
 
     def usage(self, parser):
         parser.add_argument("--zuul3-ssh-key", metavar="KEY_PATH",
-                            help="Use existing ssh key for zuulV3")
+                            help="Use existing ssh key for zuul")
         parser.add_argument("--zuul3-upstream-zuul-jobs", action="store_true",
                             help="Use openstack-infra/zuul-jobs")
         parser.add_argument("--zuul3-external-gerrit",
