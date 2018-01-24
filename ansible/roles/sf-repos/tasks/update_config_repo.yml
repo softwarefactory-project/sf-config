@@ -7,13 +7,14 @@
   args:
     chdir: "{{ config_clone_dir }}"
   with_items:
+    - "remote set-url origin git+ssh://gerrit/config"
     - "fetch --all"
     - "reset --hard origin/master --"
     - "clean -f -x -d"
 
 - include_tasks: sync_config_repo_content.yml
 
-- name: Push zuul-jobs change
+- name: Push config change
   command: "git {{ item }}"
   args:
     chdir: "{{ config_clone_dir }}"

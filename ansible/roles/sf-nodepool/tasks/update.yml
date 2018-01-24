@@ -18,7 +18,7 @@
   args:
     chdir: /root/config
   with_items:
-    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepool.yaml /etc/nodepool/nodepool.yaml v2
+    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepool.yaml /etc/nodepool/nodepool.yaml
     - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ /etc/nodepool/scripts/
     - rsync -avi /usr/local/share/sf-jenkins-slave-tools/ /etc/nodepool/scripts/
     - rsync -avi --delete nodepool/elements/ /etc/nodepool/elements/
