@@ -1,4 +1,13 @@
 ---
+- name: "Install package for nodepool config validate"
+  yum:
+    name: nodepool-launcher
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['zuul-executor'] }}"
+
 - name: "Install package for nodepool-launcher"
   yum:
     name: nodepool-launcher

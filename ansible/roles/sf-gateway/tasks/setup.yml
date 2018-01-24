@@ -37,6 +37,14 @@
     dest: /usr/local/bin/sf-update-dashboard
     mode: 0555
 
+- name: Install sf-update-dashboard command on the executor
+  copy:
+    src: sf-update-dashboard.py
+    dest: /usr/local/bin/sf-update-dashboard
+    mode: 0555
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['zuul-executor'] }}"
+
 - name: Set robots.txt
   copy:
     src: robots.txt
