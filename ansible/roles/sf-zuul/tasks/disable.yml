@@ -1,17 +1,10 @@
 ---
 - name: Disable services
   service:
-    name: "{{ item }}"
+    name: "rh-python35-{{ item }}"
     state: stopped
     enabled: "no"
   with_items: "{{ zuul_services }}"
-  ignore_errors: "yes"
-
-- name: Disable legacy zuul service too
-  service:
-    name: zuul
-    state: stopped
-    enabled: "no"
   ignore_errors: "yes"
 
 - block:
@@ -21,19 +14,12 @@
         state: absent
       with_items:
         - /etc/httpd/conf.d/zuul.conf
-        - /etc/httpd/conf.d/zuul-merger.conf
-        - /var/lib/zuul/ansible
-        - /var/lib/zuul/git
-        - /var/lib/zuul/jenkins
-        - /var/lib/zuul/times
-        - /var/lib/zuul/jobs/config-check
-        - /var/lib/zuul/jobs/config-update
-        - /var/lib/zuul/.ssh/known_hosts
-        - /etc/zuul
+        - "{{ zuul_conf_dir }}"
+        - "{{ zuul_lib_dir }}"
 
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
-      with_items: "{{ zuul_packages }}"
+      with_items: "{{ zuul_scheduler_packages }} + {{ zuul_merger_packages }} + {{ zuul_executor_packages }} + {{ zuul_web_packages }}"
   when: erase == True

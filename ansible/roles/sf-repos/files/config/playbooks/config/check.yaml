@@ -66,7 +66,7 @@
                 config-validate
           args:
             chdir: "{{ config_root }}"
-      when: '"nodepool3-launcher" in arch.roles'
+      when: '"nodepool-launcher" in arch.roles'
 
     - name: Validate zuul configuration
       block:
@@ -78,7 +78,7 @@
 
         - name: Merge zuul config repo files
           command: >
-            env - /usr/share/sf-config/scripts/zuul3-conf-merger.py
+            env - /usr/share/sf-config/scripts/zuul-conf-merger.py
                 zuul/ build/zuul.yaml
           args:
             chdir: "{{ config_root }}"
@@ -89,7 +89,7 @@
         #     env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
         #   args:
         #     chdir: "{{ config_root }}"
-      when: '"zuul3-scheduler" in arch.roles'
+      when: '"zuul-scheduler" in arch.roles'
 
     - name: Check resources changes
       command: env - /usr/local/bin/resources.sh validate

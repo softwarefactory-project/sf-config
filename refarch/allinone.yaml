@@ -17,11 +17,11 @@ inventory:
       - gerrit
       - gerritbot
       - logserver
-      - zuul3-scheduler
-      - zuul3-executor
-      - zuul3-web
-      - nodepool3-launcher
-      - nodepool3-builder
+      - zuul-scheduler
+      - zuul-executor
+      - zuul-web
+      - nodepool-launcher
+      - nodepool-builder
       - murmur
       - elasticsearch
         # TODO: fix AnsibleUndefinedVariable: 'jobs_zmq_publishers' is undefined

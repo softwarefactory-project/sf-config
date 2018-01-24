@@ -1,0 +1,10 @@
+---
+- name: Backup data
+  synchronize:
+    mode: pull
+    src: "{{ item }}"
+    dest: "{{ backup_dest }}/"
+    delete: "yes"
+    rsync_opts: --relative
+  with_items:
+    - "{{ zuul_lib_dir }}/keys/"
