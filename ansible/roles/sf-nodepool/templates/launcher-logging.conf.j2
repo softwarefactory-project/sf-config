@@ -27,7 +27,7 @@ args=(sys.stdout,)
 level=DEBUG
 class=logging.handlers.TimedRotatingFileHandler
 formatter=normal
-args=('{{ nodepool3_log_dir }}/launcher.log', 'H', 8, 30,)
+args=('{{ nodepool_log_dir }}/launcher.log', 'H', 8, 30,)
 
 [formatter_normal]
 format=%(asctime)s %(levelname)s %(name)s: %(message)s

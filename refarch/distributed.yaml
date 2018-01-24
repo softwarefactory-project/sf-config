@@ -16,10 +16,10 @@ inventory:
       - gitweb
       - gerrit
       - gerritbot
-      - zuul3-scheduler
-      - zuul3-executor
-      - zuul3-web
-      - nodepool3-launcher
+      - zuul-scheduler
+      - zuul-executor
+      - zuul-web
+      - nodepool-launcher
       - murmur
       - mirror
       - kibana
@@ -44,14 +44,14 @@ inventory:
     ip: 192.168.0.12
     flavor: m1.small
     roles:
-      - nodepool3-builder
+      - nodepool-builder
 
   - name: zuul-merger
     ip: 192.168.0.14
     public_url: http://zuul-merger.fqdn
     flavor: m1.small
     roles:
-      - zuul3-merger
+      - zuul-merger
 
   - name: hypervisor-oci
     ip: 192.168.0.15

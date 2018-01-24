@@ -55,7 +55,7 @@
 - block:
     - name: "Generate sflogs ssh_private_key secret"
       command: >
-        /usr/share/sf-config/scripts/zuul3-encrypt-secret.py \
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
             /var/lib/software-factory/certs/config.pub ssh_private_key \
             --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_logserver_rsa
       register: _sflogs_private_key_secret
@@ -75,7 +75,7 @@
   block:
     - name: "Generate install_server ssh_private_key secret"
       command: >
-        /usr/share/sf-config/scripts/zuul3-encrypt-secret.py \
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
             /var/lib/software-factory/certs/config.pub ssh_private_key \
             --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_worker_rsa
       register: _install_server_private_key_secret
@@ -94,7 +94,7 @@
 - block:
     - name: "Generate sfpages ssh_private_key secret"
       command: >
-        /usr/share/sf-config/scripts/zuul3-encrypt-secret.py \
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
             /var/lib/software-factory/certs/config.pub ssh_private_key \
             --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_gatewayserver_rsa
       register: _sfpages_private_key_secret

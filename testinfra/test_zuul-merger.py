@@ -11,8 +11,8 @@
 # under the License.
 
 
-class TestMerger:
-    def test_service_running_and_enabled(self, host):
-        merger = host.service("zuul-merger")
-        assert merger.is_running
-        assert merger.is_enabled
+class TestZuul3Merger:
+    def test_server_running_and_enabled(self, host):
+        server = host.service("rh-python35-zuul-merger")
+        assert server.is_running
+        assert server.is_enabled

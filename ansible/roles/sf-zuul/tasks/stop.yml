@@ -3,7 +3,4 @@
   service:
     name: "{{ item }}"
     state: stopped
-  with_items:
-    - zuul-server
-    - zuul-merger
-    - zuul-launcher
+  with_items: "{{ zuul_services }}"
