@@ -1,8 +1,0 @@
----
-- block:
-    - name: "Delete oci slave that doesn't have node id"
-      shell: >
-        for node in $(nodepool3 list | awk '/oci/ { print $2 }'); do
-            nodepool3 delete ${node}
-        done
-  when: sf_previous_version < 3.0

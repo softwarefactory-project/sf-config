@@ -1,40 +1,4 @@
 ---
-- name: Ensure jobs-zuul ensure locally
-  file:
-    path: /root/config/jobs-zuul
-    state: directory
-
-- name: Fetch zuul pages jobs from the pages node
-  synchronize:
-    src: /var/lib/pagesuser/zuul_pages.yaml
-    dest: /etc/zuul/_pages.yaml
-  delegate_to: "{{ pages_host }}"
-  register: pagesconfig
-  when: "'pages' in roles"
-
-- name: Copy zuul/_pages.yaml for processing
-  copy:
-    src: /etc/zuul/_pages.yaml
-    dest: /root/config/zuul/_pages.yaml
-    remote_src: true
-  when: "'pages' in roles"
-
-- name: Update zuul layout
-  command: "{{ item }}"
-  args:
-    chdir: /root/config
-  with_items:
-    - bash -c "/usr/share/sf-config/scripts/yaml-merger.py zuul | tee /etc/zuul/layout.yaml"
-    - bash -c "cp zuul/*.py /etc/zuul/ || true"
-    - rsync -a --delete jobs-zuul/ /etc/zuul/jobs/
-
-- name: Enable slave reuse when nodepool is not enabled
-  when: zuul_offline_node_when_complete == False
-  replace:
-    dest: /etc/zuul/layout.yaml
-    regexp: 'set_node_options'
-    replace: 'set_node_reuse'
-
 - file:
     path: /var/lib/software-factory/state/zuul_config
     state: touch
@@ -44,41 +8,47 @@
   register: localconfig
 
 - name: Check upstream config
-  command: git log -n 3 --oneline zuul/ jobs-zuul/
+  command: git log -n 3 --oneline zuul/
   args:
     chdir: /root/config
   register: upstreamconfig
 
-- name: Reload zuul-server service
-  service:
-    name: zuul-server
-    state: reloaded
-    enabled: "yes"
-  when:
-    - "'zuul-server' in zuul_services"
-    - "localconfig.stdout != upstreamconfig.stdout or
-      ('pages' in roles and pagesconfig|changed)"
+- block:
+    - name: Update zuul main.yaml
+      command: /usr/share/sf-config/scripts/zuul-conf-merger.py zuul/ "{{ zuul_conf_dir }}/main.yaml"
+      args:
+        chdir: /root/config
 
-- name: Reload zuul-launcher service
-  service:
-    name: zuul-launcher
-    state: reloaded
-    enabled: "yes"
-  when:
-    - "'zuul-launcher' in zuul_services"
-    - "localconfig.stdout != upstreamconfig.stdout or
-      ('pages' in roles and pagesconfig|changed)"
+    - name: Copy all python scripts
+      synchronize:
+        src: /root/config/zuul/
+        dest: "{{ zuul_conf_dir }}"
+        delete: yes
+        rsync_opts:
+          - "--include=*.py"
+          - "--exclude=*"
 
-# Zuul-merger doesn't support reload, restart is needed
-- name: Restart zuul-merger service
+    - name: Check if zuul-scheduler is running
+      command: systemctl -q is-active rh-python35-zuul-scheduler
+      register: _zuul_scheduler
+      failed_when: _zuul_scheduler.rc not in [0, 3]
+      when: "'zuul-scheduler' in zuul_services"
+
+    - name: Reload zuul-scheduler service
+      service:
+        name: rh-python35-zuul-scheduler
+        state: reloaded
+      when:
+        - "'zuul-scheduler' in zuul_services"
+        - _zuul_scheduler.rc == 0
+  when: localconfig.stdout != upstreamconfig.stdout
+
+- name: Ensure service are started and enabled
   service:
-    name: zuul-merger
-    state: restarted
+    name: "rh-python35-{{ item }}"
+    state: started
     enabled: "yes"
-  when:
-    - "'zuul-merger' in zuul_services"
-    - "localconfig.stdout != upstreamconfig.stdout or
-      ('pages' in roles and pagesconfig|changed)"
+  with_items: "{{ zuul_services }}"
 
 - name: Write config repo sha1 matching current configuration
   copy:

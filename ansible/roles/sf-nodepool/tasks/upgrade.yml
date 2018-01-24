@@ -1,18 +1,26 @@
 ---
 - block:
-    - name: Ensure nodepoold package is removed
-      yum:
-        name: nodepoold
+    - name: "Delete oci slave that doesn't have node id"
+      shell: >
+        for node in $(nodepool3 list | awk '/oci/ { print $2 }'); do
+            nodepool3 delete ${node}
+        done
+
+    - name: Ensure /var/lib/nodepool/oci/host-rootfs is not mounted
+      command: umount /var/lib/nodepool/oci/host-rootfs/
+      ignore_errors: yes
+
+    - name: Remove /var/lib/nodepool*
+      file:
+        path: "{{ item }}"
         state: absent
+      with_items:
+        - /var/lib/nodepool
+        - /var/lib/nodepool3
+        - /usr/bin/nodepool
 
-    - name: Ensure nodepool service is disabled
-      service:
-        name: nodepool
-        state: stopped
-        enabled: "no"
-      ignore_errors: "yes"
-
-    - name: Add comment column
-      command: mysql nodepool -e "alter table node add column comment varchar(255)"
-      delegate_to: 127.0.0.1
-  when: sf_previous_version < 2.6
+    - name: Remove nodepoolv2
+      yum:
+        name: "nodepool"
+        state: absent
+  when: sf_previous_version < 3.0
