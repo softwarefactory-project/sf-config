@@ -8,20 +8,20 @@
   register: localconfig
 
 - name: Check upstream config
-  command: git log -n 3 --oneline zuulV3/
+  command: git log -n 3 --oneline zuul/
   args:
     chdir: /root/config
   register: upstreamconfig
 
 - block:
     - name: Update zuul main.yaml
-      command: /usr/share/sf-config/scripts/zuul3-conf-merger.py zuulV3/ "{{ zuul3_conf_dir }}/main.yaml"
+      command: /usr/share/sf-config/scripts/zuul3-conf-merger.py zuul/ "{{ zuul3_conf_dir }}/main.yaml"
       args:
         chdir: /root/config
 
     - name: Copy all python scripts
       synchronize:
-        src: /root/config/zuulV3/
+        src: /root/config/zuul/
         dest: "{{ zuul3_conf_dir }}"
         delete: yes
         rsync_opts:
