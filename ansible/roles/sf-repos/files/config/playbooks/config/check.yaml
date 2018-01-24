@@ -45,22 +45,22 @@
             chdir: "{{ config_root }}"
       when: '"repoxplorer" in arch.roles'
 
-    - name: Validate nodepoolV3 configuration
+    - name: Validate nodepool configuration
       block:
-        - name: Install fake _nodepool.yaml [v3]
+        - name: Install fake _nodepool.yaml
           copy:
             remote_src: true
             src: /opt/sf/defconf-nodepool.yaml
             dest: "{{ config_root }}/build/_nodepool.yaml"
 
-        - name: Merge nodepool config repo files [v3]
+        - name: Merge nodepool config repo files
           command: >
             env - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py
-                nodepoolV3/ build/nodepool.yaml v3
+                nodepool/ build/nodepool.yaml
           args:
             chdir: "{{ config_root }}"
 
-        - name: Run nodepool config-validate [v3]
+        - name: Run nodepool config-validate
           command: >
             env - /opt/rh/rh-python35/root/bin/nodepool -c build/nodepool.yaml
                 config-validate
@@ -68,7 +68,7 @@
             chdir: "{{ config_root }}"
       when: '"nodepool3-launcher" in arch.roles'
 
-    - name: Validate zuulV3 configuration
+    - name: Validate zuul configuration
       block:
         - name: Install fake zuul.conf
           copy:
@@ -79,7 +79,7 @@
         - name: Merge zuul config repo files
           command: >
             env - /usr/share/sf-config/scripts/zuul3-conf-merger.py
-                zuulV3/ build/zuul.yaml
+                zuul/ build/zuul.yaml
           args:
             chdir: "{{ config_root }}"
 
