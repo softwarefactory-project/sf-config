@@ -1,29 +1,11 @@
 ---
-- stat:
-    path: "{{ config_clone_dir }}/zuulV3"
-  register: _zuulv3_config_dir
-
-- name: Add default zuulV3 configuration directory
-  synchronize:
-    src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/zuulV3/
-    dest: "{{ config_clone_dir }}/zuulV3"
-  when: _zuulv3_config_dir.stat.exists != True
-
-- stat:
-    path: "{{ config_clone_dir }}/nodepoolV3"
-  register: _nodepoolv3_config_dir
-
-- name: Add default nodepoolV3 configuration directory
-  synchronize:
-    src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/nodepoolV3/
-    dest: "{{ config_clone_dir }}/nodepoolV3"
-  when: _nodepoolv3_config_dir.stat.exists != True
-
 - name: Ensure config sub dir
   file:
     path: "{{ config_clone_dir }}/{{ item }}"
     state: directory
   with_items:
+    - nodepool
+    - zuul
     - zuul.d
     - playbooks/base
 
@@ -52,8 +34,8 @@
     - zuul.d/_jobs-base.yaml
     - zuul.d/_jobs-pages.yaml
     - zuul.d/_pipelines.yaml
-    - zuulV3/_main.yaml
-    - nodepoolV3/_local_hypervisor_oci.yaml
+    - zuul/_main.yaml
+    - nodepool/_local_hypervisor_oci.yaml
   register: _config_template_files
 
 - name: Check for _secret_sflogs file
@@ -119,8 +101,6 @@
     config_repo_updated: true
   when: _config_static_files|changed or
         _config_template_files|changed or
-        not _zuulv3_config_dir.stat.exists or
-        not _nodepoolv3_config_dir.stat.exists or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
         not _secret_install_server.stat.exists
@@ -131,8 +111,6 @@
   when:
     - not _config_static_files|changed
     - not _config_template_files|changed
-    - _zuulv3_config_dir.stat.exists
-    - _nodepoolv3_config_dir.stat.exists
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists
