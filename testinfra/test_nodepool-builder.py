@@ -11,8 +11,8 @@
 # under the License.
 
 
-class TestZuulMerger:
-    def test_server_running_and_enabled(self, host):
-        server = host.service("rh-python35-zuul-merger")
-        assert server.is_running
-        assert server.is_enabled
+class TestNodepoolBuilder:
+    def test_service_running_and_enabled(self, host):
+        srv = host.service("rh-python35-nodepool-builder")
+        assert srv.is_running
+        assert srv.is_enabled

@@ -123,16 +123,6 @@ def update_arch(args):
 
     for host in data['inventory']:
         # Remove legacy roles
-        if 'zuul' in host['roles']:
-            host['roles'].remove('zuul')
-            host['roles'].append('zuul-server')
-            dirty = True
-        if 'nodepool' in host['roles']:
-            host['roles'].remove('nodepool')
-            host['roles'].append('nodepool-launcher')
-            dirty = True
-        if 'pages' in host['roles']:
-            host['roles'].remove('pages')
         for removed in (
                 'zuul-server', 'zuul-merger', 'zuul-launcher',
                 'nodepool-launcher', 'nodepool-builder',
@@ -142,6 +132,16 @@ def update_arch(args):
                       " from the architecure file before running"
                       " again this command." % removed)
                 sys.exit(-1)
+        # Rename new roles
+        for idx in range(len(host['roles'])):
+            if host['roles'][idx].startswith('zuul3-'):
+                host['roles'][idx] = host['roles'][idx].replace('zuul3',
+                                                                'zuul')
+                dirty = True
+            if host['roles'][idx].startswith('nodepool3-'):
+                host['roles'][idx] = host['roles'][idx].replace('nodepool3',
+                                                                'nodepool')
+                dirty = True
 
     # Remove deployments related information
     for deploy_key in ("cpu", "mem", "hostid", "rolesname"):
