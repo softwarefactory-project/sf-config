@@ -151,14 +151,9 @@
         ProxyPassReverse /jenkins/ {{ jenkins_internal_url }}
 
 {% endif %}
-{% if 'zuul' in roles %}
-        ProxyPass /zuul/ {{ zuul_internal_url }} nocanon retry=0
-        ProxyPassReverse /zuul/ {{ zuul_internal_url }}
-
-{% endif %}
-{% if 'zuul3-scheduler' in roles and zuul3['github_connections'] %}
+{% if 'zuul3-scheduler' in roles and zuul['github_connections'] %}
         # Redirect github webhook payload
-        {% for gh_connection in zuul3['github_connections'] %}
+        {% for gh_connection in zuul['github_connections'] %}
         ProxyPassMatch ^/zuul3/connection/{{ gh_connection.name }}/payload$ {{ zuul3_webapp_url }}/connection/{{ gh_connection.name }}/payload nocanon retry=0 disablereuse=on
         {% endfor %}
 
