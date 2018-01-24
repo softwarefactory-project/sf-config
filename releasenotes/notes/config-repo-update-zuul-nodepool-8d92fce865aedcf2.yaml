@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The zuul and nodepool directory in the config repo are the V3 configuration,
+    previous V3 prefixed directories are renamed during the upgrade.

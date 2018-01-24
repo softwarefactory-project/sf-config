@@ -18,7 +18,6 @@
         - name: {{ zuul3['default_nodeset_name'] }}
           label: {{ zuul3['default_nodeset_label'] }}
 
-{% if 'zuul' not in roles %}
 - semaphore:
     name: semaphore-config-update
     max: 1
@@ -53,4 +52,12 @@
     post:
       jobs:
         - config-update
-{% endif %}
+
+- project:
+    name: zuul-jobs
+    check:
+      jobs:
+        - linters
+    gate:
+      jobs:
+        - linters
