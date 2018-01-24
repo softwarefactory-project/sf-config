@@ -1,6 +1,15 @@
 ---
 - name: "Install launcher package"
   yum:
+    name: "rh-python35-nodepool"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['zuul3-executor'] }}"
+
+- name: "Install launcher package"
+  yum:
     name: "{{ item }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"

@@ -26,7 +26,7 @@ class LogServer(Component):
             "path": "/var/www/logs",
         })
         if args.glue["logserver_host"] != args.glue["install_server_host"]:
-            args.glue["zuul3_ssh_known_hosts"].append({
+            args.glue.setdefault("zuul3_ssh_known_hosts", []).append({
                 "host_packed": args.glue["logserver_host"],
                 "host": args.glue["logserver_host"],
                 "port": 22
