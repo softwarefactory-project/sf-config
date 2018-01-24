@@ -49,7 +49,7 @@ def usage():
     p = argparse.ArgumentParser(description="Wait for no running-job before "
                                 "restarting zuul services")
 
-    p.add_argument("role", choices=("zuul", "zuul3", "nodepool", "nodepool3"))
+    p.add_argument("role", choices=("zuul", "nodepool"))
     p.add_argument("services", nargs="+", help='The services\' name')
     p.add_argument("--url", help='The services status url')
     p.add_argument("--mail", help='The admin mail to contact')
@@ -88,22 +88,6 @@ def daemonize():
 
 
 def check_zuul_running_jobs(args):
-    # Check if jobs are running
-    jobs = {}
-    try:
-        req = requests.get("%s/status.json" % args.url)
-        status = req.json()
-    except:
-        status = {}
-    for pipeline in status.get("pipelines", []):
-        for change_queue in pipeline.get("change_queues", []):
-            if change_queue.get("heads"):
-                jobs.setdefault(pipeline["name"], 0)
-                jobs[pipeline["name"]] += len(change_queue["heads"])
-    return jobs
-
-
-def check_zuul3_running_jobs(args):
     jobs = {}
     try:
         req = requests.get("%s/status.json" % args.url)
@@ -135,15 +119,9 @@ def smart_restart(args):
     # Check if jobs are running
     if args.role == "zuul":
         jobs = check_zuul_running_jobs(args)
-        services_order = ("zuul-server", "zuul-launcher", "zuul-merger")
-    elif args.role == "zuul3":
-        jobs = check_zuul3_running_jobs(args)
         services_order = list(map(lambda x: "rh-python35-zuul-%s" % x,
                                   ("scheduler", "executor", "merger", "web")))
-    elif args.role == "nodepool":
-        jobs = check_nodepool_running_jobs(args)
-        services_order = ("nodepool-launcher", "nodepool-builder")
-    elif args.role == "nodepool3":
+    if args.role == "nodepool":
         jobs = check_nodepool_running_jobs(args)
         services_order = list(map(lambda x: "rh-python35-nodepool-%s" % x,
                                   ("launcher", "builder")))
@@ -186,7 +164,7 @@ def restart(args, daemon):
 def main():
     args = usage()
 
-    if args.role in ("zuul3", "nodepool3"):
+    if args.role in ("zuul", "nodepool"):
         args.services = list(map(lambda x: "rh-python35-%s" % x,
                                  args.services))
 

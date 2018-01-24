@@ -1,7 +1,0 @@
----
-- block:
-    - name: Remove scheduler vhost configuration
-      file:
-        path: /etc/httpd/conf.d/zuul3-scheduler.conf
-        state: absent
-  when: sf_previous_version < 2.7

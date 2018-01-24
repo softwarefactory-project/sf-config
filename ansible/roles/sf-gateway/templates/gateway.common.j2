@@ -145,41 +145,37 @@
         ProxyPass /api/ {{ gerrit_internal_url }} nocanon
         ProxyPassReverse /api/ {{ gerrit_internal_url }}
 
-{% endif %}
-{% if 'jenkins' in roles %}
-        ProxyPass /jenkins/ {{ jenkins_internal_url }} nocanon retry=0
-        ProxyPassReverse /jenkins/ {{ jenkins_internal_url }}
-
-{% endif %}
-{% if 'zuul3-scheduler' in roles and zuul['github_connections'] %}
+{% if 'zuul' in roles and zuul['github_connections'] %}
         # Redirect github webhook payload
         {% for gh_connection in zuul['github_connections'] %}
-        ProxyPassMatch ^/zuul3/connection/{{ gh_connection.name }}/payload$ {{ zuul3_webapp_url }}/connection/{{ gh_connection.name }}/payload nocanon retry=0 disablereuse=on
+        # Keep legacy connection support for deprecation period
+        ProxyPassMatch ^/zuul3/connection/{{ gh_connection.name }}/payload$ {{ zuul_webapp_url }}/connection/{{ gh_connection.name }}/payload nocanon retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul/connection/{{ gh_connection.name }}/payload$ {{ zuul_webapp_url }}/connection/{{ gh_connection.name }}/payload nocanon retry=0 disablereuse=on
         {% endfor %}
 
 {% endif %}
-{% if 'zuul3-web' in roles %}
+{% if 'zuul' in roles %}
         # Fix relative url
-        Alias "/zuul3/static/js" "/var/www/static/js"
-        Alias "/zuul3/static/bootstrap" "/var/www/static/bootstrap"
-        # Redirect all the static file to /zuul3-static/
-        Alias "/zuul3/static" "/opt/rh/rh-python35/root/usr/share/zuul"
-        AliasMatch "^/zuul3/.*/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
-        AliasMatch "^/zuul3/.*.html" "/opt/rh/rh-python35/root/usr/share/zuul/index.html"
+        Alias "/zuul/static/js" "/var/www/static/js"
+        Alias "/zuul/static/bootstrap" "/var/www/static/bootstrap"
+        # Redirect all the static file to /zuul-static/
+        Alias "/zuul/static" "/opt/rh/rh-python35/root/usr/share/zuul"
+        AliasMatch "^/zuul/.*/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
+        AliasMatch "^/zuul/.*.html" "/opt/rh/rh-python35/root/usr/share/zuul/index.html"
         <Directory /opt/rh/rh-python35/root/usr/share/zuul>
             Require all granted
             Order allow,deny
             Allow from all
         </Directory>
 
-        RewriteRule ^/zuul3/$ /zuul3/tenants.html [R]
+        RewriteRule ^/zuul/$ /zuul/tenants.html [R]
 
         # Console-stream needs a special proxy-pass for websocket
-        ProxyPassMatch /zuul3/(.*)/console-stream ws://{{ zuul3_web_url }}/$1/console-stream nocanon retry=0 disablereuse=on
+        ProxyPassMatch /zuul/(.*)/console-stream ws://{{ zuul_web_url }}/$1/console-stream nocanon retry=0 disablereuse=on
 
         # Then only the json calls are sent to the zuul-web endpoints
-        ProxyPassMatch ^/zuul3/(.*.json)$ http://{{ zuul3_web_url }}/$1 nocanon  retry=0 disablereuse=on
-        ProxyPassMatch ^/zuul3/keys/(.*.pub)$ http://{{ zuul3_web_url }}/$1 nocanon  retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul/(.*.json)$ http://{{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul/keys/(.*.pub)$ http://{{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
 
 {% endif %}
 {% if 'storyboard' in roles %}
@@ -213,14 +209,9 @@
         ProxyPassReverse /kojifiles/ http://{{ koji_host }}/kojifiles/
 
 {% endif %}
-{% if 'nodepool' in roles and gateway_host != nodepool_builder_host %}
+{% if 'nodepool-builder' in roles and gateway_host != nodepool_builder_host %}
         ProxyPass /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
         ProxyPassReverse /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
-
-{% endif %}
-{% if 'nodepool3-builder' in roles and gateway_host != nodepool3_builder_host %}
-        ProxyPass /nodepool3-log/ http://{{ nodepool3_builder_host }}/nodepool3-log/
-        ProxyPassReverse /nodepool3-log/ http://{{ nodepool3_builder_host }}/nodepool3-log/
 
 {% endif %}
 {% if 'logserver' in roles and gateway_host != logserver_host %}
@@ -251,19 +242,6 @@
 {% endif %}
     </IfModule>
 
-{% if 'jenkins' in roles %}
-    <LocationMatch "^/jenkinslogs/">
-        Order Allow,Deny
-        Allow from all
-
-        AuthType mod_auth_pubtkt
-        TKTAuthFakeBasicAuth on
-        TKTAuthLoginURL /auth/login
-        TKTAuthDebug 1
-        require valid-user
-    </LocationMatch>
-
-{% endif %}
     <Location "/dashboard">
         RewriteEngine on
         RewriteCond %{REQUEST_FILENAME} -s [OR]

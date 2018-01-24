@@ -1,0 +1,23 @@
+---
+- name: "Restore data"
+  synchronize:
+    src: "{{ backup_src }}/"
+    dest: /
+
+- name: "Restore files ownership"
+  file:
+    path: "{{ item }}"
+    owner: "zuul"
+    group: "zuul"
+    recurse: "yes"
+    state: "directory"
+  with_items:
+    - "{{ zuul_lib_dir }}/keys/"
+
+- name: "Ensure zuul home is owned by zuul"
+  file:
+    path: "{{ zuul_lib_dir }}"
+    owner: zuul
+    group: zuul
+    state: directory
+    mode: 0751
