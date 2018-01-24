@@ -5,7 +5,7 @@ tenant_config=main.yaml
 driver=sql
 dburi=sqlite://
 
-{% for conn in zuul3_gerrit_connections|default([]) %}
+{% for conn in zuul_gerrit_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gerrit
 server=localhost
@@ -13,7 +13,7 @@ user=zuul
 
 {% endfor %}
 
-{% for conn in zuul3_github_connections|default([]) %}
+{% for conn in zuul_github_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=github
 git_host={{ conn['hostname']|default('github.com') }}

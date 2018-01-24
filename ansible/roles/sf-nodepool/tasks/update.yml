@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: Check new Nodepool config checksum
-  shell: git log -n 3 --oneline nodepool/nodepool.yaml && md5sum /etc/nodepool/_nodepool.yaml
+  shell: git log -n 3 --oneline nodepool/ && md5sum "{{ nodepool_conf_dir }}/_nodepool.yaml"
   args:
     chdir: /root/config
   register: upstreamconfig
@@ -17,16 +17,16 @@
   command: "{{ item }}"
   args:
     chdir: /root/config
+  when: localconfig.stdout != upstreamconfig.stdout
   with_items:
-    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/nodepool.yaml /etc/nodepool/nodepool.yaml v2
-    - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ /etc/nodepool/scripts/
-    - rsync -avi /usr/local/share/sf-jenkins-slave-tools/ /etc/nodepool/scripts/
-    - rsync -avi --delete nodepool/elements/ /etc/nodepool/elements/
+    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/ "{{ nodepool_conf_dir }}/nodepool.yaml" v3
+    - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ "{{ nodepool_conf_dir }}/scripts/"
+    - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
 
 - name: Fetch nodepool.yaml configuration
   fetch:
     flat: "yes"
-    src: /etc/nodepool/nodepool.yaml
+    src: "{{ nodepool_conf_dir }}/nodepool.yaml"
     dest: /var/lib/software-factory/state/nodepool.yaml
 
 - name: Load nodepool configuration
@@ -37,13 +37,13 @@
 - name: Update logging.conf
   template:
     src: "{{ item }}.j2"
-    dest: "/etc/nodepool/{{ item }}"
-  with_items: [logging.conf, builder-logging.conf]
+    dest: "{{ nodepool_conf_dir }}/{{ item }}"
+  with_items: [launcher-logging.conf, builder-logging.conf]
   notify: restart nodepool
 
 - name: Ensure service are started and enabled
   service:
-    name: "{{ item }}"
+    name: "rh-python35-{{ item }}"
     state: started
     enabled: "yes"
   with_items: "{{ nodepool_services }}"

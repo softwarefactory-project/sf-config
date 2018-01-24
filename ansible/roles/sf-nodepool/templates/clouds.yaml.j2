@@ -4,17 +4,13 @@ cache:
     port: {{ nodepool_cache_ttl  }}
     floating-ip: {{ nodepool_cache_ttl  }}
 clouds:
-{% for provider in nodepool_providers|default([]) + nodepool3_providers|default([]) %}
+{% for provider in nodepool_providers|default([]) %}
   {{ provider['name'] }}:
     api_timeout: {{ provider['api_timeout'] | default(60) }}
     auth:
       username: {{ provider['username'] }}
       password: {{ provider['password'] }}
-{% if nodepool_disable_providers %}
-      auth_url: localhost:12345
-{% else %}
       auth_url: {{ provider['auth_url'] }}
-{% endif %}
       project_name: {{ provider['project_name'] }}
 {% if provider.get("user_domain_name") %}
       user_domain_name: {{ provider['user_domain_name'] }}
@@ -31,4 +27,5 @@ clouds:
       - {{ region }}
     {% endfor%}
 {% endif %}
+
 {% endfor %}

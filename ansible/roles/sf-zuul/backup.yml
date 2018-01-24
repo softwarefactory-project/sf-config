@@ -1,5 +1,5 @@
 ---
-- name: "Backup data"
+- name: Backup data
   synchronize:
     mode: pull
     src: "{{ item }}"
@@ -7,6 +7,4 @@
     delete: "yes"
     rsync_opts: --relative
   with_items:
-    - /var/lib/jenkins/jobs
-    - /var/lib/jenkins/credentials.xml
-    - /var/lib/jenkins/secrets
+    - "{{ zuul_lib_dir }}/keys/"

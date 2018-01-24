@@ -3,24 +3,50 @@ role_actions:
   - stop
   - install
   - setup
+  - backup
+  - restore
   - update
+  - upgrade
   - get_logs
   - disable
-  - upgrade
 
 zuul_services:
-  - zuul-server
-  - zuul-merger
-  - zuul-launcher
+  - rh-python35-zuul-scheduler
+  - rh-python35-zuul-merger
+  - rh-python35-zuul-executor
+  - rh-python35-zuul-web
 
-zuul_packages:
-  - zuul
-  - zuul-webui
-  - zuul-server
-  - zuul-merger
-  - zuul-launcher
+zuul_scheduler_packages:
+  - rh-python35-zuul
+  - rh-python35-zuul-scheduler
+  - rh-python35-zuul-webui
+  - httpd
+  - sf-web-assets
 
-zuul_port: 8084
+zuul_merger_packages:
+  - rh-python35-zuul
+  - rh-python35-zuul-merger
+  - httpd
+
+zuul_executor_packages:
+  - rh-python35-zuul
+  - rh-python35-zuul-executor
+  - rh-python35-ara
+
+zuul_web_packages:
+  - rh-python35-zuul
+  - rh-python35-zuul-web
+
+zuul_conf_dir: "/etc/opt/rh/rh-python35/zuul"
+zuul_lib_dir: "/var/opt/rh/rh-python35/lib/zuul"
+zuul_log_dir: "/var/opt/rh/rh-python35/log/zuul"
+zuul_share_dir: "/opt/rh/rh-python35/root/usr/share/javascript/zuul"
+zuul_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/zuul"
+
+zuul_port: 8085
+zuul_webapp_port: 8004
+zuul_web_port: 9000
+zuul_gearman_port: 4733
 
 zuul_mysql_host: "mysql.example.com"
 zuul_mysql_port: 3306
@@ -28,21 +54,16 @@ zuul_mysql_db: "zuul"
 zuul_mysql_user: "zuul"
 zuul_mysql_password: "CHANGE_ME"
 
-zuul_server_host: "zuul.example.com"
-
 gerrit_pub_url: "https://example.com/r/"
 zuul_pub_url: "https://example.com/zuul/"
 zuul_internal_url: "http://localhost:{{ zuul_port }}/"
 
-zuul_offline_node_when_complete: true
-
 zuul_loglevel: INFO
-zuul_gear_loglevel: WARNING
 zuul_root_loglevel: WARNING
 
-zuul_log_url: "{{ gateway_url }}/logs/{build.parameters[LOG_PATH]}"
-
-# Enable zuul jenkins credencials support
-zuul_jenkins_credencials: true
+# We need those variables to generate config-check nodepool.yaml file
+nodepool_conf_dir: "/etc/opt/rh/rh-python35/nodepool"
+nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
+nodepool_webapp_port: 8006
 
 zuul_periodic_pipeline_mail_rcpt: root@localhost

@@ -88,7 +88,7 @@
     state: link
   when: "'zuul' in roles"
 
-- name: Inject top-menu to zuul3 static page
+- name: Inject top-menu to zuul static page
   lineinfile:
     path: "{{ item }}"
     line: '    <script type="text/javascript" src="/static/js/topmenu.js"></script>'

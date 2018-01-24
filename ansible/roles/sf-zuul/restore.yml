@@ -12,11 +12,11 @@
     recurse: "yes"
     state: "directory"
   with_items:
-    - "{{ zuul3_lib_dir }}/keys/"
+    - "{{ zuul_lib_dir }}/keys/"
 
 - name: "Ensure zuul home is owned by zuul"
   file:
-    path: "{{ zuul3_lib_dir }}"
+    path: "{{ zuul_lib_dir }}"
     owner: zuul
     group: zuul
     state: directory
