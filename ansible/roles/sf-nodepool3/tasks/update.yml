@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: Check new Nodepool config checksum
-  shell: git log -n 3 --oneline nodepoolV3/ nodepool/elements/ && md5sum "{{ nodepool3_conf_dir }}/_nodepool.yaml"
+  shell: git log -n 3 --oneline nodepool/ && md5sum "{{ nodepool3_conf_dir }}/_nodepool.yaml"
   args:
     chdir: /root/config
   register: upstreamconfig
@@ -19,7 +19,7 @@
     chdir: /root/config
   when: localconfig.stdout != upstreamconfig.stdout
   with_items:
-    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepoolV3/ "{{ nodepool3_conf_dir }}/nodepool.yaml" v3
+    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/ "{{ nodepool3_conf_dir }}/nodepool.yaml" v3
     - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ "{{ nodepool3_conf_dir }}/scripts/"
     - rsync -avi --delete nodepool/elements/ "{{ nodepool3_conf_dir }}/elements/"
 
@@ -27,11 +27,11 @@
   fetch:
     flat: "yes"
     src: "{{ nodepool3_conf_dir }}/nodepool.yaml"
-    dest: /var/lib/software-factory/state/nodepoolV3.yaml
+    dest: /var/lib/software-factory/state/nodepool.yaml
 
 - name: Load nodepool configuration
   include_vars:
-    file: /var/lib/software-factory/state/nodepoolV3.yaml
+    file: /var/lib/software-factory/state/nodepool.yaml
     name: nodepool3_config
 
 - name: Update logging.conf
