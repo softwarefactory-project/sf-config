@@ -222,15 +222,13 @@ def config_update(args, pb):
         'register': 'configsha'
     }))
     # The list of role to run update task
-    roles_order = ["gerrit", "jenkins", "pages", "gerritbot",
+    roles_order = ["gerrit", "pages", "gerritbot",
                    "gateway", "managesf", "mirror", "repoxplorer",
-                   "zuul", "nodepool", "zuul3", "nodepool3"]
+                   "zuul", "nodepool"]
     # The extra list of host group to run fetch-config-repo
     roles_group = [
-        "zuul-server", "zuul-merger",
+        "zuul-scheduler", "zuul-merger", "zuul-executor", "zuul-web",
         "nodepool-launcher", "nodepool-builder",
-        "zuul3-scheduler", "zuul3-merger", "zuul3-executor", "zuul3-web",
-        "nodepool3-launcher", "nodepool3-builder",
     ]
     pb.append(host_play(':'.join(roles_order + roles_group),
                         'repos', {'role_action': 'fetch_config_repo'}))
@@ -412,8 +410,7 @@ def generate(args):
                 service_name = "%s-%s" % (role_name, meta_name)
                 if service_name in host["roles"]:
                     host["params"].setdefault(
-                        "%s_services" % role_name, []).append(
-                            service_name.replace('3', ''))
+                        "%s_services" % role_name, []).append(service_name)
                     # Remove meta-name role
                     host["roles"] = list(filter(
                         lambda x: x != service_name, host["roles"]))
@@ -425,16 +422,12 @@ def generate(args):
                             host)
 
         ensure_role_services("nodepool", ["launcher", "builder"])
-        ensure_role_services("zuul", ["server", "merger", "launcher"])
-        ensure_role_services("nodepool3", ["launcher", "builder"])
-        ensure_role_services("zuul3", ["scheduler", "merger", "executor",
-                                       "web"])
+        ensure_role_services("zuul", ["scheduler", "merger", "executor",
+                                      "web"])
 
         # if firehose role is in the arch, install publishers where needed
         if "firehose" in args.glue["roles"]:
-            if "zuul" in host["roles"] or \
-               "nodepool" in host["roles"] or \
-               "zuul3" in host["roles"]:
+            if "zuul" in host["roles"]:
                 host["roles"].append("ochlero")
             if "gerrit" in host["roles"]:
                 host["roles"].append("germqtt")
@@ -449,13 +442,6 @@ def generate(args):
         if "gateway" in host["roles"] and \
            args.sfconfig['network']['use_letsencrypt']:
             host["roles"].insert(0, "lecm")
-
-        # Check for conflicts
-        for conflict in (("zuul3-merger", "zuul-merger")):
-            if conflict[0] in host["roles"] and conflict[1] in host["roles"]:
-                raise RuntimeError("%s: can't install both %s and %s" % (
-                    host["hostname"], conflict[0], conflict[1]
-                ))
 
     if 'hydrant' in args.glue["roles"] and \
        "firehose" not in args.glue["roles"]:

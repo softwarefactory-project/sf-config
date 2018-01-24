@@ -5,8 +5,8 @@ diskimages: []
 #      - raw
 #    elements:
 #      - centos-minimal
-#      - nodepool3-minimal
-#      - sf-zuul3-worker
+#      - nodepool-minimal
+#      - sf-zuul-worker
 
 labels: []
 #  - name: dib-centos-7

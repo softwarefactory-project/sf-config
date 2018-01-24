@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  description: Nodepool service
+  description: NodepoolV3 service
   company: Red Hat
   license: Apache
   min_ansible_version: 2.2
