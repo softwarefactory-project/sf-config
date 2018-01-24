@@ -1,33 +1,36 @@
 ---
-- name: "Install package for zuul-server"
+- name: "Install scheduler package"
   yum:
     name: "{{ item }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  with_items:
-    - httpd
-    - zuul-webui
-    - zuul-server
-  when: "'zuul-server' in zuul_services"
+  with_items: "{{ zuul_scheduler_packages }}"
+  when: '"zuul-scheduler" in zuul_services'
 
-- name: "Install package for zuul-merger"
+- name: "Install merger package"
   yum:
     name: "{{ item }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  with_items:
-    - httpd
-    - zuul-merger
-  when: "'zuul-merger' in zuul_services"
+  with_items: "{{ zuul_merger_packages }}"
+  when: '"zuul-merger" in zuul_services'
 
-- name: "Install package for zuul-launcher"
+- name: "Install executor package"
   yum:
     name: "{{ item }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  with_items:
-    - zuul-launcher
-  when: "'zuul-launcher' in zuul_services"
+  with_items: "{{ zuul_executor_packages }}"
+  when: '"zuul-executor" in zuul_services'
+
+- name: "Install web package"
+  yum:
+    name: "{{ item }}"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  with_items: "{{ zuul_web_packages }}"
+  when: '"zuul-web" in zuul_services'
