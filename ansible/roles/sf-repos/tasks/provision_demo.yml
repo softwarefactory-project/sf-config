@@ -19,7 +19,7 @@
         src: "demo/config/{{ item }}"
         dest: "/root/config/{{ item }}"
       with_items:
-        - zuulV3/demo.yaml
+        - zuul/demo.yaml
 
     - name: Provision demo resources in config repo
       command: "{{ item }}"
@@ -28,7 +28,7 @@
       with_items:
         - /usr/share/sf-config/scripts/create_project_resources.py --repo demo-project --repo demo-project-distgit --core demo@{{ fqdn }} resources/demo.yaml
         - /usr/local/bin/resources.sh direct_apply /root/empty_resources.yaml resources/demo.yaml
-        - git add resources/demo.yaml zuulV3/demo.yaml
+        - git add resources/demo.yaml zuul/demo.yaml
         - git commit -m 'Provision demo resources'
         - git push git+ssh://gerrit/config master
   when: demo_resource.stdout == 'False'
