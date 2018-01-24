@@ -13,7 +13,7 @@
 
 - include_tasks: sync_config_repo_content.yml
 
-- name: Push zuul-jobs change
+- name: Push config change
   command: "git {{ item }}"
   args:
     chdir: "{{ config_clone_dir }}"

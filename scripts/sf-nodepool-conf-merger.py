@@ -23,7 +23,7 @@ def yaml_merge_load(inp):
     return user
 
 
-def merge(inp, _nodepool, np_version):
+def merge(inp, _nodepool):
     if os.path.isfile(inp):
         user = yaml.safe_load(open(inp))
     elif os.path.isdir(inp):
@@ -36,15 +36,6 @@ def merge(inp, _nodepool, np_version):
         cache_dir = "/var/opt/rh/rh-python35/cache/nodepool"
     else:
         cache_dir = "/var/cache/nodepool"
-
-    for provider in user.get('providers', []):
-        if np_version.endswith("2"):
-            # This syntax is nodepool2 only
-            for image in provider['images']:
-                image['private-key'] = '/var/lib/nodepool/.ssh/id_rsa'
-            if provider.get("driver", "openstack") == "openstack" and \
-               not provider.get("image-type"):
-                provider["image-type"] = "raw"
 
     for dib in user.get('diskimages', []):
         envvars = dib.setdefault('env-vars', {})
@@ -85,14 +76,10 @@ if __name__ == '__main__':
         sys.exit(1)
     inp = sys.argv[1]
     out = sys.argv[2]
-    np_version = sys.argv[3]
-    if np_version[-1] not in ["2", "3"]:
-        print("Incorrect nodepool version")
-        sys.exit(2)
     _nodepool = "%s/_nodepool.yaml" % os.path.dirname(out)
     for reqfile in (_nodepool, inp):
         if not os.path.exists(reqfile):
             print("%s: missing file" % reqfile)
             sys.exit(1)
-    merged = merge(inp, _nodepool, np_version)
+    merged = merge(inp, _nodepool)
     open(out, 'w').write(merged)
