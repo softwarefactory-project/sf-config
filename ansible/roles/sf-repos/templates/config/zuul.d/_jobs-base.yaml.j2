@@ -15,8 +15,8 @@
       - site_sflogs
     nodeset:
       nodes:
-        - name: {{ zuul3['default_nodeset_name'] }}
-          label: {{ zuul3['default_nodeset_label'] }}
+        - name: {{ zuul['default_nodeset_name'] }}
+          label: {{ zuul['default_nodeset_label'] }}
 
 {% if 'zuul' not in roles %}
 - semaphore:
