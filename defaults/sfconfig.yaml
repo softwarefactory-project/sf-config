@@ -141,19 +141,6 @@ nodepool:
       # user_domain_name: Default
       # project_domain_name: Default
 
-nodepool3:
-  providers:
-    - name: default
-      auth_url:
-      project_name: tenantname
-      username: username
-      password: secret
-      region_name: regionOne
-      regions: []
-      # These must be set when using a keystone v3 auth endpoint
-      # user_domain_name: Default
-      # project_domain_name: Default
-
 elasticsearch:
   heap_size: 512m
   replicas: 0
@@ -166,39 +153,6 @@ logs:
   expiry: 60
 
 zuul:
-  # Mail address to contact when post or periodic pipeline job failed
-  periodic_pipeline_mail_rcpt: "root@localhost"
-  # Set external log server to be used in zuul-jobs scp publisher site
-  external_logservers: []
-  #  - name: logs.example.com
-  #    # host: logs.example.com  # host is optional, default to name when missing
-  #    user: loguser
-  #    path: /var/www/logs/sftests.com/
-
-  # Use external log server for console-log publisher
-  #  Default is 'sflogs' (hosted internally)
-  default_log_site: "sflogs"
-
-  # Set custom zuul log url, the url will be expaned using the build parameters
-  #  Default is: https://fqdn/logs/{build.parameters[LOG_PATH]}
-  log_url: ""
-
-  # Set external gerrit connections to act as third party CI
-  gerrit_connections: []
-  #  - name: "external_gerrit"
-  #    hostname: external-gerrit-hostname
-  #    port: 29418
-  #    puburl: https://external-gerrit-host-name/r/
-  #    username: external-gerrit-user-name
-
-  # Define static nodes
-  static_nodes: []
-  #  - name: node_name
-  #    hostname: host_name
-  #    description: node description
-  #    labels: node label
-
-zuul3:
   default_nodeset_name: container
   default_nodeset_label: centos-oci
   # Mail address to contact when post or periodic pipeline job failed
