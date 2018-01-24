@@ -1,7 +1,7 @@
 ---
 - name: Disable service
   service:
-    name: "{{ item }}"
+    name: "rh-python35-{{ item }}"
     state: stopped
     enabled: "no"
   with_items: "{{ nodepool_services }}"
@@ -15,12 +15,12 @@
       with_items:
         - /etc/httpd/conf.d/nodepool_log.conf
         - /var/www/nodepool-log
-        - /var/lib/nodepool
-        - /etc/nodepool
+        - "{{ nodepool_lib_dir }}"
+        - "{{ nodepool_conf_dir }}"
 
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
-      with_items: "{{ nodepool_packages }}"
+      with_items: "{{ nodepool_launcher_packages }} + {{ nodepool_builder_packages }}"
   when: erase == True

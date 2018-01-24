@@ -1,94 +1,95 @@
 [gearman]
-server={{ zuul_server_host }}
-check_job_registration=true
+server={{ zuul_scheduler_host }}
+port={{ zuul_gearman_port }}
+
+{% if 'influxdb' in roles %}
+[statsd]
+server={{ influxdb_host }}
+{% endif %}
+
+[zookeeper]
+hosts={{ zookeeper_host }}:2181
 
 [gearman_server]
 start=true
-log_config=/etc/zuul/gearman-logging.conf
+log_config={{ zuul_conf_dir }}/gearman-server-logging.yaml
+port={{ zuul_gearman_port }}
 
-[zuul]
-layout_config=/etc/zuul/layout.yaml
-log_config=/etc/zuul/server-logging.conf
-pidfile=/var/run/zuul/zuul.pid
-state_dir=/var/lib/zuul
-status_url={{ zuul_pub_url }}
-job_name_in_report=true
-report_times=true
-url_pattern={{ zuul_log_url }}
+[scheduler]
+state_dir={{ zuul_lib_dir }}
+command_socket={{ zuul_lib_dir }}/scheduler.socket
+tenant_config={{ zuul_conf_dir }}/main.yaml
+log_config={{ zuul_conf_dir }}/scheduler-logging.yaml
 
 [merger]
-git_dir=/var/lib/zuul/git
+state_dir={{ zuul_lib_dir }}
+command_socket={{ zuul_lib_dir }}/merger.socket
+git_dir={{ zuul_lib_dir }}/git/
 git_user_email=zuul@{{ fqdn }}
 git_user_name=zuul
 zuul_url={{ host_public_url }}/p
-log_config=/etc/zuul/merger-logging.conf
-append_hostname=true
+log_config={{ zuul_conf_dir }}/merger-logging.yaml
 
-[launcher]
-log_config=/etc/zuul/launcher-logging.conf
-jenkins_jobs=/etc/zuul/jobs/
-workspace_root=/var/lib/zuul/jobs/
-private_key_file=/var/lib/zuul/.ssh/id_rsa
-username=zuul
-{% if 'jenkins' in roles or zuul_jenkins_credencials %}
-jenkins_secrets=/var/lib/zuul/jenkins/
-{% endif %}
+[executor]
+state_dir={{ zuul_lib_dir }}
+command_socket={{ zuul_lib_dir }}/executor.socket
+git_dir={{ zuul_lib_dir }}/executor/
+private_key_file={{ zuul_lib_dir }}/.ssh/id_rsa
+finger_port=7979
+trusted_ro_paths=/opt/
+untrusted_ro_paths=/opt/
+log_config={{ zuul_conf_dir }}/executor-logging.yaml
+log_stream_file=/var/tmp/zuul-console/{log_uuid}.log
 
-{% for logserver in logservers|default([]) %}
-[site "{{ logserver["name"] }}"]
-host={{ logserver["host"] }}
-user={{ logserver["user"] }}
-root={{ logserver["path"] }}
+[fingergw]
+state_dir={{ zuul_lib_dir }}
+command_socket={{ zuul_lib_dir }}/fingergw.socket
+listen_address=0.0.0.0
 
-{% endfor %}
+[web]
+listen_address=0.0.0.0
+command_socket={{ zuul_lib_dir }}/web.socket
+port={{ zuul_web_port }}
+log_config={{ zuul_conf_dir }}/web-logging.yaml
 
-{% if pages is defined %}
-[site "pages"]
-host={{ pages["host"] }}
-user={{ pages["user"] }}
-root={{ pages["path"] }}
-
-[node "pages"]
-host={{ pages["host"] }}
-description=The pages node for rendering and publishing pages
-labels=pages
-{% endif %}
-
-{% for node in zuul_static_nodes|default([]) %}
-[node "{{ node['name'] }}"]
-host={{ node['hostname'] }}
-description={{ node['description'] }}
-labels={{ node['labels'] }}
-
-{% endfor %}
-[node "master"]
-host=localhost
-description=The master node allowed to trigger config-update
-labels=master
+[webapp]
+listen_address=0.0.0.0
+port={{ zuul_webapp_port }}
+status_url={{ zuul_pub_url }}
 
 [connection sqlreporter]
 driver=sql
 dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}
 
-[connection gerrit]
-driver=gerrit
-server=gerrit.{{ fqdn }}
-# baseurl is only use to fetch git refs on diff url than server.
-# Using baseurl we cannot modify url zuul report to user
-baseurl={{ gerrit_pub_url }}
-user=jenkins
-sshkey=/var/lib/zuul/.ssh/id_rsa
-strip_branch_ref=1
-
-{% for conn in zuul_extra_gerrits|default([]) %}
+{% for conn in zuul_gerrit_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gerrit
+port={{ conn['port']|default('29418') }}
 server={{ conn['hostname'] }}
-port={{ conn['port']|default(29418) }}
 baseurl={{ conn['puburl'] }}
 user={{ conn['username'] }}
-sshkey=/var/lib/zuul/.ssh/id_rsa
-strip_branch_ref=1
+sshkey={{ zuul_lib_dir }}/.ssh/id_rsa
+
+{% endfor %}
+
+{% for conn in zuul_github_connections|default([]) %}
+[connection {{ conn['name'] }}]
+driver=github
+{% if conn.get('app_key') %}
+# Github App
+app_id={{ conn.get('app_id') }}
+app_key={{ zuul_lib_dir }}/.ssh/github_{{ conn['name'] }}_rsa
+{% else %}
+# Github Webhook
+sshkey={{ zuul_lib_dir }}/.ssh/id_rsa
+api_token={{ conn['api_token'] }}
+{% endif %}
+webhook_token={{ conn['webhook_token'] }}
+server={{ conn['hostname']|default('github.com') }}
+# canonical_hostname=?
+verify_ssl={{ conn['verify_ssl']|default(True) }}
+git_host={{ conn['hostname']|default('github.com') }}
+port={{ conn['port']|default('22') }}
 
 {% endfor %}
 
