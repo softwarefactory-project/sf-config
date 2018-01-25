@@ -12,3 +12,12 @@
       zuul_logserver_root: /var/www/logs
     - role: buildset-artifacts-location
       zuul_log_url: "https://{{ fqdn }}/logs"
+
+{% if 'job-logs-gearman-client' in roles %}
+- hosts: localhost
+  ignore_errors: yes
+  roles:
+    - role: submit-logstash-jobs
+      logstash_gearman_server: "job-logs-gearman-client.{{ fqdn }}"
+      logstash_gearman_server_port: 4731
+{% endif %}
