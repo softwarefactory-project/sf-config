@@ -432,10 +432,6 @@ def generate(args):
 
         # if firehose role is in the arch, install publishers where needed
         if "firehose" in args.glue["roles"]:
-            if "zuul" in host["roles"] or \
-               "nodepool" in host["roles"] or \
-               "zuul3" in host["roles"]:
-                host["roles"].append("ochlero")
             if "gerrit" in host["roles"]:
                 host["roles"].append("germqtt")
 
