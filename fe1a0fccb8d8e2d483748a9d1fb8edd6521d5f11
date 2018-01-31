@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_ce13c50c",
+        "filename": "ansible/roles/sf-managesf/templates/config.py.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-31T05:38:48Z",
+      "side": 1,
+      "message": "Same comment as for zuul, sf-3.0 only has \u0027nodepool\u0027.",
+      "revId": "fe1a0fccb8d8e2d483748a9d1fb8edd6521d5f11",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_aef9b1ca",
+        "filename": "ansible/roles/sf-managesf/templates/config.py.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-31T05:38:48Z",
+      "side": 1,
+      "message": "This block can be dropped.",
+      "revId": "fe1a0fccb8d8e2d483748a9d1fb8edd6521d5f11",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
