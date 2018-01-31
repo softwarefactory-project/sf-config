@@ -6,7 +6,7 @@
     replace: '  urls = ["https://{{ influxdb_host }}:8086"]'
   notify: Restart telegraf
 
-- name: Configure credential
+- name: Configure credentials
   replace:
     dest: /etc/telegraf/telegraf.conf
     regexp: '  #? ?{{ item.name }} =.*'
@@ -16,17 +16,24 @@
     - {name: password, value: '{{ telegraf_influxdb_password }}'}
   notify: Restart telegraf
 
-- name: Configure hostname
+- name: Set hostname for service
   replace:
     dest: /etc/telegraf/telegraf.conf
     regexp: '  hostname = ""'
     replace: '  hostname = "{{ ansible_fqdn }}"'
 
-- name: Configure inputs plugins
+- name: Configure inputs net plugin
   replace:
     dest: /etc/telegraf/telegraf.conf
     regexp: '^#? ?\[\[inputs.net\]\]'
     replace: '[[inputs.net]]'
+  notify: Restart telegraf
+
+- name: Configure inputs statsd plugin
+  copy:
+    src: statsd.conf
+    dest: /etc/telegraf/telegraf.d/statsd.conf
+  when: "'influxdb' in roles"
   notify: Restart telegraf
 
 - name: Set owner and mode for /etc/telegraf/telegraf.conf
@@ -34,13 +41,6 @@
     path: /etc/telegraf/telegraf.conf
     owner: telegraf
     mode: 0440
-  notify: Restart telegraf
-
-- name: Setup statsd server
-  copy:
-    src: statsd.conf
-    dest: /etc/telegraf/telegraf.d/statsd.conf
-  when: "'influxdb' in roles"
   notify: Restart telegraf
 
 - name: Start service
