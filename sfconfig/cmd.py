@@ -182,6 +182,8 @@ def main():
 
     # Process the arch and render playbooks
     sfconfig.arch.process(args)
+    if os.path.isfile(args.extra):
+        args.glue.update(yaml_load(args.extra))
     sfconfig.inventory.generate(args)
 
     # Generate group vars
@@ -202,8 +204,6 @@ def main():
     with open(allyaml, "w") as allvars_file:
         # Add legacy content
         args.glue.update(yaml_load(args.config))
-        if os.path.isfile(args.extra):
-            args.glue.update(yaml_load(args.extra))
         args.glue.update(args.sfarch)
         yaml_dump(args.glue, allvars_file)
 
