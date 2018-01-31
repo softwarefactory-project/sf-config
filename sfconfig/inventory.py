@@ -304,6 +304,9 @@ def enable_action(args):
             for role in host["roles"]:
                 if role in testinfra_tests:
                     tests.append(role)
+            if 'telegraf' in testinfra_tests and ('influxdb' or
+                                                  'graphite-api' in role):
+                tests.append('telegraf')
             if tests:
                 for test in tests:
                     testinfra.append(testinfra_tests[test])
