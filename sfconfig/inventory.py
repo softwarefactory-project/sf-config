@@ -302,8 +302,12 @@ def enable_action(args):
                 testinfra.append("--connection=ssh")
                 testinfra.append("--hosts=%s" % host["hostname"])
             for role in host["roles"]:
+                if 'influxdb' or 'graphite-api' in role:
+                    tests.append('telegraf')
                 if role in testinfra_tests:
                     tests.append(role)
+            if 'influxdb' or 'graphite-api' in role:
+                tests.append('telegraf')
             if tests:
                 for test in tests:
                     testinfra.append(testinfra_tests[test])
