@@ -302,6 +302,9 @@ def enable_action(args):
             for role in host["roles"]:
                 if role in testinfra_tests:
                     tests.append(role)
+            if 'influxdb' in host["roles"]:
+                if 'telegraf' in testinfra_tests:
+                    tests.append('telegraf')
             if tests:
                 for test in tests:
                     testinfra.append(testinfra_tests[test])
@@ -455,8 +458,8 @@ def generate(args):
             if "gerrit" in host["roles"]:
                 host["roles"].append("germqtt")
 
-        # if influxdb role is in the arch, install telegraf
-        if "influxdb" in args.glue["roles"]:
+        # if influxdb role is in arch, install telegraf
+        if ("influxdb" in args.glue["roles"]):
             if ("hypervisor-oci" not in host["roles"] or
                 ("hypervisor-oci" in host["roles"] and
                  args.glue.get("enable_insecure_slaves") is True)):
