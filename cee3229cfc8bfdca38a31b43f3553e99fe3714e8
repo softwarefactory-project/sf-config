@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_ee57a9c8",
+        "filename": "ansible/roles/sf-managesf/templates/config.py.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-31T05:31:38Z",
+      "side": 1,
+      "message": "Only \u0027zuul\u0027 will be in sf-3.0, you can drop the condition and remove zuul2 compatibility. See: https://softwarefactory-project.io/r/#/q/topic:refactor-zuul-name",
+      "revId": "cee3229cfc8bfdca38a31b43f3553e99fe3714e8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_ce5ce5ef",
+        "filename": "ansible/roles/sf-repos/tasks/upgrade.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-01-31T05:31:38Z",
+      "side": 1,
+      "message": "It didn\u0027t because the config repo was modified anyway. Also this isn\u0027t used any more and can be drop, maybe in a follow-up patch.",
+      "revId": "cee3229cfc8bfdca38a31b43f3553e99fe3714e8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
