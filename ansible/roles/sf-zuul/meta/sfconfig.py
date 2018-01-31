@@ -142,6 +142,8 @@ class ZuulScheduler(Component):
 
         # Extra settings
         zuul_config = args.sfconfig.get("zuul", {})
+        args.glue["zuul_default_retry_attempts"] = zuul_config[
+            "default_retry_attempts"]
         args.glue["zuul_upstream_zuul_jobs"] = zuul_config[
             "upstream_zuul_jobs"]
         args.glue["zuul_gerrit_connections"] = copy.copy(zuul_config.get(

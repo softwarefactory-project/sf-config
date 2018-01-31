@@ -10,7 +10,7 @@
       - zuul: zuul-jobs
     timeout: 1800
     # Set attempts to 1 until it's working well
-    attempts: 1
+    attempts: {{ zuul_default_retry_attempts }}
     secrets:
       - site_sflogs
     nodeset:

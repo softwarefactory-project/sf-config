@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The zuul base job retry attemps value is now configuration in the
+    sfconfig.yaml file, with a default of 3.

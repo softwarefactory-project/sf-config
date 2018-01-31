@@ -103,6 +103,10 @@ def update_sfconfig(args):
         }
         dirty = True
 
+    if "default_retry_attempts" not in data['zuul']:
+        data['zuul']['default_retry_attempts'] = 3
+        dirty = True
+
     # Check for duplicate gerrit connection bug
     to_delete = None
     for connection in data["zuul"].get("gerrit_connections", []):
