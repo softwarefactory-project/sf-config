@@ -27,7 +27,7 @@ angular.module('sfWelcome', []).controller('mainController', function($scope, $h
     $scope.host = $location.protocol() + "://" + $location.host();
     $scope.hide = true;
     $scope.dlimit = 5;
-    $http.get('/manage/resources').
+    $http.get('/manage/v2/resources').
         success(function(data) {
             $scope.Projects = data['resources']['projects'];
             $scope.Repos = data['resources']['repos'];

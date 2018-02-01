@@ -77,7 +77,8 @@ def main(argv=sys.argv[1:]):
         return
 
     if args.managesf_url:
-        for name, project in requests.get("%s/resources" % args.managesf_url) \
+        for name, project in requests.get(
+                "%s/v2/resources" % args.managesf_url) \
                 .json().get('resources', {}).get('projects', {}).items():
             if not project.get('review-dashboard'):
                 continue

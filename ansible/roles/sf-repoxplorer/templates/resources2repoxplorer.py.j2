@@ -22,7 +22,7 @@ if __name__ == "__main__":
         'identities': {},
         'groups': {},
     }
-    resources = requests.get("http://managesf:20001/resources/").json()
+    resources = requests.get("http://managesf:20001/v2/resources/").json()
     resources = resources['resources']
     for project, data in resources['projects'].items():
         default['projects'][project] = {}

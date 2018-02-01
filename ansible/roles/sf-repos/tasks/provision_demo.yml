@@ -10,7 +10,7 @@
   command: sfmanager --auth demo:demo sf_user list
 
 - name: Check if repository exists
-  command: python -c "import requests; print('demo-project' in requests.get('{{ managesf_internal_url }}/resources').json().get('resources', {}).get('repos', {}))"
+  command: python -c "import requests; print('demo-project' in requests.get('{{ managesf_internal_url }}/v2/resources').json().get('resources', {}).get('repos', {}))"
   register: demo_resource
 
 - block:
