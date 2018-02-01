@@ -5,7 +5,7 @@
 
 - block:
     - name: Check if repository exists
-      command: python -c "import requests; print('zuul-jobs' in requests.get('{{ managesf_internal_url }}/resources').json().get('resources', {}).get('repos', {}))"
+      command: python -c "import requests; print('zuul-jobs' in requests.get('{{ managesf_internal_url }}/v2/resources').json().get('resources', {}).get('repos', {}))"
       register: jobs_resource
 
     - name: Create empty resources file
