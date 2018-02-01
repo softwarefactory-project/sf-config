@@ -24,9 +24,8 @@ inventory:
       - nodepool-builder
       - murmur
       - elasticsearch
-        # TODO: fix AnsibleUndefinedVariable: 'jobs_zmq_publishers' is undefined
-        #      - job-logs-gearman-client
-        #      - job-logs-gearman-worker
+      - job-logs-gearman-client
+      - job-logs-gearman-worker
       - logstash
       - kibana
       - mirror

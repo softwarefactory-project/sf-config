@@ -1,14 +1,4 @@
 source-url: https://{{ fqdn }}
-
-# List of zmq event inputs.
-zmq-publishers:
-{% for publisher in jobs_zmq_publishers %}
-  - {{ publisher }}
-{% endfor %}
-
+zmq-publishers: []
 subunit-files: []
-# List of files to source logs from.
-source-files:
-  - name: console.html
-    tags:
-      - console
+source-files: []
