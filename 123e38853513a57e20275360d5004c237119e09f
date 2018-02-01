@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_e981e3fc",
+        "filename": "ansible/roles/sf-grafana/tasks/update.yml",
+        "patchSetId": 17
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-01T01:27:36Z",
+      "side": 1,
+      "message": "Why checking for changes in the \"resources\" directory?",
+      "revId": "123e38853513a57e20275360d5004c237119e09f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_c9861f13",
+        "filename": "ansible/roles/sf-repos/files/config/metrics/README",
+        "patchSetId": 17
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-01T01:27:36Z",
+      "side": 1,
+      "message": "and installed on the grafana service* ?",
+      "revId": "123e38853513a57e20275360d5004c237119e09f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
