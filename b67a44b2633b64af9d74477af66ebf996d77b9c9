@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_89a02792",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 15
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-01T01:29:00Z",
+      "side": 1,
+      "message": "That doesn\u0027t seems right, when graphite-api is deployed on the gateway host, then it is still listening to a local port. I think we need to drop the gateway_host check.\n\nftr, it\u0027s done like that for nodepool-builder because the role doesn\u0027t setup a vhost, so it works seemlesly if deployed on the gateway host.",
+      "revId": "b67a44b2633b64af9d74477af66ebf996d77b9c9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
