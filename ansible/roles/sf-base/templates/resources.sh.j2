@@ -26,9 +26,30 @@ import json
 data = {}
 data['prev'] = file("$2").read()
 data['new'] = file("$3").read()
+data['background'] = True
 json.dump(data, file('direct_apply.json', 'w'))
 SCRIPT
     }
+}
+
+function check_task() {
+    while true; do
+        sleep 1
+        http_code=$(curl -s -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
+         -H 'Content-Type: application/json' -d '{"task_id": "'$tid'"}' \
+         -X PUT $ENDPOINT -o $APPLIED_OUTPUT)
+        tstatus=$(python -c 'import json; print json.loads(file("'$APPLIED_OUTPUT'").read())[0]')
+        tlogs=$(python -c 'import json; print json.loads(file("'$APPLIED_OUTPUT'").read())[1]')
+        [ "$tstatus" == "DONE" ] && {
+            echo $tlogs | python -m json.tool
+            exit 0
+        }
+        [ "$tstatus" == "ERROR" ] && {
+            echo $tlogs | python -m json.tool
+            exit 1
+        }
+        # Still in PROGRESS or PENDING - continue in the loop
+    done
 }
 
 case $1 in
@@ -113,26 +134,18 @@ SCRIPT
         cd -
         rm -R $clone
         http_code=$(curl -s -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
-         -H 'Content-Type: application/json' -d '{"COMMIT": "'$ZUUL_COMMIT'"}' \
+         -H 'Content-Type: application/json' -d '{"COMMIT": "'$ZUUL_COMMIT'", "background": "true"}' \
          -X PUT $ENDPOINT -o $APPLIED_OUTPUT)
-        cat $APPLIED_OUTPUT | python -m json.tool
-        [ "$http_code" != "201" ] && {
-            echo "Resource modifications apply failed (API return code: $http_code)."
-            exit 1
-        }
-        exit 0
+        tid=$(python -c 'import json; print json.loads(file("'$APPLIED_OUTPUT'").read())[2]')
+        check_task $tid
         ;;
     direct_apply)
         http_code=$(curl -s -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
          -H "Content-Type: application/json" \
          --data @direct_apply.json \
          -X PUT $ENDPOINT -o $APPLIED_OUTPUT)
-        cat $APPLIED_OUTPUT | python -m json.tool
-        [ "$http_code" != "201" ] && {
-            echo "Resource modifications direct_apply failed (API return code: $http_code)."
-            exit 1
-        }
-        exit 0
+        tid=$(python -c 'import json; print json.loads(file("'$APPLIED_OUTPUT'").read())[2]')
+        check_task $tid
         ;;
     get)
         curl -s -H "X-Remote-User: SF_SERVICE_USER" $ENDPOINT | python -m json.tool
