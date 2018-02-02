@@ -124,6 +124,11 @@
   register: _zuul_version
   changed_when: false
 
+- name: Read nodepool version
+  command: rpm -q rh-python35-nodepool-doc
+  register: _nodepool_version
+  changed_when: false
+
 - name: Install templates
   template:
     src: "{{ item.name }}.j2"

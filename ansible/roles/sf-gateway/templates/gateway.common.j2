@@ -23,6 +23,7 @@
     </LocationMatch>
     Alias "/docs/zuul-jobs" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-zuul-jobs-doc-{{ _zuul_job_version.stdout.split('-')[5] }}/html"
     Alias "/docs/zuul" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-zuul-doc-{{ _zuul_version.stdout.split('-')[4] }}/html"
+    Alias "/docs/nodepool" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-nodepool-doc-{{ _nodepool_version.stdout.split('-')[4] }}/html"
     <Directory "/opt/rh/rh-python35/root/usr/share/doc/">
         Require all granted
     </Directory>
