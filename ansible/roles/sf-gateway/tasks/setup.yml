@@ -124,6 +124,10 @@
   command: rpm -q rh-python35-zuul-doc
   register: _zuul_version
 
+- name: Read nodepool version
+  command: rpm -q rh-python35-nodepool-doc
+  register: _nodepool_version
+
 - name: Install templates
   template:
     src: "{{ item.name }}.j2"
