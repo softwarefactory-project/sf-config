@@ -1,5 +1,5 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa home_dir={{ nodepool_lib_dir }} update_user=no"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa home_dir={{ nodepool_lib_dir }}"
 
 - name: Install nodepool shortcut
   copy:

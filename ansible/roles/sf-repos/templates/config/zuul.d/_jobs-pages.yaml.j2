@@ -9,8 +9,7 @@
       - playbooks/pages/publish.yaml
     secrets:
       - site_pages
-    allowed-projects:
-      - config
+    protected: true
     vars:
       src_dir: /
       fqdn: {{ fqdn }}

@@ -120,6 +120,7 @@
   command: systemctl -q is-active gerrit
   register: _gerrit
   failed_when: _gerrit.rc != 3 and _gerrit.rc != 0
+  changed_when: false
 
 - name: "Initialize/Upgrade gerrit when service is not running"
   command: /usr/bin/java -jar /usr/lib64/gerrit/release.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins

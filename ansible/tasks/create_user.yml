@@ -7,6 +7,7 @@
   command: "grep '^{{ user_name }}:' /etc/passwd"
   register: user_exists
   failed_when: user_exists.rc not in [0, 1]
+  changed_when: false
 
 - name: "Create user"
   user:

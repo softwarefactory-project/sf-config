@@ -23,6 +23,7 @@
 - name: Get all server hostnames
   shell: grep '^[a-zA-Z0-9]' /var/lib/software-factory/ansible/hosts | awk '{ print $1 }' | sort -u
   register: servers
+  changed_when: false
 
 - name: Wait for ssh services on all servers
   wait_for:
@@ -37,6 +38,7 @@
   until: public_ssh_host_keys|success
   retries: 30
   delay: 10
+  changed_when: false
 
 - name: Populate ssh_know_hosts
   lineinfile:

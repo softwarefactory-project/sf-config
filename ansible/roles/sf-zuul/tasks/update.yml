@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: Check upstream config
-  command: git log -n 3 --oneline zuul/
+  command: git log -n 3 --oneline zuul/ resources/
   args:
     chdir: /root/config
   register: upstreamconfig

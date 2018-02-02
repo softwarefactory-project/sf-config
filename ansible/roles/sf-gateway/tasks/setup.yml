@@ -101,19 +101,18 @@
     dest: /var/www/dashboard/index.html
     mode: 0444
 
-- name: Touch files
+- name: Ensure managesf_htpasswd is present
   file:
-    path: "{{ item }}"
+    path: /etc/httpd/managesf_htpasswd
     state: touch
     mode: 0640
-    owner: apache
+    owner: managesf
     group: apache
-  with_items:
-    - /etc/httpd/managesf_htpasswd
 
 - name: Read zuul-job version
   command: rpm -q rh-python35-zuul-jobs-doc
   register: _zuul_job_version
+  changed_when: false
 
 - name: Install templates
   template:
