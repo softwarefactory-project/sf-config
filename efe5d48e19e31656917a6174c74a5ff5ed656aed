@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a0c5dc1_6795323f",
+        "filename": "ansible/roles/sf-grafana/tasks/update.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-02T02:33:15Z",
+      "side": 1,
+      "message": "\"resources/\" is not needed here",
+      "revId": "efe5d48e19e31656917a6174c74a5ff5ed656aed",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0c5dc1_279f3a61",
+        "filename": "ansible/roles/sf-grafana/tasks/update.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-02T02:33:15Z",
+      "side": 1,
+      "message": "Maybe use \"find *\" instead to skip hidden files.",
+      "revId": "efe5d48e19e31656917a6174c74a5ff5ed656aed",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a0c5dc1_079c3668",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 18
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-02T02:33:15Z",
+      "side": 1,
+      "message": "Same here, \"find *\"",
+      "revId": "efe5d48e19e31656917a6174c74a5ff5ed656aed",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
