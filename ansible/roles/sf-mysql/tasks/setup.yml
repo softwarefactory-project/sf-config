@@ -21,6 +21,7 @@
   shell: "/usr/bin/mysqladmin -u root -p{{ mysql_root_password }} status"
   register: mysql_root_password_set
   ignore_errors: true
+  changed_when: false
 
 - name: Set mysql root password
   shell: "/usr/bin/mysqladmin -u root password {{ mysql_root_password }}"

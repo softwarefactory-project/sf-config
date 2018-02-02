@@ -4,10 +4,12 @@
 - name: Hash admin password
   shell: python <<<"{{hash_code}}'{{authentication.admin_password}}'{{hash_code_end}}"
   register: admin_password_hashed
+  changed_when:: false
 
 - name: Hash service user password
   shell: python <<<"{{hash_code}}'{{sf_service_user_password}}'{{hash_code_end}}"
   register: service_user_password_hashed
+  changed_when:: false
 
 - name: Install cauth config files
   template:

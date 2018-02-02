@@ -1,6 +1,6 @@
 ---
 # Use 0751 to let apache access {{ zuul_lib_dir }}/git
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul_lib_dir }} home_dir_mode=0751 update_user=no"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul_lib_dir }} home_dir_mode=0751"
 
 - name: Install zuul shortcut
   copy:
@@ -45,12 +45,6 @@
     - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
     - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
     - {src: /etc/opt/rh/rh-python35, dest: /etc}
-
-# TODO: fix package
-- name: Removed unsued layout.yaml file
-  file:
-    path: /etc/opt/rh/rh-python35/zuul/layout.yaml
-    state: absent
 
 - name: Apply selinux port labelling
   seport:
@@ -107,7 +101,8 @@
       command: "ssh-keygen -f {{ zuul_lib_dir }}/.ssh/known_hosts -F {{ item.host_packed }}"
       with_items: "{{ zuul_ssh_known_hosts }}"
       register: _zuul_known_hosts_results
-      ignore_errors: "yes"
+      failed_when: false
+      changed_when: false
 
     - name: Scan the missing zuul sources
       shell: >
@@ -125,6 +120,7 @@
             {{ item.username }}@{{ item.hostname }}
       register: _zuul_connection_test
       failed_when: _zuul_connection_test.stderr.find("Welcome to Gerrit Code Review") == -1
+      changed_when: false
       with_items: "{{ zuul_gerrit_connections }}"
 
     - name: Install github private key
