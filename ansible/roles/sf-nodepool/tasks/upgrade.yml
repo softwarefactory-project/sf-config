@@ -10,6 +10,11 @@
       command: umount /var/lib/nodepool/oci/host-rootfs/
       ignore_errors: yes
 
+    # Repeat that task because previous nodepool driver could double mount that directory
+    - name: Ensure /var/lib/nodepool/oci/host-rootfs is not mounted
+      command: umount /var/lib/nodepool/oci/host-rootfs/
+      ignore_errors: yes
+
     - name: Remove /var/lib/nodepool*
       file:
         path: "{{ item }}"
