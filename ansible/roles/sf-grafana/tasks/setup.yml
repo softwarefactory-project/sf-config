@@ -69,3 +69,5 @@
     state: started
     daemon_reload: "yes"
     enabled: "yes"
+
+- include_tasks: grafana_configuration.yml
