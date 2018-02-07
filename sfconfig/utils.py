@@ -16,6 +16,9 @@ import subprocess
 import sys
 import yaml
 
+from jinja2 import FileSystemLoader
+from jinja2.environment import Environment
+
 
 def load_components(share="/usr/share/sf-config"):
     import inspect
@@ -65,6 +68,42 @@ def pread(argv):
 def fail(msg):
     print >>sys.stderr, msg
     exit(1)
+
+
+def render_template(dest, template, data):
+    if os.path.exists(dest):
+        current = open(dest).read()
+    else:
+        current = ""
+    loader = FileSystemLoader(os.path.dirname(template))
+    env = Environment(trim_blocks=True, loader=loader)
+    template = env.get_template(os.path.basename(template))
+    new = template.render(data)
+    if new[-1] != "\n":
+        new += "\n"
+    if new != current:
+        with open(dest, "w") as out:
+            out.write(new)
+        print("[+] Wrote %s" % dest)
+        return True
+
+
+def yaml_merge_load(inp):
+    paths = []
+    for root, dirs, files in os.walk(inp, topdown=True):
+        paths.extend([os.path.join(root, path) for path in files])
+
+    # Keeps only .yaml files
+    paths = filter(lambda x: x.endswith('.yaml') or x.endswith('.yml'), paths)
+
+    user = {}
+    for path in paths:
+        data = yaml.safe_load(open(path))
+        if not data:
+            continue
+        for key, value in data.items():
+            user.setdefault(key, []).extend(value)
+    return user
 
 
 def yaml_load(filename):

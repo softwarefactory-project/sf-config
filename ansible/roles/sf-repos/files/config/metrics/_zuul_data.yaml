@@ -1,0 +1,58 @@
+rows:
+  - title: Graphs
+    panels:
+      - title: Zuul Jobs Launched (per hour)
+        targets:
+          - alias: All jobs
+            measurement: /zuul.tenant.local.pipeline.*.all_jobs/
+            groupby_time: 1h
+            select_type: count
+            tags_value: counter
+            groupby_fill: 0
+      - title: Node Requests
+        targets:
+          - alias: Requests
+            measurement: /zuul.nodepool.current.requests/
+            select_type: mean
+            tags_value: gauge
+      - title: Test Nodes
+        targets:
+          - alias: Building
+            measurement: nodepool.nodes.building
+            select_type: distinct
+            tags_value: gauge
+          - alias: Available
+            measurement: nodepool.nodes.ready
+            select_type: distinct
+            tags_value: gauge
+          - alias: In Use
+            measurement: nodepool.nodes.in-use
+            select_type: distinct
+            tags_value: gauge
+          - alias: Used
+            measurement: nodepool.nodes.used
+            select_type: distinct
+            tags_value: gauge
+          - alias: Deleting
+            measurement: nodepool.nodes.deleting
+            select_type: distinct
+            tags_value: gauge
+  - title: Executor
+    panels:
+      - title: Executors
+        targets:
+          - alias: online
+            measurement: zuul.executors.online
+            select_type: count
+            tags_value: gauge
+          - alias: accepting
+            measurement: zuul.executors.accepting
+            select_type: count
+            tags_value: gauge
+      - title: Running Builds
+        targets:
+          - alias: online
+            measurement: /zuul.executor.*.running_builds/
+            select_type: distinct
+            tags_value: gauge
+
