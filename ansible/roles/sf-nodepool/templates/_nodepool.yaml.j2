@@ -1,6 +1,11 @@
 elements-dir: {{ nodepool_conf_dir }}/elements:/usr/share/sf-elements
 images-dir: {{ nodepool_lib_dir }}/dib
 
+{% if 'influxdb' in roles %}
+statsd:
+  host: {{ influxdb_host }}
+
+{% endif %}
 webapp:
   port: {{ nodepool_webapp_port }}
 

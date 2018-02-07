@@ -10,7 +10,7 @@
 - name: Symlink SCL to nodepool
   file:
     src: "{{ item.src }}/nodepool"
-    dest: "{{ item.dest }}/nodepool3"
+    dest: "{{ item.dest }}/nodepool"
     state: link
   with_items:
     - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
@@ -141,12 +141,6 @@
     path: /var/www/html/nodepool-log
     src: /var/www/nodepool-log
     state: link
-
-- name: Setup sysconfig
-  template:
-    src: sysconfig.j2
-    dest: "{{ nodepool_sysconfig }}"
-  notify: restart nodepool
 
 - name: Setup authorized keys
   copy:
