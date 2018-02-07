@@ -1,13 +1,12 @@
 ---
 - stat:
     path: "{{ config_clone_dir }}/metrics"
-  register: _metrics_config_dir
 
 - name: Add default metrics configuration directory
   synchronize:
     src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/metrics/
     dest: "{{ config_clone_dir }}/metrics"
-  when: not _metrics_config_dir.stat.exists
+  register: _config_metrics_files
 
 - name: Ensure config sub dir
   file:
@@ -120,7 +119,7 @@
     config_repo_updated: true
   when: _config_static_files|changed or
         _config_template_files|changed or
-        not _metrics_config_dir.stat.exists or
+        _config_metrics_files|changed or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
         not _secret_install_server.stat.exists
@@ -131,7 +130,7 @@
   when:
     - not _config_static_files|changed
     - not _config_template_files|changed
-    - _metrics_config_dir.stat.exists
+    - not _config_metrics_files|changed
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists

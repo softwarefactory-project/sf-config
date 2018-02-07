@@ -3,7 +3,6 @@ role_actions:
   - disable
   - install
   - setup
-  - postconf
   - update
 
 grafana_repo_name: grafana

@@ -1,0 +1,85 @@
+dashboard:
+  title: Zuul Status
+  rows:
+{% for tenant in tenants %}
+    - title: {{ tenant.name }} pipelines
+      height: 150px
+      showTitle: true
+      panels:
+{% for pipeline in tenant.pipelines %}
+        - title: {{ pipeline | capitalize }}
+          span: 2
+          datasource: 'influxdb'
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [0]
+                type: fill
+              measurement: zuul.tenant.{{ tenant.name }}.pipeline.{{ pipeline }}.current_changes
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: count
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+          type: singlestat
+          valueName: current
+{% endfor %}
+{% for row in rows %}
+    - title: {{ row.title }}
+      height: 250px
+      showTitle: true
+      panels:
+{% for panel in row.panels %}
+        - title: {{ panel.title }}
+          span: 6
+          targets:
+{% for target in panel.targets %}
+            - alias: {{ target.alias }}
+              groupBy:
+              - params: [{{ target.groupby_time | default('$__interval') }}]
+                type: time
+              - params: [{{ target.groupby_fill | default('none') }}]
+                type: fill
+              measurement: {{ target.measurement }}
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [{{ target.select_field | default('value') }}]
+                    type: field
+                  - params: []
+                    type: {{ target.select_type }}
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: {{ target.tags_value }}
+              # Depends-on: https://review.openstack.org/542135
+              # yaxes:
+              #   - decimals:        0
+              #     format:  short
+              #     label:   null
+              #     logBase: 1
+              #     max:     null
+              #     min:     null
+              #     show:    true
+              #   - decimals:        0
+              #     format:  short
+              #     label:   null
+              #     logBase: 1
+              #     max:     null
+              #     min:     null
+              #     show:    true
+{% endfor %}
+          type: graph
+{% endfor %}
+{% endfor %}
+{% endfor %}
