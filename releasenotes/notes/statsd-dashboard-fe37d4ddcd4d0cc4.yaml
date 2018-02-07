@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Grafana dashboard are automatically created to
+    display Zuul and Nodepool metrics.
