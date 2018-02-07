@@ -16,10 +16,12 @@
   register: upstreamconfig
 
 - name: Update metrics dashboards
-  shell: |
-    find . -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard update yaml
+  shell: >
+    find . -regextype posix-egrep -regex '.*.(yaml|yml)$' |
+        xargs -I yaml grafana-dashboard update yaml
   args:
     chdir: "/root/config/metrics"
+  delegate_to: '{{ install_server_host }}'
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Write config repo sha1 matching current metrics configuration
