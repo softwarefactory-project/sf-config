@@ -42,6 +42,8 @@ telegraf_influxdb_password: CHANGE_ME
 service_name: grafana
 service_real_name: grafana-server
 
+grafyaml_metrics: /var/lib/software-factory/metrics
+
 grafana_data_source:
   isDefault: true
   database: telegraf
