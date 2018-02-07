@@ -7,6 +7,9 @@
       with_items:
         - /var/lib/zuul
         - /var/lib/zuul3
+        - /var/log/zuul
+        - /var/log/zuul3
+        - /usr/bin/zuul
         - /usr/bin/zuul3
 
     - name: Remove zuulv2

@@ -39,7 +39,7 @@
 - name: Symlink SCL to zuul
   file:
     src: "{{ item.src }}/zuul"
-    dest: "{{ item.dest }}/zuul3"
+    dest: "{{ item.dest }}/zuul"
     state: link
   with_items:
     - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
@@ -148,12 +148,6 @@
 - block:
     - include_tasks: create_logging.yml _logfile="web"
   when: "'zuul-web' in zuul_services"
-
-- name: "Setup sysconfig"
-  template:
-    src: sysconfig.j2
-    dest: "{{ zuul_sysconfig }}"
-  notify: restart zuul
 
 - name: "Setup configuration"
   template:
