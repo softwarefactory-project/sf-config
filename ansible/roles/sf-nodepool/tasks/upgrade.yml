@@ -8,6 +8,7 @@
 
     - name: Ensure /var/lib/nodepool/oci/host-rootfs is not mounted
       command: umount /var/lib/nodepool/oci/host-rootfs/
+      retries: 3
       ignore_errors: yes
 
     - name: Remove /var/lib/nodepool*
