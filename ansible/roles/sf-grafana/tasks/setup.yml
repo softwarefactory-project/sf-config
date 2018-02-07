@@ -54,6 +54,22 @@
     line: '        <script type="text/javascript" src="/static/js/topmenu.js"></script>'
   notify: restart grafana
 
+- name: Create metrics directory on the install server
+  file:
+    path: '{{ grafyaml_metrics }}'
+    state: directory
+    mode: 0755
+  delegate_to: '{{ install_server_host }}'
+
+- name: Install update-grafana-graphs script
+  template:
+    src: update-grafana-graphs.sh.j2
+    dest: /usr/bin/update-grafana-graphs.sh
+    owner: root
+    group: root
+    mode: 0755
+  delegate_to: '{{ install_server_host }}'
+
 - name: Install default dashboard
   template:
     src: sf-system-metrics.json
@@ -69,3 +85,5 @@
     state: started
     daemon_reload: "yes"
     enabled: "yes"
+
+- include_tasks: grafana_configuration.yml

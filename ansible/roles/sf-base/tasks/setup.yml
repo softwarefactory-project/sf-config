@@ -65,9 +65,8 @@
     state: directory
     mode: 0700
   with_items:
-    - /var/lib/software-factory/sql
-    - /var/lib/software-factory/jenkins
     - /var/log/software-factory
+    - /var/lib/software-factory/sql
 
 - name: "system: make sure rsyslogd is started"
   service:
