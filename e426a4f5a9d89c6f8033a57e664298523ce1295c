@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_6c6d0f32",
+        "filename": "ansible/roles/sf-nodepool/templates/sysconfig.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-02-07T15:53:50Z",
+      "side": 0,
+      "message": "For nodepool, it not yet deprecated https://docs.openstack.org/infra/nodepool/installation.html",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 11
+      },
+      "revId": "e426a4f5a9d89c6f8033a57e664298523ce1295c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

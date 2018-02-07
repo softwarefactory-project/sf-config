@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_4c6a531c",
+        "filename": "ansible/roles/sf-nodepool/templates/_nodepool.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-02-07T15:53:50Z",
+      "side": 1,
+      "message": "env variables are used by nodepool:\n\n./nodepool/stats.py:        statsd_args[\u0027host\u0027] \u003d os.environ[\u0027STATSD_HOST\u0027]                                                         \n./nodepool/stats.py:        statsd_args[\u0027port\u0027] \u003d os.environ[\u0027STATSD_PORT\u0027]",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 11
+      },
+      "revId": "809557217fa90a7265fc96b60ec0f8759f19ea33",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
