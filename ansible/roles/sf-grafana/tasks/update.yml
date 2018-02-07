@@ -15,11 +15,18 @@
     chdir: /root/config
   register: upstreamconfig
 
-- name: Update metrics dashboards
-  shell: |
-    find . -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard update yaml
-  args:
-    chdir: "/root/config/metrics"
+- block:
+    - name: Render dynamic dashboards
+      command: >
+        sf-graph-render --zuul-url http://{{ zuul_web_url }}
+                        --config-dir /root/config
+                        --output-dir /root/config/metrics
+
+    - name: Update metrics dashboards
+      shell: |
+        find . -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard update yaml
+      args:
+        chdir: "/root/config/metrics"
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Write config repo sha1 matching current metrics configuration

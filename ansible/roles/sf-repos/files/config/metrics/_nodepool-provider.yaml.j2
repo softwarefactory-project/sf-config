@@ -1,0 +1,25 @@
+dashboard:
+  title: 'Nodepool: {{ name }}'
+  rows:
+{% if driver == "openstack" %}
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          type: singlestat
+          valueName: current
+{% endif %}
+    - title: Node Launches
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Ready Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"

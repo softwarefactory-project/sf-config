@@ -93,6 +93,12 @@
 
     - name: Validate metrics dashboards
       block:
+        - name: Generate dynamic dashboard
+          command: >
+            sf-graph-render --check
+                            --config-dir {{ config_root }}
+                            --output-dir {{ config_root }}/metrics
+
         - name: Check syntax errors in metrics dashboards
           shell: |
            find . -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard validate yaml

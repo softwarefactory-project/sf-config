@@ -1,0 +1,17 @@
+dashboard:
+  title: Zuul Status
+  rows:
+{% for tenant in tenants %}
+    - title: {{ tenant.name }} pipelines
+      height: 150px
+      panels:
+{% for pipeline in tenant.pipelines %}
+        - title: {{ pipeline }}
+          #span: 2
+          sparkline:
+            full: true
+            show: true
+          type: singlestat
+          valueName: current
+{% endfor %}
+{% endfor %}
