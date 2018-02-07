@@ -30,3 +30,5 @@
     name: influxdb
     state: started
     enabled: "yes"
+
+- include_tasks: influxdb_configuration.yml
