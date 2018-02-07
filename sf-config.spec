@@ -1,8 +1,8 @@
 %global         sum The Software Factory configuration sfconfig
 
 Name:           sf-config
-Version:        2.7.0
-Release:        3%{?dist}
+Version:        3.0.0
+Release:        1%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -45,7 +45,7 @@ mv ansible defaults refarch scripts templates testinfra %{buildroot}%{_datarootd
 install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 
 %files
-%{_bindir}/sfconfig
+%{_bindir}/sf*
 %{python2_sitelib}/sfconfig-%{version}-py*.egg-info
 %{python2_sitelib}/sfconfig
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
@@ -69,6 +69,10 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Wed Feb  7 2018 Tristan Cacqueray <tdecacqu@redhat.com> - 3.0.0-1
+- Bump version
+- Add sf-graph-render command
+
 * Tue Nov 21 2017 Tristan Cacqueray <tdecacqu@redhat.com> - 2.7.0-3
 - Require ansible >= 2.4.1
 
