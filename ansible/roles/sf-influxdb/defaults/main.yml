@@ -3,7 +3,6 @@ role_actions:
   - disable
   - install
   - setup
-  - postconf
 
 influxdb_host: influxdb.example.com
 influxdb_port: 25826

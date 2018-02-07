@@ -6,14 +6,6 @@
     replace: '  urls = ["https://{{ influxdb_host }}:8086"]'
   notify: Restart telegraf
 
-- name: Configure telegraf for self-signed crt
-  replace:
-    dest: /etc/telegraf/telegraf.conf
-    regexp: '  #? ?insecure_skip_verify =.*'
-    replace: '  insecure_skip_verify = true'
-  when: use_letsencrypt == False
-  notify: Restart telegraf
-
 - name: Configure credential
   replace:
     dest: /etc/telegraf/telegraf.conf
