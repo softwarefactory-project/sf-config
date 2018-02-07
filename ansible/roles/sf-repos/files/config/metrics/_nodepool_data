@@ -1,0 +1,83 @@
+singlestats:
+  - building
+  - ready
+  - in-use
+  - used
+  - deleting
+  - hold
+  - failed
+rows:
+  - title: Nodepool Images
+    panels:
+      - title: Building Nodes
+        targets:
+          - alias: $2
+            measurement: /nodepool.label.*.nodes.building/
+            select_type: mean
+            tags_value: gauge
+            groupby_fill: 0
+      - title: Ready Nodes
+        targets:
+          - alias: $2
+            measurement: /nodepool.label.*.nodes.ready/
+            select_type: mean
+            tags_value: gauge
+            groupby_fill: 0
+      - title: In-use Nodes
+        targets:
+          - alias: $2
+            measurement: /nodepool.label.*.nodes.in-use/
+            select_type: mean
+            tags_value: gauge
+            groupby_fill: 0
+      - title: Deleting Nodes
+        targets:
+          - alias: $2
+            measurement: /nodepool.label.*.nodes.deleting/
+            select_type: mean
+            tags_value: gauge
+            groupby_fill: 0
+
+continuous_queries:
+  - dest: nodepool.all_providers.building
+    function: sum
+    measurement: /nodepool.provider.*.nodes.building/
+    time: 30s
+    resample_time: 30s
+    resample_fill: 0
+  - dest: nodepool.all_providers.ready
+    function: sum
+    measurement: /nodepool.provider.*.nodes.ready/
+    time: 30s
+    resample_time: 30s
+    resample_fill: 0
+  - dest: nodepool.all_providers.in-use
+    function: sum
+    measurement: /nodepool.provider.*.nodes.in-use/
+    time: 30s
+    resample_time: 30s
+    resample_fill: 0
+  - dest: nodepool.all_providers.used
+    function: sum
+    measurement: /nodepool.provider.*.nodes.used/
+    time: 30s
+    resample_time: 30s
+    resample_fill: 0
+  - dest: nodepool.all_providers.deleting
+    function: sum
+    measurement: /nodepool.provider.*.nodes.deleting/
+    time: 30s
+    resample_time: 30s
+    resample_fill: 0
+  - dest: nodepool.all_providers.hold
+    function: sum
+    measurement: /nodepool.provider.*.nodes.hold/
+    time: 30s
+    resample_time: 30s
+    resample_fill: 0
+  - dest: nodepool.all_providers.failed
+    function: sum
+    measurement: /nodepool.provider.*.nodes.failed/
+    time: 30s
+    resample_time: 30s
+    resample_fill: 0
