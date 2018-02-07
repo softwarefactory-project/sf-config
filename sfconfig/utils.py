@@ -67,6 +67,24 @@ def fail(msg):
     exit(1)
 
 
+def yaml_merge_load(inp):
+    paths = []
+    for root, dirs, files in os.walk(inp, topdown=True):
+        paths.extend([os.path.join(root, path) for path in files])
+
+    # Keeps only .yaml files
+    paths = filter(lambda x: x.endswith('.yaml') or x.endswith('.yml'), paths)
+
+    user = {}
+    for path in paths:
+        data = yaml.safe_load(open(path))
+        if not data:
+            continue
+        for key, value in data.items():
+            user.setdefault(key, []).extend(value)
+    return user
+
+
 def yaml_load(filename):
     try:
         return yaml.safe_load(open(filename))
