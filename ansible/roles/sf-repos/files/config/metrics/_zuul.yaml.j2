@@ -1,0 +1,262 @@
+dashboard:
+  title: Zuul Status
+  rows:
+{% for tenant in tenants %}
+    - title: {{ tenant.name }} pipelines
+      height: 150px
+      showTitle: true
+      panels:
+{% for pipeline in tenant.pipelines %}
+        - title: {{ pipeline | capitalize }}
+          span: 2
+          datasource: 'influxdb'
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [0]
+                type: fill
+              measurement: zuul.tenant.{{ tenant.name }}.pipeline.{{ pipeline }}.current_changes
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: count
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+          type: singlestat
+          valueName: current
+{% endfor %}
+    - title: Graphs
+      height: 250px
+      showTitle: true
+      panels:
+        - title: Zuul Jobs Launched (per hour)
+          span: 6
+          targets:
+            - alias: All jobs
+              groupBy:
+              - params: [1h]
+                type: time
+              - params: [0]
+                type: fill
+              # TODO create continuous query to agregate zuul.tenant.local.pipeline.*.all_jobs
+              measurement: /zuul.tenant.local.pipeline.*.all_jobs/
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: count
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: counter
+          type: graph
+        - title: Node Requests
+          span: 6
+          targets:
+            - alias: requests
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: /zuul.nodepool.current.requests/
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: mean
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+          type: graph
+        - title: Test Nodes
+          span: 6
+          targets:
+            - alias: Building
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: nodepool.nodes.building
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: distinct
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+            - alias: Available
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: nodepool.nodes.ready
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: distinct
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+            - alias: In Use
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: nodepool.nodes.in-use
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: distinct
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+            - alias: Used
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: nodepool.nodes.used
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: distinct
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+            - alias: Deleting
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: nodepool.nodes.deleting
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: distinct
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+          type: graph
+    - title: Executor
+      height: 250px
+      showTitle: true
+      panels:
+        - title: Executors
+          span: 6
+          targets:
+            - alias: online
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: zuul.executors.online
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: count
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+            - alias: accepting
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: zuul.executors.accepting
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: count
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+# Depends-on: https://review.openstack.org/542135
+#          yaxes:
+#            - decimals:        0
+#              format:  short
+#              label:   null
+#              logBase: 1
+#              max:     null
+#              min:     null
+#              show:    true
+#            - decimals:        0
+#              format:  short
+#              label:   null
+#              logBase: 1
+#              max:     null
+#              min:     null
+#              show:    true
+          type: graph
+        - title: Running Builds
+          span: 6
+          targets:
+            - alias: none
+              groupBy:
+              - params: [$__interval]
+                type: time
+              - params: [none]
+                type: fill
+              measurement: /zuul.executor.*.running_builds/
+              orderByTime: ASC
+              resultFormat: time_series
+              select:
+                - - params: [value]
+                    type: field
+                  - params: []
+                    type: distinct
+              tags:
+                - key: metric_type
+                  operator: '='
+                  value: gauge
+          type: graph
+{% endfor %}
