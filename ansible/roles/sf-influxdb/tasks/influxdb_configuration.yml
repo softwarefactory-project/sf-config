@@ -6,12 +6,12 @@
 
 - name: Set influxdb cli fact
   set_fact:
-    influxdb_cli: 'influx -ssl -unsafeSsl'
+    influxdb_cli: 'influx -ssl -host {{ influxdb_host }} -port 8086'
 
 - name: Check if admin password is set
   shell: '{{ influxdb_cli }} -execute "SHOW USERS"'
   register: admin_password
-  ignore_errors: true
+  failed_when: false
   no_log: true
 
 - name: Create admin user
@@ -46,3 +46,12 @@
   ignore_errors: true
   no_log: true
   when: "'telegraf' not in users.stdout"
+
+- name: Create continuous query
+  command: >
+    sf-graph-render --influxdb-host "{{ influxdb_host }}"
+                    --influxdb-password "{{ influxdb_admin_password }}"
+                    update-cq
+  register: _update_cq
+  failed_when: _update_cq.rc not in [0, 4]
+  changed_when: _update_cq.rc == 4

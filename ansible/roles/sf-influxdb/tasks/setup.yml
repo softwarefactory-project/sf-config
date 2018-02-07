@@ -11,6 +11,7 @@
   with_items:
     - {content: "{{ influxdb_crt}}", dest: "influxdb.crt"}
     - {content: "{{ influxdb_key }}", dest: "influxdb.key", mode: '0400'}
+  no_log: true
 
 - name: Configure influxdb to use tls
   ini_file:
@@ -30,3 +31,5 @@
     name: influxdb
     state: started
     enabled: "yes"
+
+- include_tasks: influxdb_configuration.yml
