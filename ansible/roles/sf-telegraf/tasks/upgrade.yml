@@ -1,0 +1,6 @@
+---
+- name: Remove insecure ssl settings
+  replace:
+    dest: /etc/telegraf/telegraf.conf
+    regexp: '  #? ?insecure_skip_verify =.*'
+    replace: '  # insecure_skip_verify = true'
