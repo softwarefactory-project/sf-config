@@ -31,6 +31,7 @@
 - name: Create grafyaml config directory
   file:
     path: /etc/grafyaml
+    mode: 0700
     state: directory
   delegate_to: '{{ install_server_host }}'
 
@@ -131,5 +132,5 @@
     dest: /etc/grafyaml/grafyaml.conf
     owner: root
     group: root
-    mode: 0444
+    mode: 0400
   delegate_to: '{{ install_server_host }}'
