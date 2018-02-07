@@ -1,135 +1,32 @@
 ---
-- name: Wait for db initialization
-  wait_for:
-    port: 3000
-    host: '{{ grafana_host }}'
+- name: Make sure config repo is cleaned
+  command: "git {{ item }}"
+  args:
+    chdir: /root/config
+  with_items:
+    - fetch --all
+    - reset --hard origin/master --
+    - clean -f -x -d
+  delegate_to: localhost
 
-- name: Get datasources
-  uri:
-    url: '{{ grafana_internal_datasource_url }}'
-    method: GET
-    user: admin
-    password: '{{ grafana_admin_password }}'
-    force_basic_auth: "yes"
-  register: datasources
+- name: Render dynamic graph
+  command: >
+    sf-graph-render --zuul-url http://{{ zuul_web_url }}
+                    --enable-logstash "{{ 'logstash' in roles }}"
+                    --config-dir /root/config
+                    update-grafyaml
+  register: _update_cq
+  failed_when: _update_cq.rc not in [0, 4]
+  changed_when: _update_cq.rc == 4
+  delegate_to: localhost
 
-- name: set datasource fact
-  set_fact:
-    grafana_datasources: "{{ datasources.json | default([]) | map(attribute='name') | list }}"
-
-- name: Configure datasource
-  uri:
-    url: '{{ grafana_internal_datasource_url }}'
-    method: POST
-    user: admin
-    password: '{{ grafana_admin_password }}'
-    body: '{{ grafana_data_source | to_json }}'
-    body_format: json
-    force_basic_auth: "yes"
-  when: grafana_data_source.name not in grafana_datasources
-
-- name: Create grafyaml config directory
-  file:
-    path: /etc/grafyaml
-    state: directory
-  delegate_to: '{{ install_server_host }}'
-
-- name: Get all api keys
-  uri:
-    url: '{{ grafana_internal_apikey_url }}'
-    method: GET
-    user: admin
-    password: '{{ grafana_admin_password }}'
-    force_basic_auth: "yes"
-  register: grafana_apikeys
-
-- name: Create a list with all api key names
-  set_fact:
-    grafana_apikeys_names: "{{ grafana_apikeys.json | map(attribute='name') | list }}"
-  when: grafana_apikeys.json is defined
-
-- include_vars:
-    file: /var/lib/software-factory/bootstrap-data/secrets.yaml
-    name: grafana_secrets
-  when: grafyaml_apikey_data.name in grafana_apikeys_names
-
-- name: Validate existing grafyaml key
-  uri:
-    url: '{{ grafana_internal_datasource_url }}'
-    method: GET
-    force_basic_auth: "yes"
-    status_code: 200, 401
-    headers:
-      Authorization: "Bearer {{ grafana_secrets.grafyaml_apikey }}"
-  register: grafyaml_check_apikeys
-  when: grafyaml_apikey_data.name in grafana_apikeys_names
-
-- name: Delete outdated grafyaml key if needed
-  block:
-    - block:
-        - name: Get all api keys ids
-          uri:
-            url: '{{ grafana_internal_apikey_url }}'
-            method: GET
-            user: admin
-            password: '{{ grafana_admin_password }}'
-            body_format: json
-            force_basic_auth: "yes"
-          register: grafana_get_apikeys
-
-        - name: Delete outdated grafyaml apikey
-          uri:
-            url: '{{ grafana_internal_apikey_url }}/{{ item.id }}'
-            method: DELETE
-            user: admin
-            password: '{{ grafana_admin_password }}'
-            body_format: json
-            force_basic_auth: "yes"
-          with_items: '{{ grafana_get_apikeys.json }}'
-          no_log: True
-          when: item.name == grafyaml_apikey_data.name
-
-        - set_fact:
-            grafyaml_new_api_key: True
-      when: grafyaml_check_apikeys.status == 401
-  when: grafyaml_check_apikeys is defined and
-        grafyaml_apikey_data.name in grafana_apikeys_names
-
-- name: Create api key and configuration file for grafyaml
-  block:
-    - name: Create api for grafyaml service
-      uri:
-        url: '{{ grafana_internal_apikey_url }}'
-        method: POST
-        user: admin
-        password: '{{ grafana_admin_password }}'
-        force_basic_auth: "yes"
-        body: '{{ grafyaml_apikey_data | to_json }}'
-        body_format: json
-      register: grafana_apikey
-
-    - set_fact:
-        grafyaml_apikey: '{{ grafana_apikey.json.key }}'
-
-    - name: Copy grafyaml_apikey in secrets.yaml
-      lineinfile:
-        path: /var/lib/software-factory/bootstrap-data/secrets.yaml
-        regexp: '^grafyaml_apikey'
-        line: 'grafyaml_apikey: {{ grafyaml_apikey }}'
-  when: grafana_apikeys_names is not defined or
-        grafyaml_apikey_data.name not in grafana_apikeys_names or
-        grafyaml_new_api_key is defined
-  delegate_to: '{{ install_server_host }}'
-
-- include_vars:
-    file: /var/lib/software-factory/bootstrap-data/secrets.yaml
-  when: grafyaml_apikey is not defined
-
-- name: Configure grafyaml
-  template:
-    src: grafyaml.conf.j2
-    dest: /etc/grafyaml/grafyaml.conf
-    owner: root
-    group: root
-    mode: 0444
-  delegate_to: '{{ install_server_host }}'
+- name: Push new dashboard
+  command: "git {{ item }}"
+  args:
+    chdir: /root/config
+  with_items:
+    - add -A
+    - commit -m "Dynamic grafyaml dashboards update"
+    - push git+ssh://gerrit/config master
+  delegate_to: localhost
+  when: _update_cq.rc == 4
