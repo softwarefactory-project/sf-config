@@ -38,6 +38,7 @@ def merge(inp, _nodepool):
         cache_dir = "/var/cache/nodepool"
 
     for dib in user.get('diskimages', []):
+        dib.setdefault('username', 'zuul-worker')
         envvars = dib.setdefault('env-vars', {})
         envvars['TMPDIR'] = "%s/dib_tmp" % cache_dir
         envvars['DIB_IMAGE_CACHE'] = "%s/dib_cache" % cache_dir
