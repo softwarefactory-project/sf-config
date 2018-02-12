@@ -91,6 +91,15 @@
         #     chdir: "{{ config_root }}"
       when: '"zuul-scheduler" in arch.roles'
 
+    - name: Validate metrics dashboards
+      block:
+        - name: Check syntax errors in metrics dashboards
+          shell: |
+           find . -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard validate yaml
+          args:
+            chdir: "{{ config_root }}/metrics"
+      when: '"grafana" in arch.roles'
+
     - name: Check resources changes
       command: env - /usr/local/bin/resources.sh validate
       args:
