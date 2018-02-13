@@ -120,29 +120,6 @@ gerrit = {
 }
 {% endif %}
 
-{% if 'zuul' in roles %}
-zuul = {
-    'dburi': 'mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}',
-    'status_url': '{{ zuul_internal_url }}/status.json',
-}
-{% endif %}
-
-{% if 'jenkins' in roles %}
-jenkins = {
-    'api_url': '{{ jenkins_api_url }}',
-    'user': 'jenkins',
-    'password': '{{ jenkins_password }}'
-}
-{% endif %}
-
-{% if 'nodepool' in roles %}
-nodepool = {
-    'host': '{{ nodepool_launcher_host }}',
-    'user': 'root',
-    'key': '/var/lib/managesf/.ssh/id_rsa',
-}
-{% endif %}
-
 {% if 'storyboard' in roles %}
 storyboard = {
     'base_url': '{{ gateway_url }}',
