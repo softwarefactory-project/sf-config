@@ -18,4 +18,27 @@
       yum:
         name: "zuul"
         state: absent
+
+    - name: Check for zuul3 database
+      command: mysql -e "show tables;" zuul3
+      failed_when: false
+      changed_when: false
+      register: _zuul3_database
+      delegate_to: localhost
+
+    - name: Drop zuul2 database
+      command: mysql -e "DROP DATABASE zuul;"
+      failed_when: false
+      changed_when: false
+      when: _zuul3_database.rc == 0
+      delegate_to: localhost
+
+    - name: Drop zuul2 database and rename zuul3
+      command: >
+        mysql -e "RENAME TABLE zuul3.zuul_build TO zuul.zuul_build;"
+              -e "RENAME TABLE zuul3.zuul_buildset TO zuul.zuul_buildset;"
+              -e "RENAME TABLE zuul3.alembic_version TO zuul.alembic_version;"
+              -e "DROP DATABASE zuul3;"
+      when: _zuul3_database.rc == 0
+      delegate_to: localhost
   when: sf_previous_version < 3.0
