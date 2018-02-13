@@ -47,6 +47,7 @@
       command: >
         sed -i -e 's/nodepool3-minimal/nodepool-minimal/'
                -e 's/sf-zuul-worker/zuul-worker-user/'
+               -e 's/sf-zuul3-worker/zuul-worker-user/'
           {{ item }}
       with_fileglob: /root/config/nodepool/*
 

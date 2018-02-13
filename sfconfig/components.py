@@ -139,6 +139,7 @@ DNS.1 = %s
             'password': password,
         }
         args.glue["%s_mysql_host" % name] = args.glue["mysql_host"]
+        args.glue["%s_mysql_user" % name] = user
 
     def usage(self, parser):
         """Add argparse arguments"""
