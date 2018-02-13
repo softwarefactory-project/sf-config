@@ -28,6 +28,7 @@
         - /var/log/nodepool3
         - /usr/bin/nodepool
         - /usr/bin/nodepool3
+        - /var/www/nodepool3-log
 
     - name: Remove nodepoolv2
       yum:
