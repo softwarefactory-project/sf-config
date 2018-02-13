@@ -156,7 +156,7 @@ class ZuulScheduler(Component):
             zuul_config, "failure_log_url",
             "%s/logs/{build.uuid}/" % args.glue["gateway_url"]
         )
-        args.glue["zuul_ssh_known_hosts"] = []
+        args.glue.setdefault("zuul_ssh_known_hosts", [])
         args.glue["zuul_github_connections"] = []
 
         # Add local gerrit if available
