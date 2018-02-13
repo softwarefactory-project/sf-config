@@ -51,7 +51,7 @@ logging = {
 
 # Authorization configurations
 auth = {
-    {% if not authentication['active_directory']['disabled'] %}
+    {% if not authentication['active_directory'].get('disabled') %}
     'ldap': {
         'host': '{{ authentication['active_directory']['ldap_url'] }}',
         'dn': '%(username)s@' + '{{ authentication['active_directory']['ldap_account_domain'] }}',
@@ -60,7 +60,7 @@ auth = {
         'sn': '{{ authentication['active_directory']['ldap_account_surname_attribute'] }}',
         'mail': '{{ authentication['active_directory']['ldap_account_mail_attribute'] }}',
     },
-    {% elif not authentication['ldap']['disabled'] %}
+    {% elif not authentication['ldap'].get('disabled') %}
     'ldap': {
         'host': '{{ authentication['ldap']['ldap_url'] }}',
         'dn': '{{ authentication['ldap']['ldap_account_username_attribute'] }}=%(username)s,' + '{{ authentication['ldap']['ldap_account_base'] }}',
@@ -68,22 +68,22 @@ auth = {
         'mail': '{{ authentication['ldap']['ldap_account_mail_attribute'] }}',
     },
     {% endif %}
-    {% if not authentication['oauth2']['github']['disabled'] %}
+    {% if not authentication['oauth2']['github'].get('disabled') %}
     'github': {
         'redirect_uri': '{{ gateway_url }}/auth/login/oauth2/callback',
         'client_id': '{{ authentication['oauth2']['github']['client_id'] }}',
         'client_secret': '{{ authentication['oauth2']['github']['client_secret'] }}',
-        'allowed_organizations': '{{ authentication['oauth2']['github']['github_allowed_organizations'] }}'
+        'allowed_organizations': '{{ authentication['oauth2']['github'].get('github_allowed_organizations', '') }}'
     },
     {% endif %}
-    {% if not authentication['oauth2']['google']['disabled'] %}
+    {% if not authentication['oauth2']['google'].get('disabled') %}
     'google': {
         'redirect_uri': '{{ gateway_url }}/auth/login/oauth2/callback',
         'client_id': '{{ authentication['oauth2']['google']['client_id'] }}',
         'client_secret': '{{ authentication['oauth2']['google']['client_secret'] }}'
     },
     {% endif %}
-    {% if not authentication['oauth2']['bitbucket']['disabled'] %}
+    {% if not authentication['oauth2']['bitbucket'].get('disabled') %}
     'bitbucket': {
         'redirect_uri': '{{ gateway_url }}/auth/login/oauth2/callback',
         'client_id': '{{ authentication['oauth2']['bitbucket']['client_id'] }}',
@@ -93,13 +93,13 @@ auth = {
     'localdb': {
         'managesf_url': 'http://managesf.{{ fqdn }}',
     },
-    {% if not authentication['openid']['disabled'] %}
+    {% if not authentication['openid'].get('disabled') %}
     'openid': {
         'auth_url': '{{ authentication['openid']['server'] }}',
         'redirect_uri': '/auth/login/openid/callback'
     },
     {% endif %}
-    {% if not authentication['openid_connect']['disabled'] %}
+    {% if not authentication['openid_connect'].get('disabled') %}
     'openid_connect': {
         'issuer_url': '{{ authentication['openid_connect']['issuer_url'] }}',
         'client_id': '{{ authentication['openid_connect']['client_id'] }}',
