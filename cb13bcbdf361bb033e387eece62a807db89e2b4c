@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7a016987_55c77645",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-02-13T14:24:18Z",
+      "side": 1,
+      "message": "it\u0027s possible, but if users want to create a continuous query, we have to allow them to do it on the metrics directory.",
+      "parentUuid": "7a016987_b557cac9",
+      "revId": "cb13bcbdf361bb033e387eece62a807db89e2b4c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a016987_955cceee",
         "filename": "sfconfig/tools/graph_render.py",
         "patchSetId": 8
@@ -30,6 +48,24 @@
       "writtenOn": "2018-02-13T08:33:46Z",
       "side": 1,
       "message": "This needs a \"and not args.check\" condition, this script is currently running at config-check time.",
+      "revId": "cb13bcbdf361bb033e387eece62a807db89e2b4c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_35c4fa3e",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-02-13T14:24:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a016987_955cceee",
       "revId": "cb13bcbdf361bb033e387eece62a807db89e2b4c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
