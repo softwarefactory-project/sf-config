@@ -119,7 +119,9 @@ class ZuulScheduler(Component):
 
     def configure(self, args, host):
         args.glue["zuul_host"] = args.glue["zuul_scheduler_host"]
-        self.add_mysql_database(args, "zuul")
+        self.add_mysql_database(args, "zuul", hosts=list(set((
+            args.glue["zuul_scheduler_host"], args.glue["zuul_web_host"]
+        ))))
         self.get_or_generate_ssh_key(args, "zuul_rsa")
         self.get_or_generate_ssh_key(args, "zuul_logserver_rsa")
         self.get_or_generate_ssh_key(args, "zuul_gatewayserver_rsa")
@@ -156,7 +158,7 @@ class ZuulScheduler(Component):
             zuul_config, "failure_log_url",
             "%s/logs/{build.uuid}/" % args.glue["gateway_url"]
         )
-        args.glue["zuul_ssh_known_hosts"] = []
+        args.glue.setdefault("zuul_ssh_known_hosts", [])
         args.glue["zuul_github_connections"] = []
 
         # Add local gerrit if available
