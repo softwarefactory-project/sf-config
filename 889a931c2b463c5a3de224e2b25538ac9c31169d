@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_a0d546ba",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-02-14T21:13:35Z",
+      "side": 1,
+      "message": "It doesn\u0027t work for me without the unsafessl option, influx use a self signed certificate",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 64
+      },
+      "revId": "889a931c2b463c5a3de224e2b25538ac9c31169d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_80db6aed",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-02-14T21:13:35Z",
+      "side": 1,
+      "message": "resample is mandatory to have the fill option (check https://docs.influxdata.com/influxdb/v1.4/query_language/continuous_queries/#examples-of-advanced-syntax example 4)",
+      "range": {
+        "startLine": 50,
+        "startChar": 9,
+        "endLine": 50,
+        "endChar": 71
+      },
+      "revId": "889a931c2b463c5a3de224e2b25538ac9c31169d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_60d86ef0",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-02-14T21:13:35Z",
+      "side": 1,
+      "message": "singlestat for nodepool will use qc_*, means metric_type field doesn\u0027t exist",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 44
+      },
+      "revId": "889a931c2b463c5a3de224e2b25538ac9c31169d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_40e572a6",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-02-14T21:13:35Z",
+      "side": 1,
+      "message": "use continuous queries here",
+      "range": {
+        "startLine": 267,
+        "startChar": 14,
+        "endLine": 267,
+        "endChar": 40
+      },
+      "revId": "889a931c2b463c5a3de224e2b25538ac9c31169d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
