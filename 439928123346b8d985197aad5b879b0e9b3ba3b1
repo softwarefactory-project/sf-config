@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_8096ca92",
+        "filename": "ansible/roles/sf-managesf/templates/config.py.j2",
+        "patchSetId": 14
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-02-14T09:55:38Z",
+      "side": 1,
+      "message": "You should rebase the patch on 11217. The patch is in the gate atm and remove this. You should only use \u0027zuul\u0027 now that refers to zuul3.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 11
+      },
+      "revId": "439928123346b8d985197aad5b879b0e9b3ba3b1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
