@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_c0560206",
+        "filename": "ansible/roles/sf-zuul/tasks/upgrade.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-14T01:32:28Z",
+      "side": 1,
+      "message": "This should actually be \"zuul_scheduler_host\", otherwise this won\u0027t work when zuul is running on a dedicated host. Next PS will remove those statement because the GRANT will be performed by the sf-mysql role setup phase.",
+      "revId": "b3a3e4073c0beca5aec6c84d6d963b7cc299d6ff",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
