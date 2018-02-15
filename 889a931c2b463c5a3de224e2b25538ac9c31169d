@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "7a016987_e0f21e6f",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-15T02:28:00Z",
+      "side": 1,
+      "message": "The certificate is not self signed, its signed with the localCA which installed on all the hosts. You have to use the hostname of the certificate, which is {{influxdb_host}}, e.g. managesf.sftests.com.",
+      "parentUuid": "7a016987_a0d546ba",
+      "revId": "889a931c2b463c5a3de224e2b25538ac9c31169d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a016987_80db6aed",
         "filename": "sfconfig/tools/graph_render.py",
         "patchSetId": 12
@@ -42,6 +60,24 @@
         "endLine": 50,
         "endChar": 71
       },
+      "revId": "889a931c2b463c5a3de224e2b25538ac9c31169d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_c0e722ab",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-15T02:28:00Z",
+      "side": 1,
+      "message": "Oh ok, shouldn\u0027t it cq_data.get(\u0027time\u0027) ?",
+      "parentUuid": "7a016987_80db6aed",
       "revId": "889a931c2b463c5a3de224e2b25538ac9c31169d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
