@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_a0ec2690",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-15T02:27:49Z",
+      "side": 1,
+      "message": "stat[\u0027targets\u0027][\u0027tags\u0027]",
+      "revId": "a0c19c8e58471406ff4e312e7c5bd0d3df2cfcb2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
