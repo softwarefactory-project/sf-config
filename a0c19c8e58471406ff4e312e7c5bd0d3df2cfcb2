@@ -16,6 +16,24 @@
       "revId": "a0c19c8e58471406ff4e312e7c5bd0d3df2cfcb2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_20a71651",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-02-15T11:17:41Z",
+      "side": 1,
+      "message": "To get it worked I changed like that.\n\n    if tags:\n        for target in stat[\u0027targets\u0027]:\n            target[\u0027tags\u0027] \u003d [{\u0027key\u0027: \u0027metric_type\u0027, \u0027operator\u0027: \u0027\u003d\u0027, \u0027value\u0027: \u0027gauge\u0027}]",
+      "parentUuid": "7a016987_a0ec2690",
+      "revId": "a0c19c8e58471406ff4e312e7c5bd0d3df2cfcb2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
