@@ -209,3 +209,5 @@ class ZuulWeb(Component):
     def configure(self, args, host):
         args.glue["zuul_web_url"] = "%s:%s" % (
             args.glue["zuul_web_host"], args.defaults["zuul_web_port"])
+        args.glue["zuul_admin_web_url"] = "%s:%s" % (
+            args.glue["zuul_web_host"], args.defaults["zuul_admin_web_port"])
