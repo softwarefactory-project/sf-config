@@ -206,3 +206,5 @@ class ZuulWeb(Component):
             args.glue["zuul_web_host"], args.defaults["zuul_web_port"])
         args.glue["zuul_ws_url"] = "ws://%s:%s" % (
             args.glue["zuul_web_host"], args.defaults["zuul_web_port"])
+        args.glue["zuul_admin_web_url"] = "%s:%s" % (
+            args.glue["zuul_web_host"], args.defaults["zuul_admin_web_port"])
