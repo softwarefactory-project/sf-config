@@ -67,6 +67,10 @@
 'zuul.status:get': 'rule:any'
 'zuul.status.change:get': 'rule:any'
 'zuul.project.public_key:get': 'rule:any'
+'zuul.autohold:list': 'rule:admin_or_service'
+# zuul Admin API
+'zuul.autohold:add': 'rule:admin_or_service'
+'zuul.buildset:enqueue': 'rule:admin_or_service'
 # nodepool API
 'nodepool.image:list': 'rule:any'
 'nodepool.dib-image:list': 'rule:any'
