@@ -126,7 +126,8 @@ gerrit = {
 
 {% if 'zuul' in roles %}
 zuul = {
-    'api_root_url': '{{ zuul_web_url }}/'
+    'api_root_url': 'http://{{ zuul_web_url }}/',
+    'admin_api_root_url': 'http://{{ zuul_admin_web_url }}/',
 }
 {% endif %}
 
