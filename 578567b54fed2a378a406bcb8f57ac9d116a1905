@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7a016987_6d3ce62f",
+        "filename": "ansible/roles/sf-grafana/tasks/grafana_configuration.yml",
+        "patchSetId": 22
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-02-19T09:55:43Z",
+      "side": 1,
+      "message": "every day. next PS.",
+      "parentUuid": "7a016987_2d170eef",
+      "revId": "578567b54fed2a378a406bcb8f57ac9d116a1905",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a016987_0dd3323a",
         "filename": "ansible/roles/sf-grafana/tasks/grafana_configuration.yml",
         "patchSetId": 22
@@ -30,6 +48,24 @@
       "writtenOn": "2018-02-19T02:27:43Z",
       "side": 1,
       "message": "This won\u0027t be easy to debug if^Wwhen this fail, could we keep the stdout?",
+      "revId": "578567b54fed2a378a406bcb8f57ac9d116a1905",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_4d492ad0",
+        "filename": "ansible/roles/sf-grafana/tasks/grafana_configuration.yml",
+        "patchSetId": 22
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-02-19T09:55:43Z",
+      "side": 1,
+      "message": "If it is run every day yes. The only concern is that grafana-dashboard output some log each run and I was unable to only keep stderr as output.",
+      "parentUuid": "7a016987_0dd3323a",
       "revId": "578567b54fed2a378a406bcb8f57ac9d116a1905",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
