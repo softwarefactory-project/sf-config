@@ -161,12 +161,8 @@
 
 {% endif %}
         # Redirect all the static file to webui cache
-        AliasMatch "^/zuul/.*/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
-        AliasMatch "^/zuul/(.*).html" "/opt/rh/rh-python35/root/usr/share/zuul/$1.html"
-        AliasMatch "^/zuul/.*/(.*).js$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.js"
-        AliasMatch "^/zuul/(.*).js$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.js"
-        AliasMatch "^/zuul/.*/(.*).png$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.png"
-        AliasMatch "^/zuul/(.*).png$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.png"
+        AliasMatch "^/zuul/.*/(.*)\.(html|js|png|map)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
+        AliasMatch "^/zuul/(.*)\.(html|js|png|map)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
         <Directory /opt/rh/rh-python35/root/usr/share/zuul>
             Require all granted
             Order allow,deny
@@ -179,8 +175,9 @@
         ProxyPassMatch /zuul/(.*)/console-stream ws://{{ zuul_web_url }}/$1/console-stream nocanon retry=0 disablereuse=on
 
         # Then only the json calls are sent to the zuul-web endpoints
-        ProxyPassMatch ^/zuul/(.*.json)$ http://{{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
-        ProxyPassMatch ^/zuul/keys/(.*.pub)$ http://{{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul/.*\.(html|js|png|map)$ !
+        ProxyPassMatch ^/zuul/keys/(.*)$ http://{{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul/(.*)$ http://{{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
 
 {% endif %}
 {% if 'storyboard' in roles %}

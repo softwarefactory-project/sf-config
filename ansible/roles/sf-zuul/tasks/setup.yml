@@ -73,7 +73,7 @@
         project = ZuulJobs()
         project.name = "config"
         project.private_key_file = "{{ zuul_lib_dir }}/keys/gerrit/config.pem"
-        zuul.configloader.TenantParser._generateKeys(project)
+        zuul.configloader.TenantParser(None, None, None)._generateKeys(project)
         zuul.configloader.TenantParser._loadKeys(project)
         pub = open("{{ zuul_lib_dir }}/keys/gerrit/config.pub", "w")
         pub.write(zuul.lib.encryption.serialize_rsa_public_key(project.public_key).decode("utf-8"))
