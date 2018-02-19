@@ -8,6 +8,5 @@
     rsync_opts: --relative
   with_items:
     - /var/lib/software-factory/bootstrap-data
-    - /var/lib/software-factory/jenkins
     - /root/config
     - /etc/software-factory

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+pushd /root/config
+git fetch --all
+git reset --hard origin/master --
+git clean -f -d -x
+popd
+
+sf-graph-render --zuul-url http://{{ zuul_web_url }} \
+                --enable-logstash "{{ 'logstash' in roles }}" \
+                --config-dir "/root/config" \
+                --output-dir "{{ grafyaml_metrics }}" \
+                update-grafyaml
+
+find {{ grafyaml_metrics }} -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard update yaml
