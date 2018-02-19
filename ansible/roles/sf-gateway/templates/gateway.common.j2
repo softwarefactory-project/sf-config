@@ -237,6 +237,10 @@
         ProxyPassMatch ^/jenkinslogs/{{ prefix }}(.*)$ http://{{ prefix }}$1
         {% endfor %}
 
+{% if 'repoxplorer' in roles %}
+        RewriteRule ^/repoxplorer/$ /repoxplorer/index.html [R]
+{% endif %}
+
 {% if 'grafana' in roles %}
         RewriteRule ^/grafana$ grafana/ [R]
         ProxyPass /grafana/ {{ grafana_internal_url }}/
