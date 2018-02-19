@@ -16,17 +16,45 @@
     path: /etc/repoxplorer/index.yaml
     state: absent
 
-- name: "Install top menu"
+- name: "Check repoxplorer version"
+  command: rpm -q repoxplorer
+  register: repoxplorer_version
+
+- name: "Install top menu for repoxplorer"
   lineinfile:
     dest: /usr/share/repoxplorer/templates/layout.html
     insertafter: '<%def name="javascript()">'
     line: '    <script src="/static/js/topmenu.js"></script>'
+  when: repoxplorer_version.stdout != 'repoxplorer-1.2.0-1.el7.noarch'
+
+- name: "Install top menu for repoxplorer 1.2.0"
+  lineinfile:
+    dest: /usr/share/repoxplorer/public/{{ item }}
+    insertafter: '        <script src="javascript/moment.min.js"></script>'
+    line: '    <script src="/static/js/topmenu.js"></script>'
+  with_items:
+    - project.html
+    - projects.html
+    - group.html
+    - groups.html
+    - contributor.html
+    - contributors.html
+    - index.html
+  when: repoxplorer_version.stdout == 'repoxplorer-1.2.0-1.el7.noarch'
 
 - name: "Install resources2repoxplorer"
   template:
     src: resources2repoxplorer.py.j2
     dest: /usr/local/bin/resources2repoxplorer.py
     mode: 0755
+  when: repoxplorer_version.stdout != 'repoxplorer-1.2.0-1.el7.noarch'
+
+- name: "Install resources2repoxplorer for 1.2.0"
+  template:
+    src: resources2repoxplorer_new.py.j2
+    dest: /usr/local/bin/resources2repoxplorer.py
+    mode: 0755
+  when: repoxplorer_version.stdout == 'repoxplorer-1.2.0-1.el7.noarch'
 
 - name: Start service
   systemd:

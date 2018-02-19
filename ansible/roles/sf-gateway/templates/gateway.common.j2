@@ -233,6 +233,10 @@
             allow from all
         </Proxy>
 
+{% if 'repoxplorer' in roles %}
+        RewriteRule ^/repoxplorer/$ /repoxplorer/index.html [R]
+{% endif %}
+
 {% if 'grafana' in roles %}
         RewriteRule ^/grafana$ grafana/ [R]
         ProxyPass /grafana/ {{ grafana_internal_url }}/
