@@ -11,6 +11,7 @@
 # under the License.
 
 from sfconfig.components import Component
+SF_FALLBACK_PREVIOUS_VERSION = '3.0'
 
 
 def get_sf_version():
@@ -22,13 +23,14 @@ def get_sf_version():
 
 def get_previous_version():
     try:
-        ver = float(open("/var/lib/software-factory/.version").read().strip())
-        if ver == '':
-            raise IOError
+        version = open("/var/lib/software-factory/.version").read().strip()
+        if version != 'master':
+            version = float(version)
     except:
-        print("WARNING: couldn't read previous version, defaulting to 2.6")
-        ver = 2.6
-    return ver
+        print("WARNING: couldn't read previous version, defaulting to %s" %
+              SF_FALLBACK_PREVIOUS_VERSION)
+        version = SF_FALLBACK_PREVIOUS_VERSION
+    return version
 
 
 class InstallServer(Component):
