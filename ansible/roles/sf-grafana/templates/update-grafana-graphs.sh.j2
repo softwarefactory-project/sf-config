@@ -1,15 +1,25 @@
 #!/bin/bash
 
+set -e
 pushd /root/config
 git fetch --all
 git reset --hard origin/master --
 git clean -f -d -x
 popd
 
+set +e
 sf-graph-render --zuul-url http://{{ zuul_web_url }} \
                 --enable-logstash "{{ 'logstash' in roles }}" \
                 --config-dir "/root/config" \
                 --output-dir "{{ grafyaml_metrics }}" \
                 update-grafyaml
 
-find {{ grafyaml_metrics }} -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard update yaml
+RET="$?"
+if [ "${RET}" -ne "4" ] && [ "${RET}" -ne "0" ]; then
+    echo "Graph render failed"
+    exit 1
+elif [ "${RET}" -eq "4" ]; then
+    set -e
+    set -o pipefail
+    find {{ grafyaml_metrics }} -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard update yaml
+fi
