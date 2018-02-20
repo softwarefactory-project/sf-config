@@ -400,12 +400,12 @@ def update_grafyaml_action(args):
 ############################
 def get_tenants(zuul_url):
     result = []
-    tenants_url = urllib.urlopen("%s/tenants.json" % zuul_url)
+    tenants_url = urllib.urlopen("%s/tenants" % zuul_url)
     tenants = json.loads(tenants_url.read())
     for tenant in tenants:
         tenant_data = {"name": tenant["name"], "pipelines": []}
         tenant_url = urllib.urlopen(
-            "%s/%s/pipelines.json" % (zuul_url, tenant["name"]))
+            "%s/%s/pipelines" % (zuul_url, tenant["name"]))
         pipelines = json.loads(tenant_url.read())
         for pipeline in pipelines:
             tenant_data["pipelines"].append(pipeline["name"])
@@ -418,7 +418,9 @@ def get_providers(config_dir):
     nodepool_conf = sfconfig.utils.yaml_merge_load(os.path.join(config_dir,
                                                                 "nodepool"))
     for provider in nodepool_conf["providers"]:
-        result.append({"name": provider["name"], "driver": provider["driver"]})
+        result.append(
+            {"name": provider["name"],
+             "driver": provider.get("driver", "openstack")})
     return result
 
 
