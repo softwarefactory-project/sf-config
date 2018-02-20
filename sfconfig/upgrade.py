@@ -118,6 +118,10 @@ def update_sfconfig(args):
         data["zuul"]["gerrit_connections"].remove(to_delete)
         dirty = True
 
+    if 'allowed_proxy_prefixes' in data['authentication']:
+        del data['authentication']['allowed_proxy_prefixes']
+        dirty = True
+
     args.save_sfconfig = dirty
 
 
