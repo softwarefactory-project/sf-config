@@ -22,13 +22,15 @@ def get_sf_version():
 
 def get_previous_version():
     try:
-        ver = float(open("/var/lib/software-factory/.version").read().strip())
-        if ver == '':
+        version = open("/var/lib/software-factory/.version").read().strip()
+        if version != 'master':
+            version = float(version)
+        if version == '':
             raise IOError
     except:
         print("WARNING: couldn't read previous version, defaulting to 2.6")
-        ver = 2.6
-    return ver
+        version = 2.6
+    return version
 
 
 class InstallServer(Component):
