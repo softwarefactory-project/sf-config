@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a016987_90ca994e",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-20T00:53:52Z",
+      "side": 1,
+      "message": "That seems fine, but then we need to remove it from the group_var generation bellow.",
+      "revId": "2d25213e10c76be3b1261f485171bb5c278c5ddd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_70c71d46",
+        "filename": "testinfra/test_telegraf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-20T00:53:52Z",
+      "side": 1,
+      "message": "What will be the host here? Isn\u0027t statsd enable on only one of the telegraf?",
+      "revId": "2d25213e10c76be3b1261f485171bb5c278c5ddd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a016987_b0b475d1",
+        "filename": "testinfra/test_telegraf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-20T00:53:52Z",
+      "side": 1,
+      "message": "There is no more \u0027nodepool3\u0027 or \u0027zuul3\u0027 roles, only \u0027nodepool\u0027 or \u0027zuul\u0027",
+      "revId": "2d25213e10c76be3b1261f485171bb5c278c5ddd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
