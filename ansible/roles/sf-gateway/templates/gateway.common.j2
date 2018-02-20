@@ -233,10 +233,6 @@
             allow from all
         </Proxy>
 
-        {% for prefix in authentication['allowed_proxy_prefixes'] %}
-        ProxyPassMatch ^/jenkinslogs/{{ prefix }}(.*)$ http://{{ prefix }}$1
-        {% endfor %}
-
 {% if 'grafana' in roles %}
         RewriteRule ^/grafana$ grafana/ [R]
         ProxyPass /grafana/ {{ grafana_internal_url }}/
