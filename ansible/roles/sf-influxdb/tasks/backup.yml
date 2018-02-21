@@ -1,0 +1,14 @@
+---
+- name: Backup meta-data
+  command: influxd backup /var/lib/influxdb/backup/meta/
+
+- name: Backup telegraf database
+  command: influxd backup -database telegraf /var/lib/influxdb/backup/databases
+
+- name: Backup data
+  synchronize:
+    mode: pull
+    src: /var/lib/influxdb/backup/
+    dest: "{{ backup_dest }}/"
+    delete: "yes"
+    rsync_opts: --relative
