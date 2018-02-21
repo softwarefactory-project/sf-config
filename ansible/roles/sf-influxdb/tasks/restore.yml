@@ -1,0 +1,22 @@
+---
+- name: "Retrieve data"
+  synchronize:
+    src: "{{ backup_src }}/"
+    dest: /var/lib/influxdb/backup/
+
+- name: Restore meta-data
+  command: |
+    influxd restore -metadir /var/lib/influxdb/meta
+    /var/lib/influxdb/backup/meta/
+
+- name: Restore telegraf database
+  command: |
+    influxd restore -database telegraf -datadir /var/lib/influxdb/data
+    /var/lib/influxdb/backup/databases
+
+- name: Set owner and group for working directory
+  file:
+    path: /var/lib/influxdb
+    owner: influxdb
+    group: influxdb
+    recurse: "yes"
