@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3afb71cf_e75d9ced",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-22T11:56:33Z",
+      "side": 1,
+      "message": "Ok, so this is for the \u0027enable_insecure_slave\u0027 flag. This initial logic was flawed and it actually prevented telegraf deployment in allinone setup. I improved the code with a \u0027remote\u0027 flag here: https://softwarefactory-project.io/r/11173\n\nPlease revert that change in this patch.",
+      "parentUuid": "3afb71cf_67c40c92",
+      "revId": "72a2327756b92142dc3d93c1f93c3f32f6399950",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3afb71cf_a7c9e4ae",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 8
