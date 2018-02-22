@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3afb71cf_67c40c92",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-22T11:23:11Z",
+      "side": 1,
+      "message": "Actually, why the extra vars needs to be loaded here now?\n\nExtra-vars should be only over-ride for ansible variable.",
+      "revId": "72a2327756b92142dc3d93c1f93c3f32f6399950",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3afb71cf_a7c9e4ae",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-22T11:23:11Z",
+      "side": 1,
+      "message": "Why remove \"the\" here?",
+      "revId": "72a2327756b92142dc3d93c1f93c3f32f6399950",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

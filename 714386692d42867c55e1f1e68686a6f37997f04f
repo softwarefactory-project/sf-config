@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3afb71cf_47c11080",
+        "filename": "ansible/roles/sf-telegraf/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-22T11:23:11Z",
+      "side": 0,
+      "message": "Are the changes in this file needed? It seems cosmetics.",
+      "revId": "714386692d42867c55e1f1e68686a6f37997f04f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
