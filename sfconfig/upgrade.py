@@ -131,6 +131,10 @@ def update_arch(args):
         sf_version = "master"
 
     for host in data['inventory']:
+        # Set remote flag
+        if host['roles'] == ["hypervisor-oci"]:
+            host['remote'] = True
+            dirty = True
         # Remove legacy roles
         if 'pages' in host['roles']:
             host['roles'].remove('pages')

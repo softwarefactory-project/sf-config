@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A new host attribute named 'remote' let operator define remote host in
+    the architecture where the monit, postfix and telegraf role won't be
+    installed.
