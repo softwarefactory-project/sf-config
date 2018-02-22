@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3afb71cf_0700b8a9",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-22T12:43:12Z",
+      "side": 1,
+      "message": "I think the proper fix is to set the version to 3.0 when there is an exception.\nKeep the above code as it was",
+      "revId": "5e4b86793559bd18c55f40a410048552a8868b1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
