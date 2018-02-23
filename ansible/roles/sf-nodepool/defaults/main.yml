@@ -40,3 +40,5 @@ nodepool_webapp_port: 8006
 
 nodepool_loglevel: INFO
 nodepool_root_loglevel: WARNING
+
+nodepool_build_log_retention: 7
