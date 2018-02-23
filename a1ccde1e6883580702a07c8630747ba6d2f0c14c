@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa32b979_e27346b3",
+        "filename": "ansible/roles/sf-influxdb/defaults/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-02-23T18:09:37Z",
+      "side": 1,
+      "message": "Better to deactivate the backup and restore action. We did that for the logserver role.",
+      "revId": "a1ccde1e6883580702a07c8630747ba6d2f0c14c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
