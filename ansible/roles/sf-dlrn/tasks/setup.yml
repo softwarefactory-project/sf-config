@@ -1,0 +1,45 @@
+---
+- name: "Create dlrn user"
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml ssh_key=dlrn_rsa user_name=dlrn"
+
+- name: "Add dlrn user in the mock group"
+  user:
+    name: dlrn
+    groups: mock
+
+- name: "Create dlrn directories"
+  file:
+    path: "{{ item.path }}"
+    mode: 0755
+    owner: "{{ item.owner }}"
+    state: directory
+  with_items:
+    - path: /etc/dlrn
+      owner: dlrn
+    - path: /var/www/dlrn
+      owner: apache
+    - path: "{{ dlrn_base_dir }}"
+      owner: dlrn
+
+- name: "Setup default mock configuration"
+  blockinfile:
+    path: /etc/mock/site-defaults.cfg
+    content: |
+      config_opts['plugin_conf']['tmpfs_enable'] = True
+      config_opts['plugin_conf']['tmpfs_opts'] = {}
+      config_opts['plugin_conf']['tmpfs_opts']['required_ram_mb'] = 2048
+      config_opts['plugin_conf']['tmpfs_opts']['max_fs_size'] = '4g'
+      config_opts['plugin_conf']['tmpfs_opts']['mode'] = '0755'
+      config_opts['plugin_conf']['tmpfs_opts']['keep_mounted'] = True
+
+- name: "Install dlrn wsgi app"
+  copy:
+    src: dlrn-api.wsgi
+    dest: /var/www/dlrn/dlrn-api.wsgi
+  notify: apache reload
+
+- name: "Install dlrn .gitconfig"
+  template:
+    src: gitconfig.j2
+    dest: "/var/lib/dlrn/.gitconfig"
+    owner: dlrn
