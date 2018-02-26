@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa32b979_023c2a92",
+        "filename": "ansible/roles/sf-repoxplorer/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-26T05:23:37Z",
+      "side": 1,
+      "message": "Can you double check the conditions, iiuc 1.2.0 is the old version, so i think you need to check for !\u003d 1.2.0 to install the new script.",
+      "revId": "0d86a98739d6764a85c279582b4d2881f5d7e869",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa32b979_a240de08",
+        "filename": "ansible/roles/sf-repoxplorer/templates/resources2repoxplorer_new.py.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-26T05:23:37Z",
+      "side": 1,
+      "message": "I would like to remove virtual names in a future release, can you please use \"{{ managesf_host }}\" instead, or even better: \"{{ managesf_internal_url }}\"",
+      "revId": "0d86a98739d6764a85c279582b4d2881f5d7e869",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
