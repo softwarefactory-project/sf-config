@@ -36,3 +36,4 @@ inventory:
       - hydrant
       - influxdb
       - grafana
+      - dlrn
