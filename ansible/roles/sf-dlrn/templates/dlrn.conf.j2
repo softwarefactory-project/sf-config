@@ -1,0 +1,17 @@
+Alias "/dlrn-worker/{{ item.project }}" "{{ dlrn_base_dir }}/{{ item.project }}/data/repos"
+<Directory "{{ dlrn_base_dir }}/{{ item.project }}/data/repos">
+    Options Indexes MultiViews FollowSymlinks
+    Require all granted
+</Directory>
+
+WSGIDaemonProcess dlrn-{{ item.project }} user=dlrn group=dlrn threads=1
+WSGIScriptAlias /dlrn-worker-api/{{ item.project }} /var/www/dlrn/dlrn-api.wsgi
+SetEnv CONFIG_FILE /etc/dlrn/{{ item.project }}-api.cfg
+
+<Directory /var/www/dlrn>
+    WSGIProcessGroup dlrn-{{ item.project }}
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIScriptReloading On
+    Order deny,allow
+    Allow from all
+</Directory>
