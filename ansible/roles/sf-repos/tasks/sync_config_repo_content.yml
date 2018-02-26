@@ -13,6 +13,17 @@
     recursive: "yes"
   register: _config_metrics_files
 
+- name: Add default dlrn configuration directory
+  synchronize:
+    src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/dlrn/
+    dest: "{{ config_clone_dir }}/dlrn"
+    archive: "no"
+    times: "no"
+    checksum: "yes"
+    perms: "yes"
+    recursive: "yes"
+  register: _config_dlrn_files
+
 - name: Ensure config sub dir
   file:
     path: "{{ config_clone_dir }}/{{ item }}"
@@ -125,6 +136,7 @@
   when: _config_static_files|changed or
         _config_template_files|changed or
         _config_metrics_files|changed or
+        _config_dlrn_files|changed or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
         not _secret_install_server.stat.exists
@@ -136,6 +148,7 @@
     - not _config_static_files|changed
     - not _config_template_files|changed
     - not _config_metrics_files|changed
+    - not _config_dlrn_files|changed
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists
