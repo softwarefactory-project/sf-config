@@ -36,3 +36,4 @@ inventory:
       - influxdb
       - grafana
       - hound
+      - dlrn
