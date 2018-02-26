@@ -1,0 +1,8 @@
+<IfModule mod_proxy.c>
+{% for project in projects %}
+    ProxyPass /dlrn/{{ project.project }} http://dlrn.{{ fqdn }}/dlrn-worker/{{ project.project }}
+    ProxyPassReverse /dlrn/{{ project.project }} http://dlrn.{{ fqdn }}/dlrn-worker/{{ project.project }}
+    ProxyPass /dlrn-api/{{ project.project }} http://dlrn.{{ fqdn }}/dlrn-worker-api/{{ project.project }}
+    ProxyPassReverse /dlrn-api/{{ project.project }} http://dlrn.{{ fqdn }}/dlrn-worker-api/{{ project.project }}
+{% endfor %} 
+</IfModule>
