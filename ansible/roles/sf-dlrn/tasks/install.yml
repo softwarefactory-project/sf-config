@@ -1,0 +1,11 @@
+---
+- name: "Install DLRN packages"
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - httpd
+#    - rdopkg
+#    - dlrn
+#    - dlrncient
+    - mock
