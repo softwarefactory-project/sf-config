@@ -1,0 +1,21 @@
+[DEFAULT]
+datadir={{ dlrn_data_dir }}
+scriptsdir={{ dlrn_scripts_dir }}
+baseurl=https://{{ fqdn }}/dlrn
+distro=rpm-master
+source=master
+target=centos
+project_name=RDO
+smtpserver=localhost
+reponame=delorean
+templatedir={{ dlrn_templates_dir }}
+maxretries=3
+pkginfo_driver=dlrn.drivers.rdoinfo.RdoInfoDriver
+tags=
+rsyncdest=
+rsyncport=22
+workers=1
+gerrit_topic=rdo-FTBFS
+database_connection=mysql+pymysql://dlrn:{{ dlrn_mysql_password }}@{{ mysql_host }}/dlrn
+fallback_to_master=1
+release_numbering=0.date.hash

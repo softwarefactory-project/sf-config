@@ -1,0 +1,48 @@
+---
+- name: "Create dlrn user"
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=dlrn"
+
+- name: "Add dlrn user in the mock group"
+  user:
+    name: dlrn
+    groups: mock
+
+- name: "Create dlrn directories"
+  file:
+    path: "{{ item.path }}"
+    mode: 0755
+    owner: "{{ item.owner }}"
+    state: directory
+  with_items:
+    - path: /etc/dlrn
+      owner: dlrn
+    - path: /var/lib/dlrn
+      owner: dlrn
+    - path: /var/www/dlrn
+      owner: apache
+    - path: "{{ dlrn_data_dir }}"
+      owner: dlrn
+
+- name: "Setup dlrn configuration file"
+  template:
+    src: projects.ini.j2
+    dest: /etc/dlrn/projects.ini
+
+- name: "Setup dlrn httpd configuration file"
+  template:
+    src: dlrn.conf.j2
+    dest: /etc/httpd/conf.d/dlrn.conf
+  notify: apache reload
+
+- name: "Install dlrn wsgi app"
+  copy:
+    src: dlrn-api.wsgi
+    dest: /var/www/dlrn/dlrn-api.wsgi
+  notify: apache reload
+
+- name: "Setup http gateway dlrn proxy"
+  template:
+    src: gateway-dlrn.conf.j2
+    dest: /etc/httpd/conf.d/gateway-dlrn.conf
+  notify: apache reload
+  delegate_to: "{{ install_server }}"

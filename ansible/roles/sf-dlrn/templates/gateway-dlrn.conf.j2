@@ -1,0 +1,6 @@
+<IfModule mod_proxy.c>
+    ProxyPass /dlrn/ http://dlrn.{{ fqdn }}/dlrn-worker-repos/
+    ProxyPassReverse /dlrn/ http://dlrn.{{ fqdn }}/dlrn-worker-repos/
+    ProxyPass /dlrn-api/ http://dlrn.{{ fqdn }}/dlrn-worker-api/
+    ProxyPassReverse /dlrn-api/ http://dlrn.{{ fqdn }}/dlrn-worker-api/
+</IfModule>
