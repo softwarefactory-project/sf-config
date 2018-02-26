@@ -1,0 +1,41 @@
+---
+- name: "Create dlrn user"
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=dlrn"
+
+- name: "Add dlrn user in the mock group"
+  user:
+    name: dlrn
+    groups: mock
+
+- name: "Create dlrn directories"
+  file:
+    path: "{{ item }}"
+    mode: 0755
+    owner: dlrn
+    state: directory
+  with_items:
+    - /etc/dlrn
+    - /var/lib/dlrn
+    - "{{ dlrn_data_dir }}"
+
+- name: "Setup dlrn configuration file"
+  template:
+    src: projects.ini.j2
+    dest: /etc/dlrn/projects.ini
+
+- name: "Setup dlrn-api configuration file"
+  template:
+    src: dlrn-api.cfg.j2
+    dest: /etc/dlrn/dlrn-api.cfg
+
+- name: "Install DLRN API service file"
+  copy:
+    src: dlrn-api.service
+    dest: /lib/systemd/system/dlrn-api.service 
+    
+- name: "Start DLRN API service"
+  systemd:
+    name: dlrn-api
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"

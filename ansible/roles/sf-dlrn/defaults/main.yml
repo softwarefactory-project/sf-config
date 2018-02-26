@@ -1,0 +1,9 @@
+---
+role_actions:
+#  - install
+  - setup
+
+dlrn_mysql_password: "CHANGE_ME"
+dlrn_data_dir: "/var/lib/dlrn/data"
+dlrn_scripts_dir: "/root/dlrn-venv/share/dlrn/scripts"
+dlrn_templates_dir: "/root/dlrn-venv/lib/python2.7/site-packages/dlrn/templates"

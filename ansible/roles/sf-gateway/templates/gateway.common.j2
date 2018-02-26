@@ -56,6 +56,14 @@
         Deny from all
     </Directory>
 
+{% if 'dlrn' in roles %}
+    Alias "/dlrn" "/var/lib/dlrn/data/repos"
+    <Directory "/var/lib/dlrn/data/repos">
+        Options Indexes MultiViews FollowSymlinks
+        Require all granted
+    </Directory>
+{% endif %}
+
 {% if 'storyboard' in roles %}
     # Don't login to Storyboard itself, use cauth instead
     <LocationMatch "/storyboard_api/openid/">

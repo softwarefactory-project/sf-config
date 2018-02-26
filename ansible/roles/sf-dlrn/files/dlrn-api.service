@@ -1,0 +1,12 @@
+[Unit]
+Description=DLRN API server
+
+[Service]
+User=dlrn
+Group=dlrn
+Environment=CONFIG_FILE=/etc/dlrn/dlrn-api.cfg
+Environment=PYTHONPATH=/root/dlrn-venv/lib/python2.7/site-packages/
+ExecStart=/usr/bin/gunicorn -b :5000 --name dlrn-api dlrn.api:app
+
+[Install]
+WantedBy=multi-user.target
