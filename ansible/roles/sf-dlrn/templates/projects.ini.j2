@@ -1,0 +1,25 @@
+[DEFAULT]
+datadir={{ dlrn_base_dir }}/{{ item.project }}/data
+scriptsdir={{ dlrn_scripts_dir }}
+baseurl={{ gateway_url }}/dlrn/{{ item.project }}
+distro={{ item.distro_branch | default('master') }}
+source={{ item.source_branch | default('master') }}
+target={{ item.distro_target }}
+project_name={{ item.project_name }}
+smtpserver={{ item.smtpserver | default('') }}
+reponame=delorean
+templatedir={{ dlrn_templates_dir }}
+maxretries=3
+pkginfo_driver=dlrn.drivers.rdoinfo.RdoInfoDriver
+tags=
+rsyncdest=
+rsyncport=22
+workers=1
+gerrit=1
+gerrit_topic={{ item.project }}-FTBFS
+database_connection=sqlite:///{{ dlrn_base_dir }}/{{ item.project }}/dlrn.sqlite
+fallback_to_master=1
+release_numbering=0.1.date.hash
+
+[rdoinfo_driver]
+repo={{ item.rdoinfo_repo | default('') }}
