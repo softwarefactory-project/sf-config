@@ -1,0 +1,11 @@
+---
+role_actions:
+  - install
+  - setup
+  - update
+
+dlrn_base_dir: "/var/lib/dlrn"
+dlrn_scripts_dir: "/opt/rh/rh-python35/root/usr/share/dlrn/scripts"
+dlrn_templates_dir: "/opt/rh/rh-python35/root/usr/lib/python3.5/site-packages/dlrn/templates"
+dlrn_gerrit_username: dlrn
+dlrn_email: dlrn@{{ fqdn }}
