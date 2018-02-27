@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa32b979_e230260a",
+        "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-02-27T09:48:02Z",
+      "side": 1,
+      "message": "DLRN has some package dependencies [1], not sure if those are installed via some other means.\n\n[1]-https://github.com/softwarefactory-project/DLRN#setup",
+      "revId": "3eec88b39c0c579795f6ddc6bc2002d098aedf41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa32b979_02366a03",
+        "filename": "ansible/roles/sf-dlrn/templates/projects.ini.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-02-27T09:48:02Z",
+      "side": 1,
+      "message": "I think baseurl should be configured here to be the URL in the SF installation. Otherwise, the delorean.repo files generated after a package build will point to the RDO Trunk URL.",
+      "range": {
+        "startLine": 4,
+        "startChar": 8,
+        "endLine": 4,
+        "endChar": 44
+      },
+      "revId": "3eec88b39c0c579795f6ddc6bc2002d098aedf41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa32b979_a23a1ee6",
+        "filename": "ansible/roles/sf-dlrn/templates/projects.ini.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-02-27T09:48:02Z",
+      "side": 1,
+      "message": "We may want to make these configurable in the future",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 13
+      },
+      "revId": "3eec88b39c0c579795f6ddc6bc2002d098aedf41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
