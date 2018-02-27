@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fa32b979_254e18c2",
+        "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-02-27T16:01:51Z",
+      "side": 1,
+      "message": "Yes it will be. For the moment I\u0027m working with a virtualenv installed manually. Tristan will work soon on having up to date package that will be used by the install.yml playbook (the file does not exist yet)",
+      "parentUuid": "fa32b979_e230260a",
+      "revId": "3eec88b39c0c579795f6ddc6bc2002d098aedf41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa32b979_02366a03",
         "filename": "ansible/roles/sf-dlrn/templates/projects.ini.j2",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2018-02-27T09:48:02Z",
       "side": 1,
       "message": "I think baseurl should be configured here to be the URL in the SF installation. Otherwise, the delorean.repo files generated after a package build will point to the RDO Trunk URL.",
+      "range": {
+        "startLine": 4,
+        "startChar": 8,
+        "endLine": 4,
+        "endChar": 44
+      },
+      "revId": "3eec88b39c0c579795f6ddc6bc2002d098aedf41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa32b979_e5c6f015",
+        "filename": "ansible/roles/sf-dlrn/templates/projects.ini.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-02-27T16:01:51Z",
+      "side": 1,
+      "message": "ok, I\u0027ll fix that.",
+      "parentUuid": "fa32b979_02366a03",
       "range": {
         "startLine": 4,
         "startChar": 8,
