@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa32b979_e504b0c7",
+        "filename": "testinfra/test_telegraf-statsd.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-27T12:31:09Z",
+      "side": 1,
+      "message": "This actually check if the True is in the enabled_roles...\nYou need to use: \u0027nodepool\u0027 in self.enabled_roles() or \u0027zuul\u0027 in self.enabled_roles()",
+      "revId": "9107a732f40e58b695f2e7a27d443bb32b79f4ba",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa32b979_050af4d2",
+        "filename": "testinfra/test_telegraf.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-02-27T12:31:09Z",
+      "side": 1,
+      "message": "No needs to inherit from utils.Base",
+      "revId": "9107a732f40e58b695f2e7a27d443bb32b79f4ba",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
