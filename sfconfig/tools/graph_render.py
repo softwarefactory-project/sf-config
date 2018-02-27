@@ -193,8 +193,8 @@ def zuul_dashboard(args):
     global_row = row("Global stats", height="250px")
     global_row["panels"].append(graph(
         'Jobs Launched (per Hour)',
-        [{'m': '/zuul.tenant.*.pipeline.*.all_jobs/', 'type': 'counter'}],
-        interval='1h'))
+        [{'m': '/zuul.tenant.*.pipeline.*.all_jobs/', 'alias': '$5',
+          'type': 'counter'}], select_fct='distinct', interval='1h'))
     if args.enable_logstash == 'True':
         global_row["panels"].append(graph(
             'Logstash Job Queue',
@@ -203,7 +203,8 @@ def zuul_dashboard(args):
              {'m': 'logstash.geard.queue.total'}]))
     global_row["panels"].append(graph(
         'Node Requests',
-        [{'m': 'zuul.nodepool.current_requests', 'alias': 'Requests'}]))
+        [{'m': 'zuul.nodepool.current_requests', 'alias': 'Requests'}],
+        select_fct='distinct'))
     global_row["panels"].append(graph(
         'Job Queue',
         [{'m': 'zuul.geard.queue.running'},
@@ -211,11 +212,11 @@ def zuul_dashboard(args):
          {'m': 'zuul.geard.queue.total'}],
         select_fct='distinct'))
     global_row["panels"].append(graph(
-        'Gerrit Events',
+        'Gerrit Events (per Hour)',
         [{'m': 'zuul.event.gerrit.comment-added', 'type': 'counter'},
          {'m': 'zuul.event.gerrit.patchset-created', 'type': 'counter'},
          {'m': 'zuul.event.gerrit.change-merged', 'type': 'counter'}],
-        interval='1h'))
+        interval='1h', select_fct='distinct'))
     global_row["panels"].append(graph(
         'Test Nodes',
         [{'m': 'nodepool.nodes.building'},
