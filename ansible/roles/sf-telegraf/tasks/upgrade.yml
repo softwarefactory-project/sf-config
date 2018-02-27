@@ -1,6 +1,12 @@
 ---
+- name: Check for telegraf.conf
+  stat:
+    path: /etc/telegraf/telegraf.conf
+  register: _telegraf_conf
+
 - name: Remove insecure ssl settings
   replace:
     dest: /etc/telegraf/telegraf.conf
     regexp: '  #? ?insecure_skip_verify =.*'
     replace: '  # insecure_skip_verify = true'
+  when: _telegraf_conf.stat.exists

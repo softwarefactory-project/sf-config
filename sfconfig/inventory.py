@@ -194,8 +194,7 @@ def setup(args, pb):
     for host in args.inventory:
         roles_action = {'role_action': 'setup', 'manage_etc_hosts': True}
         host_roles = ["postfix", "base", "monit"]
-        if "hypervisor-oci" in host["roles"] and \
-           args.glue.get("enable_insecure_slaves") is not True:
+        if host.get("remote", False):
             # This host is running on isolated network
             host_roles = ["base"]
             roles_action['manage_etc_hosts'] = False
@@ -457,9 +456,7 @@ def generate(args):
 
         # if influxdb role is in the arch, install telegraf
         if "influxdb" in args.glue["roles"]:
-            if ("hypervisor-oci" not in host["roles"] or
-                ("hypervisor-oci" in host["roles"] and
-                 args.glue.get("enable_insecure_slaves") is True)):
+            if not host.get("remote", False):
                 host["roles"].append("telegraf")
 
         if "gateway" in host["roles"] and \
