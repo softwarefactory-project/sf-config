@@ -1,6 +1,13 @@
 ---
 - hosts: localhost
   roles:
+{% if 'firehose' in roles %}
+    - role: publish-status-mqtt
+      mqtt_server: "{{ firehose_host }}"
+      mqtt_username: "{{'{{'}} sf_service_user.username {{'}}'}}"
+      mqtt_password: "{{'{{'}} sf_service_user.password {{'}}'}}"
+      ignore_errors: yes
+{% endif %}
     - role: add-fileserver
       fileserver: "{{'{{'}} site_sflogs {{'}}'}}"
     - emit-ara-html
@@ -24,3 +31,11 @@
       logstash_gearman_server: "job-logs-gearman-client.{{ fqdn }}"
       logstash_gearman_server_port: 4731
 {% endif %}
+
+- hosts: all
+  roles:
+    - role: add-authorized-keys
+      # Override per project or tenant
+      # public_keys: []
+      # - public_key: XXXXX
+      when: not zuul_success | bool

@@ -121,6 +121,26 @@
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
   when: not _secret_sfpages.stat.exists
 
+- name: Check for _secret_managesf file
+  stat:
+    path: "{{ config_clone_dir }}/zuul.d/_secret_managesf.yaml"
+  register: _secret_managesf
+
+- block:
+    - name: "Generate service user password secret"
+      command: >
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
+            /var/lib/software-factory/certs/config.pub password
+      args:
+        stdin: "{{ sf_service_user_password }}"
+      register: _managesf_service_password
+
+    - name: Update secret_managesf.yaml
+      template:
+        src: "config/zuul.d/_secret_managesf.yaml.j2"
+        dest: "{{ config_clone_dir }}/zuul.d/_secret_managesf.yaml"
+  when: not _secret_managesf.stat.exists
+
 - name: "Indicate config repo changed"
   set_fact:
     config_repo_updated: true
@@ -129,6 +149,7 @@
         _config_metrics_files|changed or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
+        not _secret_managesf.stat.exists or
         not _secret_install_server.stat.exists
 
 - name: "Indicated config repo didn't changed"
@@ -140,4 +161,5 @@
     - not _config_metrics_files|changed
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
+    - _secret_managesf.stat.exists
     - _secret_install_server.stat.exists
