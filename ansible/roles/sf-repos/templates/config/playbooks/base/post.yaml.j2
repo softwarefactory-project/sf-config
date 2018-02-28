@@ -21,3 +21,11 @@
       logstash_gearman_server: "job-logs-gearman-client.{{ fqdn }}"
       logstash_gearman_server_port: 4731
 {% endif %}
+
+- hosts: all
+  roles:
+    - role: add-authorized-keys
+      # Override per project or tenant
+      # public_keys: []
+      # - public_key: XXXXX
+      when: not zuul_success | bool
