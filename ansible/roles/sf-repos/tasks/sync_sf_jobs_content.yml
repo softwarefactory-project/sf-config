@@ -19,6 +19,7 @@
     - README
     - playbooks/ansible/
     - playbooks/linters/
+    - roles/add-authorized-keys/
     - roles/ansible-lint/
     - roles/ansible-review/
     - roles/ansible-spec/
@@ -32,6 +33,7 @@
     - roles/fetch-buildset-artifacts/
     - roles/fetch-pages/
     - roles/linters/
+    - roles/publish-status-mqtt/
     - roles/submit-log-processor-jobs/
     - roles/submit-logstash-jobs/
     - roles/upload-galaxy/
