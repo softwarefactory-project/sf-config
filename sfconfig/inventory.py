@@ -301,6 +301,12 @@ def enable_action(args):
             for role in host["roles"]:
                 if role in testinfra_tests:
                     tests.append(role)
+            if 'influxdb' in args.glue["roles"]:
+                if 'telegraf' in testinfra_tests:
+                    tests.append('telegraf')
+            if 'influxdb' in host["roles"]:
+                if 'telegraf-statsd' in testinfra_tests:
+                    tests.append('telegraf-statsd')
             if tests:
                 for test in tests:
                     testinfra.append(testinfra_tests[test])
@@ -454,7 +460,7 @@ def generate(args):
             if "gerrit" in host["roles"]:
                 host["roles"].append("germqtt")
 
-        # if influxdb role is in the arch, install telegraf
+        # if influxdb role is in arch, install telegraf
         if "influxdb" in args.glue["roles"]:
             if not host.get("remote", False):
                 host["roles"].append("telegraf")
