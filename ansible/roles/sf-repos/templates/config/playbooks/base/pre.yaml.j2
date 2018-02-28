@@ -1,4 +1,13 @@
 ---
+- hosts: localhost
+  roles:
+    - role: publish-status-mqtt
+      mqtt_server: "{{ firehose_host }}"
+      mqtt_username: "{{'{{'}} sf_service_user.username {{'}}'}}"
+      mqtt_password: "{{'{{'}} sf_service_user.password {{'}}'}}"
+      # TODO condition this to the presence of the firehose in the arch
+      ignore_errors: yes
+
 - hosts: all
   roles:
     - prepare-workspace

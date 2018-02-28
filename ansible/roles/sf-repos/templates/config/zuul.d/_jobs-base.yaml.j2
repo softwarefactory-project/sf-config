@@ -17,6 +17,10 @@
       nodes:
         - name: {{ zuul['default_nodeset_name'] }}
           label: {{ zuul['default_nodeset_label'] }}
+    # by default, the admin will be allowed to SSH into failing nodes
+    vars:
+      public_keys:
+        - public_key: {{ gerrit_admin_rsa_pub }}
 
 - semaphore:
     name: semaphore-config-update
