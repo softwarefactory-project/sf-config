@@ -8,7 +8,8 @@
           - config
 {% if not zuul_upstream_zuul_jobs %}
         untrusted-projects:
-          - zuul-jobs
+          - zuul-jobs:
+              shadow: config
 {% endif %}
 {% endif %}
 {% if zuul_upstream_zuul_jobs %}
@@ -17,6 +18,5 @@
           - openstack-infra/zuul-jobs:
               include:
                 - job
-                - project-template
-              shadow: zuul-jobs
+              shadow: config
 {% endif %}

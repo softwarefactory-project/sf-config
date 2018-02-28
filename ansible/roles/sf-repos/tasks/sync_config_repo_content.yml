@@ -45,6 +45,7 @@
   with_items:
     - playbooks/config
     - playbooks/pages
+    - roles/emit-jobg-report
   register: _config_static_files
 
 - name: Update config templates

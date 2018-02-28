@@ -36,6 +36,7 @@ command_socket={{ zuul_lib_dir }}/executor.socket
 git_dir={{ zuul_lib_dir }}/executor/
 private_key_file={{ zuul_lib_dir }}/.ssh/id_rsa
 finger_port=7979
+trusted_rw_paths=/var/lib/log-classify
 trusted_ro_paths=/opt/
 untrusted_ro_paths=/opt/
 log_config={{ zuul_conf_dir }}/executor-logging.yaml
