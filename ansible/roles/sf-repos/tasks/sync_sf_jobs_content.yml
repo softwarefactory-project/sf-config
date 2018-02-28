@@ -19,6 +19,7 @@
     - README
     - playbooks/ansible/
     - playbooks/linters/
+    - roles/add-authorized-keys/
     - roles/ansible-lint/
     - roles/ansible-review/
     - roles/ansible-spec/
