@@ -8,6 +8,15 @@
       vars:
         zuul_log_url: "https://{{ fqdn }}/logs"
 
+{% if 'firehose' in roles %}
+- hosts: localhost
+  roles:
+    - role: publish-status-mqtt
+      mqtt_server: "{{ firehose_host }}"
+      mqtt_username: "{{'{{'}} sf_service_user.username {{'}}'}}"
+      mqtt_password: "{{'{{'}} sf_service_user.password | trim {{'}}'}}"
+      ignore_errors: yes
+{% endif %}
 - hosts: all
   roles:
     - prepare-workspace
