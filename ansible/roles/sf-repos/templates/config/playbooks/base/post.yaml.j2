@@ -6,12 +6,15 @@
     - emit-ara-html
 
 - hosts: "{{'{{'}} site_sflogs.fqdn {{'}}'}}"
-  roles:
-    - role: upload-logs
-      zuul_log_url: "https://{{ fqdn }}/logs"
-      zuul_logserver_root: /var/www/logs
-    - role: buildset-artifacts-location
-      zuul_log_url: "https://{{ fqdn }}/logs"
+  tasks:
+    # Use a block because play vars doesn't take precedence on roles vars
+    - block:
+        - import_role: name=upload-logs
+        - import_role: name=emit-job-report
+        - import_role: name=buildset-artifacts-location
+      vars:
+        zuul_log_url: "https://{{ fqdn }}/logs"
+        zuul_logserver_root: /var/www/logs
 
 {% if 'job-logs-gearman-client' in roles %}
 - hosts: localhost
