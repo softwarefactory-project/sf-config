@@ -14,10 +14,11 @@
     disablerepo: "*"
     enablerepo: "{{ grafana_repo_name }},base,updates"
 
-- name: Install grafyaml
+- name: Install grafyaml for config-update and config-check
   yum:
     name: grafyaml
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  delegate_to: '{{ install_server_host }}'
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['zuul-executor'] | union( groups['install-server'] ) }}"

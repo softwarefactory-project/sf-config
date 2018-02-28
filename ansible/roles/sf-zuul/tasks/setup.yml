@@ -15,6 +15,13 @@
         path: /opt/sf
         state: directory
 
+    - name: Create /var/lib/log-classify directory
+      file:
+        path: /var/lib/log-classify
+        state: directory
+        owner: zuul
+        mode: 0700
+
     - name: Dump current architecture for config-check test
       copy:
         dest: /opt/sf/arch.yaml

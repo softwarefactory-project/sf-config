@@ -1,7 +1,7 @@
 elements-dir: {{ nodepool_conf_dir }}/elements:/usr/share/sf-elements
 images-dir: {{ nodepool_lib_dir }}/dib
 build-log-dir: /var/www/nodepool-log/
-build-log-retention: {{ nodepool_build_log_retention }}
+build-log-retention: {{ nodepool_build_log_retention|default(7) }}
 
 {% if 'influxdb' in roles %}
 statsd-server:
