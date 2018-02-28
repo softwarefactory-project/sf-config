@@ -1,0 +1,17 @@
+- name: set payload status according to zuul_success
+  set_fact:
+    mqtt_payload.status: "{{ (not zuul_success|bool) | ternary('FAILURE', 'SUCCESS') }}"
+  when: zuul_success is defined
+
+- name: set default topic
+  set_fact:
+    mqtt_topic: "zuul/{{ zuul.tenant }}/{{ zuul.project.name }}/{{ zuul.pipeline }}/{{ zuul.job }}"
+  when: mqtt_topic is not defined
+
+- name: publish status to MQTT
+  mqtt:
+    topic: "{{ mqtt_topic }}"
+    payload: "{{ mqtt_payload | to_json }}"
+    server: "{{ mqtt_server }}"
+    username: "{{ mqtt_username }}"
+    password: "{{ mqtt_password }}"
