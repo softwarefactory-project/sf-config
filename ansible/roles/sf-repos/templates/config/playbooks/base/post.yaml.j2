@@ -13,6 +13,14 @@
     - role: buildset-artifacts-location
       zuul_log_url: "https://{{ fqdn }}/logs"
 
+- hosts: all
+  roles:
+    - role: add-authorized-keys
+      public_keys: []
+      # Override per project or tenant
+      # - public_key: XXXXX
+      when: not zuul_success | bool
+
 {% if 'job-logs-gearman-client' in roles %}
 - hosts: localhost
   ignore_errors: yes
