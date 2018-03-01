@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa32b979_0b044513",
+        "filename": "ansible/roles/sf-dlrn/templates/projects.ini.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-03-01T15:39:57Z",
+      "side": 1,
+      "message": "By default, we probably want this to be empty. If there is a value, DLRN will send an email to package owners everytime a package fails to build (and we don\u0027t want to spam packagers from test machines :D).",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "54b96092dd5cc2e981d826bd2df5cecd06a6611a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
