@@ -6,21 +6,7 @@
     validate_certs: no
   when: sf_version != "master"
 
-# 2.7: We need to remove python2-alabaster now because it is replaced by
-#      python2-sphinx-theme-alabaster in rdo-pike
-- name: Remove python-alabaster
-  yum:
-    name: python2-alabaster
-    state: absent
-
-- name: Remove epel-release
-  yum:
-    name: epel-release
-    state: absent
-
-# 2.7 only
-- name: Remove python2-paramiko to use python-paramiko from extras instead
-  shell: if rpm -q python2-paramiko; then rpm -e --nodeps python2-paramiko && yum install -y python-paramiko; fi
+- include_tasks: remove_packages.yaml
 
 - name: "Update packages"
   yum:
@@ -29,6 +15,5 @@
     state: latest
     exclude:
       - ansible
-      - jenkins
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'

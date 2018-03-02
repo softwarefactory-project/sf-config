@@ -15,11 +15,11 @@ inventory:
       - lodgeit
       - gitweb
       - gerrit
-      - gerritbot
       - logserver
       - zuul-scheduler
       - zuul-executor
       - zuul-web
+      - gerritbot
       - nodepool-launcher
       - nodepool-builder
       - murmur

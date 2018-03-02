@@ -1,0 +1,13 @@
+---
+- name: Remove python-alabaster
+  yum:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - python2-alabaster
+    - epel-release
+    - jenkins
+
+# 2.7 only
+- name: Remove python2-paramiko to use python-paramiko from extras instead
+  shell: if rpm -q python2-paramiko; then rpm -e --nodeps python2-paramiko && yum install -y python-paramiko; fi
