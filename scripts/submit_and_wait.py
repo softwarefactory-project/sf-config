@@ -32,7 +32,7 @@ def get_ci_verify_vote(json_object):
             u'approvals' not in json_object[u'currentPatchSet']):
         return None
     for a in json_object[u'currentPatchSet'][u'approvals']:
-        if a[u'by'][u'name'] in ('Jenkins CI', 'Zuul CI') and \
+        if a[u'by'][u'name'] in ('Zuul CI',) and \
            a[u"type"] == "Verified":
             return int(a[u'value'])
 

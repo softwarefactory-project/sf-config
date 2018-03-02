@@ -18,8 +18,6 @@
   with_items:
     - {content: "{{ gerrit_admin_rsa }}", name: "gerrit_admin_rsa", mode: "0400"}
     - {content: "{{ gerrit_admin_rsa_pub }}", name: "gerrit_admin_rsa.pub", mode: "0444"}
-    - {content: "{{ jenkins_rsa }}", name: "jenkins_rsa", mode: "0400"}
-    - {content: "{{ jenkins_rsa_pub }}", name: "jenkins_rsa.pub", mode: "0444"}
     - {content: "{{ zuul_rsa }}", name: "zuul_rsa", mode: "0400"}
     - {content: "{{ zuul_rsa_pub }}", name: "zuul_rsa.pub", mode: "0444"}
   no_log: true

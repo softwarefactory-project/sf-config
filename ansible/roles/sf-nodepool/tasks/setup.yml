@@ -67,7 +67,7 @@
   when:
     - '"nodepool-builder" in nodepool_services'
 
-- name: Install jenkins/zuul public ssh key
+- name: Install zuul public ssh key
   copy:
     content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
     dest: "{{ nodepool_lib_dir }}/.ssh/{{ item }}.pub"
@@ -75,7 +75,6 @@
     owner: nodepool
     group: nodepool
   with_items:
-    - jenkins_rsa
     - zuul_rsa
 
 - name: Install config
