@@ -36,6 +36,9 @@
     dest: /usr/local/bin/resources2repoxplorer.py
     mode: 0755
 
+- name: "Update default repoxplorer index file"
+  command: /usr/local/bin/resources2repoxplorer.py apply
+
 - name: Start service
   systemd:
     name: "{{ item }}"
