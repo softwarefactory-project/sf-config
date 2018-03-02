@@ -1,5 +1,4 @@
 User-agent: *
-Disallow: /jenkins
 Disallow: /logs
 Disallow: /zuul
 Disallow: /nodepool-log
