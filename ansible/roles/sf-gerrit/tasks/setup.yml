@@ -167,9 +167,6 @@
     state: started
     enabled: "yes"
 
-- name: "Add jenkins user (for zuul-launcher and managesf)"
-  command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "jenkins" "ssh-rsa {{ jenkins_rsa_pub.split()[1] }}" "jenkins@{{ fqdn }}"
-
 - name: "Add zuul user"
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
 

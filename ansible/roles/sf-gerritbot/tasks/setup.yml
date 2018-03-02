@@ -1,5 +1,5 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=gerritbot ssh_key=jenkins_rsa"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=gerritbot ssh_key=zuul_rsa"
 
 - name: "Setup gerritbot.conf"
   template:
