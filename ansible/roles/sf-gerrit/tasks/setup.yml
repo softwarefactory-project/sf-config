@@ -156,9 +156,6 @@
   shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'
   when: gerrit_allprojects.stat.exists == False
 
-- name: "Add jenkins user (for zuul-launcher and managesf)"
-  command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "jenkins" "ssh-rsa {{ jenkins_rsa_pub.split()[1] }}" "jenkins@{{ fqdn }}"
-
 - name: "Add zuul user"
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
 
