@@ -16,7 +16,6 @@ from sfconfig.components import Component
 class Managesf(Component):
     def configure(self, args, host):
         self.add_mysql_database(args, "managesf")
-        self.get_or_generate_ssh_key(args, "jenkins_rsa")
         self.get_or_generate_ssh_key(args, "zuul_rsa")
         args.glue["managesf_internal_url"] = "http://%s:%s" % (
             args.glue["managesf_host"], args.defaults["managesf_port"])

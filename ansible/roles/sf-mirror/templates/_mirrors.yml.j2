@@ -10,7 +10,7 @@ pipelines:
         - time: '{{ mirrors.periodic_update }}'
     failure:
       smtp:
-        from: jenkins@{{ fqdn }}
+        from: zuul@{{ fqdn }}
         to: dev-robot@{{ fqdn }}
         subject: '{{ fqdn }}: Periodic mirror update failed'
 
