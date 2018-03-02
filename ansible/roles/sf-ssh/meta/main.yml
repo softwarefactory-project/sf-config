@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  description: Manage ssh keys for system, jenkins and gerrit
+  description: Manage ssh keys for system, zuul and gerrit
   company: Red Hat
   license: Apache
   min_ansible_version: 2.2

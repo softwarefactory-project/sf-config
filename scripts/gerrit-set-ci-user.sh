@@ -6,10 +6,10 @@ set -e
 USER_NAME="${1}"
 USER_SSHKEY="${2}"
 USER_MAIL="${3}"
-# Capitalize user_name, e.g. "Jenkins CI"
+# Capitalize user_name, e.g. "Zuul CI"
 USER_FULLNAME="$(tr '[:lower:]' '[:upper:]' <<< ${USER_NAME:0:1})${USER_NAME:1} CI"
 
-# Check if Jenkins user does not exist yet
+# Check if user does not exist yet
 USER_EXISTS=$(ssh gerrit gerrit ls-members \"Non-Interactive Users\" | { grep ${USER_NAME} || true; })
 
 if [ -z "$USER_EXISTS" ]; then
