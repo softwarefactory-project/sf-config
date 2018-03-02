@@ -3,7 +3,7 @@
 
 - name: "Install log gearman worker configuration"
   template:
-    src: templates/jenkins-log-worker.yaml.j2
+    src: templates/zuul-log-worker.yaml.j2
     dest: /etc/log-gearman-worker/config.yml
     owner: joblogsworker
     group: joblogsworker
