@@ -2,5 +2,6 @@
 role_actions:
   - install
   - setup
+  - postconf
   - update
   - disable

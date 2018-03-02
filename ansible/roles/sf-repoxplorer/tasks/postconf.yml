@@ -1,0 +1,3 @@
+---
+- name: "Update default repoxplorer index file"
+  command: /usr/local/bin/resources2repoxplorer.py apply
