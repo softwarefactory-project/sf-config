@@ -8,7 +8,7 @@ git clean -f -d -x
 popd
 
 set +e
-sf-graph-render --zuul-url http://{{ zuul_web_url }} \
+sf-graph-render --zuul-url {{ zuul_web_url }} \
                 --enable-logstash "{{ 'logstash' in roles }}" \
                 --config-dir "/root/config" \
                 --output-dir "{{ grafyaml_metrics }}" \

@@ -127,11 +127,6 @@ class ZuulScheduler(Component):
         self.get_or_generate_ssh_key(args, "zuul_gatewayserver_rsa")
         self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
         args.glue["zuul_pub_url"] = "%s/zuul/" % args.glue["gateway_url"]
-        args.glue["zuul_internal_url"] = "http://%s:%s/" % (
-            args.glue["zuul_host"], args.defaults["zuul_port"])
-        args.glue["zuul_webapp_url"] = "http://%s:%s" % (
-            args.glue["zuul_scheduler_host"],
-            args.defaults["zuul_webapp_port"])
         args.glue["zuul_mysql_host"] = args.glue["mysql_host"]
         args.glue["loguser_authorized_keys"].append(
             args.glue["zuul_logserver_rsa_pub"])
@@ -207,5 +202,7 @@ class ZuulWeb(Component):
     require_role = ["zuul-scheduler"]
 
     def configure(self, args, host):
-        args.glue["zuul_web_url"] = "%s:%s" % (
+        args.glue["zuul_web_url"] = "http://%s:%s" % (
+            args.glue["zuul_web_host"], args.defaults["zuul_web_port"])
+        args.glue["zuul_ws_url"] = "ws://%s:%s" % (
             args.glue["zuul_web_host"], args.defaults["zuul_web_port"])

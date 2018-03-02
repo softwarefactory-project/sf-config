@@ -301,12 +301,13 @@ def enable_action(args):
             for role in host["roles"]:
                 if role in testinfra_tests:
                     tests.append(role)
-            if 'influxdb' in args.glue["roles"]:
-                if 'telegraf' in testinfra_tests:
-                    tests.append('telegraf')
-            if 'influxdb' in host["roles"]:
-                if 'telegraf-statsd' in testinfra_tests:
-                    tests.append('telegraf-statsd')
+            if host.get("remote") is not True:
+                if 'influxdb' in args.glue["roles"]:
+                    if 'telegraf' in testinfra_tests:
+                        tests.append('telegraf')
+                if 'influxdb' in host["roles"]:
+                    if 'telegraf-statsd' in testinfra_tests:
+                        tests.append('telegraf-statsd')
             if tests:
                 for test in tests:
                     testinfra.append(testinfra_tests[test])

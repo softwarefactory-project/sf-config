@@ -54,7 +54,7 @@ def usage():
     p.add_argument("--url", help='The services status url')
     p.add_argument("--mail", help='The admin mail to contact')
     p.add_argument("--sender", help='The mail sender')
-    p.add_argument("--retries", type=int, default=60)
+    p.add_argument("--retries", type=int, default=360)
     p.add_argument("--delay", type=int, default=10)
     return p.parse_args()
 
@@ -88,17 +88,27 @@ def daemonize():
 
 
 def check_zuul_running_jobs(args):
-    jobs = {}
+    tenants = {}
     try:
-        req = requests.get("%s/status.json" % args.url)
-        status = req.json()
-    except:
-        status = {}
-    for pipeline in status.get("pipelines", []):
-        for change_queue in pipeline.get("change_queues", []):
-            if change_queue.get("heads"):
-                jobs.setdefault(pipeline["name"], 0)
-                jobs[pipeline["name"]] += len(change_queue["heads"])
+        req = requests.get("%s/tenants" % args.url)
+        for tenant in req.json():
+            tenants[tenant["name"]] = {}
+    except Exception:
+        tenants = {}
+    for tenant in tenants:
+        try:
+            req = requests.get("%s/%s/status" % (args.url, tenant))
+            tenants[tenant]["pipelines"] = req.json().get("pipelines", [])
+        except Exception:
+            continue
+    jobs = {}
+    for tenant in tenants:
+        for pipeline in tenants[tenant].get("pipelines", []):
+            for change_queue in pipeline.get("change_queues", []):
+                if change_queue.get("heads"):
+                    pipe_name = "%s:%s" % (tenant, pipeline["name"])
+                    jobs.setdefault(pipe_name, 0)
+                    jobs[pipe_name] += len(change_queue["heads"])
     return jobs
 
 

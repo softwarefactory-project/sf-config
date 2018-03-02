@@ -37,8 +37,8 @@ git_dir={{ zuul_lib_dir }}/executor/
 private_key_file={{ zuul_lib_dir }}/.ssh/id_rsa
 finger_port=7979
 trusted_rw_paths=/var/lib/log-classify
-trusted_ro_paths=/opt/
-untrusted_ro_paths=/opt/
+trusted_ro_paths=/opt/:/etc/ld.so.cache:/etc/pki
+untrusted_ro_paths=/opt/:/etc/ld.so.cache:/etc/pki
 log_config={{ zuul_conf_dir }}/executor-logging.yaml
 log_stream_file=/var/tmp/zuul-console/{log_uuid}.log
 
@@ -52,11 +52,6 @@ listen_address=0.0.0.0
 command_socket={{ zuul_lib_dir }}/web.socket
 port={{ zuul_web_port }}
 log_config={{ zuul_conf_dir }}/web-logging.yaml
-
-[webapp]
-listen_address=0.0.0.0
-port={{ zuul_webapp_port }}
-status_url={{ zuul_pub_url }}
 
 [connection sqlreporter]
 driver=sql

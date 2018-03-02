@@ -26,32 +26,38 @@ dump_file = "/var/lib/zuul/zuul-queues-dump.sh"
 
 
 def dump(args):
-    data = urllib2.urlopen(args.url).read()
-    data = json.loads(data)
-
+    tenants = json.loads(urllib2.urlopen("%s/tenants" % args.url).read())
+    status = {}
+    for tenant in tenants:
+        status[tenant["name"]] = json.loads(urllib2.urlopen(
+            "%s/%s/status" % (args.url, tenant["name"])).read())
     if os.path.isfile(args.dump_file):
         os.rename(args.dump_file, "%s.orig" % args.dump_file)
 
     of = open(args.dump_file, "w")
     of.write("#/bin/sh\nset -ex\n")
-    for pipeline in data['pipelines']:
-        for queue in pipeline['change_queues']:
-            for head in queue['heads']:
-                for change in head:
-                    if not change['live'] or ',' not in change['id']:
-                        continue
-                    cid, cps = change['id'].split(',')
-                    cmd = (
-                        "zuul enqueue --trigger gerrit --pipeline %s "
-                        "--project %s --change %s,%s" % (
-                            pipeline['name'],
-                            change['project'],
-                            cid, cps)
-                    )
-                    if ";" in cmd or "|" in cmd:
-                        raise RuntimeError("Forbidden char in [%s]" % cmd)
-                    print(cmd)
-                    of.write("%s\n" % cmd)
+    for tenant in tenants:
+        for pipeline in status[tenant["name"]].get('pipelines', []):
+            for queue in pipeline['change_queues']:
+                for head in queue['heads']:
+                    for change in head:
+                        if (not change['live'] or
+                                not change.get('id') or
+                                ',' not in change['id']):
+                            continue
+                        cid, cps = change['id'].split(',')
+                        cmd = (
+                            "zuul enqueue --tenant %s --trigger gerrit "
+                            "--pipeline %s --project %s --change %s,%s" % (
+                                tenant["name"],
+                                pipeline['name'],
+                                change['project'],
+                                cid, cps)
+                        )
+                        if ";" in cmd or "|" in cmd:
+                            raise RuntimeError("Forbidden char in [%s]" % cmd)
+                        print(cmd)
+                        of.write("%s\n" % cmd)
     of.write("curl %s 2>&1 | grep 'zuul_version' > /dev/null\n" % args.url)
     of.write("echo SUCCESS: zuul queues restored\n")
     of.close()
@@ -71,7 +77,7 @@ def load(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--force', action="store_const", const=True)
-    parser.add_argument('--url', default="https://localhost/zuul/status.json")
+    parser.add_argument('--url', default="{{ zuul_web_url }}")
     parser.add_argument('--dump_file', default=dump_file)
     parser.add_argument('action', choices=("dump", "load"))
     args = parser.parse_args()
