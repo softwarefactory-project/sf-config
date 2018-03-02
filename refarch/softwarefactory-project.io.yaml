@@ -1,61 +1,69 @@
----
-description: "The softwarefactory-project.io architecture"
+description: The softwarefactory-project.io architecture
 inventory:
-  - name: managesf
-    ip: 192.168.0.10
-    flavor: rdo.m1.xlarge
-    disk: 160
-    roles:
-      - install-server
-      - mysql
-      - rabbitmq
-      - gateway
-      - managesf
-      - etherpad
-      - lodgeit
-      - gerrit
-      - gerritbot
-      - zuul-server
-      - zuul-merger
-      - zuul-launcher
-      - nodepool-launcher
-      - jenkins
-      - murmur
-      - mirror
-      - kibana
-      - cauth
-      - storyboard
-      - storyboard-webclient
-      - repoxplorer
-      - firehose
-
-  - name: elk
-    ip: 192.168.0.11
-    flavor: rdo.m1.large
-    disk: 160
-    roles:
-      - logserver
-      - elasticsearch
-      - job-logs-gearman-client
-      - job-logs-gearman-worker
-      - logstash
-
-  - name: nodepool-builder
-    ip: 192.168.0.12
-    flavor: rdo.m1.large
-    disk: 100
-    roles:
-      - nodepool-builder
-
-  - name: zuulv3
-    ip: 192.168.0.13
-    flavor: rdo.m1.large2
-    disk: 80
-    public_url: http://zuulv3.fqdn
-    roles:
-      - zuul-scheduler
-      - zuul-merger
-      - zuul-executor
-      - zuul-web
-      - nodepool-launcher
-      - nodepool-builder
+- disk: 160
+  flavor: rdo.m1.large2
+  hostname: managesf.softwarefactory-project.io
+  ip: 192.168.240.11
+  name: managesf
+  public_url: https://softwarefactory-project.io
+  roles:
+  - install-server
+  - mysql
+  - gateway
+  - managesf
+  - etherpad
+  - lodgeit
+  - gitweb
+  - gerrit
+  - gerritbot
+  - murmur
+  - kibana
+  - cauth
+  - repoxplorer
+  - firehose
+  - grafana
+  - zookeeper
+- disk: 160
+  flavor: rdo.m1.large
+  hostname: elk.softwarefactory-project.io
+  ip: 192.168.240.14
+  name: elk
+  public_url: http://192.168.240.14
+  roles:
+  - logserver
+  - elasticsearch
+  - logstash
+  - influxdb
+  - job-logs-gearman-client
+  - job-logs-gearman-worker
+  - hound
+- disk: 100
+  flavor: rdo.m1.medium
+  hostname: nodepool-builder.softwarefactory-project.io
+  ip: 192.168.240.9
+  name: nodepool-builder
+  public_url: http://192.168.240.9
+  roles:
+  - nodepool-builder
+- hostname: zs.softwarefactory-project.io
+  ip: 192.168.240.15
+  name: zs
+  public_url: http://192.168.240.15
+  roles:
+  - zuul-scheduler
+  - zuul-web
+  - nodepool-launcher
+- hostname: ze01.softwarefactory-project.io
+  ip: 192.168.240.8
+  name: ze01
+  public_url: http://192.168.240.8
+  roles:
+  - zuul-executor
+- hostname: oci01.softwarefactory-project.io
+  ip: 38.145.33.82
+  max-servers: 24
+  name: oci01
+  public_url: http://38.145.33.82
+  remote: true
+  roles:
+  - hypervisor-oci

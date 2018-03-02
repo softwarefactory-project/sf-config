@@ -3,7 +3,7 @@
 
 - name: "Install log gearman client configuration"
   template:
-    src: templates/jenkins-log-client.yaml.j2
+    src: templates/zuul-log-client.yaml.j2
     dest: /etc/log-gearman-client/config.yml
     owner: joblogsclient
     group: joblogsclient
