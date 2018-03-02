@@ -20,7 +20,6 @@
   when: localconfig.stdout != upstreamconfig.stdout
   with_items:
     - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/ "{{ nodepool_conf_dir }}/nodepool.yaml"
-    - rsync -avi --delete --exclude authorized_keys --exclude localCA.pem nodepool/scripts/ "{{ nodepool_conf_dir }}/scripts/"
     - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
 
 - name: Fetch nodepool.yaml configuration
