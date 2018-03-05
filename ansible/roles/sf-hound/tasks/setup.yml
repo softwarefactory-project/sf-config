@@ -1,0 +1,6 @@
+---
+- name: Setup hound config generator
+  template:
+    src: hound-config-generator.py.j2
+    dest: /usr/local/bin/hound-config-generator.py
+    mode: 0755

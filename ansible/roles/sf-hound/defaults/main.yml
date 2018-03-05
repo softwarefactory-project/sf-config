@@ -1,0 +1,9 @@
+---
+role_actions:
+  - install
+  - setup
+  - update
+  - disable
+
+# TODO: update service packaging to support a different port
+hound_port: 6080

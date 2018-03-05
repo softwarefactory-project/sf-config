@@ -1,0 +1,42 @@
+#!/bin/env python
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+import sys
+import json
+import urllib
+
+config = {
+   "max-concurrent-indexers": 2,
+   "dbpath": "/var/lib/hound/data",
+   "repos": {},
+}
+
+req = urllib.urlopen("{{ managesf_internal_url }}/resources")
+data = json.loads(req.read())
+
+for repo in data.get("resources", {}).get("repos", {}):
+    config["repos"][repo] = {
+        "url": "{{ gateway_url }}/r/%s.git" % repo,
+        "url-pattern": {
+            "base-url": "{{ gateway_url }}/r/gitweb?p=%s.git;a=blob;f={path}{anchor}" % repo,
+            "anchor": "#l{line}",
+        }
+    }
+
+orig = open(sys.argv[1], "r").read()
+new = json.dumps(config, indent=True, sort_keys=True)
+
+if orig != new:
+    with open(sys.argv[1], "w") as of:
+        of.write(new)
+    exit(4)
