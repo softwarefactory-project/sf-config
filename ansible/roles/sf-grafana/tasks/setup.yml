@@ -50,9 +50,15 @@
 - name: Install sf top menu
   lineinfile:
     dest: /usr/share/grafana/public/views/index.html
-    insertafter: '<body ng-cloak>'
+    insertafter: '<body ng-cloak'
     line: '        <script type="text/javascript" src="/static/js/topmenu.js"></script>'
   notify: restart grafana
+
+- name: Add grafana-app css to make room for the top menu
+  replace:
+    path: /usr/share/grafana/public/views/index.html
+    regexp: '<grafana-app class'
+    replace: '<grafana-app style="top: 50px" class'
 
 - name: Create metrics directory on the install server
   file:

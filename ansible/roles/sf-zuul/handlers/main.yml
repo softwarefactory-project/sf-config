@@ -2,7 +2,7 @@
 - name: restart zuul
   command: >
     /usr/share/sf-config/scripts/smart-restart.py zuul
-        --url {{ zuul_internal_url }}
+        --url {{ zuul_web_url }}
         --sender root@{{ fqdn }}
         --mail {{ network.admin_mail_forward }}
         {{ zuul_services|join(" ") }}

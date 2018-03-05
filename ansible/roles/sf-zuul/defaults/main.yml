@@ -40,8 +40,6 @@ zuul_log_dir: "/var/opt/rh/rh-python35/log/zuul"
 zuul_share_dir: "/opt/rh/rh-python35/root/usr/share/javascript/zuul"
 zuul_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/zuul"
 
-zuul_port: 8085
-zuul_webapp_port: 8004
 zuul_web_port: 9000
 zuul_gearman_port: 4730
 
@@ -53,7 +51,9 @@ zuul_mysql_password: "CHANGE_ME"
 
 gerrit_pub_url: "https://example.com/r/"
 zuul_pub_url: "https://example.com/zuul/"
-zuul_internal_url: "http://localhost:{{ zuul_port }}/"
+
+zuul_web_url: "http://localhost:{{ zuul_web_port }}"
+zuul_ws_url: "ws://localhost:{{ zuul_web_port }}"
 
 zuul_loglevel: INFO
 zuul_root_loglevel: WARNING

@@ -152,14 +152,6 @@
         # Keep /zuul3/ retro-compatibility
         RewriteRule ^/zuul3/(.*)$ /zuul/$1 [R,L]
 
-{% if zuul['github_connections'] %}
-        # Redirect github webhook payload
-        {% for gh_connection in zuul['github_connections'] %}
-        # Keep legacy connection support for deprecation period
-        ProxyPassMatch ^/zuul/connection/{{ gh_connection.name }}/payload$ {{ zuul_webapp_url }}/connection/{{ gh_connection.name }}/payload nocanon retry=0 disablereuse=on
-        {% endfor %}
-
-{% endif %}
         # Redirect all the static file to webui cache
         AliasMatch "^/zuul/.*/(.*)\.(html|js|png|map)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
         AliasMatch "^/zuul/(.*)\.(html|js|png|map)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
@@ -172,12 +164,12 @@
         RewriteRule ^/zuul/?$ /zuul/index.html [R]
 
         # Console-stream needs a special proxy-pass for websocket
-        ProxyPassMatch /zuul/(.*)/console-stream ws://{{ zuul_web_url }}/$1/console-stream nocanon retry=0 disablereuse=on
+        ProxyPassMatch /zuul/(.*)/console-stream {{ zuul_ws_url }}/$1/console-stream nocanon retry=0 disablereuse=on
 
         # Then only the json calls are sent to the zuul-web endpoints
         ProxyPassMatch ^/zuul/.*\.(html|js|png|map)$ !
-        ProxyPassMatch ^/zuul/keys/(.*)$ http://{{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
-        ProxyPassMatch ^/zuul/(.*)$ http://{{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul/keys/(.*)$ {{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul/(.*)$ {{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
 
 {% endif %}
 {% if 'storyboard' in roles %}

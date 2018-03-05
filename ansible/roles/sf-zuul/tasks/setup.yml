@@ -53,14 +53,6 @@
     - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
     - {src: /etc/opt/rh/rh-python35, dest: /etc}
 
-- name: Apply selinux port labelling
-  seport:
-    ports: "{{ zuul_port }}"
-    proto: tcp
-    setype: http_port_t
-    state: present
-  when: "ansible_selinux.status == 'enabled' and 'zuul-scheduler' in zuul_services"
-
 - name: Setup apache zuul-merger.conf
   template:
     src: zuul-merger.httpd.conf.j2
@@ -93,6 +85,15 @@
         flat: "yes"
         src: "{{ zuul_lib_dir }}/keys/gerrit/config.pub"
         dest: "/var/lib/software-factory/certs/config.pub"
+
+    - name: Install zuul-changes.py script
+      template:
+        src: zuul-changes.py.j2
+        dest: /usr/local/bin/zuul-changes.py
+        mode: 0755
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
+
   when: "'zuul-scheduler' in zuul_services"
 
 - block:
