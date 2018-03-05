@@ -1,0 +1,8 @@
+---
+role_actions:
+  - install
+  - setup
+  - update
+  - disable
+
+hound_port: 6080
