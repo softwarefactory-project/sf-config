@@ -216,6 +216,14 @@
         ProxyPassReverse /logs-raw/ http://{{ logserver_host }}/logs-raw/
 
 {% endif %}
+{% if 'hound' in roles %}
+        # Inject custom index.html
+        AliasMatch "^/codesearch/$" /var/www/hound.html
+        ProxyPassMatch "^/codesearch/$" !
+        ProxyPass /codesearch/ {{ hound_internal_url }}/
+        ProxyPassReverse /codesearch/ {{ hound_internal_url }}/
+
+{% endif %}
         ProxyPreserveHost On
         AllowEncodedSlashes NoDecode
         <Proxy *>

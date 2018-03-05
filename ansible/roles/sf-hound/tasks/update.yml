@@ -1,0 +1,37 @@
+---
+- file:
+    path: /var/lib/software-factory/state/hound_config
+    state: touch
+
+- name: Check local config
+  command: cat /var/lib/software-factory/state/hound_config
+  register: localconfig
+
+- name: Check upstream config
+  command: git log -n 3 --oneline resources/
+  args:
+    chdir: /root/config
+  register: upstreamconfig
+
+- block:
+    - name: Update hound configuration
+      command: /usr/local/bin/hound-config-generator.py /etc/hound/config.json
+      args:
+        chdir: /root/config
+      register: _hound_config
+      changed_when: _hound_config.rc == 4
+      failed_when: _hound_config.rc not in [0, 4]
+      notify: restart hound
+  when: localconfig.stdout != upstreamconfig.stdout
+
+- name: Ensure service is started and enabled
+  service:
+    name: houndd
+    state: started
+    enabled: "yes"
+
+- name: Write config repo sha1 matching current configuration
+  copy:
+    content: "{{ upstreamconfig.stdout }}"
+    dest: /var/lib/software-factory/state/hound_config
+  when: localconfig.stdout != upstreamconfig.stdout
