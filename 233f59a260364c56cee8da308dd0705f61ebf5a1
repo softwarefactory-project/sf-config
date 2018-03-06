@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da37b569_848608b8",
+        "filename": "ansible/roles/sf-dlrn/meta/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-03-06T10:21:14Z",
+      "side": 1,
+      "message": "Copy/paste typo :)",
+      "range": {
+        "startLine": 3,
+        "startChar": 15,
+        "endLine": 3,
+        "endChar": 21
+      },
+      "revId": "233f59a260364c56cee8da308dd0705f61ebf5a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_24937cfc",
+        "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-03-06T10:21:14Z",
+      "side": 1,
+      "message": "To get some speedup during builds, I would suggest to enable mock_tmpfs in the mock configuration. I do that with the following Ansible snippet:\n\n- name: Set up mock configuration\n  shell:\n    cmd: |\n      cat \u003c\u003c EOF | tee /etc/mock/site-defaults.cfg\n      config_opts[\u0027plugin_conf\u0027][\u0027tmpfs_enable\u0027] \u003d True\n      config_opts[\u0027plugin_conf\u0027][\u0027tmpfs_opts\u0027] \u003d {}\n      config_opts[\u0027plugin_conf\u0027][\u0027tmpfs_opts\u0027][\u0027required_ram_mb\u0027] \u003d 2048\n      config_opts[\u0027plugin_conf\u0027][\u0027tmpfs_opts\u0027][\u0027max_fs_size\u0027] \u003d \u00274g\u0027\n      config_opts[\u0027plugin_conf\u0027][\u0027tmpfs_opts\u0027][\u0027mode\u0027] \u003d \u00270755\u0027\n      config_opts[\u0027plugin_conf\u0027][\u0027tmpfs_opts\u0027][\u0027keep_mounted\u0027] \u003d True\n      EOF\n  become: true",
+      "revId": "233f59a260364c56cee8da308dd0705f61ebf5a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_449000ed",
+        "filename": "ansible/roles/sf-dlrn/templates/projects.ini.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-03-06T10:21:14Z",
+      "side": 1,
+      "message": "It\u0027s perfectly ok to use SQLite3 in this type of deployment. \n\nMariaDB would only help if we plan to do a more distributed environment, with the database external to the DLRN deployment. There is not a really high load on the DB.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 80
+      },
+      "revId": "233f59a260364c56cee8da308dd0705f61ebf5a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_e4bb5474",
+        "filename": "ansible/roles/sf-dlrn/templates/projects.ini.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-03-06T10:21:14Z",
+      "side": 1,
+      "message": "If we\u0027re starting from scratch, I would suggest to set release_numbering to \"0.1.date.hash\". This fits better with the Fedora packaging guidelines, we\u0027re only keeping the other as default for compatibility with existing RDO Trunk releases.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 29
+      },
+      "revId": "233f59a260364c56cee8da308dd0705f61ebf5a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
