@@ -61,6 +61,24 @@
     },
     {
       "key": {
+        "uuid": "da37b569_47032210",
+        "filename": "ansible/roles/sf-hound/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-07T18:41:53Z",
+      "side": 1,
+      "message": "I agree it should be quite fast to add the sysconfig support in the package and setup the sysconfig file here.",
+      "parentUuid": "da37b569_07175aa4",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_87ce0a59",
         "filename": "ansible/roles/sf-hound/tasks/setup.yml",
         "patchSetId": 2
@@ -96,6 +114,23 @@
       "side": 1,
       "message": "yes, but that is only used by the update task so that\u0027s ok.",
       "parentUuid": "da37b569_87ce0a59",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_eafebb04",
+        "filename": "ansible/roles/sf-hound/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-07T18:41:53Z",
+      "side": 1,
+      "message": "I\u0027m thinking we should run the hound-config-generator in a sf-config post-config action in case we update the generator script to have changes the hound config file applied when sf-config run w/o the need to have a change merged in the config repo. wdyt ?",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -155,6 +190,29 @@
       "side": 1,
       "message": "Yeah I think that would make more sense than using /root/config (especially if we want to eventually switch to a \"sf\" user instead of running everything as root, for example)",
       "parentUuid": "da37b569_47efa2b0",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_aa08b329",
+        "filename": "ansible/roles/sf-hound/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-07T18:41:53Z",
+      "side": 1,
+      "message": "Actuallly that\u0027s not needed as nothing in the script need to located in the config repo clone.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 27
+      },
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -272,6 +330,24 @@
       "writtenOn": "2018-03-07T18:02:39Z",
       "side": 1,
       "message": "If a branch can be specified in the conf then you can improve by using the default-branch info from the resource: https://softwarefactory-project.io/docs/managesf/resources.html#default-branch",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_0a043f13",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-07T18:41:53Z",
+      "side": 1,
+      "message": "Tested a rpm-master on a repo and indexation was OK with this new code block.\n\n```\nfor repo, attr in data.get(\"resources\", {}).get(\"repos\", {}).items():\n    config[\"repos\"][repo] \u003d {\n        \"url\": \"https://sftests.com/r/%s.git\" % repo,\n        \"vcs-config\": {\n            \"ref\": attr.get(\u0027default-branch\u0027, \u0027master\u0027)\n        },\n        \"url-pattern\": {\n            \"base-url\": \"https://sftests.com/r/gitweb?p\u003d%s.git;a\u003dblob;f\u003d{path}{anchor}\" % repo,\n            \"anchor\": \"#l{line}\",\n        }\n    }\n```",
+      "parentUuid": "da37b569_c7165255",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
