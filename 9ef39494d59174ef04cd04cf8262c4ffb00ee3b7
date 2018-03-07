@@ -261,6 +261,23 @@
     },
     {
       "key": {
+        "uuid": "da37b569_c7165255",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-07T18:02:39Z",
+      "side": 1,
+      "message": "If a branch can be specified in the conf then you can improve by using the default-branch info from the resource: https://softwarefactory-project.io/docs/managesf/resources.html#default-branch",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_07099a95",
         "filename": "refarch/allinone.yaml",
         "patchSetId": 2
