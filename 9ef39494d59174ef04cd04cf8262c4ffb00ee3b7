@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "da37b569_87f5aa84",
+        "filename": "ansible/roles/sf-hound/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T13:03:36Z",
+      "side": 1,
+      "message": "Yes, but do we want that complexity now? :)",
+      "parentUuid": "da37b569_c7ebb2af",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_87ce0a59",
         "filename": "ansible/roles/sf-hound/tasks/setup.yml",
         "patchSetId": 2
@@ -42,6 +60,24 @@
         "endLine": 5,
         "endChar": 24
       },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_27f29e9b",
+        "filename": "ansible/roles/sf-hound/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T13:03:36Z",
+      "side": 1,
+      "message": "yes, but that is only used by the update task so that\u0027s ok.",
+      "parentUuid": "da37b569_87ce0a59",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -71,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "da37b569_47efa2b0",
+        "filename": "ansible/roles/sf-hound/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T13:03:36Z",
+      "side": 1,
+      "message": "That\u0027s the current config-update process: pull the config repo in /root/config, then check if there is something to do. It\u0027s quite ancient and the config repo sync could be kept somewhere else like /var/lib/sf/config",
+      "parentUuid": "da37b569_e7035675",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_c7b412d3",
         "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
         "patchSetId": 2
@@ -88,6 +142,24 @@
         "endLine": 1,
         "endChar": 10
       },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_e72a76e7",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T13:03:36Z",
+      "side": 1,
+      "message": "i\u0027m still used to /bin and /usr/bin being separated...",
+      "parentUuid": "da37b569_c7b412d3",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -117,6 +189,24 @@
     },
     {
       "key": {
+        "uuid": "da37b569_0730ba55",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T13:03:36Z",
+      "side": 1,
+      "message": "Is there a reason we should do that?",
+      "parentUuid": "da37b569_e7dcb61a",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_07099a95",
         "filename": "refarch/allinone.yaml",
         "patchSetId": 2
@@ -134,6 +224,24 @@
         "endLine": 39,
         "endChar": 13
       },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_a7346e4a",
+        "filename": "refarch/allinone.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T13:03:36Z",
+      "side": 1,
+      "message": "yes sure. Though we are still missing a real git server role, repos are only available through gerrit atm.",
+      "parentUuid": "da37b569_07099a95",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
