@@ -43,6 +43,24 @@
     },
     {
       "key": {
+        "uuid": "da37b569_07175aa4",
+        "filename": "ansible/roles/sf-hound/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T14:22:28Z",
+      "side": 1,
+      "message": "¯\\_(ツ)_/¯ it doesn\u0027t feel very complex, I can contribute it if you\u0027d like -- I think it\u0027s more important to support it *in the packaging* than in the role... i.e, we can just leave the defaults in the role/sf implementation but the packaging should support different config.",
+      "parentUuid": "da37b569_87f5aa84",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_87ce0a59",
         "filename": "ansible/roles/sf-hound/tasks/setup.yml",
         "patchSetId": 2
@@ -125,6 +143,24 @@
     },
     {
       "key": {
+        "uuid": "da37b569_27205ef7",
+        "filename": "ansible/roles/sf-hound/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T14:22:28Z",
+      "side": 1,
+      "message": "Yeah I think that would make more sense than using /root/config (especially if we want to eventually switch to a \"sf\" user instead of running everything as root, for example)",
+      "parentUuid": "da37b569_47efa2b0",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_c7b412d3",
         "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
         "patchSetId": 2
@@ -201,6 +237,24 @@
       "side": 1,
       "message": "Is there a reason we should do that?",
       "parentUuid": "da37b569_e7dcb61a",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_471d62bc",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T14:22:28Z",
+      "side": 1,
+      "message": "My \"localrepos\" implementation allows hound to index repositories from the local filesystem instead of remotely in order to prevent hound from constantly hammering GitHub.\n\nIt\u0027s not perfect and I\u0027m not saying we should do this here. I was mostly saying \"here\u0027s what I did in case it gives you any ideas\".",
+      "parentUuid": "da37b569_0730ba55",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
