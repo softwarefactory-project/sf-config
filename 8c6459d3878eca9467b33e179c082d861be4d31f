@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da37b569_271a9e18",
+        "filename": "ansible/roles/sf-dlrn/tasks/install.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T10:37:52Z",
+      "side": 1,
+      "message": "mock and git-review are already pulled by the dlrn package.",
+      "revId": "8c6459d3878eca9467b33e179c082d861be4d31f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_871daa11",
+        "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T10:37:52Z",
+      "side": 1,
+      "message": "owner could be root i think",
+      "revId": "8c6459d3878eca9467b33e179c082d861be4d31f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_67e74613",
+        "filename": "ansible/roles/sf-dlrn/templates/gateway-dlrn.conf.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T10:37:52Z",
+      "side": 1,
+      "message": "Please use {{ dlrn_host }}",
+      "revId": "8c6459d3878eca9467b33e179c082d861be4d31f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_87e4ca0d",
+        "filename": "ansible/roles/sf-dlrn/templates/gitconfig.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T10:37:52Z",
+      "side": 1,
+      "message": "Perhaps untabify this ?",
+      "revId": "8c6459d3878eca9467b33e179c082d861be4d31f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_27f13ece",
+        "filename": "ansible/roles/sf-dlrn/templates/projects.ini.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-07T10:37:52Z",
+      "side": 1,
+      "message": "s#https://{{ fqdn }}#{{ gateway_url }}#",
+      "revId": "8c6459d3878eca9467b33e179c082d861be4d31f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
