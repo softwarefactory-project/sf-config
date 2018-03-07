@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da37b569_c7ebb2af",
+        "filename": "ansible/roles/sf-hound/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T12:58:08Z",
+      "side": 1,
+      "message": "This can be done through sysconfig, e.g:\n\n    https://github.com/dmsimard/hound-localrepos/blob/master/files/hound.service#L9-L11\n    https://github.com/dmsimard/hound-localrepos/blob/master/tasks/hound.yml#L34\n    https://github.com/dmsimard/hound-localrepos/blob/master/templates/hound.config.j2",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 60
+      },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_87ce0a59",
+        "filename": "ansible/roles/sf-hound/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T12:58:08Z",
+      "side": 1,
+      "message": "NB /usr/local/bin is not in default PATH for default CentOS installations",
+      "range": {
+        "startLine": 5,
+        "startChar": 10,
+        "endLine": 5,
+        "endChar": 24
+      },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_e7035675",
+        "filename": "ansible/roles/sf-hound/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T12:58:08Z",
+      "side": 1,
+      "message": "Why /root/config ?",
+      "range": {
+        "startLine": 20,
+        "startChar": 15,
+        "endLine": 20,
+        "endChar": 27
+      },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_c7b412d3",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T12:58:08Z",
+      "side": 1,
+      "message": "I\u0027ve always used \"/usr/bin/env\" but it looks like \"/bin/env\" is a thing too ¯\\_(ツ)_/¯",
+      "range": {
+        "startLine": 1,
+        "startChar": 2,
+        "endLine": 1,
+        "endChar": 10
+      },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_e7dcb61a",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T12:58:08Z",
+      "side": 1,
+      "message": "I\u0027ve done this slightly differently but it\u0027s mostly because in my use case I synchronize the repositories locally before adding them to the config: https://github.com/dmsimard/hound-localrepos/blob/master/files/localrepos.py",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 55
+      },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_07099a95",
+        "filename": "refarch/allinone.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-03-07T12:58:08Z",
+      "side": 1,
+      "message": "Another example reference architecture could split the git and hound services onto another node I guess ?",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 39,
+        "endChar": 13
+      },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
