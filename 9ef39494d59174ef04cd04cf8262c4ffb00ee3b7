@@ -79,6 +79,24 @@
     },
     {
       "key": {
+        "uuid": "da37b569_2ab9032f",
+        "filename": "ansible/roles/sf-hound/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-08T00:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da37b569_47032210",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_87ce0a59",
         "filename": "ansible/roles/sf-hound/tasks/setup.yml",
         "patchSetId": 2
@@ -131,6 +149,24 @@
       "writtenOn": "2018-03-07T18:41:53Z",
       "side": 1,
       "message": "I\u0027m thinking we should run the hound-config-generator in a sf-config post-config action in case we update the generator script to have changes the hound config file applied when sf-config run w/o the need to have a change merged in the config repo. wdyt ?",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_ea81db4e",
+        "filename": "ansible/roles/sf-hound/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-08T00:50:33Z",
+      "side": 1,
+      "message": "If the script is modified, then we could remove /var/lib/software-factory/state/hound_config to force a regeneration.\nOr let\u0027s add the post-config action when actually needed.",
+      "parentUuid": "da37b569_eafebb04",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -213,6 +249,24 @@
         "endLine": 20,
         "endChar": 27
       },
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_4ab6c73e",
+        "filename": "ansible/roles/sf-hound/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-08T00:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da37b569_aa08b329",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -319,6 +373,24 @@
     },
     {
       "key": {
+        "uuid": "da37b569_6aaf0be4",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-08T00:50:33Z",
+      "side": 1,
+      "message": "I think this implementation is ok because it\u0027s fetching from the local gerrit.",
+      "parentUuid": "da37b569_471d62bc",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da37b569_c7165255",
         "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
         "patchSetId": 2
@@ -348,6 +420,24 @@
       "side": 1,
       "message": "Tested a rpm-master on a repo and indexation was OK with this new code block.\n\n```\nfor repo, attr in data.get(\"resources\", {}).get(\"repos\", {}).items():\n    config[\"repos\"][repo] \u003d {\n        \"url\": \"https://sftests.com/r/%s.git\" % repo,\n        \"vcs-config\": {\n            \"ref\": attr.get(\u0027default-branch\u0027, \u0027master\u0027)\n        },\n        \"url-pattern\": {\n            \"base-url\": \"https://sftests.com/r/gitweb?p\u003d%s.git;a\u003dblob;f\u003d{path}{anchor}\" % repo,\n            \"anchor\": \"#l{line}\",\n        }\n    }\n```",
       "parentUuid": "da37b569_c7165255",
+      "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da37b569_8aaccfee",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-08T00:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da37b569_0a043f13",
       "revId": "9ef39494d59174ef04cd04cf8262c4ffb00ee3b7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
