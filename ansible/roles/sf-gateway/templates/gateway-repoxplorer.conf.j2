@@ -10,6 +10,6 @@ Alias "/repoxplorer/javascript/" "/var/www/static/js/"
 <IfModule mod_proxy.c>
     ProxyPassMatch "/repoxplorer/css/(?!repoxplorer\.css).*" !
     ProxyPassMatch "/repoxplorer/javascript/(?!repoxplorer\.js).*" !
-    ProxyPass /repoxplorer/ http://repoxplorer.{{ fqdn }}:51000/
-    ProxyPassReverse /repoxplorer/ http://repoxplorer.{{ fqdn }}:51000/
+    ProxyPass /repoxplorer/ http://repoxplorer.{{ fqdn }}:20002/
+    ProxyPassReverse /repoxplorer/ http://repoxplorer.{{ fqdn }}:20002/
 </IfModule>

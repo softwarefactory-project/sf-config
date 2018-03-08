@@ -17,4 +17,3 @@ class TestRepoxplorer:
             srv = host.service(service)
             assert srv.is_running
             assert srv.is_enabled
-        assert host.socket("tcp://0.0.0.0:51000").is_listening
