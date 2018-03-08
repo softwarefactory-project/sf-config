@@ -110,9 +110,9 @@ def update_sfconfig(args):
     # Check for duplicate gerrit connection bug
     to_delete = None
     for connection in data["zuul"].get("gerrit_connections", []):
-        print("Warning: Gerrit connection named 'gerrit' is reserved for "
-              "the internal gerrit")
         if connection["name"] == "gerrit":
+            print("Warning: Gerrit connection named 'gerrit' is reserved for "
+                  "the internal gerrit")
             to_delete = connection
     if to_delete:
         data["zuul"]["gerrit_connections"].remove(to_delete)
@@ -137,8 +137,9 @@ def update_arch(args):
     for host in data['inventory']:
         # Set remote flag
         if host['roles'] == ["hypervisor-oci"]:
-            host['remote'] = True
-            dirty = True
+            if not host.get('remote'):
+                host['remote'] = True
+                dirty = True
         # Remove legacy roles
         if 'pages' in host['roles']:
             host['roles'].remove('pages')
