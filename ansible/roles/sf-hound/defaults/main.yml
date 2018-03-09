@@ -1,0 +1,10 @@
+---
+role_actions:
+  - install
+  - setup
+  - update
+  - disable
+
+hound_port: 6080
+# Poll frequency in seconds, default to 12 hours
+hound_poll_frequency: 43200

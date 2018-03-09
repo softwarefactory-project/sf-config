@@ -1,0 +1,22 @@
+---
+- name: Disable services
+  service:
+    name: "houndd"
+    state: stopped
+    enabled: "no"
+  ignore_errors: "yes"
+
+- block:
+    - name: Remove files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/hound
+        - /var/lib/hound
+
+    - name: Remove packages
+      yum:
+        name: hound
+        state: absent
+  when: erase == True

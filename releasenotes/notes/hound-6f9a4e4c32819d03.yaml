@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new component named "hound" can be added to the architecture to enable
+    a code search service.
