@@ -4,6 +4,11 @@
     path: /var/lib/software-factory/ansible/ara.cfg
   register: _ara_cfg
 
+- name: Setup logrotate.conf
+  copy:
+    src: logrotate.conf
+    dest: /etc/logrotate.d/software-factory
+
 - name: Setup ~/.ansible.cfg
   copy:
     src: /var/lib/software-factory/ansible/ara.cfg

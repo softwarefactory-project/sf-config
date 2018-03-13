@@ -1,6 +1,15 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
 
+# TODO: remove this once cauth package release 5 is used
+- name: Fix /var/log/cauth insecure permissions
+  file:
+    path: /var/log/cauth
+    owner: apache
+    group: apache
+    mode: 0750
+    state: directory
+
 - name: Hash admin password
   shell: python <<<"{{hash_code}}'{{authentication.admin_password}}'{{hash_code_end}}"
   register: admin_password_hashed
