@@ -21,6 +21,14 @@ port={{ conn['port']|default('22') }}
 
 {% endfor %}
 
+{% for conn in zuul_git_connections|default([]) %}
+[connection {{ conn['name'] }}]
+driver=git
+baseurl={{ conn['baseurl'] }}
+poll_delay={{ conn['poll_delay']|default('7200') }}
+
+{% endfor %}
+
 [connection smtp]
 driver=smtp
 server=localhost

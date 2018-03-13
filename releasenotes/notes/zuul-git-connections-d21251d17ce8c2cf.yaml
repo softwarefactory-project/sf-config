@@ -1,0 +1,3 @@
+---
+features:
+  - A new 'git_connections' sfconfig options enables zuul git driver setup.

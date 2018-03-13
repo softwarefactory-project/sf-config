@@ -122,6 +122,10 @@ def update_sfconfig(args):
         del data['authentication']['allowed_proxy_prefixes']
         dirty = True
 
+    if "git_connections" not in data["zuul"]:
+        data["zuul"]["git_connections"] = []
+        dirty = True
+
     args.save_sfconfig = dirty
 
 

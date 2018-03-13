@@ -174,6 +174,13 @@ zuul:
   #      # Github Webhook settings
   #      api_token: XXX # See https://help.github.com/articles/creating-an-access-token-for-command-line-use/
 
+  git_connections: []
+  #    - name: "git.openstack.org"
+  #      # project name will be appended to it.
+  #      baseurl: "https://git.openstack.org/"
+  #      # refresh rate in second
+  #      poll_delay: 7200
+
   # To use openstack-infra/zuul-jobs, review.openstack.org needs to be added to gerrit_connections list too
   upstream_zuul_jobs: false
 

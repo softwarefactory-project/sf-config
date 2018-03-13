@@ -106,14 +106,21 @@ class ZuulScheduler(Component):
         super(ZuulScheduler, self).prepare(args)
         self.openstack_connection_name = None
         if args.sfconfig["zuul"]["upstream_zuul_jobs"]:
-            # Check review.openstack.org is configured
+            # Check if review.openstack.org is configured
             for connection in args.sfconfig.get("zuul", {}).get(
                     "gerrit_connections", []):
                 if connection["hostname"] == "review.openstack.org":
                     self.openstack_connection_name = connection["name"]
                     break
             if not self.openstack_connection_name:
-                fail("To use upstream zuul_jobs, review.openstack.org needs to"
+                # Check if git.openstack.org is configured
+                for connection in args.sfconfig.get("zuul", {}).get(
+                        "git_connections", []):
+                    if "git.openstack.org" in connection["baseurl"]:
+                        self.openstack_connection_name = connection["name"]
+                        break
+            if not self.openstack_connection_name:
+                fail("To use upstream zuul-jobs, review.openstack.org needs to"
                      " be configured, e.g.: --zuul-external-gerrit %s" %
                      EXT_GERRIT)
 
@@ -155,6 +162,7 @@ class ZuulScheduler(Component):
         )
         args.glue.setdefault("zuul_ssh_known_hosts", [])
         args.glue["zuul_github_connections"] = []
+        args.glue["zuul_git_connections"] = []
 
         # Add local gerrit if available
         if "gerrit" in args.glue["roles"]:
@@ -195,6 +203,8 @@ class ZuulScheduler(Component):
                 "port": github_connection.get("port", 22)
             })
             args.glue["zuul_github_connections"].append(github_connection)
+        for git_connection in zuul_config.get("git_connections", []):
+            args.glue["zuul_git_connections"].append(git_connection)
 
 
 class ZuulWeb(Component):
