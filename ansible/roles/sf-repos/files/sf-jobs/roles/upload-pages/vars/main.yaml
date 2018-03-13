@@ -1,0 +1,2 @@
+zuul_pagesserver_root: /var/www/pages/
+zuul_pagesvhosts_root: /etc/httpd/pages.d/

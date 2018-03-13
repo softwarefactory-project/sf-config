@@ -1,0 +1,44 @@
+---
+- name: Ensure sf-jobs sub-dir exists
+  file:
+    path: "{{ sf_jobs_clone_dir }}/{{ item }}"
+    state: directory
+  with_items:
+    - playbooks
+    - roles
+    - zuul.d
+
+- name: Sync sf-jobs static files
+  synchronize:
+    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/sf-jobs/{{ item }}"
+    dest: "{{ sf_jobs_clone_dir }}/{{ item }}"
+    archive: "no"
+    times: "no"
+    checksum: "yes"
+    delete: "yes"
+    perms: "yes"
+    recursive: "yes"
+  with_items:
+    - README
+    - playbooks/ansible/
+    - playbooks/linters/
+    - roles/ansible-lint/
+    - roles/ansible-review/
+    - roles/ansible-spec/
+    - roles/build-pages/
+    - roles/buildset-artifacts-location/
+    - roles/ensure-ansible/
+    - roles/ensure-ansible-lint/
+    - roles/ensure-ansible-review/
+    - roles/ensure-ansible_spec/
+    - roles/ensure-rake/
+    - roles/emit-job-report/
+    - roles/fetch-buildset-artifacts/
+    - roles/fetch-pages/
+    - roles/linters/
+    - roles/submit-log-processor-jobs/
+    - roles/submit-logstash-jobs/
+    - roles/upload-galaxy/
+    - roles/upload-pages/
+    - zuul.d/_included-jobs.yaml
+  register: sf_jobs_files

@@ -1,0 +1,17 @@
+---
+- name: Run ansible-lint
+  shell: "ansible-lint -p --nocolor {{ ansible_lint_roles_dir }}/*"
+  register: _ansible_lint
+  ignore_errors: yes
+  args:
+    chdir: "{{ zuul.project.src_dir }}"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+  when: ansible_lint_roles_dir
+
+- name: Set linter failure to true
+  set_fact:
+    linter_failure: true
+  when:
+    - ansible_lint_roles_dir
+    - _ansible_lint.rc

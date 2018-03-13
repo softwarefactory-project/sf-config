@@ -1,0 +1,3 @@
+---
+- name: Ensure ansible-lint is installed
+  shell: type ansible-lint || pip install --user ansible-lint

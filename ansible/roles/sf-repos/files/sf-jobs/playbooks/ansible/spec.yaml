@@ -1,0 +1,7 @@
+---
+- hosts: all
+  roles:
+    - ensure-rake
+    - ensure-ansible_spec
+    - ensure-ansible
+    - ansible-spec

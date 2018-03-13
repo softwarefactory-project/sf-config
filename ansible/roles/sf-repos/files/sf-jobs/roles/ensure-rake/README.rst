@@ -1,0 +1,1 @@
+Ensure rake is installed

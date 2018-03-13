@@ -1,0 +1,9 @@
+---
+- name: Run ansible-review on yaml files
+  shell: >
+    find * -name "*.yml" -or -name "*.yaml" |
+        xargs --no-run-if-empty ansible-review
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+  args:
+    chdir: "{{ zuul.project.src_dir }}"

@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+    ServerName {{ vhost_name }}.{{ fqdn }}
+    Alias / /var/www/pages/{{ zuul.project.name }}/
+</VirtualHost>
+
+#<VirtualHost *:443>
+#    ServerName {{ vhost_name }}.{{ fqdn }}
+#    Alias / /var/www/pages/{{ zuul.project.name }}/
+#    SSLEngine on
+#    SSLCertificateFile /etc/pki/tls/certs/{{ fqdn }}.crt
+#    SSLCertificateChainFile /etc/pki/tls/certs/{{ fqdn }}-chain.crt
+#    SSLCertificateKeyFile  /etc/pki/tls/private/{{ fqdn }}.key
+#</VirtualHost>

@@ -1,0 +1,5 @@
+---
+- name: Ensure ansible_spec is installed
+  shell: type ansiblespec-init || gem install --user-install ansible_spec
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.gem/ruby/bin/"

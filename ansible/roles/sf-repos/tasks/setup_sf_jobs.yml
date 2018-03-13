@@ -1,0 +1,62 @@
+---
+- stat:
+    path: /root/sf-jobs
+  register: sf_jobs_done
+
+- block:
+    - name: Check if repository exists
+      command: python -c "import requests; print('sf-jobs' in requests.get('{{ managesf_internal_url }}/v2/resources').json().get('resources', {}).get('repos', {}))"
+      register: jobs_resource
+
+    - name: Create empty resources file
+      shell: "echo 'resources: {}' > /root/empty_resources.yaml"
+      when: jobs_resource.stdout == 'False'
+
+    - name: Create repository
+      command: "{{ item }}"
+      args:
+        chdir: /root/config
+      with_items:
+        - git fetch --all
+        - git reset --hard origin/master --
+        - git clean -f -x -d
+        - /usr/share/sf-config/scripts/create_project_resources.py --repo sf-jobs --core admin@{{ fqdn }} resources/_sf-jobs.yaml
+        - /usr/local/bin/resources.sh direct_apply /root/empty_resources.yaml resources/_sf-jobs.yaml
+        - git add resources/_sf-jobs.yaml
+        - git commit -m 'Create sf-jobs repository'
+        - git push git+ssh://gerrit/config master
+      when: jobs_resource.stdout == 'False'
+
+    - name: Create a temporary clone directory
+      command: mktemp -d
+      register: jobs_tmp
+
+    - name: Set correct temporary mode to prevent change from rsync
+      file:
+        path: "{{ jobs_tmp.stdout }}"
+        mode: 0755
+        state: directory
+
+    - set_fact:
+        sf_jobs_clone_dir: "{{ jobs_tmp.stdout }}"
+
+    - name: Clone the sf-jobs repository
+      git:
+        repo: git+ssh://gerrit/sf-jobs
+        dest: "{{ sf_jobs_clone_dir }}"
+
+    - include_tasks: sync_sf_jobs_content.yml
+
+    - name: Push zuul jobs repo
+      command: "git {{ item }}"
+      args:
+        chdir: "{{ sf_jobs_clone_dir }}"
+      with_items:
+        - "add -A"
+        - "commit -m 'Initialize sf-jobs repository'"
+        - "push git+ssh://gerrit/sf-jobs master"
+      when: sf_jobs_files|changed
+
+    - name: Save zuul jobs repo
+      command: "mv {{ sf_jobs_clone_dir }} /root/sf-jobs"
+  when: sf_jobs_done.stat.exists != True

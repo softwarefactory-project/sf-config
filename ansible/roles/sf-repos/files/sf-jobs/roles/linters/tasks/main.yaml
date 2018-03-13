@@ -1,0 +1,12 @@
+---
+- name: Set linter failure to false
+  set_fact:
+    linter_failure: false
+
+- include: "lint_{{ item }}.yaml"
+  with_items: "{{ linters }}"
+
+- name: Fail if one linter failed
+  fail:
+    msg: "One or more file(s) failed lint checks"
+  when: linter_failure

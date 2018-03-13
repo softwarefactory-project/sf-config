@@ -33,7 +33,6 @@
     - zuul
     - zuul.d
     - playbooks/base
-    - roles/emit-job-report
 
 - name: Ensure retro-compatibility symlinks
   file:
@@ -57,7 +56,6 @@
   with_items:
     - playbooks/config
     - playbooks/pages
-    - roles/emit-job-report
   register: _config_static_files
 
 - name: Update config templates

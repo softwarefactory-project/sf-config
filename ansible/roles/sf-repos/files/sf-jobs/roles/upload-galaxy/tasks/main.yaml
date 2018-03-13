@@ -1,0 +1,18 @@
+---
+- name: Galaxy login
+  command: >
+    ansible-galaxy login --github-token={{ galaxy_info.github_token }}
+      {% if galaxy_api_server %}--server={{ galaxy_api_server }}{% endif %}
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+  no_log: True
+
+- name: Galaxy import
+  command: >
+    ansible-galaxy import
+      {% if zuul.tag|default(None) %}--branch={{ zuul.tag }}{% endif %}
+      {% if galaxy_api_server %}--server={{ galaxy_api_server }}{% endif %}
+      {{ galaxy_info.github_username|default(zuul.project.name.split()[0]) }}
+      {{ galaxy_project_name|default(zuul.project.name.split()[1]) }}
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"

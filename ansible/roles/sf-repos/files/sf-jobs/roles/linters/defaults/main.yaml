@@ -1,0 +1,10 @@
+---
+linters:
+  - flake8
+  - doc8
+  - bashate
+  - yamllint
+  - golint
+  - ansible-lint
+
+ansible_lint_roles_dir: ""

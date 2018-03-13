@@ -1,3 +1,4 @@
+# This file is managed by ansible, do not edit directly
 ---
 - tenant:
     name: 'local'
@@ -6,10 +7,11 @@
       gerrit:
         config-projects:
           - config
-{% if not zuul_upstream_zuul_jobs %}
         untrusted-projects:
+          - sf-jobs
+{% if not zuul_upstream_zuul_jobs %}
           - zuul-jobs:
-              shadow: config
+              shadow: sf-jobs
 {% endif %}
 {% endif %}
 {% if zuul_upstream_zuul_jobs %}
@@ -18,5 +20,5 @@
           - openstack-infra/zuul-jobs:
               include:
                 - job
-              shadow: config
+              shadow: sf-jobs
 {% endif %}

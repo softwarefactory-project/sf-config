@@ -1,0 +1,14 @@
+---
+- name: Run ansible test site
+  command: ansible-playbook -i hosts "{{ ansible_test_site_file | basename }}"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+  args:
+    chdir: "{{ zuul.project.src_dir }}/{{ ansible_test_site_file | dirname }}"
+
+- name: Run rake tests
+  command: rake all
+  args:
+    chdir: "{{ zuul.project.src_dir }}/{{ ansible_test_site_file | dirname }}"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.gem/ruby/bin"

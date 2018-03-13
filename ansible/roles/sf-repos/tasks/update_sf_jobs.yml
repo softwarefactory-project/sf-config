@@ -1,0 +1,24 @@
+---
+- set_fact:
+    sf_jobs_clone_dir: /root/sf-jobs
+
+- name: Sync sf-jobs local copy
+  command: "git {{ item }}"
+  args:
+    chdir: "{{ sf_jobs_clone_dir }}"
+  with_items:
+    - "fetch --all"
+    - "reset --hard origin/master --"
+    - "clean -f -x -d"
+
+- include_tasks: sync_sf_jobs_content.yml
+
+- name: Push sf-jobs change
+  command: "git {{ item }}"
+  args:
+    chdir: "{{ sf_jobs_clone_dir }}"
+  with_items:
+    - "add -A"
+    - "commit -m 'Update sf-jobs default definitions'"
+    - "push git+ssh://gerrit/sf-jobs master"
+  when: sf_jobs_files|changed

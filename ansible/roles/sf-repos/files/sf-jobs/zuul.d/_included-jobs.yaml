@@ -1,0 +1,63 @@
+# This file is managed by ansible, do not edit directly
+---
+- job:
+    name: linters
+    description: |
+      Run linters.
+
+      Responds to these variables:
+
+      .. zuul:jobvar:: linters
+         :default: [flake8,doc8,bashate,yamllint,ansible-lint,golint]
+
+         List of linters to execute.
+
+      .. zuul:jobvar:: ansible_lint_roles_dir
+
+         Set this variable to the Ansible roles directory.
+    run: playbooks/linters/run.yaml
+
+- job:
+    name: ansible-lint
+    description: |
+      Run ansible-lint.
+
+      Responds to these variables:
+
+      .. zuul:jobvar:: ansible_lint_roles_dir
+
+         The path to the Ansible roles directory.
+    run: playbooks/ansible/lint.yaml
+
+- job:
+    name: ansible-review
+    description: |
+      Run ansible-review.
+
+    run: playbooks/ansible/review.yaml
+
+- job:
+    name: ansible-import-to-galaxy
+    description: |
+      Import project to the Ansible galaxy.
+
+      Requires a variable ``galaxy_info`` to be set which is a dict containing
+      at least a ``github_username`` and ``github_attribute`` attribute.
+
+      Responds to these variables:
+
+      .. zuul:jobvar:: galaxy_project_name
+
+         The GitHub project name.
+
+- job:
+    name: ansible-spec
+    description: |
+      Run ansible_spec tests
+
+      Responds to these variables:
+
+      .. zuul:jobvar:: ansible_test_site_file
+         :default: tests/site.yml
+
+         The test site file to deploy.

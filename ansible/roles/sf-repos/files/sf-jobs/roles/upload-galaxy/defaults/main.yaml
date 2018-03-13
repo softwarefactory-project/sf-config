@@ -1,0 +1,2 @@
+---
+galaxy_api_server: "{{ galaxy_info.api_server|default(None) }}"

@@ -1,0 +1,2 @@
+---
+ansible_test_site_file: tests/site.yml

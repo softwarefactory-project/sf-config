@@ -1,12 +1,16 @@
 ---
 - include_tasks: setup_config_repo.yml
 
+- include_tasks: setup_sf_jobs.yml
+  when: "'zuul' in roles"
+
 - include_tasks: setup_zuul_jobs.yml
   when: "'zuul' in roles"
 
 # Ensure repo content template are updated
 - include_tasks: update_config_repo.yml
   when: "'zuul' in roles"
+- include_tasks: update_sf_jobs.yml
 - include_tasks: update_zuul_jobs.yml
   when: "'zuul' in roles"
 

@@ -1,0 +1,2 @@
+---
+pages_artifacts_dir: "src/{{ zuul.project.canonical_hostname }}/pages-artifacts/"

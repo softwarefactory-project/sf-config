@@ -1,0 +1,15 @@
+---
+- name: Run doc8
+  shell: >
+    find * -name "*.rst" | xargs --no-run-if-empty doc8
+  register: _doc8
+  ignore_errors: yes
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+  args:
+    chdir: "{{ zuul.project.src_dir }}"
+
+- name: Set linter failure to true
+  set_fact:
+    linter_failure: true
+  when: _doc8.rc

@@ -1,0 +1,32 @@
+- name: Create project pages directory
+  file:
+    path: "{{ zuul_pagesserver_root }}/{{ zuul.project.name }}"
+    state: directory
+    recurse: yes
+    mode: 0775
+
+- name: Check fqdn and vhost_name variables
+  fail:
+    msg: "Fail as fqdn and vhost_name are not set"
+  when: (not vhost_name is defined or not vhost_name or
+         not fqdn is defined or not fqdn)
+
+- name: Create vhost file
+  template:
+    src: templates/vhost.conf.j2
+    dest: "{{ zuul_pagesvhosts_root }}/pages-{{ zuul.project.name | regex_replace('/', '_') | regex_replace('\\.\\.', '') }}.conf"
+    mode: 0644
+
+- name: Upload website to publication server
+  synchronize:
+    src: "{{ zuul.executor.log_root }}/pages/"
+    dest: "{{ zuul_pagesserver_root }}/{{ zuul.project.name }}/"
+    delete: yes
+    recursive: yes
+  no_log: true
+
+# pageuser must be authorized to reload
+# httpd via sudo. However using become and systemd
+# facility fails to match the sudoerd rule.
+- name: reload httpd
+  command: sudo /bin/systemctl reload httpd

@@ -1,0 +1,5 @@
+---
+- name: Ensure rake is installed
+  shell: type rake || gem install --user-install rake
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.gem/ruby/bin/"

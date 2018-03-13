@@ -1,0 +1,14 @@
+---
+- name: "Run bashate"
+  shell: find * -name "*.sh" | xargs --no-run-if-empty bashate
+  register: _bashate
+  ignore_errors: yes
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+  args:
+    chdir: "{{ zuul.project.src_dir }}"
+
+- name: Set linter failure to true
+  set_fact:
+    linter_failure: true
+  when: _bashate.rc

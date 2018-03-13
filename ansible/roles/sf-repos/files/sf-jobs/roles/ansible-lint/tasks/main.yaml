@@ -1,0 +1,26 @@
+---
+- name: Run ansible-lint on yaml files
+  shell: >
+    find * -name "*.yml" -or -name "*.yaml" |
+        xargs --no-run-if-empty ansible-lint -p --nocolor
+  register: __files
+  ignore_errors: yes
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+  args:
+    chdir: "{{ zuul.project.src_dir }}"
+
+- name: Run ansible-lint on roles dir
+  shell: "ansible-lint -p --nocolor {{ ansible_lint_roles_dir }}/*"
+  register: __roles
+  ignore_errors: yes
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+  args:
+    chdir: "{{ zuul.project.src_dir }}"
+  when: ansible_lint_roles_dir
+
+- name: Fail if linter failed
+  fail:
+    msg: "One or more file(s) failed lint checks"
+  when: (ansible_lint_roles_dir and __roles.rc) or __files.rc

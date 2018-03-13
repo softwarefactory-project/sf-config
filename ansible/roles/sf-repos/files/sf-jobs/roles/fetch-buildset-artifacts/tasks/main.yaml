@@ -1,0 +1,12 @@
+---
+- name: Fetch buildset artifacts
+  no_log: true
+  command: >
+    wget --recursive
+         --execute robots=off
+         --no-parent
+         --no-host-directories
+         --reject "index.html*"
+         --directory-prefix buildset/
+         --cut-dirs={{ buildset_artifacts_url.split('/') | length - 3 }}
+         {{ buildset_artifacts_url }}/
