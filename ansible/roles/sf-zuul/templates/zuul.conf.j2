@@ -34,6 +34,7 @@ log_config={{ zuul_conf_dir }}/merger-logging.yaml
 state_dir={{ zuul_lib_dir }}
 command_socket={{ zuul_lib_dir }}/executor.socket
 git_dir={{ zuul_lib_dir }}/executor/
+disk_limit_per_job={{ zuul_executor_disk_limit|default(250) }}
 private_key_file={{ zuul_lib_dir }}/.ssh/id_rsa
 finger_port=7979
 trusted_rw_paths=/var/lib/log-classify

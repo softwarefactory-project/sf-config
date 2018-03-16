@@ -8,6 +8,13 @@
     dest: /usr/bin/zuul
     mode: 0755
 
+- name: Expose public keys
+  copy:
+    content: "{{ zuul_rsa_pub }}"
+    dest: "/var/www/keys/zuul_rsa.pub"
+    mode: "0444"
+  delegate_to: "{{ gateway_host }}"
+
 - name: Prepare config-check files in /opt/sf
   block:
     - name: Create /opt/sf directory
