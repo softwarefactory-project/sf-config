@@ -28,3 +28,9 @@
   args:
     chdir: /etc/software-factory/
     creates: /etc/software-factory/.git
+
+- name: Fetch config repo public key
+  get_url:
+    url: "https://{{ remote_zuul_url }}/keys/{{ sf_tenant_name }}/{{ config_repo_name }}.pub"
+    dest: /var/lib/software-factory/bootstrap-data/certs/config.pub
+  when: remote_zuul_url is defined
