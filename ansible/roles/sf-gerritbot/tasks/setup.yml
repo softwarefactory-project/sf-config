@@ -1,4 +1,5 @@
 ---
+# TODO(tristan): create a gerritbot dedicated key and user on gerrit
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=gerritbot ssh_key=zuul_rsa"
 
 - name: "Setup gerritbot.conf"
