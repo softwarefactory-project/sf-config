@@ -84,7 +84,7 @@
       fetch:
         flat: "yes"
         src: "{{ zuul_lib_dir }}/keys/gerrit/config.pub"
-        dest: "/var/lib/software-factory/certs/config.pub"
+        dest: "/var/lib/software-factory/bootstrap-data/certs/config.pub"
 
     - name: Install zuul-changes.py script
       template:

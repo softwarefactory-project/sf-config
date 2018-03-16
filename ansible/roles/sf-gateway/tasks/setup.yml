@@ -36,14 +36,8 @@
     src: sf-update-dashboard.py
     dest: /usr/local/bin/sf-update-dashboard
     mode: 0555
-
-- name: Install sf-update-dashboard command for config-check
-  copy:
-    src: sf-update-dashboard.py
-    dest: /usr/local/bin/sf-update-dashboard
-    mode: 0555
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['zuul-executor'] }}"
+  with_items: "{{ executor_hosts | union( groups['gateway'] ) }}"
 
 - name: Set robots.txt
   copy:
@@ -121,6 +115,7 @@
     mode: 0640
     owner: managesf
     group: apache
+  when: "'managesf' in roles"
 
 - name: Read zuul-job version
   command: rpm -q rh-python35-zuul-jobs-doc
@@ -195,29 +190,6 @@
     group: apache
     mode: 0640
   notify: apache reload
-
-- name: Install service file for socat_gerrit
-  copy:
-    src: socat_gerrit.service
-    dest: /lib/systemd/system/socat_gerrit.service
-    owner: root
-    group: root
-    mode: 0644
-  register: install_service_file
-  when: groups['gerrit'] != groups['gateway']
-
-- name: Reload systemctl daemon
-  shell: "systemctl daemon-reload"
-  when:
-    - install_service_file|changed
-    - groups['gerrit'] != groups['gateway']
-
-- name: Start socat_gerrit
-  service:
-    name: socat_gerrit
-    enabled: "yes"
-    state: started
-  when: groups['gerrit'] != groups['gateway']
 
 - include_tasks: setup_pages.yml
 
