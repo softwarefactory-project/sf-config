@@ -70,7 +70,6 @@
         config_clone_dir: "{{ conf_tmp.stdout }}"
 
     - include_tasks: sync_config_repo_content.yml
-      when: "'zuul' in roles"
 
     # Commit
     - name: Push config repo

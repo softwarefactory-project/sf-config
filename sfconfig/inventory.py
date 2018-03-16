@@ -302,6 +302,8 @@ def enable_action(args):
                 testinfra.append("--connection=ssh")
                 testinfra.append("--hosts=%s" % host["hostname"])
             for role in host["roles"]:
+                if args.glue.get("tenant-deployment") and role == "gerrit":
+                    continue
                 if role in testinfra_tests:
                     tests.append(role)
             if host.get("remote") is not True:
@@ -519,6 +521,9 @@ def generate(args):
         write_playbook(playbook_path, playbook)
 
     # Generate /etc/hosts file
+    # including network static_hostname defined in sfconfig.yaml
+    host_arch = copy.copy(arch)
+    host_arch["network"] = args.sfconfig["network"]
     render_template("/etc/hosts",
                     "%s/etc-hosts.j2" % templates,
-                    arch)
+                    host_arch)
