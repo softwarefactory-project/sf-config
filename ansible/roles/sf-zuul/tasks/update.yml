@@ -14,19 +14,11 @@
   register: upstreamconfig
 
 - block:
-    - name: Update zuul main.yaml
-      command: /usr/share/sf-config/scripts/zuul-conf-merger.py zuul/ "{{ zuul_conf_dir }}/main.yaml"
-      args:
-        chdir: /root/config
-
-    - name: Copy all python scripts
-      synchronize:
-        src: /root/config/zuul/
-        dest: "{{ zuul_conf_dir }}"
-        delete: yes
-        rsync_opts:
-          - "--include=*.py"
-          - "--exclude=*"
+    - name: Update zuul main.yaml by calling managesf
+      uri:
+        url: http://localhost:20001/v2/configurations/zuul
+        method: GET
+        dest: "{{ zuul_conf_dir }}/main.yaml"
 
     - name: Check if zuul-scheduler is running
       command: systemctl -q is-active rh-python35-zuul-scheduler

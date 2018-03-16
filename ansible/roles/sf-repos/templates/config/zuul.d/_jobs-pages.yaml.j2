@@ -1,4 +1,5 @@
 ---
+{% if config_key_exists %}
 - job:
     name: build-and-publish-pages
     parent: base
@@ -24,3 +25,5 @@
     success-url: 'pages/'
     vars:
       src_dir: /
+
+{% endif %}
