@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: "Check upstream repoxplorer config"
-  command: git log --oneline repoxplorer/ resources/
+  command: git log -n 3 --oneline repoxplorer/ resources/
   args:
     chdir: /root/config
   register: upstreamconfig
