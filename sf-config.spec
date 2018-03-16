@@ -13,6 +13,7 @@ BuildArch:      noarch
 
 Requires:       python-jinja2
 Conflicts:      epel-release
+Requires:       python2-six
 
 Buildrequires:  python2-devel
 Buildrequires:  python-setuptools
