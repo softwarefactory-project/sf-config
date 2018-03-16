@@ -207,6 +207,14 @@ class ZuulScheduler(Component):
             args.glue["zuul_git_connections"].append(git_connection)
 
 
+class ZuulExecutor(Component):
+    role = "zuul-executor"
+    require_role = ["zuul-scheduler"]
+
+    def configure(self, args, host):
+        args.glue["executor_hosts"].append(host["hostname"])
+
+
 class ZuulWeb(Component):
     role = "zuul-web"
     require_role = ["zuul-scheduler"]

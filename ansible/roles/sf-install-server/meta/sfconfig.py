@@ -11,6 +11,7 @@
 # under the License.
 
 from sfconfig.components import Component
+from sfconfig.utils import fail
 
 
 def get_sf_version():
@@ -32,6 +33,29 @@ def get_previous_version():
 
 
 class InstallServer(Component):
+    def usage(self, parser):
+        parser.add_argument("--remote-zuul-url",
+                            help="The zuul-web url of a remote zuul service")
+        parser.add_argument("--tenant-name",
+                            help="The name of the remote zuul tenant")
+        parser.add_argument("--config-repo-url",
+                            help="The url of the tenant config repository")
+
+    def argparse(self, args):
+        if args.remote_zuul_url:
+            args.glue["remote_zuul_url"] = args.remote_zuul_url
+            if args.tenant_name is None:
+                fail("--tenant_name is required")
+            args.glue["sf_tenant_name"] = args.tenant_name
+            if args.config_repo_url is None:
+                fail("--config-repo-url is required")
+            args.glue["config_repo_url"] = args.config_repo_url
+            args.glue["internal_config_repo_url"] = args.config_repo_url
+        else:
+            if args.tenant_name is not None or \
+               args.config_repo_url is not None:
+                    fail("--remote-zuul-url is required")
+
     def configure(self, args, host):
         self.get_or_generate_CA(args)
         self.get_or_generate_ssh_key(args, "service_rsa")

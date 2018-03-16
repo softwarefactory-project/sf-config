@@ -153,3 +153,48 @@
 - name: "Set ACL"
   command: /usr/share/sf-config/scripts/gerrit-set-default-acl.sh
   when: gerrit_allprojects.stat.exists == False
+
+- name: "Setup socat service"
+  block:
+    - name: Install service file for socat_gerrit
+      copy:
+        src: socat_gerrit.service
+        dest: /lib/systemd/system/socat_gerrit.service
+        owner: root
+        group: root
+        mode: 0644
+      delegate_to: "{{ gateway_host }}"
+
+    - name: Start socat_gerrit
+      systemd:
+        name: socat_gerrit
+        enabled: "yes"
+        state: started
+        daemon_reload: yes
+      delegate_to: "{{ gateway_host }}"
+  when: groups['gerrit'] != groups['gateway']
+
+- name: Initialize git access
+  template:
+    src: sshconfig.j2
+    dest: /root/.ssh/config
+  delegate_to: "{{ install_server_host }}"
+
+- name: Initialize git config
+  template:
+    src: gitconfig.j2
+    dest: /root/.gitconfig
+  delegate_to: "{{ install_server_host }}"
+
+- name: "Copy ssh keys"
+  copy:
+    content: "{{ item.content }}"
+    dest: "/var/lib/managesf/.ssh/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: managesf
+    group: managesf
+  with_items:
+    - {content: "{{ gerrit_admin_rsa }}", name: "gerrit_admin_rsa", mode: "0400"}
+    - {content: "{{ gerrit_admin_rsa_pub }}", name: "gerrit_admin_rsa.pub", mode: "0444"}
+  delegate_to: "{{ managesf_host }}"
+  no_log: true

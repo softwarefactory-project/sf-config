@@ -17,6 +17,8 @@ required_roles = (
     "install-server",
     "gateway",
     "mysql",
+    "managesf",
+    "cauth",
 )
 
 
