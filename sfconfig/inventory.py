@@ -217,7 +217,7 @@ def config_update(args, pb):
     # Check config repo HEAD and update /root/config copy for each services
     pb.append(host_play('install-server', tasks={
         'name': 'Get config sha1',
-        'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
+        'command': 'git ls-remote -h {{ config_repo_url }}',
         'register': 'configsha'
     }))
     # The list of role to run update task
@@ -233,15 +233,16 @@ def config_update(args, pb):
                         'repos', {'role_action': 'fetch_config_repo'}))
 
     # Call resources apply
-    pb.append(host_play('managesf', tasks=[
-        {'name': 'Exec resources apply',
-         'command': '/usr/local/bin/resources.sh apply',
-         'register': 'output',
-         'ignore_errors': 'yes'},
-        {'debug': {'msg': '{{ output.stdout_lines }}'}},
-        {'fail': {'msg': 'Resources apply failed {{ output.rc }}'},
-         'when': 'output.rc != 0'}
-    ]))
+    if "gerrit" in args.glue["roles"]:
+        pb.append(host_play('managesf', tasks=[
+            {'name': 'Exec resources apply',
+             'command': '/usr/local/bin/resources.sh apply',
+             'register': 'output',
+             'ignore_errors': 'yes'},
+            {'debug': {'msg': '{{ output.stdout_lines }}'}},
+            {'fail': {'msg': 'Resources apply failed {{ output.rc }}'},
+             'when': 'output.rc != 0'}
+        ]))
 
     # Update all components
     for host in args.inventory:

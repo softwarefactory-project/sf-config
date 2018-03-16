@@ -157,7 +157,9 @@ def main():
     args.glue = {'sf_tasks_dir': "%s/ansible/tasks" % args.share,
                  'sf_templates_dir': "%s/templates" % args.share,
                  'sf_playbooks_dir': "%s" % args.ansible_root,
-                 'logservers': []}
+                 'logservers': [],
+                 'executor_hosts': [],
+                 }
 
     # Make sure the yaml files are updated
     sfconfig.upgrade.update_sfconfig(args)
