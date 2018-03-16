@@ -43,6 +43,8 @@ zuul_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/zuul"
 zuul_web_port: 9000
 zuul_gearman_port: 4730
 
+zuul_executor_disk_limit: 1024
+
 zuul_mysql_host: "mysql.example.com"
 zuul_mysql_port: 3306
 zuul_mysql_db: "zuul"

@@ -25,7 +25,7 @@
 - name: Ensure Elasticsearch listen to all addresses
   lineinfile:
     dest: /etc/elasticsearch/elasticsearch.yml
-    regexp: "^network.host{{':'}} elasticsearch.{{ fqdn }}"
+    regexp: "^network.host{{':'}}.*"
     insertafter: "^# network.host:"
     line: "network.host{{':'}} elasticsearch.{{ fqdn }}"
   register: listenaddr
