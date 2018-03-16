@@ -10,8 +10,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import json
+import os
+
 from sfconfig.components import Component
 from sfconfig.utils import fail
+from six.moves import urllib
 
 
 def get_sf_version():
@@ -37,6 +41,15 @@ class InstallServer(Component):
         if bool(args.sfconfig['config-locations']['config-repo']) != \
            bool(args.sfconfig['config-locations']['jobs-repo']):
             fail("Both config-repo and jobs-repo needs to be set")
+
+        if args.sfconfig["tenant-deployment"] and (
+                bool(args.sfconfig["tenant-deployment"]["name"]) !=
+                bool(args.sfconfig["tenant-deployment"]["master-sf"])):
+            fail("Both tenant name and master-sf url need to be set")
+        if args.sfconfig["tenant-deployment"] and (
+                "zuul" in args.glue["roles"] or
+                "nodepool" in args.glue["roles"]):
+            fail("Zuul and Nodepool can't be running in a tenant deployment")
 
     def configure(self, args, host):
         self.get_or_generate_CA(args)
@@ -173,3 +186,104 @@ class InstallServer(Component):
         args.glue["zuul_jobs_connection_name"] = zuul_conn
         args.glue["zuul_jobs_project_name"] = zuul_name
         args.glue["zuul_jobs_location"] = zuul_loc
+
+        key_path = "/var/lib/software-factory/bootstrap-data/certs/config.pub"
+        master_path = "%s/ssh_keys/master_zuul_rsa.pub" % args.lib
+        if bool(args.sfconfig["tenant-deployment"]):
+            args.glue["tenant_deployment"] = True
+            args.glue["tenant_name"] = args.sfconfig[
+                "tenant-deployment"]["name"]
+            args.glue["master_sf_url"] = args.sfconfig[
+                "tenant-deployment"]["master-sf"].replace(
+                    "https://", "").replace("http://", "")
+
+            # Adapt glue for zuul-less deployment
+            args.glue["config_connection_name"] = args.sfconfig[
+                "tenant-deployment"]["connection-name"]
+            args.glue["zuul_default_retry_attempts"] = args.sfconfig[
+                "zuul"].get("default_retry_attempts", 3)
+
+            # Fetch zuul public key from master sf
+            try:
+                master_key = open(master_path).read()
+            except Exception:
+                master_key = None
+            if not master_key or "ssh-rsa" not in master_key:
+                key_url = "%s/keys/zuul_rsa.pub" % (
+                    args.sfconfig["tenant-deployment"]["master-sf"].replace(
+                        "/manage", ""))
+                try:
+                    req = urllib.request.urlopen(key_url)
+                    master_key = req.read().decode("utf-8")
+                    open(master_path, "w").write(master_key)
+                except Exception:
+                    fail("Couldn't get zuul public key at %s" % key_url)
+            args.glue["zuul_rsa_pub"] = master_key
+
+            # Fetch zuul-jobs project name and connection name
+            # TODO: add special attribute to zuul-jobs to better identify it
+            try:
+                req = urllib.request.urlopen(
+                    "%s/resources" %
+                    args.sfconfig["tenant-deployment"]["master-sf"])
+                master_resource = json.loads(req.read().decode('utf-8'))
+                zj = master_resource.get(
+                    "resources", {}).get("projects", {}).get(
+                        "internal", {}).get("source-repositories")[-1]
+                zuul_name = zj.keys()[0]
+                zuul_conn = zj[zuul_name]["connection"]
+                args.glue["zuul_jobs_connection_name"] = zuul_conn
+                args.glue["zuul_jobs_project_name"] = zuul_name
+                args.glue["zuul_upstream_zuul_jobs"] = True
+            except Exception:
+                raise
+                fail("Couldn't find zuul-jobs location in master sf")
+
+            # Look for connection type
+            args.glue["zuul_gerrit_connections"] = []
+            args.glue["zuul_github_connections"] = []
+            args.glue["zuul_periodic_pipeline_mail_rcpt"] = args.sfconfig[
+                "zuul"]["periodic_pipeline_mail_rcpt"]
+            for name, values in master_resource.get(
+                    "resources", {}).get("connections", {}).items():
+                if name == args.glue["config_connection_name"]:
+                    if values.get("type") == "gerrit":
+                        args.glue["zuul_gerrit_connections"].append(
+                            {'name': args.glue["config_connection_name"],
+                             'hostname': "master-sf", "username": "zuul"}
+                        )
+                    elif values.get("type") == "github":
+                        # TODO: add app name in main resource connection object
+                        args.glue["zuul_github_connections"].append({
+                            "name": name,
+                            })
+
+            # Check if tenant config key already exists in master sf
+            args.glue["config_key_exists"] = False
+            if (
+                    os.path.exists(key_path) and
+                    "PUBLIC KEY" in open(key_path).read()):
+                args.glue["config_key_exists"] = True
+            else:
+                try:
+                    req = urllib.request.urlopen(
+                        "%s/zuul/api/tenant/%s/key/%s.pub" % (
+                            args.sfconfig["tenant-deployment"][
+                                "master-sf"].replace("/manage", ""),
+                            args.glue["tenant_name"],
+                            args.glue["config_project_name"]))
+                    key_data = req.read().decode("utf-8")
+                    if "PUBLIC KEY" in key_data:
+                        open(key_path, "w").write(key_data)
+                        args.glue["config_key_exists"] = True
+                    else:
+                        raise RuntimeError(
+                            "Invalid public key --[%s]--" % key_data)
+                except Exception:
+                    print("Tenant isn't registered in master deployment, "
+                          "add tenant config and restart sfconfig")
+        else:
+            args.glue["tenant_name"] = "local"
+            args.glue["tenant_deployment"] = False
+            # Master tenant deployment always has config key ready to be used
+            args.glue["config_key_exists"] = True

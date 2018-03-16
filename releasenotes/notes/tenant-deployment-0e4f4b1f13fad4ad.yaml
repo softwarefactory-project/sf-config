@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    New tenant-deployment settings enables deployment where zuul and nodepool
+    are running remotely.

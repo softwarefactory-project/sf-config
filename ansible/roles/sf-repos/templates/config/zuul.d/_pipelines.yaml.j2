@@ -8,7 +8,7 @@
     manager: independent
     trigger:
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         - event: patchset-created
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
@@ -34,7 +34,7 @@
 {% endfor %}
 {% endif %}
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         verified: 0
 {% endif %}
 {% if 'firehose' in roles %}
@@ -47,7 +47,7 @@
         status: 'success'
 {% endfor %}
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         verified: 1
 {% endif %}
       sqlreporter:
@@ -61,7 +61,7 @@
         status: 'failure'
 {% endfor %}
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         verified: -1
 {% endif %}
       sqlreporter:
@@ -84,7 +84,7 @@
     precedence: high
     require:
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         open: True
         current-patchset: True
         approval:
@@ -108,7 +108,7 @@
 {% endif %}{% endfor %}
     trigger:
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         - event: comment-added
           approval:
             - Workflow: 1
@@ -143,7 +143,7 @@
 {% endif %}{% endfor %}
     start:
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         Verified: 0
 {% endif %}
 {% for github_connection in zuul_github_connections %}
@@ -158,7 +158,7 @@
 {% endif %}
     success:
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         Verified: 2
         submit: true
 {% endif %}
@@ -175,7 +175,7 @@
 {% endif %}
     failure:
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         Verified: -2
 {% endif %}
 {% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
@@ -199,7 +199,7 @@
     precedence: low
     trigger:
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         - event: ref-updated
           ref: ^refs/heads/.*$
 {% endif %}
@@ -238,7 +238,7 @@
     precedence: high
     trigger:
 {% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
 {% endif %}

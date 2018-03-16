@@ -2,11 +2,11 @@
 ---
 resources:
   tenants:
-    local:
-      description: "The local tenant."
+    {{ tenant_name }}:
+      description: "The {{ tenant_name }} tenant."
       url: "{{ gateway_url }}/manage"
 
-{% if not initial_creation|default(False) %}
+{% if not initial_creation|default(False) and not tenant_deployment %}
   connections:
 {% for conn in zuul_gerrit_connections|default([]) %}
     {{ conn['name'] }}:
@@ -27,7 +27,7 @@ resources:
 
   projects:
     internal:
-      tenant: local
+      tenant: {{ tenant_name }}
       connection: {{ config_connection_name }}
       description: Internal configuration project
 {% if 'storyboard' in roles %}

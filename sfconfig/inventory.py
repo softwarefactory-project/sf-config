@@ -293,6 +293,10 @@ def enable_action(args):
     }))
 
     if not args.skip_test:
+        if (
+                args.glue.get("tenant-deployment") and
+                "gerrit" in args.glue["roles"]):
+            print("Adds tenant gerrit to master deployment connections")
         testinfra_tests = sfconfig.utils.list_testinfra()
         for host in args.glue["inventory"]:
             logfile = "/var/log/software-factory/testinfra.log"
@@ -519,6 +523,9 @@ def generate(args):
         write_playbook(playbook_path, playbook)
 
     # Generate /etc/hosts file
+    # including network static_hostname defined in sfconfig.yaml
+    host_arch = copy.copy(arch)
+    host_arch["network"] = args.sfconfig["network"]
     render_template("/etc/hosts",
                     "%s/etc-hosts.j2" % templates,
-                    arch)
+                    host_arch)

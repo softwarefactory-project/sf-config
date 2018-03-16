@@ -1,7 +1,7 @@
 # This file is managed by ansible, do not edit directly
 ---
 - tenant:
-    name: 'local'
+    name: '{{ tenant_name }}'
     source:
       {{ config_connection_name }}:
         config-projects:
@@ -10,7 +10,7 @@
           - {{ sf_jobs_project_name }}
 
 - tenant:
-    name: 'local'
+    name: '{{ tenant_name }}'
     source:
       {{ zuul_jobs_connection_name }}:
         untrusted-projects:
