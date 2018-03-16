@@ -101,7 +101,7 @@
 
     - name: Set config_key_regenerated fact
       set_fact:
-        new_config_key: "{{ localconfig.stdout == _config_repo_key.stat.checksum }}"
+        new_config_key: "{{ localconfig.stdout != _config_repo_key.stat.checksum|default(None) }}"
 
 - name: Check for _secret_sflogs file
   stat:
@@ -120,7 +120,9 @@
       template:
         src: "config/zuul.d/_secret_sflogs.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sflogs.yaml"
-  when: not _secret_sflogs.stat.exists or new_config_key
+  when:
+    - not _secret_sflogs.stat.exists or new_config_key
+    - config_key_exists
 
 - name: Check for _secret_install_server file
   stat:
@@ -141,7 +143,9 @@
       template:
         src: "config/zuul.d/_secret_install_server.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_install_server.yaml"
-  when: not _secret_install_server.stat.exists or new_config_key
+  when:
+    - not _secret_install_server.stat.exists or new_config_key
+    - config_key_exists
 
 - name: Check for _secret_pages file
   stat:
@@ -160,7 +164,9 @@
       template:
         src: "config/zuul.d/_secret_sfpages.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
-  when: not _secret_sfpages.stat.exists or new_config_key
+  when:
+    - not _secret_sfpages.stat.exists or new_config_key
+    - config_key_exists
 
 - name: Indicate config repo changed
   set_fact:
@@ -171,7 +177,8 @@
         _config_dlrn_files is changed or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
-        not _secret_install_server.stat.exists
+        not _secret_install_server.stat.exists or
+        new_config_key
 
 - name: Indicated config repo didn't changed
   set_fact:
@@ -181,6 +188,13 @@
     - not _config_template_files is changed
     - not _config_metrics_files is changed
     - not _config_dlrn_files is changed
+    - not new_config_key
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists
+
+- name: Save config key checksum
+  copy:
+    content: "{{ _config_repo_key.stat.checksum|default(None) }}"
+    dest: /var/lib/software-factory/state/config_key_checksum
+  when: config_key_exists
