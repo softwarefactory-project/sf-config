@@ -3,6 +3,13 @@
 - name: "Create gerrit user"
   include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=gerrit ssh_key=gerrit_service_rsa shell=/bin/bash"
 
+- name: Expose public keys
+  copy:
+    content: "{{ gerrit_service_rsa_pub }}"
+    dest: "/var/www/keys/gerrit_service_rsa.pub"
+    mode: "0444"
+  delegate_to: "{{ gateway_host }}"
+
 # During the first run, config repo isn't created, so use the default file
 - include_vars: "{{ item }}"
   with_first_found:

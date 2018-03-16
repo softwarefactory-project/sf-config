@@ -8,6 +8,14 @@
         Require all granted
     </Directory>
 
+    <Directory "/var/www/keys">
+        Options Indexes
+        AllowOverride None
+        Require all granted
+        IndexOptions FancyIndexing HTMLTable NameWidth=* SuppressDescription
+        HeaderName /static/index-header.html
+    </Directory>
+
     RewriteEngine On
     RewriteRule ^/$ /{{ welcome_page_path }} [R]
 

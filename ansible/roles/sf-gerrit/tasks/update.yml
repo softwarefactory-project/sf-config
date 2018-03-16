@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: Check upstream config
-  shell: git log --oneline gerrit/; echo "{{ gerrit_replication }}"
+  shell: git log -n 3 --oneline gerrit/; echo "{{ gerrit_replication }}"
   args:
     chdir: /root/config
   register: upstreamconfig

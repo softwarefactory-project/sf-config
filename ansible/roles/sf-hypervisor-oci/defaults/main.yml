@@ -15,3 +15,4 @@ hypervisor_oci_packages:
   - rpm-build
   - python2-pelican
   - python2-sphinx
+  - doc8
