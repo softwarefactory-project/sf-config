@@ -2,11 +2,12 @@
 ---
 resources:
   tenants:
-    local:
-      description: "The local tenant."
+    {{ tenant_name }}:
+      description: "The {{ tenant_name }} tenant."
       url: "{{ gateway_url }}/manage"
+      default-connection: {{ config_connection_name }}
 
-{% if not initial_creation|default(False) %}
+{% if not initial_creation|default(False) and not tenant_deployment %}
   connections:
 {% for conn in zuul_gerrit_connections|default([]) %}
     {{ conn['name'] }}:
@@ -27,8 +28,7 @@ resources:
 
   projects:
     internal:
-      tenant: local
-      connection: {{ config_connection_name }}
+      tenant: {{ tenant_name }}
       description: Internal configuration project
 {% if 'storyboard' in roles %}
       issue-tracker: SFStoryboard
