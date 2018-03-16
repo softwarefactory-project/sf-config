@@ -132,6 +132,10 @@ def update_sfconfig(args):
         data["config-locations"] = {'config-repo': '', 'jobs-repo': ''}
         dirty = True
 
+    if "tenant-deployment" not in data:
+        data["tenant-deployment"] = {}
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \

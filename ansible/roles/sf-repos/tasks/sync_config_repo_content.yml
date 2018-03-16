@@ -120,7 +120,9 @@
       template:
         src: "config/zuul.d/_secret_sflogs.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sflogs.yaml"
-  when: not _secret_sflogs.stat.exists or new_config_key
+  when:
+    - not _secret_sflogs.stat.exists or new_config_key
+    - config_key_exists
 
 - name: Check for _secret_install_server file
   stat:
@@ -141,7 +143,9 @@
       template:
         src: "config/zuul.d/_secret_install_server.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_install_server.yaml"
-  when: not _secret_install_server.stat.exists or new_config_key
+  when:
+    - not _secret_install_server.stat.exists or new_config_key
+    - config_key_exists
 
 - name: Check for _secret_pages file
   stat:
@@ -160,7 +164,9 @@
       template:
         src: "config/zuul.d/_secret_sfpages.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
-  when: not _secret_sfpages.stat.exists or new_config_key
+  when:
+    - not _secret_sfpages.stat.exists or new_config_key
+    - config_key_exists
 
 - name: Indicate config repo changed
   set_fact:

@@ -137,7 +137,6 @@
         ProxyPassReverse /r/ {{ gerrit_internal_url }}
 
 {% endif %}
-{% if 'zuul' in roles %}
         <Directory /opt/rh/rh-python35/root/usr/share/zuul>
             Require all granted
             Order allow,deny
@@ -151,6 +150,21 @@
         AliasMatch "^/zuul/t/.*/(.*)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1"
         AliasMatch "^/zuul/t/(.*)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1"
 
+{% if tenant_deployment %}
+        <location /zuul/api/console-stream>
+          ProxyPass wss://{{ master_sf_url }}/zuul/api/tenant/{{ tenant_name }}/console-stream nocanon retry=0 disablereuse=on
+        </location>
+
+        RewriteRule ^/zuul/?$ /zuul/status.html [R]
+        SSLProxyEngine On
+        # SSLProxyVerify none
+        # SSLProxyCheckPeerCN off
+        # SSLProxyCheckPeerName off
+        ProxyPassMatch ^/zuul/.*\.(html|js|png|map)$ !
+        ProxyPassMatch ^/zuul/(.*)$ https://{{ master_sf_url }}/zuul/{{ tenant_name }}/$1 retry=0 disablereuse=on
+
+{% endif %}
+{% if 'zuul' in roles %}
         # Redirect api call to zuul-web controllers
         ProxyPassMatch ^/zuul/api/tenant/(.*)/console-stream$ {{ zuul_ws_url }}/api/tenant/$1/console-stream nocanon retry=0 disablereuse=on
         ProxyPassMatch ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 nocanon  retry=0 disablereuse=on

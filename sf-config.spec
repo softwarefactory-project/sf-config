@@ -12,6 +12,7 @@ Source0:        https://github.com/softwarefactory-project/software-factory/arch
 BuildArch:      noarch
 
 Requires:       python-jinja2
+Requires:       python2-six
 
 Buildrequires:  python2-devel
 Buildrequires:  python-setuptools

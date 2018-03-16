@@ -24,6 +24,7 @@
     max: 1
 
 {% if zuul_gerrit_connections or zuul_github_connections %}
+# TODO(tristanC): add tenant-check and tenant-update job for tenant deployment
 - job:
     name: config-check
     parent: base

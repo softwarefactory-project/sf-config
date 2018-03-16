@@ -28,6 +28,11 @@ network:
   # Disable gerrit replication and nodepool providers
   disable_external_resources: false
 
+# Special deployment mode where zuul and nodepool is not running locally
+tenant-deployment:
+  # name: tenant-name
+  # master-sf: main-sf-url
+
 config-locations:
   # When not set, the config repositories are hosted locally
   config-repo:
