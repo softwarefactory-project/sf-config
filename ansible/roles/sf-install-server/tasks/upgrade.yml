@@ -45,3 +45,4 @@
 - name: Fix config.pub cert path
   command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
   when: _config_pub.stat.exists
+
