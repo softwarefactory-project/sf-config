@@ -22,6 +22,9 @@
                 <li><a href="/dashboard/" target="_top">Dashboard</a></li>
                 <li><a href="/r/" target="_top">Gerrit</a></li>
             {% endif %}
+            {% if tenant_deployment %}
+                <li><a href="/zuul/" target="_top">Zuul</a></li>
+            {% endif %}
             {% if 'zuul-scheduler' in roles %}
                 <li><a href="/zuul/t/local/status.html" target="_top">Zuul</a></li>
             {% endif %}
