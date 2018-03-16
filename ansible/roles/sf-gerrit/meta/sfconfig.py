@@ -32,3 +32,6 @@ class Gerrit(Component):
         args.glue["gerrit_email"] = "gerrit@%s" % args.sfconfig["fqdn"]
         if args.sfconfig["network"]["disable_external_resources"]:
             args.glue["gerrit_replication"] = False
+        args.glue["config_repo_url"] = \
+            "%s/r/config.git" % args.glue["gateway_url"]
+        args.glue["internal_config_repo_url"] = "git+ssh://gerrit/config"

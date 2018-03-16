@@ -154,10 +154,6 @@
         ProxyPassReverse /api/ {{ gerrit_internal_url }}
 
 {% endif %}
-{% if 'zuul' in roles %}
-        # Keep /zuul3/ retro-compatibility
-        RewriteRule ^/zuul3/(.*)$ /zuul/$1 [R,L]
-
         # Redirect all the static file to webui cache
         AliasMatch "^/zuul/.*/(.*)\.(html|js|png|map)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
         AliasMatch "^/zuul/(.*)\.(html|js|png|map)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
@@ -166,6 +162,24 @@
             Order allow,deny
             Allow from all
         </Directory>
+
+{% if remote_zuul_url is defined %}
+        <location /zuul/console-stream>
+          ProxyPass wss://{{ remote_zuul_url }}/ansible-network/console-stream nocanon retry=0 disablereuse=on
+        </location>
+
+        RewriteRule ^/zuul/?$ /zuul/status.html [R]
+        SSLProxyEngine On
+        # SSLProxyVerify none
+        # SSLProxyCheckPeerCN off
+        # SSLProxyCheckPeerName off
+        ProxyPassMatch ^/zuul/.*\.(html|js|png|map)$ !
+        ProxyPassMatch ^/zuul/(.*)$ https://{{ remote_zuul_url }}/{{ sf_tenant_name }}/$1 retry=0 disablereuse=on
+
+{% endif %}
+{% if 'zuul' in roles %}
+        # Keep /zuul3/ retro-compatibility
+        RewriteRule ^/zuul3/(.*)$ /zuul/$1 [R,L]
 
         RewriteRule ^/zuul/?$ /zuul/index.html [R]
 

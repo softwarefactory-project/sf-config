@@ -22,7 +22,10 @@
             {% if 'gerrit' in roles %}
                 <li><a href="/r/" target="_top">Gerrit</a></li>
             {% endif %}
-            {% if 'zuul-scheduler' in roles %}
+            {% if sf_tenant_name is defined %}
+                <li><a href="/zuul/" target="_top">Zuul</a></li>
+            {% endif %}
+            {% if 'zuul-web' in roles %}
                 <li><a href="/zuul/local/status.html" target="_top">Zuul</a></li>
             {% endif %}
             {% if 'storyboard' in roles %}
