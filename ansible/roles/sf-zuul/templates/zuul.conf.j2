@@ -1,6 +1,9 @@
 [gearman]
 server={{ zuul_scheduler_host }}
 port={{ zuul_gearman_port }}
+ssl_ca={{ zuul_conf_dir }}/ssl/localCA.pem
+ssl_cert={{ zuul_conf_dir }}/ssl/gearman.crt
+ssl_key={{ zuul_conf_dir }}/ssl/gearman.key
 
 {% if 'influxdb' in roles %}
 [statsd]
@@ -14,6 +17,9 @@ hosts={{ zookeeper_host }}:2181
 start=true
 log_config={{ zuul_conf_dir }}/gearman-server-logging.yaml
 port={{ zuul_gearman_port }}
+ssl_ca={{ zuul_conf_dir }}/ssl/localCA.pem
+ssl_cert={{ zuul_conf_dir }}/ssl/gearman.crt
+ssl_key={{ zuul_conf_dir }}/ssl/gearman.key
 
 [scheduler]
 state_dir={{ zuul_lib_dir }}

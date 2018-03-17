@@ -1,0 +1,4 @@
+---
+features:
+  - SSL is enabled on zuul gearman service. A gearman-client script is installed
+    on the scheduler host to enable direct connection.
