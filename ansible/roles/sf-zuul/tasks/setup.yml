@@ -101,6 +101,12 @@
       delegate_to: "{{ item }}"
       with_items: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
 
+    - name: Install gearman-client script
+      template:
+        src: gearman-client.sh.j2
+        dest: /usr/local/bin/gearman-client
+        mode: 0755
+
   when: "'zuul-scheduler' in zuul_services"
 
 - block:
@@ -163,6 +169,25 @@
 - block:
     - include_tasks: create_logging.yml _logfile="web"
   when: "'zuul-web' in zuul_services"
+
+- name: "Create ssl directory"
+  file:
+    path: "{{ zuul_conf_dir }}/ssl"
+    mode: 0550
+    group: zuul
+    state: directory
+
+- name: "Setup gearman certificates"
+  copy:
+    content: "{{ item.content }}"
+    dest: "{{ zuul_conf_dir }}/ssl/{{ item.dest }}"
+    mode: 0440
+    group: zuul
+  with_items:
+    - {content: "{{ localCA_pem }}", dest: "localCA.pem"}
+    - {content: "{{ gearman_crt }}", dest: "gearman.crt"}
+    - {content: "{{ gearman_key }}", dest: "gearman.key"}
+  no_log: true
 
 - name: "Setup configuration"
   template:

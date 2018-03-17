@@ -1,0 +1,6 @@
+#!/bin/sh
+
+openssl s_client -connect {{ zuul_scheduler_host }}:4730   \
+    -cert /etc/zuul/ssl/gearman.crt                        \
+    -key /etc/zuul/ssl/gearman.key -quiet  2> /dev/null || \
+    openssl s_client -connect {{ zuul_scheduler_host }}:4730 -cert /etc/zuul/ssl/gearman.crt -key /etc/zuul/ssl/gearman.key
