@@ -1,0 +1,3 @@
+---
+features:
+  - SSL is enabled on zuul gearman service.
