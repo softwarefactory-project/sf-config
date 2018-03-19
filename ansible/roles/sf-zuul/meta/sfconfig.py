@@ -130,13 +130,10 @@ class ZuulScheduler(Component):
             args.glue["zuul_scheduler_host"], args.glue["zuul_web_host"]
         ))))
         self.get_or_generate_ssh_key(args, "zuul_rsa")
-        self.get_or_generate_ssh_key(args, "zuul_logserver_rsa")
         self.get_or_generate_ssh_key(args, "zuul_gatewayserver_rsa")
         self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
         args.glue["zuul_pub_url"] = "%s/zuul/" % args.glue["gateway_url"]
         args.glue["zuul_mysql_host"] = args.glue["mysql_host"]
-        args.glue["loguser_authorized_keys"].append(
-            args.glue["zuul_logserver_rsa_pub"])
         args.glue["pagesuser_authorized_keys"].append(
             args.glue["zuul_gatewayserver_rsa_pub"])
         args.glue["openstack_connection_name"] = self.openstack_connection_name
@@ -205,6 +202,14 @@ class ZuulScheduler(Component):
             args.glue["zuul_github_connections"].append(github_connection)
         for git_connection in zuul_config.get("git_connections", []):
             args.glue["zuul_git_connections"].append(git_connection)
+
+
+class ZuulExecutor(Component):
+    role = "zuul-executor"
+    require_role = ["zuul-scheduler"]
+
+    def configure(self, args, host):
+        args.glue["executor_hosts"].append(host["hostname"])
 
 
 class ZuulWeb(Component):

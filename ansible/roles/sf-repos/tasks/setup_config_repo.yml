@@ -22,6 +22,7 @@
 
     - name: Create config repository resources
       command: /usr/local/bin/resources.sh direct_apply /root/empty_resources.yaml /root/resources.yaml
+      when: "'gerrit' in roles"
 
     # Clone the config repo
     - command: mktemp -d

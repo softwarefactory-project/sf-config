@@ -19,6 +19,7 @@ class LogServer(Component):
         args.glue["loguser_authorized_keys"] = []
 
     def configure(self, args, host):
+        self.get_or_generate_ssh_key(args, "zuul_logserver_rsa")
         args.glue["logservers"].append({
             "name": "sflogs",
             "host": args.glue["logserver_host"],
@@ -32,3 +33,5 @@ class LogServer(Component):
                 "port": 22
             })
         args.glue["logs_expiry"] = args.sfconfig["logs"]["expiry"]
+        args.glue["loguser_authorized_keys"].append(
+            args.glue["zuul_logserver_rsa_pub"])

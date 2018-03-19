@@ -36,3 +36,12 @@
         - {name: auto_backup}
         - {name: auto_backup_scp}
   when: sf_previous_version < 2.7
+
+- name: Check for misplaced config.pub
+  stat:
+    path: /var/lib/software-factory/certs/config.pub
+  register: _config_pub
+
+- name: Fix config.pub cert path
+  command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
+  when: _config_pub.stat.exists
