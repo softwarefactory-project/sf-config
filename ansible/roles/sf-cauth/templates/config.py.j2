@@ -161,3 +161,10 @@ sqlalchemy = {
 managesf = {
     'url'           : 'http://managesf.{{ fqdn }}',
 }
+
+gerrit = {
+    'url'           : '{{ gerrit_internal_url }}',
+    'password'      : '{{ gerrit_admin_password }}',
+    # Managesf is in charge of creating gerrit users
+    'register_user' : False,
+}

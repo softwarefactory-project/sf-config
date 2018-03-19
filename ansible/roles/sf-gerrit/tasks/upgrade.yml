@@ -1,0 +1,8 @@
+---
+- name: Reset gerrit passwords
+  command: >
+    mysql -e "DROP TRIGGER IF EXISTS default_password;"
+          -e "UPDATE account_external_ids SET password=NULL;"
+          gerrit
+  delegate_to: "{{ mysql_host }}"
+  when: sf_previous_version < 3.1

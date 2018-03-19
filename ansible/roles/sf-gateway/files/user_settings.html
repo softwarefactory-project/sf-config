@@ -52,17 +52,6 @@
             <button type="submit" class="btn btn-default">Generate new API key</button>
         </form>
     </div>
-    <div class="container" id="gerrit_key">
-        <h3>Gerrit API key</h3>
-        <form>
-            <div class="form-group" data-toggle="tooltip" data-placement="left" title="This key is personal and can be used with the Gerrit REST API to perform allowed operations">
-                <label for="gerrit_key_value">Key:</label>
-                <p id="gerrit_key_value">{{gerrit_api_key}}</p>
-            </div>
-            <button type="submit" class="btn btn-default" ng-if="!htpasswd_set" ng-click="htpasswd_enable()">Enable</button>
-            <button type="submit" class="btn btn-default" ng-if="htpasswd_set" ng-click="htpasswd_disable()">Disable</button>
-        </form>
-    </div>
 
 </body>
 </html>

@@ -64,6 +64,7 @@
   with_items:
     - gerrit-firstuser-init.sql
     - gerrit-restore-user-keys.sql
+    - gerrit-admin-password.sql
 
 - name: "Add monit service check"
   copy:
@@ -134,15 +135,18 @@
   become_user: gerrit
   when: _gerrit.rc == 3
 
+- name: "Add initial user"
+  shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'
+  when: gerrit_allprojects.stat.exists == False
+
+- name: "Set gerrit admin key"
+  shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-admin-password.sql'
+
 - name: "Start service"
   service:
     name: gerrit
     state: started
     enabled: "yes"
-
-- name: "Add initial user"
-  shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'
-  when: gerrit_allprojects.stat.exists == False
 
 - name: "Add jenkins user (for zuul-launcher and managesf)"
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "jenkins" "ssh-rsa {{ jenkins_rsa_pub.split()[1] }}" "jenkins@{{ fqdn }}"
