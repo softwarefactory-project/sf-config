@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3cc151_e6491a90",
+        "filename": "ansible/roles/sf-gerrit/templates/gerrit-firstuser-init.sql.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-19T11:14:13Z",
+      "side": 1,
+      "message": "This is actually not needed here.",
+      "revId": "c8797ae4222fe9273bb82f16bf95c0a615771510",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
