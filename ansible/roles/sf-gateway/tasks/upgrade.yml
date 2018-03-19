@@ -5,3 +5,10 @@
         path: /var/www/zuul
         state: absent
   when: sf_previous_version < 2.7
+
+- block:
+    - name: Remove /etc/httpd/managesf_htpasswd
+      file:
+        path: /etc/httpd/managesf_htpasswd
+        state: absent
+  when: sf_previous_version < 3.1

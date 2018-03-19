@@ -3,10 +3,3 @@
   synchronize:
     src: "{{ backup_src }}/"
     dest: /
-
-- name: "Restore files ownership"
-  file:
-    path: "/etc/httpd/managesf_htpasswd"
-    owner: "managesf"
-    group: "gerrit"
-    mode: "0640"
