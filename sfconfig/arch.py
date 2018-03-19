@@ -17,6 +17,8 @@ required_roles = (
     "install-server",
     "gateway",
     "mysql",
+    "managesf",
+    "cauth",
 )
 
 
@@ -39,7 +41,7 @@ def process(args):
         if "install-server" in host["roles"]:
             host["ip"] = pread(["ip", "route", "get", "8.8.8.8"]).split()[6]
         elif "ip" not in host:
-            fail("%s: host '%s' needs an ip" % (args.arch, host["name"]))
+            fail("%s: host '%s' needs an ip" % (args.arch, host))
 
         if "public_url" not in host:
             if "gateway" in host["roles"]:
@@ -50,7 +52,9 @@ def process(args):
             host["public_url"] = host["public_url"].rstrip("/")
 
         # TODO: remove this aliases logic when $role.$fqdn are no longer used
-        aliases = set((host['name'],))
+        aliases = set()
+        if 'name' in host:
+            aliases.add(host['name'])
         for role in host["roles"]:
             # Add host to role list
             args.glue["roles"].setdefault(role, []).append(host)
