@@ -21,9 +21,15 @@
     <LocationMatch "/static">
         CacheDisable on
     </LocationMatch>
+    {% if _zuul_job_version is defined %}
     Alias "/docs/zuul-jobs" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-zuul-jobs-doc-{{ _zuul_job_version.stdout.split('-')[5] }}/html"
+    {% endif %}
+    {% if _zuul_version is defined %}
     Alias "/docs/zuul" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-zuul-doc-{{ _zuul_version.stdout.split('-')[4] }}/html"
+    {% endif %}
+    {% if _nodepool_version is defined %}
     Alias "/docs/nodepool" "/opt/rh/rh-python35/root/usr/share/doc/rh-python35-nodepool-doc-{{ _nodepool_version.stdout.split('-')[4] }}/html"
+    {% endif %}
     <Directory "/opt/rh/rh-python35/root/usr/share/doc/">
         Require all granted
     </Directory>

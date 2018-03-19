@@ -135,12 +135,6 @@
     mode: 0644
   when: manage_etc_hosts|default(true)
 
-- name: "system: install /usr/local/bin/resources.sh"
-  template:
-    src: resources.sh.j2
-    dest: /usr/local/bin/resources.sh
-    mode: 0555
-
 - name: "system: remove unused ip address if present"
   known_hosts:
     name: '[192.168.135.101]:29418'

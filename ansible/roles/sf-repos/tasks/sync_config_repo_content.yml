@@ -81,7 +81,7 @@
     - name: "Generate sflogs ssh_private_key secret"
       command: >
         /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
-            /var/lib/software-factory/certs/config.pub ssh_private_key \
+            /var/lib/software-factory/bootstrap-data/certs/config.pub ssh_private_key \
             --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_logserver_rsa
       register: _sflogs_private_key_secret
 
@@ -96,12 +96,22 @@
     path: "{{ config_clone_dir }}/zuul.d/_secret_install_server.yaml"
   register: _secret_install_server
 
+- name: Check for misplaced config.pub
+  stat:
+    path: /var/lib/software-factory/certs/config.pub
+  register: _config_pub
+
+- name: Fix config.pub cert path
+  command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
+  when: _config_pub.stat.exists
+
 - name: install server secret
   block:
+
     - name: "Generate install_server ssh_private_key secret"
       command: >
         /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
-            /var/lib/software-factory/certs/config.pub ssh_private_key \
+            /var/lib/software-factory/bootstrap-data/certs/config.pub ssh_private_key \
             --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_worker_rsa
       register: _install_server_private_key_secret
 
@@ -120,7 +130,7 @@
     - name: "Generate sfpages ssh_private_key secret"
       command: >
         /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
-            /var/lib/software-factory/certs/config.pub ssh_private_key \
+            /var/lib/software-factory/bootstrap-data/certs/config.pub ssh_private_key \
             --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_gatewayserver_rsa
       register: _sfpages_private_key_secret
 
