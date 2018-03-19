@@ -104,11 +104,15 @@ resources = {
 
 {% if 'gerrit' in roles %}
 gerrit = {
+    'url': '{{ gerrit_internal_url }}',
+    'password': '{{ gerrit_admin_password }}',
+
+    # Remove bellow configuration when api-key and user management is
+    # implemented through REST api
     'user': 'gerrit',
     'admin_user': 'admin',
     'admin_password': '{{ authentication['admin_password'] }}',
     'host': '{{ gerrit_host }}',
-    'url': '{{ gerrit_internal_url }}',
     'top_domain': '{{ fqdn }}',
     'ssh_port': 29418,
     'sshkey_priv_path': '/var/lib/managesf/.ssh/gerrit_admin_rsa',
@@ -142,10 +146,6 @@ storyboard = {
 sqlalchemy = {
     'url': 'mysql://{{ managesf_mysql_user }}:{{ managesf_mysql_password }}@{{ managesf_mysql_host }}:{{ managesf_mysql_port }}/{{ managesf_mysql_db }}?charset=utf8',
     'encoding': 'utf-8',
-}
-
-htpasswd = {
-    'filename': '/etc/httpd/managesf_htpasswd'
 }
 
 policy = {

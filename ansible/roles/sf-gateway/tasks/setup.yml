@@ -108,15 +108,6 @@
     dest: /var/www/dashboard/index.html
     mode: 0444
 
-- name: Ensure managesf_htpasswd is present
-  file:
-    path: /etc/httpd/managesf_htpasswd
-    state: touch
-    mode: 0640
-    owner: managesf
-    group: apache
-  when: "'managesf' in roles"
-
 - name: Read zuul-job version
   command: rpm -q rh-python35-zuul-jobs-doc
   register: _zuul_job_version
