@@ -8,6 +8,7 @@ role_actions:
   - restore
   - stop
   - disable
+  - upgrade
 
 gerrit_port: 8000
 
@@ -29,6 +30,7 @@ gerrit_admin_rsa_pub: ""
 
 gerrit_email_pk: "CHANGE_ME"
 gerrit_token_pk: "CHANGE_ME"
+gerrit_admin_password: "CHANGE_ME"
 
 gitweb_cgi: "/var/www/git/gitweb.cgi"
 

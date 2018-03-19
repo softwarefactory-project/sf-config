@@ -36,10 +36,6 @@
 'managesf.user:create': 'rule:admin_api or username:%(username)s'
 'managesf.user:delete': 'rule:admin_api'
 'managesf.user:update': 'rule:admin_api or username:%(username)s'
-# htpasswd API
-'managesf.htpasswd:get': 'rule:authenticated_api'
-'managesf.htpasswd:create_update': 'rule:authenticated_api'
-'managesf.htpasswd:delete': 'rule:authenticated_api'
 # gerrit hooks API
 'managesf.hooks:trigger': 'rule:admin_or_service'
 # template tests for projects API
