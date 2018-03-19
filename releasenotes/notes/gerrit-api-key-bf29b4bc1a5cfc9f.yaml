@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    Gerrit HTTP password are removed during the upgrade. The Gerrit REST API
+    is now available using the Cauth main API-KEY. Users need to re-generate
+    an API-KEY (using the /sf/user_settings.html page) and replace the old
+    password using the new Key.
