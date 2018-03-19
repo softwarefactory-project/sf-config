@@ -41,21 +41,6 @@ angular.module('sfSettings', []).controller('mainController', function($scope, $
             $scope.showErrorAlert = true;
         });
 
-    // Get htpasswd status
-    $http.get('/manage/htpasswd/')
-        .success( function (data) {
-          $scope.htpasswd_set = true;
-          $scope.gerrit_api_key = "SECRET";
-        })
-        .error( function (data) {
-          $scope.htpasswd_set = false;
-          $scope.gerrit_api_key = "-";
-        })
-        .catch( function (data) {
-          $scope.htpasswd_set = false;
-          $scope.gerrit_api_key = "-";
-        });
-
     // Get API token
     $http.get('/auth/apikey/?cauth_id='+localStorage.getItem("ls.id_token")).
         success(function(data) {
@@ -99,30 +84,4 @@ angular.module('sfSettings', []).controller('mainController', function($scope, $
                         })
                 });
     };
-
-    $scope.htpasswd_disable = function(name) {
-        $scope.errors = false;
-        $http.delete('/manage/htpasswd/')
-            .success(function(data) {
-                $scope.htpasswd_set = false;
-                $scope.gerrit_api_key = "";
-            })
-            .error(function(data) {
-                $scope.errors = data;
-            });
-    };
-
-    $scope.htpasswd_enable = function(name) {
-        $scope.errors = false;
-        $http.put('/manage/htpasswd/')
-            .success(function(data) {
-                $scope.gerrit_api_key = data.password;
-                $scope.htpasswd_set = true;
-            })
-            .error(function(data) {
-                $scope.errors = data;
-                $scope.htpasswd_set = false;
-            });
-    };
-
 });

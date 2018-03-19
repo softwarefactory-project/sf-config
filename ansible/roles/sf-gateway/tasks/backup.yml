@@ -8,7 +8,6 @@
     rsync_opts: --relative
   with_items:
     - /etc/letsencrypt/
-    - /etc/httpd/managesf_htpasswd
     - /etc/httpd/pages.d/
     - /var/www/pages/
 
