@@ -11,12 +11,6 @@
     RewriteEngine On
     RewriteRule ^/$ /{{ welcome_page_path }} [R]
 
-    RewriteMap base64helper "prg:/usr/local/sbin/base64helper"
-
-    <If "%{HTTP:Authorization} =~ m#^Basic (.*)$# && unbase64($1) =~ m#^.*:password$#">
-        RequestHeader unset Authorization
-    </If>
-
     # Disable caching of static files
     <LocationMatch "/static">
         CacheDisable on
@@ -65,7 +59,7 @@
 
 {% endif %}
 {% if 'gerrit' in roles %}
-    <LocationMatch "/r/(?!(login|logout|a))">
+    <LocationMatch "/r/(?!(login|logout))">
         RewriteEngine On
 
         # Logged in in SSO, but logged out from Gerrit
@@ -79,7 +73,7 @@
         RewriteRule ^(.*)$ /r/logout [R,NC,L]
     </LocationMatch>
 
-    <LocationMatch "/r/(login|a)(/|$)">
+    <LocationMatch "/r/login(/|$)">
         Order Allow,Deny
         Allow from all
 
@@ -98,21 +92,6 @@
         RewriteCond %{HTTP_COOKIE} !^.*gerritaccount.*$ [NC]
         RewriteCond %{QUERY_STRING} ^p=(.*).git;a=summary$
         RewriteRule /r/gitweb.*$ /r/#/admin/projects/%1,branches [QSD,R,L,NE]
-    </LocationMatch>
-
-    # Manage http gerrit basic authentication
-    <LocationMatch "^/(api|r)/.*$">
-        <If "%{HTTP:Authorization} =~ m#^Basic #>
-            AuthType Basic
-            AuthName "Gerrit API"
-            AuthUserFile /etc/httpd/managesf_htpasswd
-            require valid-user
-
-            # Helper to send a fake authorization header to Gerrit
-            RewriteCond %{REMOTE_USER} (.+)
-            RewriteRule .* - [E=B64:${base64helper:%{REMOTE_USER}},NE]
-            RequestHeader set Authorization "Basic %{B64}e"
-        </If>
     </LocationMatch>
 
 {% endif %}
@@ -142,10 +121,6 @@
 {% if 'gerrit' in roles %}
         ProxyPass /r/ {{ gerrit_internal_url }} nocanon retry=0
         ProxyPassReverse /r/ {{ gerrit_internal_url }}
-
-        # Requires internal authentication in Gerrit (without SSO)
-        ProxyPass /api/ {{ gerrit_internal_url }} nocanon
-        ProxyPassReverse /api/ {{ gerrit_internal_url }}
 
 {% endif %}
 {% if 'zuul' in roles %}
