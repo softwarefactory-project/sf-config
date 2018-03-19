@@ -81,12 +81,17 @@
           'zuul.project.public_keys:get': 'rule:any'
   when: sf_previous_version < 3.0
 
+- block:
+    - name: Remove old policies
+      command: sed -i /root/config/policies/policy.yaml -e 's/^.*htpasswd.*//'
+  when: sf_previous_version < 3.1
+
 - name: Push config change
   command: "git {{ item }}"
   args:
-    chdir: "{{ config_clone_dir }}"
+    chdir: "/root/config"
   with_items:
     - "add -A"
-    - "commit -m 'Update Zuul V3 default definitions'"
+    - "commit -m 'Update default definitions'"
     - "push git+ssh://gerrit/config master"
   when: config_repo_updated
