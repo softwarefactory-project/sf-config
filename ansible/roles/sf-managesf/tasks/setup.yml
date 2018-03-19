@@ -24,14 +24,6 @@
     - {content: "{{ zuul_rsa_pub }}", name: "zuul_rsa.pub", mode: "0444"}
   no_log: true
 
-- name: "ensure managesf_htpasswd is present"
-  file:
-    path: /etc/httpd/managesf_htpasswd
-    state: touch
-    mode: 0640
-    owner: managesf
-    group: apache
-
 - name: "Setup config.py"
   template:
     src: config.py.j2

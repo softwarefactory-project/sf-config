@@ -1,22 +1,9 @@
-SET @username="admin";
 SET @mail="admin@{{ fqdn }}";
 SET @pubkey="{{ gerrit_admin_rsa_pub }}";
 
 DELETE FROM account_external_ids WHERE account_id = 1;
 
-DROP TRIGGER IF EXISTS default_password;
-delimiter //
-CREATE TRIGGER default_password BEFORE INSERT ON `account_external_ids`
-FOR EACH ROW BEGIN
-SET NEW.password = 'password';
-END; //
-delimiter ;
-
--- Update also existing entries
-UPDATE account_external_ids SET password = 'password';
-
-INSERT INTO account_external_ids VALUES (1,@mail,NULL,CONCAT('gerrit:',@username));
-INSERT INTO account_external_ids VALUES (1,NULL,NULL,CONCAT('username:',@username));
+INSERT INTO account_external_ids VALUES (1, @mail, NULL, "gerrit:admin");
 INSERT INTO account_group_members SELECT 1,1 ON DUPLICATE KEY UPDATE account_id=1, group_id=1;
 INSERT IGNORE INTO account_group_members_audit VALUES (1,NULL,NULL,1,1,CURRENT_TIMESTAMP()),(1,NULL,NULL,1,6,CURRENT_TIMESTAMP());
 INSERT INTO account_id SELECT * FROM(SELECT 1)AS TMP WHERE NOT EXISTS(SELECT s FROM account_id WHERE s=1);
