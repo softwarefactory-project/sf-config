@@ -43,7 +43,18 @@
         - _zuul_scheduler.rc == 0
   when: localconfig.stdout != upstreamconfig.stdout
 
-- name: Ensure service are started and enabled
+- name: Start the scheduler first
+  service:
+    name: rh-python35-zuul-scheduler
+    state: started
+  when: "'zuul-scheduler' in zuul_services"
+
+- name: Wait for gearman server
+  wait_for:
+    port: "{{ zuul_gearman_port }}"
+    host: "{{ zuul_scheduler_host }}"
+
+- name: Ensure all services are started and enabled
   service:
     name: "rh-python35-{{ item }}"
     state: started
