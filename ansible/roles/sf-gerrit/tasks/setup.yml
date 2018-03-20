@@ -34,6 +34,14 @@
        mode: '0444'}
   notify: [restart gerrit]
 
+- name: "Install gerrit duplicate keys cleaning script"
+  template:
+    src: clean-duplicate-keys.py.j2
+    dest: /var/lib/gerrit/clean-duplicate-keys
+    mode: 0550
+    owner: root
+    group: root
+
 - name: "Install static configuration files for gerrit"
   copy:
     src: "{{ item.name }}"

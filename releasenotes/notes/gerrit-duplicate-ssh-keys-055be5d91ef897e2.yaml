@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Gerrit duplicate user's ssh keys are fixed. A script to clean the duplicates
+    is installed in /var/lib/gerrit/clean-duplicate-keys.
