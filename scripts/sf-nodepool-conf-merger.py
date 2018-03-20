@@ -62,6 +62,9 @@ def merge(inp, _nodepool):
         for provider in conf['providers']:
             if provider['name'] != extra_labels['provider']:
                 continue
+            if extra_labels.get('cloud-images'):
+                provider.setdefault('cloud-images', []).extend(
+                    extra_labels['cloud-images'])
             for pool in provider.get('pools', []):
                 if pool['name'] == extra_labels['pool']:
                     pool['labels'].extend(extra_labels['labels'])
