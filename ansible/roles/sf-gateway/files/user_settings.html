@@ -28,21 +28,23 @@
                 <label for="email">eMail</label>
                 <input id="email" type="text" class="form-control" ng-model="user.email" ng-disabled="user.idp_sync" size=32  />
             </div>
-            <div class="checkbox" data-toggle="tooltip" data-placement="left" title="When disabled, eMail and full name are not updated with Identity Provider data">
+            <div ng-if="user.username != 'admin'" class="checkbox" data-toggle="tooltip" data-placement="left" title="When disabled, eMail and full name are not updated with Identity Provider data">
                 <label><input type="checkbox" ng-model="user.idp_sync" />Synchronize user data with the Identity Provider&nbsp;</label>
             </div>
-            <button type="submit" class="btn btn-default">Save</button>
-            <div class="alert alert-success" ng-show="showSuccessAlert">
-                <strong>Saved!</strong> {{successTextAlert}}
-                <button type="button" class="close" data-ng-click="showSuccessAlert = !showSuccessAlert">×</button>
-            </div>
-            <div class="alert alert-danger" ng-show="showErrorAlert">
-                <strong>Oops, couldn't save!</strong>
-                <button type="button" class="close" data-ng-click="showErrorAlert = !showErrorAlert">×</button>
+            <div ng-if="user.username != 'admin'">
+                <button type="submit" class="btn btn-default">Save</button>
+                <div class="alert alert-success" ng-show="showSuccessAlert">
+                    <strong>Saved!</strong> {{successTextAlert}}
+                    <button type="button" class="close" data-ng-click="showSuccessAlert = !showSuccessAlert">×</button>
+                </div>
+                <div class="alert alert-danger" ng-show="showErrorAlert">
+                    <strong>Oops, couldn't save!</strong>
+                    <button type="button" class="close" data-ng-click="showErrorAlert = !showErrorAlert">×</button>
+                </div>
             </div>
         </form>
     </div>
-    <div class="container" id="api_key">
+    <div ng-if="user.username != 'admin'" div class="container" id="api_key">
         <h3>API key</h3>
         <form ng-submit="regen_api_key()">
             <div class="form-group" data-toggle="tooltip" data-placement="left" title="This key is personal and can be used with the sfmanager command line interface to perform allowed operations">
