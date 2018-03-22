@@ -1,0 +1,23 @@
+---
+description: "Github tenant Software Factory deployment"
+inventory:
+  - name: managesf
+    ip: 192.168.0.10
+    roles:
+      - install-server
+      - mysql
+      - gateway
+      - logserver
+      - repoxplorer
+      - murmur
+      - etherpad
+      - lodgeit
+      - kibana
+      - logserver
+      - cauth
+      - managesf
+      - elasticsearch
+      - job-logs-gearman-client
+      - job-logs-gearman-worker
+      - logstash
+      - hound
