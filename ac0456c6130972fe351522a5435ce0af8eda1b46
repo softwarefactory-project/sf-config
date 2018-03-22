@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "ba3cc151_af3a05e6",
+        "filename": "ansible/roles/sf-gerrit/templates/clean-duplicate-keys.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-22T02:23:45Z",
+      "side": 1,
+      "message": "oops :-)",
+      "parentUuid": "ba3cc151_cfb429d3",
+      "revId": "ac0456c6130972fe351522a5435ce0af8eda1b46",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3cc151_2fc4b53e",
         "filename": "ansible/roles/sf-gerrit/templates/clean-duplicate-keys.py.j2",
         "patchSetId": 1
@@ -42,6 +60,24 @@
         "endLine": 36,
         "endChar": 40
       },
+      "revId": "ac0456c6130972fe351522a5435ce0af8eda1b46",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3cc151_0f369103",
+        "filename": "ansible/roles/sf-gerrit/templates/clean-duplicate-keys.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-22T02:23:45Z",
+      "side": 1,
+      "message": "Well it\u0027s remove key that are already in keys, except the last one (since if it\u0027s a duplicate, it would be removed...).\n\nHowever the test is incorrect, \u0027seq\u0027 is always different, it need to check if keydata is in keys.",
+      "parentUuid": "ba3cc151_2fc4b53e",
       "revId": "ac0456c6130972fe351522a5435ce0af8eda1b46",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
