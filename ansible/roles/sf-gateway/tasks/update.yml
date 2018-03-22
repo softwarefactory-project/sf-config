@@ -8,7 +8,7 @@
   register: localconfig
 
 - name: "Check upstream dashboards config"
-  command: git log --oneline dashboards/ resources/
+  command: git log -n 3 --oneline dashboards/ resources/
   args:
     chdir: /root/config
   register: upstreamconfig

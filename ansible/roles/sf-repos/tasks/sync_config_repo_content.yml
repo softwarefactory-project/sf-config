@@ -33,6 +33,7 @@
     - zuul
     - zuul.d
     - playbooks/base
+    - playbooks/config
 
 - name: Ensure retro-compatibility symlinks
   file:
@@ -54,7 +55,6 @@
     perms: "yes"
     recursive: "yes"
   with_items:
-    - playbooks/config
     - playbooks/pages
   register: _config_static_files
 
@@ -65,6 +65,10 @@
   with_items:
     - playbooks/base/pre.yaml
     - playbooks/base/post.yaml
+    - playbooks/config/pre.yaml
+    - playbooks/config/check.yaml
+    - playbooks/config/update.yaml
+    - playbooks/config/post.yaml
     - zuul.d/_jobs-base.yaml
     - zuul.d/_jobs-pages.yaml
     - zuul.d/_pipelines.yaml
