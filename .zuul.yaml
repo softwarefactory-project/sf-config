@@ -1,0 +1,14 @@
+- project-template:
+    name: sf-jobs-exp-tenant
+    check:
+      jobs:
+        - linters
+        - sf-rpm-build
+        - sf-ci-functional-tenant:
+            dependencies:
+              - sf-rpm-build
+
+- project:
+    name: software-factory/sf-config
+    templates:
+      - sf-jobs-exp-tenant
