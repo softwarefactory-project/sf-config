@@ -25,17 +25,20 @@
 
 - job:
     name: config-check
-    parent: base
+    parent: null
     description: Validate the config repo.
+    pre-run: playbooks/config/pre.yaml
     run: playbooks/config/check.yaml
+    post-run: playbooks/config/post.yaml
     nodeset:
       nodes: []
 
 - job:
     name: config-update
-    parent: base
+    parent: null
     description: Deploy config repo update.
     run: playbooks/config/update.yaml
+    post-run: playbooks/config/post.yaml
     secrets:
       - site_install_server
     semaphore: semaphore-config-update
