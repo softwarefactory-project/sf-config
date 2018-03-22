@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3cc151_9a097d34",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-22T15:35:59Z",
+      "side": 1,
+      "message": "{{ sf_tenant_name }}",
+      "range": {
+        "startLine": 168,
+        "startChar": 48,
+        "endLine": 168,
+        "endChar": 64
+      },
+      "revId": "be00a14bb0c7c758a4b92b60793ff9622f61f090",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3cc151_15045e13",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-22T15:35:59Z",
+      "side": 1,
+      "message": "To keep the naming convention I prefer: remote_zuul_tenant_name",
+      "range": {
+        "startLine": 52,
+        "startChar": 23,
+        "endLine": 52,
+        "endChar": 58
+      },
+      "revId": "be00a14bb0c7c758a4b92b60793ff9622f61f090",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba3cc151_551ae66f",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-22T15:35:59Z",
+      "side": 1,
+      "message": "It deserves a comment here, why are we doing that ? \"The tenant have previously created a Zuul config-project declared in the remote SF tenant definition. We fetch the key to further initialize needed secrets into this config-project\"",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 34
+      },
+      "revId": "be00a14bb0c7c758a4b92b60793ff9622f61f090",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
