@@ -18,7 +18,7 @@ gerrit_internal_url: "http://localhost:{{ gerrit_port }}/r/"
 managesf_internal_url: "http://localhost:20001"
 
 local_admin_mail: "admin@{{ fqdn }}"
-gerrit_email: "gerrit@example.com"
+gerrit_email: "admin@example.com"
 
 gerrit_replication: true
 
