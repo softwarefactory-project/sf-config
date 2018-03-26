@@ -203,6 +203,11 @@ def setup(args, pb):
     # Setup mysql role before all components
     pb.append(host_play('mysql', 'mysql', action))
 
+    # TODO: remove after gerrit bump is merged
+    pb.append(host_play('install-server', tasks=[
+        {"name": "Check gerrit version", "command": "rpm -q gerrit",
+         "register": "gerrit_version"}]))
+
     # Setup all components except mysql
     for host in args.inventory:
         host_roles = [role for role in host["roles"] if

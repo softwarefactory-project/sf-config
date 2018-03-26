@@ -15,6 +15,11 @@
 
 - include_vars: /root/config/gerrit/commentlinks.yaml
 
+# TODO: remove after gerrit update
+- name: "Check gerrit version"
+  command: rpm -q gerrit
+  register: gerrit_version
+
 - name: Update configuration file
   when: localconfig.stdout != upstreamconfig.stdout
   template:
