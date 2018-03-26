@@ -29,7 +29,7 @@ network:
   disable_external_resources: false
 
 authentication:
-  admin_password: userpass
+  admin_password: CHANGE_ME
   # timeout of sessions in seconds
   sso_cookie_timeout: 43200
 
