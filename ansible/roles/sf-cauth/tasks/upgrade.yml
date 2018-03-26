@@ -1,0 +1,5 @@
+---
+- name: "Add login column"
+  command: mysql cauth -e "alter table auth_mapping add column login varchar(4096)"
+  ignore_errors: yes
+  delegate_to: "{{ mysql_hosts }}"
