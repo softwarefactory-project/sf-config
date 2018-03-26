@@ -29,6 +29,6 @@ class Gerrit(Component):
         args.glue["gerrit_pub_url"] = "%s/r/" % args.glue["gateway_url"]
         args.glue["gerrit_internal_url"] = "http://%s:%s/r/" % (
             args.glue["gerrit_host"], args.defaults["gerrit_port"])
-        args.glue["gerrit_email"] = "gerrit@%s" % args.sfconfig["fqdn"]
+        args.glue["gerrit_email"] = "admin@%s" % args.sfconfig["fqdn"]
         if args.sfconfig["network"]["disable_external_resources"]:
             args.glue["gerrit_replication"] = False

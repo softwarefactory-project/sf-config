@@ -1,8 +1,19 @@
 ---
-- name: Reset gerrit passwords
-  command: >
-    mysql -e "DROP TRIGGER IF EXISTS default_password;"
-          -e "UPDATE account_external_ids SET password=NULL;"
-          gerrit
-  delegate_to: "{{ mysql_host }}"
+- block:
+    - name: Reset gerrit passwords
+      command: >
+        mysql -e "DROP TRIGGER IF EXISTS default_password;"
+              -e "UPDATE account_external_ids SET password=NULL WHERE password='password';"
+              gerrit
+      delegate_to: "{{ mysql_host }}"
+
+    - name: Install gerrit admin password update
+      template:
+        src: "gerrit-admin-password-update.sql.j2"
+        dest: "/var/lib/software-factory/sql/gerrit-admin-password-update.sql"
+      delegate_to: "{{ mysql_host }}"
+
+    - name: Run gerrit admin password update
+      shell: "mysql gerrit < /var/lib/software-factory/sql/gerrit-admin-password-update.sql"
+      delegate_to: "{{ mysql_host }}"
   when: sf_previous_version < 3.1
