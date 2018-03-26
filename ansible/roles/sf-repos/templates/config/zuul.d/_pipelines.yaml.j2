@@ -120,7 +120,7 @@
 {% if 'gerrit' in roles %}
       gerrit:
         - event: ref-updated
-          ref: ^(?!refs/).*$
+          ref: ^refs/heads/.*$
 {% endif %}
     success:
       sqlreporter:
