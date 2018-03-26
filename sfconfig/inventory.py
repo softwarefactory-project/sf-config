@@ -148,6 +148,11 @@ def install(args, pb):
     for host in args.inventory:
         pb.append(host_play(host, host['roles'], action))
 
+    # TODO: remove after gerrit bump is merged
+    pb.append(host_play('install-server', tasks=[
+        {"name": "Check gerrit version", "command": "rpm -q gerrit",
+         "register": "gerrit_version"}]))
+
 
 def recover(args, pb):
     pb.append(host_play('install-server', tasks=[
