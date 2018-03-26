@@ -76,15 +76,6 @@
     mode: 0644
   when: not gerrit_replication_config.stat.exists
 
-- name: "Install initialization and migration scripts"
-  template:
-    src: "{{ item }}.j2"
-    dest: "/var/lib/software-factory/sql/{{ item }}"
-  with_items:
-    - gerrit-firstuser-init.sql
-    - gerrit-restore-user-keys.sql
-    - gerrit-admin-password.sql
-
 - name: "Add monit service check"
   copy:
     src: monit
@@ -142,6 +133,24 @@
   failed_when: _gerrit.rc != 3 and _gerrit.rc != 0
   changed_when: false
 
+- name: "Create .init directory"
+  file:
+    path: /var/lib/gerrit/.init
+    owner: gerrit
+    mode: 0500
+    state: directory
+
+- name: "Setup .init files"
+  copy:
+    content: "{{ hostvars[inventory_hostname][item.key] }}"
+    dest: "/var/lib/gerrit/.init/{{ item.dest }}"
+    owner: gerrit
+    mode: 0400
+  with_items:
+    - {key: gerrit_admin_password, dest: "admin_http_password"}
+    - {key: gerrit_admin_rsa_pub, dest: "admin_ssh_key.pub"}
+    - {key: gerrit_email, dest: "admin_email"}
+
 - name: "Initialize/Upgrade gerrit when service is not running"
   command: /usr/bin/java -jar /usr/lib64/gerrit/release.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins
   become: true
@@ -154,12 +163,23 @@
   become_user: gerrit
   when: _gerrit.rc == 3
 
-- name: "Add initial user"
-  shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'
-  when: gerrit_allprojects.stat.exists == False
+- name: "Setup gerrit old initialization process"
+  block:
+    - name: "Install initialization and migration scripts"
+      template:
+        src: "{{ item }}.j2"
+        dest: "/var/lib/software-factory/sql/{{ item }}"
+      with_items:
+        - gerrit-firstuser-init.sql
+        - gerrit-admin-password.sql
 
-- name: "Set gerrit admin key"
-  shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-admin-password.sql'
+    - name: "Add initial user"
+      shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'
+      when: gerrit_allprojects.stat.exists == False
+
+    - name: "Set gerrit admin key"
+      shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-admin-password.sql'
+  when: "'2.11.10' in gerrit_version.stdout"
 
 - name: "Start service"
   service:

@@ -96,12 +96,20 @@ resources = {
     'workdir': '/var/lib/managesf',
     'subdir': 'resources',
     'master_repo': '{{ gateway_url }}/r/config',
+
+{% if "2.11" not in gerrit_version.stdout %}
+    'new_gerrit_client': True,
+{% endif %}
 }
 
 {% if 'gerrit' in roles %}
 gerrit = {
     'url': '{{ gerrit_internal_url }}',
     'password': '{{ gerrit_admin_password }}',
+
+{% if "2.11" not in gerrit_version.stdout %}
+    'new_gerrit_client': True,
+{% endif %}
 
     # Remove bellow configuration when api-key and user management is
     # implemented through REST api

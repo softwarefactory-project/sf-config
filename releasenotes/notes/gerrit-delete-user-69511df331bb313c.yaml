@@ -1,0 +1,5 @@
+---
+issues:
+  - |
+    Gerrit user are no longer deleted through the managesf API. To fully delete
+    a gerrit user, a new 'delete-gerrit-user.sh' script is provided.
