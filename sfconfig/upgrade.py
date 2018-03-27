@@ -11,6 +11,8 @@
 # under the License.
 
 import sys
+import uuid
+import re
 
 
 def update_sfconfig(args):
@@ -127,6 +129,16 @@ def update_sfconfig(args):
         dirty = True
 
     args.save_sfconfig = dirty
+
+    if data['authentication']['admin_password'] == 'CHANGE_ME' or \
+       data['authentication']['admin_password'] == 'userpass':
+        new_pass = uuid.uuid4().hex
+        data['authentication']['admin_password'] = new_pass
+        # Admin_password is changed in place to avoid automatic sfconfig.yaml
+        # upgrade on first deployment (which break formating)
+        raw_config = open(args.config).read()
+        open(args.config, 'w').write(re.sub(
+            "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
 
 
 def update_arch(args):
