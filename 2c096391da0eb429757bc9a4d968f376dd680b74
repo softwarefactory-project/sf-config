@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "9a41bdd9_62f978c8",
+        "filename": "ansible/roles/sf-gateway/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-27T09:24:39Z",
+      "side": 1,
+      "message": "Not sure if it\u0027s still used, can be removed in a later patch though.",
+      "parentUuid": "9abe1de1_03bbf1c5",
+      "revId": "2c096391da0eb429757bc9a4d968f376dd680b74",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_e3afdd7b",
         "filename": "ansible/roles/sf-gateway/tasks/setup.yml",
         "patchSetId": 2
@@ -36,6 +54,24 @@
       "writtenOn": "2017-09-22T14:13:18Z",
       "side": 1,
       "message": "sf-gateway/tasks/disable.yml removes /var/www/localCA.pem when sfconfig --erase. What about adding the removal of /var/www/keys too ?",
+      "revId": "2c096391da0eb429757bc9a4d968f376dd680b74",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a41bdd9_82f6fcd5",
+        "filename": "ansible/roles/sf-gateway/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-27T09:24:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9abe1de1_e3afdd7b",
       "revId": "2c096391da0eb429757bc9a4d968f376dd680b74",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
