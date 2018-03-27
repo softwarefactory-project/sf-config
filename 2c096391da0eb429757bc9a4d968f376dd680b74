@@ -43,6 +43,23 @@
     },
     {
       "key": {
+        "uuid": "9a41bdd9_6220984a",
+        "filename": "ansible/roles/sf-gateway/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-03-27T09:44:40Z",
+      "side": 1,
+      "message": "Could you add the gerrit pub key too ? It will ease replication configuration.",
+      "revId": "2c096391da0eb429757bc9a4d968f376dd680b74",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9abe1de1_e3afdd7b",
         "filename": "ansible/roles/sf-gateway/tasks/setup.yml",
         "patchSetId": 2
