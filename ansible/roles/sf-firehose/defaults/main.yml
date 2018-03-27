@@ -2,3 +2,5 @@
 role_actions:
   - install
   - setup
+  - get_logs
+  - disable

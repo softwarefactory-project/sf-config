@@ -1,0 +1,19 @@
+logging:
+  level: DEBUG
+broker:
+  url: {{ firehose_host }}
+  port: 1883
+
+software-factory:
+  auth:
+    user: SF_SERVICE_USER
+    password: {{ sf_service_user_password }}
+  url: https://{{ fqdn }}
+  managesf: {{ managesf_internal_url }}
+  gerrit: {{ gerrit_internal_url }}a/
+
+# Hooks configuration
+hooks:
+  # Actually no config needed here yet
+  SFZuul:
+    - {}

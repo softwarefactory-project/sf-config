@@ -1,1 +1,13 @@
 ---
+- name: "Setup firehooks config"
+  template:
+    src: default.yaml.j2
+    dest: /etc/firehooks/default.yaml
+  notify: [restart firehooks]
+
+- name: Start service
+  systemd:
+    name: firehooks
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
