@@ -1,7 +1,7 @@
 ---
 - name: Disable services
   service:
-    name: ochlero
+    name: firehooks
     state: stopped
     enabled: "no"
   ignore_errors: "yes"
@@ -18,5 +18,5 @@
         name: "{{ item }}"
         state: absent
       with_items:
-        - ochlero
+        - firehooks
   when: erase == True

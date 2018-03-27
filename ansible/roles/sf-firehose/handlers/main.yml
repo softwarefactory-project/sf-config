@@ -1,0 +1,5 @@
+---
+- name: restart firehooks
+  service:
+    name: firehooks
+    state: restarted

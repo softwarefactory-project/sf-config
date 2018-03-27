@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  description: Firehose service
+  description: Firehose service and mqtt-triggered hooks
   company: Red Hat
   license: Apache
   min_ansible_version: 2.2

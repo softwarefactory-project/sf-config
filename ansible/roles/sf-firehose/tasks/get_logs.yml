@@ -1,1 +1,7 @@
 ---
+- name: "Fetch firehooks config"
+  synchronize:
+    mode: pull
+    src: "/etc/firehooks/"
+    dest: "{{ log_dest }}/etc"
+  ignore_errors: true
