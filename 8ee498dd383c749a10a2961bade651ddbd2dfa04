@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a41bdd9_62e73813",
+        "filename": "ansible/roles/sf-gateway/files/user_settings.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-27T09:49:23Z",
+      "side": 0,
+      "message": "Perhaps adds the div ng-if around the button instead?",
+      "revId": "8ee498dd383c749a10a2961bade651ddbd2dfa04",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

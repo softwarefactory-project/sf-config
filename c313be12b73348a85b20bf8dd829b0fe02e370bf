@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a41bdd9_c2e16400",
+        "filename": "ansible/roles/sf-gateway/files/user_settings.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-03-27T09:49:23Z",
+      "side": 1,
+      "message": "There is an extra div here",
+      "revId": "c313be12b73348a85b20bf8dd829b0fe02e370bf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
