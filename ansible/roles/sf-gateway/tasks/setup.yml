@@ -19,6 +19,7 @@
     - /var/www/sf
     - /var/www/dashboard
     - /var/www/dashboards_data
+    - /var/www/keys
     - /etc/letsencrypt
 
 - name: Create extra working directories
@@ -44,10 +45,10 @@
     src: robots.txt
     dest: /var/www/robots.txt
 
-- name: Expose localCA.pem
+- name: Expose public keys
   copy:
     content: "{{ localCA_pem }}"
-    dest: /var/www/localCA.pem
+    dest: "/var/www/keys/localCA.pem"
     mode: "0444"
 
 - name: Add embedded TLS certificate for apache
