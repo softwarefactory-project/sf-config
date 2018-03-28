@@ -90,25 +90,6 @@
     - {name: jobs.js, path: /var/www/jobs}
     - {name: jobs.html, path: /var/www/jobs, real_name: index.html}
 
-- name: Inject top-menu to zuul static page
-  lineinfile:
-    path: "{{ item }}"
-    line: '    <script type="text/javascript" src="/static/js/topmenu.js"></script>'
-    insertafter: '<head>'
-  with_fileglob: /opt/rh/rh-python35/root/usr/share/zuul/*.html
-
-- name: Inject zuul documentation links
-  lineinfile:
-    path: "/opt/rh/rh-python35/root/usr/share/zuul/{{ item }}.html"
-    line: '    <ul class="nav navbar-nav navbar-right"><li><a href="/docs/zuul">Zuul documentation</a></li></ul>'
-    insertbefore: '<ul class="nav navbar-nav">'
-  with_items:
-    - builds
-    - index
-    - job
-    - jobs
-    - status
-
 - name: Install gerrit dashboard
   copy:
     src: dashboard.index.html

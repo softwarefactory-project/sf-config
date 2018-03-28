@@ -88,27 +88,14 @@ def daemonize():
 
 
 def check_zuul_running_jobs(args):
-    tenants = {}
-    try:
-        req = requests.get("%s/tenants" % args.url)
-        for tenant in req.json():
-            tenants[tenant["name"]] = {}
-    except Exception:
-        tenants = {}
-    for tenant in tenants:
-        try:
-            req = requests.get("%s/%s/status" % (args.url, tenant))
-            tenants[tenant]["pipelines"] = req.json().get("pipelines", [])
-        except Exception:
-            continue
     jobs = {}
-    for tenant in tenants:
-        for pipeline in tenants[tenant].get("pipelines", []):
-            for change_queue in pipeline.get("change_queues", []):
-                if change_queue.get("heads"):
-                    pipe_name = "%s:%s" % (tenant, pipeline["name"])
-                    jobs.setdefault(pipe_name, 0)
-                    jobs[pipe_name] += len(change_queue["heads"])
+    try:
+        req = requests.get("%s/api/tenants" % args.url)
+        for tenant in req.json():
+            if tenant["queue"]:
+                jobs[tenant["name"]] = tenant["queue"]
+    except Exception:
+        jobs = {}
     return jobs
 
 
