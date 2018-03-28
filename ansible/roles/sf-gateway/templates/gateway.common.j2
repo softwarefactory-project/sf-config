@@ -142,8 +142,8 @@
         RewriteRule ^/zuul3/(.*)$ /zuul/$1 [R,L]
 
         # Redirect all the static file to webui cache
-        AliasMatch "^/zuul/.*/(.*)\.(html|js|png|map)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
-        AliasMatch "^/zuul/(.*)\.(html|js|png|map)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
+        AliasMatch "^/zuul/.*/(.*)\.(html|js|png|map|ttf|woff)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
+        AliasMatch "^/zuul/(.*)\.(html|js|png|map|ttf|woff)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
         <Directory /opt/rh/rh-python35/root/usr/share/zuul>
             Require all granted
             Order allow,deny
@@ -152,13 +152,22 @@
 
         RewriteRule ^/zuul/?$ /zuul/index.html [R]
 
+        ProxyPassMatch ^/zuul/.*\.(html|js|png|map|ttf|woff)$ !
         # Console-stream needs a special proxy-pass for websocket
+        {% if _zuul_version.stdout.split('.')[2] == "0-25" %}
         ProxyPassMatch /zuul/(.*)/console-stream {{ zuul_ws_url }}/$1/console-stream nocanon retry=0 disablereuse=on
 
         # Then only the json calls are sent to the zuul-web endpoints
-        ProxyPassMatch ^/zuul/.*\.(html|js|png|map)$ !
         ProxyPassMatch ^/zuul/keys/(.*)$ {{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
         ProxyPassMatch ^/zuul/(.*)$ {{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
+        {% else %}
+        ProxyPassMatch /zuul/(.*)/api/console-stream {{ zuul_ws_url }}/api/tenant/$1/console-stream nocanon retry=0 disablereuse=on
+
+        # Then only the json calls are sent to the zuul-web endpoints
+        ProxyPass /zuul/tenants {{ zuul_web_url }}/api/tenants nocanon  retry=0 disablereuse=on
+        ProxyPassMatch ^/zuul/(.*)$ {{ zuul_web_url }}/api/tenant/$1 nocanon  retry=0 disablereuse=on
+        {% endif %}
+
 
 {% endif %}
 {% if 'storyboard' in roles %}
