@@ -105,14 +105,6 @@
   register: _nodepool_version
   changed_when: false
 
-- name: Inject top-menu to zuul static page
-  lineinfile:
-    path: "{{ item }}"
-    line: '    <script type="text/javascript" src="/static/js/topmenu.js"></script>'
-    insertafter: '<head>'
-  with_fileglob: /opt/rh/rh-python35/root/usr/share/zuul/*.html
-  when: _zuul_version.stdout.split('.')[2] == "0-25"
-
 - name: Install templates
   template:
     src: "{{ item.name }}.j2"
