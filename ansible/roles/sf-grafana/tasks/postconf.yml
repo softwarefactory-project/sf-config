@@ -1,4 +1,5 @@
 ---
-- name: Render dynamic graph
-  command: update-grafana-graphs.sh
-  delegate_to: localhost
+# TEMP disable
+#- name: Render dynamic graph
+#  command: update-grafana-graphs.sh
+#  delegate_to: localhost
