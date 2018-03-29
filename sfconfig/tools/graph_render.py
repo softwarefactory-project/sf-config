@@ -401,12 +401,12 @@ def update_grafyaml_action(args):
 ############################
 def get_tenants(zuul_url):
     result = []
-    tenants_url = urllib.urlopen("%s/tenants" % zuul_url)
+    tenants_url = urllib.urlopen("%s/api/tenants" % zuul_url)
     tenants = json.loads(tenants_url.read())
     for tenant in tenants:
         tenant_data = {"name": tenant["name"], "pipelines": []}
         tenant_url = urllib.urlopen(
-            "%s/%s/pipelines" % (zuul_url, tenant["name"]))
+            "%s/api/tenant/%s/pipelines" % (zuul_url, tenant["name"]))
         pipelines = json.loads(tenant_url.read())
         for pipeline in pipelines:
             tenant_data["pipelines"].append(pipeline["name"])
