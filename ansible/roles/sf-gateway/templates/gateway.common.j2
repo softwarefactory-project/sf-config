@@ -144,26 +144,6 @@
             Allow from all
         </Directory>
 
-        {% if _zuul_version.stdout.split('.')[2] in ["0-22", "0-25"] %}
-        # Keep /zuul3/ retro-compatibility
-        RewriteRule ^/zuul3/(.*)$ /zuul/$1 [R,L]
-
-        # Redirect all the static file to webui cache
-        AliasMatch "^/zuul/.*/(.*)\.(html|js|png|map|ttf|woff)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
-        AliasMatch "^/zuul/(.*)\.(html|js|png|map|ttf|woff)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
-
-        RewriteRule ^/zuul/?$ /zuul/index.html [R]
-
-        ProxyPassMatch ^/zuul/.*\.(html|js|png|map|ttf|woff)$ !
-
-        # Console-stream needs a special proxy-pass for websocket
-        ProxyPassMatch /zuul/(.*)/console-stream {{ zuul_ws_url }}/$1/console-stream nocanon retry=0 disablereuse=on
-
-        # Then only the json calls are sent to the zuul-web endpoints
-        ProxyPassMatch ^/zuul/keys/(.*)$ {{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
-        ProxyPassMatch ^/zuul/(.*)$ {{ zuul_web_url }}/$1 nocanon  retry=0 disablereuse=on
-
-        {% else %}
         RewriteRule ^/zuul3.*$ /zuul/t/ [R,L]
         RewriteRule ^/zuul/?$ /zuul/t/ [R,L]
 
@@ -174,10 +154,7 @@
         # Redirect api call to zuul-web controllers
         ProxyPassMatch ^/zuul/api/tenant/(.*)/console-stream$ {{ zuul_ws_url }}/api/tenant/$1/console-stream nocanon retry=0 disablereuse=on
         ProxyPassMatch ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 nocanon  retry=0 disablereuse=on
-        # Support old routes used in sf-ci
-        ProxyPassMatch ^/zuul/local/(.*)$ {{ zuul_web_url }}/api/tenant/local/$1 nocanon  retry=0 disablereuse=on
 
-        {% endif %}
 {% endif %}
 {% if 'storyboard' in roles %}
         ProxyPass /storyboard_api/ http://storyboard:20000/v1/ nocanon retry=0
