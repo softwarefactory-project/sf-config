@@ -28,6 +28,7 @@
 {% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         status: 'pending'
+        status-url: "{{ gateway_url }}/zuul/t/local/status.html"
         comment: false
 {% endfor %}
 {% endif %}
@@ -78,6 +79,20 @@
             username: zuul
           - Workflow: 1
 {% endif %}
+{% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
+      {{ github_connection.name }}:
+        review:
+          # Require an approval from user with write access (e.g. core-reviewer)
+          - permission: write
+            type: approved
+{% if github_connection.label_name|default(False) %}
+        # Require label
+        label: {{ github_connection.label_name }}
+{% endif %}
+        status: "{{ github_connection.app_name }}[bot]:local/check:success"
+        open: True
+        current-patchset: True
+{% endif %}{% endfor %}
     trigger:
 {% if 'gerrit' in roles %}
       gerrit:
@@ -89,23 +104,64 @@
             - Verified: 1
           username: zuul
 {% endif %}
+{% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
+      {{ github_connection.name }}:
+        - event: pull_request_review
+          action: submitted
+          state: approved
+        - event: pull_request
+          action: comment
+          comment: (?i)^\s*regate\s*$
+        - event: pull_request_review
+          action: submitted
+          state: approved
+        - event: pull_request_review
+          action: dismissed
+          state: request_changes
+        - event: pull_request
+          action: status
+          status: "{{ github_connection.app_name }}[bot]:local/check:success"
+{% if github_connection.label_name|default(False) %}
+        - event: pull_request
+          action: labeled
+          label:
+            - {{ github_connection.label_name }}
+{% endif %}
+{% endif %}{% endfor %}
     start:
 {% if 'gerrit' in roles %}
       gerrit:
         Verified: 0
 {% endif %}
+{% for github_connection in zuul_github_connections %}
+      {{ github_connection.name }}:
+        status: 'pending'
+        status-url: "{{ gateway_url }}/zuul/t/local/status.html"
+        comment: false
+{% endfor %}
     success:
 {% if 'gerrit' in roles %}
       gerrit:
         Verified: 2
         submit: true
 {% endif %}
+{% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
+      {{ github_connection.name }}:
+        status: 'success'
+        merge: true
+        comment: true
+{% endif %}{% endfor %}
       sqlreporter:
     failure:
 {% if 'gerrit' in roles %}
       gerrit:
         Verified: -2
 {% endif %}
+{% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
+      {{ github_connection.name }}:
+        status: 'failure'
+        comment: true
+{% endif %}{% endfor %}
       sqlreporter:
     window-floor: 20
     window-increase-factor: 2
@@ -122,6 +178,11 @@
         - event: ref-updated
           ref: ^refs/heads/.*$
 {% endif %}
+{% for github_connection in zuul_github_connections %}
+      {{ github_connection.name }}:
+        - event: push
+          ref: ^refs/heads/.*$
+{% endfor %}
     success:
       sqlreporter:
     failure:
@@ -143,6 +204,11 @@
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
 {% endif %}
+{% for github_connection in zuul_github_connections %}
+      {{ github_connection.name }}:
+        - event: push
+          ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
+{% endfor %}
     success:
       sqlreporter:
     failure:

@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    A new app_name setting is added to sfconfig.yaml github_connections list
+    to auto-configure the github gate pipeline.
+  - |
+    A new label_name setting is added to sfconfig.yaml github_connections list
+    to auto-configure a label requirement to github gate.
