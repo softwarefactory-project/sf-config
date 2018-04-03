@@ -6,7 +6,7 @@ diskimages: []
 #    elements:
 #      - centos-minimal
 #      - nodepool-minimal
-#      - sf-zuul-worker
+#      - zuul-worker-user
 
 labels: []
 #  - name: dib-centos-7
