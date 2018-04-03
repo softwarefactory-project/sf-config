@@ -1,0 +1,10 @@
+---
+- name: "Install db upgrade scripts"
+  copy:
+    src: "{{ item }}"
+    dest: "/var/lib/software-factory/sql/{{ item }}"
+  with_items:
+    - cauth_add_username_to_auth_mapping.sql
+
+- name: "Add username column to auth_mapping table"
+  shell: 'mysql cauth < /var/lib/software-factory/sql/cauth_add_username_to_auth_mapping.sql'
