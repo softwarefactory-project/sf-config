@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a46c9f1_e17820fb",
+        "filename": "ansible/roles/sf-job-logs-gearman-client/tasks/setup.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-04T07:55:56Z",
+      "side": 1,
+      "message": "The template should probably be named log-client.yaml.j2",
+      "revId": "4169962f9e481f4a8533bca4178dbdc972d138c6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a46c9f1_017e6ce4",
+        "filename": "ansible/roles/sf-job-logs-gearman-worker/tasks/setup.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-04T07:55:56Z",
+      "side": 1,
+      "message": "Same here, log-worker.yaml.j2",
+      "revId": "4169962f9e481f4a8533bca4178dbdc972d138c6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a46c9f1_411d54bc",
+        "filename": "refarch/allinone.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-04T07:55:56Z",
+      "side": 1,
+      "message": "Is the order matter, why is it changed?",
+      "revId": "4169962f9e481f4a8533bca4178dbdc972d138c6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
