@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "5a43c5e1_bdaf9f93",
+        "filename": "ansible/roles/sf-job-logs-gearman-client/tasks/setup.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-04-04T14:09:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a46c9f1_21e5a8a7",
+      "revId": "4169962f9e481f4a8533bca4178dbdc972d138c6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a46c9f1_017e6ce4",
         "filename": "ansible/roles/sf-job-logs-gearman-worker/tasks/setup.yml",
         "patchSetId": 9
@@ -54,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "5a43c5e1_5d953b3e",
+        "filename": "ansible/roles/sf-job-logs-gearman-worker/tasks/setup.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-04-04T14:09:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a46c9f1_017e6ce4",
+      "revId": "4169962f9e481f4a8533bca4178dbdc972d138c6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a46c9f1_e1ed808f",
         "filename": "ansible/roles/sf-upgrade/tasks/remove_packages.yaml",
         "patchSetId": 9
@@ -65,6 +101,30 @@
       "writtenOn": "2018-04-04T08:30:47Z",
       "side": 1,
       "message": "Could be done in one step instead ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 17
+      },
+      "revId": "4169962f9e481f4a8533bca4178dbdc972d138c6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a43c5e1_bd86bf11",
+        "filename": "ansible/roles/sf-upgrade/tasks/remove_packages.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-04-04T14:09:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a46c9f1_e1ed808f",
       "range": {
         "startLine": 2,
         "startChar": 0,
