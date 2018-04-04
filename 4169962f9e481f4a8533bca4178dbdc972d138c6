@@ -151,6 +151,24 @@
       "revId": "4169962f9e481f4a8533bca4178dbdc972d138c6",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a43c5e1_7d79172f",
+        "filename": "refarch/allinone.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-04-04T14:10:24Z",
+      "side": 1,
+      "message": "I changed it because gerritbot user needs zuul_rsa ssh key",
+      "parentUuid": "7a46c9f1_411d54bc",
+      "revId": "4169962f9e481f4a8533bca4178dbdc972d138c6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
