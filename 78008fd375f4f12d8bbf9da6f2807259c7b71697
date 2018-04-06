@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a43c5e1_83ce0259",
+        "filename": "ansible/roles/sf-repos/files/sf-jobs/zuul.d/dlrn.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-04-06T11:33:26Z",
+      "side": 1,
+      "message": "This playbook is missing from the review",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 39
+      },
+      "revId": "78008fd375f4f12d8bbf9da6f2807259c7b71697",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
