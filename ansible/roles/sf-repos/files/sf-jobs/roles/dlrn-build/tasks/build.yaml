@@ -1,0 +1,46 @@
+- name: Get project info
+  shell:
+    cmd: "{{ rdopkg }} findpkg {{ zuul.project.name }} -l {{ working_dir}}/rdoinfo"
+  register: result_info
+
+- set_fact:
+    project_info: "{{ result_info.stdout | from_yaml }}"
+
+- name: Delete data directory if exist
+  file:
+    path: "{{ working_dir }}/DLRN/data"
+    state: absent
+
+- name: Create data directory
+  file:
+    path: "{{ working_dir }}/DLRN/data"
+    state: directory
+
+- name: Copy distgit in data directory
+  shell:
+    cmd: "cp -Rf {{ zuul.project.src_dir }} {{ working_dir }}/DLRN/data/{{ project_info['name'] }}_distro"
+  when: zuul.project.name is match(".*-distgit$")
+
+- name: Copy source in data directory
+  shell:
+    cmd: "cp -Rf {{ zuul.project.src_dir }} {{ working_dir }}/DLRN/data/{{ project_info['name'] }}"
+  when: not zuul.project.name is match(".*-distgit$")
+
+- include: build-pkg.yaml
+  vars:
+    project_name: "{{ zuul.project.name }}"
+    source_branch: "{{ zuul.branch }}"
+    current_tag: "master"
+
+- name: Upload logs for all builds
+  synchronize:
+    src: '{{ zuul.project.src_dir }}/buildset'
+    dest: '{{ zuul.executor.log_root }}'
+    mode: pull
+    copy_links: true
+    verify_host: true
+    rsync_opts:
+      - --include=/buildset/**
+      - --include=*/
+      - --exclude=*
+      - --prune-empty-dirs

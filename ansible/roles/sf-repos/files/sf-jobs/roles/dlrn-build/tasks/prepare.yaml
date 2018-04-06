@@ -1,0 +1,42 @@
+- name: Install required dependencies
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - git
+  - createrepo
+  - python-virtualenv
+  - mock
+  - gcc
+  - redhat-rpm-config
+  - rpmdevtools
+  - libffi-devel
+  - openssl-devel
+  - yum-utils
+  - policycoreutils
+  - rh-python35-rdopkg
+  - rh-python35-dlrn
+  become: true
+
+- name: Setup default mock configuration
+  blockinfile:
+    path: /etc/mock/site-defaults.cfg
+    content: |
+      config_opts['plugin_conf']['tmpfs_enable'] = True
+      config_opts['plugin_conf']['tmpfs_opts'] = {}
+      config_opts['plugin_conf']['tmpfs_opts']['required_ram_mb'] = 2048
+      config_opts['plugin_conf']['tmpfs_opts']['max_fs_size'] = '4g'
+      config_opts['plugin_conf']['tmpfs_opts']['mode'] = '0755'
+      config_opts['plugin_conf']['tmpfs_opts']['keep_mounted'] = True
+  become: true
+
+- name: Add user to mock group
+  user: name="{{ ansible_user }}"
+        groups=mock
+        append=yes
+  become: true
+
+- name: Clone rdoinfo
+  shell:
+    cmd: |
+      rm -Rf {{ working_dir }}/rdoinfo && git clone {{ rdo_info_clone_url }} {{ working_dir }}/rdoinfo

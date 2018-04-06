@@ -1,0 +1,46 @@
+- name: Build for real
+  debug:
+    msg: "Build {{ project_name }} with source branch {{ source_branch }} and tag {{ current_tag }}"
+
+- name: Get project info
+  shell:
+    cmd: "{{ rdopkg }} findpkg {{ project_name }} -l {{ working_dir}}/rdoinfo"
+  register: result_info
+
+- set_fact:
+    project_info: "{{ result_info.stdout | from_yaml }}"
+
+- name: Set project.ini values according to current config
+  template:
+    src: projects.ini.j2
+    dest: "{{ working_dir }}/projects.ini"
+
+- name: Build package
+  block:
+    - name: Ensure commits.yaml not exists
+      file:
+        path: "{{ working_dir }}/commits.yaml"
+        state: absent
+
+    - name: build
+      shell:
+        cmd: "{{ dlrn }} --config-file {{ working_dir }}/projects.ini --package-name {{ project_info['name'] }} --use-public --local --info-repo {{ working_dir }}/rdoinfo --verbose-mock"
+      args:
+        chdir: "{{ working_dir }}"
+
+  always:
+    - name: Ensure log directory is created
+      file:
+        path: '{{ zuul.project.src_dir }}/buildset'
+        state: directory
+
+    - name: Ensure branch log directory is created
+      file:
+        path: '{{ zuul.project.src_dir }}/buildset/{{ current_tag }}'
+        state: directory
+
+    - name: Copy logs
+      shell:
+        cmd: |
+          rsync -avL {{ working_dir }}/DLRN/data/repos {{ zuul.project.src_dir }}/buildset/{{ current_tag }}
+          cp -p {{ working_dir }}/DLRN/commits.sqlite {{ zuul.project.src_dir }}/buildset/{{ current_tag }}
