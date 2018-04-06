@@ -1,0 +1,24 @@
+- job:
+    name: packaging-base
+    parent: base
+    attempts: 5
+    roles:
+      - zuul: sf-jobs
+    nodeset:
+      nodes:
+        - name: test-node
+          label: dlrn-worker
+
+- job:
+    name: dlrn-build
+    parent: packaging-base
+    description: build a package using DLRN
+    run: playbooks/dlrn/dlrn-build.yaml
+
+- job:
+    name: dlrn-publish
+    parent: packaging-base
+    description: publish a built package using the DLRN API
+#    secrets:
+#      - dlrnapi_passwd
+    run: playbooks/dlrn/dlrn-publish.yaml
