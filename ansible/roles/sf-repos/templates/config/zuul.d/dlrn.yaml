@@ -1,0 +1,29 @@
+- job:
+    name: default-dlrn-build
+    parent: dlrn-build
+    description: build a package using DLRN for default project
+    vars:
+      gateway_url: "https://sftests.com/"
+      dlrn_project: "default"
+      dlrn_build_target: sf
+      rdo_info_clone_url: "https://sftests.com/r/sfdlrninfo"
+
+- project:
+    name: zuul-distgit
+    check:
+      jobs:
+        - default-dlrn-build
+    gate:
+      jobs:
+        - noop
+    post:
+      jobs:
+        - default-dlrn-build
+        - dlrn-publish:
+            vars:
+              gateway_url: "https://sftests.com/"
+              dlrn_project: "default"
+              dlrnapi_username: dlrn
+              dlrnapi_password: test
+            dependencies:
+              - default-dlrn-build
