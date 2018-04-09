@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a43c5e1_c613b80c",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/nodepool.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-09T01:16:43Z",
+      "side": 1,
+      "message": "vm is already in nodepool-minimal element-deps",
+      "revId": "65ca840ea5cf106b5badf5e0e5baf5ba82990761",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
