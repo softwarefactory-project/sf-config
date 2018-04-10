@@ -163,24 +163,6 @@
   become_user: gerrit
   when: _gerrit.rc == 3
 
-- name: "Setup gerrit old initialization process"
-  block:
-    - name: "Install initialization and migration scripts"
-      template:
-        src: "{{ item }}.j2"
-        dest: "/var/lib/software-factory/sql/{{ item }}"
-      with_items:
-        - gerrit-firstuser-init.sql
-        - gerrit-admin-password.sql
-
-    - name: "Add initial user"
-      shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-firstuser-init.sql'
-      when: gerrit_allprojects.stat.exists == False
-
-    - name: "Set gerrit admin key"
-      shell: 'mysql gerrit < /var/lib/software-factory/sql/gerrit-admin-password.sql'
-  when: "'2.11.10' in gerrit_version.stdout"
-
 - name: "Start service"
   service:
     name: gerrit
