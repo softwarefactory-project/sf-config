@@ -120,11 +120,7 @@
 {% if 'gerrit' in roles %}
       gerrit:
         - event: ref-updated
-{% if "2.11" not in gerrit_version.stdout %}
           ref: ^refs/heads/.*$
-{% else %}
-          ref: ^(?!refs/).*$
-{% endif %}
 {% endif %}
     success:
       sqlreporter:
