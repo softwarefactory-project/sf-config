@@ -49,3 +49,32 @@
       group: apache
       mode: 0440
       setype: httpd_sys_content_t
+
+- name: Fetch the IdP metadata
+  block:
+    - copy:
+        src: "{{ idp_md_file }}"
+        dest: /etc/httpd/saml2/idp_metadata.xml
+        mode: 0444
+        owner: apache
+        group: apache
+      when: idp_md_file is defined
+    - get_url:
+        url: "{{ idp_md_url }}"
+        dest: /etc/httpd/saml2/idp_metadata.xml
+        mode: 0444
+        owner: apache
+        group: apache
+      when: idp_md_url is defined
+  when: idp_md_url is defined or idp_md_file is defined
+
+- name: Check for the presence of IdP metadata
+  stat:
+    path: /etc/httpd/saml2/idp_metadata.xml
+  register: idp_metadata
+
+- include_tasks: saml2_idp.yaml
+  when: not authentication.SAML2.disabled and idp_metadata.stat.exists
+
+- include_tasks: saml2.yaml
+  when: not authentication.SAML2.disabled

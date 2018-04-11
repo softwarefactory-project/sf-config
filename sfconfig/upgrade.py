@@ -140,6 +140,22 @@ def update_sfconfig(args):
         open(args.config, 'w').write(re.sub(
             "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
 
+    # 3.1: add SAML2 default auth values
+    if 'SAML2' not in data['authentication']:
+        data['authentication']['SAML2'] = {
+            'disabled': True,
+            'login_button_text': 'Replace me with a SAML login prompt',
+            'key_delimiter': ';',
+            'mapping': {
+                'login': 'urn:oid:2.5.4.42',
+                'email': 'urn:oid:1.2.840.113549.1.9.1',
+                'name': 'urn:oid:2.5.4.42',
+                'uid': 'uid',
+                'ssh_keys': None,
+            },
+        }
+        dirty = True
+
 
 def update_arch(args):
     dirty = False
