@@ -1,0 +1,54 @@
+---
+- name: Fetch the IdP metadata
+  block:
+    - copy:
+        src: "{{ idp_md_file }}"
+        dest: /etc/httpd/saml2/idp_metadata.xml
+        mode: 0444
+        owner: apache
+        group: apache
+      when: idp_md_file is defined
+    - get_url:
+        url: "{{ idp_md_url }}"
+        dest: /etc/httpd/saml2/idp_metadata.xml
+        mode: 0444
+        owner: apache
+        group: apache
+      when: idp_md_url is defined
+  when: idp_md_url is defined or idp_md_file is defined
+
+- name: Remove old SAML2 HTTPd configuration if it exists
+  file:
+    path: /etc/httpd/conf.d/saml_auth.conf
+    state: absent
+  notify: apache reload
+
+- name: Install current SAML2 HTTPd configuration, disabled
+  template:
+      src: "{{ item.name }}.j2"
+      dest: "{{ item.dest }}/{{ item.name }}.disabled"
+      mode: 0444
+      owner: apache
+      group: apache
+  with_items:
+      - {name: saml_auth.conf, dest: /etc/httpd/conf.d/}
+
+- name: Generate SP metadata
+  command: /usr/share/sf-config/scripts/generate_sp_metadata.sh "https://{{ fqdn }}/mellon/metadata" "https://{{ fqdn }}/mellon" "/etc/pki/tls/certs/{{ fqdn }}.crt"
+
+- name: Check for the presence of IdP metadata
+  stat:
+    path: /etc/httpd/saml2/idp_metadata.xml
+  register: idp_metadata
+
+- name: Enable saml_auth_conf if the configuration is complete
+  block:
+    - copy:
+        remote_src: yes
+        src: /etc/httpd/conf.d/saml_auth.conf.disabled
+        dest: /etc/httpd/conf.d/saml_auth.conf
+    - file:
+        path: /etc/httpd/conf.d/saml_auth.conf.disabled
+        state: absent
+      notify: apache reload
+  when: idp_metadata.stat.exists
