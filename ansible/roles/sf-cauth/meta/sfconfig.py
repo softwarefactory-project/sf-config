@@ -11,12 +11,28 @@
 # under the License.
 
 import os
+import requests
+import sys
 
 from sfconfig.components import Component
 from sfconfig.utils import execute
 
 
 class Cauth(Component):
+    def usage(self, parser):
+        parser.add_argument("--set-idp-metadata", metavar="IDP_METADATA_URI",
+                            help="Install the SAML2 Identity Provider and "
+                                 "finish setting up the SAML2 authentication. "
+                                 "The URI can be a file on the system or a "
+                                 "URL (the distant server's certificate must "
+                                 "be valid)")
+
+    def argparse(self, args):
+        if args.set_idp_metadata:
+            self.idp_metadata_uri = args.set_idp_metadata
+        else:
+            self.idp_metadata_uri = None
+
     def configure(self, args, host):
         priv_file = "%s/certs/cauth_privkey.pem" % args.lib
         pub_file = "%s/certs/cauth_pubkey.pem" % args.lib
@@ -28,6 +44,11 @@ class Cauth(Component):
         args.glue["cauth_privkey"] = open(priv_file).read()
         args.glue["cauth_pubkey"] = open(pub_file).read()
         self.add_mysql_database(args, "cauth")
+        if self.idp_metadata_uri:
+            if self.idp_metadata_uri.lower().startswith('http'):
+                args.glue["idp_md_url"] = self.idp_metadata_uri
+            else:
+                args.glue["idp_md_file"] = self.idp_metadata_uri
 
     def validate(self, args, host):
         if not args.sfconfig["authentication"]["ldap"]["disabled"] and \
