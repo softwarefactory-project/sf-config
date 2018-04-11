@@ -1,0 +1,13 @@
+---
+features:
+  - SAML2 support
+    Software Factory can be configured as a Service Provider
+    to a SAML2-enabled Identity Provider.
+issues:
+  - The SAML session is discarded immediately after the
+    authentication is successful, the session is still
+    handled by auth_pubtkt in cauth. This means that
+    terminating a user's session on the Identity Provider
+    will not terminate it on Software Factory. The
+    administrator should configure Software Factory's cookie
+    timeout to match the Identity Provider's own session timeout.
