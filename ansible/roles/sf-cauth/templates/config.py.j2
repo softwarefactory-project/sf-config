@@ -114,6 +114,20 @@ auth = {
         },
     },
     {% endif %}
+    {% if not authentication['SAML2'].get('disabled') %}
+    'SAML2': {
+        'key_delimiter': '{{ authentication['SAML2']['key_delimiter']|default(',')  }}',
+        'mapping': {
+            'login': 'MELLON_{{ authentication['SAML2']['mapping']['login'] }}',
+            'email': 'MELLON_{{ authentication['SAML2']['mapping']['email'] }}',
+            'name': 'MELLON_{{ authentication['SAML2']['mapping']['name'] }}',
+            'uid': 'MELLON_{{ authentication['SAML2']['mapping']['uid'] }}',
+            {% if authentication['SAML2']['mapping']['ssh_keys'] %}
+            'ssh_keys': 'MELLON_{{ authentication['SAML2']['mapping']['ssh_keys'] }}',
+            {% endif %}
+        },
+    },
+    {% endif %}
     'users': {
         "admin": {
             "lastname": "Software Factory Administrator",
