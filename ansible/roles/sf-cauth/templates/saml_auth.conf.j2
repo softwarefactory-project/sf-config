@@ -1,0 +1,14 @@
+<Location / >
+    MellonEnable info
+    MellonEndpointPath /mellon/
+    MellonSPMetadataFile /etc/httpd/saml2/mellon_metadata.xml
+    MellonSPPrivateKeyFile /etc/pki/tls/private/{{ fqdn }}.key
+    MellonSPCertFile /etc/pki/tls/certs/{{ fqdn }}.crt
+    MellonIdPMetadataFile /etc/httpd/saml2/idp_metadata.xml
+</Location>
+
+<Location /auth/login/SAML2 >
+    AuthType Mellon
+    MellonEnable auth
+    Require valid-user
+</Location>

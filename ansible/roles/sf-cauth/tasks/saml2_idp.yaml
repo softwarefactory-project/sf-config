@@ -1,0 +1,30 @@
+---
+- name: Install Identity Provider metadata
+  copy:
+      src: "{{ item.name }}"
+      dest: "{{ item.dest }}/{{ item.name }}"
+  with_items:
+      - {name: idp_metadata.xml, dest: /etc/httpd/saml2/}
+
+- name: Check if mod_auth_mellon is disabled
+  stat:
+    path: /etc/httpd/conf.modules.d/10-auth_mellon.conf.disabled
+    register: mellon_conf_disabled
+
+- name: Enable mod_auth_mellon if the configuration is complete
+  block:
+    - copy:
+        remote_src: yes
+        src: /etc/httpd/conf.modules.d/10-auth_mellon.conf.disabled
+        dest: /etc/httpd/conf.modules.d/10-auth_mellon.conf
+    - file:
+        path: /etc/httpd/conf.modules.d/10-auth_mellon.conf.disabled
+        state: absent
+  when: not authentication.SAML2.disabled and mellon_conf_disabled.exists
+
+- name: Start service
+  systemd:
+    name: httpd
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"

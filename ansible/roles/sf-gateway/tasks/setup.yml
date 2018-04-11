@@ -21,6 +21,7 @@
     - /var/www/dashboards_data
     - /var/www/keys
     - /etc/letsencrypt
+    - /etc/httpd/saml2
 
 - name: Create extra working directories
   file:
@@ -165,6 +166,29 @@
   notify: apache reload
 
 - include_tasks: setup_pages.yml
+
+- name: Check for the presence of SP metadata
+  stat:
+    path: /etc/httpd/saml2/mellon_metadata.xml
+    register: sp_metadata
+  when: not authentication.SAML2.disabled
+
+- name: Check for the presence of IdP metadata
+  stat:
+    path: /etc/httpd/saml2/idp_metadata.xml
+    register: idp_metadata
+  when: not authentication.SAML2.disabled
+
+- name: disable mod_auth_mellon if SAML2 is not enabled or config files are missing
+  block:
+    - copy:
+        remote_src: yes
+        src: /etc/httpd/conf.modules.d/10-auth_mellon.conf
+        dest: /etc/httpd/conf.modules.d/10-auth_mellon.conf.disabled
+    - file:
+        path: /etc/httpd/conf.modules.d/10-auth_mellon.conf
+        state: absent
+  when: authentication.SAML2.disabled or not sp_metadata.exists or not idp_metadata.exists
 
 - name: Start service
   systemd:
