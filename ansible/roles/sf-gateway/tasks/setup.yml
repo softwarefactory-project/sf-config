@@ -21,6 +21,7 @@
     - /var/www/dashboards_data
     - /var/www/keys
     - /etc/letsencrypt
+    - /etc/httpd/saml2
 
 - name: Create extra working directories
   file:
