@@ -49,3 +49,14 @@
       group: apache
       mode: 0440
       setype: httpd_sys_content_t
+
+- name: Check for the presence of IdP metadata
+  stat:
+    path: /etc/httpd/saml2/idp_metadata.xml
+  register: idp_metadata
+
+- include_tasks: saml2_idp.yaml
+  when: not authentication.SAML2.disabled and idp_metadata.stat.exists
+
+- include_tasks: saml2.yaml
+  when: not authentication.SAML2.disabled

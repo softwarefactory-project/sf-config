@@ -1,0 +1,23 @@
+---
+- name: Install Identity Provider metadata
+  copy:
+      src: "{{ item.name }}"
+      dest: "{{ item.dest }}/{{ item.name }}"
+  with_items:
+      - {name: idp_metadata.xml, dest: /etc/httpd/saml2/}
+
+- name: Check if saml_auth_conf is disabled
+  stat:
+    path: /etc/httpd/conf.d/saml_auth.conf.disabled
+    register: saml_auth_conf_disabled
+
+- name: Enable saml_auth_conf if the configuration is complete
+  block:
+    - copy:
+        remote_src: yes
+        src: /etc/httpd/conf.d/saml_auth.conf.disabled
+        dest: /etc/httpd/conf.d/saml_auth.conf
+    - file:
+        path: /etc/httpd/conf.d/saml_auth.conf.disabled
+        state: absent
+  when: not authentication.SAML2.disabled and saml_auth_conf_disabled.stat.exists
