@@ -1,0 +1,30 @@
+---
+- name: Install SAML2 HTTPd configuration
+  template:
+      src: "{{ item.name }}.j2"
+      dest: "{{ item.dest }}/{{ item.name }}"
+      mode: 0444
+      owner: apache
+      group: apache
+  with_items:
+      - {name: saml_auth.conf, dest: /etc/httpd/conf.d/}
+
+- name: Generate SP metadata
+  command: /usr/share/sf-config/scripts/generate_sp_metadata.sh "https://{{ fqdn }}/mellon/metadata" "https://{{ fqdn }}/mellon" "/etc/pki/tls/certs/{{ fqdn }}.crt"
+
+- name: Check for the presence of IdP metadata
+  stat:
+    path: /etc/httpd/saml2/idp_metadata.xml
+  register: idp_metadata
+
+- name: Enable saml_auth_conf if the configuration is complete
+  block:
+    - copy:
+        remote_src: yes
+        src: /etc/httpd/conf.d/saml_auth.conf
+        dest: /etc/httpd/conf.d/saml_auth.conf.disabled
+    - file:
+        path: /etc/httpd/conf.d/saml_auth.conf
+        state: absent
+      notify: apache reload
+  when: not idp_metadata.stat.exists
