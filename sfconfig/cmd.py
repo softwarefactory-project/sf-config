@@ -228,6 +228,14 @@ Login with admin user, get the admin password by running:
 
 """ % (args.sfconfig['fqdn'], args.sfconfig['fqdn']))
 
+    if not args.sfconfig['authentication']['SAML2']['disabled']:
+        print("""
+Service Provider metadata is available at /etc/httpd/saml2/mellon_metadata.xml
+Once you have the Identity Provider metadata, run:
+  sfconfig --set-idp-metadata <path/to/metadata.xml>
+
+""" % args.config['fqdn'])
+
 
 if __name__ == "__main__":
     main()
