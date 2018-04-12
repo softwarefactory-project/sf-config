@@ -32,6 +32,9 @@
       config_opts['plugin_conf']['tmpfs_opts']['mode'] = '0755'
       config_opts['plugin_conf']['tmpfs_opts']['keep_mounted'] = True
 
+- name: "Add dlrn gerrit user"
+  command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "dlrn" "ssh-rsa {{ dlrn_rsa_pub.split()[1] }}" "dlrn@{{ fqdn }}"
+
 - name: "Install dlrn .gitconfig"
   template:
     src: gitconfig.j2

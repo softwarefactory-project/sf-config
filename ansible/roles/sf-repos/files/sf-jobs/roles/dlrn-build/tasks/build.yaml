@@ -1,0 +1,87 @@
+- name: Get project info
+  shell:
+    cmd: "{{ rdopkg }} findpkg {{ zuul.project.name }} -l {{ working_dir}}/rdoinfo"
+  register: result_info
+
+- set_fact:
+    project_info: "{{ result_info.stdout | from_yaml }}"
+
+- name: Delete data directory if exist
+  file:
+    path: "{{ working_dir }}/DLRN/data"
+    state: absent
+
+- name: Create data directory
+  file:
+    path: "{{ working_dir }}/DLRN/data"
+    state: directory
+
+- name: Copy distgit in data directory
+  shell:
+    cmd: "cp -Rf {{ zuul.project.src_dir }} {{ working_dir }}/DLRN/data/{{ project_info['name'] }}_distro"
+  when: zuul.project.name is match(".*-distgit$")
+
+- name: Copy source in data directory
+  shell:
+    cmd: "cp -Rf {{ zuul.project.src_dir }} {{ working_dir }}/DLRN/data/{{ project_info['name'] }}"
+  when: not zuul.project.name is match(".*-distgit$")
+
+- name: Set project.ini values according to current config
+  template:
+    src: projects.ini.j2
+    dest: "{{ working_dir }}/projects.ini"
+
+- name: Clean previous commits.sqlite
+  file:
+    path: "{{ working_dir }}/commits.sqlite"
+    state: absent
+
+- name: Clean previous buildset directory
+  file:
+    path: "{{ working_dir }}/buildset"
+    state: absent
+
+- name: Ensure buildset branch log directory exists
+  file:
+    path: '{{ working_dir }}/buildset/{{ zuul.branch }}'
+    state: directory
+
+- name: Run DLRN build
+  shell:
+    cmd: "{{ dlrn }} --config-file {{ working_dir }}/projects.ini --package-name {{ project_info['name'] }} --use-public --local --info-repo {{ working_dir }}/rdoinfo --verbose-mock"
+  args:
+    chdir: "{{ working_dir }}"
+  ignore_errors: yes
+  register: dlrnbuild
+
+- name: Make sure current link is set
+  shell:
+    cmd: "test -L current || ln -s $(dirname $(find . -name commit.yaml)) current"
+  args:
+    chdir: "{{ working_dir }}/DLRN/data/repos"
+
+- name: Copy logs
+  shell:
+    cmd: |
+      rsync -avL {{ working_dir }}/DLRN/data/repos {{ working_dir }}/buildset/{{ zuul.branch }}
+      cp -p {{ working_dir }}/commits.sqlite {{ working_dir }}/buildset/{{ zuul.branch }}
+
+- name: Upload logs for all builds
+  synchronize:
+    src: '{{ working_dir }}/buildset'
+    dest: '{{ zuul.executor.log_root }}'
+    mode: pull
+    copy_links: true
+    verify_host: true
+    rsync_opts:
+      - --include=/buildset/**
+      - --include=*/
+      - --exclude=*
+      - --prune-empty-dirs
+
+# In the post pipeline we want to continue on the dependent
+# dlrn-publish job to export the failed commits.yaml to the API
+- name: Fail under context conditions
+  fail:
+    msg: "DLRN build failed"
+  when: dlrnbuild.rc != 0 and zuul.pipeline != 'post'
