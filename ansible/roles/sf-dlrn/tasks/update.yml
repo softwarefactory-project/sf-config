@@ -21,12 +21,31 @@
     - include_vars: /root/config/dlrn/projects.yaml
       when: dlrn_config.stat.exists
 
-    - name: "Create dlrn data projects directories"
+    # Set a fake repo for the initialization
+    - name: "Create dlrn data directory default tree"
       file:
-        path: "{{ dlrn_base_dir }}/{{ item.project }}/data"
+        path: "{{ dlrn_base_dir }}/{{ item.project }}/data/repos/bootstrap"
         mode: 0755
         owner: dlrn
         state: directory
+      with_items: "{{ projects }}"
+      when: projects is defined
+
+    # delorean.repo is expected to exists by DLRN workers
+    - name: "Create empty default delorean.repo"
+      file:
+        path: "{{ dlrn_base_dir }}/{{ item.project }}/data/repos/bootstrap/delorean.repo"
+        mode: 0755
+        owner: dlrn
+        state: touch
+      with_items: "{{ projects }}"
+      when: projects is defined
+
+    # Set the link only when not already exists
+    - name: "Create dlrn data projects directories"
+      shell: "test -L current || ln -s bootstrap current && chown -h dlrn current"
+      args:
+        chdir: "{{ dlrn_base_dir }}/{{ item.project }}/data/repos/"
       with_items: "{{ projects }}"
       when: projects is defined
 
