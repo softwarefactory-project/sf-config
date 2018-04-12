@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a50d1a3_bf80f347",
+        "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/dlrn-build/tasks/build.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2018-04-12T09:37:51Z",
+      "side": 1,
+      "message": "This will work in this context. However, if we ever decide to extend this playbook to support more than one package being built at the same time (via Depends-On: for example), we will have to look for an alternative way. Anyway, not an issue for now.",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 82
+      },
+      "revId": "0df5133964dc7e4b53d3b6f437b4b1d7f9daaa1c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
