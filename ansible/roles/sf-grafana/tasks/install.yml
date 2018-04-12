@@ -1,4 +1,14 @@
 ---
+- name: Check if CentOS system
+  set_fact:
+    extra_repos: "base,updates"
+  when: ansible_distribution == "CentOS"
+
+- name: Check if RedHat system
+  set_fact:
+    extra_repos: "rhel-7-server-rpms"
+  when: ansible_distribution == "RedHat"
+
 - name: Add the grafana RPM repository
   yum_repository:
     name: "{{ grafana_repo_name }}"
@@ -12,7 +22,7 @@
     name: grafana
     state: present
     disablerepo: "*"
-    enablerepo: "{{ grafana_repo_name }},base,updates"
+    enablerepo: "{{ grafana_repo_name }},{{ extra_repos }}"
 
 - name: Install grafyaml for config-update and config-check
   yum:
