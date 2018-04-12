@@ -22,6 +22,30 @@
       "revId": "0df5133964dc7e4b53d3b6f437b4b1d7f9daaa1c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a50d1a3_5fb0cf8b",
+        "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/dlrn-build/tasks/build.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-12T15:03:24Z",
+      "side": 1,
+      "message": "Yes I see. Hum, so for the moment we will try to support the most basic usecase. I\u0027ll followup on having a deployment doc or even a two nodes SF+static slave where we can experiment (I\u0027ll put your key on it)",
+      "parentUuid": "3a50d1a3_bf80f347",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 82
+      },
+      "revId": "0df5133964dc7e4b53d3b6f437b4b1d7f9daaa1c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
