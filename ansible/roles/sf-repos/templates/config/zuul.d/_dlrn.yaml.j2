@@ -1,0 +1,68 @@
+# This is jobs configuration examples for DLRN trunk chasing
+# Do not reuse as it. Adapt this example and push it in a new config-project
+# style git repository.
+
+#- secret:
+#    name: dlrnapi_site
+#    data:
+#      ssl_verify: '0'
+#      username: dlrn
+#      secret: !encrypted/pkcs1-oaep
+#        - Pn8slxw9lfLwKkKBgsnSIr+zM5Aqri5NznxckgCBiBOz+zBVScwUSKCTH39BWKbJM9cGn
+#          ln33dhESHDUdHlp7FRZ1U0JDM7BGdII/Ql2guWxR+KiTmBnLYKNM1WJ/eP9ij3AunerkF
+#          rjV28QcbMfVCpQMkH/YKhm4DtYJcleaI4z28FFXHeWIw6PPqj2se4fMI7fZCOEt4s/FL+
+#          AjExyt3sXLEQBHjJCp6GHNAfaq38K+U3kyy/GtPFCbWUi+7kNw4S/bvRt51xH+m8UfsPE
+#          b0R8kyGb1aWTZvjyB6AlIuSixp44n5AbsoW6fIlRp1YpfKSacNf+4GlMZ7LxM422513rV
+#          oBIme3gqYWe4kS0BxC8sqkP8qsdaRYhyTqqnboctP6yx9P4rW0p/fI32hcpivjo48rajw
+#          7+QVqLBpM9p3blxm1QDVb3R4LWThOLKVKSrZqra1X7x75j3gfahAuZKkGYZV6DEzTYunz
+#          sZ2jJOLUpEvn385s9dK9ggERcT3KidEwqXUnsanK2YlGyKsIgLV9hqS/xEDoyOHjB1LNr
+#          iH83Wg3ymG23ki2Aqb4VXoN0fo+KWgmMnZHESxovfU2pmG6+wXQbFGAzPuxBWNWgG0gr7
+#          6V4jK9vlvSVeXL8c9yDWKMjWn/lVXRxrca/8bB11Zr+5aHcPKt1+MgCVHTvdHA=
+#
+#- job:
+#    name: ci-dlrn-build
+#    description: build packages for CI project
+#    run: playbooks/dlrn/dlrn-build.yaml
+#    vars:
+#      gateway_url: {{ gateway_url }}/
+#      dlrn_project: ci
+#      dlrn_build_target: sf
+#      rdo_info_clone_url: https://sftests.com/r/sfdlrninfo
+#    nodeset:
+#      nodes:
+#        - name: test-node
+#          label: dlrn-worker
+#
+#- job:
+#    name: ci-dlrn-publish
+#    description: publish packages for CI project
+#    run: playbooks/dlrn/dlrn-publish.yaml
+#    secrets:
+#      - dlrnapi_site
+#    vars:
+#      gateway_url: {{ gateway_url }}/
+#      dlrn_project: ci
+#    nodeset:
+#      nodes:
+#        - name: test-node
+#          label: dlrn-worker
+#
+#- project-template:
+#    name: ci-dlrn-project-template
+#    check:
+#      jobs:
+#        - ci-dlrn-build
+#    gate:
+#      jobs:
+#        - noop
+#    post:
+#      jobs:
+#        - ci-dlrn-build
+#        - ci-dlrn-publish:
+#            dependencies:
+#              - ci-dlrn-build
+#
+#- project:
+#    name: zuul-distgit
+#    templates:
+#      - ci-dlrn-project-template

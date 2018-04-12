@@ -40,5 +40,7 @@
     - roles/submit-logstash-jobs/
     - roles/upload-galaxy/
     - roles/upload-pages/
+    - roles/dlrn-build/
+    - roles/dlrn-publish/
     - zuul.d/_included-jobs.yaml
   register: sf_jobs_files
