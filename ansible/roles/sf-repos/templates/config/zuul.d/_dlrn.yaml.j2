@@ -1,0 +1,61 @@
+- job:
+    name: base-dlrn-build
+    description: build packages using DLRN
+    parent: dlrn-build
+    vars:
+      gateway_url: https://{{ fqdn }}/
+    nodeset:
+      nodes:
+        - name: test-node
+          label: dlrn-worker
+
+- job:
+    name: base-dlrn-publish
+    description: publish packages using DLRN
+    parent: dlrn-publish
+    vars:
+      gateway_url: https://{{ fqdn }}/
+    nodeset:
+      nodes:
+        - name: test-node
+          label: dlrn-worker
+
+# Below is usage example
+#
+#- job:
+#    name: ci-dlrn-build
+#    parent: base-dlrn-build
+#    description: build packages for CI project
+#    vars:
+#      dlrn_project: ci
+#      dlrn_build_target: sf
+#      rdo_info_clone_url: https://sftests.com/r/sfdlrninfo
+#
+#- job:
+#    name: ci-dlrn-publish
+#    parent: base-dlrn-publish
+#    description: publish packages for CI project
+#    vars:
+#      dlrn_project: ci
+#      dlrnapi_username: dlrn
+#      dlrnapi_password: test
+#
+#- project-template:
+#    name: ci-dlrn-project-template
+#    check:
+#      jobs:
+#        - ci-dlrn-build
+#    gate:
+#      jobs:
+#        - noop
+#    post:
+#      jobs:
+#        - ci-dlrn-build
+#        - ci-dlrn-publish:
+#            dependencies:
+#              - ci-dlrn-build
+#
+#- project:
+#    name: zuul-distgit
+#    templates:
+#      - ci-dlrn-project-template 

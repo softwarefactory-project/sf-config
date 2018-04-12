@@ -1,0 +1,9 @@
+- job:
+    name: dlrn-build
+    description: build a package using DLRN
+    run: playbooks/dlrn/dlrn-build.yaml
+
+- job:
+    name: dlrn-publish
+    description: publish a built package using the DLRN API
+    run: playbooks/dlrn/dlrn-publish.yaml
