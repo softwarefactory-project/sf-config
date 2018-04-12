@@ -56,6 +56,7 @@
   with_items:
     - playbooks/config
     - playbooks/pages
+    - playbooks/dlrn
   register: _config_static_files
 
 - name: Update config templates
@@ -68,6 +69,7 @@
     - zuul.d/_jobs-base.yaml
     - zuul.d/_jobs-pages.yaml
     - zuul.d/_pipelines.yaml
+    - zuul.d/_dlrn.yaml
     - zuul/_main.yaml
     - nodepool/_local_hypervisor_oci.yaml
   register: _config_template_files

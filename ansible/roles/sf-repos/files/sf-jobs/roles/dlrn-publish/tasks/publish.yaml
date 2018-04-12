@@ -1,0 +1,13 @@
+- name: Set DLRN API url based on current tag
+  set_fact:
+    dlrnapi_url: "{{ gateway_url }}/dlrn-api/{{ dlrn_project }}"
+
+#- debug:
+#    msg: "{{ dlrnapi }} --url {{ dlrnapi_url }} --username {{ dlrnapi_site.username }} --password {{ dlrnapi_site.secret | trim }} commit-import --repo-url {{ buildset_artifacts_url }}/{{ zuul.branch }}/repos/current/"
+
+- name: Import commit
+  shell:
+    cmd: "{{ dlrnapi }} --url {{ dlrnapi_url }} --username {{ dlrnapi_site.username }} commit-import --repo-url {{ buildset_artifacts_url }}/{{ zuul.branch }}/repos/current/"
+  environment:
+      DLRNAPI_PASSWORD: "{{ dlrnapi_site.secret | trim }}"
+      SSL_VERIFY: "{{ dlrnapi_site.ssl_verify | default('1') }}"
