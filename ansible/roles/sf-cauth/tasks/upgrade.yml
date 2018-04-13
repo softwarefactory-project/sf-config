@@ -1,0 +1,5 @@
+---
+- name: Add username column to auth_mapping table
+  command: mysql cauth -e "ALTER TABLE auth_mapping ADD username VARCHAR(4096)"
+  delegate_to: "{{ mysql_host }}"
+  when: sf_previous_version < 3.1
