@@ -1,0 +1,9 @@
+Code-Review+1: Matthieu Huin <mhuin@redhat.com>
+Code-Review+2: Fabien Boucher <fboucher@redhat.com>
+Workflow+1: Fabien Boucher <fboucher@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Fri, 13 Apr 2018 16:38:39 +0000
+Reviewed-on: https://softwarefactory-project.io/r/11751
+Project: software-factory/sf-config
+Branch: refs/heads/master
