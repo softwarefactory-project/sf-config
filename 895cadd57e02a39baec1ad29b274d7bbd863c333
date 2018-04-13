@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a50d1a3_62e73213",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-13T11:50:15Z",
+      "side": 1,
+      "message": "That can be remove that if version is \u0027\u0027 line 27 it will raise ValueError (float(\u0027\u0027))",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 25
+      },
+      "revId": "895cadd57e02a39baec1ad29b274d7bbd863c333",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a50d1a3_22f12ace",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-13T11:50:15Z",
+      "side": 1,
+      "message": "That annoying to have to keep this as the right version. But well could it be at least be at least a global in that file SF_FALLBACK_PREVIOUS_VERSION\u003d\u00273.0\u0027",
+      "range": {
+        "startLine": 32,
+        "startChar": 18,
+        "endLine": 32,
+        "endChar": 21
+      },
+      "revId": "895cadd57e02a39baec1ad29b274d7bbd863c333",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
