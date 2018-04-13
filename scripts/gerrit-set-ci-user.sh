@@ -10,7 +10,7 @@ USER_MAIL="${3}"
 USER_FULLNAME="$(tr '[:lower:]' '[:upper:]' <<< ${USER_NAME:0:1})${USER_NAME:1} CI"
 
 # Check if user does not exist yet
-USER_EXISTS=$(ssh gerrit gerrit ls-members \"Non-Interactive Users\" | { grep ${USER_NAME} || true; })
+USER_EXISTS=$(ssh gerrit gerrit ls-members \"Non-Interactive Users\" | awk '{ print $2 }' | { grep ${USER_NAME} || true; })
 
 if [ -z "$USER_EXISTS" ]; then
     echo "$USER_SSHKEY" | ssh gerrit gerrit create-account ${USER_NAME} \
