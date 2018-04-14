@@ -7,12 +7,16 @@ resources:
       source-repositories:
         - config
         - zuul-jobs
+        - sf-jobs
   repos:
     config:
       description: Config repository (Do not delete it)
       acl: config-acl
     zuul-jobs:
       description: ZuulV3 jobs
+      acl: config-acl
+    sf-jobs:
+      description: The sf-jobs repository
       acl: config-acl
   acls:
     config-acl:
