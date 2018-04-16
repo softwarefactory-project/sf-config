@@ -16,6 +16,18 @@
     state: present
   when: not sf_release_installed.stat.exists
 
+- name: Add repo packages
+  yum:
+    name: '{{ item }}'
+    state: present
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'
+  with_items:
+    - centos-release-openstack-pike
+    - centos-release-opstools
+    - centos-release-scl-rh
+  when: ansible_distribution == "CentOS"
+
 - name: Install useful packages
   yum:
     name: '{{ item }}'
