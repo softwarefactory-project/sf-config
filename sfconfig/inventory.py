@@ -124,13 +124,6 @@ def upgrade(args, pb):
         pb.append(host_play(host, roles, {'role_action': 'disable',
                                           'erase': False}))
 
-    # TODO: remove after gerrit bump is merged
-    pb.append(host_play('install-server', tasks=[
-        {"name": "Install new gerrit version now",
-         "yum": {"name": "gerrit", "state": "latest"}},
-        {"name": "Check gerrit version", "command": "rpm -q gerrit",
-         "register": "gerrit_version"}]))
-
     # Upgrade repositories
     pb.append(host_play('install-server', 'repos', {'role_action': 'upgrade'}))
 
@@ -210,11 +203,6 @@ def setup(args, pb):
     # Setup mysql role before all components
     pb.append(host_play('mysql', 'mysql', action))
 
-    # TODO: remove after gerrit bump is merged
-    pb.append(host_play('install-server', tasks=[
-        {"name": "Check gerrit version", "command": "rpm -q gerrit",
-         "register": "gerrit_version"}]))
-
     # Setup all components except mysql
     for host in args.inventory:
         host_roles = [role for role in host["roles"] if
@@ -232,11 +220,6 @@ def config_update(args, pb):
         'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
         'register': 'configsha'
     }))
-
-    # TODO: remove after gerrit bump is merged
-    pb.append(host_play('install-server', tasks=[
-        {"name": "Check gerrit version", "command": "rpm -q gerrit",
-         "register": "gerrit_version"}]))
 
     # The list of role to run update task
     roles_order = ["gerrit", "pages", "gerritbot",
