@@ -1,0 +1,5 @@
+---
+other:
+  - |
+    Gerrit All-projects project.config Software Factory default ACLs additions
+    are checked/updated at every sfconfig run.
