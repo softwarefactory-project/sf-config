@@ -190,9 +190,7 @@
 - name: "Add zuul user"
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
 
-- name: "Set ACL"
-  command: /usr/share/sf-config/scripts/gerrit-set-default-acl.sh
-  when: gerrit_allprojects.stat.exists == False
+- include_tasks: setup_acl.yml
 
 - name: "Setup socat service"
   block:
