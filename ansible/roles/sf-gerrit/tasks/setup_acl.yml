@@ -1,0 +1,88 @@
+- file:
+    path: /var/lib/software-factory/git/All-projects
+    state: directory
+
+- name: Prepare All-project clone
+  shell: "git {{ item }}"
+  with_items:
+    - init .
+    - remote add origin ssh://gerrit/All-Projects || true
+    - fetch origin refs/meta/config:refs/remotes/origin/meta/config
+    - git checkout meta/config
+    - reset --hard origin/meta/config
+  args:
+    chdir: /var/lib/software-factory/git/All-projects
+
+- name: Get project.config checksum
+  stat:
+    path: /var/lib/software-factory/git/All-projects/project.config
+  register: project_config
+
+# This are default Gerrit ACLs got the SF workflow
+# This complete Gerrit ACLs set by gerrit init
+- name: Set All-project/project.config ACLs
+  shell: "git config -f project.config --replace-all {{ item }}"
+  with_items:
+    - 'capability.accessDatabase "group Administrators"'
+    - 'access.refs/for/*.addPatchSet "group Administrators" "group Administrator"'
+    - 'access.refs/for/*.addPatchSet "group Project Owners" "group Project Owners"'
+    - 'access.refs/heads/*.push "+force group Administrators" ".*group Administrators"'
+    - 'access.refs/heads/*.push "+force group Project Owners" ".*group Project Owners"'
+    - 'access.refs/heads/*.label-Verified "-2..+2 group Non-Interactive Users" ".*group Non-Interactive Users"'
+    - 'access.refs/heads/*.label-Verified "-2..+2 group Administrators" ".*group Administrators"'
+    - 'access.refs/heads/*.label-Verified "-2..+2 group Project Owners" ".*group Project Owners"'
+    - 'access.refs/heads/*.label-Workflow "-1..+1 group Administrators" ".*group Administrators"'
+    - 'access.refs/heads/*.label-Workflow "-1..+1 group Project Owners" ".*group Project Owners"'
+    - 'access.refs/heads/*.submit "group Non-Interactive Users" "group Non-Interactive Users"'
+    - 'access.refs/heads/*.rebase "group Administrators" "group Administrators"'
+    - 'access.refs/heads/*.rebase "group Project Owners" "group Project Owners"'
+    - 'access.refs/heads/*.rebase "group Non-Interactive Users" "group Non-Interactive Users"'
+    - 'access.refs/heads/*.abandon "group Administrators" "group Administrators"'
+    - 'access.refs/heads/*.abandon "group Project Owners" "group Project Owners"'
+    - 'access.refs/meta/config.read "group Registered Users" "group Registered Users"'
+    - 'access.refs/meta/config.read "group Anonymous Users" "group Anonymous Users"'
+    - 'access.refs/meta/config.rebase "group Administrators" "group Administrators"'
+    - 'access.refs/meta/config.rebase "group Project Owners" "group Project Owners"'
+    - 'access.refs/meta/config.abandon "group Administrators" "group Administrators"'
+    - 'access.refs/meta/config.abandon "group Project Owners" "group Project Owners"'
+    - 'access.refs/tags/*.pushTag "+force group Administrators" ".*group Administrators"'
+    - 'access.refs/tags/*.pushTag "+force group Project Owners" ".*group Project Owners"'
+    - 'access.refs/tags/*.pushAnnotatedTag "group Administrators" "group Administrators"'
+    - 'access.refs/tags/*.pushAnnotatedTag "group Project Owners" "group Project Owners"'
+    - 'access.refs/tags/*.pushSignedTag "group Administrators" "group Administrators"'
+    - 'access.refs/tags/*.pushSignedTag "group Project Owners" "group Project Owners"'
+    - 'access.refs/tags/*.forgeAuthor "group Administrators" "group Administrators"'
+    - 'access.refs/tags/*.forgeAuthor "group Project Owners" "group Project Owners"'
+    - 'access.refs/tags/*.forgeCommitter "group Administrators" "group Administrators"'
+    - 'access.refs/tags/*.forgeCommitter "group Project Owners" "group Project Owners"'
+    - 'access.refs/tags/*.push "group Administrators" "group Administrators"'
+    - 'access.refs/tags/*.push "group Project Owners" "group Project Owners"'
+    - 'label.Code-Review.copyAllScoresIfNoCodeChange "true"'
+    - 'label.Code-Review.value "-2 Do not submit" "-2.*"'
+    - "label.Code-Review.value \"-1 I would prefer that you didn't submit this\" '-1.*'"
+    - 'label.Code-Review.value "+2 Looks good to me (core reviewer)" "\+2.*"'
+    - 'label.Verified.value "-2 Fails" "-2.*"'
+    - "label.Verified.value \"-1 Doesn't seem to work\" '-1.*'"
+    - 'label.Verified.value "0 No score" "0.*"'
+    - 'label.Verified.value "+1 Works for me" "\+1.*"'
+    - 'label.Verified.value "+2 Verified" "\+2.*"'
+    - 'label.Workflow.value "-1 Work in progress" "-1.*"'
+    - 'label.Workflow.value "0 Ready for reviews" "0.*"'
+    - 'label.Workflow.value "+1 Approved" "\+1.*"'
+  args:
+    chdir: /var/lib/software-factory/git/All-projects
+
+- name: Get project.config checksum
+  stat:
+    path: /var/lib/software-factory/git/All-projects/project.config
+  register: project_config_post
+
+- name: Push All-project/project.config ACLs
+  command: "git {{ item }}"
+  with_items:
+    - add project.config
+    - commit -m"Set SF default Gerrit ACLs"
+    - push origin meta/config:meta/config
+  args:
+    chdir: /var/lib/software-factory/git/All-projects
+  when: project_config_post.stat.checksum != project_config.stat.checksum
