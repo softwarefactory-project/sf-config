@@ -1,4 +1,17 @@
 ---
+- name: Remove old repos
+  yum:
+    name: '{{ item }}'
+    state: absent
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'
+  with_items:
+    - centos-release-openstack-queens
+    - centos-release-opstools
+    - centos-release-scl-rh
+    - centos-release-ceph-jewel
+  when: ansible_distribution == "CentOS" and sf_version != "master"
+
 - name: "Install new release repo"
   yum:
     name: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
