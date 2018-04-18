@@ -36,3 +36,18 @@
         - nodepool-launcher
         - jenkins
   when: sf_previous_version < 3.0
+
+- block:
+    - name: Remove old repos
+      yum:
+        name: '{{ item }}'
+        state: absent
+        disablerepo: '{{ yum_disable_repo|default(omit) }}'
+        enablerepo: '{{ yum_enable_repo|default(omit) }}'
+      with_items:
+        - centos-release-openstack-queens
+        - centos-release-opstools
+        - centos-release-scl-rh
+        - centos-release-ceph-jewel
+      when: ansible_distribution == "CentOS"
+  when: sf_previous_version < 3.1
