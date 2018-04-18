@@ -15,6 +15,19 @@ import os
 import yaml
 
 
+def merge_source(tenant_conf, sources, path):
+    tenant_sources = tenant_conf.setdefault("source", {})
+    for source in sources.keys():
+        source_conf = tenant_sources.setdefault(source, {})
+        for project_type in sources[source]:
+            projects = source_conf.setdefault(project_type, [])
+            for project in sources[source][project_type]:
+                if project in projects:
+                    raise RuntimeError("%s: define existing project %s"
+                                       % (path, project))
+                projects.append(project)
+
+
 def loadConfig(config_path):
     # Discover all files in config_path
     paths = []
@@ -42,26 +55,29 @@ def loadConfig(config_path):
             if not tenant.get('name'):
                 tenant["name"] = "local"
             tenant_conf = tenants.setdefault(tenant['name'], {})
-            for source in tenant['source'].keys():
-                source_conf = tenant_conf.setdefault(source, {})
-                for project_type in tenant['source'][source]:
-                    projects = source_conf.setdefault(project_type, [])
-                    for project in tenant['source'][source][project_type]:
-                        if project in projects:
-                            raise RuntimeError("%s: define existing project %s"
-                                               % (path, project))
-                        projects.append(project)
+            for name, value in tenant.items():
+                if name == "source":
+                    # Merge source lists
+                    merge_source(tenant_conf, value, path)
+                else:
+                    # Set tenant option
+                    if name in tenant_conf:
+                        raise RuntimeError(
+                            "%s: define multiple %s for tenant %s" % (
+                                path, tenant["name"], name))
+                    tenant_conf[name] = value
     final_data = []
     for tenant, tenant_conf in tenants.items():
-        final_data.append({'tenant': {'name': tenant, 'source': tenant_conf}})
+        final_data.append({'tenant': tenant_conf})
     return final_data
 
 
 def main(argv):
-    if len(argv) != 3 and not os.path.isdir(argv[1]):
+    if len(argv) != 3:
         print("usage: %s dir dest" % argv[0])
     data = loadConfig(argv[1])
     yaml.dump(data, open(argv[2], "w"), default_flow_style=False)
+
 
 if __name__ == "__main__":
     import sys
