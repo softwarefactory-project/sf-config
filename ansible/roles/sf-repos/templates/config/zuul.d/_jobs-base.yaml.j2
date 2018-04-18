@@ -8,7 +8,11 @@
       - playbooks/base/post.yaml
     roles:
       - zuul: sf-jobs
+{% if zuul_upstream_zuul_jobs %}
+      - zuul: openstack-infra/zuul-jobs
+{% else %}
       - zuul: zuul-jobs
+{% endif %}
     timeout: 1800
     # Set attempts to 1 until it's working well
     attempts: {{ zuul_default_retry_attempts }}
@@ -54,6 +58,7 @@
       jobs:
         - config-update
 
+{% if not zuul_upstream_zuul_jobs %}
 - project:
     name: zuul-jobs
     check:
@@ -63,6 +68,7 @@
       jobs:
         - linters
 
+{% endif %}
 - project:
     name: sf-jobs
     check:
