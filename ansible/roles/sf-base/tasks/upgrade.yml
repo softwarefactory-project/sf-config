@@ -36,3 +36,41 @@
         - nodepool-launcher
         - jenkins
   when: sf_previous_version < 3.0
+
+- block:
+    - name: Ensure unused repos are removed from sf-release.repo
+      yum_repository:
+        name: '{{ item }}'
+        state: absent
+        file: sf-release
+      notify: yum-clean-metadata
+      with_items:
+        - openstack-pike
+        - centos-release-ceph-jewel
+        - centos-opstools
+
+    - name: Copy sf-release.repo
+      copy:
+        remote_src: yes
+        src: /etc/yum.repos.d/sf-release.repo
+        dest: /etc/yum.repos.d/sf-release.repo.bck
+
+    - name: Remove old repos
+      yum:
+        name: '{{ item }}'
+        state: absent
+      with_items:
+        - centos-release-ceph-jewel
+        - centos-release-openstack-pike
+        - centos-release-opstools
+      when: ansible_distribution == "CentOS"
+
+    - name: Restore sf-release.repo
+      copy:
+        remote_src: yes
+        src: /etc/yum.repos.d/sf-release.repo.bck
+        dest: /etc/yum.repos.d/sf-release.repo
+
+    - name: Ensure yum clean metadata is applied
+      meta: flush_handlers
+  when: sf_previous_version < 3.1
