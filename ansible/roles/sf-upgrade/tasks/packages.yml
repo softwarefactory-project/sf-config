@@ -15,5 +15,7 @@
     state: latest
     exclude:
       - ansible
+      # https://softwarefactory-project.io/etherpad/p/sf-config-update_pike_queens
+      - python-django-bash-completion
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
