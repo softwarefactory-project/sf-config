@@ -1,0 +1,8 @@
+---
+# TODO: could be remove when sf 3.1 will be release
+# use to clean repo added in sf-release.repo in
+# sf-ci, only used to upgrade from sf-2.7
+- name: yum-clean-metadata
+  command: yum clean metadata
+  args:
+    warn: no
