@@ -16,6 +16,14 @@
     state: present
   when: not sf_release_installed.stat.exists
 
+- name: Remove outdated ceph repo
+  yum:
+    name: centos-release-ceph-jewel
+    state: absent
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'
+  when: ansible_distribution == "CentOS"
+
 - name: Add repo packages
   yum:
     name: '{{ item }}'
@@ -23,7 +31,7 @@
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
   with_items:
-    - centos-release-openstack-pike
+    - centos-release-openstack-queens
     - centos-release-opstools
     - centos-release-scl-rh
   when: ansible_distribution == "CentOS"
