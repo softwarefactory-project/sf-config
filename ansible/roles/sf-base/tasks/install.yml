@@ -16,6 +16,25 @@
     state: present
   when: not sf_release_installed.stat.exists
 
+- name: Remove old repos
+  yum:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - centos-release-ceph-jewel
+    - centos-release-openstack-pike
+  when: ansible_distribution == "CentOS"
+
+- name: Ensure unused repos are removed from sf-release
+  yum_repository:
+    name: '{{ item }}'
+    state: absent
+    file: sf-release
+  notify: yum-clean-metadata
+  with_items:
+    - openstack-pike
+    - centos-release-ceph-jewel
+
 - name: Add repo packages
   yum:
     name: '{{ item }}'
@@ -23,8 +42,7 @@
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
   with_items:
-    - centos-release-openstack-pike
-    - centos-release-opstools
+    - centos-release-openstack-queens
     - centos-release-scl-rh
   when: ansible_distribution == "CentOS"
 
