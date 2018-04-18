@@ -5,16 +5,25 @@
     state: directory
     mode: 0755
 
-- name: Check for sf-release
-  stat:
-    path: /etc/yum.repos.d/sf-release.repo
-  register: sf_release_installed
-
-- name: Install sf-release if needed
+- name: Remove old repos
   yum:
-    name: "{{ sf_release_url }}"
-    state: present
-  when: not sf_release_installed.stat.exists
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - centos-release-ceph-jewel
+    - centos-release-openstack-pike
+    - centos-release-opstools
+  when: ansible_distribution == "CentOS"
+
+- name: Ensure unused repos are removed from sf-release
+  yum_repository:
+    name: '{{ item }}'
+    state: absent
+    file: sf-release
+  notify: yum-clean-metadata
+  with_items:
+    - openstack-pike
+    - centos-release-ceph-jewel
 
 - name: Add repo packages
   yum:
@@ -23,10 +32,23 @@
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
   with_items:
-    - centos-release-openstack-pike
-    - centos-release-opstools
+    - centos-release-openstack-queens
     - centos-release-scl-rh
   when: ansible_distribution == "CentOS"
+
+- name: Check for sf-release
+  stat:
+    path: /etc/yum.repos.d/sf-release.repo
+  register: sf_release_installed
+
+- debug:
+    var: sf_release_url
+
+- name: Install sf-release if needed
+  yum:
+    name: "{{ sf_release_url }}"
+    state: present
+  when: not sf_release_installed.stat.exists
 
 - name: Install useful packages
   yum:
