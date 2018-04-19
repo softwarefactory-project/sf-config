@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa1b9901_5a68d5ba",
+        "filename": "ansible/roles/sf-cauth/meta/sfconfig.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-19T12:23:41Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be saved in a persistent file, for example see ansible/roles/sf-zuul/meta/sfconfig.py and how it keeps the upstream_zuul_jobs value.",
+      "revId": "c0de22b89ff3a6026bebfe37ad9d3d63fe827b1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa1b9901_7a6599df",
+        "filename": "ansible/roles/sf-cauth/tasks/saml2.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-19T12:23:41Z",
+      "side": 1,
+      "message": "Why not installing the file as disabled and only doing the copy when the idp_metadata exists?",
+      "revId": "c0de22b89ff3a6026bebfe37ad9d3d63fe827b1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa1b9901_1a625dd9",
+        "filename": "ansible/roles/sf-cauth/tasks/saml2_idp.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-19T12:23:41Z",
+      "side": 1,
+      "message": "same here, that sounds a bit convoluted.",
+      "revId": "c0de22b89ff3a6026bebfe37ad9d3d63fe827b1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa1b9901_da9aa5c5",
+        "filename": "ansible/roles/sf-gateway/tasks/setup.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-19T12:23:41Z",
+      "side": 1,
+      "message": "Should this directory be added to the backup tasks too?",
+      "revId": "c0de22b89ff3a6026bebfe37ad9d3d63fe827b1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa1b9901_fa9f69b2",
+        "filename": "releasenotes/notes/saml2-support-d01d7a33940af72c.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-19T12:23:41Z",
+      "side": 1,
+      "message": "This doesn\u0027t seems useful for new options. Perhaps adds the sfconfig.yaml update in the features block.",
+      "revId": "c0de22b89ff3a6026bebfe37ad9d3d63fe827b1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa1b9901_3a5f2110",
+        "filename": "scripts/generate_sp_metadata.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-19T12:23:41Z",
+      "side": 1,
+      "message": "why not keeping the name then? Perhaps prefix it with \"cauth\"",
+      "revId": "c0de22b89ff3a6026bebfe37ad9d3d63fe827b1e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
