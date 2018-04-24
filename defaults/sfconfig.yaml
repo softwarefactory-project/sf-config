@@ -100,7 +100,7 @@ authentication:
 theme:
   loginpage_custom_footer: ""
   # Right topmenu entry, next to the login/logout button
-  topmenu_custom_entry: '<li><a href="/docs/" target="_top">Get started</a></li>'
+  topmenu_custom_entry: '<li><a href="/docs/" target="_top">Documentation</a></li>'
 
 # add httpd directories
 gateway_directories: ""
