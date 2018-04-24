@@ -127,7 +127,7 @@
   register: _secret_sfpages
 
 - block:
-    - name: "Generate sfpages ssh_private_key secret"
+    - name: Generate sfpages ssh_private_key secret
       command: >
         /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
             /var/lib/software-factory/bootstrap-data/certs/config.pub ssh_private_key \
@@ -140,25 +140,25 @@
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
   when: not _secret_sfpages.stat.exists
 
-- name: "Indicate config repo changed"
+- name: Indicate config repo changed
   set_fact:
     config_repo_updated: true
-  when: _config_static_files|changed or
-        _config_template_files|changed or
-        _config_metrics_files|changed or
-        _config_dlrn_files|changed or
+  when: _config_static_files is changed or
+        _config_template_files is changed or
+        _config_metrics_files is changed or
+        _config_dlrn_files is changed or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
         not _secret_install_server.stat.exists
 
-- name: "Indicated config repo didn't changed"
+- name: Indicated config repo didn't changed
   set_fact:
     config_repo_updated: false
   when:
-    - not _config_static_files|changed
-    - not _config_template_files|changed
-    - not _config_metrics_files|changed
-    - not _config_dlrn_files|changed
+    - not _config_static_files is changed
+    - not _config_template_files is changed
+    - not _config_metrics_files is changed
+    - not _config_dlrn_files is changed
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists

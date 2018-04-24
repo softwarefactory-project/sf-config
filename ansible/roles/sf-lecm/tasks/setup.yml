@@ -25,7 +25,7 @@
   service:
     name: httpd
     state: reloaded
-  when: lecmgateway|changed and _httpd.rc == 0
+  when: lecmgateway is changed and _httpd.rc == 0
 
 - name: Check if certificate exists
   stat:

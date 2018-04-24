@@ -1,29 +1,26 @@
 ---
-- name: "sf: create basic directories"
+- name: Create working directories
   file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     state: directory
-    mode: 0755
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default(0750) }}"
   with_items:
-    - /var/lib/software-factory/state
-    - /usr/share/software-factory
-    - /usr/libexec/software-factory
-    - /usr/share/software-factory
+    - {path: '/var/lib/software-factory/state'}
+    - {path: '/usr/share/software-factory'}
+    - {path: '/usr/libexec/software-factory'}
+    - {path: '/usr/share/software-factory'}
+    - {path: '/etc/software-factory', mode: '0700'}
+    - {path: '/var/log/software-factory', mode: '0700'}
+    - {path: '/var/lib/software-factory/sql', mode: '0700'}
 
-- name: "sf: ensure /etc/software-factory exists"
-  file:
-    path: /etc/software-factory
-    state: directory
-    mode: 0700
-    owner: root
-    group: root
-
-- name: "system: check for python3 scl"
+- name: Check for python3 scl
   stat:
     path: /opt/rh/rh-python35/root/usr/bin/python3.5
   register: _python35_installed
 
-- name: "system: symlink libpython3.5"
+- name: Create symlink libpython3.5
   file:
     src: "/opt/rh/rh-python35/root/{{ item }}"
     dest: "/usr/{{ item }}"
@@ -36,12 +33,12 @@
     - "lib64/python3.5"
     - "lib/python3.5"
 
-- name: "system: add FQDN to prompt"
+- name: Add FQDN to prompt
   copy:
     src: prompt.sh
     dest: /etc/profile.d/prompt.sh
 
-- name: "system: disable cloud-init"
+- name: Disable cloud-init
   service:
     name: "{{ item }}"
     state: stopped
@@ -53,54 +50,47 @@
     - cloud-final
   failed_when: "False"
 
-- name: "system: enable haveged"
+- name: Start haveged
   service:
     name: haveged
     state: started
     enabled: "yes"
 
-- name: "sf: create sf directory"
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0700
-  with_items:
-    - /var/log/software-factory
-    - /var/lib/software-factory/sql
-
-- name: "system: make sure rsyslogd is started"
+- name: Start rsyslogd
   service:
     name: rsyslog
     state: started
     enabled: "yes"
 
-- name: "system: disable DNS lookup in sshd"
+- name: Disable DNS lookup in sshd
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '.*UseDNS.*'
     line: "UseDNS no"
   register: sshd_config
 
-- name: "system: restart sshd"
+- name: Restart sshd
   service:
     name: sshd
     state: restarted
     enabled: "yes"
-  when: sshd_config|changed
+  when: sshd_config is changed
 
-- name: "system: disable StrictHostKeyChecking"
+- name: Disable StrictHostKeyChecking
   lineinfile:
     dest: /etc/ssh/ssh_config
     line: "        StrictHostKeyChecking no"
     insertafter: "^Host *$"
 
-- name: "system: setenforce 0"
-  command: setenforce 0
+- name: Set selinux in enforce mode
+  selinux:
+    policy: targeted
+    state: enforcing
   when:
     - ansible_virtualization_role != "guest"
     - ansible_selinux["mode"] != "permissive"
 
-- name: "system: manage sysctl"
+- name: Set sysctl values
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
@@ -121,59 +111,57 @@
     - {name: kernel.sysrq, value: 0}
   when: ansible_virtualization_role != "guest"
 
-- name: "system: make sure auditd is enabled"
+- name: Start auditd
   systemd:
     name: auditd
     enabled: "yes"
     state: started
   when: ansible_virtualization_role != "guest"
 
-- name: "system: manage /etc/hosts"
+- name: Manage /etc/hosts
   template:
     src: "{{ sf_templates_dir }}/etc-hosts.j2"
     dest: /etc/hosts
     mode: 0644
   when: manage_etc_hosts|default(true)
 
-- name: "system: remove unused ip address if present"
+- name: Cleanup known_hosts
   known_hosts:
-    name: '[192.168.135.101]:29418'
+    name: "{{ item }}"
     state: absent
+  with_items:
+    - '[192.168.135.101]:29418'
+    - '[localhost]:29418'
 
-- name: "system: remove unused localhost entry if present"
-  known_hosts:
-    name: '[localhost]:29418'
-    state: absent
-
-- name: "system: disable root password login"
+- name: Disable root password login
   user:
     name: root
     password: "*"
 
-- name: "system: remove requiretty from sudoers"
+- name: Remove requiretty from sudoers
   lineinfile:
     dest: /etc/sudoers
     state: absent
     regexp: "^Defaults.*requiretty"
 
-- name: "system: allow install-server to connect"
+- name: Configure install-server access
   authorized_key:
     user: root
     key: "{{ service_rsa_pub }}"
 
-- name: "system: check if /etc/httpd/conf/httpd.conf exists"
+- name: Check if /etc/httpd/conf/httpd.conf exists
   stat:
     path: /etc/httpd/conf/httpd.conf
   register: httpd_conf
 
-- name: "system: update DocumentRoot to /var/www when possible"
+- name: Update DocumentRoot to /var/www
   lineinfile:
     dest: /etc/httpd/conf/httpd.conf
     regexp: "^DocumentRoot "
     line: "DocumentRoot \"/var/www\""
   when: httpd_conf.stat.exists == "True"
 
-- name: "system: allow apache to connect database"
+- name: Set selinux policies for httpd
   seboolean:
     name: "{{ item }}"
     state: "yes"
@@ -184,27 +172,27 @@
     - httpd_can_network_connect_db
     - logging_syslogd_can_sendmail
 
-- name: "system: install wait4 scripts"
+- name: Install wait4 scripts
   copy:
     src: "{{ item }}"
     dest: "/usr/libexec/{{ item }}"
     mode: 0555
   with_items: [wait4port, wait4mariadb, wait4gerrit]
 
-- name: "Set ntp server"
+- name: Configure ntp server
   template:
     src: ntp.conf.j2
     dest: /etc/ntp.conf
   register: ntp_config
 
-- name: "ntpd: manage service"
+- name: Start ntpd
   service:
     name: ntpd
     enabled: true
     state: restarted
-  when: ntp_config|changed
+  when: ntp_config is changed
 
-- name: "Add localCA to pki trust"
+- name: Add localCA to pki trust
   copy:
     content: "{{ localCA_pem }}"
     dest: "/etc/pki/ca-trust/source/anchors/localCA.pem"
@@ -213,17 +201,17 @@
     group: root
   register: new_crt
 
-- name: "Trust crt"
+- name: Trust crt
   shell: update-ca-trust
-  when: new_crt|changed
+  when: new_crt is changed
 
-- name: "Update CA list for python-requests"
+- name: Update CA list for python-requests
   copy:
     src: /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt
     dest: "{{ item }}/cacert.pem"
     mode: 0444
     owner: root
     group: root
-  when: new_crt|changed
+  when: new_crt is changed
   with_items:
     - /usr/lib/python2.7/site-packages/requests/

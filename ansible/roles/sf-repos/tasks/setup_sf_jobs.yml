@@ -55,7 +55,7 @@
         - "add -A"
         - "commit -m 'Initialize sf-jobs repository'"
         - "push git+ssh://gerrit/sf-jobs master"
-      when: sf_jobs_files|changed
+      when: sf_jobs_files is changed
 
     - name: Save zuul jobs repo
       command: "mv {{ sf_jobs_clone_dir }} /root/sf-jobs"

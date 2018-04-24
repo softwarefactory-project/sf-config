@@ -2,12 +2,14 @@
 - name: Create elasticsearch group
   group:
     name: elasticsearch
+
 - name: Create elasticsearch user
   user:
     name: elasticsearch
     group: elasticsearch
     shell: /sbin/nologin
     home: /var/lib/elasticsearch
+
 - name: Ensure /var/lib/elasticsearch directory exists
   file:
     path: /var/lib/elasticsearch
@@ -15,6 +17,7 @@
     mode: 0700
     owner: elasticsearch
     group: elasticsearch
+
 - name: Ensure /var/run/elasticsearch directory exists
   file:
     path: /var/run/elasticsearch
@@ -22,6 +25,7 @@
     mode: 0755
     owner: elasticsearch
     group: elasticsearch
+
 - name: Ensure Elasticsearch listen to all addresses
   lineinfile:
     dest: /etc/elasticsearch/elasticsearch.yml
@@ -29,24 +33,28 @@
     insertafter: "^# network.host:"
     line: "network.host{{':'}} elasticsearch.{{ fqdn }}"
   register: listenaddr
+
 - name: Set Elasticsearch indexes replica count
   lineinfile:
     dest: /etc/elasticsearch/elasticsearch.yml
     regexp: "^index.number_of_replicas{{':'}}.*$"
     line: "index.number_of_replicas{{':'}} {{ elasticsearch_replicas }}"
   register: replicas
+
 - name: Set Eleasticsearch JAVA HEAP Size
   lineinfile:
     dest: /etc/sysconfig/elasticsearch
     regexp: "^.*ES_HEAP_SIZE=.*$"
     line: "ES_HEAP_SIZE={{ elasticsearch_heap_size }}"
   register: heapsize
+
 - name: Elasticsearch service started and enabled
   service:
     name: elasticsearch
     state: restarted
     enabled: "yes"
-  when: listenaddr|changed or heapsize|changed or replicas|changed
+  when: listenaddr is changed or heapsize is changed or replicas is changed
+
 - name: Start service
   systemd:
     name: elasticsearch
