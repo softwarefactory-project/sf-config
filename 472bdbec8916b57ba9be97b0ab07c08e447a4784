@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da20952f_dc7861fb",
+        "filename": "ansible/roles/sf-cauth/tasks/saml2.yaml",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-24T15:14:12Z",
+      "side": 1,
+      "message": "{{ gateway_url }}",
+      "range": {
+        "startLine": 37,
+        "startChar": 102,
+        "endLine": 37,
+        "endChar": 120
+      },
+      "revId": "472bdbec8916b57ba9be97b0ab07c08e447a4784",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_3c1dddbd",
+        "filename": "ansible/roles/sf-cauth/tasks/saml2.yaml",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-24T15:14:12Z",
+      "side": 1,
+      "message": "{{ gateway_url }}",
+      "range": {
+        "startLine": 37,
+        "startChar": 65,
+        "endLine": 37,
+        "endChar": 83
+      },
+      "revId": "472bdbec8916b57ba9be97b0ab07c08e447a4784",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_9c82e9c7",
+        "filename": "scripts/generate_sp_metadata.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-24T15:14:12Z",
+      "side": 1,
+      "message": "Why not a template for ansible ?",
+      "revId": "472bdbec8916b57ba9be97b0ab07c08e447a4784",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_bc87add6",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-24T15:14:12Z",
+      "side": 1,
+      "message": "That\u0027s not the same default than in the default sfconfig.yaml. Is that expected ?",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 33
+      },
+      "revId": "472bdbec8916b57ba9be97b0ab07c08e447a4784",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
