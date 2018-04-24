@@ -10,6 +10,7 @@
   when: mnesia.stat.isdir is undefined
   command: rabbitmqctl force_reset
   ignore_errors: "yes"
+  no_logs: true
 
 - name: Set rabbitmq heartbeat timeout
   replace:
@@ -17,7 +18,7 @@
     regexp: ".*{heartbeat, 600}.*"
     replace: "   {heartbeat, 3600}"
 
-- name: Rabbitmq service started and enabled
+- name: Start rabbitmq
   service:
     name: rabbitmq-server
     state: started

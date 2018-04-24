@@ -35,7 +35,7 @@
   shell: "ssh-keyscan -p 22 {{ item }} | grep ssh-rsa"
   with_items: "{{ servers.stdout_lines }}"
   register: public_ssh_host_keys
-  until: public_ssh_host_keys|success
+  until: public_ssh_host_keys is success
   retries: 30
   delay: 10
   changed_when: false

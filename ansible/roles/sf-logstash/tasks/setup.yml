@@ -1,7 +1,7 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=logstash"
 
-- name: "Install logstash configuration"
+- name: Install logstash configuration
   template:
     src: templates/indexer.conf.erb
     dest: /etc/logstash/conf.d/indexer.conf
@@ -11,33 +11,34 @@
     path: /var/log/logstash/logstash.log
   register: logfile
 
-- file:
+- name: Create logstash.log
+  file:
     path: /var/log/logstash/logstash.log
     owner: logstash
     group: logstash
   when: logfile.stat.exists
 
-- template:
-    src: templates/curator.yml.j2
-    dest: /etc/logstash/curator.yml
+- name: Install configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/logstash/{{ item }}"
+  with_items:
+    - curator.yml
+    - delete_old_indices.yml
 
-- template:
-    src: templates/delete_old_indices.yml.j2
-    dest: /etc/logstash/delete_old_indices.yml
-
-- name: "Enable logstash"
+- name: Enable logstash
   service:
     name: logstash
     enabled: "yes"
     state: started
 
-- name: "Restart logstash if needed"
+- name: Restart logstash if needed
   service:
     name: logstash
     state: restarted
-  when: config|changed
+  when: config is changed
 
-- name: "Setup delete old logstash indexes CRON"
+- name: Setup delete old logstash indexes CRON
   cron:
     name: "Delete old logstash indexes"
     minute: 0

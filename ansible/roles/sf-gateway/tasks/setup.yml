@@ -94,16 +94,19 @@
   command: rpm -q rh-python35-zuul-jobs-doc
   register: _zuul_job_version
   changed_when: false
+  warn: false
 
 - name: Read zuul version
   command: rpm -q rh-python35-zuul-doc
   register: _zuul_version
   changed_when: false
+  warn: false
 
 - name: Read nodepool version
   command: rpm -q rh-python35-nodepool-doc
   register: _nodepool_version
   changed_when: false
+  warn: false
 
 - name: Install templates
   template:

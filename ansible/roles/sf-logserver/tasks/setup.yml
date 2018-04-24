@@ -50,7 +50,7 @@
     name: httpd
     state: reloaded
     enabled: "yes"
-  when: httpd_conf|changed
+  when: httpd_conf is changed
 
 - name: Start services
   service:
