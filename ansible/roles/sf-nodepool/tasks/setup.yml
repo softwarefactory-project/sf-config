@@ -107,13 +107,17 @@
     - "{{ nodepool_lib_dir }}/.config/openstack/clouds.yaml"
     - /root/.config/openstack/clouds.yaml
 
-- name: Create nodepool image build log directory
+- name: Create nodepool working directories
   file:
-    path: /var/www/nodepool-log
+    path: "{{ item.path }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default(0750) }}"
     state: directory
-    owner: nodepool
-    group: apache
-    mode: 0750
+  with_items:
+    - {path: "/var/www/nodepool-log", owner: "nodepool", group: "apache"}
+    - {path: "/var/lib/nodepool/images", owner: "nodepool", group: "nodepool"}
+    - {path: "/var/www/html", mode: "0755"}
 
 - name: Install httpd conf.d nodepool log
   copy:
@@ -129,11 +133,6 @@
   when:
     - 'nodepool_log_http_conf|changed'
     - '"nodepool-builder" in nodepool_services'
-
-- name: Ensure /var/www/html exists
-  file:
-    path: /var/www/html
-    state: directory
 
 - name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log
   file:
