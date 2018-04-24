@@ -154,12 +154,12 @@ policy = {
 api = {
     'v2': {
         'builds': [
-{% if 'zuul' in roles %}
+{% if 'zuul2' in roles %}
             'SFZuul',
 {% endif %}
         ],
         'jobs': [
-{% if 'zuul' in roles %}
+{% if 'zuul2' in roles %}
             'SFZuul',
 {% endif %}
         ],
