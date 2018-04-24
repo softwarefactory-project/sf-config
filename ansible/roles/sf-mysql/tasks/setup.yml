@@ -11,7 +11,7 @@
     option: wait_timeout
     value: 1209600
 
-- name: Start service
+- name: Start mariadb
   service:
     name: mariadb
     enabled: "yes"
@@ -29,7 +29,7 @@
   until: result.rc == 0
   retries: 5
   delay: 1
-  when: mysql_root_password_set|failed
+  when: mysql_root_password_set is failed
 
 - name: Setup create_database sql query
   template:

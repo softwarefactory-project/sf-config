@@ -131,7 +131,7 @@
     state: reloaded
     enabled: "yes"
   when:
-    - 'nodepool_log_http_conf|changed'
+    - 'nodepool_log_http_conf is changed'
     - '"nodepool-builder" in nodepool_services'
 
 - name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log

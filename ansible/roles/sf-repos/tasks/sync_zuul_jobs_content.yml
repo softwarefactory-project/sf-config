@@ -26,12 +26,12 @@
 - name: "Indicate configuration changed"
   set_fact:
     zuul_conf_updated: true
-  when: _static_files|changed or
-        _readme_file|changed
+  when: _static_files is changed or
+        _readme_file is changed
 
 - name: "Indicate configuration didn't changed"
   set_fact:
     zuul_conf_updated: false
   when:
-    - not _static_files|changed
-    - not _readme_file|changed
+    - not _static_files is changed
+    - not _readme_file is changed

@@ -1,7 +1,7 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=joblogsworker"
 
-- name: "Install log gearman worker configuration"
+- name: Install log gearman worker configuration
   template:
     src: templates/log-worker.yaml.j2
     dest: /etc/log-gearman-worker/config.yml
@@ -9,14 +9,14 @@
     group: joblogsworker
   register: config
 
-- name: "Start service"
+- name: Start service
   service:
     name: log-gearman-worker
     state: started
     enabled: "yes"
 
-- name: "Restart log gearman worker if needed"
+- name: Restart log gearman worker if needed
   service:
     name: log-gearman-worker
     state: restarted
-  when: config|changed
+  when: config is changed

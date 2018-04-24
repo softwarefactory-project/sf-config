@@ -38,7 +38,7 @@
     state: restarted
   when:
     - _grafana_service.rc == 0
-    - _grafana_ini|changed
+    - _grafana_ini is changed
 
 - name: Fix systemd file to wait for mysql
   ini_file:

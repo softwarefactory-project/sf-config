@@ -50,7 +50,7 @@
 
 - name: Generate virtual database
   shell: /usr/sbin/postmap /etc/postfix/virtual
-  when: postfix_virtual|changed
+  when: postfix_virtual is changed
   notify:
     - restart postfix
 
