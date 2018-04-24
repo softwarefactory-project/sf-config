@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "da20952f_dc038175",
+        "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/dlrn-build/tasks/build.yaml",
+        "patchSetId": 12
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-24T13:41:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a50d1a3_451d60bc",
+      "range": {
+        "startLine": 34,
+        "startChar": 31,
+        "endLine": 34,
+        "endChar": 35
+      },
+      "revId": "cc06b6ade0a81f003034c5518c396624351cc75a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3a50d1a3_a58224c7",
         "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/dlrn-build/tasks/prepare.yaml",
         "patchSetId": 12
@@ -36,6 +60,30 @@
       "writtenOn": "2018-04-16T14:45:02Z",
       "side": 1,
       "message": "This is just a minor detail, but do we want to keep the info repo name as \"rdoinfo\"?",
+      "range": {
+        "startLine": 54,
+        "startChar": 14,
+        "endLine": 54,
+        "endChar": 21
+      },
+      "revId": "cc06b6ade0a81f003034c5518c396624351cc75a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_3cd87d1d",
+        "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/dlrn-build/tasks/prepare.yaml",
+        "patchSetId": 12
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-24T13:41:27Z",
+      "side": 1,
+      "message": "No I don\u0027t think so. I\u0027ll keep that like that as the task will be removed I guess once we will move to full distro info support.",
+      "parentUuid": "3a50d1a3_a58224c7",
       "range": {
         "startLine": 54,
         "startChar": 14,
