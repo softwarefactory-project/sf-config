@@ -83,6 +83,24 @@
     },
     {
       "key": {
+        "uuid": "da20952f_1f81eb8f",
+        "filename": "scripts/generate_sp_metadata.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-25T13:41:31Z",
+      "side": 1,
+      "message": "You can do the same grep command with ansible command module and register then used command.stdout to set a fact with set_fact. The fact/variable will be used in the jinja template.",
+      "parentUuid": "da20952f_5c545153",
+      "revId": "472bdbec8916b57ba9be97b0ab07c08e447a4784",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da20952f_bc87add6",
         "filename": "sfconfig/upgrade.py",
         "patchSetId": 13
@@ -118,6 +136,30 @@
       "side": 1,
       "message": "it doesn\u0027t really matter as the operator will have to change these fields to conform with the IdP.",
       "parentUuid": "da20952f_bc87add6",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 33
+      },
+      "revId": "472bdbec8916b57ba9be97b0ab07c08e447a4784",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_df493390",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-25T13:41:31Z",
+      "side": 1,
+      "message": "My concern is more for consistency between a fresh install and an upgrade. But well I won\u0027t block on that :p",
+      "parentUuid": "da20952f_bc5ecd74",
       "range": {
         "startLine": 146,
         "startChar": 0,
