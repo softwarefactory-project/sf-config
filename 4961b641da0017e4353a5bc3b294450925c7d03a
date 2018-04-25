@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da20952f_7f2267bb",
+        "filename": "ansible/roles/sf-upgrade/tasks/packages.yml",
+        "patchSetId": 35
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-25T14:08:29Z",
+      "side": 1,
+      "message": "Better to give the plain text explanation here instead of targeting a doc that will maybe disappear.",
+      "revId": "4961b641da0017e4353a5bc3b294450925c7d03a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
