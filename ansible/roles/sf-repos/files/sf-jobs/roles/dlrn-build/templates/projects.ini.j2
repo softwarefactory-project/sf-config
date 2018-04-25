@@ -1,0 +1,21 @@
+[DEFAULT]
+datadir={{ working_dir }}/DLRN/data
+scriptsdir={{ dlrn_scripts_dir }}
+baseurl={{ gateway_url }}/dlrn/{{ dlrn_project }}
+distro=master
+source=master
+target={{ dlrn_build_target }}
+project_name={{ dlrn_project }}
+reponame=delorean
+templatedir={{ dlrn_templates_dir }}
+maxretries=3
+smtpserver=
+pkginfo_driver=dlrn.drivers.rdoinfo.RdoInfoDriver
+tags=
+workers=1
+database_connection=sqlite:///commits.sqlite
+fallback_to_master=1
+release_numbering=0.1.date.hash
+
+[rdoinfo_driver]
+repo={{ rdo_info_clone_url }}
