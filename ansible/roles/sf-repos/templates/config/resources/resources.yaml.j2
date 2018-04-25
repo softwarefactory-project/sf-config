@@ -1,5 +1,8 @@
 ---
 resources:
+  tenants:
+    local:
+      url: {{ gateway_url }}
   projects:
     internal:
       description: Internal configuration project
@@ -49,7 +52,7 @@ resources:
     config-ptl:
       description: Team lead for the config repo
       members:
-        - admin@sftests.com
+        - admin@{{ fqdn }}
     config-core:
       description: Team core for the config repo
       members: []

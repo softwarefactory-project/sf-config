@@ -3,25 +3,22 @@
     path: /root/config
   register: config_done
 
+- name: Create empty resources file
+  copy:
+    content: 'resources: {}'
+    dest: /var/lib/software-factory/bootstrap-data/empty_resources.yaml
+
+- name: Create default resources file
+  template:
+    src: "config/resources/resources.yaml.j2"
+    dest: "/var/lib/software-factory/bootstrap-data/resources.yaml"
+
 - block:
     - name: Make a first admin connexion through SF SSO (force sf_users admin id:1)
       command: sfmanager sf_user list
 
-    # Create the config repo
-    - name: Copy default resources file
-      command: cp /usr/share/sf-config/ansible/roles/sf-repos/files/config/resources/resources.yaml /root/resources.yaml
-
-    - name: Change default admin email in default resources file
-      replace:
-        dest: /root/resources.yaml
-        regexp: '@sftests.com'
-        replace: "@{{ fqdn }}"
-
-    - name: Create empty resources file
-      shell: "echo 'resources: {}' > /root/empty_resources.yaml"
-
     - name: Create config repository resources
-      command: /usr/local/bin/resources.sh direct_apply /root/empty_resources.yaml /root/resources.yaml
+      command: /usr/local/bin/resources.sh direct_apply /var/lib/software-factory/bootstrap-data/empty_resources.yaml /var/lib/software-factory/bootstrap-data/resources.yaml
       when: "'gerrit' in roles"
 
     # Clone the config repo
@@ -37,8 +34,16 @@
     - name: Copy the default config repo files
       command: rsync -av /usr/share/sf-config/ansible/roles/sf-repos/files/config/ {{ conf_tmp.stdout }}/
 
+    - name: Create resources directory
+      file:
+        path: "{{ conf_tmp.stdout }}/resources/"
+        state: directory
+
     - name: Copy default resources file
-      command: mv /root/resources.yaml "{{ conf_tmp.stdout }}/resources/resources.yaml"
+      copy:
+        src: /var/lib/software-factory/bootstrap-data/resources.yaml
+        dest: "{{ conf_tmp.stdout }}/resources/resources.yaml"
+        remote_src: yes
 
     - set_fact:
         config_clone_dir: "{{ conf_tmp.stdout }}"
