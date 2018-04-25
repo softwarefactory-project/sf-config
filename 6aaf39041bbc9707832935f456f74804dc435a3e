@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da20952f_7fad8730",
+        "filename": "ansible/roles/sf-firehose/templates/default.yaml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-25T13:21:44Z",
+      "side": 1,
+      "message": "{{ gateway_url }}",
+      "range": {
+        "startLine": 11,
+        "startChar": 7,
+        "endLine": 11,
+        "endChar": 25
+      },
+      "revId": "6aaf39041bbc9707832935f456f74804dc435a3e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
