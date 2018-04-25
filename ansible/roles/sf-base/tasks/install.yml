@@ -1,4 +1,18 @@
 ---
+- name: Ensure mirrorlist are disabled in CentOS-*.repo
+  replace:
+    dest: "/etc/yum.repos.d/{{ item }}"
+    regexp: "^mirrorlist"
+    replace: "#mirrorlist"
+  with_items: "{{ centos_repos }}"
+
+- name: Use vault.centos.org to ensure using pinned CentOS version
+  replace:
+    dest: "/etc/yum.repos.d/{{ item }}"
+    regexp: "#baseurl=http://mirror.centos.org/centos/$releasever"
+    replace: "baseurl=http://mirror.centos.org/centos-7/{{ centos_version }}"
+  with_items: "{{ centos_repos }}"
+
 - name: Create libexec directory
   file:
     path: /usr/local/libexec/software-factory
