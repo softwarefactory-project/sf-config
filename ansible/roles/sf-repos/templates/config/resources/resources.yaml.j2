@@ -1,5 +1,14 @@
 ---
 resources:
+  tenants:
+    local:
+{% if 'gerrit' in roles %}
+      config-project: {{ gateway_url }}/r/config
+      type: gerrit
+{% else %}
+      config-project: {{ gateway_url }}/cgit/config
+      type: bare
+{% endif %}
   projects:
     internal:
       description: Internal configuration project
@@ -49,7 +58,7 @@ resources:
     config-ptl:
       description: Team lead for the config repo
       members:
-        - admin@sftests.com
+        - admin@{{ fqdn }}
     config-core:
       description: Team core for the config repo
       members: []
