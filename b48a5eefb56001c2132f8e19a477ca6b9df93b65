@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da20952f_fff2f76e",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-25T12:45:35Z",
+      "side": 1,
+      "message": "Could you add also:\n/var/lib/software-factory/git please ? We are already using it in https://softwarefactory-project.io/r/gitweb?p\u003dsoftware-factory/sf-config.git;a\u003dcommitdiff;h\u003d27573936ce50f77fe4b4f9394172e396cb2a95d5 and we will use it more and more later.",
+      "revId": "b48a5eefb56001c2132f8e19a477ca6b9df93b65",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_9fe73bac",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-25T12:45:35Z",
+      "side": 1,
+      "message": "So the mode change here setenforce 0 is permissive.\nOn my sftests currently: sestatus:\nLoaded policy name:             targeted\nCurrent mode:                   permissive",
+      "range": {
+        "startLine": 88,
+        "startChar": 11,
+        "endLine": 88,
+        "endChar": 20
+      },
+      "revId": "b48a5eefb56001c2132f8e19a477ca6b9df93b65",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
