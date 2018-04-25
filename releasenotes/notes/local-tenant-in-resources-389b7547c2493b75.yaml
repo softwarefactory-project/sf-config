@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    A tenant object is managed in config resources.
+    It defines the local default tenant and the configured connections.
+upgrade:
+  - |
+    A _internal.yaml file is created with the default managed
+    config/resources. Config project and acls are removed from common files.

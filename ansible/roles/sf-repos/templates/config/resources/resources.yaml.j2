@@ -1,0 +1,15 @@
+---
+# This file contains the default users group authorized to
+# manage Software Factory services configurations.
+#
+# Adds trusted operator email to the config-core or config-ptl list.
+#
+resources:
+  groups:
+    config-ptl:
+      description: Team lead for the config repo
+      members:
+        - admin@{{ fqdn }}
+    config-core:
+      description: Team core for the config repo
+      members: []
