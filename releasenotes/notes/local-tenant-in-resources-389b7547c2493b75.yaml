@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    A resource tenants object is provided into the resources.
+    It defines the local default tenant and the location
+    of the config repository.
+upgrade:
+  - |
+    A local-tenant.yaml file will be automatically added to the
+    config/resources directory.
