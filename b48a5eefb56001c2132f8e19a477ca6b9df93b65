@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "da20952f_7f74a7ce",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-04-25T13:43:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da20952f_fff2f76e",
+      "revId": "b48a5eefb56001c2132f8e19a477ca6b9df93b65",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da20952f_9fe73bac",
         "filename": "ansible/roles/sf-base/tasks/setup.yml",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2018-04-25T12:45:35Z",
       "side": 1,
       "message": "So the mode change here setenforce 0 is permissive.\nOn my sftests currently: sestatus:\nLoaded policy name:             targeted\nCurrent mode:                   permissive",
+      "range": {
+        "startLine": 88,
+        "startChar": 11,
+        "endLine": 88,
+        "endChar": 20
+      },
+      "revId": "b48a5eefb56001c2132f8e19a477ca6b9df93b65",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_9f43bb6c",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-04-25T13:43:08Z",
+      "side": 1,
+      "message": "On my deployment it is:\nLoaded policy name:             targeted\nCurrent mode:                   enforcing\nBut I will push a review with permissive mode \u003d)",
+      "parentUuid": "da20952f_9fe73bac",
       "range": {
         "startLine": 88,
         "startChar": 11,
