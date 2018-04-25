@@ -86,6 +86,16 @@
       command: sed -i /root/config/policies/policy.yaml -e 's/^.*htpasswd.*//'
   when: sf_previous_version < 3.1
 
+- block:
+    - name: Remove internal resources managed by _internal.yaml template
+      command: python /usr/share/sf-config/ansible/roles/sf-repos/files/remove-internal-resources.py /root/config/resources
+
+    - name: Remove unused file
+      file:
+        path: /root/empty_resources.yaml
+        state: absent
+  when: sf_previous_version < 3.1
+
 - name: Push config change
   command: "git {{ item }}"
   args:

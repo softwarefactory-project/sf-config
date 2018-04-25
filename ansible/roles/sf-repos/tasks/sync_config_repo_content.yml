@@ -29,6 +29,7 @@
     path: "{{ config_clone_dir }}/{{ item }}"
     state: directory
   with_items:
+    - resources
     - nodepool
     - zuul
     - zuul.d
@@ -63,6 +64,7 @@
     src: "config/{{ item }}.j2"
     dest: "{{ config_clone_dir }}/{{ item }}"
   with_items:
+    - resources/_internal.yaml
     - playbooks/base/pre.yaml
     - playbooks/base/post.yaml
     - zuul.d/_jobs-base.yaml
