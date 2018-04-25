@@ -34,6 +34,24 @@
       "revId": "7c70897d40710c6df3e9c3b59087a057a63624dc",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_bfeb1fb0",
+        "filename": "ansible/roles/sf-gateway/files/user_settings.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-04-25T09:44:45Z",
+      "side": 1,
+      "message": "You can update admin api key, it\u0027s just the access to gerrit that is hardcoded in the services conf as gerrit_admin_password and it can\u0027t shouldn\u0027t be changed by the user like that.",
+      "parentUuid": "da20952f_3fc14f2f",
+      "revId": "7c70897d40710c6df3e9c3b59087a057a63624dc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
