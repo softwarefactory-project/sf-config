@@ -33,8 +33,9 @@ data = json.loads(req.read().decode('utf-8'))
 resources = data.get("resources", {})
 projects = resources.get("projects", {})
 repos = resources.get("repos", {})
-projects_name = ["internal"] + sorted(list(filter(lambda x: x != "internal",
-                                                  projects.keys())))
+projects_name = ["internal", "internal-configuration"]
+projects_name += sorted(list(filter(lambda x: x != "internal",
+                                    projects.keys())))
 
 listed_repos = set()
 conf = []
@@ -53,7 +54,9 @@ def add_repo(repo_name):
 
 
 for project_name in projects_name:
-    if project_name != "internal":
+    if project_name not in projects:
+        continue
+    if project_name not in ("internal", "internal-configuration"):
         conf.append("section=%s" % project_name)
     for repo_name in projects[project_name].get("source-repositories", []):
         add_repo(repo_name)
