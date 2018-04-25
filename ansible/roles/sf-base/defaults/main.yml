@@ -8,3 +8,11 @@ role_actions:
 sf_release_url: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
 edeploy_server: "install-server"
 edeploy_service_port: "873"
+centos_version: '7.4.1708'
+centos_repos:
+    - CentOS-Base.repo
+    - CentOS-CR.repo
+    - CentOS-Debuginfo.repo
+    - CentOS-fasttrack.repo
+    - CentOS-Media.repo
+    - CentOS-Sources.repo
