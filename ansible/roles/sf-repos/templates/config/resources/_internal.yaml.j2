@@ -1,23 +1,61 @@
+# This file is managed by ansible, do not edit directly
 ---
 resources:
+  tenants:
+    local:
+      description: "The local tenant."
+      url: "{{ gateway_url }}/manage"
+
+{% if not initial_creation|default(False) %}
+  connections:
+{% for conn in zuul_gerrit_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "{{ conn['puburl'] }}"
+      type: gerrit
+{% endfor %}
+{% for conn in zuul_github_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "https://{{ conn['hostname']|default('github.com') }}"
+      type: github
+{% endfor %}
+{% for conn in zuul_git_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "{{ conn['baseurl'] }}"
+      type: git
+{% endfor %}
+{% endif %}
+
   projects:
     internal:
+      tenant: local
+      connection: gerrit
       description: Internal configuration project
+{% if 'storyboard' in roles %}
       issue-tracker: SFStoryboard
+{% endif %}
       source-repositories:
         - config
-        - zuul-jobs
         - sf-jobs
+{% if zuul_upstream_zuul_jobs %}
+        - openstack-infra/zuul-jobs:
+            connection: {{ openstack_connection_name }}
+{% else %}
+        - zuul-jobs
+{% endif %}
+
   repos:
     config:
-      description: Config repository (Do not delete it)
-      acl: config-acl
-    zuul-jobs:
-      description: ZuulV3 jobs
+      description: Config repository
       acl: config-acl
     sf-jobs:
-      description: The sf-jobs repository
+      description: Local job repository
       acl: config-acl
+{% if not zuul_upstream_zuul_jobs %}
+    zuul-jobs:
+      description: The openstack-infra/zuul-jobs repository copy
+      acl: config-acl
+{% endif %}
+
   acls:
     config-acl:
       file: |
@@ -45,11 +83,14 @@ resources:
       groups:
         - config-ptl
         - config-core
+{% if initial_creation|default(False) %}
+
   groups:
     config-ptl:
       description: Team lead for the config repo
       members:
-        - admin@sftests.com
+        - admin@{{ fqdn }}
     config-core:
       description: Team core for the config repo
       members: []
+{% endif %}
