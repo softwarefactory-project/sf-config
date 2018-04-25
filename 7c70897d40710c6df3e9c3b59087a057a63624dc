@@ -16,6 +16,24 @@
       "revId": "7c70897d40710c6df3e9c3b59087a057a63624dc",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da20952f_3fc14f2f",
+        "filename": "ansible/roles/sf-gateway/files/user_settings.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-04-25T09:19:58Z",
+      "side": 1,
+      "message": "That\u0027s not possible https://softwarefactory-project.io/r/gitweb?p\u003dsoftware-factory/cauth.git;a\u003dblob;f\u003dcauth/service/gerrit.py;h\u003d6259bf4f00d979d1353a8ea6e63499f26951d839;hb\u003dHEAD#l70 or I missed something there ?",
+      "parentUuid": "da20952f_9faf3b7d",
+      "revId": "7c70897d40710c6df3e9c3b59087a057a63624dc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
