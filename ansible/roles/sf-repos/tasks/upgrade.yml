@@ -86,6 +86,25 @@
       command: sed -i /root/config/policies/policy.yaml -e 's/^.*htpasswd.*//'
   when: sf_previous_version < 3.1
 
+- block:
+    - name: Add the default SF local-tenant.yaml
+      blockinfile:
+        path: /root/config/resources/local-tenant.yaml
+        create: yes
+        block: |
+           ---
+           resources:
+             tenants:
+               local:
+                 {% if 'gerrit' in roles %}
+                 config-project: {{ gateway_url }}/r/config
+                 type: gerrit
+                 {% else %}
+                 config-project: {{ gateway_url }}/cgit/config
+                 type: bare
+                 {% endif %}
+  when: sf_previous_version < 3.1
+
 - name: Push config change
   command: "git {{ item }}"
   args:
