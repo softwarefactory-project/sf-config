@@ -2,7 +2,6 @@
 description: "All in one instance architecture"
 inventory:
   - name: managesf
-    ip: 192.168.0.10
     roles:
       - install-server
       - mysql

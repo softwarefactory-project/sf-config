@@ -1,11 +1,6 @@
 description: The softwarefactory-project.io architecture
 inventory:
-- disk: 160
-  flavor: rdo.m1.large2
-  hostname: managesf.softwarefactory-project.io
-  ip: 192.168.240.11
-  name: managesf
-  public_url: https://softwarefactory-project.io
+- name: managesf
   roles:
   - install-server
   - mysql
@@ -23,12 +18,8 @@ inventory:
   - firehose
   - grafana
   - zookeeper
-- disk: 160
-  flavor: rdo.m1.large
-  hostname: elk.softwarefactory-project.io
+- name: elk
   ip: 192.168.240.14
-  name: elk
-  public_url: http://192.168.240.14
   roles:
   - logserver
   - elasticsearch
@@ -37,33 +28,23 @@ inventory:
   - job-logs-gearman-client
   - job-logs-gearman-worker
   - hound
-- disk: 100
-  flavor: rdo.m1.medium
-  hostname: nodepool-builder.softwarefactory-project.io
+- name: nodepool-builder
   ip: 192.168.240.9
-  name: nodepool-builder
-  public_url: http://192.168.240.9
   roles:
   - nodepool-builder
-- hostname: zs.softwarefactory-project.io
+- name: zs
   ip: 192.168.240.15
-  name: zs
-  public_url: http://192.168.240.15
   roles:
   - zuul-scheduler
   - zuul-web
   - nodepool-launcher
-- hostname: ze01.softwarefactory-project.io
+- name: ze01
   ip: 192.168.240.8
-  name: ze01
-  public_url: http://192.168.240.8
   roles:
   - zuul-executor
-- hostname: oci01.softwarefactory-project.io
+- name: oci01
   ip: 38.145.33.82
   max-servers: 24
-  name: oci01
-  public_url: http://38.145.33.82
   remote: true
   roles:
   - hypervisor-oci
