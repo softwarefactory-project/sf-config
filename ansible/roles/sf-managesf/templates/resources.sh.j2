@@ -24,9 +24,9 @@ trap "rm -f $VALIDATED_OUTPUT && rm -f $APPLIED_OUTPUT" EXIT
         python <<SCRIPT
 import json
 data = {}
-data['prev'] = file("$2").read()
-data['new'] = file("$3").read()
-json.dump(data, file('direct_apply.json', 'w'))
+data['prev'] = open("$2").read()
+data['new'] = open("$3").read()
+json.dump(data, open('direct_apply.json', 'w'))
 SCRIPT
     }
 }
@@ -46,9 +46,9 @@ import os
 import yaml
 import json
 
-data = dict([(os.path.join('resources', f), file(os.path.join('resources', f)).read())
+data = dict([(os.path.join('resources', f), open(os.path.join('resources', f)).read())
 	     for f in os.listdir('resources') if f.endswith('.yaml') or f.endswith('.yml')])
-json.dump({'data': data}, file('data.json', 'w'))
+json.dump({'data': data}, open('data.json', 'w'))
 SCRIPT
         http_code=$(curl -s -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
          -H "Content-Type: application/json" \

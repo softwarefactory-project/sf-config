@@ -10,6 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import ConfigParser
 import copy
 import os
 import yaml
@@ -113,6 +114,10 @@ def disable_action(args):
 
 
 def upgrade(args, pb):
+    # Replace system ansible with rh-python35
+    sfconfig.utils.execute(["yum", "remove", "-y", "ansible"])
+    sfconfig.utils.execute(["yum", "install", "-y", "rh-python35-ansible"])
+
     # Call pre upgrade task
     pb.append(host_play('all', 'upgrade', {'role_action': 'pre'}))
 
@@ -326,27 +331,42 @@ def enable_action(args):
 
 
 def enable_ara():
-    try:
-        import ara
-        import ConfigParser
-    except ImportError:
-        return
-
     ara_cfg = "/var/lib/software-factory/ansible/ara.cfg"
     if not os.path.isfile(ara_cfg):
-        ara_location = os.path.dirname(ara.__file__)
+        ara_loc = "/opt/rh/rh-python35/root/lib/python3.5/site-packages/ara/"
         ansiblecfg = ConfigParser.ConfigParser()
         ansiblecfg.read("/usr/share/sf-config/ansible/ansible.cfg")
         ansiblecfg.set("defaults", "callback_plugins",
-                       "%s/plugins/callbacks" % ara_location)
+                       "%s/plugins/callbacks" % ara_loc)
         ansiblecfg.set("defaults", "action_plugins",
-                       "%s/plugins/actions" % ara_location)
+                       "%s/plugins/actions" % ara_loc)
         ansiblecfg.set("defaults", "library",
-                       "%s/plugins/modules" % ara_location)
+                       "%s/plugins/modules" % ara_loc)
         ansiblecfg.write(open(ara_cfg, "w"))
     os.environ["ANSIBLE_CONFIG"] = ara_cfg
     os.environ["ARA_LOG_FILE"] = ""
     os.environ["ARA_DIR"] = "/var/lib/software-factory/ansible/ara/"
+
+
+def install_ansible():
+    if os.path.isfile("/opt/rh/rh-python35/root/usr/bin/ansible-playbook"):
+        return
+    # Install scl repository first
+    if "centos" in open("/etc/os-release").read():
+        sfconfig.utils.execute(
+            ["yum", "install", "-y", "centos-release-scl-rh"])
+        sfconfig.utils.execute(
+            ["yum", "install", "-y", "rh-python35-ansible", "rh-python35-ara"])
+    else:
+        # TODO: auto-enable scl on rhel
+        pass
+
+    try:
+        sfconfig.utils.execute(
+            ["yum", "install", "-y", "rh-python35-ansible", "rh-python35-ara"])
+    except Exception:
+        print("Install rh-python35 scl first")
+        raise
 
 
 def run(args):
@@ -359,8 +379,10 @@ def run(args):
     write_playbook(playbook_path, playbook)
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
     if not args.skip_apply:
+        install_ansible()
         enable_ara()
-        sfconfig.utils.execute(["ansible-playbook", playbook_path])
+        sfconfig.utils.execute(["scl", "enable", "rh-python35", "--",
+                                "ansible-playbook", playbook_path])
 
 
 def get_logs(args, pb):
