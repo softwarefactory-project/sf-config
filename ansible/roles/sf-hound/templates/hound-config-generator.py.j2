@@ -27,8 +27,8 @@ config = {
    "repos": {},
 }
 
-req = urllib.urlopen("{{ managesf_internal_url }}/resources")
-data = json.loads(req.read())
+req = urllib.request.urlopen("{{ managesf_internal_url }}/resources")
+data = json.loads(req.read().decode('utf-8'))
 
 for repo, attr in data.get("resources", {}).get("repos", {}).items():
     config["repos"][repo] = {
