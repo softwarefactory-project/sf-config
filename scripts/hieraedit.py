@@ -107,7 +107,7 @@ if args.value:
 if args.file:
     data[args.key] = open(args.file).read()
     changed = True
-# print data[args.key]
+# print(data[args.key])
 
 if changed:
     dn = os.path.dirname(args.yaml)

@@ -13,7 +13,7 @@
 
 import argparse
 import json
-import urllib
+from six.moves import urllib
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--poll-frequency", default=(12*60*60), type=int,
@@ -27,7 +27,7 @@ config = {
    "repos": {},
 }
 
-req = urllib.urlopen("{{ managesf_internal_url }}/resources")
+req = urllib.request.urlopen("{{ managesf_internal_url }}/resources")
 data = json.loads(req.read())
 
 for repo, attr in data.get("resources", {}).get("repos", {}).items():

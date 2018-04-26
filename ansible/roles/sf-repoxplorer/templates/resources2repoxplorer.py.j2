@@ -47,9 +47,9 @@ if __name__ == "__main__":
             shutil.copy(REPOXPLORER_DEFAULT_FILE,
                         REPOXPLORER_DEFAULT_FILE + 'save')
         yaml.safe_dump(default,
-                       file(REPOXPLORER_DEFAULT_FILE, 'w'),
+                       open(REPOXPLORER_DEFAULT_FILE, 'w'),
                        default_flow_style=False)
     else:
-        print default
-        print
-        print "Run with 'apply' as first argument to apply"
+        print(default)
+        print()
+        print("Run with 'apply' as first argument to apply")
