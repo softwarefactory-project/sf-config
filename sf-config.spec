@@ -11,7 +11,6 @@ Source0:        https://github.com/softwarefactory-project/software-factory/arch
 
 BuildArch:      noarch
 
-Requires:       ansible >= 2.4.1
 Requires:       python-jinja2
 
 Buildrequires:  python2-devel
