@@ -1,13 +1,20 @@
 #!/bin/env python
 # Convert dash files to json representation for custom dashboard
 
-import ConfigParser
+try:
+    import ConfigParser
+except ImportError:
+    import configparser as ConfigParser
 import argparse
 import json
 import os
 import requests
-import urllib
 import sys
+import logging
+from six.moves import urllib
+
+
+logger = logging.getLogger()
 
 
 def usage(argv):
@@ -43,7 +50,7 @@ def load_dashboard(path, title=None, extra_foreach=None):
     qs.append(('title', data['title']))
     for section in sections:
         qs.append(section)
-    data['gerrit_url'] = '/r/#/dashboard/?%s' % urllib.urlencode(qs)
+    data['gerrit_url'] = '/r/#/dashboard/?%s' % urllib.parse.urlencode(qs)
 
     # Generate gerrit changes query
     gerrit_query = []
@@ -51,7 +58,7 @@ def load_dashboard(path, title=None, extra_foreach=None):
         data['tables'].append(table)
         if foreach:
             query = "%s %s" % (query, foreach)
-        gerrit_query.append(urllib.quote_plus(query))
+        gerrit_query.append(urllib.parse.quote_plus(query))
 
     data['gerrit_query'] = '/r/changes/?q=%s&O=81' % "&q=".join(gerrit_query)
     return data
@@ -66,8 +73,8 @@ def main(argv=sys.argv[1:]):
         dashboard_file = "%s/%s" % (args.input, dashboard)
         try:
             data = load_dashboard(dashboard_file)
-        except Exception, e:
-            print("[E] Couldn't load %s: %s" % (dashboard_file, e))
+        except Exception:
+            logger.exception("Couldn't load: %s" % dashboard_file)
             if args.check:
                 exit(1)
             continue
@@ -94,8 +101,8 @@ def main(argv=sys.argv[1:]):
                 data = load_dashboard(dashboard_file,
                                       title="%s's dashboard" % name,
                                       extra_foreach=foreach)
-            except Exception, e:
-                print("[E] Couldn't load dashboard: %s" % e)
+            except Exception:
+                logger.exception("Couldn't load: %s" % dashboard_file)
                 continue
             dashboards['project_%s' % name] = data
 
@@ -107,11 +114,11 @@ def main(argv=sys.argv[1:]):
             'description': data['description']
         })
 
-    with open("%s/data.json" % args.output, "wb") as of:
+    with open("%s/data.json" % args.output, "w") as of:
         of.write(json.dumps(dashboards_list))
 
     for name, data in dashboards.items():
-        with open("%s/data_%s.json" % (args.output, name), "wb") as of:
+        with open("%s/data_%s.json" % (args.output, name), "w") as of:
             of.write(json.dumps(data))
 if __name__ == "__main__":
     main()

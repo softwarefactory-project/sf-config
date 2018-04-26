@@ -5,6 +5,11 @@
     state: directory
     mode: 0755
 
+- name: Ensure ansible from centos repos is not present
+  package:
+    name: ansible
+    state: absent
+
 - name: Check for sf-release
   stat:
     path: /etc/yum.repos.d/sf-release.repo
