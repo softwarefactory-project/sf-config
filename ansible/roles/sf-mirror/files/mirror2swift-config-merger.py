@@ -19,7 +19,7 @@ import os
 import yaml
 
 if len(sys.argv) != 3 or not os.path.exists(sys.argv[1]):
-    print "usage: %s mirrors-dir output-conf.yaml" % sys.argv[0]
+    print("usage: %s mirrors-dir output-conf.yaml" % sys.argv[0])
     exit(1)
 
 # Collect mirrors configuration files

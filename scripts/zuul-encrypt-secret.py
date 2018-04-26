@@ -59,7 +59,7 @@ def main():
 
     pubkey_file = tempfile.NamedTemporaryFile(delete=False)
     try:
-        pubkey_file.write(pubkey.read())
+        pubkey_file.write(pubkey.read().encode('utf-8'))
         pubkey_file.close()
 
         p = subprocess.Popen(['openssl', 'rsa', '-text',
