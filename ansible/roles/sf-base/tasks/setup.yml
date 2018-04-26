@@ -36,6 +36,31 @@
     - "lib64/python3.5"
     - "lib/python3.5"
 
+- name: "system: check for scl ansible"
+  stat:
+    path: /opt/rh/rh-python35/root/usr/bin/ansible-playbook
+  register: _python35_ansible
+
+- name: "system: check for system ansible"
+  stat:
+    path: /usr/bin/ansible-playbook
+  register: _system_ansible
+
+- name: "system: symlink scl ansible"
+  file:
+    src: "/opt/rh/rh-python35/root/usr/bin/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
+    state: link
+    force: yes
+  when: _python35_ansible.stat.exists and not _system_ansible.stat.exists
+  with_items:
+    - ansible-playbook
+    - ansible-inventory
+    - ansible-pull
+    - ansible-vault
+    - ansible-galaxy
+    - ansible
+
 - name: "system: add FQDN to prompt"
   copy:
     src: prompt.sh
