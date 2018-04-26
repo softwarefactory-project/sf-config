@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ansible version provided by CentOS extras is replaced by the one
+    already packaged in scl for Zuul.

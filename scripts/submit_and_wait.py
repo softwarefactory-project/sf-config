@@ -66,8 +66,9 @@ def main():
     # Check gerrit host
     if not os.path.isfile(".gitreview"):
         fail("%s: Project is missing .gitreview" % args.repository)
-    ghost = filter(lambda x: x.startswith("host="),
-                   open(".gitreview").readlines())[0].split('=')[1].strip()
+    ghost = list(filter(lambda x: x.startswith("host="),
+                        open(".gitreview").readlines()))
+    ghost = ghost[0].split('=')[1].strip()
 
     # Set gitreview.username configuration
     if "username" not in open("%s/.gitconfig" % os.environ["HOME"]).read():
@@ -78,14 +79,14 @@ def main():
         gr_opts = '-v'
 
     if args.review_id:
-        print execute("git review %s -d %s" % (gr_opts, args.review_id))
+        print(execute("git review %s -d %s" % (gr_opts, args.review_id)))
         sha = execute("git log -n1 --pretty=format:%H")
     else:
         # Submit change
         if "Change-Id:" in execute("git log -n 1"):
-            print execute("git review %s -y" % gr_opts)
+            print(execute("git review %s -y" % gr_opts))
         else:
-            print execute("git review %s -yi" % gr_opts)
+            print(execute("git review %s -yi" % gr_opts))
         # get current branch
         current_ref = open(".git/HEAD").read()
         if current_ref.startswith('ref: '):
