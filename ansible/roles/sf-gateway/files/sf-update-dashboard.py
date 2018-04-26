@@ -66,10 +66,10 @@ def main(argv=sys.argv[1:]):
         dashboard_file = "%s/%s" % (args.input, dashboard)
         try:
             data = load_dashboard(dashboard_file)
-        except Exception, e:
-            print("[E] Couldn't load %s: %s" % (dashboard_file, e))
+        except Exception:
+            print("[E] Couldn't load %s" % dashboard_file)
             if args.check:
-                exit(1)
+                raise
             continue
         dashboards[dashboard.replace('.dash', '')] = data
 
