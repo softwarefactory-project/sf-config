@@ -19,20 +19,20 @@ def pull_data(from_db, to_db, tables):
     destination, dest_engine = make_session(to_db)
 
     for table_name in tables:
-        print 'Processing', table_name
-        print 'Pulling schema from source server'
+        print('Processing', table_name)
+        print('Pulling schema from source server')
         table = Table(table_name, source_meta, autoload=True)
-        print 'Creating table on destination server'
+        print('Creating table on destination server')
         NewRecord = quick_mapper(table)
         NewRecord.metadata.create_all(dest_engine, checkfirst=True)
         columns = table.columns.keys()
-        print 'Transferring records'
+        print('Transferring records')
         for record in source.query(table).all():
             data = dict(
                 [(str(column), getattr(record, column)) for column in columns]
             )
             destination.merge(NewRecord(**data))
-    print 'Committing changes'
+    print('Committing changes')
     destination.commit()
 
 
@@ -82,4 +82,4 @@ if __name__ == '__main__':
                   cauth_conf.sqlalchemy['url'],
                   ['auth_mapping', ])
     except exc.NoSuchTableError:
-        print "auth_mapping not available in this version of cauth, skipping."
+        print("auth_mapping not available in this version of cauth, skipping.")
