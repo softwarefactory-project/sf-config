@@ -134,6 +134,7 @@ def main():
                     "%s/group_vars" % args.ansible_root,
                     "%s/facts" % args.ansible_root,
                     "%s/ara" % args.ansible_root,
+                    "/var/log/software-factory",
                     args.lib,
                     "%s/ssh_keys" % args.lib,
                     "%s/certs" % args.lib):
