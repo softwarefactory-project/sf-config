@@ -8,7 +8,7 @@ role_actions:
 
 hash_code: |
     import crypt, random, string, sys
-    salt = '\$6\$' + ''.join(random.choice(string.letters + string.digits) for _ in range(16)) + '\$'
+    salt = '\$6\$' + ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(16)) + '\$'
     sys.stdout.write(crypt.crypt(
 
 hash_code_end: ", salt))"

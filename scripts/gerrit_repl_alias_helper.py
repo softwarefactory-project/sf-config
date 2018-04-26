@@ -80,8 +80,8 @@ def write(ssh_config):
                           ".%s-%s" % (os.path.basename(SSH_CONFIG),
                                       now.strftime('%y-%m-%d_%H-%M-%S')))
     shutil.copy2(SSH_CONFIG, backup)
-    print "[+] save a copy of the ssh_config file (%s)" % backup
-    f = file(SSH_CONFIG, 'w')
+    print("[+] save a copy of the ssh_config file (%s)" % backup)
+    f = open(SSH_CONFIG, 'w')
     for host in ssh_config:
         if '*' not in host['host']:
             f.write('Host "%s"\n' % host['host'][0])
@@ -99,12 +99,12 @@ def copy_key(path):
     gid = getpwnam(OWNER).pw_gid
     if os.path.dirname(path).strip() != KEYS_DB:
         tpath = os.path.join(KEYS_DB, os.path.basename(path))
-        print "[+] move %s to %s" % (path, tpath)
+        print("[+] move %s to %s" % (path, tpath))
         shutil.copy2(path, tpath)
     else:
         # Key already in the keys db
         tpath = path
-    print "[+] set key perms (%s)" % tpath
+    print("[+] set key perms (%s)" % tpath)
     os.chmod(tpath, stat.S_IRUSR | stat.S_IWUSR)
     os.chown(tpath, uid, gid)
     return tpath
@@ -115,11 +115,11 @@ def main(args):
     if os.path.isfile(SSH_CONFIG):
         config.parse(open(SSH_CONFIG))
     else:
-        print "[+] %s does not exists. Creating an empty one." % SSH_CONFIG
-        file(SSH_CONFIG, 'w').write("")
+        print("[+] %s does not exists. Creating an empty one." % SSH_CONFIG)
+        open(SSH_CONFIG, 'w').write("")
 
     if args.delete:
-        print "[+] delete section Host %s" % args.alias
+        print("[+] delete section Host %s" % args.alias)
         config._config = [
             section for section in config._config if
             args.alias not in section['host']]
@@ -127,7 +127,7 @@ def main(args):
         if (args.hostname and args.alias and
            (args.key_path or args.key_from_stdin)):
             if args.key_from_stdin:
-                print "[+] read the key from stdin ..."
+                print("[+] read the key from stdin ...")
                 fd, key_path = tempfile.mkstemp(suffix='_%s.key' % args.alias)
                 for line in sys.stdin:
                     os.write(fd, line)
@@ -135,7 +135,7 @@ def main(args):
                 key_path = copy_key(key_path)
             else:
                 key_path = copy_key(args.key_path)
-            print "[+] add section Host %s" % args.alias
+            print("[+] add section Host %s" % args.alias)
             # Clean section with the name
             config._config = [
                 section for section in config._config if
@@ -145,7 +145,7 @@ def main(args):
             section['config']['hostname'] = args.hostname
             section['config']['identityfile'] = [key_path]
             config._config.append(section)
-    print "[+] write the ssh_config file"
+    print("[+] write the ssh_config file")
     write(config._config)
 
 
