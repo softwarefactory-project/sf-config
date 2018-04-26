@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -43,6 +43,8 @@ install -p -d %{buildroot}%{_datarootdir}/sf-config
 mv ansible defaults refarch scripts templates testinfra %{buildroot}%{_datarootdir}/sf-config/
 # /var/lib/software-factory/backup
 install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
+# /var/log/software-factory
+install -p -d -m 0700 %{buildroot}/var/log/software-factory
 
 %files
 %{_bindir}/sf*
@@ -50,6 +52,7 @@ install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 %{python2_sitelib}/sfconfig
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
 %dir %attr(0700, root, root) /var/lib/software-factory/backup
+%dir %attr(0700, root, root) /var/log/software-factory
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
@@ -69,6 +72,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Fri Apr 27 2018 Nicolas Hicher <nhicher@redhat.com> - 3.0.0-2
+- Add /var/log/software-factory directory creation
+
 * Wed Feb  7 2018 Tristan Cacqueray <tdecacqu@redhat.com> - 3.0.0-1
 - Bump version
 - Add sf-graph-render command
