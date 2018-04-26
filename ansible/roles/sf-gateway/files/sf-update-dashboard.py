@@ -1,13 +1,20 @@
 #!/bin/env python
 # Convert dash files to json representation for custom dashboard
 
-import ConfigParser
+try:
+    import ConfigParser
+except ImportError:
+    import configparser as ConfigParser
 import argparse
 import json
 import os
 import requests
 import urllib
 import sys
+import logging
+
+
+logger = logging.getLogger()
 
 
 def usage(argv):
@@ -66,8 +73,8 @@ def main(argv=sys.argv[1:]):
         dashboard_file = "%s/%s" % (args.input, dashboard)
         try:
             data = load_dashboard(dashboard_file)
-        except Exception, e:
-            print("[E] Couldn't load %s: %s" % (dashboard_file, e))
+        except Exception:
+            logger.exception("Couldn't load: %s" % dashboard_file)
             if args.check:
                 exit(1)
             continue
@@ -94,8 +101,8 @@ def main(argv=sys.argv[1:]):
                 data = load_dashboard(dashboard_file,
                                       title="%s's dashboard" % name,
                                       extra_foreach=foreach)
-            except Exception, e:
-                print("[E] Couldn't load dashboard: %s" % e)
+            except Exception:
+                logger.exception("Couldn't load: %s" % dashboard_file)
                 continue
             dashboards['project_%s' % name] = data
 
