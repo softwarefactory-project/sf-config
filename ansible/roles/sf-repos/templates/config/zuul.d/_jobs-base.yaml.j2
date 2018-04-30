@@ -7,7 +7,7 @@
     post-run:
       - playbooks/base/post.yaml
     roles:
-      - zuul: sf-jobs
+      - zuul: {{ jobs_project_name }}
 {% if zuul_upstream_zuul_jobs %}
       - zuul: openstack-infra/zuul-jobs
 {% else %}
@@ -48,7 +48,7 @@
       nodes: []
 
 - project:
-    name: config
+    name: {{ config_project_name }}
     check:
       jobs:
         - config-check
@@ -71,7 +71,7 @@
 
 {% endif %}
 - project:
-    name: sf-jobs
+    name: {{ jobs_project_name }}
     check:
       jobs:
         - linters

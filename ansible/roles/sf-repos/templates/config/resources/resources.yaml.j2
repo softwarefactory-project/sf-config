@@ -1,32 +1,5 @@
 ---
 resources:
-  tenants:
-    local:
-{% if 'gerrit' in roles %}
-      config-project: {{ gateway_url }}/r/config
-      type: gerrit
-{% else %}
-      config-project: {{ gateway_url }}/cgit/config
-      type: bare
-{% endif %}
-  projects:
-    internal:
-      description: Internal configuration project
-      issue-tracker: SFStoryboard
-      source-repositories:
-        - config
-        - zuul-jobs
-        - sf-jobs
-  repos:
-    config:
-      description: Config repository (Do not delete it)
-      acl: config-acl
-    zuul-jobs:
-      description: ZuulV3 jobs
-      acl: config-acl
-    sf-jobs:
-      description: The sf-jobs repository
-      acl: config-acl
   acls:
     config-acl:
       file: |

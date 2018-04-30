@@ -123,6 +123,9 @@ class ZuulScheduler(Component):
                 fail("To use upstream zuul-jobs, review.openstack.org needs to"
                      " be configured, e.g.: --zuul-external-gerrit %s" %
                      EXT_GERRIT)
+            args.glue["zuul_jobs_project_name"] = "openstack-infra/zuul-jobs"
+            args.glue["zuul_jobs_connection_name"] = \
+                self.openstack_connection_name
 
     def configure(self, args, host):
         args.glue["zuul_host"] = args.glue["zuul_scheduler_host"]

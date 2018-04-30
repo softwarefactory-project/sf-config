@@ -21,22 +21,33 @@
       command: /usr/local/bin/resources.sh direct_apply /var/lib/software-factory/bootstrap-data/empty_resources.yaml /var/lib/software-factory/bootstrap-data/resources.yaml
   when:
     - config_done.stat.exists != True
+    - not remote_config_repositories
     - "'gerrit' in roles"
 
 - include_tasks: create_local_repo.yml repo_name=config
   when:
     - config_done.stat.exists != True
+    - not remote_config_repositories
     - "'gerrit' not in roles"
 
 - block:
-    # Clone the config repo
     - command: mktemp -d
       register: conf_tmp
 
+    # Ignore errors and manual check for missing master branch because it's
+    # not fatal
     - name: Clone the config repository
       git:
         repo: "{{ config_location }}"
         dest: "{{conf_tmp.stdout}}"
+      ignore_errors: true
+      register: _git_output
+
+    - name: Check if master branch was missing
+      fail: msg="{{ _git_output.msg }}"
+      when:
+        - _git_output|failed
+        - "'Failed to checkout branch master' not in _git_output.msg"
 
     # Prepare the config repo
     - name: Copy the default config repo files
