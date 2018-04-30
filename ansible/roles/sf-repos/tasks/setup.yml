@@ -5,7 +5,9 @@
   when: "'zuul' in roles"
 
 - include_tasks: setup_zuul_jobs.yml
-  when: "'zuul' in roles"
+  when:
+    - "'zuul' in roles"
+    - not zuul_upstream_zuul_jobs
 
 # Ensure repo content template are updated
 - include_tasks: update_config_repo.yml
@@ -13,7 +15,11 @@
 - include_tasks: update_sf_jobs.yml
   when: "'zuul' in roles"
 - include_tasks: update_zuul_jobs.yml
-  when: "'zuul' in roles"
+  when:
+    - "'zuul' in roles"
+    - not zuul_upstream_zuul_jobs
 
 - include_tasks: provision_demo.yml
-  when: provision_demo
+  when:
+    - provision_demo
+    - "'gerrit' in roles"

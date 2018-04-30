@@ -1,0 +1,35 @@
+---
+- name: Check for bare repo
+  stat:
+    path: "/var/lib/software-factory/git/{{ repo_name }}.git"
+  register: _repo_dir
+
+- block:
+    - name: Create directory
+      file:
+        path: "/var/lib/software-factory/git/{{ repo_name }}"
+        state: directory
+
+    - name: Initialize repository
+      shell: "{{ item }}"
+      args:
+        chdir: "/var/lib/software-factory/git/{{ repo_name }}"
+      with_items:
+        - "git init ."
+        - "echo {{ fqdn }} {{ repo_name }} > README"
+        - "git add README"
+        - "git commit -m 'Initialize repository'"
+        - "cd ..; git clone --bare {{ repo_name }}"
+  when: not _repo_dir.stat.exists
+
+- name: Ensure source repository is removed
+  file:
+    path: "/var/lib/software-factory/git/{{ repo_name }}"
+    state: absent
+
+- name: Setup commit hook update
+  copy:
+    src: local-post-update-hook.sh
+    dest: /var/lib/software-factory/git/config.git/hooks/post-update
+    mode: 0755
+  when: "repo_name == 'config'"

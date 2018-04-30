@@ -95,7 +95,7 @@ admin = {
 resources = {
     'workdir': '/var/lib/managesf',
     'subdir': 'resources',
-    'master_repo': '{{ gateway_url }}/r/config',
+    'master_repo': '{{ config_public_location }}',
 }
 
 {% if 'gerrit' in roles %}
