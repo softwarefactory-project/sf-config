@@ -3,22 +3,18 @@
 - tenant:
     name: 'local'
     source:
-{% if 'gerrit' in roles %}
-      gerrit:
+      {{ config_connection_name }}:
         config-projects:
-          - config
+          - {{ config_project_name }}
         untrusted-projects:
-          - sf-jobs
-{% if not zuul_upstream_zuul_jobs %}
-          - zuul-jobs:
-              shadow: sf-jobs
-{% endif %}
-{% endif %}
-{% if zuul_upstream_zuul_jobs %}
-      {{ openstack_connection_name }}:
+          - {{ sf_jobs_project_name }}
+
+- tenant:
+    name: 'local'
+    source:
+      {{ zuul_jobs_connection_name }}:
         untrusted-projects:
-          - openstack-infra/zuul-jobs:
+          - {{ zuul_jobs_project_name }}:
               include:
                 - job
-              shadow: sf-jobs
-{% endif %}
+              shadow: {{ sf_jobs_project_name }}
