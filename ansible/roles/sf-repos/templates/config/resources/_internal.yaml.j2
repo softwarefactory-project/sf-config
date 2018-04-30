@@ -1,0 +1,51 @@
+# This file is managed by ansible, do not edit directly
+---
+resources:
+  tenants:
+    local:
+      description: "The local tenant."
+  connections:
+{% for conn in zuul_gerrit_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "{{ conn['puburl'] }}"
+      type: gerrit
+{% endfor %}
+{% for conn in zuul_github_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "https://{{ conn['hostname']|default('github.com') }}"
+      type: github
+{% endfor %}
+{% for conn in zuul_git_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "{{ conn['baseurl'] }}"
+      type: git
+{% endfor %}
+  projects:
+    internal:
+      description: Internal configuration project
+{% if 'storyboard' in roles %}
+      issue-tracker: SFStoryboard
+{% endif %}
+      source-repositories:
+        - {{ config_project_name }}
+        - {{ jobs_project_name }}
+        - zuul-jobs
+  repos:
+    {{ config_project_name }}:
+      description: Config repository
+      connection: {{ config_connection_name }}
+{% if config_connection_name == 'gerrit' %}
+      acl: config-acl
+{% endif %}
+    {{ jobs_project_name }}:
+      description: Local job repository
+      connection: {{ config_connection_name }}
+{% if config_connection_name == 'gerrit' %}
+      acl: config-acl
+{% endif %}
+    {{ zuul_jobs_project_name }}:
+      description: The zuul-jobs repository
+      connection: {{ zuul_jobs_connection_name }}
+{% if config_connection_name == 'gerrit' %}
+      acl: config-acl
+{% endif %}
