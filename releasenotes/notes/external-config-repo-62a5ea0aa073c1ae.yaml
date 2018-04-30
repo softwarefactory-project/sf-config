@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A new config-location settings enables deployment where the config and jobs
+    repository are hosted remotely, for example on an external gerrit or
+    github.

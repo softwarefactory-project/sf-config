@@ -28,11 +28,13 @@
       when: jobs_resource.stdout == 'False'
   when:
     - sf_jobs_done.stat.exists != True
+    - not remote_config_repositories
     - "'gerrit' in roles"
 
 - include_tasks: create_local_repo.yml repo_name=sf-jobs
   when:
     - sf_jobs_done.stat.exists != True
+    - not remote_config_repositories
     - "'gerrit' not in roles"
 
 - block:
@@ -53,6 +55,12 @@
       git:
         repo: "{{ sf_jobs_location }}"
         dest: "{{ sf_jobs_clone_dir }}"
+      ignore_errors: true
+      register: _git_output
+
+    - name: Check if master branch was missing
+      fail: msg="{{ output.msg }}"
+      when: "'Failed to checkout branch master' not in _git_output.msg"
 
     - include_tasks: sync_sf_jobs_content.yml
 

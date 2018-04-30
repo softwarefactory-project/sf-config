@@ -16,6 +16,16 @@
     remote_src: true
   when: _ara_cfg.stat.exists
 
+- name: Setup git access to remote gerrit
+  blockinfile:
+    path: /root/.ssh/config
+    mode: 0644
+    block: |
+      Host {{ item.hostname }}
+        User {{ item.username }}
+        Port {{ item.port|default(29418) }}
+  with_items: "{{ zuul_gerrit_connections }}"
+
 - name: Setup default ansible.cfg
   copy:
     src: /usr/share/sf-config/ansible/ansible.cfg
@@ -28,3 +38,10 @@
   args:
     chdir: /etc/software-factory/
     creates: /etc/software-factory/.git
+
+- name: Validate access to remote repositories
+  command: "git ls-remote {{ config_location }}"
+  with_items:
+    - "{{ config_location }}"
+    - "{{ sf_jobs_location }}"
+  when: remote_config_repositories
