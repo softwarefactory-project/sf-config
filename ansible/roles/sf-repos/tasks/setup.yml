@@ -16,4 +16,6 @@
   when: "'zuul' in roles"
 
 - include_tasks: provision_demo.yml
-  when: provision_demo
+  when:
+    - provision_demo
+    - "'gerrit' in roles"

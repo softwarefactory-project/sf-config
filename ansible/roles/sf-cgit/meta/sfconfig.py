@@ -22,3 +22,18 @@ class Cgit(Component):
              "install-server" not in host["roles"]:
             fail("Cgit needs to be deployed on the same host as "
                  "the install-server.")
+
+    def configure(self, args, host):
+        if "gerrit" not in args.glue["roles"]:
+            args.glue["config_connection_name"] = "local-cgit"
+            args.glue["zuul_jobs_connection_name"] = "local-cgit"
+            args.glue["config_location"] = \
+                "/var/lib/software-factory/git/config.git"
+            args.glue["public_config_location"] = \
+                "/var/lib/software-factory/git/config.git"
+            args.glue["sf_jobs_location"] = \
+                "/var/lib/software-factory/git/sf-jobs.git"
+            args.glue["zuul_jobs_location"] = \
+                "/var/lib/software-factory/git/zuul-jobs.git"
+            args.glue["public_config_location"] = "%s/cgit/config" % (
+                args.glue["gateway_url"])
