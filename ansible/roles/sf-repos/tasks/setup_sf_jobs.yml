@@ -26,7 +26,16 @@
         - git commit -m 'Create sf-jobs repository'
         - git push git+ssh://gerrit/config master
       when: jobs_resource.stdout == 'False'
+  when:
+    - sf_jobs_done.stat.exists != True
+    - "'gerrit' in roles"
 
+- include_tasks: create_local_repo.yml repo_name=sf-jobs
+  when:
+    - sf_jobs_done.stat.exists != True
+    - "'gerrit' not in roles"
+
+- block:
     - name: Create a temporary clone directory
       command: mktemp -d
       register: jobs_tmp
@@ -42,7 +51,7 @@
 
     - name: Clone the sf-jobs repository
       git:
-        repo: git+ssh://gerrit/sf-jobs
+        repo: "{{ sf_jobs_location }}"
         dest: "{{ sf_jobs_clone_dir }}"
 
     - include_tasks: sync_sf_jobs_content.yml
@@ -54,7 +63,7 @@
       with_items:
         - "add -A"
         - "commit -m 'Initialize sf-jobs repository'"
-        - "push git+ssh://gerrit/sf-jobs master"
+        - "push {{ sf_jobs_location }} master"
       when: sf_jobs_files is changed
 
     - name: Save zuul jobs repo

@@ -20,5 +20,5 @@
   with_items:
     - "add -A"
     - "commit -m 'Update sf-jobs default definitions'"
-    - "push git+ssh://gerrit/sf-jobs master"
+    - "push {{ sf_jobs_location }} master"
   when: sf_jobs_files is changed
