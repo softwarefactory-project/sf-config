@@ -60,9 +60,11 @@ logging = {
 }
 
 # Authorization configurations
+{% if 'cauth' in roles %}
 auth = {
     'host': '{{ cauth_host }}',
 }
+{% endif %}
 
 services = [
 {% if 'storyboard' in roles %}

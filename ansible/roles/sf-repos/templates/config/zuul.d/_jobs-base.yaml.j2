@@ -27,6 +27,7 @@
     name: semaphore-config-update
     max: 1
 
+{% if zuul_gerrit_connections or zuul_github_connections %}
 - job:
     name: config-check
     parent: base
@@ -77,3 +78,5 @@
     gate:
       jobs:
         - linters
+
+{% endif %}
