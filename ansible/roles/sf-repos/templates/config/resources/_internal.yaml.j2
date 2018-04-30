@@ -28,30 +28,28 @@ resources:
   projects:
     internal-configuration:
       tenant: local
-      connection: gerrit
+      connection: {{ config_connection_name }}
       description: Internal configuration project
 {% if 'storyboard' in roles %}
       issue-tracker: SFStoryboard
 {% endif %}
       source-repositories:
-        - config
-        - sf-jobs
-{% if zuul_upstream_zuul_jobs %}
-        - openstack-infra/zuul-jobs:
-            connection: {{ openstack_connection_name }}
-{% else %}
-        - zuul-jobs
-{% endif %}
+        - {{ config_project_name }}:
+            zuul/config-project: True
+        - {{ sf_jobs_project_name }}
+        - {{ zuul_jobs_project_name }}:
+            connection: {{ zuul_jobs_connection_name }}
+{% if 'gerrit' in roles %}
 
   repos:
-    config:
+    {{ config_project_name }}:
       description: Config repository
       acl: config-acl
-    sf-jobs:
+    {{ sf_jobs_project_name }}:
       description: Local job repository
       acl: config-acl
 {% if not zuul_upstream_zuul_jobs %}
-    zuul-jobs:
+    {{ zuul_jobs_project_name }}:
       description: The openstack-infra/zuul-jobs repository copy
       acl: config-acl
 {% endif %}
@@ -83,6 +81,7 @@ resources:
       groups:
         - config-ptl
         - config-core
+{% endif %}
 {% if initial_creation|default(False) %}
 
   groups:
