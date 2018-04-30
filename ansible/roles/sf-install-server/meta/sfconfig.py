@@ -10,6 +10,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import os
+import shutil
+
 from sfconfig.components import Component
 
 
@@ -36,6 +39,14 @@ class InstallServer(Component):
         self.get_or_generate_CA(args)
         self.get_or_generate_ssh_key(args, "service_rsa")
         self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
+
+        # Rename legacy gerrit_admin_rsa key
+        legacy_key = "%s/ssh_keys/gerrit_admin_rsa" % args.lib
+        if os.path.isfile(legacy_key):
+            new_key = "%s/ssh_keys/admin_rsa" % args.lib
+            shutil.move(legacy_key, new_key)
+            shutil.move(legacy_key + ".pub", new_key + ".pub")
+        self.get_or_generate_ssh_key(args, "admin_rsa")
 
         args.glue["sf_version"] = get_sf_version()
         args.glue["sf_previous_version"] = get_previous_version()
