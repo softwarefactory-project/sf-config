@@ -22,6 +22,12 @@
     dest: /etc/httpd/conf.d/logserver.conf
   register: httpd_conf
 
+- name: Install os-loganalyze configuration
+  copy:
+    src: os-loganalyze.wsgi.conf
+    dest: /etc/os_loganalyze/wsgi.conf
+  register: httpd_conf
+
 - name: Install purge-logs script
   template:
     src: purge-logs.sh.j2
