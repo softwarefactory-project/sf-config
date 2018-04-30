@@ -22,15 +22,23 @@
 
     - name: Create config repository resources
       command: /usr/local/bin/resources.sh direct_apply /root/empty_resources.yaml /root/resources.yaml
-      when: "'gerrit' in roles"
+  when:
+    - config_done.stat.exists != True
+    - "'gerrit' in roles"
 
+- include_tasks: create_local_repo.yml repo_name=config
+  when:
+    - config_done.stat.exists != True
+    - "'gerrit' not in roles"
+
+- block:
     # Clone the config repo
     - command: mktemp -d
       register: conf_tmp
 
     - name: Clone the config repository
       git:
-        repo: git+ssh://gerrit/config
+        repo: "{{ config_location }}"
         dest: "{{conf_tmp.stdout}}"
 
     # Prepare the config repo
@@ -39,6 +47,7 @@
 
     - name: Copy default resources file
       command: mv /root/resources.yaml "{{ conf_tmp.stdout }}/resources/resources.yaml"
+      when: "'managesf' in roles"
 
     - set_fact:
         config_clone_dir: "{{ conf_tmp.stdout }}"
@@ -54,7 +63,7 @@
       with_items:
         - "add -A"
         - "commit -m 'Initialize config repository'"
-        - "push git+ssh://gerrit/config master"
+        - "push {{ config_location }} master"
 
     - command: mv {{ conf_tmp.stdout }} /root/config
   when: config_done.stat.exists != True

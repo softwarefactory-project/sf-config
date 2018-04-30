@@ -1,4 +1,5 @@
 ---
+{% if zuul_gerrit_connections or zuul_github_connections %}
 - pipeline:
     name: check
     description: |
@@ -152,6 +153,7 @@
         subject: '[Zuul] Job failed in release pipeline: {change.project}'
       sqlreporter:
 
+{% endif %}
 - pipeline:
     name: periodic
     post-review: true

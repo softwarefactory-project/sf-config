@@ -5,6 +5,9 @@
     source:
 {% if 'gerrit' in roles %}
       gerrit:
+{% else %}
+      local-git:
+{% endif %}
         config-projects:
           - config
         untrusted-projects:
@@ -12,7 +15,6 @@
 {% if not zuul_upstream_zuul_jobs %}
           - zuul-jobs:
               shadow: sf-jobs
-{% endif %}
 {% endif %}
 {% if zuul_upstream_zuul_jobs %}
       {{ openstack_connection_name }}:

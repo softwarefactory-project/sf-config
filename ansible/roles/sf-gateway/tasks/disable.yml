@@ -19,6 +19,7 @@
         - /etc/pki/tls/certs/{{ fqdn }}.crt
         - /etc/pki/tls/certs/{{ fqdn }}-chain.crt
         - /etc/pki/tls/private/{{ fqdn }}.key
+        - /etc/httpd/conf.d/auth_pubtkt.conf
         - /etc/httpd/conf.d/ssl.conf
         - /etc/httpd/conf.d/gateway.conf
         - /etc/httpd/conf.d/gateway.common

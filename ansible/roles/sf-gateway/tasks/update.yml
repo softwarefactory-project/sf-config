@@ -21,4 +21,6 @@
       copy:
         content: "{{ upstreamconfig.stdout }}"
         dest: /var/lib/software-factory/state/dashboards_config
-  when: localconfig.stdout != upstreamconfig.stdout
+  when:
+    - "'managesf' in roles"
+    - localconfig.stdout != upstreamconfig.stdout

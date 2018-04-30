@@ -217,7 +217,7 @@ def config_update(args, pb):
     # Check config repo HEAD and update /root/config copy for each services
     pb.append(host_play('install-server', tasks={
         'name': 'Get config sha1',
-        'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
+        'command': 'git ls-remote -h {{ config_location }}',
         'register': 'configsha'
     }))
 
