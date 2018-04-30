@@ -39,3 +39,15 @@ class InstallServer(Component):
 
         args.glue["sf_version"] = get_sf_version()
         args.glue["sf_previous_version"] = get_previous_version()
+
+        if "gerrit" not in args.glue["roles"] or \
+           "cgit" not in args.glue["roles"]:
+            args.glue["config_connection_name"] = "local-git"
+            args.glue["config_location"] = \
+                "/var/lib/software-factory/git/config.git"
+            args.glue["public_config_location"] = \
+                "/var/lib/software-factory/git/config.git"
+            args.glue["sf_jobs_location"] = \
+                "/var/lib/software-factory/git/sf-jobs.git"
+            args.glue["zuul_jobs_location"] = \
+                "/var/lib/software-factory/git/zuul-jobs.git"

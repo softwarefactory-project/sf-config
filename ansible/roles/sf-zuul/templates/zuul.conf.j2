@@ -64,6 +64,13 @@ log_config={{ zuul_conf_dir }}/web-logging.yaml
 driver=sql
 dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}
 
+{% if 'gerrit' not in roles and 'cgit' not in roles %}
+[connection local-git]
+driver=git
+baseurl=file:///var/lib/software-factory/git
+poll_delay=7200
+
+{% endif %}
 {% for conn in zuul_gerrit_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gerrit
