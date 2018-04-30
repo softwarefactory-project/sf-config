@@ -36,3 +36,17 @@
         - {name: auto_backup}
         - {name: auto_backup_scp}
   when: sf_previous_version < 2.7
+
+- name: Check for gerrit_admin_rsa
+  stat:
+    path: /var/lib/software-factory/bootstrap-data/ssh_keys/gerrit_admin_rsa
+  register: _gerrit_admin_rsa
+
+- name: Rename gerrit_admin_rsa into admin_rsa
+  command: >
+    mv /var/lib/software-factory/bootstrap-data/ssh_keys/gerrit_{{ item }} \
+       /var/lib/software-factory/bootstrap-data/ssh_keys/{{ item }}
+  with_items:
+    - admin_rsa
+    - admin_rsa.pub
+  when: _gerrit_admin_rsa.stat.exists

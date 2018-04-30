@@ -36,6 +36,7 @@ class InstallServer(Component):
         self.get_or_generate_CA(args)
         self.get_or_generate_ssh_key(args, "service_rsa")
         self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
+        self.get_or_generate_ssh_key(args, "admin_rsa")
 
         args.glue["sf_version"] = get_sf_version()
         args.glue["sf_previous_version"] = get_previous_version()
