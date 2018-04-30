@@ -23,9 +23,10 @@ class Gerrit(Component):
 
     def configure(self, args, host):
         self.get_or_generate_ssh_key(args, "gerrit_service_rsa")
-        self.get_or_generate_ssh_key(args, "gerrit_admin_rsa")
         self.add_mysql_database(args, "gerrit",
                                 hosts=[args.glue["managesf_host"]])
+        args.glue["gerrit_admin_rsa"] = args.glue["admin_rsa"]
+        args.glue["gerrit_admin_rsa_pub"] = args.glue["admin_rsa_pub"]
         args.glue["gerrit_pub_url"] = "%s/r/" % args.glue["gateway_url"]
         args.glue["gerrit_internal_url"] = "http://%s:%s/r/" % (
             args.glue["gerrit_host"], args.defaults["gerrit_port"])
