@@ -104,25 +104,6 @@ class ZuulScheduler(Component):
 
     def prepare(self, args):
         super(ZuulScheduler, self).prepare(args)
-        self.openstack_connection_name = None
-        if args.sfconfig["zuul"]["upstream_zuul_jobs"]:
-            # Check if review.openstack.org is configured
-            for connection in args.sfconfig.get("zuul", {}).get(
-                    "gerrit_connections", []):
-                if connection["hostname"] == "review.openstack.org":
-                    self.openstack_connection_name = connection["name"]
-                    break
-            if not self.openstack_connection_name:
-                # Check if git.openstack.org is configured
-                for connection in args.sfconfig.get("zuul", {}).get(
-                        "git_connections", []):
-                    if "git.openstack.org" in connection["baseurl"]:
-                        self.openstack_connection_name = connection["name"]
-                        break
-            if not self.openstack_connection_name:
-                fail("To use upstream zuul-jobs, review.openstack.org needs to"
-                     " be configured, e.g.: --zuul-external-gerrit %s" %
-                     EXT_GERRIT)
 
     def configure(self, args, host):
         args.glue["zuul_host"] = args.glue["zuul_scheduler_host"]
@@ -137,7 +118,6 @@ class ZuulScheduler(Component):
         args.glue["zuul_mysql_host"] = args.glue["mysql_host"]
         args.glue["pagesuser_authorized_keys"].append(
             args.glue["zuul_gatewayserver_rsa_pub"])
-        args.glue["openstack_connection_name"] = self.openstack_connection_name
 
         args.glue["zuul_periodic_pipeline_mail_rcpt"] = args.sfconfig[
             "zuul"]["periodic_pipeline_mail_rcpt"]
@@ -159,8 +139,8 @@ class ZuulScheduler(Component):
             "%s/logs/{build.uuid}/" % args.glue["gateway_url"]
         )
         args.glue.setdefault("zuul_ssh_known_hosts", [])
-        args.glue["zuul_github_connections"] = []
-        args.glue["zuul_git_connections"] = []
+        args.glue.setdefault("zuul_github_connections", [])
+        args.glue.setdefault("zuul_git_connections", [])
 
         # Add local gerrit if available
         if "gerrit" in args.glue["roles"]:
