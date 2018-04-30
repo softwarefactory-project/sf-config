@@ -24,11 +24,13 @@
       command: /usr/local/bin/resources.sh direct_apply /root/empty_resources.yaml /root/resources.yaml
   when:
     - config_done.stat.exists != True
+    - not remote_config_repositories
     - "'gerrit' in roles"
 
 - include_tasks: create_local_repo.yml repo_name=config
   when:
     - config_done.stat.exists != True
+    - not remote_config_repositories
     - "'gerrit' not in roles"
 
 - block:
@@ -40,6 +42,12 @@
       git:
         repo: "{{ config_location }}"
         dest: "{{conf_tmp.stdout}}"
+      ignore_errors: true
+      register: _git_output
+
+    - name: Check if master branch was missing
+      fail: msg="{{ output.msg }}"
+      when: "'Failed to checkout branch master' not in _git_output.msg"
 
     # Prepare the config repo
     - name: Copy the default config repo files

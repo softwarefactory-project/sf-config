@@ -78,19 +78,19 @@
         class ZuulJobs: pass
         project = ZuulJobs()
         project.name = "config"
-        project.private_key_file = "{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/config.pem"
+        project.private_key_file = "{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/{{ config_project_name }}.pem"
         zuul.configloader.TenantParser(None, None, None)._generateKeys(project)
         zuul.configloader.TenantParser._loadKeys(project)
-        pub = open("{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/config.pub", "w")
+        pub = open("{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/{{ config_project_name }}.pub", "w")
         pub.write(zuul.lib.encryption.serialize_rsa_public_key(project.public_key).decode("utf-8"))
         pub.close()'
       args:
-        creates: "{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/config.pub"
+        creates: "{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/{{ config_project_name }}.pub"
 
     - name: Fetch config project pub key on install-server
       fetch:
         flat: "yes"
-        src: "{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/config.pub"
+        src: "{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/{{ config_project_name }}.pub"
         dest: "/var/lib/software-factory/bootstrap-data/certs/config.pub"
 
     - name: Install zuul-changes.py script
