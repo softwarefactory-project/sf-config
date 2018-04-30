@@ -29,6 +29,7 @@
     path: "{{ config_clone_dir }}/{{ item }}"
     state: directory
   with_items:
+    - resources
     - nodepool
     - zuul
     - zuul.d
@@ -63,6 +64,7 @@
     src: "config/{{ item }}.j2"
     dest: "{{ config_clone_dir }}/{{ item }}"
   with_items:
+    - resources/_internal.yaml
     - playbooks/base/pre.yaml
     - playbooks/base/post.yaml
     - zuul.d/_jobs-base.yaml
@@ -71,6 +73,35 @@
     - zuul/_main.yaml
     - nodepool/_local_hypervisor_oci.yaml
   register: _config_template_files
+
+- name: Check for misplaced config.pub
+  stat:
+    path: /var/lib/software-factory/certs/config.pub
+  register: _config_pub
+
+- name: Fix config.pub cert path
+  command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
+  when: _config_pub.stat.exists
+
+- name: Verify if config repository key changed
+  block:
+    - name: Check config repository key
+      stat:
+        path: /var/lib/software-factory/bootstrap-data/certs/config.pub
+      register: _config_repo_key
+
+    - name: Ensure config_key_checksum exists
+      file:
+        path: /var/lib/software-factory/state/config_key_checksum
+        state: touch
+
+    - name: Read last config_key_checksum
+      command: cat /var/lib/software-factory/state/config_key_checksum
+      register: localconfig
+
+    - name: Set config_key_regenerated fact
+      set_fact:
+        new_config_key: "{{ localconfig.stdout == _config_repo_key.stat.checksum }}"
 
 - name: Check for _secret_sflogs file
   stat:
@@ -89,21 +120,12 @@
       template:
         src: "config/zuul.d/_secret_sflogs.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sflogs.yaml"
-  when: not _secret_sflogs.stat.exists
+  when: not _secret_sflogs.stat.exists or new_config_key
 
 - name: Check for _secret_install_server file
   stat:
     path: "{{ config_clone_dir }}/zuul.d/_secret_install_server.yaml"
   register: _secret_install_server
-
-- name: Check for misplaced config.pub
-  stat:
-    path: /var/lib/software-factory/certs/config.pub
-  register: _config_pub
-
-- name: Fix config.pub cert path
-  command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
-  when: _config_pub.stat.exists
 
 - name: install server secret
   block:
@@ -119,7 +141,7 @@
       template:
         src: "config/zuul.d/_secret_install_server.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_install_server.yaml"
-  when: not _secret_install_server.stat.exists
+  when: not _secret_install_server.stat.exists or new_config_key
 
 - name: Check for _secret_pages file
   stat:
@@ -138,7 +160,7 @@
       template:
         src: "config/zuul.d/_secret_sfpages.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
-  when: not _secret_sfpages.stat.exists
+  when: not _secret_sfpages.stat.exists or new_config_key
 
 - name: Indicate config repo changed
   set_fact:

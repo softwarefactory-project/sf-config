@@ -24,7 +24,8 @@ class Cgit(Component):
                  "the install-server.")
 
     def configure(self, args, host):
-        if "gerrit" not in args.glue["roles"]:
+        if "gerrit" not in args.glue["roles"] and \
+          not args.glue["remote_config_repositories"]:
             args.glue["config_connection_name"] = "local-cgit"
             args.glue["zuul_jobs_connection_name"] = "local-cgit"
             args.glue["config_location"] = \
