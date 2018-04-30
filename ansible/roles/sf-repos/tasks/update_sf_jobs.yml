@@ -7,6 +7,7 @@
   args:
     chdir: "{{ sf_jobs_clone_dir }}"
   with_items:
+    - "remote set-url origin {{ sf_jobs_location }}"
     - "fetch --all"
     - "reset --hard origin/master --"
     - "clean -f -x -d"

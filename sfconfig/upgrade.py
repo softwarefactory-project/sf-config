@@ -128,6 +128,10 @@ def update_sfconfig(args):
         data["zuul"]["git_connections"] = []
         dirty = True
 
+    if "config-locations" not in data:
+        data["config-locations"] = {'config-repo': '', 'jobs-repo': ''}
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \
