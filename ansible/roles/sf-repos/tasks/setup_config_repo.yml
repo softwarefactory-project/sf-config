@@ -30,16 +30,32 @@
             /var/lib/software-factory/bootstrap-data/empty_resources.yaml
             /var/lib/software-factory/bootstrap-data/resources.yaml
       ignore_errors: yes
-      when: "'gerrit' in roles"
+      when:
+        - not remote_config_repositories
+        - "'gerrit' in roles"
 
-    # Clone the config repo
+    - include_tasks: create_local_repo.yml repo_name=config
+      when:
+        - not remote_config_repositories
+        - "'gerrit' not in roles"
+
     - command: mktemp -d
       register: conf_tmp
 
+    # Ignore errors and manual check for missing master branch because it's
+    # not fatal
     - name: Clone the config repository
       git:
-        repo: git+ssh://gerrit/config
+        repo: "{{ config_location }}"
         dest: "{{conf_tmp.stdout}}"
+      ignore_errors: true
+      register: _git_output
+
+    - name: Check if master branch was missing
+      fail: msg="{{ _git_output.msg }}"
+      when:
+        - _git_output|failed
+        - "'Failed to checkout branch master' not in _git_output.msg"
 
     # Prepare the config repo
     - name: Copy the default config repo files
@@ -64,7 +80,7 @@
       with_items:
         - "add -A"
         - "commit -m 'Initialize config repository'"
-        - "push git+ssh://gerrit/config master"
+        - "push {{ config_location }} master"
 
     - command: mv {{ conf_tmp.stdout }} /root/config
   when: config_done.stat.exists != True

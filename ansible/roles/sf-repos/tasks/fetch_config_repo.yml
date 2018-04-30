@@ -3,7 +3,7 @@
   register: config
 
 - git:
-    repo: "http://{{ fqdn }}/r/config"
+    repo: "{{ public_config_location }}"
     dest: /root/config
     force: "yes"
   when: config.stat.isdir is not defined
@@ -19,7 +19,7 @@
     chdir: /root/config
   with_items:
     # The git config replaces the http address in remote.origin.url.
-    - git config -f .git/config --replace-all remote.origin.url http://{{ fqdn }}/r/config
+    - git config -f .git/config --replace-all remote.origin.url "{{ public_config_location }}"
     # The sed replaces the ssh address in remote.gerrit.url; however this might
     # not be set yet and therefore we can't use git config here, otherwise tests
     # are breaking

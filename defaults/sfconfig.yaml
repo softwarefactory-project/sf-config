@@ -28,6 +28,11 @@ network:
   # Disable gerrit replication and nodepool providers
   disable_external_resources: false
 
+config-locations:
+  # When not set, the config repositories are hosted locally
+  config-repo:
+  jobs-repo:
+
 authentication:
   admin_password: CHANGE_ME
   # timeout of sessions in seconds
