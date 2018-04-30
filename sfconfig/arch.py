@@ -77,6 +77,11 @@ def process(args):
         if len(args.glue["roles"][requirement]) > 1:
             fail("Only one instance of %s is required" % requirement)
 
+    if len(args.sfarch["inventory"]) > 1 and (
+            "cgit" not in args.glue["roles"] or
+            "gerrit" not in args.glue["roles"]):
+        fail("Cgit or Gerrit component is required for distributed deployment")
+
     # Add install-server hostname for easy access
     args.glue["install_server"] = args.glue["roles"]["install-server"][0][
         "hostname"]

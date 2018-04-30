@@ -218,7 +218,7 @@ def config_update(args, pb):
     # Check config repo HEAD and update /root/config copy for each services
     pb.append(host_play('install-server', tasks={
         'name': 'Get config sha1',
-        'command': 'git ls-remote -h https://{{ fqdn }}/r/config.git',
+        'command': 'git ls-remote -h {{ config_location }}',
         'register': 'configsha'
     }))
 
@@ -344,7 +344,10 @@ def enable_ara():
     os.environ["ARA_DIR"] = "/var/lib/software-factory/ansible/ara/"
 
 
-def install_ansible():
+def install_ansible(args):
+    if args.upgrade:
+        # Update ansible early on if possible
+        sfconfig.utils.execute(["yum", "update", "-y", "rh-python35-ansible"])
     if os.path.isfile("/opt/rh/rh-python35/root/usr/bin/ansible-playbook"):
         return
     # Install scl repository first
@@ -375,7 +378,7 @@ def run(args):
     write_playbook(playbook_path, playbook)
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
     if not args.skip_apply:
-        install_ansible()
+        install_ansible(args)
         enable_ara()
         sfconfig.utils.execute(["scl", "enable", "rh-python35", "--",
                                 "ansible-playbook", playbook_path])

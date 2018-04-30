@@ -164,7 +164,12 @@ auth = {
     }
 }
 
-services = ['managesf', 'gerrit']
+services = [
+    'managesf',
+{% if 'gerrit' in roles %}
+    'gerrit',
+{% endif %}
+]
 
 sqlalchemy = {
     'url'           : 'mysql://{{ cauth_mysql_user }}:{{ cauth_mysql_password }}@{{ cauth_mysql_host }}:{{ cauth_mysql_port }}/{{ cauth_mysql_db }}',
@@ -175,6 +180,7 @@ sqlalchemy = {
 managesf = {
     'url'           : 'http://managesf.{{ fqdn }}',
 }
+{% if 'gerrit' in roles %}
 
 gerrit = {
     'url'           : '{{ gerrit_internal_url }}',
@@ -182,3 +188,4 @@ gerrit = {
     # Managesf is in charge of creating gerrit users
     'register_user' : False,
 }
+{% endif %}
