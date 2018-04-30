@@ -32,9 +32,11 @@ class Gerrit(Component):
         args.glue["gerrit_email"] = "admin@%s" % args.sfconfig["fqdn"]
         if args.sfconfig["network"]["disable_external_resources"]:
             args.glue["gerrit_replication"] = False
-        args.glue["config_connection_name"] = "gerrit"
-        args.glue["config_location"] = "git+ssh://gerrit/config"
-        args.glue["sf_jobs_location"] = "git+ssh://gerrit/sf-jobs"
-        args.glue["zuul_jobs_location"] = "git+ssh://gerrit/zuul-jobs"
-        args.glue["public_config_location"] = "%s/r/config" % (
-            args.glue["gateway_url"])
+        if not args.glue["remote_config_repositories"]:
+            args.glue["config_connection_name"] = "gerrit"
+            args.glue["zuul_jobs_connection_name"] = "gerrit"
+            args.glue["config_location"] = "git+ssh://gerrit/config"
+            args.glue["sf_jobs_location"] = "git+ssh://gerrit/sf-jobs"
+            args.glue["zuul_jobs_location"] = "git+ssh://gerrit/zuul-jobs"
+            args.glue["public_config_location"] = "%s/r/config" % (
+                args.glue["gateway_url"])
