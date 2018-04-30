@@ -20,5 +20,5 @@
   with_items:
     - "add -A"
     - "commit -m 'Update zuul-jobs default definitions'"
-    - "push git+ssh://gerrit/zuul-jobs master"
+    - "push {{ zuul_jobs_location }} master"
   when: zuul_conf_updated

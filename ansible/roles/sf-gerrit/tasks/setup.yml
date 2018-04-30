@@ -11,9 +11,20 @@
   delegate_to: "{{ gateway_host }}"
 
 - name: Initialize git access
-  template:
-    src: sshconfig.j2
-    dest: /root/.ssh/config
+  blockinfile:
+    path: /root/.ssh/config
+    create: yes
+    mode: 0644
+    block: |
+      Host {{ fqdn }}
+        User admin
+        Port 29418
+        IdentityFile /root/.ssh/gerrit_admin
+      Host gerrit
+        User admin
+        Hostname {{ gerrit_host }}
+        Port 29418
+        IdentityFile /root/.ssh/gerrit_admin
   delegate_to: "{{ install_server_host }}"
 
 - name: Initialize git config
