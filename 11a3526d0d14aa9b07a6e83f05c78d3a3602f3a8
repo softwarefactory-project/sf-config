@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba15a1d1_de9a95c5",
+        "filename": "ansible/roles/sf-cauth/tasks/saml2.yaml",
+        "patchSetId": 16
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-01T06:44:20Z",
+      "side": 1,
+      "message": "So if I read this correctly, the flow is:\n\n* Remove saml_auth.conf\n* Install saml_auth.conf.disabled\n* Copy saml_auth.conf.distabled to saml_auth.conf\n* Remove saml_auth.conf.disabled\n\nIt seems like the saml_auth.conf file is always removed and re-created bellow.\n\nWhy not just installing saml_auth.conf when the idp_metadata exists? (e.g. only run the template task for saml_auth.conf when needed)",
+      "revId": "11a3526d0d14aa9b07a6e83f05c78d3a3602f3a8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
