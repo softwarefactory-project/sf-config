@@ -49,13 +49,57 @@
       fail: msg="{{ output.msg }}"
       when: "'Failed to checkout branch master' not in _git_output.msg"
 
-    # Prepare the config repo
     - name: Copy the default config repo files
       command: rsync -av /usr/share/sf-config/ansible/roles/sf-repos/files/config/ {{ conf_tmp.stdout }}/
 
     - name: Copy default resources file
       command: mv /root/resources.yaml "{{ conf_tmp.stdout }}/resources/resources.yaml"
       when: "'managesf' in roles"
+
+    - name: Remove dlrn if not enabled
+      file:
+        path: "{{ conf_tmp.stdout }}/dlrn"
+        state: absent
+      when: "'dlrn' not in roles"
+
+    - name: Remove metrics if not enabled
+      file:
+        path: "{{ conf_tmp.stdout }}/metrics"
+        state: absent
+      when: "'grafana' not in roles"
+
+    - name: Remove policies if managesf is not enabled
+      file:
+        path: "{{ conf_tmp.stdout }}/policies"
+        state: absent
+      when: "'managesf' not in roles"
+
+    - name: Remove dashboard if gerrit is not enabled
+      file:
+        path: "{{ conf_tmp.stdout }}/{{ item }}"
+        state: absent
+      with_items:
+        - dashboards
+        - gerrit
+      when: "'gerrit' not in roles"
+
+    - name: Remove gerritbot if not enabled
+      file:
+        path: "{{ conf_tmp.stdout }}/gerritbot"
+        state: absent
+      when: "'gerritbot' not in roles"
+
+    - name: Remove repoxplorer if not enabled
+      file:
+        path: "{{ conf_tmp.stdout }}/repoxplorer"
+        state: absent
+      when: "'repoxplorer' not in roles"
+
+    - name: Remove mirrors if not enabled
+      file:
+        path: "{{ conf_tmp.stdout }}/mirrors"
+        state: absent
+      when: "'mirror' not in roles"
 
     - set_fact:
         config_clone_dir: "{{ conf_tmp.stdout }}"

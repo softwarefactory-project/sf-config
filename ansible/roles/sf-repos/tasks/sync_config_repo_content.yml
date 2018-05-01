@@ -11,7 +11,9 @@
     checksum: "yes"
     perms: "yes"
     recursive: "yes"
+    existing_only: "yes"
   register: _config_metrics_files
+  when: "'grafana' in roles"
 
 - name: Add default dlrn configuration directory
   synchronize:
@@ -22,7 +24,38 @@
     checksum: "yes"
     perms: "yes"
     recursive: "yes"
+    existing_only: "yes"
   register: _config_dlrn_files
+  when: "'dlrn' in roles"
+
+- name: Add default repoxplorer configuration directory
+  synchronize:
+    src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/repoxplorer/
+    dest: "{{ config_clone_dir }}/repoxplorer"
+    archive: "no"
+    times: "no"
+    checksum: "yes"
+    perms: "yes"
+    recursive: "yes"
+    existing_only: "yes"
+  register: _config_repoxplorer_files
+  when: "'repoxplorer' in roles"
+
+- name: Add default gerrit configuration directory
+  synchronize:
+    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/config/{{ item }}/"
+    dest: "{{ config_clone_dir }}/{{ item }}"
+    archive: "no"
+    times: "no"
+    checksum: "yes"
+    perms: "yes"
+    recursive: "yes"
+    existing_only: "yes"
+  register: _config_gerrit_files
+  with_items:
+    - gerrit
+    - dashboard
+  when: "'gerrit' in roles"
 
 - name: Ensure config sub dir
   file:
@@ -147,6 +180,8 @@
         _config_template_files|changed or
         _config_metrics_files|changed or
         _config_dlrn_files|changed or
+        _config_repoxplorer_files|changed or
+        _config_gerrit_files|changed or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
         not _secret_install_server.stat.exists
@@ -159,6 +194,8 @@
     - not _config_template_files|changed
     - not _config_metrics_files|changed
     - not _config_dlrn_files|changed
+    - not _config_repoxplorer_files|changed
+    - not _config_gerrit_files|changed
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists
