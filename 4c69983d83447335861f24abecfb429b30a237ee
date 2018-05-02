@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba15a1d1_61964c96",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-02T14:25:29Z",
+      "side": 1,
+      "message": "Why do we need that check as non-scl ansible won\u0027t be used anymore ?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 27
+      },
+      "revId": "4c69983d83447335861f24abecfb429b30a237ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba15a1d1_c1807849",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-02T14:25:29Z",
+      "side": 1,
+      "message": "Could we move that in install_ansible ? I don\u0027t think it should be run only with sfconfig --upgrade specifically. wdyt ?",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 75
+      },
+      "revId": "4c69983d83447335861f24abecfb429b30a237ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba15a1d1_a17b047b",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-02T14:25:29Z",
+      "side": 1,
+      "message": "We do it line 365.",
+      "range": {
+        "startLine": 358,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 79
+      },
+      "revId": "4c69983d83447335861f24abecfb429b30a237ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
