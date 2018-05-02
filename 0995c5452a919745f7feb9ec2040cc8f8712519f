@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba15a1d1_4100e8aa",
+        "filename": "ansible/roles/sf-zuul/templates/gearman-client.sh.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-02T16:58:02Z",
+      "side": 1,
+      "message": "{{ zuul_conf_dir }}",
+      "range": {
+        "startLine": 4,
+        "startChar": 10,
+        "endLine": 4,
+        "endChar": 19
+      },
+      "revId": "0995c5452a919745f7feb9ec2040cc8f8712519f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
