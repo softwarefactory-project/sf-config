@@ -1,0 +1,16 @@
+---
+- name: Configure cgitrc
+  lineinfile:
+    dest: /etc/cgitrc
+    regexp: "^{{ item.key }}=.*"
+    line: "{{ item.key }}={{ item.value }}"
+  with_items:
+    - {key: "head-include", value: "/var/www/static/index-header.html"}
+    - {key: "include", value: "/etc/cgitrepos"}
+    - {key: "logo", value: ""}
+
+- name: Setup cgit config generator
+  template:
+    src: cgit-config-generator.py.j2
+    dest: /usr/local/bin/cgit-config-generator.py
+    mode: 0755

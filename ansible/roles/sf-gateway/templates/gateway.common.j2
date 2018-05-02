@@ -187,6 +187,11 @@
         ProxyPassReverse /kojifiles/ http://{{ koji_host }}/kojifiles/
 
 {% endif %}
+{% if 'cgit' in roles and gateway_host != cgit_host %}
+        ProxyPass /cgit/ http://{{ cgit_host }}/cgit/
+        ProxyPassReverse /cgit/ http://{{ cgit_host }}/cgit/
+
+{% endif %}
 {% if 'nodepool-builder' in roles and gateway_host != nodepool_builder_host %}
         ProxyPass /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
         ProxyPassReverse /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
