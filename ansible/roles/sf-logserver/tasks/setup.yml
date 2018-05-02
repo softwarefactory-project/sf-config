@@ -40,11 +40,6 @@
     path: /var/www/static
     state: directory
 
-- name: Install index header
-  copy:
-    content: '<script type="text/javascript" src="/static/js/topmenu.js"></script>'
-    dest: /var/www/static/index-header.html
-
 - name: Reload httpd
   service:
     name: httpd
