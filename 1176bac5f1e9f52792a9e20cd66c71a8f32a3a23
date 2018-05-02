@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba15a1d1_9eaf3d7d",
+        "filename": "ansible/roles/sf-repos/tasks/setup_config_repo.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-02T01:58:20Z",
+      "side": 1,
+      "message": "How about we use copy: content\u003d\"resources: {}\"   instead?",
+      "revId": "1176bac5f1e9f52792a9e20cd66c71a8f32a3a23",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba15a1d1_beb481d1",
+        "filename": "ansible/roles/sf-repos/tasks/setup_config_repo.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-02T01:58:20Z",
+      "side": 1,
+      "message": "Same here, we should be using \"copy: remote_src\u003dTrue src\u003d.. dest\u003d...\"",
+      "revId": "1176bac5f1e9f52792a9e20cd66c71a8f32a3a23",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
