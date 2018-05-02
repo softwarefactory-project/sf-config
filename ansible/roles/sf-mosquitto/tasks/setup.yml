@@ -48,4 +48,4 @@
   service:
     name: mosquitto
     state: restarted
-  when: mosquittoconf|changed
+  when: mosquittoconf is changed

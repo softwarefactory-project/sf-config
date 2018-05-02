@@ -13,10 +13,10 @@
   service:
     name: germqtt
     state: restarted
-  when: germqtt_conf|changed
+  when: germqtt_conf is changed
 
 - name: Start service
   service:
     name: germqtt
     state: started
-  when: not germqtt_conf|changed
+  when: not germqtt_conf is changed

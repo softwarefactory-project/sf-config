@@ -8,7 +8,7 @@
     line: "elasticsearch.url{{':'}} \"http://elasticsearch.{{ fqdn }}:9200\""
   register: kibanaconf
 
-- name: "Look for top menu patch"
+- name: Look for top menu patch
   command: grep -q "loadTopmenu" /opt/kibana/optimize/bundles/kibana.bundle.js
   register: top_menu
   ignore_errors: "yes"
@@ -29,4 +29,4 @@
   service:
     name: kibana
     state: restarted
-  when: kibanaconf|changed
+  when: kibanaconf is changed
