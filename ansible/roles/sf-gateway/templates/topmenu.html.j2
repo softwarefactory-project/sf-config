@@ -43,6 +43,9 @@
             {% if 'hound' in roles %}
                 <li><a href="/codesearch/" target="_top">Code-Search</a></li>
             {% endif %}
+            {% if 'cgit' in roles %}
+                <li><a href="/cgit/" target="_top">Git-Browser</a></li>
+            {% endif %}
             {% if 'murmur' in roles %}
                 <li><a href="mumble://{{ fqdn }}/?version=1.2.0">Mumble</a></li>
             {% endif %}

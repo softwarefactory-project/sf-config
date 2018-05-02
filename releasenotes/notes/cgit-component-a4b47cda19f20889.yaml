@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new cgit components is available to host a fast web frontend for
+    gerrit repositories at https://fqdn/cgit.

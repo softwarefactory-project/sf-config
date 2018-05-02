@@ -84,6 +84,11 @@
     - {name: jobs.js, path: /var/www/jobs}
     - {name: jobs.html, path: /var/www/jobs, real_name: index.html}
 
+- name: Install index header
+  copy:
+    content: '<script type="text/javascript" src="/static/js/topmenu.js"></script>'
+    dest: /var/www/static/index-header.html
+
 - name: Install gerrit dashboard
   copy:
     src: dashboard.index.html
