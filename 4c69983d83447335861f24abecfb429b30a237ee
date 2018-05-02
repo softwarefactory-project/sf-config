@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ba15a1d1_a1b3040a",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-02T18:44:27Z",
+      "side": 1,
+      "message": "I will clean that, I added ansible removal in install.yaml this morning",
+      "parentUuid": "ba15a1d1_61964c96",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 27
+      },
+      "revId": "4c69983d83447335861f24abecfb429b30a237ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba15a1d1_c1807849",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 20
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "ba15a1d1_c1b878e8",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-02T18:44:27Z",
+      "side": 1,
+      "message": "I moved all install task (ansible and ara) in install_ansible function, it is call by run function (always executed at the end of cmd.py)",
+      "parentUuid": "ba15a1d1_c1807849",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 75
+      },
+      "revId": "4c69983d83447335861f24abecfb429b30a237ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba15a1d1_a17b047b",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 20
@@ -59,6 +107,30 @@
       "writtenOn": "2018-05-02T14:25:29Z",
       "side": 1,
       "message": "We do it line 365.",
+      "range": {
+        "startLine": 358,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 79
+      },
+      "revId": "4c69983d83447335861f24abecfb429b30a237ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba15a1d1_61ce4c85",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-02T18:44:27Z",
+      "side": 1,
+      "message": "I moved all the ansible install task in this method",
+      "parentUuid": "ba15a1d1_a17b047b",
       "range": {
         "startLine": 358,
         "startChar": 0,
