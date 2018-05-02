@@ -1,0 +1,77 @@
+#!/bin/env python
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+import argparse
+import json
+
+from six.moves import urllib
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("dest")
+args = parser.parse_args()
+
+{% if 'gerrit' in roles %}
+base_path = "/var/lib/gerrit/git"
+{% else %}
+base_path = "/var/lib/software-factory/git"
+{% endif %}
+
+req = urllib.urlopen("{{ managesf_internal_url }}/resources")
+data = json.loads(req.read())
+
+resources = data.get("resources", {})
+projects = resources.get("projects", {})
+repos = resources.get("repos", {})
+projects_name = ["internal"] + sorted(list(filter(lambda x: x != "internal",
+                                                  projects.keys())))
+
+listed_repos = set()
+conf = []
+
+
+def add_repo(repo_name):
+    repo = repos[repo_name]
+    if repo is None:
+        print("%s: unknown source-repositories" % repo_name)
+        return
+    listed_repos.add(repo_name)
+    conf.append("repo.url=%s" % repo_name)
+    conf.append("repo.path=%s/%s.git" % (base_path, repo_name))
+    conf.append("repo.desc=%s" % repo["description"])
+    conf.append("")
+
+
+for project_name in projects_name:
+    if project_name != "internal":
+        conf.append("section=%s" % project_name)
+    for repo_name in projects[project_name].get("source-repositories", []):
+        add_repo(repo_name)
+    conf.append("")
+
+unlisted_repos = list(filter(lambda x: x not in listed_repos, repos.keys()))
+if unlisted_repos:
+    conf.append("section=extras")
+    for repo_name in unlisted_repos:
+        add_repo(repo_name)
+
+try:
+    orig = open(args.dest, "r").read()
+except IOError:
+    orig = ""
+new = "\n".join(conf)
+
+if orig != new:
+    with open(args.dest, "w") as of:
+        of.write(new)
+    exit(4)
