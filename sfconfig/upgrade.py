@@ -140,6 +140,11 @@ def update_sfconfig(args):
         open(args.config, 'w').write(re.sub(
             "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
 
+    if args.fqdn and args.fqdn != data['fqdn']:
+        data['fqdn'] = args.fqdn
+        open(args.config, 'w').write(re.sub(
+            "^fqdn:.*", "fqdn: %s" % args.fqdn, open(args.config).read()))
+
 
 def update_arch(args):
     dirty = False
