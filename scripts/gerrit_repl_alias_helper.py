@@ -80,6 +80,7 @@ def write(ssh_config):
                           ".%s-%s" % (os.path.basename(SSH_CONFIG),
                                       now.strftime('%y-%m-%d_%H-%M-%S')))
     shutil.copy2(SSH_CONFIG, backup)
+    set_owner(backup)
     print "[+] save a copy of the ssh_config file (%s)" % backup
     f = file(SSH_CONFIG, 'w')
     for host in ssh_config:
@@ -92,11 +93,10 @@ def write(ssh_config):
                 else:
                     f.write('%s %s\n' % (capitalize.get(k, k), v))
         f.write('\n')
+    set_owner(SSH_CONFIG)
 
 
 def copy_key(path):
-    uid = getpwnam(OWNER).pw_uid
-    gid = getpwnam(OWNER).pw_gid
     if os.path.dirname(path).strip() != KEYS_DB:
         tpath = os.path.join(KEYS_DB, os.path.basename(path))
         print "[+] move %s to %s" % (path, tpath)
@@ -106,8 +106,14 @@ def copy_key(path):
         tpath = path
     print "[+] set key perms (%s)" % tpath
     os.chmod(tpath, stat.S_IRUSR | stat.S_IWUSR)
-    os.chown(tpath, uid, gid)
+    set_owner(tpath)
     return tpath
+
+
+def set_owner(path):
+    uid = getpwnam(OWNER).pw_uid
+    gid = getpwnam(OWNER).pw_gid
+    os.chown(path, uid, gid)
 
 
 def main(args):
@@ -164,12 +170,14 @@ class Tests(unittest.TestCase):
 
     def test_write(self):
         import mock
+        import getpass
         sshconf = section_template
         sshconf['host'] = ['test']
         sshconf['config']['hostname'] = 'test.domain.test'
         sshconf['config']['identityfile'] = ['/to/the/key']
         target_sshconf = tempfile.mkstemp()[1]
-        with mock.patch.dict(globals(), {'SSH_CONFIG': target_sshconf}):
+        with mock.patch.dict(globals(), {'SSH_CONFIG': target_sshconf,
+                                         'OWNER': getpass.getuser()}):
             write([sshconf])
             config = SSHConfig()
             config.parse(open(target_sshconf))
@@ -178,6 +186,7 @@ class Tests(unittest.TestCase):
     def test_main(self):
         import mock
         import copy
+        import getpass
         sshconf1 = copy.deepcopy(section_template)
         sshconf1['host'] = ['test1']
         sshconf1['config']['hostname'] = 'test.domain.test'
@@ -187,7 +196,8 @@ class Tests(unittest.TestCase):
         sshconf2['config']['hostname'] = 'test.domain.test'
         sshconf2['config']['identityfile'] = ['/to/the/key']
         target_sshconf = tempfile.mkstemp()[1]
-        with mock.patch.dict(globals(), {'SSH_CONFIG': target_sshconf}):
+        with mock.patch.dict(globals(), {'SSH_CONFIG': target_sshconf,
+                                         'OWNER': getpass.getuser()}):
             # Create a dummy ssh_config file
             write([sshconf1, sshconf2])
 
