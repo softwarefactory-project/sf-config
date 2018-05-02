@@ -1,7 +1,7 @@
 ---
 # Use real shell for replication tests. TODO: improve replication test and set /sbin/nologin shell
 - name: "Create gerrit user"
-  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=gerrit ssh_key=gerrit_service_rsa shell=/bin/bash"
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=gerrit ssh_key=gerrit_service_rsa shell=/bin/bash home_dir_mode=0755"
 
 - name: Expose public keys
   copy:
