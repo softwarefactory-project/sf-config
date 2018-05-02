@@ -66,6 +66,7 @@ def usage(components):
     p = argparse.ArgumentParser()
 
     # inputs
+    p.add_argument("--fqdn", help="The public hostname of the deployment")
     p.add_argument("--arch", default="/etc/software-factory/arch.yaml",
                    help="The architecture file")
     p.add_argument("--config", default="/etc/software-factory/sfconfig.yaml",
