@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba15a1d1_216cd49b",
+        "filename": "ansible/roles/sf-zuul/templates/fake_zuul.conf.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-02T16:16:37Z",
+      "side": 1,
+      "message": "Why is it mosquitto here as in zuul.conf.j2 that\u0027s mqtt ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 7,
+        "endLine": 38,
+        "endChar": 16
+      },
+      "revId": "b791bd837034c9d19966a1044c120acd2ac44dbd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
