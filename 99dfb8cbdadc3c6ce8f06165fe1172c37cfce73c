@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a1a9d01_5713cc5c",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-03T09:22:05Z",
+      "side": 1,
+      "message": "this is a duplicated from L363",
+      "revId": "99dfb8cbdadc3c6ce8f06165fe1172c37cfce73c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
