@@ -22,6 +22,24 @@
       "revId": "b791bd837034c9d19966a1044c120acd2ac44dbd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba15a1d1_01e2f0d5",
+        "filename": "ansible/roles/sf-zuul/templates/fake_zuul.conf.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-03T03:05:59Z",
+      "side": 1,
+      "message": "Oops good catch, though the zuul config check is actually not implemented upstream.",
+      "parentUuid": "ba15a1d1_216cd49b",
+      "revId": "b791bd837034c9d19966a1044c120acd2ac44dbd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
