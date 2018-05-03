@@ -22,6 +22,24 @@
       "revId": "0995c5452a919745f7feb9ec2040cc8f8712519f",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba15a1d1_81f5a084",
+        "filename": "ansible/roles/sf-zuul/templates/gearman-client.sh.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-03T04:49:22Z",
+      "side": 1,
+      "message": "It\u0027s fine like that because the /etc/zuul points at the zuul_conf_dir.",
+      "parentUuid": "ba15a1d1_4100e8aa",
+      "revId": "0995c5452a919745f7feb9ec2040cc8f8712519f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
