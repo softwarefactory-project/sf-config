@@ -140,6 +140,30 @@
       "revId": "4c69983d83447335861f24abecfb429b30a237ee",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a1a9d01_f703000c",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-03T09:07:52Z",
+      "side": 1,
+      "message": "Ok but why we do it twice (line 365) ? I think you can remove this statement.",
+      "parentUuid": "ba15a1d1_61ce4c85",
+      "range": {
+        "startLine": 358,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 79
+      },
+      "revId": "4c69983d83447335861f24abecfb429b30a237ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
