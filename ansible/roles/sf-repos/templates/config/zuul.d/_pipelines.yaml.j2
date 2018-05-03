@@ -36,6 +36,10 @@
       gerrit:
         verified: 0
 {% endif %}
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_start_topic }}"
+{% endif %}
     success:
 {% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
@@ -46,6 +50,10 @@
         verified: 1
 {% endif %}
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_success_topic }}"
+{% endif %}
     failure:
 {% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
@@ -56,6 +64,10 @@
         verified: -1
 {% endif %}
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_failure_topic }}"
+{% endif %}
 
 - pipeline:
     name: gate
@@ -139,6 +151,10 @@
         status-url: "{{ gateway_url }}/zuul/t/local/status.html"
         comment: false
 {% endfor %}
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_start_topic }}"
+{% endif %}
     success:
 {% if 'gerrit' in roles %}
       gerrit:
@@ -152,6 +168,10 @@
         comment: true
 {% endif %}{% endfor %}
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_success_topic }}"
+{% endif %}
     failure:
 {% if 'gerrit' in roles %}
       gerrit:
@@ -163,6 +183,10 @@
         comment: true
 {% endif %}{% endfor %}
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_failure_topic }}"
+{% endif %}
     window-floor: 20
     window-increase-factor: 2
 
@@ -183,14 +207,27 @@
         - event: push
           ref: ^refs/heads/.*$
 {% endfor %}
+{% if 'firehose' in roles %}
+    start:
+      mqtt:
+        topic: "{{ zuul_mqtt_start_topic }}"
+{% endif %}
     success:
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_success_topic }}"
+{% endif %}
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in post pipeline: {change.project}'
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_failure_topic }}"
+{% endif %}
 
 - pipeline:
     name: release
@@ -209,14 +246,27 @@
         - event: push
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
 {% endfor %}
+{% if 'firehose' in roles %}
+    start:
+      mqtt:
+        topic: "{{ zuul_mqtt_start_topic }}"
+{% endif %}
     success:
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_success_topic }}"
+{% endif %}
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in release pipeline: {change.project}'
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_failure_topic }}"
+{% endif %}
 
 - pipeline:
     name: periodic
@@ -227,11 +277,24 @@
     trigger:
       timer:
         - time: '0 0 * * *'
+{% if 'firehose' in roles %}
+    start:
+      mqtt:
+        topic: "{{ zuul_mqtt_start_topic }}"
+{% endif %}
     success:
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_success_topic }}"
+{% endif %}
     failure:
       smtp:
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in periodic pipeline: {change.project}'
       sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_failure_topic }}"
+{% endif %}
