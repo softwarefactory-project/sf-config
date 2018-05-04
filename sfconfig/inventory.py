@@ -392,11 +392,12 @@ def run(args):
     playbook_path = "%s/%s.yml" % (args.ansible_root, playbook_name)
     write_playbook(playbook_path, playbook)
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
+    run_cmd = ["scl", "enable", "rh-python35", "--",
+               "ansible-playbook", playbook_path]
     if not args.skip_apply:
         install_ansible(args)
         enable_ara()
-        sfconfig.utils.execute(["scl", "enable", "rh-python35", "--",
-                                "ansible-playbook", playbook_path])
+        sfconfig.utils.execute(run_cmd)
 
 
 def get_logs(args, pb):
