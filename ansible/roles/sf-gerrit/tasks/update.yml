@@ -1,17 +1,21 @@
 ---
-- file:
+- name: Create gerrit_config file
+  file:
     path: /var/lib/software-factory/state/gerrit_config
     state: touch
+  changed_when: false
 
 - name: Check local config
   shell: cat /var/lib/software-factory/state/gerrit_config
   register: localconfig
+  changed_when: false
 
 - name: Check upstream config
   shell: git log -n 3 --oneline gerrit/; echo "{{ gerrit_replication }}"
   args:
     chdir: /root/config
   register: upstreamconfig
+  changed_when: false
 
 - include_vars: /root/config/gerrit/commentlinks.yaml
 
@@ -63,6 +67,48 @@
         mode: 0644
   when: not gerrit_replication and localconfig.stdout != upstreamconfig.stdout
 
+- name: Set admin and zuul emails
+  set_fact:
+    admin_email: 'admin@{{ fqdn }}'
+    zuul_email: 'zuul@{{ fqdn }}'
+
+- name: Get zuul email in account_external_id from gerrit database
+  shell: mysql --database=gerrit
+         --execute "select email_address, external_id from account_external_ids"
+         | awk '/zuul@/ {print $1}'
+  register: gerrit_zuul_email
+  changed_when: false
+
+- name: Get admin email in account_external_id from gerrit database
+  shell: mysql --database=gerrit
+         --execute "select email_address, external_id from account_external_ids"
+         | awk '/admin@/ {print $1}'
+  register: gerrit_admin_email
+  changed_when: false
+
+- name: Update email address in gerrit database
+  block:
+    - name: Update email address in account_external_ids table
+      shell: mysql --database=gerrit --execute
+            "update account_external_ids set email_address='{{ item.email }}' where external_id='{{ item.external_id }}'"
+      with_items:
+        - {email: '{{ admin_email}}', external_id: 'gerrit:admin'}
+        - {email: '{{ zuul_email }}', external_id: 'mailto:{{ gerrit_zuul_email.stdout }}'}
+
+    - name: Update external_id in account_external_ids table
+      shell: mysql --database=gerrit --execute
+            "update account_external_ids set external_id='{{ zuul_email }}' where email_address='{{ zuul_email }}' "
+
+    - name: Update email address in accounts table
+      shell: mysql --database=gerrit --execute
+            "update accounts set preferred_email='{{ item.email }}' where full_name='{{ item.full_name }}'"
+      with_items:
+        - {email: '{{ admin_email }}', full_name: 'Software Factory Administrator'}
+        - {email: '{{ zuul_email }}', full_name: 'Zuul CI'}
+  register: email_updated
+  when: gerrit_admin_email.stdout != admin_email or
+        gerrit_zuul_email.stdout != zuul_email
+
 - name: Reload gerrit service
   service:
     name: gerrit
@@ -73,4 +119,5 @@
   copy:
     content: "{{ upstreamconfig.stdout }}"
     dest: /var/lib/software-factory/state/gerrit_config
-  when: localconfig.stdout != upstreamconfig.stdout
+  when: localconfig.stdout != upstreamconfig.stdout or
+        email_updated is changed
