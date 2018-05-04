@@ -1,4 +1,37 @@
 ---
+- name: Check if system is updated
+  stat:
+    path: /var/lib/software-factory/.version
+  register: base_sf_version
+
+- name: Get configured fqdn
+  command: dnsdomainname
+  register: old_fqdn
+  changed_when: false
+  when: base_sf_version.stat.exists
+
+- set_fact:
+    update_fqdn: True
+  when: base_sf_version.stat.exists and fqdn != old_fqdn
+
+- name: Update ssh public keys if fqdn is updated
+  block:
+    - name: Get all pubkeys filenames
+      shell: ls /var/lib/software-factory/bootstrap-data/ssh_keys/*.pub
+      register: pubkeys
+
+    - name: Set hostname in pub keys files
+      shell: 'sed -i "s/@.*/@{{ fqdn }}/" {{ item }}'
+      args:
+        warn: false
+      with_items:
+        - '{{ pubkeys.stdout_lines }}'
+  when: base_update_fqdn
+
+- name: Set hostname
+  hostname:
+    name: '{{ ansible_hostname }}.{{ fqdn }}'
+
 - name: Create working directories
   file:
     path: "{{ item.path }}"
