@@ -62,3 +62,18 @@
         state: absent
       when: not _jobs_remote_ls.stdout
   when: remote_config_repositories
+
+- name: Update ssh public keys if fqdn is updated
+  block:
+    - name: Get all ssh key filenames
+      shell: find /var/lib/software-factory/bootstrap-data/ssh_keys -type f ! -name '*pub'
+      register: sshkeys
+
+    - name: Update fqdn in ssh keys
+      shell: 'ssh-keygen -c -o -C root@{{ fqdn }} -f {{ item }}'
+      args:
+        warn: false
+      with_items:
+        - '{{ sshkeys.stdout_lines }}'
+  when: update_fqdn
+
