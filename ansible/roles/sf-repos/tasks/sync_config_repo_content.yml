@@ -104,6 +104,21 @@
       set_fact:
         new_config_key: "{{ config_key_exists and localconfig.stdout != _config_repo_key.stat.checksum|default(None) }}"
 
+- name: Delete secrets files if update fqdn
+  file:
+    path: "{{ config_clone_dir }}/zuul.d/{{ item }}"
+    state: absent
+  with_items:
+    - _secret_sfpages.yaml
+    - _secret_sflogs.yaml
+    - _secret_install_server.yaml
+  when: update_fqdn
+
+- name: Check for _secret_sflogs file
+  stat:
+    path: "{{ config_clone_dir }}/zuul.d/_secret_sflogs.yaml"
+  register: _secret_sflogs
+
 - block:
     - name: "Generate sflogs ssh_private_key secret"
       command: >
@@ -154,6 +169,14 @@
     - new_config_key
     - config_key_exists
 
+- name: Update admin email in resources.yaml
+  lineinfile:
+    path: '{{ config_clone_dir }}/resources/resources.yaml'
+    regexp: '        - admin@.*'
+    line: '        - admin@{{ fqdn }}'
+  register: _resources_admin_email
+  when: update_fqdn
+
 - name: Indicate config repo changed
   set_fact:
     config_repo_updated: true
@@ -161,7 +184,18 @@
         _config_template_files is changed or
         _config_metrics_files is changed or
         _config_dlrn_files is changed or
+<<<<<<< HEAD
         new_config_key
+||||||| parent of ec9145d... Fix to allow updating fqdn
+        not _secret_sflogs.stat.exists or
+        not _secret_sfpages.stat.exists or
+        not _secret_install_server.stat.exists
+=======
+        _resources_admin_email is changed or
+        not _secret_sflogs.stat.exists or
+        not _secret_sfpages.stat.exists or
+        not _secret_install_server.stat.exists
+>>>>>>> ec9145d... Fix to allow updating fqdn
 
 - name: Indicated config repo didn't changed
   set_fact:
@@ -171,6 +205,7 @@
     - not _config_template_files is changed
     - not _config_metrics_files is changed
     - not _config_dlrn_files is changed
+<<<<<<< HEAD
     - not new_config_key
 
 - name: Save config key checksum
@@ -178,3 +213,13 @@
     content: "{{ _config_repo_key.stat.checksum|default(None) }}"
     dest: /var/lib/software-factory/state/config_key_checksum
   when: config_key_exists
+||||||| parent of ec9145d... Fix to allow updating fqdn
+    - _secret_sflogs.stat.exists
+    - _secret_sfpages.stat.exists
+    - _secret_install_server.stat.exists
+=======
+    - not _resources_admin_email is changed
+    - _secret_sflogs.stat.exists
+    - _secret_sfpages.stat.exists
+    - _secret_install_server.stat.exists
+>>>>>>> ec9145d... Fix to allow updating fqdn
