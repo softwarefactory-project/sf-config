@@ -213,3 +213,12 @@
         app.configure_connections()'
       when: zuul_scheduler_service_running.rc == 3
   when: "'zuul-scheduler' in zuul_services"
+
+- name: Update gerrit email address when fqdn is updated
+  block:
+    - name: Delete all emails in gerrit
+      command: ssh gerrit 'gerrit set-account --delete-email ALL zuul'
+
+    - name: Update email address in gerrit
+      command: ssh gerrit 'gerrit set-account --add-email zuul@{{ fqdn }} zuul'
+  when: update_fqdn is defined
