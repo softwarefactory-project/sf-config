@@ -72,6 +72,16 @@
     - nodepool/_local_hypervisor_oci.yaml
   register: _config_template_files
 
+- name: Delete secrets files if update fqdn
+  file:
+    path: "{{ config_clone_dir }}/zuul.d/{{ item }}"
+    state: absent
+  with_items:
+    - _secret_sfpages.yaml
+    - _secret_sflogs.yaml
+    - _secret_install_server.yaml
+  when: update_fqdn is defined
+
 - name: Check for _secret_sflogs file
   stat:
     path: "{{ config_clone_dir }}/zuul.d/_secret_sflogs.yaml"
@@ -140,6 +150,14 @@
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
   when: not _secret_sfpages.stat.exists
 
+- name: Update admin email in resources.yaml
+  lineinfile:
+    path: '{{ config_clone_dir }}/resources/resources.yaml'
+    regexp: '        - admin@.*'
+    line: '        - admin@{{ fqdn }}'
+  register: _resources_admin_email
+  when: update_fqdn is defined
+
 - name: Indicate config repo changed
   set_fact:
     config_repo_updated: true
@@ -147,6 +165,7 @@
         _config_template_files is changed or
         _config_metrics_files is changed or
         _config_dlrn_files is changed or
+        _resources_admin_email is changed or
         not _secret_sflogs.stat.exists or
         not _secret_sfpages.stat.exists or
         not _secret_install_server.stat.exists
@@ -159,6 +178,7 @@
     - not _config_template_files is changed
     - not _config_metrics_files is changed
     - not _config_dlrn_files is changed
+    - not _resources_admin_email is changed
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists
