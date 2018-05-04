@@ -26,8 +26,14 @@
     - {section: http, option: https-private-key, value: '"/etc/influxdb/influxdb.key"'}
   notify: restart influxdb
 
+- name: Restart influxdb when fqdn is updated to use new crt
+  systemd:
+    name: influxdb
+    state: restarted
+  when: update_fqdn
+
 - name: Start service
-  service:
+  systemd:
     name: influxdb
     state: started
     enabled: "yes"
