@@ -72,6 +72,16 @@
     - nodepool/_local_hypervisor_oci.yaml
   register: _config_template_files
 
+- name: Delete secrets files if update fqdn
+  file:
+    path: "{{ config_clone_dir }}/zuul.d/{{ item }}"
+    state: absent
+  with_items:
+    - _secret_sfpages.yaml
+    - _secret_sflogs.yaml
+    - _secret_install_server.yaml
+  when: update_fqdn is defined
+
 - name: Check for _secret_sflogs file
   stat:
     path: "{{ config_clone_dir }}/zuul.d/_secret_sflogs.yaml"
