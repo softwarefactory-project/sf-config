@@ -1,17 +1,21 @@
 ---
-- file:
+- name: Create gerrit_config file
+  file:
     path: /var/lib/software-factory/state/gerrit_config
     state: touch
+  changed_when: false
 
 - name: Check local config
   shell: cat /var/lib/software-factory/state/gerrit_config
   register: localconfig
+  changed_when: false
 
 - name: Check upstream config
   shell: git log -n 3 --oneline gerrit/; echo "{{ gerrit_replication }}"
   args:
     chdir: /root/config
   register: upstreamconfig
+  changed_when: false
 
 - include_vars: /root/config/gerrit/commentlinks.yaml
 
@@ -73,4 +77,5 @@
   copy:
     content: "{{ upstreamconfig.stdout }}"
     dest: /var/lib/software-factory/state/gerrit_config
-  when: localconfig.stdout != upstreamconfig.stdout
+  when: localconfig.stdout != upstreamconfig.stdout or
+        email_updated is changed
