@@ -11,6 +11,7 @@
     dest: /etc/telegraf/telegraf.conf
     regexp: '  #? ?{{ item.name }} =.*'
     replace: '  {{ item.name }} = "{{ item.value }}"'
+  no_logs: true
   with_items:
     - {name: username, value: '{{ telegraf_influxdb_user }}'}
     - {name: password, value: '{{ telegraf_influxdb_password }}'}

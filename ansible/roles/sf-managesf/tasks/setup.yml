@@ -34,7 +34,13 @@
     dest: /etc/managesf/config.py
     group: managesf
     mode: 0440
-  notify: [restart managesf]
+  notify: restart managesf
+
+- name: Restart service if fqdn is updated
+  systemd:
+    name: managesf
+    state: restarted
+  when: base_update_fqdn
 
 - name: Start service
   systemd:
