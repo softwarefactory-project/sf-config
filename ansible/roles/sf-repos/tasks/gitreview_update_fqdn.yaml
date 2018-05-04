@@ -1,0 +1,15 @@
+---
+- name: Update fqdn in .gitreview
+  replace:
+    dest: "{{ update_fqdn_project }}/.gitreview"
+    regexp: "^host=.*"
+    replace: "host={{ fqdn }}"
+
+- name: Update repository
+  command: "{{ item }}"
+  args:
+    chdir: "{{ update_fqdn_project }}"
+  with_items:
+    - git add -A .
+    - git commit -m "update fqdn in gitreview"
+    - git push

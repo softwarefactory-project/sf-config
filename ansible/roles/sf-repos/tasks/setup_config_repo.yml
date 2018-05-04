@@ -58,3 +58,6 @@
 
     - command: mv {{ conf_tmp.stdout }} /root/config
   when: config_done.stat.exists != True
+
+- include_tasks: gitreview_update_fqdn.yaml update_fqdn_project='{{ config_done.stat.path }}'
+  when: update_fqdn is defined
