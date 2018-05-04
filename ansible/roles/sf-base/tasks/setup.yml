@@ -1,4 +1,23 @@
 ---
+- name: Check if system is updated
+  stat:
+    path: /root/config
+  register: base_config
+
+- name: Get configured fqdn
+  command: dnsdomainname
+  register: old_fqdn
+  changed_when: false
+  when: base_config.stat.exists
+
+- set_fact:
+    base_update_fqdn: True
+  when: fqdn != old_fqdn
+
+- name: Set hostname
+  hostname:
+    name: '{{ ansible_hostname }}.{{ fqdn }}'
+
 - name: Create working directories
   file:
     path: "{{ item.path }}"
