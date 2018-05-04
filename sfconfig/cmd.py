@@ -187,6 +187,14 @@ def main():
     sfconfig.arch.process(args)
     sfconfig.inventory.generate(args)
 
+    # Check if fqdn should be updated
+    if os.path.isfile(allyaml):
+        previous_args = yaml_load(allyaml)
+        if args.sfconfig['fqdn'] != previous_args['fqdn']:
+            args.glue["update_fqdn"] = True
+        else:
+            args.glue["update_fqdn"] = False
+
     # Generate group vars
     sfconfig.groupvars.load(args)
     for host in args.sfarch["inventory"]:

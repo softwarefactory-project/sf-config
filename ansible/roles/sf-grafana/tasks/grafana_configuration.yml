@@ -4,6 +4,15 @@
     port: 3000
     host: '{{ grafana_host }}'
 
+- name: Delete old datasource when fqdn is updated
+  uri:
+    url: '{{ grafana_internal_datasource_url }}/name/{{ grafana_data_source.name }}'
+    method: DELETE
+    user: admin
+    password: '{{ grafana_admin_password }}'
+    force_basic_auth: "yes"
+  when: update_fqdn
+
 - name: Get datasources
   uri:
     url: '{{ grafana_internal_datasource_url }}'
