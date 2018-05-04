@@ -92,6 +92,9 @@ def usage(components):
     p.add_argument("--disable-external-resources", default=False,
                    action='store_true',
                    help="Disable gerrit replication and nodepool providers")
+    p.add_argument("--update-fqdn", default=False,
+                   action='store_true',
+                   help="Change deployment fully qualified domain name")
 
     # TODO: switch default to False when 2.7 is released
     # (with zookeeper enabled in minimal arch)
@@ -127,6 +130,9 @@ def main():
     if not args.skip_apply:
         execute(["logger", "sfconfig: started %s" % sys.argv[1:]])
         print("[%s] Running sfconfig" % time.ctime())
+
+    if args.update_fqdn:
+        args.glue["update_fqdn"] = True
 
     # Create required directories
     allyaml = "%s/group_vars/all.yaml" % args.ansible_root
