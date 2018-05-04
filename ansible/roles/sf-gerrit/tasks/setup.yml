@@ -1,6 +1,6 @@
 ---
 # Use real shell for replication tests. TODO: improve replication test and set /sbin/nologin shell
-- name: "Create gerrit user"
+- name: Create gerrit user
   include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=gerrit ssh_key=gerrit_service_rsa shell=/bin/bash"
 
 - name: Expose public keys
@@ -28,7 +28,7 @@
     - /root/config/gerrit/commentlinks.yaml
     - /usr/share/sf-config/ansible/roles/sf-repos/files/config/gerrit/commentlinks.yaml
 
-- name: "Install configuration files"
+- name: Install configuration files
   template:
     src: "{{ item.name }}.j2"
     dest: "{{ item.path }}/{{ item.name }}"
@@ -53,7 +53,7 @@
        mode: '0444'}
   notify: [restart gerrit]
 
-- name: "Install static configuration files for gerrit"
+- name: Install static configuration files for gerrit
   copy:
     src: "{{ item.name }}"
     dest: /etc/gerrit/
@@ -64,19 +64,19 @@
     - {name: GerritSiteHeader.html}
     - {name: GerritSite.css}
 
-- name: "Check for replication.config"
+- name: Check for replication.config
   stat:
     path: /etc/gerrit/replication.config
   register: gerrit_replication_config
 
-- name: "Copy initial replication.config"
+- name: Copy initial replication.config
   copy:
     src: replication.config
     dest: /etc/gerrit/
     mode: 0644
   when: not gerrit_replication_config.stat.exists
 
-- name: "Add monit service check"
+- name: Add monit service check
   copy:
     src: monit
     dest: /etc/monit.d/gerrit
@@ -86,7 +86,7 @@
   notify:
     - restart monit
 
-- name: "Copy gerrit service key"
+- name: Copy gerrit service key
   copy:
     content: "{{ hostvars[inventory_hostname][item.name] }}"
     dest: "/etc/gerrit/{{ item.file }}"
@@ -97,19 +97,19 @@
     - {name: gerrit_service_rsa, file: ssh_host_rsa_key, mode: "0400"}
     - {name: gerrit_service_rsa_pub, file: ssh_host_rsa_key.pub, mode: "0444"}
 
-- name: "Copy gerrit admin key"
+- name: Copy gerrit admin key
   copy:
     content: "{{ gerrit_admin_rsa }}"
     dest: "/root/.ssh/gerrit_admin"
     mode: "0400"
 
-- name: "Copy gerrit admin pub key"
+- name: Copy gerrit admin pub key
   copy:
     content: "{{ gerrit_admin_rsa_pub }}"
     dest: "/root/.ssh/gerrit_admin.pub"
     mode: "0444"
 
-- name: "Allow gerrit to connect to himself for self replication test"
+- name: Allow gerrit to connect to himself for self replication test
   authorized_key:
     user: gerrit
     key: "{{ gerrit_service_rsa_pub }}"
@@ -122,25 +122,25 @@
     state: present
   when: ansible_selinux.status == "enabled"
 
-- name: "Test if gerrit All-Projects exists"
+- name: Test if gerrit All-Projects exists
   stat:
     path: /var/lib/gerrit/git/All-Projects.git
   register: gerrit_allprojects
 
-- name: "Test if gerrit is running"
+- name: Test if gerrit is running
   command: systemctl -q is-active gerrit
   register: _gerrit
   failed_when: _gerrit.rc != 3 and _gerrit.rc != 0
   changed_when: false
 
-- name: "Create .init directory"
+- name: Create .init directory
   file:
     path: /var/lib/gerrit/.init
     owner: gerrit
     mode: 0500
     state: directory
 
-- name: "Setup .init files"
+- name: Setup .init files
   copy:
     content: "{{ hostvars[inventory_hostname][item.key] }}"
     dest: "/var/lib/gerrit/.init/{{ item.dest }}"
@@ -151,30 +151,44 @@
     - {key: gerrit_admin_rsa_pub, dest: "admin_ssh_key.pub"}
     - {key: gerrit_email, dest: "admin_email"}
 
-- name: "Initialize/Upgrade gerrit when service is not running"
+- name: Update gerrit email address when fqdn is updated
+  block:
+    - name: Restart service if fqdn is updated to apply gerrit_email update
+      systemd:
+        name: gerrit
+        state: restarted
+
+    - name: Delete all emails in gerrit
+      command: ssh gerrit 'gerrit set-account --delete-email ALL admin'
+
+    - name: Update email address in gerrit
+      command: ssh gerrit 'gerrit set-account --add-email admin@{{ fqdn }} admin'
+  when: update_fqdn is defined
+
+- name: Initialize/Upgrade gerrit when service is not running
   command: /usr/bin/java -jar /usr/lib64/gerrit/release.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins
   become: true
   become_user: gerrit
   when: _gerrit.rc == 3
 
-- name: "Reindex gerrit when service is not running"
+- name: Reindex gerrit when service is not running
   command: /usr/bin/java -jar /usr/lib64/gerrit/release.war reindex -d /var/lib/gerrit
   become: true
   become_user: gerrit
   when: _gerrit.rc == 3
 
-- name: "Start service"
+- name: Start service
   service:
     name: gerrit
     state: started
     enabled: "yes"
 
-- name: "Add zuul user"
+- name: Add zuul user
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
 
 - include_tasks: setup_acl.yml
 
-- name: "Setup socat service"
+- name: Setup socat service
   block:
     - name: Install service file for socat_gerrit
       copy:
@@ -194,7 +208,7 @@
       delegate_to: "{{ gateway_host }}"
   when: groups['gerrit'] != groups['gateway']
 
-- name: "Copy ssh keys"
+- name: Copy ssh keys
   copy:
     content: "{{ item.content }}"
     dest: "/var/lib/managesf/.ssh/{{ item.name }}"
