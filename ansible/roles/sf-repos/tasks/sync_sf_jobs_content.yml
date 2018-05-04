@@ -42,3 +42,6 @@
     - roles/upload-pages/
     - zuul.d/_included-jobs.yaml
   register: sf_jobs_files
+
+- include_tasks: gitreview_update_fqdn.yaml update_fqdn_project='{{ sf_jobs_done.stat.path }}'
+  when: update_fqdn is defined

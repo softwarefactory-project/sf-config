@@ -35,3 +35,6 @@
   when:
     - not _static_files is changed
     - not _readme_file is changed
+
+- include_tasks: gitreview_update_fqdn.yaml update_fqdn_project='{{ zuul_jobs_done.stat.path }}'
+  when: update_fqdn is defined
