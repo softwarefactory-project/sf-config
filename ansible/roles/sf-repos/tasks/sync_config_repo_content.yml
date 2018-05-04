@@ -86,6 +86,12 @@
   command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
   when: _config_pub.stat.exists
 
+- name: Delete config_key_checksum if update fqdn
+  file:
+    path: /var/lib/software-factory/state/config_key_checksum
+    state: absent
+  when: update_fqdn
+
 - name: Verify if config repository key changed
   block:
     - name: Check config repository key
@@ -122,6 +128,7 @@
   when:
     - new_config_key
     - config_key_exists
+
 
 - name: install server secret
   block:
@@ -172,6 +179,14 @@
     - new_config_key
     - config_key_exists
 
+- name: Update admin email in resources.yaml
+  lineinfile:
+    path: '{{ config_clone_dir }}/resources/resources.yaml'
+    regexp: '        - admin@.*'
+    line: '        - admin@{{ fqdn }}'
+  register: _resources_admin_email
+  when: update_fqdn
+
 - stat:
     path: "{{ config_clone_dir }}/zuul.d/_secret_service_user.yaml"
   register: _service_user_secret_file
@@ -216,6 +231,7 @@
         _config_template_files is changed or
         _config_metrics_files is changed or
         _config_dlrn_files is changed or
+        _resources_admin_email is changed or
         new_config_key
 
 - name: Indicated config repo didn't changed
@@ -226,6 +242,7 @@
     - not _config_template_files is changed
     - not _config_metrics_files is changed
     - not _config_dlrn_files is changed
+    - not _resources_admin_email is changed
     - not new_config_key
 
 - name: Save config key checksum

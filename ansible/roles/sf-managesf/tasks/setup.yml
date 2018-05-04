@@ -34,7 +34,19 @@
     dest: /etc/managesf/config.py
     group: managesf
     mode: 0440
-  notify: [restart managesf]
+  notify: restart managesf
+
+- block:
+    - name: Update local config repo remote url if fqdn is updated
+      command: 'git remote set-url origin {{ config_public_location }}'
+      args:
+        chdir: "/var/lib/managesf/git/local/{{ config_project_name }}"
+
+    - name: Restart service when fqdn is updated
+      systemd:
+        name: managesf
+        state: restarted
+  when: update_fqdn
 
 - name: Start service
   systemd:

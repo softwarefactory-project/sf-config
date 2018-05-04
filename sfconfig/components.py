@@ -34,9 +34,11 @@ class Component(object):
     def get_or_generate_ssh_key(self, args, name):
         priv = "%s/ssh_keys/%s" % (args.lib, name)
         pub = "%s/ssh_keys/%s.pub" % (args.lib, name)
+        comment = '%s@%s' % (name, args.sfconfig["fqdn"])
 
         if not os.path.isfile(priv):
-            execute(["ssh-keygen", "-t", "rsa", "-N", "", "-f", priv, "-q"])
+            execute(["ssh-keygen", "-t", "rsa", "-N", "",
+                     "-f", priv, "-q", '-C', comment])
         args.glue[name] = open(priv).read()
         args.glue["%s_pub" % name] = open(pub).read()
 
