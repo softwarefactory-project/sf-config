@@ -40,3 +40,12 @@
     src: gitconfig.j2
     dest: "/var/lib/dlrn/.gitconfig"
     owner: dlrn
+
+- name: Update gerrit email address when fqdn is updated
+  block:
+    - name: Delete all emails in gerrit
+      command: ssh gerrit 'gerrit set-account --delete-email ALL dlrn'
+
+    - name: Update email address in gerrit
+      command: ssh gerrit 'gerrit set-account --add-email dlrn@{{ fqdn }} dlrn'
+  when: update_fqdn is defined
