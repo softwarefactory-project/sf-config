@@ -10,7 +10,7 @@
   when: mnesia.stat.isdir is undefined
   command: rabbitmqctl force_reset
   ignore_errors: "yes"
-  no_logs: true
+  no_log: true
 
 - name: Set rabbitmq heartbeat timeout
   replace:

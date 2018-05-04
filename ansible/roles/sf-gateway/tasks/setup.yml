@@ -92,15 +92,17 @@
 
 - name: Read zuul-job version
   command: rpm -q rh-python35-zuul-jobs-doc
+  args:
+    warn: false
   register: _zuul_job_version
   changed_when: false
-  warn: false
 
 - name: Read zuul version
   command: rpm -q rh-python35-zuul-doc
+  args:
+    warn: false
   register: _zuul_version
   changed_when: false
-  warn: false
 
 - name: Read nodepool version
   command: rpm -q rh-python35-nodepool-doc
