@@ -16,7 +16,7 @@
 - name: Set mailname
   copy:
     dest: /etc/mailname
-    content: "{{ ansible_fqdn }}"
+    content: "{{ ansible_hostname }}.{{ fqdn }}"
     owner: root
     group: root
     mode: 0644
