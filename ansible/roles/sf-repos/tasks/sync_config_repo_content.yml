@@ -104,6 +104,16 @@
       set_fact:
         new_config_key: "{{ config_key_exists and localconfig.stdout != _config_repo_key.stat.checksum|default(None) }}"
 
+- name: Delete secrets files if update fqdn
+  file:
+    path: "{{ config_clone_dir }}/zuul.d/{{ item }}"
+    state: absent
+  with_items:
+    - _secret_sfpages.yaml
+    - _secret_sflogs.yaml
+    - _secret_install_server.yaml
+  when: update_fqdn
+
 - block:
     - name: "Generate sflogs ssh_private_key secret"
       command: >
@@ -154,6 +164,14 @@
     - new_config_key
     - config_key_exists
 
+- name: Update admin email in resources.yaml
+  lineinfile:
+    path: '{{ config_clone_dir }}/resources/resources.yaml'
+    regexp: '        - admin@.*'
+    line: '        - admin@{{ fqdn }}'
+  register: _resources_admin_email
+  when: update_fqdn
+
 - name: Indicate config repo changed
   set_fact:
     config_repo_updated: true
@@ -161,6 +179,7 @@
         _config_template_files is changed or
         _config_metrics_files is changed or
         _config_dlrn_files is changed or
+        _resources_admin_email is changed or
         new_config_key
 
 - name: Indicated config repo didn't changed
@@ -171,6 +190,7 @@
     - not _config_template_files is changed
     - not _config_metrics_files is changed
     - not _config_dlrn_files is changed
+    - not _resources_admin_email is changed
     - not new_config_key
 
 - name: Save config key checksum
