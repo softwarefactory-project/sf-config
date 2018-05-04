@@ -92,6 +92,9 @@ def usage(components):
     p.add_argument("--disable-external-resources", default=False,
                    action='store_true',
                    help="Disable gerrit replication and nodepool providers")
+    p.add_argument("--update-fqdn", default=False,
+                   action='store_true',
+                   help="Change deployment fully qualified domain name")
 
     # TODO: switch default to False when 2.7 is released
     # (with zookeeper enabled in minimal arch)

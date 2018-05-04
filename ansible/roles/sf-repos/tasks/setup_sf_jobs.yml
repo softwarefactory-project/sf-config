@@ -60,3 +60,6 @@
     - name: Save zuul jobs repo
       command: "mv {{ sf_jobs_clone_dir }} /root/sf-jobs"
   when: sf_jobs_done.stat.exists != True
+
+- include_tasks: gitreview_update_fqdn.yaml update_fqdn_project='{{ sf_jobs_done.stat.path }}'
+  when: update_fqdn is defined
