@@ -162,3 +162,6 @@
     - _secret_sflogs.stat.exists
     - _secret_sfpages.stat.exists
     - _secret_install_server.stat.exists
+
+- include_tasks: gitreview_update_fqdn.yaml update_fqdn_project='{{ config_done.stat.path }}'
+  when: update_fqdn is defined
