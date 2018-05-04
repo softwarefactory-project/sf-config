@@ -34,6 +34,20 @@
     - "lib64/python3.5"
     - "lib/python3.5"
 
+- name: Symlink scl ansible
+  file:
+    src: "/opt/rh/rh-python35/root/usr/bin/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
+    state: link
+    force: yes
+  with_items:
+    - ansible-playbook
+    - ansible-inventory
+    - ansible-pull
+    - ansible-vault
+    - ansible-galaxy
+    - ansible
+
 - name: Add FQDN to prompt
   copy:
     src: prompt.sh
