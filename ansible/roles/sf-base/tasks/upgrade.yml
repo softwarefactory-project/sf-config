@@ -36,3 +36,53 @@
         - nodepool-launcher
         - jenkins
   when: sf_previous_version < 3.0
+
+- block:
+    # TODO: could be remove when sf 3.1 will be release
+    # repos were added in sf-ci during our tests
+    # only used to upgrade from sf-2.7
+    - name: Ensure unused repos are removed from sf-release.repo
+      yum_repository:
+        name: '{{ item }}'
+        state: absent
+        file: sf-release
+      notify: yum-clean-metadata
+      with_items:
+        - openstack-pike
+        - centos-release-ceph-jewel
+        - centos-opstools
+
+    # TODO: could be remove when sf 3.1 will be release.
+    # sf-release is removed when openstack-pike is
+    # removed, only used to upgrade from sf-2.7
+    - name: Copy sf-release.repo
+      copy:
+        remote_src: yes
+        src: /etc/yum.repos.d/sf-release.repo
+        dest: /etc/yum.repos.d/sf-release.repo.bck
+
+    - name: Remove old repos
+      yum:
+        name: '{{ item }}'
+        state: absent
+      with_items:
+        - centos-release-ceph-jewel
+        - centos-release-openstack-pike
+        - centos-release-opstools
+      when: ansible_distribution == "CentOS"
+
+    # TODO: could be remove when sf 3.1 will be release.
+    # sf-release is removed when openstack-pike is
+    # removed, only used to upgrade from sf-2.7
+    - name: Restore sf-release.repo
+      copy:
+        remote_src: yes
+        src: /etc/yum.repos.d/sf-release.repo.bck
+        dest: /etc/yum.repos.d/sf-release.repo
+
+    # could be remove when sf 3.1 will be release.
+    # used when removing file from sf-release.repo in sf-ci
+    # removed, only used to upgrade from sf-2.7
+    - name: Ensure yum clean metadata is applied
+      meta: flush_handlers
+  when: sf_previous_version < 3.1
