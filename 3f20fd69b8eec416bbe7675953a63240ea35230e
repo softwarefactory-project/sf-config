@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "9a1a9d01_4069c48a",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-14T09:15:48Z",
+      "side": 1,
+      "message": "zuul related tasks must be done in the zuul role.",
+      "range": {
+        "startLine": 159,
+        "startChar": 7,
+        "endLine": 159,
+        "endChar": 37
+      },
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a1a9d01_c013940c",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-14T09:15:48Z",
+      "side": 1,
+      "message": "Is there any other emails to fix ? We will have this one too once merged https://softwarefactory-project.io/r/#/c/12052 for dlrn",
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a1a9d01_00874c62",
         "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
         "patchSetId": 19
@@ -13,6 +53,23 @@
       "writtenOn": "2018-05-14T01:32:17Z",
       "side": 1,
       "message": "We shouldn\u0027t access gerrit sql database directly as it won\u0027t work with gerrit-2.15. Instead we need to use the REST api using the \"{{ gerrit_admin_password }}\" http password.\n\nAlso, note that sql command needs to be delegate_to: \"{{ mysql_host }}\"",
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a1a9d01_60f968c8",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-14T09:15:48Z",
+      "side": 1,
+      "message": "I agree with Tristan, should this script gerrit-set-ci-user.sh be improved to handle the situation where the mail of a ci user is changed ? (using the ssh api or the REST api)",
       "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
