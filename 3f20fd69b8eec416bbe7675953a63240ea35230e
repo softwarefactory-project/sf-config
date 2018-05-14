@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_56ce7484",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-14T20:15:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a1a9d01_4069c48a",
+      "range": {
+        "startLine": 159,
+        "startChar": 7,
+        "endLine": 159,
+        "endChar": 37
+      },
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a1a9d01_c013940c",
         "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
         "patchSetId": 19
@@ -36,6 +60,24 @@
       "writtenOn": "2018-05-14T09:15:48Z",
       "side": 1,
       "message": "Is there any other emails to fix ? We will have this one too once merged https://softwarefactory-project.io/r/#/c/12052 for dlrn",
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_76cb7073",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-14T20:15:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a1a9d01_c013940c",
       "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_16c8fc73",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-14T20:15:22Z",
+      "side": 1,
+      "message": "I updated the command to use \"ssh gerrit \u0027gerrit ...\u0027\" like in gerrit-set-ci-user script",
+      "parentUuid": "9a1a9d01_00874c62",
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a1a9d01_60f968c8",
         "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
         "patchSetId": 19
@@ -70,6 +130,24 @@
       "writtenOn": "2018-05-14T09:15:48Z",
       "side": 1,
       "message": "I agree with Tristan, should this script gerrit-set-ci-user.sh be improved to handle the situation where the mail of a ci user is changed ? (using the ssh api or the REST api)",
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_36c5f85a",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-14T20:15:22Z",
+      "side": 1,
+      "message": "I used the same command, but I don\u0027t want to improve the bash script. WDYT about converting this script in ansible playbook ?",
+      "parentUuid": "9a1a9d01_60f968c8",
       "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -93,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_d6a044a8",
+        "filename": "ansible/roles/sf-managesf/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-14T20:15:22Z",
+      "side": 1,
+      "message": "I have to restart the service or sfconfig fails later. I don\u0027t want to flush all handler, that\u0027s why I added this restart",
+      "parentUuid": "9a1a9d01_a07b007b",
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a1a9d01_c0807449",
         "filename": "ansible/roles/sf-repos/tasks/setup_config_repo.yml",
         "patchSetId": 19
@@ -110,6 +206,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_f6a540b5",
+        "filename": "ansible/roles/sf-repos/tasks/setup_config_repo.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-14T20:15:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a1a9d01_c0807449",
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a1a9d01_60964896",
         "filename": "sfconfig/cmd.py",
         "patchSetId": 19
@@ -121,6 +235,24 @@
       "writtenOn": "2018-05-14T01:32:17Z",
       "side": 1,
       "message": "This doesn\u0027t needs to be explicit, instead we should check if $already_deployed \u0026\u0026 $fqdn !\u003d group_vars[\"fqdn\"]",
+      "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_b6afc893",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-14T20:15:22Z",
+      "side": 1,
+      "message": "Ok, I will change this script",
+      "parentUuid": "9a1a9d01_60964896",
       "revId": "3f20fd69b8eec416bbe7675953a63240ea35230e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
