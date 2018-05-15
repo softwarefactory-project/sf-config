@@ -1,88 +1,72 @@
 ---
-- block:
-    - name: "Remove old configuration"
-      file:
-        path: "{{ item }}"
-        state: absent
-      with_items:
-        - /var/lib/edeploy
-        - /var/lib/software-factory/dashboards_config
-        - /var/lib/software-factory/gerrit_config
-        - /var/lib/software-factory/jenkins_config
-        - /var/lib/software-factory/nodepool_config
-        - /var/lib/software-factory/repoxplorer_config
-        - /var/lib/software-factory/zuul_config
-  when: sf_previous_version < 2.6
+- name: Remove old configuration files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/ssh/ssh_known_hosts
+    - /etc/jenkins_jobs
+    - /usr/local/bin/gearman-check
+    - /var/lib/edeploy
+    - /var/lib/software-factory/dashboards_config
+    - /var/lib/software-factory/gerrit_config
+    - /var/lib/software-factory/jenkins_config
+    - /var/lib/software-factory/jenkins
+    - /var/lib/software-factory/nodepool_config
+    - /var/lib/software-factory/repoxplorer_config
+    - /var/lib/software-factory/zuul_config
 
-- block:
-    - name: "Remove old configuration"
-      file:
-        path: /etc/ssh/ssh_known_hosts
-        state: absent
-  when: sf_previous_version < 2.7
+- name: Remove old crontabs
+  cron:
+    name: gearman-check-cron
+    state: absent
 
-- block:
-    - name: "Remove not existing services"
-      service:
-        name: "{{ item }}"
-        state: stopped
-        enabled: "no"
-      ignore_errors: "yes"
-      with_items:
-        - zuul-server
-        - zuul-merger
-        - zuul-launcher
-        - nodepool-builder
-        - nodepool-launcher
-        - jenkins
-  when: sf_previous_version < 3.0
+- name: Remove old services
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: "no"
+  ignore_errors: "yes"
+  with_items:
+    - zuul-server
+    - zuul-merger
+    - zuul-launcher
+    - nodepool-builder
+    - nodepool-launcher
+    - jenkins
 
-- block:
-    # TODO: could be remove when sf 3.1 will be release
-    # repos were added in sf-ci during our tests
-    # only used to upgrade from sf-2.7
-    - name: Ensure unused repos are removed from sf-release.repo
-      yum_repository:
-        name: '{{ item }}'
-        state: absent
-        file: sf-release
-      notify: yum-clean-metadata
-      with_items:
-        - openstack-pike
-        - centos-release-ceph-jewel
-        - centos-opstools
+- name: Ensure unused repos are removed from sf-release.repo
+  yum_repository:
+    name: '{{ item }}'
+    state: absent
+    file: sf-release
+  notify: yum-clean-metadata
+  with_items:
+    - openstack-pike
+    - centos-release-ceph-jewel
+    - centos-opstools
 
-    # TODO: could be remove when sf 3.1 will be release.
-    # sf-release is removed when openstack-pike is
-    # removed, only used to upgrade from sf-2.7
-    - name: Copy sf-release.repo
-      copy:
-        remote_src: yes
-        src: /etc/yum.repos.d/sf-release.repo
-        dest: /etc/yum.repos.d/sf-release.repo.bck
+- name: Copy sf-release.repo
+  copy:
+    remote_src: yes
+    src: /etc/yum.repos.d/sf-release.repo
+    dest: /etc/yum.repos.d/sf-release.repo.bck
 
-    - name: Remove old repos
-      yum:
-        name: '{{ item }}'
-        state: absent
-      with_items:
-        - centos-release-ceph-jewel
-        - centos-release-openstack-pike
-        - centos-release-opstools
-      when: ansible_distribution == "CentOS"
+- name: Remove old repos
+  yum:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - centos-release-ceph-jewel
+    - centos-release-openstack-pike
+    - centos-release-opstools
+  when: ansible_distribution == "CentOS"
 
-    # TODO: could be remove when sf 3.1 will be release.
-    # sf-release is removed when openstack-pike is
-    # removed, only used to upgrade from sf-2.7
-    - name: Restore sf-release.repo
-      copy:
-        remote_src: yes
-        src: /etc/yum.repos.d/sf-release.repo.bck
-        dest: /etc/yum.repos.d/sf-release.repo
+- name: Restore sf-release.repo
+  copy:
+    remote_src: yes
+    src: /etc/yum.repos.d/sf-release.repo.bck
+    dest: /etc/yum.repos.d/sf-release.repo
 
-    # could be remove when sf 3.1 will be release.
-    # used when removing file from sf-release.repo in sf-ci
-    # removed, only used to upgrade from sf-2.7
-    - name: Ensure yum clean metadata is applied
-      meta: flush_handlers
-  when: sf_previous_version < 3.1
+- name: Ensure yum clean metadata is applied
+  meta: flush_handlers
