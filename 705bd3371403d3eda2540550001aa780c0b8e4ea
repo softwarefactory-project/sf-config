@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_39008baa",
+        "filename": "ansible/roles/sf-repos/tasks/setup_config_repo.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-15T13:36:47Z",
+      "side": 1,
+      "message": "IMO we should KISS it and call direct_apply twice, for _internal.yaml and then for the groups (resources.yaml) and remove initial_creation fact",
+      "revId": "705bd3371403d3eda2540550001aa780c0b8e4ea",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_79f603d9",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-15T13:36:47Z",
+      "side": 1,
+      "message": "For simplicity you should remove the this condition. The resources engine won\u0027t create anything about cnx so that\u0027s no-cost to send that struct to the engine.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 29
+      },
+      "revId": "705bd3371403d3eda2540550001aa780c0b8e4ea",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_d92b9732",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-15T13:36:47Z",
+      "side": 1,
+      "message": "That shoud be under a condition, is gerrit in the arch ?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 24
+      },
+      "revId": "705bd3371403d3eda2540550001aa780c0b8e4ea",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_f930d3a0",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-15T13:36:47Z",
+      "side": 1,
+      "message": "Nothing declare in connections",
+      "range": {
+        "startLine": 41,
+        "startChar": 13,
+        "endLine": 41,
+        "endChar": 53
+      },
+      "revId": "705bd3371403d3eda2540550001aa780c0b8e4ea",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_19034fba",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-15T13:36:47Z",
+      "side": 1,
+      "message": "to avoid duplication why not removing that block and use only resources.yaml.j2",
+      "range": {
+        "startLine": 88,
+        "startChar": 2,
+        "endLine": 95,
+        "endChar": 17
+      },
+      "revId": "705bd3371403d3eda2540550001aa780c0b8e4ea",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
