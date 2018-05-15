@@ -174,7 +174,7 @@
     dest: /etc/httpd/conf/httpd.conf
     regexp: "^DocumentRoot "
     line: "DocumentRoot \"/var/www\""
-  when: httpd_conf.stat.exists == "True"
+  when: httpd_conf.stat.exists
 
 - name: Set selinux policies for httpd
   seboolean:
