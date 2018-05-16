@@ -31,6 +31,7 @@ app = {
 
 logging = {
     'root': {'level': '{{ managesf_root_loglevel }}', 'handlers': ['normal', 'console']},
+    'disable_existing_loggers': False,
     'loggers': {
         'managesf': {
             'level': '{{ managesf_loglevel }}',
