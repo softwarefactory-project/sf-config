@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_3c1719ef",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-16T12:32:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3cc151_9a097d34",
+      "revId": "be00a14bb0c7c758a4b92b60793ff9622f61f090",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3cc151_15045e13",
         "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
         "patchSetId": 8
@@ -48,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_1cf1fdcd",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-16T12:32:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba3cc151_15045e13",
+      "revId": "be00a14bb0c7c758a4b92b60793ff9622f61f090",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3cc151_551ae66f",
         "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
         "patchSetId": 8
@@ -65,6 +101,24 @@
         "endLine": 36,
         "endChar": 34
       },
+      "revId": "be00a14bb0c7c758a4b92b60793ff9622f61f090",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_7ce4b10c",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-16T12:32:42Z",
+      "side": 1,
+      "message": "There is a chicken and egg problem here, the zuul project key is only created when the tenant resources are defined. So the process will be:\n\n* run sfconfig --tenant-name rdo --master-sf https://sf-project.io\n* adds tenant resource to the main sf (which will reload zuul with the tenant config repo defined)\n* run sfconfig or a script to generate the tenant config repo content, that could also adds tenant-check and tenant-update jobs",
+      "parentUuid": "ba3cc151_551ae66f",
       "revId": "be00a14bb0c7c758a4b92b60793ff9622f61f090",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
