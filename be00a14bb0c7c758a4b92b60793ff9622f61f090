@@ -84,6 +84,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_9cb3cd0a",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-16T12:37:57Z",
+      "side": 1,
+      "message": "actually why remote_ ? for a tenant deployement, the tenant name is local",
+      "parentUuid": "7a2fa921_1cf1fdcd",
+      "revId": "be00a14bb0c7c758a4b92b60793ff9622f61f090",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba3cc151_551ae66f",
         "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
         "patchSetId": 8
