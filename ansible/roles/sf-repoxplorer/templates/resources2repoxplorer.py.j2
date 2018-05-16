@@ -33,7 +33,12 @@ if __name__ == "__main__":
         default['project-templates'][project] = copy.deepcopy(
             default['project-templates']['default'])
         for repo in data['source-repositories']:
-            default['projects'][project]['repos'][repo] = {'template': project}
+            if isinstance(repo, dict):
+                reponame = repo.keys()[0]
+            else:
+                reponame = repo
+            default['projects'][project]['repos'][reponame] = {
+                'template': project}
     for group, data in resources['groups'].items():
         grp = {}
         grp['description'] = data.get('description', '')
