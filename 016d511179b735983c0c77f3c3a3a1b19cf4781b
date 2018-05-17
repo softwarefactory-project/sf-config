@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_bf5ebb74",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 13
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-17T16:45:32Z",
+      "side": 1,
+      "message": "It seems the JS expects the name of the tenant to be in the url to build the correct uri to call the api",
+      "revId": "016d511179b735983c0c77f3c3a3a1b19cf4781b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_9f597f91",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-17T16:45:32Z",
+      "side": 1,
+      "message": "I don\u0027t really like that name here this is an \u0027*_url\u0027 but we remove scheme.",
+      "revId": "016d511179b735983c0c77f3c3a3a1b19cf4781b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_ff64334a",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-17T16:45:32Z",
+      "side": 1,
+      "message": "master_sf_url contains /manage, I create master_sf_gateway that is the gateway host.",
+      "revId": "016d511179b735983c0c77f3c3a3a1b19cf4781b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
