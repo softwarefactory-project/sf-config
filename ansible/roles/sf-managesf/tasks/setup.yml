@@ -8,18 +8,6 @@
     mode: 0750
     group: managesf
 
-- name: "Copy ssh keys"
-  copy:
-    content: "{{ item.content }}"
-    dest: "/var/lib/managesf/.ssh/{{ item.name }}"
-    mode: "{{ item.mode }}"
-    owner: managesf
-    group: managesf
-  with_items:
-    - {content: "{{ zuul_rsa }}", name: "zuul_rsa", mode: "0400"}
-    - {content: "{{ zuul_rsa_pub }}", name: "zuul_rsa.pub", mode: "0444"}
-  no_log: true
-
 - name: "Install resources management script"
   template:
     src: resources.sh.j2
