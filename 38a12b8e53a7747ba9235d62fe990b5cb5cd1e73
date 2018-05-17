@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_1fb9ef2e",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-17T09:12:19Z",
+      "side": 1,
+      "message": "you should first remove key_path if zuul not in the arch. It will cause issue if zuul was deployed on the tenant node then deactivated.",
+      "revId": "38a12b8e53a7747ba9235d62fe990b5cb5cd1e73",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
