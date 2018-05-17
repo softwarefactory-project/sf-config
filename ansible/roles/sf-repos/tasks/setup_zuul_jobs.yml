@@ -8,10 +8,6 @@
       command: python -c "import requests; print('zuul-jobs' in requests.get('{{ managesf_internal_url }}/v2/resources').json().get('resources', {}).get('repos', {}))"
       register: jobs_resource
 
-    - name: Create empty resources file
-      shell: "echo 'resources: {}' > /root/empty_resources.yaml"
-      when: jobs_resource.stdout == 'False'
-
     - name: Create repository
       command: "{{ item }}"
       args:
@@ -21,7 +17,7 @@
         - git reset --hard origin/master --
         - git clean -f -x -d
         - /usr/share/sf-config/scripts/create_project_resources.py --repo zuul-jobs --core admin@{{ fqdn }} resources/_zuul-jobs.yaml
-        - /usr/local/bin/resources.sh direct_apply /root/empty_resources.yaml resources/_zuul-jobs.yaml
+        - /usr/local/bin/resources.sh direct_apply /var/lib/software-factory/bootstrap-data/empty_resources.yaml resources/_zuul-jobs.yaml
         - git add resources/_zuul-jobs.yaml
         - git commit -m 'Create zuul-jobs repository'
         - git push git+ssh://gerrit/config master
