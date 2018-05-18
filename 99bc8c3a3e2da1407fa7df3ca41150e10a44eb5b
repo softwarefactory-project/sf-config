@@ -1,0 +1,283 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_aab3d709",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "resolve_tenant_informations instead",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_cab893e8",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "Maybe add a comment here: \"Check master SF connectivity\"",
+      "range": {
+        "startLine": 238,
+        "startChar": 1,
+        "endLine": 238,
+        "endChar": 12
+      },
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_0aa68bc1",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "We can explain why:\n* For registering the master\u0027s zuul pub on the tenant\u0027s Gerrit\n* For exposing the master\u0027s zuul pub key on the tenant /var/www/keys",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_2ac82774",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "Use master_sf_gateway",
+      "range": {
+        "startLine": 258,
+        "startChar": 14,
+        "endLine": 259,
+        "endChar": 35
+      },
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_caaf3393",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "# A tenant deployment references, in its zuul tenant config, the zuul-jobs repository (can be the sf one or upstream one)",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_aaaaf783",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "source-repositories:\n - zuul-jobs:\n     zuul/lib: True ?",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_6a95bf3e",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "hostname \u003d value.get(\u0027base_url\u0027).replace(\u0027http://\u0027, \u0027\u0027).replace(\u0027https://\u0027, \u0027\u0027).rstrip(\u0027r/\u0027)",
+      "range": {
+        "startLine": 300,
+        "startChar": 41,
+        "endLine": 300,
+        "endChar": 52
+      },
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_aa98b76b",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "There is this patch https://softwarefactory-project.io/r/#/c/12255",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_6aa37f9f",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "A bit more explanation: # If not then it means the tenant have not been defined on the master-sf. If yes, fetch it. The key will be used to initialize Zuul\u0027s secrets (like logserver ssh key) into the tenant\u0027s config repository.",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_ca9df35a",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "Use master_sf_gateway",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_eab54fd0",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "We don\u0027t need a base_url for github connection. We\u0027ll need to be adapted when the patch will depends on https://softwarefactory-project.io/r/#/c/12255/",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 70
+      },
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_0abbebc5",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "let\u0027s add zuul/lib: True here ? for ease detection.",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_4ac1e32d",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 15
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "Might deserve a comment: # Only set this job when the secret have been set/refresh. When config_key exists we are sure secrets have been refreshed (needed in case of tenant deployment)",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_eadc6f1a",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-pages.yaml.j2",
+        "patchSetId": 15
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "Might deserve a comment: # Only set this job when the secret have been set/refresh. When config_key exists we are sure secrets have been refreshed (needed in case of tenant deployment)",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_0ae20bd6",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul/_main.yaml.j2",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T11:56:00Z",
+      "side": 1,
+      "message": "A comment: # In case of tenant deployment zuul tenant configuration is fully based on resources.",
+      "revId": "99bc8c3a3e2da1407fa7df3ca41150e10a44eb5b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
