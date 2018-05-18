@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_0a79ab93",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 13
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-18T04:05:40Z",
+      "side": 1,
+      "message": "Hum, we should try to have tenant deployment use \"/zuul/status.html\" and not \"/zuul/$tenant_name/status.html\".",
+      "parentUuid": "7a2fa921_bf5ebb74",
+      "revId": "016d511179b735983c0c77f3c3a3a1b19cf4781b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_9f597f91",
         "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
         "patchSetId": 13
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_4a48035c",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-18T04:05:40Z",
+      "side": 1,
+      "message": "Agree, but that\u0027s an issue for zuul where we need to change http into ws scheme for console-stream. We could rename the variable to master_sf_fqdn.",
+      "parentUuid": "7a2fa921_9f597f91",
+      "revId": "016d511179b735983c0c77f3c3a3a1b19cf4781b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_ff64334a",
         "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
         "patchSetId": 13
@@ -47,6 +83,24 @@
       "writtenOn": "2018-05-17T16:45:32Z",
       "side": 1,
       "message": "master_sf_url contains /manage, I create master_sf_gateway that is the gateway host.",
+      "revId": "016d511179b735983c0c77f3c3a3a1b19cf4781b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_ea730fb3",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-18T04:05:40Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "7a2fa921_ff64334a",
       "revId": "016d511179b735983c0c77f3c3a3a1b19cf4781b",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
