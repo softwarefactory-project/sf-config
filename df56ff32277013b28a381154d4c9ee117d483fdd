@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_ea2b0f32",
+        "filename": "ansible/roles/sf-repos/files/remove-internal-resources.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-18T08:41:34Z",
+      "side": 1,
+      "message": "This should be wrapped by a try/except clause to skip non yaml files.",
+      "revId": "df56ff32277013b28a381154d4c9ee117d483fdd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
