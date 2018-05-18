@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_6a25bfc0",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T16:18:57Z",
+      "side": 1,
+      "message": "is not matching",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_6a0cdf42",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T16:18:57Z",
+      "side": 1,
+      "message": "Can we add an IdentityFile too ? the zuul private key",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_ca165355",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T16:18:57Z",
+      "side": 1,
+      "message": "Can it collapse with the blocks you init in ansible/roles/sf-gerrit/tasks/setup.yml in case of all in one node and gerrit deployed ? I mean for the default gerrit",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_8a093b34",
+        "filename": "ansible/roles/sf-repos/tasks/create_local_repo.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T16:18:57Z",
+      "side": 1,
+      "message": "I guess it should be {{ repo_name }}.git",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_2a06e720",
+        "filename": "ansible/roles/sf-repos/tasks/create_local_repo.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-18T16:18:57Z",
+      "side": 1,
+      "message": "Same here",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
