@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_4573144e",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-19T13:30:30Z",
+      "side": 1,
+      "message": "indeed :)",
+      "parentUuid": "7a2fa921_6a25bfc0",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_6a0cdf42",
         "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
         "patchSetId": 12
@@ -30,6 +48,24 @@
       "writtenOn": "2018-05-18T16:18:57Z",
       "side": 1,
       "message": "Can we add an IdentityFile too ? the zuul private key",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_2576183f",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-19T13:30:30Z",
+      "side": 1,
+      "message": "That\u0027s to be defined, iirc we said we\u0027ll use the gerrit_admin_rsa key (to be renamed admin_rsa key).",
+      "parentUuid": "7a2fa921_6a0cdf42",
       "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_85792c32",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-19T13:30:30Z",
+      "side": 1,
+      "message": "I don\u0027t think so, sf-gerrit setup \"gerrit\" host while here it sets the hostnames.",
+      "parentUuid": "7a2fa921_ca165355",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_8a093b34",
         "filename": "ansible/roles/sf-repos/tasks/create_local_repo.yml",
         "patchSetId": 12
@@ -64,6 +118,24 @@
       "writtenOn": "2018-05-18T16:18:57Z",
       "side": 1,
       "message": "I guess it should be {{ repo_name }}.git",
+      "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_e58ee026",
+        "filename": "ansible/roles/sf-repos/tasks/create_local_repo.yml",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-19T13:30:30Z",
+      "side": 1,
+      "message": "The \"{{ repo_name }}.git\" folder is created when doing the clone --bare L22 of this file",
+      "parentUuid": "7a2fa921_8a093b34",
       "revId": "b1668a76bc8ca650072ff8579f616c82d0122aec",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
