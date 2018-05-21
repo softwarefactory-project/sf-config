@@ -1,4 +1,15 @@
 ---
+- name: Check if epel-release is installed
+  command: rpm -q epel-release
+  ignore_errors: yes
+  register: epel_installed
+  failed_when: epel_installed.rc == 0
+
+- name: Report error if epel-release is installed
+  fail:
+    msg: "Software Factory is not compatible with EPEL."
+  when: epel_installed.rc == 0
+
 - name: Create libexec directory
   file:
     path: /usr/local/libexec/software-factory
