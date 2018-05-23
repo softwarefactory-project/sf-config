@@ -32,6 +32,8 @@
     parent: base
     description: Validate the config repo.
     run: playbooks/config/check.yaml
+    vars:
+      gateway_url: {{ gateway_url }}
     nodeset:
       nodes: []
 

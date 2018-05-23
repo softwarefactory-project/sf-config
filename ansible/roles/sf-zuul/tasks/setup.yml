@@ -15,40 +15,12 @@
     mode: "0444"
   delegate_to: "{{ gateway_host }}"
 
-- name: Prepare config-check files in /opt/sf
-  block:
-    - name: Create /opt/sf directory
-      file:
-        path: /opt/sf
-        state: directory
-
-    - name: Create /var/lib/log-classify directory
-      file:
-        path: /var/lib/log-classify
-        state: directory
-        owner: zuul
-        mode: 0700
-
-    - name: Dump current architecture for config-check test
-      copy:
-        dest: /opt/sf/arch.yaml
-        content: '{{ {"roles": roles}| to_yaml }}'
-
-    - name: Setup _nodepool.yaml for config-check test
-      template:
-        src: /usr/share/sf-config/ansible/roles/sf-nodepool/templates/_nodepool.yaml.j2
-        dest: /opt/sf/defconf-nodepool.yaml
-
-    - name: Setup zuul.conf for config-check test
-      template:
-        src: fake_zuul.conf.j2
-        dest: /opt/sf/defconf-zuul.conf
-
-    - name: Setup repoxplorer config.py
-      copy:
-        content: "db_path = 'repoxplorer/'"
-        dest: /opt/sf/defconf-repoxplorer.py
-  when: "'zuul-executor' in zuul_services"
+- name: Create /var/lib/log-classify directory
+  file:
+    path: /var/lib/log-classify
+    state: directory
+    owner: zuul
+    mode: 0700
 
 - name: Symlink SCL to zuul
   file:

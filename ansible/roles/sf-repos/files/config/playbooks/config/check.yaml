@@ -1,14 +1,31 @@
 ---
 - hosts: localhost
   tasks:
-    - name: include arch.yaml
-      include_vars:
-        file: /opt/sf/arch.yaml
-        name: arch
-
     - name: Set speculative config path
       set_fact:
         config_root: "{{ zuul.executor.src_root }}/{{ zuul.project.canonical_name }}"
+
+    - name: Fetch default config
+      get_url:
+        url: "{{ gateway_url }}/_defconf.tgz"
+        dest: "{{ config_root }}/"
+      retries: 30
+      delay: 1
+
+    - name: Create defconf directory
+      file:
+        path: "{{ config_root }}/defconf"
+        state: directory
+
+    - name: Extract default config
+      unarchive:
+        src: "{{ config_root }}/_defconf.tgz"
+        dest: "{{ config_root }}/defconf/"
+
+    - name: include arch.yaml
+      include_vars:
+        file: "{{ config_root }}/defconf/arch.yaml"
+        name: arch
 
     - name: Create build directory to merge configuration
       file:
@@ -40,7 +57,7 @@
       block:
         - name: Check syntax errors in repoxplorer definition files
           command: >
-            env - repoxplorer-config-validate --config /opt/sf/defconf-repoxplorer.py
+            env - repoxplorer-config-validate --config {{ config_root }}/defconf/defconf-repoxplorer.py
           args:
             chdir: "{{ config_root }}"
       when: '"repoxplorer" in arch.roles'
@@ -50,7 +67,7 @@
         - name: Install fake _nodepool.yaml
           copy:
             remote_src: true
-            src: /opt/sf/defconf-nodepool.yaml
+            src: "{{ config_root }}/defconf/defconf-nodepool.yaml"
             dest: "{{ config_root }}/build/_nodepool.yaml"
 
         - name: Merge nodepool config repo files
@@ -73,7 +90,7 @@
         - name: Install fake zuul.conf
           copy:
             remote_src: true
-            src: /opt/sf/defconf-zuul.conf
+            src: "{{ config_root }}/defconf/defconf-zuul.conf"
             dest: "{{ config_root }}/build/zuul.conf"
 
         - name: Merge zuul config repo files
