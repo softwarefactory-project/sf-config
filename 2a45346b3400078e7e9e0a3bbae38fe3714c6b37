@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_cb865513",
+        "filename": "ansible/roles/sf-repos/tasks/setup_config_repo.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-23T20:33:33Z",
+      "side": 1,
+      "message": "during sf-ci-functional-allinone, the task failed with \u0027fatal: Project not found: config\u0027, we catch this error on this task",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 25
+      },
+      "revId": "2a45346b3400078e7e9e0a3bbae38fe3714c6b37",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_ab8199fd",
+        "filename": "ansible/roles/sf-repos/tasks/setup_config_repo.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-23T20:33:33Z",
+      "side": 1,
+      "message": "update to \u0027_git_output is failed\u0027 to avoid ansible deprecation warning",
+      "range": {
+        "startLine": 57,
+        "startChar": 10,
+        "endLine": 57,
+        "endChar": 28
+      },
+      "revId": "2a45346b3400078e7e9e0a3bbae38fe3714c6b37",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_6b7ce120",
+        "filename": "ansible/roles/sf-repos/tasks/sync_config_repo_content.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-23T20:33:33Z",
+      "side": 1,
+      "message": "please use lookup(\u0027file... syntax instead command and cat",
+      "range": {
+        "startLine": 99,
+        "startChar": 6,
+        "endLine": 99,
+        "endChar": 70
+      },
+      "revId": "2a45346b3400078e7e9e0a3bbae38fe3714c6b37",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
