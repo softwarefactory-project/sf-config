@@ -97,6 +97,19 @@ authentication:
       name: name
       uid: sub
 
+  SAML2:
+    disabled: true
+    login_button_text: "Log in with Weyland-Yutani SSO"
+    # used only if the IdP can provide SSH keys as a list in an attribute.
+    key_delimiter: ';'
+    mapping:
+      login: XXX
+      email: XXX # X500 default is urn:oid:1.2.840.113549.1.9.1
+      name: XXX # X500 default is urn:oid:2.5.4.42
+      uid: XXX
+      # optional
+      ssh_keys: XXX
+
 theme:
   loginpage_custom_footer: ""
   # Right topmenu entry, next to the login/logout button

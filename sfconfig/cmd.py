@@ -31,6 +31,7 @@ from sfconfig.utils import yaml_load
 
 
 bdir = '/var/lib/software-factory/backup'
+saml_idp_file = '/etc/httpd/saml2/idp_metadata.xml'
 
 
 def extract_backup(backup):
@@ -227,6 +228,15 @@ Login with admin user, get the admin password by running:
   awk '/admin_password/ {print $2}' /etc/software-factory/sfconfig.yaml
 
 """ % (args.sfconfig['fqdn'], args.sfconfig['fqdn']))
+
+    if (not args.sfconfig['authentication']['SAML2']['disabled'] and
+       not os.path.isfile(saml_idp_file)):
+        print("""
+Service Provider metadata is available at /etc/httpd/saml2/mellon_metadata.xml
+Once you have the Identity Provider metadata, run:
+  sfconfig --set-idp-metadata <path/to/metadata.xml>
+
+""")
 
 
 if __name__ == "__main__":

@@ -49,3 +49,6 @@
       group: apache
       mode: 0440
       setype: httpd_sys_content_t
+
+- include_tasks: saml2.yaml
+  when: not authentication.SAML2.disabled
