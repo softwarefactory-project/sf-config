@@ -128,18 +128,6 @@ def update_sfconfig(args):
         data["zuul"]["git_connections"] = []
         dirty = True
 
-    args.save_sfconfig = dirty
-
-    if data['authentication']['admin_password'] == 'CHANGE_ME' or \
-       data['authentication']['admin_password'] == 'userpass':
-        new_pass = uuid.uuid4().hex
-        data['authentication']['admin_password'] = new_pass
-        # Admin_password is changed in place to avoid automatic sfconfig.yaml
-        # upgrade on first deployment (which break formating)
-        raw_config = open(args.config).read()
-        open(args.config, 'w').write(re.sub(
-            "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
-
     # 3.1: add SAML2 default auth values
     if 'SAML2' not in data['authentication']:
         data['authentication']['SAML2'] = {
@@ -155,6 +143,18 @@ def update_sfconfig(args):
             },
         }
         dirty = True
+
+    args.save_sfconfig = dirty
+
+    if data['authentication']['admin_password'] == 'CHANGE_ME' or \
+       data['authentication']['admin_password'] == 'userpass':
+        new_pass = uuid.uuid4().hex
+        data['authentication']['admin_password'] = new_pass
+        # Admin_password is changed in place to avoid automatic sfconfig.yaml
+        # upgrade on first deployment (which break formating)
+        raw_config = open(args.config).read()
+        open(args.config, 'w').write(re.sub(
+            "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
 
 
 def update_arch(args):
