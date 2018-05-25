@@ -154,6 +154,39 @@
     - new_config_key
     - config_key_exists
 
+- stat:
+    path: "{{ config_clone_dir }}/zuul.d/_secret_service_user.yaml"
+  register: _service_user_secret_file
+
+- block:
+    - name: Create temprary service user secret file
+      tempfile:
+        state: file
+      register: temp_secret_file
+
+    - name: Add service user password to temprary file
+      copy:
+        content: "{{ sf_service_user_password }}"
+        dest: "{{ temp_secret_file.path }}"
+
+    - name: Generate service_user secret
+      command: >
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
+            /var/lib/software-factory/bootstrap-data/certs/config.pub password \
+            --infile {{ temp_secret_file.path }}
+      register: _service_user_secret
+
+    - name: Remove temprary service user secret file
+      file:
+        path: "{{ temp_secret_file.path }}"
+        state: absent
+
+    - name: Update service_user.yaml
+      template:
+        src: "config/zuul.d/_secret_service_user.yaml.j2"
+        dest: "{{ config_clone_dir }}/zuul.d/_secret_service_user.yaml"
+  when: (new_config_key and config_key_exists) or not _service_user_secret_file.stat.exists
+
 - name: Indicate config repo changed
   set_fact:
     config_repo_updated: true

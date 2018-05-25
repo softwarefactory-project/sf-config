@@ -26,7 +26,28 @@
 
 {% endif %}
 {% if tenant_deployment %}
-# TODO(tristanC): add tenant-check and tenant-update job for tenant deployment
+- job:
+    name: config-check
+    parent: base
+    description: Validate the config repo.
+    run: playbooks/config/check.yaml
+    vars:
+      gateway_url: {{ gateway_url }}
+      tenant_config: True
+    secrets:
+      - service_user
+    nodeset:
+      nodes: []
+
+- project:
+    name: config
+    check:
+      jobs:
+        - config-check
+    gate:
+      jobs:
+        - config-check
+
 
 {% else %}
 {% if zuul_gerrit_connections or zuul_github_connections %}

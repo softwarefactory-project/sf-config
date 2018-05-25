@@ -14,6 +14,35 @@ trap "rm -f $VALIDATED_OUTPUT && rm -f $APPLIED_OUTPUT" EXIT
     exit 1
 }
 
+[ "$1" == "validate" ] && {
+    [ -n "$2" ] && {
+        GATEWAY_URL=$2
+        echo "Requesting a resources validation for $GATEWAY_URL"
+        # We are going to call a remote resources endpoint
+        # We need a cauth cookie - request by username/passowrd
+        [ ! -f .service_user_password ] && {
+            echo "Unable to find service user password file"
+            exit 1
+        }
+        pass="$(cat .service_user_password)"
+        username="SF_SERVICE_USER"
+        cookie_payload=$(python <<SCRIPT
+from sfmanager import sfauth
+print(sfauth.get_cookie('$GATEWAY_URL', username='$username', password='$pass'))
+SCRIPT
+)
+        [ -z "$cookie_payload" ] && {
+            echo "Unabled to fetch the AUTH_PUB_TKT cookie"
+            exit 1
+        }
+        ENDPOINT="$GATEWAY_URL/manage/v2/resources/"
+        COOKIE="--cookie 'auth_pubtkt=$cookie_payload'"
+    } || {
+        COOKIE=""
+    }
+}
+
+
 [ "$1" == "direct_apply" ] && {
     [ ! -f "$2" -a ! -f "$3" ] && {
         echo "direct_apply action needs two yaml files as second and third args"
@@ -50,7 +79,7 @@ data = dict([(os.path.join('resources', f), open(os.path.join('resources', f)).r
 	     for f in os.listdir('resources') if f.endswith('.yaml') or f.endswith('.yml')])
 json.dump({'data': data}, open('data.json', 'w'))
 SCRIPT
-        http_code=$(curl -s -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
+        http_code=$(curl -s $COOKIE -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
          -H "Content-Type: application/json" \
          -d @data.json -X POST $ENDPOINT -o $VALIDATED_OUTPUT)
         rm -f data.json
@@ -135,7 +164,7 @@ SCRIPT
         exit 0
         ;;
     get)
-        curl -s -H "X-Remote-User: SF_SERVICE_USER" $ENDPOINT | python -m json.tool
+        curl -s $ENDPOINT | python -m json.tool
         ;;
     *)
         echo "Action not supported."
