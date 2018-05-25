@@ -269,7 +269,6 @@
         topic: "{{ zuul_mqtt_failure_topic }}"
 {% endif %}
 
-{% endif %}
 - pipeline:
     name: periodic
     post-review: true
@@ -299,4 +298,6 @@
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
+{% endif %}
+
 {% endif %}
