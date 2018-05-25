@@ -1,3 +1,19 @@
 ---
-- include_tasks: "{{ role_action }}.yml"
-  when: role_action in role_actions
+- block:
+    - name: "Wait for lock file {{ role_action }}"
+      wait_for:
+        path: "{{ lock_path }}_{{ role_action }}.lock"
+        state: absent
+
+    - name: "Create lock file {{ role_action }}"
+      file:
+        path: "{{ lock_path }}_{{ role_action }}.lock"
+        state: touch
+
+    - include_tasks: "{{ role_action }}.yml"
+      when: role_action in role_actions
+  always:
+    - name: "Release lock file {{ role_action }}"
+      file:
+        path: "{{ lock_path }}_{{ role_action }}.lock"
+        state: absent
