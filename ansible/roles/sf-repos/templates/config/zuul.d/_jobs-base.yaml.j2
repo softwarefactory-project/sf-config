@@ -26,7 +26,42 @@
 
 {% endif %}
 {% if tenant_deployment %}
-# TODO(tristanC): add tenant-check and tenant-update job for tenant deployment
+- job:
+    name: config-check
+    parent: base
+    description: Validate the config repo.
+    run: playbooks/config/check.yaml
+    vars:
+      gateway_url: {{ gateway_url }}
+      tenant_config: True
+    secrets:
+      - service_user
+    nodeset:
+      nodes: []
+
+- job:
+    name: config-update
+    parent: base
+    description: Deploy config repo update.
+    run: playbooks/config/update.yaml
+    secrets:
+      - site_install_server
+      - site_tenant_update
+    semaphore: semaphore-config-update
+    nodeset:
+      nodes: []
+
+- project:
+    name: {{ config_project_name }}
+    check:
+      jobs:
+        - config-check
+    gate:
+      jobs:
+        - config-check
+    post:
+      jobs:
+        - config-update
 
 {% else %}
 {% if zuul_gerrit_connections or zuul_github_connections %}
@@ -37,6 +72,7 @@
     run: playbooks/config/check.yaml
     vars:
       gateway_url: {{ gateway_url }}
+      tenant_config: False
     nodeset:
       nodes: []
 
