@@ -20,6 +20,7 @@ class LogServer(Component):
 
     def configure(self, args, host):
         self.get_or_generate_ssh_key(args, "zuul_logserver_rsa")
+        # TODO(fbo): what logservers array is for ?
         args.glue["logservers"].append({
             "name": "sflogs",
             "host": args.glue["logserver_host"],
