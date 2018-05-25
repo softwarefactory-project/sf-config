@@ -21,6 +21,10 @@
   ignore_errors: yes
   roles:
     - role: submit-logstash-jobs
+{% if tenant_deployment %}
+      logstash_gearman_server: "{{ fqdn }}"
+{% else %}
       logstash_gearman_server: "job-logs-gearman-client.{{ fqdn }}"
+{% endif %}
       logstash_gearman_server_port: 4731
 {% endif %}
