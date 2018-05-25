@@ -4,9 +4,35 @@
     path: /etc/telegraf/telegraf.conf
   register: _telegraf_conf
 
-- name: Remove insecure ssl settings
-  replace:
-    dest: /etc/telegraf/telegraf.conf
-    regexp: '  #? ?insecure_skip_verify =.*'
-    replace: '  # insecure_skip_verify = true'
+- block:
+    - name: Remove insecure ssl settings
+      replace:
+        dest: /etc/telegraf/telegraf.conf
+        regexp: '  #? ?insecure_skip_verify =.*'
+        replace: '  # insecure_skip_verify = true'
+      notify: Restart telegraf
+
+    - name: Disable configuration in telegraf.conf
+      replace:
+        dest: /etc/telegraf/telegraf.conf
+        regexp: '^{{ item.regexp }}'
+        replace: '#{{ item.replace | default(item.regexp) }}'
+      with_items:
+        - {regexp: '\[\[outputs.influxdb\]\]', replace: '[[outputs.influxdb]]' }
+        - {regexp: '\[\[inputs.cpu\]\]', replace: '[[inputs.cpu]]' }
+        - {regexp: '\[\[inputs.disk\]\]', replace: '[[inputs.disk]]' }
+        - {regexp: '  collect_cpu_time =.*'}
+        - {regexp: '  database =.*'}
+        - {regexp: '  ignore_fs =.*'}
+        - {regexp: '  password =.*'}
+        - {regexp: '  percpu =.*'}
+        - {regexp: '  report_active =.*'}
+        - {regexp: '  retention_policy =.*'}
+        - {regexp: '  timeout =.*'}
+        - {regexp: '  totalcpu =.*'}
+        - {regexp: '  urls =.*'}
+        - {regexp: '  username =.*'}
+        - {regexp: '  write_consistency =.*'}
+      notify: Restart telegraf
   when: _telegraf_conf.stat.exists
+

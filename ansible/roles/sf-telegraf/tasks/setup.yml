@@ -1,48 +1,31 @@
 ---
-- name: Set influxdb host
-  replace:
-    dest: /etc/telegraf/telegraf.conf
-    regexp: '  urls = \["http://.*:8086"\].*'
-    replace: '  urls = ["https://{{ influxdb_host }}:8086"]'
-  notify: Restart telegraf
-
-- name: Configure credentials
-  replace:
-    dest: /etc/telegraf/telegraf.conf
-    regexp: '  #? ?{{ item.name }} =.*'
-    replace: '  {{ item.name }} = "{{ item.value }}"'
-  no_log: true
+- name: Install configuration templates
+  template:
+    src: '{{ item }}.j2'
+    dest: '/etc/telegraf/telegraf.d/{{ item }}'
+    owner: telegraf
+    group: root
+    mode: 0440
   with_items:
-    - {name: username, value: '{{ telegraf_influxdb_user }}'}
-    - {name: password, value: '{{ telegraf_influxdb_password }}'}
+    - output_influxdb.conf
   notify: Restart telegraf
 
-- name: Set hostname for service
+- name: Install configuration files
+  copy:
+    src: '{{ item }}'
+    dest: '/etc/telegraf/telegraf.d/{{ item }}'
+    owner: telegraf
+    mode: 0440
+  with_items:
+    - inputs.conf
+    - statsd.conf
+  notify: Restart telegraf
+
+- name: Configure hostname
   replace:
     dest: /etc/telegraf/telegraf.conf
     regexp: '  hostname = ""'
     replace: '  hostname = "{{ ansible_fqdn }}"'
-
-- name: Configure inputs net plugin
-  replace:
-    dest: /etc/telegraf/telegraf.conf
-    regexp: '^#? ?\[\[inputs.net\]\]'
-    replace: '[[inputs.net]]'
-  notify: Restart telegraf
-
-- name: Configure inputs statsd plugin
-  copy:
-    src: statsd.conf
-    dest: /etc/telegraf/telegraf.d/statsd.conf
-  when: "'influxdb' in roles"
-  notify: Restart telegraf
-
-- name: Set owner and mode for /etc/telegraf/telegraf.conf
-  file:
-    path: /etc/telegraf/telegraf.conf
-    owner: telegraf
-    mode: 0440
-  notify: Restart telegraf
 
 - name: Start service
   service:
