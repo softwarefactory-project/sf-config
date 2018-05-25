@@ -1,5 +1,5 @@
 ---
-{% if config_key_exists %}
+{% if zuul_gerrit_connections or zuul_github_connections or (tenant_deployment and config_key_exists) %}
 - job:
     name: build-and-publish-pages
     parent: base

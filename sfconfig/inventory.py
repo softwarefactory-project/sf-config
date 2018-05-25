@@ -376,7 +376,9 @@ def install_ansible(args):
         # Replace system ansible with rh-python35
         sfconfig.utils.execute(["yum", "remove", "-y", "ansible"])
         sfconfig.utils.execute(
-            ["yum", "install", "-y", "rh-python35-ansible", "rh-python35-ara"])
+            ["yum", "install", "-y",
+             "rh-python35-ansible", "rh-python35-ara",
+             "rh-python35-python-requests"])
     except Exception:
         print("Install rh-python35 scl first")
         raise
