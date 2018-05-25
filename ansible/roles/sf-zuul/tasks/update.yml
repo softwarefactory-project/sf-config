@@ -1,84 +1,100 @@
 ---
-- file:
-    path: /var/lib/software-factory/state/zuul_config
-    state: touch
-
-- name: Check local config
-  command: cat /var/lib/software-factory/state/zuul_config
-  register: localconfig
-
-- name: Check upstream config
-  command: git log -n 3 --oneline zuul/ resources/
-  args:
-    chdir: /root/config
-  register: upstreamconfig
-
 - block:
-    - name: Update zuul main.yaml by calling managesf
-      uri:
-        url: "{{ managesf_internal_url }}/v2/configurations/zuul"
-        method: GET
-        dest: "{{ zuul_conf_dir }}/main.yaml"
+    - name: Wait for lock file
+      wait_for:
+        path: "{{ lock_file }}"
+        state: absent
 
-    - name: Check if zuul-scheduler is running
-      command: systemctl -q is-active rh-python35-zuul-scheduler
-      register: _zuul_scheduler
-      failed_when: _zuul_scheduler.rc not in [0, 3]
+    - name: Create lock file
+      file:
+        path: "{{ lock_file }}"
+        state: touch
+
+    - file:
+        path: /var/lib/software-factory/state/zuul_config
+        state: touch
+
+    - name: Check local config
+      command: cat /var/lib/software-factory/state/zuul_config
+      register: localconfig
+
+    - name: Check upstream config
+      command: git log -n 3 --oneline zuul/ resources/
+      args:
+        chdir: /root/config
+      register: upstreamconfig
+
+    - block:
+        - name: Update zuul main.yaml by calling managesf
+          uri:
+            url: "{{ managesf_internal_url }}/v2/configurations/zuul"
+            method: GET
+            dest: "{{ zuul_conf_dir }}/main.yaml"
+
+        - name: Check if zuul-scheduler is running
+          command: systemctl -q is-active rh-python35-zuul-scheduler
+          register: _zuul_scheduler
+          failed_when: _zuul_scheduler.rc not in [0, 3]
+          when: "'zuul-scheduler' in zuul_services"
+
+        - name: Reload zuul-scheduler service
+          service:
+            name: rh-python35-zuul-scheduler
+            state: reloaded
+          when:
+            - "'zuul-scheduler' in zuul_services"
+            - _zuul_scheduler.rc == 0
+      when: localconfig.stdout != upstreamconfig.stdout or force_update|default(False)
+
+    - block:
+        - name: Generate tenant-update secrets
+          command: /usr/share/sf-config/ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py "{{ managesf_internal_url }}"
+          register: updated_keys
+
+        - name: Copy secrets to the install-server
+          fetch:
+            src: "{{ item }}"
+            dest: "{{ item }}"
+            flat: yes
+          with_items: "{{ updated_keys.stdout_lines }}"
+          when: updated_keys.stdout
+
+        - name: Copy secrets to the gateway
+          copy:
+            src: "{{ item }}"
+            dest: "/var/www/.config/{{ item | basename }}"
+          delegate_to: "{{ gateway_host }}"
+          with_items: "{{ updated_keys.stdout_lines }}"
+          when: updated_keys.stdout
       when: "'zuul-scheduler' in zuul_services"
 
-    - name: Reload zuul-scheduler service
+    - name: Start the scheduler first
       service:
         name: rh-python35-zuul-scheduler
-        state: reloaded
-      when:
-        - "'zuul-scheduler' in zuul_services"
-        - _zuul_scheduler.rc == 0
-  when: localconfig.stdout != upstreamconfig.stdout or force_update|default(False)
+        state: started
+      when: "'zuul-scheduler' in zuul_services"
 
-- block:
-    - name: Generate tenant-update secrets
-      command: /usr/share/sf-config/ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py "{{ managesf_internal_url }}"
-      register: updated_keys
+    - name: Wait for gearman server
+      wait_for:
+        port: "{{ zuul_gearman_port }}"
+        host: "{{ zuul_scheduler_host }}"
 
-    - name: Copy secrets to the install-server
-      fetch:
-        src: "{{ item }}"
-        dest: "{{ item }}"
-        flat: yes
-      with_items: "{{ updated_keys.stdout_lines }}"
-      when: updated_keys.stdout
+    - name: Ensure all services are started and enabled
+      service:
+        name: "rh-python35-{{ item }}"
+        state: started
+        enabled: "yes"
+      with_items: "{{ zuul_services }}"
 
-    - name: Copy secrets to the gateway
+    - name: Write config repo sha1 matching current configuration
       copy:
-        src: "{{ item }}"
-        dest: "/var/www/.config/{{ item | basename }}"
-      delegate_to: "{{ gateway_host }}"
-      with_items: "{{ updated_keys.stdout_lines }}"
-      when: updated_keys.stdout
-  when: "'zuul-scheduler' in zuul_services"
-
-- name: Start the scheduler first
-  service:
-    name: rh-python35-zuul-scheduler
-    state: started
-  when: "'zuul-scheduler' in zuul_services"
-
-- name: Wait for gearman server
-  wait_for:
-    port: "{{ zuul_gearman_port }}"
-    host: "{{ zuul_scheduler_host }}"
-
-- name: Ensure all services are started and enabled
-  service:
-    name: "rh-python35-{{ item }}"
-    state: started
-    enabled: "yes"
-  with_items: "{{ zuul_services }}"
-
-- name: Write config repo sha1 matching current configuration
-  copy:
-    content: "{{ upstreamconfig.stdout }}"
-    dest: /var/lib/software-factory/state/zuul_config
-  when:
-    - localconfig.stdout != upstreamconfig.stdout
-    - not force_update|default(False)
+        content: "{{ upstreamconfig.stdout }}"
+        dest: /var/lib/software-factory/state/zuul_config
+      when:
+        - localconfig.stdout != upstreamconfig.stdout
+        - not force_update|default(False)
+  always:
+    - name: Release lock file
+      file:
+        path: "{{ lock_file }}"
+        state: absent

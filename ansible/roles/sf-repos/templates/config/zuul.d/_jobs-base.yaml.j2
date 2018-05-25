@@ -24,12 +24,6 @@
     name: semaphore-config-update
     max: 1
 
-{% endif %}
-{% if tenant_deployment %}
-# TODO(tristanC): add tenant-check and tenant-update job for tenant deployment
-
-{% else %}
-{% if zuul_gerrit_connections or zuul_github_connections %}
 - job:
     name: config-check
     parent: base
@@ -37,6 +31,11 @@
     run: playbooks/config/check.yaml
     vars:
       gateway_url: {{ gateway_url }}
+{% if tenant_deployment %}
+      tenant_config: True
+{% else %}
+      tenant_config: False
+{% endif %}
     nodeset:
       nodes: []
 
@@ -47,6 +46,9 @@
     run: playbooks/config/update.yaml
     secrets:
       - site_install_server
+{% if tenant_deployment %}
+      - site_tenant_update
+{% endif %}
     semaphore: semaphore-config-update
     nodeset:
       nodes: []
@@ -73,7 +75,6 @@
       jobs:
         - linters
 
-{% endif %}
 {% endif %}
 
 - project:
