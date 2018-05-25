@@ -29,7 +29,7 @@
     force: yes
   when: _python35_installed.stat.exists
   with_items:
-    - "lib64/libpython3.5m.so"
+    - "lib64/libpython3.so.rh-python35"
     - "lib64/libpython3.5m.so.rh-python35-1.0"
     - "lib64/python3.5"
     - "lib/python3.5"
