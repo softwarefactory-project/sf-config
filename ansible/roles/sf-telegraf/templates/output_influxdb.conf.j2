@@ -1,0 +1,9 @@
+[[outputs.influxdb]]
+  urls = ["https://{{ influxdb_host }}:8086"]
+  database = "telegraf"
+  retention_policy = ""
+  write_consistency = "any"
+  timeout = "5s"
+  username = "{{ telegraf_influxdb_user }}"
+  password = "{{ telegraf_influxdb_password }}"
+  skip_database_creation = true
