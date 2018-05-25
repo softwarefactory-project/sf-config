@@ -54,6 +54,8 @@
     - policycoreutils-python
     # Needed for wait4 scripts
     - nmap-ncat
+    # Needed by sfconfig ansible setup tasks
+    - rh-python35-python-requests
 
 - name: Set permissive selinux
   lineinfile:
@@ -65,3 +67,43 @@
   file:
     path: /.autorelabel
     state: absent
+
+- name: Check for python3 scl
+  stat:
+    path: /opt/rh/rh-python35/root/usr/bin/python3.5
+  register: _python35_installed
+
+- name: Create symlink libpython3.5
+  file:
+    src: "/opt/rh/rh-python35/root/{{ item }}"
+    dest: "/usr/{{ item }}"
+    state: link
+    force: yes
+  when: _python35_installed.stat.exists
+  with_items:
+    - "lib64/libpython3.so.rh-python35"
+    - "lib64/libpython3.5m.so.rh-python35-1.0"
+    - "lib64/python3.5"
+    - "lib/python3.5"
+    - "bin/python3"
+
+- name: Symlink scl ansible
+  file:
+    src: "/opt/rh/rh-python35/root/usr/bin/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
+    state: link
+    force: yes
+  with_items:
+    - ansible-playbook
+    - ansible-inventory
+    - ansible-pull
+    - ansible-vault
+    - ansible-galaxy
+    - ansible
+
+- name: Install wait4 scripts
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/libexec/{{ item }}"
+    mode: 0555
+  with_items: [wait4port, wait4mariadb, wait4gerrit]

@@ -117,7 +117,18 @@
             chdir: "{{ config_root }}/metrics"
       when: '"grafana" in arch.roles'
 
+    - set_fact:
+        remote_gateway: "{{ gateway_url }}"
+      when: tenant_config is defined and tenant_config
+
+    - name: Copy service_user password in workspace
+      copy:
+        content: "{{ service_user.password }}"
+        dest: "{{ config_root }}/.service_user_password"
+      no_log: true
+      when: tenant_config is defined and tenant_config
+
     - name: Check resources changes
-      command: env - /usr/local/bin/resources.sh validate
+      command: env - /usr/local/bin/resources.sh validate {{ remote_gateway | default('') }}
       args:
         chdir: "{{ config_root }}"
