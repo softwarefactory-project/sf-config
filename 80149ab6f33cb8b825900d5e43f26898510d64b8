@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_532c3bab",
+        "filename": "ansible/roles/sf-zuul/tasks/update.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-29T11:10:44Z",
+      "side": 1,
+      "message": "use \"{{ managesf_internal_url }}\"",
+      "revId": "80149ab6f33cb8b825900d5e43f26898510d64b8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
