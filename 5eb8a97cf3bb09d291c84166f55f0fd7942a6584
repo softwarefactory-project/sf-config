@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_f3622716",
+        "filename": "ansible/roles/sf-gateway/tasks/defconf.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-29T08:38:55Z",
+      "side": 1,
+      "message": "file could starts with \"---\"",
+      "revId": "5eb8a97cf3bb09d291c84166f55f0fd7942a6584",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_53a75b4f",
+        "filename": "ansible/roles/sf-gateway/tasks/defconf.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-29T08:38:55Z",
+      "side": 1,
+      "message": "/var/www/_defconf.tgz",
+      "revId": "5eb8a97cf3bb09d291c84166f55f0fd7942a6584",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_136803f5",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-29T08:38:55Z",
+      "side": 1,
+      "message": "retries: 30\n\ndelay: 1",
+      "revId": "5eb8a97cf3bb09d291c84166f55f0fd7942a6584",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
