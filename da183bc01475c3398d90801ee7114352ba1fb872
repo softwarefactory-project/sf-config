@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_f3178752",
+        "filename": "ansible/roles/sf-managesf/templates/resources.sh.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-29T09:48:03Z",
+      "side": 1,
+      "message": "why not do \"pass \u003d open(\u0027.service_user_password\u0027)\" here instead?",
+      "revId": "da183bc01475c3398d90801ee7114352ba1fb872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_131d6373",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-29T09:48:03Z",
+      "side": 1,
+      "message": "no_log: yes",
+      "revId": "da183bc01475c3398d90801ee7114352ba1fb872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_b3110f60",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-29T09:48:03Z",
+      "side": 1,
+      "message": "make this a variable in the main config-check job",
+      "revId": "da183bc01475c3398d90801ee7114352ba1fb872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_d3160b55",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-29T09:48:03Z",
+      "side": 1,
+      "message": "remove \"name: config\" here.",
+      "revId": "da183bc01475c3398d90801ee7114352ba1fb872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
