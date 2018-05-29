@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_36908d95",
+        "filename": "ansible/roles/sf-managesf/templates/resources.sh.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-29T13:51:19Z",
+      "side": 1,
+      "message": "yes better thx.",
+      "parentUuid": "7a2fa921_f3178752",
+      "revId": "da183bc01475c3398d90801ee7114352ba1fb872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_131d6373",
         "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
         "patchSetId": 4
@@ -64,6 +82,24 @@
       "writtenOn": "2018-05-29T09:48:03Z",
       "side": 1,
       "message": "remove \"name: config\" here.",
+      "revId": "da183bc01475c3398d90801ee7114352ba1fb872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_16eeb122",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-29T13:51:19Z",
+      "side": 1,
+      "message": "instead I change to: name: {{ config_project_name }}",
+      "parentUuid": "7a2fa921_d3160b55",
       "revId": "da183bc01475c3398d90801ee7114352ba1fb872",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
