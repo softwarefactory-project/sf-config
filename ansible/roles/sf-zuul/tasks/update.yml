@@ -33,7 +33,28 @@
       when:
         - "'zuul-scheduler' in zuul_services"
         - _zuul_scheduler.rc == 0
-  when: localconfig.stdout != upstreamconfig.stdout
+  when: localconfig.stdout != upstreamconfig.stdout or force_update|default(False)
+
+- block:
+    - name: Generate tenant-update secrets
+      command: /usr/share/sf-config/ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py "{{ managesf_internal_url }}"
+      register: updated_keys
+
+    - name: Copy secrets to the install-server
+      fetch:
+        src: "{{ item }}"
+        dest: "{{ item }}"
+      with_items: "{{ updated_keys.stdout_lines }}"
+      when: updated_keys.stdout
+
+    - name: Copy secrets to the gateway
+      copy:
+        src: "{{ item }}"
+        dest: "/var/www/{{ item | basename }}"
+      delegate_to: "{{ gateway_host }}"
+      with_items: "{{ updated_keys.stdout_lines }}"
+      when: updated_keys.stdout
+  when: "'zuul-scheduler' in zuul_services"
 
 - name: Start the scheduler first
   service:
@@ -57,4 +78,6 @@
   copy:
     content: "{{ upstreamconfig.stdout }}"
     dest: /var/lib/software-factory/state/zuul_config
-  when: localconfig.stdout != upstreamconfig.stdout
+  when:
+    - localconfig.stdout != upstreamconfig.stdout
+    - not force_update|default(False)
