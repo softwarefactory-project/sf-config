@@ -255,6 +255,18 @@ def config_update(args, pb):
         pb.append(host_play(host, host_roles, {'role_action': 'update'}))
 
 
+def tenant_update(args, pb):
+    # Update tenant components managed on the main instance
+    for host in args.inventory:
+        host_roles = []
+        for role in ["zuul"]:
+            if role in host["roles"]:
+                host_roles.append(role)
+        pb.append(host_play(host, host_roles, {
+            'role_action': 'update',
+            'force_update': True}))
+
+
 def postconf(args, pb):
     for host in args.inventory:
         pb.append(host_play(host, host["roles"], {'role_action': 'postconf'}))
@@ -515,6 +527,7 @@ def generate(args):
     args.inventory = arch["inventory"]
     for playbook_name, generator in (
             ("sf_configrepo_update", config_update),
+            ("sf_tenant_update", tenant_update),
             ("get_logs", get_logs),
             ("sf_backup", backup),
             ("sf_erase", erase)):
