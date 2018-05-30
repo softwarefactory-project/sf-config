@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  tasks:
+    - include_tasks: update_local.yaml
+{% if tenant_deployment %}
+    - include_tasks: update_tenant.yaml
+{% endif %}
