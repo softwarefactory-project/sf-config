@@ -30,6 +30,13 @@ angular.module('sfWelcome', []).controller('mainController', function($scope, $h
     $http.get('/manage/v2/resources').
         success(function(data) {
             $scope.Projects = data['resources']['projects'];
+            angular.forEach($scope.Projects, function(project, key) {
+                new_sr = [];
+                angular.forEach(project['source-repositories'], function(sr, key) {
+                    new_sr.push(Object.keys(sr)[0]);
+                })
+                project['source-repositories'] = new_sr;
+            })
             $scope.Repos = data['resources']['repos'];
         })
 });
