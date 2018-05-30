@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_56d8a91d",
+        "filename": "ansible/roles/sf-repos/tasks/sync_config_repo_content.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-30T00:39:56Z",
+      "side": 1,
+      "message": "no_log: yes",
+      "revId": "c697e79507bbc52d88e9e3644e5133895f511e95",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

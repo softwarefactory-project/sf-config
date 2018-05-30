@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_f603f574",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-30T00:39:56Z",
+      "side": 0,
+      "message": "could the tenant_deployment change be added to the job definition below (instead of copying the whole blocks)?",
+      "revId": "753d2c02c31158c9b05b343c32da938b0183bdb1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
