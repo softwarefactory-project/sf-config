@@ -9,12 +9,6 @@
     state: present
   when: ansible_selinux.status == "enabled"
 
-- name: Patch for /paste topurl
-  patch:
-    src: lodgeit_nestedpath.patch
-    basedir: /usr/lib/python2.7/site-packages/lodgeit
-    strip: 1
-
 - name: Set service environment
   lineinfile:
     dest: /etc/sysconfig/lodgeit
