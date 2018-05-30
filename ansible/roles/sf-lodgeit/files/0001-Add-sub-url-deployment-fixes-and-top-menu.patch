@@ -1,3 +1,16 @@
+From e7591f2c4c775bc3c69803320f1a32f2637ec7d7 Mon Sep 17 00:00:00 2001
+From: SF initial configurator <admin@sftests.com>
+Date: Wed, 30 May 2018 12:48:39 +0000
+Subject: [PATCH] Add sub-url deployment fixes and top-menu
+
+---
+ urls.py                  | 32 ++++++++++++++++----------------
+ views/help/advanced.html |  6 +++---
+ views/help/pasting.html  |  4 ++--
+ views/layout.html        | 15 ++++++++-------
+ views/new_paste.html     |  2 +-
+ 5 files changed, 30 insertions(+), 29 deletions(-)
+
 diff --git a/urls.py b/urls.py
 index ee95dda..d7148ba 100644
 --- a/urls.py
@@ -102,10 +115,10 @@ index 404b96a..832de78 100644
      A new editor window will open with the contents of the old paste. Just
      do your changes and click "paste" to submit them.{% endtrans %}
 diff --git a/views/layout.html b/views/layout.html
-index dfecbed..55b4f5d 100644
+index dfecbed..99ef5a5 100644
 --- a/views/layout.html
 +++ b/views/layout.html
-@@ -3,12 +3,12 @@
+@@ -3,12 +3,13 @@
  <html>
    <head>
      <title>{{ page_title|e }} | LodgeIt!</title>
@@ -121,10 +134,11 @@ index dfecbed..55b4f5d 100644
 +    <script type="text/javascript" src="/static/lodgeit/jquery.autocomplete.js"></script>
 +    <script type="text/javascript" src="/static/lodgeit/cookie.js"></script>
 +    <script type="text/javascript" src="/static/lodgeit/lodgeit.js"></script>
++    <script type="text/javascript" src="/static/js/topmenu.js"></script>
      {%- if css %}
      <style type="text/css">
        {{ css|e }}
-@@ -35,7 +35,7 @@
+@@ -35,7 +36,7 @@
        {% for lang, name in i18n_languages %}
          <li {% if request.locale.language == lang %}class="active"{% endif %}>
            <a href="{{ url_for('pastes/new_paste', language='%s' % lang) }}">
@@ -146,3 +160,7 @@ index 2a44ef4..80fd1a1 100644
            <input type="text" name="captcha" size="20" />
          </div>
          {%- else %}
+-- 
+1.8.3.1
+
+

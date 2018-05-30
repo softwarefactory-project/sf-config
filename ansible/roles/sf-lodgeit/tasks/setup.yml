@@ -11,7 +11,7 @@
 
 - name: Patch for /paste topurl
   patch:
-    src: lodgeit_nestedpath.patch
+    src: 0001-Add-sub-url-deployment-fixes-and-top-menu.patch
     basedir: /usr/lib/python2.7/site-packages/lodgeit
     strip: 1
 
