@@ -342,3 +342,27 @@ class InstallServer(Component):
             except Exception:
                 print("Tenant isn't registered in master deployment, "
                       "add tenant config and restart sfconfig")
+
+        # Fetch main install-server tenant-update secret to trigger zuul reload
+        secret_path = "/var/lib/software-factory/bootstrap-data/certs/" \
+                      "tenant-update-secret.yaml"
+        if args.glue["config_key_exists"]:
+            if (
+                    os.path.exists(secret_path) or
+                    "pkcs" in open(secret_path).read()):
+                args.glue["tenant_update_secret"] = open(secret_path).read()
+            else:
+                try:
+                    req = request.urlopen(
+                        "%s/.config/tenant-update_%s_secret.yaml" % (
+                            args.glue["master_sf_url"],
+                            args.glue["tenant_name"]))
+                    secret_data = req.read().decode("utf-8")
+                    if "pkcs" in secret_data:
+                        open(secret_path, "w").write(secret_data)
+                        args.glue["tenant_update_secret"] = secret_data
+                    else:
+                        raise RuntimeError(
+                            "Invalid secret --[%s]--" % secret_data)
+                except Exception:
+                    fail("Ooops, tenant-update secret hasn't been generated")
