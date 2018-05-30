@@ -1,0 +1,11 @@
+---
+openstack.org:
+  name: openstack
+  hostname: review.openstack.org
+  port: 29418
+  public_url: https://review.openstack.org
+wikimedia.org:
+  name: wikimedia
+  hostname: gerrit.wikimedia.org
+  port: 29418
+  public_url: https://gerrit.wikimedia.org/r/

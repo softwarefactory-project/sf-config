@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -34,6 +34,7 @@ export PBR_VERSION=%{version}
 %{__python2} setup.py install --skip-build --root %{buildroot}
 # /etc/software-factory
 install -p -D -m 0644 defaults/arch.yaml %{buildroot}%{_sysconfdir}/software-factory/arch.yaml
+install -p -D -m 0644 defaults/known-gerrits.yaml %{buildroot}%{_sysconfdir}/software-factory/known-gerrits.yaml
 install -p -D -m 0644 defaults/sfconfig.yaml %{buildroot}%{_sysconfdir}/software-factory/sfconfig.yaml
 install -p -D -m 0644 defaults/logo-favicon.ico %{buildroot}%{_sysconfdir}/software-factory/logo-favicon.ico
 install -p -D -m 0644 defaults/logo-splash.png %{buildroot}%{_sysconfdir}/software-factory/logo-splash.png
@@ -72,6 +73,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Wed May 30 2018 Matthieu Huin <mhuin@redhat.com> - 3.0.0-3
+- Store known gerrits in a proper yaml file
+
 * Fri Apr 27 2018 Nicolas Hicher <nhicher@redhat.com> - 3.0.0-2
 - Add /var/log/software-factory directory creation
 

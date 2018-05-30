@@ -14,17 +14,16 @@ import copy
 
 from sfconfig.components import Component
 from sfconfig.utils import get_default
-from sfconfig.utils import fail
+from sfconfig.utils import fail, yaml_load
 
 
 EXT_GERRIT = "openstack#review.openstack.org#29418#" \
              "https://review.openstack.org/r/#username"
 
-
-KNOWN_GERRITS = {
-    "openstack.org": ["openstack", "review.openstack.org", "29418"],
-    "wikimedia.org": ["wikimedia", "gerrit.wikimedia.org", "29418"],
-}
+KG_PATH = '/etc/software-factory/known-gerrits.yaml'
+KNOWN_GERRITS = yaml_load(KG_PATH)
+if KNOWN_GERRITS == {}:
+    print('[Warning] Failed to load known gerrits list from %s' % KG_PATH)
 
 
 class ZuulScheduler(Component):
@@ -58,9 +57,13 @@ class ZuulScheduler(Component):
             try:
                 if len(values) == 2:
                     # Resolve shortcuts
-                    name, hostname, port = KNOWN_GERRITS.get(values[0])
-                    if name is None:
+                    gerrit_data = KNOWN_GERRITS.get(values[0])
+                    if gerrit_data is None:
                         raise RuntimeError("%s: unknown gerrit" % values[0])
+                    name = gerrit_data["name"]
+                    hostname = gerrit_data["hostname"]
+                    port = gerrit_data["port"]
+                    puburl = gerrit_data["public_url"]
                     username = values[1]
                 else:
                     name, hostname, port, puburl, username = values
