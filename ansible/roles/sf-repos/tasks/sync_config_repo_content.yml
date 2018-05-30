@@ -54,6 +54,8 @@
     delete: "yes"
     perms: "yes"
     recursive: "yes"
+    rsync_opts:
+      - "--exclude=update.yaml"
   with_items:
     - playbooks/config
     - playbooks/pages
@@ -67,6 +69,7 @@
     - resources/_internal.yaml
     - playbooks/base/pre.yaml
     - playbooks/base/post.yaml
+    - playbooks/config/update.yaml
     - zuul.d/_jobs-base.yaml
     - zuul.d/_jobs-pages.yaml
     - zuul.d/_pipelines.yaml
@@ -134,6 +137,20 @@
       template:
         src: "config/zuul.d/_secret_install_server.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_install_server.yaml"
+  when:
+    - new_config_key
+    - config_key_exists
+
+- name: install tenant update secret
+  block:
+    - name: Scan master_sf known hosts
+      command: "ssh-keyscan -t rsa {{ master_sf_fqdn }}"
+      register: _master_sf_known_hosts
+
+    - name: Update secret_tenant_update.yaml
+      template:
+        src: "config/zuul.d/_secret_tenant_update.yaml.j2"
+        dest: "{{ config_clone_dir }}/zuul.d/_secret_tenant_update.yaml"
   when:
     - new_config_key
     - config_key_exists

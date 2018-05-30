@@ -79,6 +79,13 @@
         dest: /usr/local/bin/gearman-client
         mode: 0755
 
+    - name: Install zuul_worker_rsa key
+      copy:
+        src: /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_worker_rsa
+        dest: /var/lib/zuul/.ssh/zuul_worker_rsa
+        owner: zuul
+        mode: 0400
+
   when: "'zuul-scheduler' in zuul_services"
 
 - block:

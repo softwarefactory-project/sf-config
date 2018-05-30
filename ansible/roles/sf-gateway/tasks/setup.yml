@@ -20,6 +20,7 @@
     - /var/www/dashboard
     - /var/www/dashboards_data
     - /var/www/keys
+    - /var/www/.config
     - /etc/letsencrypt
     - /etc/httpd/saml2
 
