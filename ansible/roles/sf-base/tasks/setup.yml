@@ -33,6 +33,7 @@
     - "lib64/libpython3.5m.so.rh-python35-1.0"
     - "lib64/python3.5"
     - "lib/python3.5"
+    - "bin/python3"
 
 - name: Symlink scl ansible
   file:

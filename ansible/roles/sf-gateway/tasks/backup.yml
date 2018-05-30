@@ -10,6 +10,7 @@
     - /etc/letsencrypt/
     - /etc/httpd/pages.d/
     - /var/www/pages/
+    - /var/www/.config
 
 - name: Backup extra directories
   synchronize:
