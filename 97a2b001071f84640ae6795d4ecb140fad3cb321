@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_91c40b93",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-30T20:28:56Z",
+      "side": 0,
+      "message": "I have removed that zuul_gerrit/github_connections conditions but was not sure about that, maybe it was needed for the gerrit_less deployment ... let me know",
+      "revId": "97a2b001071f84640ae6795d4ecb140fad3cb321",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
