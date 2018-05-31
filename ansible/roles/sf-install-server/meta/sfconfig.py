@@ -81,6 +81,22 @@ class InstallServer(Component):
             # Master tenant deployment always has config key ready to be used
             args.glue["config_key_exists"] = True
 
+    def ensure_git_connection(self, name, args, host):
+        """When no gerrit or github is connection is configured,
+           make sure local git connections are defined"""
+        git_connections = args.glue.setdefault("zuul_git_connections", [])
+        for git_connection in git_connections:
+            if git_connection["name"] == name:
+                return
+        if name == "local-cgit":
+            baseurl = "http://%s/cgit" % host["hostname"]
+        else:
+            baseurl = "file:///var/lib/software-factory/git"
+        git_connections.append({
+            "name": name,
+            "baseurl": baseurl
+        })
+
     def resolve_config_location(self, args, host):
         """The goal of this method is to discover the config and sf-jobs
            location and their associated connection
@@ -94,27 +110,20 @@ class InstallServer(Component):
             if "gerrit" in args.glue["roles"]:
                 # If gerrit is enabled, use it's connection and default push
                 # location
-                conn = "gerrit"
+                conn_name = "gerrit"
                 url = "%s/r/config" % args.glue["gateway_url"]
                 conf_loc = "git+ssh://gerrit/config"
                 jobs_loc = "git+ssh://gerrit/sf-jobs"
             else:
                 if "cgit" in args.glue["roles"]:
-                    # Inject a cgit connection into zuul configuration
-                    args.glue.setdefault("zuul_git_connections", []).append({
-                        "name": "local-cgit",
-                        "baseurl": "http://%s/cgit" % host["hostname"],
-                    })
-                    conn = "local-cgit"
+                    conn_name = "local-cgit"
                     url = "%s/cgit/config" % args.glue["gateway_url"]
                 else:
-                    # Inject a file:// connection into zuul configuration
-                    args.glue.setdefault("zuul_git_connections", []).append({
-                        "name": "local-git",
-                        "baseurl": "file:///var/lib/software-factory/git"
-                    })
-                    conn = "local-git"
+                    conn_name = "local-git"
                     url = "/var/lib/software-factory/git/config.git"
+                # Inject zuul git connection
+                self.ensure_git_connection(conn_name, args, host)
+
                 # If gerrit is not enabled, push location is a local path
                 conf_loc = "/var/lib/software-factory/git/config.git"
                 jobs_loc = "/var/lib/software-factory/git/sf-jobs.git"
@@ -137,10 +146,10 @@ class InstallServer(Component):
                     # Project name is the last two components
                     project_name = "/".join(location.split('/')[-2:])
                     if repo == "config-repo":
-                        conn = conn["name"]
+                        conn_name = conn["name"]
                         conf_name = project_name
                         conf_loc = "ssh://git@%s/%s" % (host, conf_name)
-                    elif conn != conn["name"]:
+                    elif conn_name != conn["name"]:
                         fail("Config and jobs needs to share "
                              "the same connection")
                     else:
@@ -161,10 +170,10 @@ class InstallServer(Component):
                         # Project name is the remaining part after the puburl
                         project_name = location[len(url):]
                         if repo == "config-repo":
-                            conn = conn["name"]
+                            conn_name = conn["name"]
                             conf_name = project_name
                             conf_loc = "%s/%s" % (conn_url, conf_name)
-                        elif conn != conn["name"]:
+                        elif conn_name != conn["name"]:
                             fail("Config and jobs needs to share "
                                  "the same connection")
                         else:
@@ -178,7 +187,7 @@ class InstallServer(Component):
                     fail("%s: No zuul connection configured" % location)
 
         # Theses variable will be used in resources and zuul templates
-        args.glue["config_connection_name"] = conn
+        args.glue["config_connection_name"] = conn_name
         args.glue["config_public_location"] = url
         args.glue["config_project_name"] = conf_name
         args.glue["config_location"] = conf_loc
@@ -221,6 +230,8 @@ class InstallServer(Component):
                     zuul_conn = "local-cgit"
                 else:
                     zuul_conn = "local-git"
+                # Inject zuul git connection
+                self.ensure_git_connection(zuul_conn, args, host)
 
         # Theses variable will be used in resources and zuul templates
         args.glue["zuul_jobs_connection_name"] = zuul_conn

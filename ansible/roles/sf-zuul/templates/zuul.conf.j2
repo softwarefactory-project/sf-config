@@ -72,6 +72,9 @@ server={{ conn['hostname'] }}
 baseurl={{ conn['puburl'] }}
 user={{ conn['username'] }}
 sshkey={{ zuul_lib_dir }}/.ssh/id_rsa
+{% if conn['canonical_hostname']|default(False) %}
+canonical_hostname={{ conn['canonical_hostname'] }}
+{% endif %}
 
 {% endfor %}
 
@@ -89,10 +92,12 @@ api_token={{ conn['api_token'] }}
 {% endif %}
 webhook_token={{ conn['webhook_token'] }}
 server={{ conn['hostname']|default('github.com') }}
-# canonical_hostname=?
 verify_ssl={{ conn['verify_ssl']|default(True) }}
 git_host={{ conn['hostname']|default('github.com') }}
 port={{ conn['port']|default('22') }}
+{% if conn['canonical_hostname']|default(False) %}
+canonical_hostname={{ conn['canonical_hostname'] }}
+{% endif %}
 
 {% endfor %}
 
