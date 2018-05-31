@@ -93,6 +93,8 @@ def yaml_load(filename):
         return yaml.safe_load(open(filename))
     except IOError:
         return {}
+    except yaml.parser.ParserError as e:
+        fail("%s: couldn't load (%s)" % (filename, e))
 
 
 def yaml_dump(content, fileobj):

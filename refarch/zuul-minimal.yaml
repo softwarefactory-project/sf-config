@@ -1,0 +1,16 @@
+---
+description: "Minimal Software Factory deployment"
+inventory:
+  - name: managesf
+    roles:
+      - install-server
+      - mysql
+      - zookeeper
+      - gateway
+      - cauth
+      - managesf
+      - logserver
+      - zuul-scheduler
+      - zuul-executor
+      - zuul-web
+      - nodepool-launcher
