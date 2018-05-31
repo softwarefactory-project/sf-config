@@ -11,6 +11,7 @@
 # under the License.
 
 import copy
+import os
 
 from sfconfig.components import Component
 from sfconfig.utils import get_default
@@ -181,6 +182,9 @@ class ZuulScheduler(Component):
                 "port": github_connection.get("port", 22)
             })
             args.glue["zuul_github_connections"].append(github_connection)
+            gh_app_key = github_connection.get('app_key')
+            if gh_app_key and os.path.isfile(gh_app_key):
+                github_connection['app_key'] = open(gh_app_key).read()
         for git_connection in zuul_config.get("git_connections", []):
             args.glue["zuul_git_connections"].append(git_connection)
 
