@@ -109,10 +109,10 @@ class InstallServer(Component):
                     # Project name is the last two components
                     project_name = "/".join(location.split('/')[-2:])
                     if repo == "config-repo":
-                        conn = conn["name"]
+                        conn_name = conn["name"]
                         conf_name = project_name
                         conf_loc = "ssh://git@%s/%s" % (host, conf_name)
-                    elif conn != conn["name"]:
+                    elif conn_name != conn["name"]:
                         fail("Config and jobs needs to share "
                              "the same connection")
                     else:

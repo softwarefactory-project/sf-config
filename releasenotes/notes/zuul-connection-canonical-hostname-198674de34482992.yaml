@@ -1,0 +1,5 @@
+---
+features:
+  - Canonical hostname can be set in sfconfig.yaml for zuul connections.
+  - Github App key can be defined as a file path instead of inlined content
+    in sfconfig.yaml
