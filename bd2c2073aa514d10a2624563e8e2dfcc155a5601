@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_2c2b5c84",
+        "filename": "ansible/roles/sf-zuul/tasks/main.yml",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-05-31T16:14:17Z",
+      "side": 1,
+      "message": "This does not work for install action as state directory is created in sf-base/setup.yml. I\u0027ll move tomorrow most of the setup.yml in install.yml.",
+      "revId": "bd2c2073aa514d10a2624563e8e2dfcc155a5601",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
