@@ -101,9 +101,6 @@
   selinux:
     policy: targeted
     state: permissive
-  when:
-    - ansible_virtualization_role != "guest"
-    - ansible_selinux["mode"] != "permissive"
 
 - name: Set sysctl values
   sysctl:
