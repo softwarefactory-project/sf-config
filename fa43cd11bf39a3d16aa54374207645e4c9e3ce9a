@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_b11d8711",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:24:43Z",
+      "side": 1,
+      "message": "this block should probably be in the install-server role. but the bootstrap-data is loaded before the ansible-playbook call and are already in the groupvars... So I guess this will only get applied on re-run. Which i think is fine since the pubkey comments are not actually used.",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_91208b4b",
+        "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:24:43Z",
+      "side": 1,
+      "message": "these tasks need to be delegate_to: \"{{ install_server_host }}\"",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_511af318",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:24:43Z",
+      "side": 1,
+      "message": "wait, how come gerrit service pub ssh keys needs update?",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_7117efed",
+        "filename": "ansible/roles/sf-influxdb/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:24:43Z",
+      "side": 1,
+      "message": "shouldn\u0027t the copy task below force the copy of the new files?",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_11d31b3a",
+        "filename": "ansible/roles/sf-repos/tasks/gitreview_update_fqdn.yaml",
+        "patchSetId": 43
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:24:43Z",
+      "side": 1,
+      "message": "Let\u0027s use a better commit message here, like \"gitreview: update host to {{ fqdn }}\"",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_31d89753",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:24:43Z",
+      "side": 1,
+      "message": "deletage_to: \"{{ install_server_host }}\"",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_d1dcc348",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:24:43Z",
+      "side": 1,
+      "message": "You could use args.glue[\"update_fqdn\"] \u003d True   here, glue is the groupvars.\nAlso, if fqdn didn\u0027t changed, you could:\n\nelse:\n    args.glue[\"update_fqdn\"] \u003d False\n\nLike that you can drop all the \"is defined\" from the update_fqdn conditions.",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_f1e1bfff",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:24:43Z",
+      "side": 1,
+      "message": "When using args.glue[\"update_fqdn\"], no need to inject an extra-vars here.",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
