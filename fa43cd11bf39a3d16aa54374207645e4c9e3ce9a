@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_514e73c2",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-31T14:30:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2fa921_b11d8711",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_91208b4b",
         "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
         "patchSetId": 43
@@ -30,6 +48,24 @@
       "writtenOn": "2018-05-31T00:24:43Z",
       "side": 1,
       "message": "these tasks need to be delegate_to: \"{{ install_server_host }}\"",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_714b6fb1",
+        "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-31T14:30:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2fa921_91208b4b",
       "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_11c79b13",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-31T14:30:14Z",
+      "side": 1,
+      "message": "It\u0027s because we check md5sum for this key on sf-ci. This change ensure the key contains the right fqdn",
+      "parentUuid": "7a2fa921_511af318",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_7117efed",
         "filename": "ansible/roles/sf-influxdb/tasks/setup.yml",
         "patchSetId": 43
@@ -64,6 +118,24 @@
       "writtenOn": "2018-05-31T00:24:43Z",
       "side": 1,
       "message": "shouldn\u0027t the copy task below force the copy of the new files?",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_31cc1735",
+        "filename": "ansible/roles/sf-influxdb/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-31T14:30:14Z",
+      "side": 1,
+      "message": "I will check, but during my tests, the only solution was to delete, then recreate the crt and key",
+      "parentUuid": "7a2fa921_7117efed",
       "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_d1d043cc",
+        "filename": "ansible/roles/sf-repos/tasks/gitreview_update_fqdn.yaml",
+        "patchSetId": 43
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-31T14:30:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2fa921_11d31b3a",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_31d89753",
         "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
         "patchSetId": 43
@@ -98,6 +188,24 @@
       "writtenOn": "2018-05-31T00:24:43Z",
       "side": 1,
       "message": "deletage_to: \"{{ install_server_host }}\"",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_f1d53fb9",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 43
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-31T14:30:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2fa921_31d89753",
       "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_91dbabed",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-31T14:30:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2fa921_d1dcc348",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_f1e1bfff",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 43
@@ -132,6 +258,24 @@
       "writtenOn": "2018-05-31T00:24:43Z",
       "side": 1,
       "message": "When using args.glue[\"update_fqdn\"], no need to inject an extra-vars here.",
+      "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_b1d827f1",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 43
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-05-31T14:30:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2fa921_f1e1bfff",
       "revId": "fa43cd11bf39a3d16aa54374207645e4c9e3ce9a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
