@@ -16,6 +16,24 @@
       "revId": "97a2b001071f84640ae6795d4ecb140fad3cb321",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_91ce4b82",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-05-31T00:51:16Z",
+      "side": 0,
+      "message": "When deploying without gerrit or github (e.g. the first step of the gerritless deployment), then we can\u0027t have a check/gate pipeline without any available triggers. So this condition is still needed, and I think it should be:\n\n{% if zuul_gerrit_connections or zuul_github_connections or (tenant_deployment and config_key_exists) %}",
+      "parentUuid": "7a2fa921_91c40b93",
+      "revId": "97a2b001071f84640ae6795d4ecb140fad3cb321",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
