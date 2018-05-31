@@ -1,12 +1,16 @@
 ---
-- name: Remove python-alabaster
+- name: Remove unused packages
   yum:
     name: '{{ item }}'
     state: absent
   with_items:
-    - python2-alabaster
     - epel-release
     - jenkins
+    - python-jenkins
+    - python2-alabaster
+    - python2-jenkins-job-builder
+    - python2-redmine
+
 
 # 2.7 only
 - name: Remove python2-paramiko to use python-paramiko from extras instead
