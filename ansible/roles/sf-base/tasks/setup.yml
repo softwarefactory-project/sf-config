@@ -1,21 +1,4 @@
 ---
-- name: Create working directories
-  file:
-    path: "{{ item.path }}"
-    state: directory
-    owner: "{{ item.owner | default('root') }}"
-    group: "{{ item.group | default('root') }}"
-    mode: "{{ item.mode | default(0750) }}"
-  with_items:
-    - {path: '/var/lib/software-factory/state'}
-    - {path: '/usr/share/software-factory'}
-    - {path: '/usr/libexec/software-factory'}
-    - {path: '/usr/share/software-factory'}
-    - {path: '/etc/software-factory', mode: '0700'}
-    - {path: '/var/log/software-factory', mode: '0700'}
-    - {path: '/var/lib/software-factory/sql', mode: '0700'}
-    - {path: '/var/lib/software-factory/git', mode: '0755'}
-
 - name: Check for python3 scl
   stat:
     path: /opt/rh/rh-python35/root/usr/bin/python3.5

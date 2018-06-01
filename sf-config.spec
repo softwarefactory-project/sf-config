@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -41,18 +41,33 @@ install -p -D -m 0644 defaults/logo-topmenu.png %{buildroot}%{_sysconfdir}/softw
 # /usr/share/sf-config
 install -p -d %{buildroot}%{_datarootdir}/sf-config
 mv ansible defaults refarch scripts templates testinfra %{buildroot}%{_datarootdir}/sf-config/
-# /var/lib/software-factory/backup
-install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
-# /var/log/software-factory
+# /var/
 install -p -d -m 0700 %{buildroot}/var/log/software-factory
+install -p -d -m 0700 %{buildroot}/var/lib/software-factory
+install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
+install -p -d -m 0750 %{buildroot}/var/lib/software-factory/state
+install -p -d -m 0700 %{buildroot}/var/lib/software-factory/sql
+install -p -d -m 0755 %{buildroot}/var/lib/software-factory/git
+# /usr/
+install -p -d -m 0755 %{buildroot}/usr/local/libexec/software-factory
+install -p -d -m 0750 %{buildroot}/usr/libexec/software-factory
+install -p -d -m 0750 %{buildroot}/usr/share/software-factory
 
 %files
 %{_bindir}/sf*
 %{python2_sitelib}/sfconfig-%{version}-py*.egg-info
 %{python2_sitelib}/sfconfig
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
+%dir %attr(0700, root, root) /var/lib/software-factory/
 %dir %attr(0700, root, root) /var/lib/software-factory/backup
+%dir %attr(0750, root, root) /var/lib/software-factory/state
+%dir %attr(0700, root, root) /var/lib/software-factory/sql
+%dir %attr(0755, root, root) /var/lib/software-factory/git
 %dir %attr(0700, root, root) /var/log/software-factory
+# What is the usage of these libexec directories for SF
+%dir %attr(0755, root, root) /usr/local/libexec/software-factory
+%dir %attr(0700, root, root) /usr/libexec/software-factory
+%dir %attr(0750, root, root) /usr/share/software-factory
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
@@ -72,6 +87,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Fri Jun  1 2018 Fabien Boucher <fboucher@redhat.com> - 3.0.0-3
+- Move sfconfig directories creation in packaging
+
 * Fri Apr 27 2018 Nicolas Hicher <nhicher@redhat.com> - 3.0.0-2
 - Add /var/log/software-factory directory creation
 
