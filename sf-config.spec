@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -51,8 +51,17 @@ install -p -d -m 0700 %{buildroot}/var/log/software-factory
 %{python2_sitelib}/sfconfig-%{version}-py*.egg-info
 %{python2_sitelib}/sfconfig
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
+%dir %attr(0700, root, root) /var/lib/software-factory/
+%dir %attr(0700, root, root) /var/lib/software-factory/backup
+%dir %attr(0750, root, root) /var/lib/software-factory/state
+%dir %attr(0700, root, root) /var/lib/software-factory/sql
+%dir %attr(0755, root, root) /var/lib/software-factory/git
 %dir %attr(0700, root, root) /var/lib/software-factory/backup
 %dir %attr(0700, root, root) /var/log/software-factory
+# What is the usage of these libexec directories for SF
+%dir %attr(0755, root, root) /usr/local/libexec/software-factory
+%dir %attr(0700, root, root) /usr/libexec/software-factory
+%dir %attr(0750, root, root) /usr/share/software-factory
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/
 
@@ -72,6 +81,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Fri Jun  1 2018 Fabien Boucher <fboucher@redhat.com> - 3.0.0-3
+- Move sfconfig directories creation in packaging
+
 * Fri Apr 27 2018 Nicolas Hicher <nhicher@redhat.com> - 3.0.0-2
 - Add /var/log/software-factory directory creation
 
