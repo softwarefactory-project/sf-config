@@ -4,5 +4,5 @@
 - name: "Install configuration updater"
   copy:
     src: mirror2swift-config-merger.py
-    dest: /usr/local/libexec/software-factory/mirror2swift-config-merger.py
+    dest: /usr/libexec/software-factory/mirror2swift-config-merger.py
     mode: 0555

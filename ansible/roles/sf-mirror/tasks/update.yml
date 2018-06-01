@@ -1,6 +1,6 @@
 ---
 - name: "Template mirror2swift config file"
-  command: /usr/local/libexec/software-factory/mirror2swift-config-merger.py "{{ item }}" "/var/lib/mirror2swift/{{ item|basename }}.yaml"
+  command: /usr/libexec/software-factory/mirror2swift-config-merger.py "{{ item }}" "/var/lib/mirror2swift/{{ item|basename }}.yaml"
   with_fileglob:
     - /root/config/mirrors/*
 
