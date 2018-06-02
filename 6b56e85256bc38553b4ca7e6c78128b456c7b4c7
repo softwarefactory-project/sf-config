@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_e7133d0c",
+        "filename": "sf-config.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-02T03:32:46Z",
+      "side": 1,
+      "message": "This needs to be 0755 for anon access to git dir.",
+      "revId": "6b56e85256bc38553b4ca7e6c78128b456c7b4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_070519c1",
+        "filename": "sf-config.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-02T03:32:46Z",
+      "side": 1,
+      "message": "libexec is defined by the FHS as a \"directory contains small helper programs called by other programs\". It\u0027s for program that doesn\u0027t need to be in user\u0027s PATH.",
+      "revId": "6b56e85256bc38553b4ca7e6c78128b456c7b4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_87f929cb",
+        "filename": "sf-config.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-02T03:32:46Z",
+      "side": 1,
+      "message": "Next PS moved /usr/local/libexec to /usr/libexec. Package shouldn\u0027t use /usr/local, it\u0027s meant for user custom stuff.",
+      "revId": "6b56e85256bc38553b4ca7e6c78128b456c7b4c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
