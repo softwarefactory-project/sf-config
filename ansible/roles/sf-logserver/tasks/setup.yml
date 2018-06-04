@@ -17,8 +17,8 @@
   with_items: "{{ loguser_authorized_keys }}"
 
 - name: Install httpd conf.d logserver
-  copy:
-    src: logserver.conf
+  template:
+    src: logserver.conf.j2
     dest: /etc/httpd/conf.d/logserver.conf
   register: httpd_conf
 
