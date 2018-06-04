@@ -1,3 +1,4 @@
+# This file is managed by ansible, do not edit directly
 ---
 {% if zuul_gerrit_connections or zuul_github_connections %}
 - pipeline:
@@ -300,3 +301,14 @@
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
 {% endif %}
+
+- pipeline:
+    name: merge-check
+    description: >
+      Each time a change merges, this pipeline verifies that all open changes
+      on the same project are still mergeable.
+    failure-message: Build failed (merge-check pipeline).
+    manager: independent
+    ignore-dependencies: true
+    precedence: low
+    trigger: {}
