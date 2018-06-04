@@ -1,3 +1,7 @@
+WSGIDaemonProcess logs user=apache group=apache processes={{ logs_wsgi_processes }} threads={{ logs_wsgi_threads }}
+WSGIProcessGroup logs
+WSGIApplicationGroup %{GLOBAL}
+
 AddType text/plain .log
 AddType text/plain .sh
 AddType text/plain .yaml
