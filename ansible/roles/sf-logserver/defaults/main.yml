@@ -9,3 +9,9 @@ loguser_authorized_keys: []
 
 # 2 months log expiry
 logs_expiry: 60
+
+# wsgi configuration
+logs_wsgi_processes: 8
+logs_wsgi_threads: 1
+logs_wsgi_ara_directory: ara-report
+logs_wsgi_ara_tmpdir_max_age: 3600
