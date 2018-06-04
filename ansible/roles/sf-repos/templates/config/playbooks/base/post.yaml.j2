@@ -6,6 +6,7 @@
     - emit-ara-html
 
 - hosts: "{{'{{'}} site_sflogs.fqdn {{'}}'}}"
+  gather_facts: false
   tasks:
     # Use a block because play vars doesn't take precedence on roles vars
     - block:
