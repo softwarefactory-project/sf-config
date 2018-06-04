@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    The --zuul-ssh-key, --zuul-upstream-zuul-jobs and --zuul-external-gerrit
+    sfconfig command line argument are no longer supported. Use the
+    sfconfig.yaml configuration file to configure those options.
