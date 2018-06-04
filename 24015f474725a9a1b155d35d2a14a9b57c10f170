@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_42be9f00",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 17
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-04T11:16:33Z",
+      "side": 1,
+      "message": "that\u0027s the fact that is misnamed. I need the base url to request a cookie on cauth too.",
+      "parentUuid": "7a2fa921_e2a9ebe0",
+      "revId": "24015f474725a9a1b155d35d2a14a9b57c10f170",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_82afd7e2",
         "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_pipelines.yaml.j2",
         "patchSetId": 17
@@ -47,6 +65,24 @@
       "writtenOn": "2018-06-04T10:03:25Z",
       "side": 1,
       "message": "why this changed?",
+      "revId": "24015f474725a9a1b155d35d2a14a9b57c10f170",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_c2c94fae",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_pipelines.yaml.j2",
+        "patchSetId": 17
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-04T11:16:33Z",
+      "side": 1,
+      "message": "Ok, that\u0027s true the periodic pipeline works w/o connections. It was to keep consistency with not pipeline set if no zuul_gerrit_connections or zuul_github_connections. I\u0027ll remove that change.",
+      "parentUuid": "7a2fa921_82afd7e2",
       "revId": "24015f474725a9a1b155d35d2a14a9b57c10f170",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "7a2fa921_e2cecbb3",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_secret_sflogs.yaml.j2",
+        "patchSetId": 17
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-04T11:16:33Z",
+      "side": 1,
+      "message": "yes, I removed the previous condition and this edit remained. I\u0027ll fix that.",
+      "parentUuid": "7a2fa921_a2ac53ee",
+      "revId": "24015f474725a9a1b155d35d2a14a9b57c10f170",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_42b9bf2d",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 17
@@ -81,6 +135,24 @@
       "writtenOn": "2018-06-04T10:03:25Z",
       "side": 1,
       "message": "i think we want that in sf-base install, otherwise this only get installed on the install-server and the import may fail on distributed deployment.",
+      "revId": "24015f474725a9a1b155d35d2a14a9b57c10f170",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a2fa921_82c4b792",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-04T11:16:33Z",
+      "side": 1,
+      "message": "yes, next ps will change that.",
+      "parentUuid": "7a2fa921_42b9bf2d",
       "revId": "24015f474725a9a1b155d35d2a14a9b57c10f170",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
