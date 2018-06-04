@@ -3,7 +3,12 @@
   roles:
     - role: add-fileserver
       fileserver: "{{'{{'}} site_sflogs {{'}}'}}"
-    - emit-ara-html
+    - role: ara-report
+      # This doesn't work, see: https://review.openstack.org/577675
+      ara_report_run: failure
+      ara_report_type: database
+      # This shouldn't be like that, see https://review.openstack.org/577676
+      ara_report_path: "{{'{{'}} zuul.executor.log_root {{'}}'}}/ara-report"
 
 - hosts: "{{'{{'}} site_sflogs.fqdn {{'}}'}}"
   gather_facts: false
