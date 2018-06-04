@@ -12,6 +12,7 @@
   args:
     chdir: /root/config
   register: upstreamconfig
+  when: "'gerrit' in roles"
 
 - block:
     - name: "Update dashboards"
@@ -21,4 +22,6 @@
       copy:
         content: "{{ upstreamconfig.stdout }}"
         dest: /var/lib/software-factory/state/dashboards_config
-  when: localconfig.stdout != upstreamconfig.stdout
+  when:
+    - localconfig.stdout != upstreamconfig.stdout
+    - "'gerrit' in roles"
