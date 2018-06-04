@@ -145,7 +145,9 @@ def update_sfconfig(args):
         dirty = True
 
     if "config-locations" not in data:
-        data["config-locations"] = {'config-repo': '', 'jobs-repo': ''}
+        data["config-locations"] = {
+            'config-repo': '', 'jobs-repo': '',
+            'strategy': {'sync': 'push', 'user': 'git'}}
         dirty = True
 
     if "tenant-deployment" not in data:

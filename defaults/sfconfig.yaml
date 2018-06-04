@@ -37,6 +37,11 @@ config-locations:
   # When not set, the config repositories are hosted locally
   config-repo:
   jobs-repo:
+  strategy:
+    # How remote location are maintained
+    sync: push
+    # The user to use for submitting changes
+    user: git
 
 authentication:
   admin_password: CHANGE_ME
