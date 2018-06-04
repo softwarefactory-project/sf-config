@@ -63,6 +63,9 @@ class InstallServer(Component):
 
         if bool(args.sfconfig['config-locations']['config-repo']):
             args.glue["remote_config_repositories"] = True
+            if args.sfconfig['config-locations'][
+                    'strategy'].get('sync', 'push') != 'push':
+                fail("Only push sync strategy is supported at the moment.")
         else:
             args.glue["remote_config_repositories"] = False
         self.resolve_config_location(args, host)
@@ -130,6 +133,7 @@ class InstallServer(Component):
         else:
             # When config repositories are remote, we need to look for the
             # zuul connection name.
+            sync_user = args.sfconfig['config-locations']['strategy']['user']
             zuul_config = args.sfconfig['zuul']
             for repo in ('config-repo', 'jobs-repo'):
                 location = args.sfconfig['config-locations'].get(repo)
@@ -145,16 +149,17 @@ class InstallServer(Component):
                         continue
                     # Project name is the last two components
                     project_name = "/".join(location.split('/')[-2:])
+                    _loc = "ssh://%s@%s/%s" % (sync_user, host, project_name)
                     if repo == "config-repo":
                         conn_name = conn["name"]
                         conf_name = project_name
-                        conf_loc = "ssh://git@%s/%s" % (host, conf_name)
+                        conf_loc = _loc
                     elif conn_name != conn["name"]:
                         fail("Config and jobs needs to share "
                              "the same connection")
                     else:
                         jobs_name = project_name
-                        jobs_loc = "ssh://git@%s/%s" % (host, jobs_name)
+                        jobs_loc = _loc
                     found = True
                     break
 
@@ -163,7 +168,7 @@ class InstallServer(Component):
                     # available gerrit connections.
                     for conn in zuul_config['gerrit_connections']:
                         conn_url = "ssh://%s@%s" % (
-                            conn["username"], conn["hostname"])
+                            sync_user, conn["hostname"])
                         url = conn.get('puburl')
                         if url not in location:
                             continue
