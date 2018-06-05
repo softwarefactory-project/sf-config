@@ -15,96 +15,11 @@ import os
 
 from sfconfig.components import Component
 from sfconfig.utils import get_default
-from sfconfig.utils import fail
-
-
-EXT_GERRIT = "openstack#review.openstack.org#29418#" \
-             "https://review.openstack.org/r/#username"
-
-
-KNOWN_GERRITS = {
-    "openstack.org": ["openstack", "review.openstack.org", "29418"],
-    "wikimedia.org": ["wikimedia", "gerrit.wikimedia.org", "29418"],
-}
 
 
 class ZuulScheduler(Component):
     role = "zuul-scheduler"
     require_role = ["nodepool", "zookeeper"]
-
-    def usage(self, parser):
-        parser.add_argument("--zuul-ssh-key", metavar="KEY_PATH",
-                            help="Use existing ssh key for zuul")
-        parser.add_argument("--zuul-upstream-zuul-jobs", action="store_true",
-                            help="Use openstack-infra/zuul-jobs")
-        parser.add_argument("--zuul-external-gerrit",
-                            metavar="name#hostname#port#puburl#username",
-                            help="Enable a remote gerrit, "
-                            "e.g.: --zuul-external-gerrit %s" % EXT_GERRIT)
-
-    def argparse(self, args):
-        if args.zuul_ssh_key:
-            self.import_ssh_key(args, "zuul_rsa", args.zuul_ssh_key)
-
-        if args.zuul_upstream_zuul_jobs is not None:
-            if args.sfconfig["zuul"]["upstream_zuul_jobs"] != \
-               args.zuul_upstream_zuul_jobs:
-                # Update sfconfig.yaml value
-                args.sfconfig["zuul"][
-                    "upstream_zuul_jobs"] = args.zuul_upstream_zuul_jobs
-                args.save_sfconfig = True
-
-        if args.zuul_external_gerrit:
-            values = args.zuul_external_gerrit.split('#')
-            try:
-                if len(values) == 2:
-                    # Resolve shortcuts
-                    name, hostname, port = KNOWN_GERRITS.get(values[0])
-                    if name is None:
-                        raise RuntimeError("%s: unknown gerrit" % values[0])
-                    username = values[1]
-                else:
-                    name, hostname, port, puburl, username = values
-                    port = int(port)
-            except ValueError:
-                fail("Invalid zuul-external-gerrit argument, it needs to be "
-                     "in this format: %s" % EXT_GERRIT)
-            if name == "gerrit":
-                fail("Can't use 'gerrit' name for external connections")
-            # Update gerrit_connection if necessary
-            args.updated = False
-            for connection in args.sfconfig.get("zuul", {}).get(
-                    "gerrit_connections", []):
-                def update_value(key, value):
-                    print("%s: updating %s to %s" % (name, key, value))
-                    connection[key] = value
-                    args.updated = True
-                    args.save_sfconfig = True
-                if connection["name"] == name:
-                    if connection.get("hostname") != hostname:
-                        update_value("hostname", hostname)
-                    if connection.get("port") and \
-                       int(connection["port"]) != port:
-                        update_value("port", port)
-                    if connection.get("puburl") != puburl:
-                        update_value("puburl", puburl)
-                    if connection.get("username") != username:
-                        update_value("username", username)
-                    break
-            if not args.updated:
-                # Else insert a new connection
-                args.sfconfig.setdefault("zuul", {}).setdefault(
-                    "gerrit_connections", []).append({
-                        'name': name,
-                        'hostname': hostname,
-                        'port': port,
-                        'puburl': puburl,
-                        'username': username
-                    })
-                args.save_sfconfig = True
-
-    def prepare(self, args):
-        super(ZuulScheduler, self).prepare(args)
 
     def configure(self, args, host):
         args.glue["zuul_host"] = args.glue["zuul_scheduler_host"]
