@@ -1,0 +1,4 @@
+---
+fixes:
+  - Zuul scheduler key are now properly backup
+  - Install-server restore now keep the desired target arch.yaml
