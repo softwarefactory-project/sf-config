@@ -27,13 +27,10 @@ class ZuulScheduler(Component):
             args.glue["zuul_scheduler_host"], args.glue["zuul_web_host"]
         ))))
         self.get_or_generate_ssh_key(args, "zuul_rsa")
-        self.get_or_generate_ssh_key(args, "zuul_gatewayserver_rsa")
         self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
         self.get_or_generate_cert(args, "gearman", host["hostname"])
         args.glue["zuul_pub_url"] = "%s/zuul/" % args.glue["gateway_url"]
         args.glue["zuul_mysql_host"] = args.glue["mysql_host"]
-        args.glue["pagesuser_authorized_keys"].append(
-            args.glue["zuul_gatewayserver_rsa_pub"])
 
         args.glue["zuul_periodic_pipeline_mail_rcpt"] = args.sfconfig[
             "zuul"]["periodic_pipeline_mail_rcpt"]
