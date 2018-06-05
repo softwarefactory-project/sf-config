@@ -152,6 +152,7 @@ nodepool:
       project_name: tenantname
       username: username
       password: secret
+      image_format: qcow2
       region_name: regionOne
       regions: []
       # These must be set when using a keystone v3 auth endpoint
