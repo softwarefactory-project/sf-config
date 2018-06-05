@@ -154,6 +154,7 @@ nodepool:
       password: secret
       region_name: regionOne
       regions: []
+      image_format: ''
       # These must be set when using a keystone v3 auth endpoint
       # user_domain_name: Default
       # project_domain_name: Default

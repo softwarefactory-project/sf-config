@@ -27,5 +27,8 @@ clouds:
       - {{ region }}
     {% endfor%}
 {% endif %}
+{% if provider.get("image_format") %}
+    image_format: {{ provider["image_format"] }}
+{% endif %}
 
 {% endfor %}
