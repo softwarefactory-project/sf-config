@@ -177,6 +177,10 @@ def recover(args, pb):
         play = host_play(host, params={'role_action': 'restore'})
         play['roles'] = []
         for role in host["roles"]:
+            # Only recover zuul data from the scheduler
+            if role == 'zuul' and 'zuul-scheduler' not in host.get(
+                    'params', {}).get('zuul_services', []):
+                continue
             play['roles'].append({'role': "sf-%s" % role,
                                   'backup_src': '/var/lib/software-factory'
                                                 '/backup/%s' % role})
@@ -437,6 +441,10 @@ def backup(args, pb):
         play = host_play(host, params={'role_action': 'backup'})
         play['roles'] = []
         for role in host["roles"]:
+            # Only backup zuul data from the scheduler
+            if role == 'zuul' and 'zuul-scheduler' not in host.get(
+                    'params', {}).get('zuul_services', []):
+                continue
             play['roles'].append({'role': "sf-%s" % role,
                                   'backup_dest': '/var/lib/software-factory'
                                                  '/backup/%s' % role})
