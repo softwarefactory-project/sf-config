@@ -40,10 +40,9 @@ def update_sfconfig(args):
         data['network']['disable_external_resources'] = False
         dirty = True
 
-    if data['network']['disable_external_resources'] != \
-       args.disable_external_resources:
-        data['network']['disable_external_resources'] = \
-            args.disable_external_resources
+    if args.disable_external_resources and \
+       not data['network']['disable_external_resources']:
+        data['network']['disable_external_resources'] = True
         dirty = True
 
     # 2.7.0: remove useless backup config section

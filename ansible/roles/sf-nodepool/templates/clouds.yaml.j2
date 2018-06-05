@@ -10,7 +10,11 @@ clouds:
     auth:
       username: {{ provider['username'] }}
       password: {{ provider['password'] }}
+{% if network['disable_external_resources'] %}
+      auth_url: http://localhost:4242
+{% else %}
       auth_url: {{ provider['auth_url'] }}
+{% endif %}
       project_name: {{ provider['project_name'] }}
 {% if provider.get("user_domain_name") %}
       user_domain_name: {{ provider['user_domain_name'] }}

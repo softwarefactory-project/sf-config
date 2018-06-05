@@ -174,35 +174,41 @@ class ZuulScheduler(Component):
                 'username': 'zuul'
             })
 
-        for extra_gerrit in args.glue.get("zuul_gerrit_connections", []):
-            if extra_gerrit.get("port", 29418) == 22:
-                host_packed = extra_gerrit["hostname"]
-            else:
-                host_packed = "[%s]:%s" % (extra_gerrit["hostname"],
-                                           extra_gerrit.get("port", 29418))
-            args.glue["zuul_ssh_known_hosts"].append({
-                "host_packed": host_packed,
-                "host": extra_gerrit["hostname"],
-                "port": extra_gerrit.get("port", 29418)
-            })
+        if not args.sfconfig["network"]["disable_external_resources"]:
+            for extra_gerrit in args.glue.get("zuul_gerrit_connections", []):
+                if extra_gerrit.get("port", 29418) == 22:
+                    host_packed = extra_gerrit["hostname"]
+                else:
+                    host_packed = "[%s]:%s" % (extra_gerrit["hostname"],
+                                               extra_gerrit.get("port", 29418))
+                args.glue["zuul_ssh_known_hosts"].append({
+                    "host_packed": host_packed,
+                    "host": extra_gerrit["hostname"],
+                    "port": extra_gerrit.get("port", 29418)
+                })
+            for github_connection in zuul_config.get("github_connections", []):
+                if github_connection.get("port", 22) == 22:
+                    host_packed = github_connection.get(
+                        "hostname", "github.com")
+                else:
+                    host_packed = "[%s]:%s" % (github_connection["hostname"],
+                                               github_connection["port"])
+                args.glue["zuul_ssh_known_hosts"].append({
+                    "host_packed": host_packed,
+                    "host": github_connection.get("hostname", "github.com"),
+                    "port": github_connection.get("port", 22)
+                })
+                args.glue["zuul_github_connections"].append(github_connection)
+                gh_app_key = github_connection.get('app_key')
+                if gh_app_key and os.path.isfile(gh_app_key):
+                    github_connection['app_key'] = open(gh_app_key).read()
+
         if "logserver" in args.glue["roles"]:
             args.glue["zuul_ssh_known_hosts"].append({
                 "host_packed": args.glue["logserver_host"],
                 "host": args.glue["logserver_host"],
                 "port": 22
             })
-        for github_connection in zuul_config.get("github_connections", []):
-            if github_connection.get("port", 22) == 22:
-                host_packed = github_connection.get("hostname", "github.com")
-            else:
-                host_packed = "[%s]:%s" % (github_connection["hostname"],
-                                           github_connection["port"])
-            args.glue["zuul_ssh_known_hosts"].append({
-                "host_packed": host_packed,
-                "host": github_connection.get("hostname", "github.com"),
-                "port": github_connection.get("port", 22)
-            })
-            args.glue["zuul_github_connections"].append(github_connection)
         for git_connection in zuul_config.get("git_connections", []):
             args.glue["zuul_git_connections"].append(git_connection)
 
