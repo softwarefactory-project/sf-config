@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a2ca52d_f54e9895",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 136
+      },
+      "writtenOn": "2018-06-05T19:05:49Z",
+      "side": 1,
+      "message": "This should be optional, if using a public cloud provider, they will already have this setup in os-client-config, but in the case of rdo-cloud, an operator would want to set this value.",
+      "revId": "61cdb5536bee3e0ce67c87b83baa896ed96db172",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
