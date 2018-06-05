@@ -3,3 +3,7 @@
   synchronize:
     src: "{{ backup_src }}/"
     dest: /
+    rsync_opts:
+      # Those files are restored early on
+      - --exclude=/etc/software-factory/
+      - --exclude=/var/lib/software-factory/
