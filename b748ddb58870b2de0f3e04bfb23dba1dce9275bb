@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a2fa921_a4ca204e",
+        "filename": "ansible/roles/sf-logserver/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-05T03:39:29Z",
+      "side": 0,
+      "message": "this needs to be \"logserver.conf.j2\"",
+      "revId": "b748ddb58870b2de0f3e04bfb23dba1dce9275bb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
