@@ -152,6 +152,8 @@ nodepool:
       project_name: tenantname
       username: username
       password: secret
+      # to specify the image format uploaded: raw, qcow2
+      # image_format: raw
       region_name: regionOne
       regions: []
       # These must be set when using a keystone v3 auth endpoint

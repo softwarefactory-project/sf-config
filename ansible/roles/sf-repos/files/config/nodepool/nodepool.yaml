@@ -1,8 +1,6 @@
 ---
 diskimages: []
 #  - name: dib-centos-7
-#    formats:
-#      - raw
 #    elements:
 #      - centos-minimal
 #      - nodepool-minimal
