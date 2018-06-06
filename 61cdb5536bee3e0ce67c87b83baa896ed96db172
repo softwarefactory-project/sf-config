@@ -16,6 +16,24 @@
       "revId": "61cdb5536bee3e0ce67c87b83baa896ed96db172",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a2ca52d_b89d755b",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-06-06T12:58:53Z",
+      "side": 1,
+      "message": "Thanks for the review, I will comment this option by default",
+      "parentUuid": "5a2ca52d_f54e9895",
+      "revId": "61cdb5536bee3e0ce67c87b83baa896ed96db172",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
