@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a2ca52d_fee195d1",
+        "filename": "ansible/roles/sf-logserver/tasks/install.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-06-08T15:07:47Z",
+      "side": 1,
+      "message": "I\u0027m not very confident that this would work with mod_wsgi with os-loganalyze and rh-python35-ara being installed in different python interpreters.",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 23
+      },
+      "revId": "552a395cf2c3e1b08e7c41c7e320920ea2a6e542",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
