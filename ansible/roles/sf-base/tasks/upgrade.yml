@@ -48,6 +48,7 @@
         file: sf-release
       notify: yum-clean-metadata
       with_items:
+        - centos-release-openstack-newton
         - openstack-pike
         - centos-release-ceph-jewel
         - centos-opstools
