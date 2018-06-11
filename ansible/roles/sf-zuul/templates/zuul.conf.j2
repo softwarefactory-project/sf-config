@@ -90,7 +90,9 @@ app_key={{ zuul_lib_dir }}/.ssh/github_{{ conn['name'] }}_rsa
 sshkey={{ zuul_lib_dir }}/.ssh/id_rsa
 api_token={{ conn['api_token'] }}
 {% endif %}
+{% if conn.get('webhook_token') %}
 webhook_token={{ conn['webhook_token'] }}
+{% endif %}
 server={{ conn['hostname']|default('github.com') }}
 verify_ssl={{ conn['verify_ssl']|default(True) }}
 git_host={{ conn['hostname']|default('github.com') }}
