@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new clouds_file sfconfig.yaml option enable setting user-defined
+    os-client-config clouds.yaml file.
