@@ -10,7 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import os
+
 from sfconfig.components import Component
+from sfconfig.utils import fail
 
 
 class NodepoolLauncher(Component):
@@ -20,6 +23,16 @@ class NodepoolLauncher(Component):
     def configure(self, args, host):
         args.glue["nodepool_providers"] = args.sfconfig.get(
             "nodepool", {}).get("providers", [])
+        args.glue["nodepool_clouds_file"] = args.sfconfig.get(
+            "nodepool", {}).get("clouds_file", None)
+        if args.glue["nodepool_clouds_file"]:
+            if not os.path.isfile(args.glue["nodepool_clouds_file"]):
+                fail("%s: does not exists" % args.glue["nodepool_clouds_file"])
+        if args.glue["nodepool_providers"] and args.glue[
+                "nodepool_clouds_file"]:
+            fail("Both clouds_file and providers can not be set "
+                 "at the same time")
+
         self.get_or_generate_ssh_key(args, "nodepool_rsa")
         self.get_or_generate_ssh_key(args, "zuul_rsa")
         args.glue["nodepool_internal_url"] = "http://%s:%s" % (

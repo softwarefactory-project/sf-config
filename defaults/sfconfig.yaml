@@ -146,19 +146,22 @@ mirrors:
   swift_mirror_ttl: 15811200  # 6 months ttl
 
 nodepool:
-  providers:
-    - name: default
-      auth_url:
-      project_name: tenantname
-      username: username
-      password: secret
-      # to specify the image format uploaded: raw, qcow2
-      # image_format: raw
-      region_name: regionOne
-      regions: []
-      # These must be set when using a keystone v3 auth endpoint
-      # user_domain_name: Default
-      # project_domain_name: Default
+  # Copy a clouds.yaml to /etc/software-factory and reference its path here
+  clouds_file:
+  # OR list the OpenStack provider here
+  providers: []
+  #  - name: default
+  #    auth_url:
+  #    project_name: tenantname
+  #    username: username
+  #    password: secret
+  #    # to specify the image format uploaded: raw, qcow2
+  #    # image_format: raw
+  #     region_name: regionOne
+  #    regions: []
+  #    # These must be set when using a keystone v3 auth endpoint
+  #    # user_domain_name: Default
+  #    # project_domain_name: Default
 
 elasticsearch:
   heap_size: 512m
@@ -200,7 +203,6 @@ zuul:
   #    hostname: github.com
   #    # optional canonical_hostname
   #    # canonical_hostname: git.hostname
-  #    webhook_token: XXX # see https://developer.github.com/webhooks/securing/>
   #
   #    # GitHub App settings
   #    # See https://softwarefactory-project.io/docs/operator/zuul_operator.html#zuul-github-app-operator
@@ -215,6 +217,7 @@ zuul:
   #
   #    # Github Webhook settings (When using Webhook, no need to configure the App settings above)
   #    api_token: XXX # See https://help.github.com/articles/creating-an-access-token-for-command-line-use/
+  #    webhook_token: XXX # see https://developer.github.com/webhooks/securing/
 
   git_connections: []
   #    - name: "git.openstack.org"
