@@ -1,0 +1,25 @@
+---
+- name: Install repository
+  yum:
+    name: "centos-release-openshift-origin39"
+    state: present
+
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - origin
+    - docker
+
+- name: Fix docker start options
+  lineinfile:
+    dest: /etc/sysconfig/docker
+    regexp: "^OPTIONS="
+    line: "OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --insecure-registry 172.30.0.0/16'"
+
+# See: https://github.com/openshift/origin/issues/15038
+- name: Fix rhel secret issue
+  file:
+    path: /usr/share/rhel/secrets
+    state: absent

@@ -1,0 +1,10 @@
+---
+- name: Turn off openshift cluster
+  command: oc cluster down
+  ignore_errors: yes
+
+- name: Turn off docker
+  service:
+    name: docker
+    state: stopped
+    enabled: no
