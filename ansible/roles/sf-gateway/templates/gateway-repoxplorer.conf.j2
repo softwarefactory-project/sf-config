@@ -7,9 +7,31 @@ Alias "/repoxplorer/css/static/bootstrap/" "/var/www/static/bootstrap/css/static
 Alias "/repoxplorer/css/" "/var/www/static/css/"
 Alias "/repoxplorer/javascript/" "/var/www/static/js/"
 
+<Location "/repoxplorer/home.html">
+    RequestHeader unset X-Remote-User
+    AuthType mod_auth_pubtkt
+    TKTAuthLoginURL /auth/login
+    TKTAuthFakeBasicAuth on
+    TKTAuthDebug 1
+    require valid-user
+    RequestHeader set X-Remote-User %{REMOTE_USER}s
+</Location>
+
+<Location "/repoxplorer">
+    RequestHeader unset X-Remote-User
+    <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
+        AuthType mod_auth_pubtkt
+        TKTAuthLoginURL /auth/login
+        TKTAuthFakeBasicAuth on
+        TKTAuthDebug 1
+        require valid-user
+        RequestHeader set X-Remote-User %{REMOTE_USER}s
+    </If>
+</Location>
+
 <IfModule mod_proxy.c>
     ProxyPassMatch "/repoxplorer/css/(?!repoxplorer\.css).*" !
-    ProxyPassMatch "/repoxplorer/javascript/(?!repoxplorer\.js).*" !
+    ProxyPassMatch "/repoxplorer/javascript/(?!(repoxplorer\.js)|(jquery\.min\.js)).*" !
     ProxyPass /repoxplorer/ http://repoxplorer.{{ fqdn }}:20002/
     ProxyPassReverse /repoxplorer/ http://repoxplorer.{{ fqdn }}:20002/
 </IfModule>
