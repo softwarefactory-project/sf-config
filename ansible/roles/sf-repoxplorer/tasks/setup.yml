@@ -30,6 +30,24 @@
     dest: /usr/local/bin/resources2repoxplorer.py
     mode: 0755
 
+- name: Create override directory
+  file:
+    path: /etc/systemd/system/repoxplorer.service.d
+    state: directory
+
+- name: Set wait4service for elasticsearch
+  blockinfile:
+    path: /etc/systemd/system/repoxplorer.service.d/override.conf
+    create: yes
+    block: |
+      [Service]
+      ExecStartPre=/usr/bin/wait4service {{ elasticsearch_host }} 9200
+  register: repoxplorer_override
+
+- name: Daemon reload
+  command: systemctl daemon-reload
+  when: repoxplorer_override is changed
+
 - name: Start service
   systemd:
     name: "{{ item }}"
