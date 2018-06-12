@@ -1,15 +1,8 @@
 ---
-- name: "Set Elasticsearch host"
-  replace:
+- name: "Install configuration file"
+  template:
+    src: config.py.j2
     dest: /etc/repoxplorer/config.py
-    regexp: "^elasticsearch_host =.*$"
-    replace: "elasticsearch_host = 'elasticsearch'"
-
-- name: "Set default index file in repoxplorer conf"
-  replace:
-    dest: /etc/repoxplorer/config.py
-    regexp: "^db_default_file =.*$"
-    replace: "db_default_file = '/etc/repoxplorer/default.yaml'"
 
 - name: "Remove index.yaml example definition"
   file:
@@ -25,6 +18,7 @@
     - project.html
     - projects.html
     - group.html
+    - home.html
     - groups.html
     - contributor.html
     - contributors.html
