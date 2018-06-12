@@ -1,0 +1,86 @@
+---
+- name: prepare dumb bare clone of future state
+  git:
+    repo: "{{ zuul.executor.work_root }}/{{ zuul.project.src_dir }}"
+    dest: "{{ zuul.executor.work_root }}/{{ zuul.project.src_dir }}.git"
+    bare: yes
+
+- name: update server info for dumb http transport
+  command: git update-server-info
+  args:
+    chdir: "{{ zuul.executor.work_root }}/{{ zuul.project.src_dir }}.git"
+
+- name: create project dir on http server
+  command: "oc exec {{ zm_name }} -- mkdir -p {{ zuul.project.src_dir }}.git"
+
+- name: copy project to http server
+  command: "oc rsync {{ zuul.executor.work_root }}/{{ zuul.project.src_dir }}.git/ {{ zm_name }}:/opt/app-root/src/{{ zuul.project.src_dir }}.git/"
+
+- name: create project ImageStream spec file
+  copy:
+    dest: "{{ zuul.executor.work_root }}/project_imagestream.yaml"
+    content: |
+      apiVersion: v1
+      kind: ImageStream
+      metadata:
+        generation: 1
+        labels:
+          app: "{{ zuul.project.short_name }}"
+        name: "{{ zuul.project.short_name }}"
+        namespace: "{{ zuul.resource.namespace }}"
+        resourceversion: '1487'
+      spec:
+        lookupPolicy:
+          local: false
+
+- name: apply project ImageStream
+  command: "oc apply -f {{ zuul.executor.work_root }}/project_imagestream.yaml"
+
+- name: create project BuildConfig spec file
+  copy:
+    dest: "{{ zuul.executor.work_root }}/project_buildconfig.yaml"
+    content: |
+      apiVersion: v1
+      kind: BuildConfig
+      metadata:
+        labels:
+          app: "{{ zuul.project.short_name }}"
+        name: "{{ zuul.project.short_name }}"
+        namespace: "{{ zuul.resource.namespace }}"
+        resourceVersion: '2488'
+      spec:
+        output:
+          to:
+            kind: ImageStreamTag
+            name: '{{ zuul.project.short_name }}:latest'
+        postCommit: {}
+        resources: {}
+        runPolicy: Serial
+        source:
+          git:
+            ref: master
+            uri: 'http://zuul-merger-server:8080/{{ zuul.project.src_dir }}.git'
+          type: Git
+        strategy:
+          sourceStrategy:
+            from:
+              kind: ImageStreamTag
+              name: '{{ base_image }}'
+              namespace: openshift
+          type: Source
+        triggers:
+          - type: ImageChange
+          - type: ConfigChange
+      status:
+        lastVersion: 1
+
+- name: apply project BuildConfig
+  command: "oc apply -f {{ zuul.executor.work_root }}/project_buildconfig.yaml"
+
+- name: wait for project image built
+  command: oc get builds -o "jsonpath={.items[?(@.metadata.labels.buildconfig!='zuul-merger-server')].status.phase}"
+  register: _project_build
+  retries: 120
+  delay: 1
+  until: "'Complete' in _project_build.stdout"
+
