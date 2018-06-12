@@ -61,9 +61,11 @@
     - playbooks/config/update.yaml
     - zuul.d/_jobs-base.yaml
     - zuul.d/_jobs-pages.yaml
+    - zuul.d/_jobs-openshift.yaml
     - zuul.d/_pipelines.yaml
     - zuul/_main.yaml
     - nodepool/_local_hypervisor_oci.yaml
+    - nodepool/_local_hypervisor_openshift.yaml
 
 # Manage config repo secrets
 - name: Delete config_key_checksum if update fqdn

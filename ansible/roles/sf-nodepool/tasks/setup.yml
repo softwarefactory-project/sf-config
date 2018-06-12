@@ -41,6 +41,12 @@
     - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
   no_log: true
 
+- name: Install .kube/config
+  command: "oc login -u developer -p devel https://{{ hypervisor_openshift_host }}:8443"
+  become: yes
+  become_user: nodepool
+  when: "'hypervisor-openshift' in roles"
+
 - name: Install os-client-config
   template:
     src: clouds.yaml.j2

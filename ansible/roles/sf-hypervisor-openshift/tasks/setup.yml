@@ -1,0 +1,17 @@
+---
+- name: Start docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Deploy OpenShift cluster
+  command: "oc cluster up --public-hostname {{ ansible_hostname }} --insecure-skip-tls-verify=true"
+  ignore_errors: true
+  register: _oc_cluster_up
+
+- name: Check if deploy failed
+  fail: msg="oc cluster up failed"
+  when:
+    - _oc_cluster_up is failed
+    - "'OpenShift is already running' not in _oc_cluster_up.stderr"

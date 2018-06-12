@@ -1,0 +1,23 @@
+# This file is managed by sfconfig, do not edit manually
+{% if not tenant_deployment %}
+{% if 'hypervisor-openshift' in roles %}
+
+labels:
+  - name: openshift-project
+    min-ready: 0
+
+providers:
+  - name: local_openshift
+    driver: openshift
+    pools:
+{% for host in inventory %}
+{% if 'hypervisor-openshift' in host['roles'] %}
+      - name: zuul-ci-{{ host['name'] }}
+        max-servers: {{ host.get('max-servers', 10) }}
+        labels:
+          - name: openshift-project
+
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}
