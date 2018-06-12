@@ -30,6 +30,45 @@
     dest: /usr/local/bin/resources2repoxplorer.py
     mode: 0755
 
+- name: Create override directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /etc/systemd/system/repoxplorer.service.d
+    - /etc/systemd/system/repoxplorer-webui.service.d
+
+- name: Set wait4service for repoxplorer
+  blockinfile:
+    path: /etc/systemd/system/repoxplorer.service.d/override.conf
+    create: yes
+    block: |
+      [Service]
+      ExecStartPre=/usr/bin/wait4service {{ elasticsearch_host }} 9200
+  register: repoxplorer_override
+
+- name: Set wait4service for repoxplorer-webui
+  blockinfile:
+    path: /etc/systemd/system/repoxplorer-webui.service.d/override.conf
+    create: yes
+    block: |
+      [Service]
+      ExecStartPre=/usr/bin/wait4service {{ elasticsearch_host }} 9200
+  register: repoxplorer_webui_override
+
+- name: Daemon reload
+  command: systemctl daemon-reload
+  when: repoxplorer_override is changed or repoxplorer_webui_override is changed
+
+- name: Restart repoxplorer when fqdn is updated
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  when: update_fqdn
+  with_items:
+    - repoxplorer-webui
+    - repoxplorer
+
 - name: Start service
   systemd:
     name: "{{ item }}"
