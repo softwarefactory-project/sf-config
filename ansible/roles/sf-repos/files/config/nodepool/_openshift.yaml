@@ -1,0 +1,13 @@
+# Uncomment to enable openshift provider
+#---
+#labels:
+#  - name: openshift-project
+#    min-ready: 1
+#
+#providers:
+#  - name: openshift.rdocloud
+#    driver: openshift
+#    pools:
+#      - name: zuul-ci
+#        labels:
+#          - name: openshift-project
