@@ -1,0 +1,24 @@
+# This file is managed by sfconfig, do not edit manually
+---
+{% if not tenant_deployment %}
+{% if nodepool_openshift_providers %}
+labels:
+  - name: openshift-project
+    min-ready: 0
+
+{% endif %}{# endif nodepool_openshift_providers #}
+
+{% for host in inventory %}{% if 'hypervisor-openshift' in host['roles'] %}
+
+providers:
+  - name: {{ host.name }}
+    driver: openshift
+    context: "myproject/{{ host.hostname|replace('.', '-') }}:8443/developer"
+    pools:
+      - name: zuul-ci
+        labels:
+          - name: openshift-project
+
+{% endif %}{% endfor %}{# endif endfor host in inventory #}
+
+{% endif %}{# endif tenant_deployment #}
