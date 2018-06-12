@@ -59,6 +59,7 @@
   with_items:
     - playbooks/config
     - playbooks/pages
+    - playbooks/openshift
   register: _config_static_files
 
 - name: Update config templates
@@ -72,8 +73,10 @@
     - playbooks/config/update.yaml
     - zuul.d/_jobs-base.yaml
     - zuul.d/_jobs-pages.yaml
+    - zuul.d/_jobs-openshift.yaml
     - zuul.d/_pipelines.yaml
     - zuul/_main.yaml
+    - nodepool/_openshift.yaml
     - nodepool/_local_hypervisor_oci.yaml
   register: _config_template_files
 
