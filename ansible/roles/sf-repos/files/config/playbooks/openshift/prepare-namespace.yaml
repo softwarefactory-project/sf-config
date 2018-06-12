@@ -1,0 +1,155 @@
+---
+- name: setup kube config
+  shell: >
+    oc --namespace {{ zuul.resource.namespace }}                \
+       login {{ zuul.resource.host }}                           \
+       --insecure-skip-tls-verify={{ zuul.resource.skiptls }}   \
+       --token $(echo {{ zuul.resource.token }} | base64 -d)
+
+# Note: this can probably be simplified by running a ready to use http server.
+# In this PoC, the http server is constructed using the openshift/httpd-ex template
+- name: create zuul-merger ImageStream spec file
+  copy:
+    dest: "{{ zuul.executor.work_root }}/zm_imagestream.yaml"
+    content: |
+      apiVersion: v1
+      kind: ImageStream
+      metadata:
+        generation: 1
+        labels:
+          app: zuul-merger-server
+        name: zuul-merger-server
+        namespace: "{{ zuul.resource.namespace }}"
+        resourceversion: '1487'
+      spec:
+        lookupPolicy:
+          local: false
+
+- name: apply zuul-merger ImageStream
+  command: "oc apply -f {{ zuul.executor.work_root }}/zm_imagestream.yaml"
+
+- name: create zuul-merger BuildConfig spec file
+  copy:
+    dest: "{{ zuul.executor.work_root }}/zm_buildconfig.yaml"
+    content: |
+      apiVersion: v1
+      kind: BuildConfig
+      metadata:
+        labels:
+          app: zuul-merger-server
+        name: zuul-merger-server
+        namespace: "{{ zuul.resource.namespace }}"
+        resourceVersion: '2488'
+      spec:
+        output:
+          to:
+            kind: ImageStreamTag
+            name: 'zuul-merger-server:latest'
+        postCommit: {}
+        resources: {}
+        runPolicy: Serial
+        source:
+          git:
+            ref: master
+            uri: 'https://github.com/openshift/httpd-ex.git'
+          type: Git
+        strategy:
+          sourceStrategy:
+            from:
+              kind: ImageStreamTag
+              name: 'httpd:2.4'
+              namespace: openshift
+          type: Source
+        triggers:
+          - type: ImageChange
+          - type: ConfigChange
+      status:
+        lastVersion: 1
+
+- name: apply zuul-merger BuildConfig
+  command: "oc apply -f {{ zuul.executor.work_root }}/zm_buildconfig.yaml"
+
+- name: create zuul-merger DeploymentConfig spec file
+  copy:
+    dest: "{{ zuul.executor.work_root }}/zm_deploymentconfig.yaml"
+    content: |
+      apiVersion: v1
+      kind: DeploymentConfig
+      metadata:
+        generation: 2
+        labels:
+          app: zuul-merger-server
+        name: zuul-merger-server
+        namespace: "{{ zuul.resource.namespace }}"
+        resourceVersion: '2604'
+      spec:
+        replicas: 1
+        selector:
+          deploymentconfig: zuul-merger-server
+        strategy:
+          resources: {}
+          type: Rolling
+        template:
+          metadata:
+            labels:
+              app: zuul-merger-server
+              deploymentconfig: zuul-merger-server
+          spec:
+            containers:
+              - image: "172.30.1.1:5000/{{ zuul.resource.namespace }}/zuul-merger-server"
+                # imagePullPolicy: Always
+                name: zuul-merger-server
+                ports:
+                  - containerPort: 8080
+                    protocol: TCP
+                  - containerPort: 8443
+                    protocol: TCP
+                resources: {}
+            dnsPolicy: ClusterFirst
+            restartPolicy: Always
+            schedulerName: default-scheduler
+            securityContext: {}
+            terminationGracePeriodSeconds: 30
+        test: false
+
+- name: apply zuul-merger DeploymentConfig
+  command: "oc apply -f {{ zuul.executor.work_root }}/zm_deploymentconfig.yaml"
+
+- name: create zuul-merger Service spec file
+  copy:
+    dest: "{{ zuul.executor.work_root }}/zm_service.yaml"
+    content: |
+      apiVersion: v1
+      kind: Service
+      metadata:
+        labels:
+          app: zuul-merger-server
+        name: zuul-merger-server
+        namespace: "{{ zuul.resource.namespace }}"
+        resourceVersion: '12063'
+      spec:
+        ports:
+          - name: 8080-tcp
+            port: 8080
+            protocol: TCP
+            targetPort: 8080
+        selector:
+          deploymentconfig: zuul-merger-server
+        sessionAffinity: None
+        type: ClusterIP
+      status:
+        loadBalancer: {}
+
+- name: apply zuul-merger Service
+  command: "oc apply -f {{ zuul.executor.work_root }}/zm_service.yaml"
+
+- name: get zuul-merger-server pod name
+  command: oc get pods --field-selector=status.phase=Running -o "jsonpath={.items[?(@.metadata.labels.app=='zuul-merger-server')].metadata.name}"
+  register: _zm_name
+  retries: 600
+  delay: 1
+  until: "'zuul-merger' in _zm_name.stdout"
+
+- name: register zuul-merger-server pod name
+  set_fact:
+    zm_name: "{{ _zm_name.stdout }}"

@@ -163,6 +163,13 @@ nodepool:
   #    # user_domain_name: Default
   #    # project_domain_name: Default
 
+  openshift_providers: []
+  # - name: openshift01
+  #   url: https://openshift.example.com:8443
+  #   username: developer
+  #   password: devel
+  #   insecure_skip_tls_verify: false
+
 elasticsearch:
   heap_size: 512m
   replicas: 0

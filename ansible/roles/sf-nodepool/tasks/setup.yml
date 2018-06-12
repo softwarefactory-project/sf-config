@@ -41,6 +41,16 @@
     - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
   no_log: true
 
+- name: Install .kube/config
+  command: >
+    oc login {{ item.url }}
+             -u {{ item.username }}
+             -p {{ item.password }}
+             --insecure-skip-tls-verify={{ item.insecure_skip_tls_verify }}
+  become: yes
+  become_user: nodepool
+  with_items: "{{ nodepool_openshift_providers }}"
+
 - name: Install os-client-config
   template:
     src: clouds.yaml.j2
