@@ -5,3 +5,5 @@ role_actions:
   - postconf
   - update
   - disable
+
+repoxplorer_admin_token: "CHANGE_ME"
