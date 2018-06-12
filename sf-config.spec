@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.0.0
-Release:        3%{?dist}
+Release:        999%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -85,6 +85,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Tue Jun 19 2018 Fabien Boucher <fboucher@redhat.com> - 3.0.0-999
+- Add openshift-base job
+
 * Fri Jun  1 2018 Fabien Boucher <fboucher@redhat.com> - 3.0.0-3
 - Move sfconfig directories creation in packaging
 
