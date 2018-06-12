@@ -1,0 +1,4 @@
+---
+- name: Turn off openshift cluster
+  command: oc cluster down
+  ignore_errors: yes

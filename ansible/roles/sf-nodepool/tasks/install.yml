@@ -25,3 +25,16 @@
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
   with_items: "{{ executor_hosts }}"
+
+- name: "Install openshift client"
+  block:
+    - name: Install repository
+      yum:
+        name: "centos-release-openshift-origin39"
+        state: present
+
+    - name: Install packages
+      yum:
+        name: origin-clients
+        state: present
+  when: "'hypervisor-openshift' in roles or enable_openshift_preview|default(False)"
