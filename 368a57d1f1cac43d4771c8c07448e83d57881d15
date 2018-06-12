@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a2ca52d_04d52042",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-12T00:42:15Z",
+      "side": 1,
+      "message": "note: next time, please prefix the commit message with the affected component, e.g.:\n\nbase: remove outdated newton repo",
+      "revId": "368a57d1f1cac43d4771c8c07448e83d57881d15",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
