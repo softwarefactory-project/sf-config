@@ -1,0 +1,10 @@
+# Uncomment to enable openshift provider
+#---
+#providers:
+#  - name: openshift01
+#    driver: openshift
+#    context: context-name # get it using 'oc config get-contexts'
+#    pools:
+#      - name: zuul-ci
+#        labels:
+#          - name: openshift-project

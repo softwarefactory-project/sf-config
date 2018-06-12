@@ -17,6 +17,7 @@
         - /var/www/nodepool-log
         - "{{ nodepool_lib_dir }}"
         - "{{ nodepool_conf_dir }}"
+        - /root/.kube/config
 
     - name: Remove packages
       yum:
