@@ -41,8 +41,9 @@ class ZuulScheduler(Component):
             "default_retry_attempts"]
         args.glue["zuul_upstream_zuul_jobs"] = zuul_config[
             "upstream_zuul_jobs"]
-        args.glue["zuul_gerrit_connections"] = copy.copy(zuul_config.get(
-            "gerrit_connections", []))
+        if not args.sfconfig["network"]["disable_external_resources"]:
+            args.glue["zuul_gerrit_connections"] = copy.copy(zuul_config.get(
+                "gerrit_connections", []))
         args.glue["zuul_success_log_url"] = get_default(
             zuul_config, "success_log_url",
             "%s/logs/{build.uuid}/" % args.glue["gateway_url"]
