@@ -78,6 +78,8 @@ class InstallServer(Component):
             args.glue["config_key_exists"] = False
             self.resolve_tenant_informations(args, host)
         else:
+            if "zuul" not in args.glue["roles"]:
+                fail("Zuul service is required in non tenant-deployment mode")
             # This is the master deployment, set default configuration
             args.glue["tenant_name"] = "local"
             args.glue["tenant_deployment"] = False
