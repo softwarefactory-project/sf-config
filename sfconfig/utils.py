@@ -98,7 +98,7 @@ def yaml_load(filename):
 
 
 def yaml_dump(content, fileobj):
-    yaml.dump(content, fileobj, default_flow_style=False)
+    yaml.safe_dump(content, fileobj, default_flow_style=False)
 
 
 def save_file(content, filename):

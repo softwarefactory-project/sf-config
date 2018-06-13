@@ -75,7 +75,7 @@ def main(argv):
     if len(argv) != 3:
         print("usage: %s dir dest" % argv[0])
     data = loadConfig(argv[1])
-    yaml.dump(data, open(argv[2], "w"), default_flow_style=False)
+    yaml.safe_dump(data, open(argv[2], "w"), default_flow_style=False)
 
 
 if __name__ == "__main__":

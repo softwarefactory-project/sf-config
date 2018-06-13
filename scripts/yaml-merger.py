@@ -50,7 +50,7 @@ def main(argv):
     if len(argv) != 2 and not os.path.isdir(argv[1]):
         print("usage: %s dir" % argv[0])
     data = loadConfig(argv[1])
-    print(yaml.dump(data, indent=4))
+    print(yaml.safe_dump(data, indent=4))
 
 if __name__ == "__main__":
     import sys

@@ -26,7 +26,7 @@ def write_playbook(playbook_path, playbook):
         current = open(playbook_path).read()
     else:
         current = ""
-    new = yaml.dump(playbook, default_flow_style=False)
+    new = yaml.safe_dump(playbook, default_flow_style=False)
     if new != current:
         with open(playbook_path, "w") as out:
             out.write(new)

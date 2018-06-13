@@ -74,7 +74,7 @@ def merge(inp, _nodepool):
                 break
         if not added:
             raise RuntimeError("%s: couldn't find provider" % extra_labels)
-    return yaml.dump(conf, default_flow_style=False)
+    return yaml.safe_dump(conf, default_flow_style=False)
 
 
 if __name__ == '__main__':

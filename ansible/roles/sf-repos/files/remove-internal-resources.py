@@ -55,4 +55,4 @@ for path in paths:
                 except KeyError:
                     pass
         print("Updating %s" % path)
-        yaml.dump(data, open(path, "w"), default_flow_style=False)
+        yaml.safe_dump(data, open(path, "w"), default_flow_style=False)
