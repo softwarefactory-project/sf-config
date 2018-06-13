@@ -53,4 +53,4 @@ for path in paths:
     for mirror in data:
         conf["sfmirrors"]["mirrors"].append(mirror)
 
-open(sys.argv[2], "w").write(yaml.dump(conf, indent=4))
+open(sys.argv[2], "w").write(yaml.safe_dump(conf, indent=4))
