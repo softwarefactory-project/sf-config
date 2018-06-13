@@ -43,7 +43,7 @@ conf = []
 def add_repo(repo_name):
     if isinstance(repo_name, dict):
         repo_name = list(repo_name.keys())[0]
-    repo = repos[repo_name]
+    repo = repos.get(repo_name)
     if repo is None:
         print("%s: unknown source-repositories" % repo_name)
         return
