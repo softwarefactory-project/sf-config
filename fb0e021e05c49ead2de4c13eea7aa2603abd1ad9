@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a2ca52d_9e92dc56",
+        "filename": "ansible/roles/sf-cauth/templates/config.py.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-14T05:43:59Z",
+      "side": 1,
+      "message": "please use {{ repoxplorer_host }}",
+      "revId": "fb0e021e05c49ead2de4c13eea7aa2603abd1ad9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a2ca52d_7e95803e",
+        "filename": "ansible/roles/sf-repoxplorer/templates/config.py.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-14T05:43:59Z",
+      "side": 1,
+      "message": "please use {{ elasticsearch_host }}",
+      "revId": "fb0e021e05c49ead2de4c13eea7aa2603abd1ad9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
