@@ -160,7 +160,10 @@
         <location /zuul/api/console-stream>
             ProxyPass wss://{{ master_sf_fqdn }}/zuul/api/tenant/{{ tenant_name }}/console-stream nocanon retry=0 disablereuse=on
         </location>
-
+        <location /zuul/>
+            RequestHeader set Host "{{ master_sf_fqdn }}"
+            ProxyPreserveHost On
+        </location>
         RewriteRule ^/zuul/?$ /zuul/status.html [R]
         ProxyPassMatch ^/zuul/.*\.(html|js|png|map|woff|ttf)$ !
         ProxyPassMatch ^/zuul/api/(.*)$ {{ master_sf_url }}/zuul/api/tenant/{{ tenant_name }}/$1 retry=0 disablereuse=on
