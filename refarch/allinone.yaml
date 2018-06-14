@@ -30,7 +30,7 @@ inventory:
       - mirror
       - storyboard
       - storyboard-webclient
-      - repoxplorer
+#      - repoxplorer
       - firehose
       - hydrant
       - influxdb
