@@ -27,6 +27,16 @@
   register: _grafana_ini
   no_log: true
 
+# See https://community.grafana.com/t/grafana-will-not-start-after-update-from-4-1-3-to-4-3-6/5212/2
+# and https://github.com/puppetlabs/puppetlabs-pe_metrics_dashboard/issues/12
+- name: Fix /var/run/grafana issues
+  file:
+    path: /var/run/grafana
+    owner: grafana
+    group: grafana
+    mode: 0755
+    state: directory
+
 - name: Check if grafana is running
   command: systemctl is-active -q grafana-server
   register: _grafana_service
