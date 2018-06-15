@@ -3,3 +3,4 @@
   service:
     name: grafana-server
     state: restarted
+  failed_when: false
