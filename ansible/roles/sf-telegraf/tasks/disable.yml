@@ -1,12 +1,9 @@
 ---
 - name: Disable services
   service:
-    name: '{{ item }}'
+    name: 'telegraf'
     state: stopped
     enabled: "no"
-  with_items:
-    - '{{ service_real_name }}'
-    - '{{ service_name }}'
   ignore_errors: "yes"
 
 - block:

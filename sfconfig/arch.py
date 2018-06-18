@@ -78,7 +78,7 @@ def process(args):
             fail("Only one instance of %s is required" % requirement)
 
     if len(args.sfarch["inventory"]) > 1 and (
-            "cgit" not in args.glue["roles"] or
+            "cgit" not in args.glue["roles"] and
             "gerrit" not in args.glue["roles"]):
         fail("Cgit or Gerrit component is required for distributed deployment")
 

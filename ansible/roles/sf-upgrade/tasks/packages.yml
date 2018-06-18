@@ -8,12 +8,15 @@
 
 - include_tasks: remove_packages.yaml
 
+- name: "Fix yum contentdir vars"
+  copy:
+    content: "centos"
+    dest: /etc/yum/vars/contentdir
+
 - name: "Update packages"
   yum:
     name: "*"
     update_cache: "yes"
     state: latest
-    exclude:
-      - rh-python35-ansible
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'

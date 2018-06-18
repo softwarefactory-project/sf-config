@@ -46,7 +46,7 @@ def host_play(host, roles=[], params={}, tasks=[]):
     if not isinstance(tasks, list):
         tasks = [tasks]
 
-    host_play = {'hosts': host['hostname']}
+    host_play = {'hosts': host['hostname'], 'any_errors_fatal': True}
     if roles:
         host_play['roles'] = []
         for role in roles:

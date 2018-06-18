@@ -5,6 +5,11 @@
   register: epel_installed
   failed_when: epel_installed.rc == 0
 
+- name: "Fix yum contentdir vars"
+  copy:
+    content: "centos"
+    dest: /etc/yum/vars/contentdir
+
 - name: Report error if epel-release is installed
   fail:
     msg: "Software Factory is not compatible with EPEL."
