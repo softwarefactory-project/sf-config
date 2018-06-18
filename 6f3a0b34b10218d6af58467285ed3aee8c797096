@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9c2030d6_d0408456",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-06-18T15:45:04Z",
+      "side": 1,
+      "message": "It was removed on the previous task when sf_previous_version \u003c 2.7",
+      "parentUuid": "7a2fa921_209a8315",
+      "revId": "6f3a0b34b10218d6af58467285ed3aee8c797096",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a2fa921_c09e2f07",
         "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-05-27T21:28:35Z",
       "side": 1,
       "message": "IIRC this may contains secrets copy which may be useful to keep when they haven\u0027t been encrypted as zuul secrets",
+      "revId": "6f3a0b34b10218d6af58467285ed3aee8c797096",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "41b860d8_99faccca",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-06-18T15:45:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a2fa921_c09e2f07",
       "revId": "6f3a0b34b10218d6af58467285ed3aee8c797096",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
