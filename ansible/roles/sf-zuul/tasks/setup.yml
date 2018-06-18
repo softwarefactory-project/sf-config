@@ -177,6 +177,29 @@
   notify: restart zuul
 
 - block:
+    - name: Create override directory
+      file:
+        path: /etc/systemd/system/rh-python35-zuul-scheduler.service.d
+        state: directory
+
+    - name: Set wait4service if gerrit service is present
+      blockinfile:
+        path: /etc/systemd/system/rh-python35-zuul-scheduler.service.d/override.conf
+        create: yes
+        block: |
+          [Service]
+          ExecStartPre=/usr/bin/wait4service gerrit 29418
+      register: zuul_override
+
+    - name: Daemon reload
+      command: systemctl daemon-reload
+      when: zuul_override is changed
+      notify: restart zuul
+  when:
+    - "'gerrit' in roles"
+    -  "'zuul-scheduler' in zuul_services"
+
+- block:
     - name: "Check if scheduler is running"
       command: systemctl is-active "rh-python35-zuul-scheduler"
       register: zuul_scheduler_service_running
