@@ -61,7 +61,6 @@
         - "add -A"
         - "commit -m 'Initialize zuul-jobs repository'"
         - "push {{ zuul_jobs_location }} master"
-      when: zuul_conf_updated
 
     - name: Save zuul jobs repo
       command: "mv {{ zuul_jobs_clone_dir }} /root/zuul-jobs"

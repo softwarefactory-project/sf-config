@@ -13,6 +13,13 @@
 
 - include_tasks: sync_zuul_jobs_content.yml
 
+- name: Check for changes
+  command: git status -s
+  args:
+    chdir: "{{ zuul_jobs_clone_dir }}"
+  changed_when: false
+  register: zuul_jobs_repo_updated
+
 - name: Push zuul-jobs change
   command: "git {{ item }}"
   args:
@@ -21,4 +28,4 @@
     - "add -A"
     - "commit -m 'Update zuul-jobs default definitions'"
     - "push {{ zuul_jobs_location }} master"
-  when: zuul_conf_updated
+  when: zuul_jobs_repo_updated.stdout
