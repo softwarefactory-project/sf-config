@@ -94,6 +94,14 @@
       file:
         path: /root/empty_resources.yaml
         state: absent
+
+    - name: Remove unused symlinks
+      file:
+        path: "/root/config/{{ item }}V3"
+        state: absent
+      with_items:
+        - zuul
+        - nodepool
   when: sf_previous_version < 3.1
 
 - name: Push config change
