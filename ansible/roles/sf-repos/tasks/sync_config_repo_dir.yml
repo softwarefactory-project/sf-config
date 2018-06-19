@@ -1,0 +1,6 @@
+---
+- name: Synchronize default configuration directory
+  synchronize:
+    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/config/{{ item }}/"
+    dest: "{{ config_clone_dir }}/{{ item }}/"
+  with_items: "{{ repo_dir_names }}"

@@ -14,6 +14,13 @@
 
 - include_tasks: sync_sf_jobs_content.yml
 
+- name: Check for changes
+  command: git status -s
+  args:
+    chdir: "{{ sf_jobs_clone_dir }}"
+  changed_when: false
+  register: sf_jobs_repo_updated
+
 - name: Push sf-jobs change
   command: "git {{ item }}"
   args:
@@ -22,4 +29,4 @@
     - "add -A"
     - "commit -m 'Update sf-jobs default definitions'"
     - "push {{ sf_jobs_location }} master"
-  when: sf_jobs_files is changed
+  when: sf_jobs_repo_updated.stdout
