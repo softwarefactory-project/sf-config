@@ -174,7 +174,7 @@
   with_items:
     - {key: gerrit_admin_password, dest: "admin_http_password"}
     - {key: gerrit_admin_rsa_pub, dest: "admin_ssh_key.pub"}
-    - {key: gerrit_email, dest: "admin_email"}
+    - {key: local_admin_mail, dest: "admin_email"}
 
 - name: Update gerrit email address when fqdn is updated
   block:
