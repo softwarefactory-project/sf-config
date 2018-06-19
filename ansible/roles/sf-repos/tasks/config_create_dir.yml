@@ -1,0 +1,9 @@
+---
+- name: Create (but not update) default configuration directory
+  synchronize:
+    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/config/{{ item }}/"
+    dest: "{{ config_clone_dir }}/{{ item }}/"
+    rsync_opts:
+      # Ignore existing because users may update those files
+      - "--ignore-existing"
+  with_items: "{{ repo_dir_names }}"
