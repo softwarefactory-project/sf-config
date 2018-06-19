@@ -42,12 +42,15 @@
     - command: mktemp -d
       register: conf_tmp
 
+    - set_fact:
+        config_clone_dir: "{{ conf_tmp.stdout }}"
+
     # Ignore errors and manual check for missing master branch because it's
     # not fatal
     - name: Clone the config repository
       git:
         repo: "{{ config_location }}"
-        dest: "{{conf_tmp.stdout}}"
+        dest: "{{ config_clone_dir }}"
       ignore_errors: true
       register: _git_output
 
@@ -57,17 +60,15 @@
         - _git_output is failed
         - "'Failed to checkout branch master' not in _git_output.msg"
 
-    # Prepare the config repo
-    - name: Copy the default config repo files
-      command: rsync -av /usr/share/sf-config/ansible/roles/sf-repos/files/config/ {{ conf_tmp.stdout }}/
+    - name: Create resources directory
+      file:
+        path: "{{ config_clone_dir }}/resources"
+        state: directory
 
     - name: Initialize default config groups
       template:
         src: config/resources/resources.yaml.j2
-        dest: "{{ conf_tmp.stdout }}/resources/resources.yaml"
-
-    - set_fact:
-        config_clone_dir: "{{ conf_tmp.stdout }}"
+        dest: "{{ config_clone_dir }}/resources/resources.yaml"
 
     - include_tasks: sync_config_repo_content.yml
 
@@ -75,13 +76,13 @@
     - name: Push config repo
       command: "git {{ item }}"
       args:
-        chdir: "{{ conf_tmp.stdout }}"
+        chdir: "{{ config_clone_dir }}"
       with_items:
         - "add -A"
         - "commit -m 'Initialize config repository'"
         - "push {{ config_location }} master"
 
-    - command: mv {{ conf_tmp.stdout }} /root/config
+    - command: "mv {{ config_clone_dir }} /root/config"
   when: config_done.stat.exists != True
 
 - include_tasks: gitreview_update_fqdn.yaml update_fqdn_project='{{ config_done.stat.path }}'
