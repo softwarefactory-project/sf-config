@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c542cb6_a5616450",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-19T09:06:54Z",
+      "side": 1,
+      "message": "Please use \"{{ gerrit_host }}\"\n\nAnd is wait4service installed on the zuul-scheduler host?",
+      "range": {
+        "startLine": 191,
+        "startChar": 45,
+        "endLine": 191,
+        "endChar": 51
+      },
+      "revId": "62a2bdac579ee97d95614b051bff1cc30b18a385",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
