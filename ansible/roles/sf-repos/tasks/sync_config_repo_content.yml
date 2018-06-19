@@ -1,66 +1,60 @@
 ---
-- stat:
-    path: "{{ config_clone_dir }}/metrics"
+################################################################################
+# First we create the default content, without over-writting user modification #
+################################################################################
+- include_tasks: config_create_dir.yml
+  vars:
+    repo_dir_names:
+      - policies
 
-- name: Add default metrics configuration directory
-  synchronize:
-    src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/metrics/
-    dest: "{{ config_clone_dir }}/metrics"
-    archive: "no"
-    times: "no"
-    checksum: "yes"
-    perms: "yes"
-    recursive: "yes"
-  register: _config_metrics_files
+- include_tasks: config_create_dir.yml
+  vars:
+    repo_dir_names: [dashboards, gerrit]
+  when: "'gerrit' in roles"
 
-- name: Add default dlrn configuration directory
-  synchronize:
-    src: /usr/share/sf-config/ansible/roles/sf-repos/files/config/dlrn/
-    dest: "{{ config_clone_dir }}/dlrn"
-    archive: "no"
-    times: "no"
-    checksum: "yes"
-    perms: "yes"
-    recursive: "yes"
-  register: _config_dlrn_files
+- include_tasks: config_create_dir.yml
+  vars:
+    repo_dir_names: [gerritbot]
+  when: "'gerritbot' in roles"
 
-- name: Ensure config sub dir
-  file:
-    path: "{{ config_clone_dir }}/{{ item }}"
-    state: directory
-  with_items:
-    - resources
-    - nodepool
-    - zuul
-    - zuul.d
-    - playbooks/base
+- include_tasks: config_create_dir.yml
+  vars:
+    repo_dir_names: [nodepool]
+  when: "'nodepool' in roles"
 
-- name: Ensure retro-compatibility symlinks
-  file:
-    src: "{{ item }}"
-    dest: "{{ config_clone_dir }}/{{ item }}V3"
-    state: link
-  with_items:
-    - nodepool
-    - zuul
+- include_tasks: config_create_dir.yml
+  vars:
+    repo_dir_names: [mirrors]
+  when: "'mirror' in roles"
 
-- name: Sync config static files
-  synchronize:
-    src: "/usr/share/sf-config/ansible/roles/sf-repos/files/config/{{ item }}/"
-    dest: "{{ config_clone_dir }}/{{ item }}/"
-    archive: "no"
-    times: "no"
-    checksum: "yes"
-    delete: "yes"
-    perms: "yes"
-    recursive: "yes"
-    rsync_opts:
-      - "--exclude=update.yaml"
-  with_items:
-    - playbooks/config
-    - playbooks/pages
-  register: _config_static_files
+- include_tasks: config_create_dir.yml
+  vars:
+    repo_dir_names: [metrics]
+  when: "'grafana' in roles"
 
+#################################################################################
+# Then we synchronize the provided files, erasing user/previous state if needed #
+#################################################################################
+- include_tasks: config_create_dir.yml
+  vars:
+    repo_dir_names: [dlrn]
+  when: "'dlrn' in roles"
+
+- include_tasks: config_sync_dir.yml
+  vars:
+    repo_dir_names:
+      - playbooks
+      - resources
+      - zuul
+      - zuul.d
+
+# Repoxplorer provided files is just a README we want to keep up to date
+- include_tasks: config_sync_dir.yml
+  vars:
+    repo_dir_names: [repoxplorer]
+  when: "'repoxplorer' in roles"
+
+# Apply mandatory templates
 - name: Update config templates
   template:
     src: "config/{{ item }}.j2"
@@ -75,17 +69,17 @@
     - zuul.d/_pipelines.yaml
     - zuul/_main.yaml
     - nodepool/_local_hypervisor_runc.yaml
-  register: _config_template_files
 
-- name: Check for misplaced config.pub
-  stat:
-    path: /var/lib/software-factory/certs/config.pub
-  register: _config_pub
+- name: Update admin email in resources.yaml
+  replace:
+    path: '{{ config_clone_dir }}/resources/resources.yaml'
+    regexp: 'admin@.*'
+    replace: 'admin@{{ fqdn }}'
+  when: update_fqdn
 
-- name: Fix config.pub cert path
-  command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
-  when: _config_pub.stat.exists
-
+####################################
+# Finaly we manage default secrets #
+####################################
 - name: Delete config_key_checksum if update fqdn
   file:
     path: /var/lib/software-factory/state/config_key_checksum
@@ -107,14 +101,15 @@
     - name: Read last config_key_checksum
       command: cat /var/lib/software-factory/state/config_key_checksum
       changed_when: false
-      register: localconfig
+      register: _localconfig
 
     - name: Set config_key_regenerated fact
       set_fact:
-        new_config_key: "{{ config_key_exists and localconfig.stdout != _config_repo_key.stat.checksum|default(None) }}"
+        new_config_key: "{{ config_key_exists and _localconfig.stdout != _config_repo_key.stat.checksum|default(None) }}"
 
-- block:
-    - name: "Generate sflogs ssh_private_key secret"
+- name: Default secrets
+  block:
+    - name: Generate sflogs ssh_private_key secret
       command: >
         /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
             /var/lib/software-factory/bootstrap-data/certs/config.pub ssh_private_key \
@@ -125,15 +120,8 @@
       template:
         src: "config/zuul.d/_secret_sflogs.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sflogs.yaml"
-  when:
-    - new_config_key
-    - config_key_exists
 
-
-- name: install server secret
-  block:
-
-    - name: "Generate install_server ssh_private_key secret"
+    - name: Generate install_server ssh_private_key secret
       command: >
         /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
             /var/lib/software-factory/bootstrap-data/certs/config.pub ssh_private_key \
@@ -144,6 +132,18 @@
       template:
         src: "config/zuul.d/_secret_install_server.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_install_server.yaml"
+
+    - name: Generate sfpages ssh_private_key secret
+      command: >
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
+            /var/lib/software-factory/bootstrap-data/certs/config.pub ssh_private_key \
+            --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_gatewayserver_rsa
+      register: _sfpages_private_key_secret
+
+    - name: Update secret_sfpages.yaml
+      template:
+        src: "config/zuul.d/_secret_sfpages.yaml.j2"
+        dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
   when:
     - new_config_key
     - config_key_exists
@@ -162,34 +162,6 @@
     - tenant_deployment
     - new_config_key
     - config_key_exists
-
-- block:
-    - name: Generate sfpages ssh_private_key secret
-      command: >
-        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
-            /var/lib/software-factory/bootstrap-data/certs/config.pub ssh_private_key \
-            --infile /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_gatewayserver_rsa
-      register: _sfpages_private_key_secret
-
-    - name: Update secret_sfpages.yaml
-      template:
-        src: "config/zuul.d/_secret_sfpages.yaml.j2"
-        dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
-  when:
-    - new_config_key
-    - config_key_exists
-
-- name: Update admin email in resources.yaml
-  lineinfile:
-    path: '{{ config_clone_dir }}/resources/resources.yaml'
-    regexp: '        - admin@.*'
-    line: '        - admin@{{ fqdn }}'
-  register: _resources_admin_email
-  when: update_fqdn
-
-- stat:
-    path: "{{ config_clone_dir }}/zuul.d/_secret_service_user.yaml"
-  register: _service_user_secret_file
 
 - block:
     - name: Create temporary service user secret file
@@ -222,28 +194,6 @@
   when:
     - new_config_key
     - config_key_exists
-    - not _service_user_secret_file.stat.exists
-
-- name: Indicate config repo changed
-  set_fact:
-    config_repo_updated: true
-  when: _config_static_files is changed or
-        _config_template_files is changed or
-        _config_metrics_files is changed or
-        _config_dlrn_files is changed or
-        _resources_admin_email is changed or
-        new_config_key
-
-- name: Indicated config repo didn't changed
-  set_fact:
-    config_repo_updated: false
-  when:
-    - not _config_static_files is changed
-    - not _config_template_files is changed
-    - not _config_metrics_files is changed
-    - not _config_dlrn_files is changed
-    - not _resources_admin_email is changed
-    - not new_config_key
 
 - name: Save config key checksum
   copy:
