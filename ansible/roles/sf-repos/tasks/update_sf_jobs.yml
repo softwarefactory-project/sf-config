@@ -14,12 +14,7 @@
 
 - include_tasks: sync_sf_jobs_content.yml
 
-- name: Push sf-jobs change
-  command: "git {{ item }}"
-  args:
-    chdir: "{{ sf_jobs_clone_dir }}"
-  with_items:
-    - "add -A"
-    - "commit -m 'Update sf-jobs default definitions'"
-    - "push {{ sf_jobs_location }} master"
-  when: sf_jobs_files is changed
+- include_tasks: submit_repo_update.yml
+  vars:
+    clone_dir: "{{ sf_jobs_clone_dir }}"
+    clone_remote: "{{ sf_jobs_location }}"

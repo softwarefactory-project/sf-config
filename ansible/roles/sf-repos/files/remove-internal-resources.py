@@ -22,6 +22,8 @@ for root, dirs, files in os.walk(resources_dir, topdown=True):
 
 # Search and remove managed resources
 for path in paths:
+    if not (path.endswith(".yaml") or path.endswith(".yml")):
+        continue
     try:
         data = yaml.safe_load(open(path))
     except Exception:
