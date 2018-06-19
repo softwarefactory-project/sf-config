@@ -61,6 +61,15 @@
         - "push git+ssh://gerrit/config master"
   when: sf_previous_version < 3.0
 
+- name: Check for misplaced config.pub
+  stat:
+    path: /var/lib/software-factory/certs/config.pub
+  register: _config_pub
+
+- name: Fix config.pub cert path
+  command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
+  when: _config_pub.stat.exists
+
 - include_tasks: sync_config_repo_content.yml
 
 - block:
@@ -94,6 +103,14 @@
       file:
         path: /root/empty_resources.yaml
         state: absent
+
+    - name: Remove unused symlinks
+      file:
+        path: "/root/config/{{ item }}V3"
+        state: absent
+      with_items:
+        - zuul
+        - nodepool
   when: sf_previous_version < 3.1
 
 - name: Remove legacy hypervisor_oci template file
@@ -101,12 +118,7 @@
     path: /root/config/nodepool/_local_hypervisor_oci.yaml
     state: absent
 
-- name: Push config change
-  command: "git {{ item }}"
-  args:
-    chdir: "/root/config"
-  with_items:
-    - "add -A"
-    - "commit -m 'Update default definitions'"
-    - "push git+ssh://gerrit/config master"
-  when: config_repo_updated
+- include_tasks: submit_repo_update.yml
+  vars:
+    clone_dir: "{{ config_clone_dir }}"
+    clone_remote: "{{ config_location }}"

@@ -3,17 +3,11 @@
   synchronize:
     src: "/opt/rh/rh-python35/root/usr/share/zuul-jobs/"
     dest: "{{ zuul_jobs_clone_dir }}/"
-    archive: "no"
-    times: "no"
     delete: "yes"
-    checksum: "yes"
-    perms: "yes"
-    recursive: "yes"
     rsync_opts:
       - --exclude=.git
       - --exclude=.gitreview
       - --exclude=README
-  register: _static_files
 
 - name: Add README
   copy:
@@ -21,17 +15,3 @@
       This a copy of openstack-infra/zuul-jobs, do not edit directly
       Documentation is available at https://{{ fqdn }}/docs/zuul-jobs/
     dest: "{{ zuul_jobs_clone_dir }}/README"
-  register: _readme_file
-
-- name: "Indicate configuration changed"
-  set_fact:
-    zuul_conf_updated: true
-  when: _static_files is changed or
-        _readme_file is changed
-
-- name: "Indicate configuration didn't changed"
-  set_fact:
-    zuul_conf_updated: false
-  when:
-    - not _static_files is changed
-    - not _readme_file is changed

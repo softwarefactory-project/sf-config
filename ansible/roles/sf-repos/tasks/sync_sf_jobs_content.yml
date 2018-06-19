@@ -12,12 +12,9 @@
   synchronize:
     src: "/usr/share/sf-config/ansible/roles/sf-repos/files/sf-jobs/{{ item }}"
     dest: "{{ sf_jobs_clone_dir }}/{{ item }}"
-    archive: "no"
-    times: "no"
-    checksum: "yes"
-    delete: "yes"
-    perms: "yes"
-    recursive: "yes"
+    rsync_opts:
+      # Ignore existing because users may update those files
+      - "--ignore-existing"
   with_items:
     - README
     - playbooks/ansible/
@@ -41,4 +38,3 @@
     - roles/upload-galaxy/
     - roles/upload-pages/
     - zuul.d/_included-jobs.yaml
-  register: sf_jobs_files
