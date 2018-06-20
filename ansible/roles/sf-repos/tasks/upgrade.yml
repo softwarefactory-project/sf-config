@@ -70,6 +70,18 @@
   command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
   when: _config_pub.stat.exists
 
+- block:
+    - name: check for zuul/_main.yaml
+      stat:
+        path: /root/config/zuul/_main.yaml
+      register: _zuul_main_yaml
+
+    - name: remove zuul/_main.yaml
+      command: git rm zuul/_main.yaml
+      args:
+        chdir: /root/config
+      when: _zuul_main_yaml.stat.exists
+
 - include_tasks: sync_config_repo_content.yml
 
 - block:
