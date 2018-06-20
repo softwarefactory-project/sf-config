@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "12164f27_6bd1f369",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/openshift/prepare-namespace.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-20T10:32:01Z",
+      "side": 1,
+      "message": "It should rather be called \"staging-http-server\", and it\u0027s to hold the future state of the project, to be used as a git ref for the BuildConfig task.",
+      "parentUuid": "cfe51f2a_60a00f99",
+      "range": {
+        "startLine": 11,
+        "startChar": 15,
+        "endLine": 11,
+        "endChar": 26
+      },
+      "revId": "724a450048a7e0928c2ee8571526baee7a06f385",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a84a49a_7338e6ff",
         "filename": "ansible/roles/sf-repos/files/config/playbooks/openshift/prepare-namespace.yaml",
         "patchSetId": 5
@@ -36,6 +60,24 @@
       "writtenOn": "2018-06-20T10:30:36Z",
       "side": 1,
       "message": "I am pretty sure you can remove all the resourceVersion attributes",
+      "revId": "724a450048a7e0928c2ee8571526baee7a06f385",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8cb7f5f_9fa00273",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/openshift/prepare-namespace.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-20T10:32:01Z",
+      "side": 1,
+      "message": "Probably, I mostly copy/paste the \"edit yaml\" button from the openshift ui.",
+      "parentUuid": "9a84a49a_7338e6ff",
       "revId": "724a450048a7e0928c2ee8571526baee7a06f385",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
