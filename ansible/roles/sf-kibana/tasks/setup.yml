@@ -29,4 +29,4 @@
   service:
     name: kibana
     state: restarted
-  when: kibanaconf is changed
+  when: kibanaconf is changed or update_fqdn
