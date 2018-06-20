@@ -64,7 +64,11 @@
             {% endif %}
             {% if 'cauth' in roles %}
                 <li><p class="navbar-btn">
+                    {% if 'gerrit' in roles %}
                     <a id="logout-btn" href="/r/logout" target="_top" class="btn btn-danger">Logout</a>
+                    {% else %}
+                    <a id="logout-btn" href="/auth/logout" target="_top" class="btn btn-danger">Logout</a>
+                    {% endif %}
                     <a id="login-btn" class="btn btn-primary">Login</a>
                 </p></li>
             {% endif %}
