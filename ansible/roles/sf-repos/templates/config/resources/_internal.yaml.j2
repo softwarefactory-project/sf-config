@@ -39,6 +39,8 @@ resources:
         - {{ sf_jobs_project_name }}
         - {{ zuul_jobs_project_name }}:
             connection: {{ zuul_jobs_connection_name }}
+            zuul/include: [job]
+            zuul/shadow: {{ sf_jobs_project_name }}
 {% if 'gerrit' in roles %}
 
   repos:
