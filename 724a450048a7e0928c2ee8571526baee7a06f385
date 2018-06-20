@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cfe51f2a_60a00f99",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/openshift/prepare-namespace.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 528
+      },
+      "writtenOn": "2018-06-20T10:30:36Z",
+      "side": 1,
+      "message": "why is it called zuul-merger? isnt this the name of the application under test?",
+      "range": {
+        "startLine": 11,
+        "startChar": 15,
+        "endLine": 11,
+        "endChar": 26
+      },
+      "revId": "724a450048a7e0928c2ee8571526baee7a06f385",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a84a49a_7338e6ff",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/openshift/prepare-namespace.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 528
+      },
+      "writtenOn": "2018-06-20T10:30:36Z",
+      "side": 1,
+      "message": "I am pretty sure you can remove all the resourceVersion attributes",
+      "revId": "724a450048a7e0928c2ee8571526baee7a06f385",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
