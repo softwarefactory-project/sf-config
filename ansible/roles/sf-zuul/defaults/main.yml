@@ -17,6 +17,7 @@ zuul_services:
   - rh-python35-zuul-web
 
 zuul_scheduler_packages:
+  - wait4service
   - rh-python35-zuul
   - rh-python35-zuul-scheduler
 
