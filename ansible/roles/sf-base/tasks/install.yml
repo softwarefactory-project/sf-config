@@ -1,4 +1,10 @@
 ---
+- name: Set yum.conf retries
+  lineinfile:
+    dest: /etc/yum.conf
+    regexp: "^retries="
+    line: "retries=30"
+
 - name: Check if epel-release is installed
   command: rpm -q epel-release
   ignore_errors: yes
