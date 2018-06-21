@@ -7,6 +7,12 @@
       Newly uploaded patchsets enter this pipeline to receive an
       initial +/-1 Verified vote.
     manager: independent
+{% if 'gerrit' in roles %}
+    require:
+      {{ config_connection_name }}:
+        open: True
+        current-patchset: True
+{% endif %}
     trigger:
 {% if 'gerrit' in roles %}
       {{ config_connection_name }}:
@@ -33,10 +39,6 @@
         status-url: "{{ gateway_url }}/zuul/t/local/status.html"
         comment: false
 {% endfor %}
-{% endif %}
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
-        verified: 0
 {% endif %}
 {% if 'firehose' in roles %}
       mqtt:
