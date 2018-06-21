@@ -30,7 +30,7 @@
 {% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         status: 'pending'
-        status-url: "{{ gateway_url }}/zuul/t/local/status.html"
+        status-url: "{{ tenant_status_page_url }}"
         comment: false
 {% endfor %}
 {% endif %}
@@ -103,7 +103,7 @@
         # Require label
         label: {{ github_connection.label_name }}
 {% endif %}
-        status: "{{ github_connection.app_name }}\\[bot\\]:local/check:success"
+        status: "{{ github_connection.app_name }}\\[bot\\]:{{ tenant_name }}/check:success"
         open: True
         current-patchset: True
 {% endif %}{% endfor %}
@@ -134,7 +134,7 @@
           state: request_changes
         - event: pull_request
           action: status
-          status: "{{ github_connection.app_name }}\\[bot\\]:local/check:success"
+          status: "{{ github_connection.app_name }}\\[bot\\]:{{ tenant_name }}/check:success"
 {% if github_connection.label_name|default(False) %}
         - event: pull_request
           action: labeled
@@ -150,7 +150,7 @@
 {% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         status: 'pending'
-        status-url: "{{ gateway_url }}/zuul/t/local/status.html"
+        status-url: "{{ tenant_status_page_url }}"
         comment: false
 {% endfor %}
 {% if 'firehose' in roles %}

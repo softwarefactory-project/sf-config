@@ -157,6 +157,10 @@ def update_sfconfig(args):
         data["nodepool"]["clouds_file"] = None
         dirty = True
 
+    if "default-tenant-name" not in data:
+        data["default-tenant-name"] = "upgrade"
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \

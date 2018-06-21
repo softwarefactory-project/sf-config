@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new default-tenant-name setting in sfconfig.yaml let operator change
+    the "local" tenant name.

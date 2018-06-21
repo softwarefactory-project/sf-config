@@ -2,6 +2,9 @@
 # fqdn of the deployment used by authentication and in notification
 fqdn: sftests.com
 
+# The name of the default tenant
+default-tenant-name: "local"
+
 # Enable services debug mode
 debug: false
 
