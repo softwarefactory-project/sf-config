@@ -28,7 +28,7 @@
     listenUrl = proxy-https://0.0.0.0:{{ gerrit_port }}/r/
 [commentlink "changeid"]
     match = (I[0-9a-f]{8,40})
-    link = "#q,$1,n,z"
+    link = "#/q/$1"
 [commentlink "testresult"]
     match = "<li>([^ ]+) <a href=\"[^\"]+\" target=\"_blank\" rel=\"nofollow\">([^<]+)</a> : ([^ ]+)([^<]*)</li>"
     html = "<li class=\"comment_test\"><span class=\"comment_test_name\"><a href=\"$2\" rel=\"nofollow\">$1</a></span> <span class=\"comment_test_result\"><span class=\"result_$3\">$3</span>$4</span></li>"
