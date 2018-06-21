@@ -63,7 +63,7 @@
   with_items:
     - /root/.config
     - /var/lib/nodepool/.config
-  when: nodepool_clouds_file
+  when: nodepool_clouds_file is string
 
 - name: add nodepool to sudoers
   copy:
