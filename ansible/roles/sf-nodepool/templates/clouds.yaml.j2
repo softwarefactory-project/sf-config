@@ -3,6 +3,7 @@ cache:
     server: {{ nodepool_cache_ttl  }}
     port: {{ nodepool_cache_ttl  }}
     floating-ip: {{ nodepool_cache_ttl  }}
+{% if nodepool_providers|default([]) %}
 clouds:
 {% for provider in nodepool_providers|default([]) %}
   {{ provider['name'] }}:
@@ -36,3 +37,4 @@ clouds:
 {% endif %}
 
 {% endfor %}
+{% endif %}
