@@ -24,6 +24,7 @@ from six.moves import urllib
 ssh_key = "/var/lib/zuul/.ssh/zuul_worker_rsa"
 
 gateway = sys.argv[1]
+default_tenant_name = sys.argv[2]
 
 updated_keys = []
 
@@ -39,10 +40,11 @@ except Exception:
 # First find the local managesf url using the local tenant
 local_url = None
 for tenant, inf in tenants.items():
-    if tenant == "local":
+    if tenant == default_tenant_name:
         local_url = inf["url"]
 if local_url is None:
-    raise RuntimeError("Couldn't find local url in %s" % str(tenants.items()))
+    raise RuntimeError("Couldn't find %s url in %s" % (
+        default_tenant_name, str(tenants.items())))
 
 
 def zuul_encrypt(private_key_file, secret_file):

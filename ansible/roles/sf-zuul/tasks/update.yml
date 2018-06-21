@@ -37,7 +37,7 @@
 
 - block:
     - name: Generate tenant-update secrets
-      command: /usr/share/sf-config/ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py "{{ managesf_internal_url }}"
+      command: /usr/share/sf-config/ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py "{{ managesf_internal_url }}" "{{ tenant_name }}"
       register: updated_keys
 
     - name: Copy secrets to the install-server

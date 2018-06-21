@@ -77,6 +77,8 @@ class InstallServer(Component):
             # This is a tenant deployment, do extra configuration
             args.glue["tenant_name"] = args.sfconfig[
                 "tenant-deployment"]["name"]
+            args.glue["tenant_status_page_url"] = "%s/zuul/status.html" % (
+                args.glue["gateway_url"])
             args.glue["tenant_deployment"] = True
             args.glue["config_key_exists"] = False
             self.resolve_tenant_informations(args, host)
@@ -84,7 +86,10 @@ class InstallServer(Component):
             if "zuul" not in args.glue["roles"]:
                 fail("Zuul service is required in non tenant-deployment mode")
             # This is the master deployment, set default configuration
-            args.glue["tenant_name"] = "local"
+            args.glue["tenant_name"] = args.sfconfig["default-tenant-name"]
+            args.glue[
+                "tenant_status_page_url"] = "%s/zuul/t/%s/status.html" % (
+                    args.glue["gateway_url"], args.glue["tenant_name"])
             args.glue["tenant_deployment"] = False
             # Master tenant deployment always has config key ready to be used
             args.glue["config_key_exists"] = True

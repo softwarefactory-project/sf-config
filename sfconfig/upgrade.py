@@ -161,6 +161,10 @@ def update_sfconfig(args):
         data["zuul"]["default_nodeset_label"] = "runc-centos"
         dirty = True
 
+    if "default-tenant-name" not in data:
+        data["default-tenant-name"] = "local"
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \
