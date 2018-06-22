@@ -57,6 +57,8 @@ zuul_mysql_port: 3306
 zuul_mysql_db: "zuul"
 zuul_mysql_user: "zuul"
 zuul_mysql_password: "CHANGE_ME"
+zuul_jwt_secret: "CHANGE_ME"
+zuul_jwt_algorithm: "HS256"
 
 gerrit_pub_url: "https://example.com/r/"
 zuul_pub_url: "https://example.com/zuul/"
