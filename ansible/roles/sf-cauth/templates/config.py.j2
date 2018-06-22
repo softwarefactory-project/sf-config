@@ -206,3 +206,11 @@ repoxplorer = {
     'admin_token'   : '{{ repoxplorer_admin_token }}',
 }
 {% endif %}
+
+{% if 'zuul' in roles %}
+zuul = {
+    'JWTsecret'     : '{{ zuul_jwt_secret }}',
+    'JWTalgorithm'  : '{{ zuul_jwt_algorithm }}',
+    'default_tenant': '{{ tenant_name }}',
+}
+{% endif %}

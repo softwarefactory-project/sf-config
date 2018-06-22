@@ -163,6 +163,24 @@
         ProxyPassMatch ^/zuul/api/tenant/(.*)/console-stream$ {{ zuul_ws_url }}/api/tenant/$1/console-stream nocanon retry=0 disablereuse=on
         ProxyPassMatch ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 nocanon  retry=0 disablereuse=on
 
+        <LocationMatch "^/zuul/api/tenant/(?<tenant>.+)/project/(?<project>.+)/(?<action>autohold|enqueue|dequeue)">
+            RewriteEngine on
+            # TODO: does this work in tenant mode ?
+            <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.+/">
+                # Set the JWT authZ header from the cookie if the user is authenticated
+                RequestHeader unset Authorization
+                AuthType mod_auth_pubtkt
+                require valid-user
+                RequestHeader set Authorization "%{HTTP_COOKIE}s"
+                RequestHeader edit Authorization ".*auth_pubtkt=.*jwt%3D(.+?)%3B.+" "Bearer $1"
+                # Remove the JWT if present in the query string to avoid hijacking
+                RewriteCond %{QUERY_STRING} ^(.*)jwt=([^&]+)(.*)
+                RewriteRule (.*)\?(.*) $1?%1%3
+                RewriteCond %{QUERY_STRING} ^(.*)&&(.*)
+                RewriteRule (.*)\?(.*) $1?%1&%3
+            </If>
+        </location>
+
 {% endif %}
 {% if tenant_deployment %}
 
