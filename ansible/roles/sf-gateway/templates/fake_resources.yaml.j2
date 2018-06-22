@@ -1,0 +1,27 @@
+# This file is managed by ansible, do not edit directly
+---
+resources:
+  tenants:
+    {{ tenant_name }}:
+      description: "The {{ tenant_name }} tenant."
+      url: "{{ gateway_url }}/manage"
+      default-connection: {{ config_connection_name }}
+
+{% if not tenant_deployment %}
+  connections:
+{% for conn in zuul_gerrit_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "{{ conn['puburl'] }}"
+      type: gerrit
+{% endfor %}
+{% for conn in zuul_github_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "https://{{ conn['hostname']|default('github.com') }}"
+      type: github
+{% endfor %}
+{% for conn in zuul_git_connections|default([]) %}
+    {{ conn['name'] }}:
+      base_url: "{{ conn['baseurl'] }}"
+      type: git
+{% endfor %}
+{% endif %}

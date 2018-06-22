@@ -21,6 +21,12 @@
     dest: "{{ defconf.path }}/defconf-zuul.conf"
   when: "'zuul-scheduler' in roles"
 
+- name: Setup resources.yaml for config-check test
+  template:
+    src: fake_resources.yaml.j2
+    dest: "{{ defconf.path }}/resources.yaml"
+  when: "'zuul-scheduler' in roles"
+
 - name: Setup repoxplorer config.py
   copy:
     content: "db_path = 'repoxplorer/'"
