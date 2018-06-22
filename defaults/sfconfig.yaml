@@ -183,11 +183,12 @@ zuul:
   # Set custom zuul log url, the url will be expaned using the build parameters
   #  Default is: https://fqdn/logs/{build.uuid}/
   success_log_url: ""
-
   # Set custom zuul log url, the url will be expaned using the build parameters
   #  Default is: https://fqdn/logs/{build.uuid}/
   failure_log_url: ""
-
+  # Set zuul executor disk limit
+  #  Default is: 1024
+  executor_disk_limit: 1024
   # Set external gerrit connections to act as third party CI
   gerrit_connections: []
   #  - name: "external_gerrit"

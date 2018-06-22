@@ -111,6 +111,8 @@ class ZuulExecutor(Component):
 
     def configure(self, args, host):
         args.glue["executor_hosts"].append(host["hostname"])
+        args.glue["zuul_executor_disk_limit"] = args.sfconfig[
+            "zuul"]["executor_disk_limit"]
 
 
 class ZuulWeb(Component):
