@@ -23,3 +23,6 @@ cauth_mysql_port: 3306
 cauth_mysql_user: "cauth"
 
 sf_service_user_password: "CHANGE_ME"
+
+# TODO this is set in sf-zuul's defaults as well. Is there a way to define it only once?
+zuul_jwt_algorithm: "HS256"
