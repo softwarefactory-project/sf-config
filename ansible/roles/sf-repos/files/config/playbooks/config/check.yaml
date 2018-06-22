@@ -87,25 +87,26 @@
 
     - name: Validate zuul configuration
       block:
-        - name: Install fake zuul.conf
-          copy:
-            remote_src: true
-            src: "{{ config_root }}/defconf/defconf-zuul.conf"
-            dest: "{{ config_root }}/build/zuul.conf"
+        - set_fact:
+            tenant_options: ""
+          when: tenant_config is not defined
+
+        - set_fact:
+            tenant_options: "--tenant --master-sf-url {{ master_sf_url }}"
+          when: tenant_config is defined
 
         - name: Merge zuul config repo files
           command: >
-            env - /usr/share/sf-config/scripts/zuul-conf-merger.py
-                zuul/ build/zuul.yaml
+            env - /bin/managesf-configuration zuul 
+               . --cache-dir ../.cache --gateway-url {{ gateway_url }} {{ tenant_options }} --output build/zuul.conf
           args:
             chdir: "{{ config_root }}"
 
-        # This is no longer available in zuul, see I4a9d9473ce028e0b0cd32a8c48598c1682e1c329
-        # - name: Validate zuul config syntax
-        #   command: >
-        #     env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
-        #   args:
-        #     chdir: "{{ config_root }}"
+        - name: Validate zuul config syntax
+          command: >
+            env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
+          args:
+            chdir: "{{ config_root }}"
       when: '"zuul-scheduler" in arch.roles'
 
     - name: Validate metrics dashboards
