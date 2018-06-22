@@ -37,7 +37,7 @@
 - name: Install sf-update-dashboard command
   copy:
     src: sf-update-dashboard.py
-    dest: /usr/local/bin/sf-update-dashboard
+    dest: /usr/libexec/software-factory/sf-update-dashboard
     mode: 0555
   delegate_to: "{{ item }}"
   with_items: "{{ executor_hosts | union( groups['gateway'] ) }}"

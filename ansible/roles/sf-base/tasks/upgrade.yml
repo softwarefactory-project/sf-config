@@ -86,4 +86,12 @@
     # removed, only used to upgrade from sf-2.7
     - name: Ensure yum clean metadata is applied
       meta: flush_handlers
+
+    - name: Fix /usr/libexec mode
+      file:
+        path: /usr/libexec/software-factory
+        owner: root
+        group: root
+        mode: 0755
+        state: directory
   when: sf_previous_version < 3.1

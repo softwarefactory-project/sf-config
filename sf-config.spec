@@ -50,7 +50,7 @@ install -p -d -m 0750 %{buildroot}/var/lib/software-factory/state
 install -p -d -m 0700 %{buildroot}/var/lib/software-factory/sql
 install -p -d -m 0755 %{buildroot}/var/lib/software-factory/git
 # /usr/
-install -p -d -m 0750 %{buildroot}/usr/libexec/software-factory
+install -p -d -m 0755 %{buildroot}/usr/libexec/software-factory
 install -p -d -m 0750 %{buildroot}/usr/share/software-factory
 
 %files
@@ -64,7 +64,7 @@ install -p -d -m 0750 %{buildroot}/usr/share/software-factory
 %dir %attr(0700, root, root) /var/lib/software-factory/sql
 %dir %attr(0755, root, root) /var/lib/software-factory/git
 %dir %attr(0700, root, root) /var/log/software-factory
-%dir %attr(0700, root, root) /usr/libexec/software-factory
+%dir %attr(0755, root, root) /usr/libexec/software-factory
 %dir %attr(0750, root, root) /usr/share/software-factory
 %config(noreplace) %{_sysconfdir}/software-factory/*
 %{_datarootdir}/sf-config/

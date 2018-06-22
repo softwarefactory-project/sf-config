@@ -12,3 +12,8 @@
         path: /etc/httpd/managesf_htpasswd
         state: absent
   when: sf_previous_version < 3.1
+
+- name: Remove old script
+  file:
+    path: /usr/local/bin/sf-update-dashboard
+    state: absent
