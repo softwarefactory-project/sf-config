@@ -44,7 +44,7 @@
         chdir: "{{ config_root }}"
 
     - name: Check dashboards
-      command: env - python2 /usr/local/bin/sf-update-dashboard --check --input dashboards/
+      command: env - python2 /usr/libexec/software-factory/sf-update-dashboard --check --input dashboards/
       args:
         chdir: "{{ config_root }}"
 

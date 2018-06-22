@@ -95,8 +95,13 @@ def main(argv=sys.argv[1:]):
                 print("[E] Couldn't find dashboard named %s" %
                       project.get('review-dashboard'))
                 continue
-            foreach = "(%s)" % (" OR ".join(map(lambda x: 'project:%s' % x,
-                                project.get('source-repositories'))))
+            repos = []
+            for sr in project.get('source-repositories', []):
+                if isinstance(sr, dict):
+                    sr = list(sr.keys())[0]
+                repos.append(sr)
+            foreach = "(%s)" % (" OR ".join(list(
+                map(lambda x: 'project:%s' % x, repos))))
             try:
                 data = load_dashboard(dashboard_file,
                                       title="%s's dashboard" % name,
