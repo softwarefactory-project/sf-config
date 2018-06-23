@@ -30,7 +30,7 @@ def dump(args):
     status = {}
     for tenant in tenants:
         status[tenant["name"]] = json.loads(urllib2.urlopen(
-            "%s/%s/status" % (args.url, tenant["name"])).read())
+            "%s/tenant/%s/status" % (args.url, tenant["name"])).read())
     if os.path.isfile(args.dump_file):
         os.rename(args.dump_file, "%s.orig" % args.dump_file)
 
@@ -58,7 +58,7 @@ def dump(args):
                             raise RuntimeError("Forbidden char in [%s]" % cmd)
                         print(cmd)
                         of.write("%s\n" % cmd)
-    of.write("curl %s 2>&1 | grep 'zuul_version' > /dev/null\n" % args.url)
+    of.write("curl %s/info 2>&1 | grep 'capabilities' > /dev/null\n" % args.url)
     of.write("echo SUCCESS: zuul queues restored\n")
     of.close()
     os.chmod(args.dump_file, 0o755)
@@ -77,7 +77,7 @@ def load(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--force', action="store_const", const=True)
-    parser.add_argument('--url', default="{{ zuul_web_url }}")
+    parser.add_argument('--url', default="{{ zuul_web_url }}/api")
     parser.add_argument('--dump_file', default=dump_file)
     parser.add_argument('action', choices=("dump", "load"))
     args = parser.parse_args()
