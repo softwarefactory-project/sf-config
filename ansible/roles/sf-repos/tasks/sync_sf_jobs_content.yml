@@ -26,7 +26,6 @@
     - roles/ansible-review/
     - roles/ansible-spec/
     - roles/build-pages/
-    - roles/buildset-artifacts-location/
     - roles/ensure-ansible/
     - roles/ensure-ansible-lint/
     - roles/ensure-ansible-review/

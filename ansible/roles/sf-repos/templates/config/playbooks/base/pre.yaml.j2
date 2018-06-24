@@ -1,4 +1,13 @@
 ---
+- hosts: localhost
+  tasks:
+    - block:
+        - import_role: name=emit-job-header
+        # We need https://review.openstack.org/577674 to use log-inventory
+        # - import_role: name=log-inventory
+      vars:
+        zuul_log_url: "https://{{ fqdn }}/logs"
+
 - hosts: all
   roles:
     - prepare-workspace
