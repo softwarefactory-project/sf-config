@@ -82,10 +82,15 @@ def erase(args, pb):
 
     # First get confirmation
     prompt = "WARNING: this playbook will *DESTROY* software factory " \
-             "data , press ENTER to continue or CTRL-C to abort"
+             "data , type the fqdn to continue or CTRL-C to abort"
     pb.append(host_play('install-server', tasks={
         'pause': {'prompt': prompt},
-        'when': 'sfconfig_batch is not defined'}))
+        'when': 'sfconfig_batch is not defined',
+        'register': 'erase_prompt'}))
+    pb.append(host_play('install-server', tasks={
+        'fail': {'msg': 'Incorrect hostname'},
+        'when': ['sfconfig_batch is not defined',
+                 'erase_prompt.user_input != fqdn']}))
 
     # Erase all but mysql and install-server
     for host in args.inventory:
