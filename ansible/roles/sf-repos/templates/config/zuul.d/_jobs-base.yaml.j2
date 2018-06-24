@@ -35,7 +35,8 @@
       - service_user
 {% endif %}
     vars:
-      gateway_url: {{ gateway_url }}
+      zuul_log_url: "https://{{ fqdn }}/logs"
+      gateway_url: "{{ gateway_url }}"
 {% if tenant_deployment %}
       tenant_config: True
 {% else %}
