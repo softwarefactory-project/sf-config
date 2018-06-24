@@ -134,3 +134,13 @@
   vars:
     clone_dir: "{{ config_clone_dir }}"
     clone_remote: "{{ config_location }}"
+
+- name: Remove now merged upstream buildset-artifacts-location
+  file:
+    path: /root/sf-jobs/roles/buildset-artifacts-location/
+    state: absent
+
+- include_tasks: submit_repo_update.yml
+  vars:
+    clone_dir: "/root/sf-jobs"
+    clone_remote: "{{ sf_jobs_location }}"
