@@ -1,22 +1,21 @@
 # This file is managed by sfconfig, do not edit manually
 {% if not tenant_deployment %}
-{% if 'hypervisor-oci' in roles %}
+{% if 'hypervisor-runc' in roles %}
 
 labels:
-  - name: centos-oci
+  - name: runc-centos
     min-ready: 2
 
 providers:
-{% for host in inventory %}
-{% if 'hypervisor-oci' in host['roles'] %}
-  - name: oci-provider-{{ host['name'] }}
-    driver: oci
-    hypervisor: {{ host['hostname'] }}
+  - name: managed-runc-provider
+    driver: runc
     pools:
-      - name: main
+{% for host in inventory %}
+{% if 'hypervisor-runc' in host['roles'] %}
+      - name: {{ host['hostname'] }}
         max-servers: {{ host.get('max-servers', 10) }}
         labels:
-          - name: centos-oci
+          - name: runc-centos
             username: zuul-worker
 
 {% endif %}

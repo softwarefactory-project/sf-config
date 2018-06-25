@@ -28,7 +28,7 @@ def process(args):
     # TODO: remove this logic when $role.$fqdn are no longer used
     args.glue["scalable_roles"] = [
         "zuul", "zuul-merger", "zuul-executor",
-        "hypervisor-oci",
+        "hypervisor-runc",
     ]
 
     # roles is a dictwith roles name as key and host list as value

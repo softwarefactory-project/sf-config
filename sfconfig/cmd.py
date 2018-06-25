@@ -166,6 +166,10 @@ def main():
     sfconfig.upgrade.update_sfconfig(args)
     sfconfig.upgrade.update_arch(args)
 
+    # Save arch if needed
+    if args.save_arch:
+        save_file(args.sfarch, args.arch)
+
     # Parse components options
     for component in components.values():
         component.argparse(args)
@@ -202,11 +206,9 @@ def main():
                 continue
             components[role].configure(args, host)
 
-    # Save config/arch when needed
+    # Save config if needed
     if args.save_sfconfig:
         save_file(args.sfconfig, args.config)
-    if args.save_arch:
-        save_file(args.sfarch, args.arch)
 
     # Generate group vars
     with open(allyaml, "w") as allvars_file:

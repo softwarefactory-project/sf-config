@@ -13,12 +13,12 @@
 from sfconfig.components import Component
 
 
-class HypervisorOci(Component):
-    role = "hypervisor-oci"
+class HypervisorRunC(Component):
+    role = "hypervisor-runc"
 
     def usage(self, parser):
         parser.add_argument("--enable-insecure-slaves", action='store_true',
-                            help="Allow using hypervisor-oci on the "
+                            help="Allow using hypervisor-runc on the "
                             "control plane")
 
     def argparse(self, args):
@@ -26,9 +26,9 @@ class HypervisorOci(Component):
             args.glue["enable_insecure_slaves"] = True
 
     def validate(self, args, host):
-        if host["roles"] != ["hypervisor-oci"] and \
+        if host["roles"] != ["hypervisor-runc"] and \
            args.glue.get("enable_insecure_slaves") is not True:
-            print("Can not deploy hypervisor-oci on %s" % host["hostname"])
+            print("Can not deploy hypervisor-runc on %s" % host["hostname"])
             print("This host is part of the control-plane, use "
                   "--enable-insecure-slaves argument to continue. ")
             print("See https://softwarefactory-project.io/docs/operator/"
