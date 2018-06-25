@@ -121,7 +121,7 @@ def upgrade(args, pb):
     for host in args.inventory:
         roles = [role for role in host["roles"] if
                  role not in ("mysql", "zookeeper",
-                              "gerrit", "hypervisor-oci")]
+                              "gerrit", "hypervisor-runc")]
         pb.append(host_play(host, roles, {'role_action': 'disable',
                                           'erase': False}))
 

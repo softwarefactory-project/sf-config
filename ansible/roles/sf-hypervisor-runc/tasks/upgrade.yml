@@ -1,0 +1,21 @@
+---
+- name: Kill all containers
+  shell: for i in $(runc list -q); do runc delete --force $i; done
+  ignore_errors: yes
+  when: sf_previous_version < 3.1
+
+- name: Copy zk-clean-runc script
+  copy:
+    src: zk-clean-runc.py
+    dest: /usr/libexec/software-factory/zk-clean-runc.py
+    mode: 0755
+  delegate_to: "{{ zookeeper_host }}"
+
+- name: Run the zk-clean-runc script
+  command: /usr/libexec/software-factory/zk-clean-runc.py
+  delegate_to: "{{ zookeeper_host }}"
+
+- name: Fix umount leaks
+  shell: while true; do umount -l /srv/host-rootfs || break; done; cat /proc/mounts; mount -a
+  ignore_errors: yes
+  when: sf_previous_version < 3.1
