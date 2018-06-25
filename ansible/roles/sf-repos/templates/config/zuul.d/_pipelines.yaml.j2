@@ -241,12 +241,12 @@
 {% if 'gerrit' in roles %}
       {{ config_connection_name }}:
         - event: ref-updated
-          ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
+          ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
 {% endif %}
 {% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         - event: push
-          ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
+          ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
 {% endfor %}
 {% if 'firehose' in roles %}
     start:
