@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2bad861e_77858cb3",
+        "filename": "ansible/roles/sf-logserver/tasks/install.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-25T23:34:34Z",
+      "side": 1,
+      "message": "We are already doing that with DLRN. I think it\u0027s fine, and we want to drop the python2 ara package.",
+      "parentUuid": "b27f4bc9_8a068b5a",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 23
+      },
+      "revId": "1ab5b8897fc42b76a8d04a6933d69b75572de301",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "86e60772_2ba9db81",
         "filename": "ansible/roles/sf-logserver/tasks/setup.yml",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2018-06-25T23:32:31Z",
       "side": 1,
       "message": "I don\u0027t understand this. Can you explain what is/was going on ?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 19
+      },
+      "revId": "1ab5b8897fc42b76a8d04a6933d69b75572de301",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5fc9c3ac_fac83f0d",
+        "filename": "ansible/roles/sf-logserver/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-25T23:34:34Z",
+      "side": 1,
+      "message": "The wsgi doesn\u0027t seems to use the SetEnv variable and it was failing because it tried to access that directory. Creating the symlink fixed the issue so...",
+      "parentUuid": "86e60772_2ba9db81",
       "range": {
         "startLine": 25,
         "startChar": 0,
