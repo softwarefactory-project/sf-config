@@ -90,7 +90,7 @@ for tenant, inf in tenants.items():
         tenant_config_name, tenant_config_connection, private_key_file),
         file=sys.stderr)
 
-    for retry in range(60):
+    for retry in range(1800):
         # Give zuul sometime to generate the key
         if os.path.exists(private_key_file):
             break
