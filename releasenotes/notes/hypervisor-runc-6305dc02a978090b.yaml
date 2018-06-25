@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The hypervisor-oci component is renamed hypervisor-runc. Any nodesets
+    using the default centos-oci needs to be adapted to use the new runc-centos
+    label.

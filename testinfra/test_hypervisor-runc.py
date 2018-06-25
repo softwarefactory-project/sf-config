@@ -14,7 +14,7 @@ import utils
 import yaml
 
 
-class TestHypervisorOCI(utils.Base):
+class TestHypervisorRunC(utils.Base):
     def test_slaves_are_running(self, host):
         assert host.check_output("runc list -q")
 

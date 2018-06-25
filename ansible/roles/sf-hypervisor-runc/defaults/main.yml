@@ -3,8 +3,9 @@ role_actions:
   - install
   - setup
   - disable
+  - upgrade
 
-hypervisor_oci_packages:
+hypervisor_runc_packages:
   - runc
   - git
   - yamllint

@@ -169,7 +169,6 @@ DNS.1 = %s
                                                    " ".join(missing_roles)))
             for role in missing_roles:
                 args.sfarch["inventory"][0]["roles"].append(role)
-            args.save_arch = True
 
     def configure(self, args, host):
         pass
