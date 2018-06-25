@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b27f4bc9_8a068b5a",
+        "filename": "ansible/roles/sf-logserver/tasks/install.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-06-25T23:32:31Z",
+      "side": 1,
+      "message": "Do we really need (or want) to mix py2 (os_loganalyzer) with py3 ? I thought putting ara here was more appropriate, you have a 0.15.0 python package in the repos.",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 23
+      },
+      "revId": "1ab5b8897fc42b76a8d04a6933d69b75572de301",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "86e60772_2ba9db81",
+        "filename": "ansible/roles/sf-logserver/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-06-25T23:32:31Z",
+      "side": 1,
+      "message": "I don\u0027t understand this. Can you explain what is/was going on ?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 19
+      },
+      "revId": "1ab5b8897fc42b76a8d04a6933d69b75572de301",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
