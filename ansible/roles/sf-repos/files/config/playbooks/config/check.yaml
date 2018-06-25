@@ -32,6 +32,22 @@
         path: "{{ config_root }}/build"
         state: directory
 
+    - set_fact:
+        remote_gateway: "{{ gateway_url }}"
+      when: tenant_config is defined and tenant_config
+
+    - name: Copy service_user password in workspace
+      copy:
+        content: "{{ service_user.password }}"
+        dest: "{{ config_root }}/.service_user_password"
+      no_log: true
+      when: tenant_config is defined and tenant_config
+
+    - name: Check resources changes
+      command: env - /usr/local/bin/resources.sh validate {{ remote_gateway | default('') }}
+      args:
+        chdir: "{{ config_root }}"
+
     - name: Check gerrit replication
       command: git config -f gerrit/replication.config -l
       args:
@@ -87,25 +103,35 @@
 
     - name: Validate zuul configuration
       block:
+        - set_fact:
+            tenant_options: ""
+          when: not tenant_config
+
+        - set_fact:
+            tenant_options: "--tenant --master-sf-url {{ master_sf_url }}"
+          when: tenant_config
+
         - name: Install fake zuul.conf
           copy:
             remote_src: true
             src: "{{ config_root }}/defconf/defconf-zuul.conf"
             dest: "{{ config_root }}/build/zuul.conf"
 
-        - name: Merge zuul config repo files
+        - name: Merge zuul tenant config
           command: >
-            env - /usr/share/sf-config/scripts/zuul-conf-merger.py
-                zuul/ build/zuul.yaml
+            env - /bin/managesf-configuration zuul
+               --cache-dir ../.cache --config-dir . --gateway-url {{ gateway_url }} {{ tenant_options }} --output build/main.yaml
           args:
             chdir: "{{ config_root }}"
 
-        # This is no longer available in zuul, see I4a9d9473ce028e0b0cd32a8c48598c1682e1c329
-        # - name: Validate zuul config syntax
-        #   command: >
-        #     env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c build/zuul.conf -t
-        #   args:
-        #     chdir: "{{ config_root }}"
+        - name: Make sure we have a default timezone in bubblewrap env
+          command: ln -s /usr/share/zoneinfo/UTC /etc/localtime
+
+        - name: Validate zuul config syntax
+          command: >
+            env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c zuul.conf -t
+          args:
+            chdir: "{{ config_root }}/build"
       when: '"zuul-scheduler" in arch.roles'
 
     - name: Validate metrics dashboards
@@ -117,18 +143,9 @@
             chdir: "{{ config_root }}/metrics"
       when: '"grafana" in arch.roles'
 
-    - set_fact:
-        remote_gateway: "{{ gateway_url }}"
-      when: tenant_config is defined and tenant_config
-
-    - name: Copy service_user password in workspace
-      copy:
-        content: "{{ service_user.password }}"
-        dest: "{{ config_root }}/.service_user_password"
-      no_log: true
-      when: tenant_config is defined and tenant_config
-
-    - name: Check resources changes
-      command: env - /usr/local/bin/resources.sh validate {{ remote_gateway | default('') }}
-      args:
-        chdir: "{{ config_root }}"
+    - name: Fetch artifacts
+      synchronize:
+        src: "{{ config_root }}/build"
+        dest: "{{ zuul.executor.log_root }}/logs"
+        mode: pull
+      no_log: True
