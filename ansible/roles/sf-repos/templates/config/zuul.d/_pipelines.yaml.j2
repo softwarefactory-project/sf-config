@@ -238,6 +238,40 @@
 {% endif %}
 
 - pipeline:
+    name: pre-release
+    description: When a commit is tagged with a pre-release tag, this pipeline runs jobs that publish archives and documentation.
+    manager: independent
+    precedence: high
+    post-review: True
+    trigger:
+{% if 'gerrit' in roles %}
+      {{ config_connection_name }}:
+        - event: ref-updated
+          ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
+{% endif %}
+{% for github_connection in zuul_github_connections %}
+      {{ github_connection.name }}:
+        - event: push
+          ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
+{% endfor %}
+    success:
+      sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_success_topic }}"
+{% endif %}
+    failure:
+      sqlreporter:
+{% if 'firehose' in roles %}
+      mqtt:
+        topic: "{{ zuul_mqtt_failure_topic }}"
+{% endif %}
+      smtp:
+        from: "zuul@{{ fqdn }}"
+        to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
+        subject: '[Zuul] Job failed in pre-release pipeline: {change.project}'
+
+- pipeline:
     name: release
     post-review: true
     description: When a commit is tagged as a release, this pipeline runs jobs that publish archives and documentation.
