@@ -30,6 +30,7 @@
     parent: base
     description: Validate the config repo.
     run: playbooks/config/check.yaml
+    post-run: playbooks/config/check-fetch-artifacts.yaml
 {% if tenant_deployment %}
     secrets:
       - service_user
@@ -38,6 +39,7 @@
       gateway_url: {{ gateway_url }}
 {% if tenant_deployment %}
       tenant_config: True
+      master_sf_url: {{ master_sf_url }}
 {% else %}
       tenant_config: False
 {% endif %}
