@@ -1,0 +1,5 @@
+---
+- name: Fix umount leaks
+  shell: while true; do umount -l /srv/host-rootfs || break; done; cat /proc/mounts; mount -a
+  ignore_errors: yes
+  when: sf_previous_version < 3.1

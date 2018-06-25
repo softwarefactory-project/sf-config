@@ -74,7 +74,7 @@
     - zuul.d/_jobs-pages.yaml
     - zuul.d/_pipelines.yaml
     - zuul/_main.yaml
-    - nodepool/_local_hypervisor_oci.yaml
+    - nodepool/_local_hypervisor_runc.yaml
   register: _config_template_files
 
 - name: Check for misplaced config.pub

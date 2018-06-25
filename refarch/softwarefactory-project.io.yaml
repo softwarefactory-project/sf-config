@@ -42,9 +42,9 @@ inventory:
   ip: 192.168.240.8
   roles:
   - zuul-executor
-- name: oci01
+- name: runc01
   ip: 38.145.33.82
   max-servers: 24
   remote: true
   roles:
-  - hypervisor-oci
+  - hypervisor-runc

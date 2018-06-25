@@ -157,6 +157,10 @@ def update_sfconfig(args):
         data["nodepool"]["clouds_file"] = None
         dirty = True
 
+    if data["zuul"].get("default_nodeset_label") == "centos-oci":
+        data["zuul"]["default_nodeset_label"] = "runc-centos"
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \
@@ -181,10 +185,17 @@ def update_arch(args):
 
     for host in data['inventory']:
         # Set remote flag
-        if host['roles'] == ["hypervisor-oci"]:
+        if host['roles'] in ("hypervisor-oci", "hypervisor-runc"):
             if not host.get('remote'):
                 host['remote'] = True
                 dirty = True
+
+        # Rename oci role to runC
+        if "hypervisor-oci" in host['roles']:
+            host['roles'].remove('hypervisor-oci')
+            host['roles'].append('hypervisor-runc')
+            dirty = True
+
         # Remove legacy roles
         if 'pages' in host['roles']:
             host['roles'].remove('pages')

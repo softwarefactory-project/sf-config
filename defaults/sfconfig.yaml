@@ -176,7 +176,7 @@ logs:
 
 zuul:
   default_nodeset_name: container
-  default_nodeset_label: centos-oci
+  default_nodeset_label: runc-centos
   default_retry_attempts: 3
   # Mail address to contact when post or periodic pipeline job failed
   periodic_pipeline_mail_rcpt: "root@localhost"
