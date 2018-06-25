@@ -38,6 +38,7 @@
       gateway_url: {{ gateway_url }}
 {% if tenant_deployment %}
       tenant_config: True
+      master_sf_url: {{ master_sf_url }}
 {% else %}
       tenant_config: False
 {% endif %}
