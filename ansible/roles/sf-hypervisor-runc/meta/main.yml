@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  description: Oci hypervisor server
+  description: RunC hypervisor server
   company: Red Hat
   license: Apache
   min_ansible_version: 2.2
