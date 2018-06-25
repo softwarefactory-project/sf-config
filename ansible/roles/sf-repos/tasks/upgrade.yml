@@ -96,6 +96,11 @@
         state: absent
   when: sf_previous_version < 3.1
 
+- name: Remove legacy hypervisor_oci template file
+  file:
+    path: /root/config/nodepool/_local_hypervisor_oci.yaml
+    state: absent
+
 - name: Push config change
   command: "git {{ item }}"
   args:

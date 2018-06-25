@@ -91,7 +91,7 @@ auth = {
     },
     {% endif %}
     'localdb': {
-        'managesf_url': 'http://managesf.{{ fqdn }}',
+        'managesf_url': '{{ managesf_internal_url }}',
     },
     {% if not authentication['openid'].get('disabled') %}
     'openid': {
@@ -181,7 +181,7 @@ sqlalchemy = {
 }
 
 managesf = {
-    'url'           : 'http://managesf.{{ fqdn }}',
+    'url'           : '{{ managesf_internal_url }}',
 }
 {% if 'gerrit' in roles %}
 
