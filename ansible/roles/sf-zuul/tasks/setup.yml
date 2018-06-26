@@ -96,6 +96,7 @@
         group: zuul
         mode: 0600
         state: touch
+      changed_when: false
 
     - name: Check if the zuul sources are already defined
       command: "ssh-keygen -f {{ zuul_lib_dir }}/.ssh/known_hosts -F {{ item.host_packed }}"
@@ -174,6 +175,7 @@
     dest: "{{ zuul_conf_dir }}/zuul.conf"
     mode: 0440
     group: zuul
+    backup: yes
   notify: restart zuul
 
 - block:

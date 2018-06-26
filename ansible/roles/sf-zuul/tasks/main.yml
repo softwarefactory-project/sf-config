@@ -9,6 +9,7 @@
       file:
         path: "{{ lock_path }}_{{ role_action }}.lock"
         state: touch
+      changed_when: false
 
     - include_tasks: "{{ role_action }}.yml"
       when: role_action in role_actions
@@ -17,3 +18,4 @@
       file:
         path: "{{ lock_path }}_{{ role_action }}.lock"
         state: absent
+      changed_when: false

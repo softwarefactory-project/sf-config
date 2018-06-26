@@ -11,6 +11,7 @@
 - name: Get local config sha1
   command: git ls-remote -h file:///root/config
   register: localsha
+  changed_when: false
 
 - name: Update config repository
   when: localsha.stdout != hostvars[install_server].configsha.stdout
