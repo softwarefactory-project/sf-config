@@ -40,6 +40,11 @@
     repo_dir_names: [dlrn]
   when: "'dlrn' in roles"
 
+- name: Ensure role directory exists
+  file:
+    path: "{{ config_clone_dir }}/roles"
+    state: directory
+
 - include_tasks: config_sync_dir.yml
   vars:
     repo_dir_names:
@@ -47,6 +52,7 @@
       - resources
       - zuul
       - zuul.d
+      - roles/wait-for-changes-ahead
 
 # Repoxplorer provided files is just a README we want to keep up to date
 - include_tasks: config_sync_dir.yml
