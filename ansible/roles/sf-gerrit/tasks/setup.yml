@@ -39,6 +39,17 @@
     - /root/config/gerrit/commentlinks.yaml
     - /usr/share/sf-config/ansible/roles/sf-repos/files/config/gerrit/commentlinks.yaml
 
+- name: Check for gerrit server id
+  command: awk '/serverId/ { print $3 }'  /etc/gerrit/gerrit.config
+  failed_when: false
+  changed_when: false
+  register: _gerrit_server_id
+
+- name: Set gerrit_server_id fact
+  set_fact:
+    gerrit_server_id: "{{ _gerrit_server_id.stdout }}"
+  when: _gerrit_server_id.rc == 0
+
 - name: Install configuration files
   template:
     src: "{{ item.name }}.j2"

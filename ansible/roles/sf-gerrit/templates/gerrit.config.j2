@@ -2,6 +2,8 @@
     basePath = git
     canonicalWebUrl = {{ gerrit_pub_url }}
     gitHttpUrl =
+{% if gerrit_server_id|default(False) %}    serverId = {{ gerrit_server_id }}
+{% endif %}
 [database]
     type = MYSQL
     hostname = {{ gerrit_mysql_host }}
@@ -22,16 +24,17 @@
     user = gerrit
     javaHome = /usr/lib/jvm/java-1.8.0-openjdk/jre/
     heapLimit = {{ gerrit_heap_limit }}
+    war = /usr/lib64/gerrit/release.war
 [sshd]
-    listenAddress = "*:29418"
+    listenAddress = *:29418
 [httpd]
     listenUrl = proxy-https://0.0.0.0:{{ gerrit_port }}/r/
 [commentlink "changeid"]
     match = (I[0-9a-f]{8,40})
     link = "#/q/$1"
 [commentlink "testresult"]
-    match = "<li>([^ ]+) <a href=\"[^\"]+\" target=\"_blank\" rel=\"nofollow\">([^<]+)</a> : ([^ ]+)([^<]*)</li>"
-    html = "<li class=\"comment_test\"><span class=\"comment_test_name\"><a href=\"$2\" rel=\"nofollow\">$1</a></span> <span class=\"comment_test_result\"><span class=\"result_$3\">$3</span>$4</span></li>"
+    match = <li>([^ ]+) <a href=\"[^\"]+\" target=\"_blank\" rel=\"nofollow\">([^<]+)</a> : ([^ ]+)([^<]*)</li>
+    html = <li class=\"comment_test\"><span class=\"comment_test_name\"><a href=\"$2\" rel=\"nofollow\">$1</a></span> <span class=\"comment_test_result\"><span class=\"result_$3\">$3</span>$4</span></li>
 {% for commentlink in commentlinks %}
 [commentlink "{{ commentlink.name }}"]
     match = "{{ commentlink.match }}"
@@ -63,24 +66,28 @@
 [plugins]
     allowRemoteAdmin = true
 [mimetype "image/*"]
-        safe = true
+    safe = true
 [mimetype "text/x-yaml"]
-        safe = true
+    safe = true
 [mimetype "text/xml"]
-        safe = true
+    safe = true
 [mimetype "application/xml"]
-        safe = true
+    safe = true
 [mimetype "text/x-rst"]
-        safe = true
+    safe = true
 [mimetype "text/plain"]
-        safe = true
+    safe = true
 [mimetype "text/x-puppet"]
-        safe = true
+    safe = true
 [mimetype "text/x-ini"]
-        safe = true
+    safe = true
 [mimetype "text/x-properties"]
-        safe = true
+    safe = true
 [mimetype "text/x-markdown"]
-        safe = true
+    safe = true
 [mimetype "text/css"]
-        safe = true
+    safe = true
+[index]
+    type = LUCENE
+[receive]
+    enableSignedPush = false
