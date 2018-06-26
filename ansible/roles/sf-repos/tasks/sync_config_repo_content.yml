@@ -97,6 +97,7 @@
       file:
         path: /var/lib/software-factory/state/config_key_checksum
         state: touch
+      changed_when: false
 
     - name: Read last config_key_checksum
       command: cat /var/lib/software-factory/state/config_key_checksum

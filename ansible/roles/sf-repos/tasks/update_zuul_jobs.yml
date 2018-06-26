@@ -10,6 +10,7 @@
     - "fetch --all"
     - "reset --hard origin/master --"
     - "clean -f -x -d"
+  changed_when: false
 
 - include_tasks: sync_zuul_jobs_content.yml
 

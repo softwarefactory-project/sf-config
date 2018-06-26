@@ -10,23 +10,6 @@
     mode: "0444"
   delegate_to: "{{ gateway_host }}"
 
-- name: Initialize git access
-  blockinfile:
-    path: /root/.ssh/config
-    create: yes
-    mode: 0644
-    block: |
-      Host {{ fqdn }}
-        User admin
-        Port 29418
-        IdentityFile /root/.ssh/gerrit_admin
-      Host gerrit
-        User admin
-        Hostname {{ gerrit_host }}
-        Port 29418
-        IdentityFile /root/.ssh/gerrit_admin
-  delegate_to: "{{ install_server_host }}"
-
 - name: Initialize git config
   template:
     src: gitconfig.j2
@@ -46,6 +29,7 @@
     owner: gerrit
     group: gerrit
     mode: "{{ item.mode }}"
+    backup: yes
   with_items:
     - {name: patchset-created,
        path: /var/lib/gerrit/hooks,
@@ -210,6 +194,7 @@
 
 - name: Add zuul user
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
+  changed_when: false
 
 - include_tasks: setup_acl.yml
 
