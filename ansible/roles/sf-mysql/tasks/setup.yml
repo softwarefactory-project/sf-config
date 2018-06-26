@@ -60,3 +60,4 @@
 
 - name: Create databases
   shell: "mysql < /var/lib/software-factory/sql/databases.sql"
+  changed_when: false
