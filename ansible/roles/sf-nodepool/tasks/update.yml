@@ -47,6 +47,13 @@
     enabled: "yes"
   with_items: "{{ nodepool_services }}"
 
+- name: Restart service when fqdn is updated to refresh statsd client
+  service:
+    name: "rh-python35-{{ item }}"
+    state: restarted
+  with_items: "{{ nodepool_services }}"
+  when: update_fqdn
+
 - name: Write config repo checksum matching current configuration
   copy:
     content: "{{ upstreamconfig.stdout }}"
