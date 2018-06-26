@@ -71,8 +71,7 @@ class Component(object):
                 os.unlink(filename)
 
         if os.path.isfile(cert_cnf) and \
-                open(cert_cnf).read().find("DNS.1 = %s\n" %
-                                           args.sfconfig["fqdn"]) == -1:
+                open(cert_cnf).read().find("DNS.1 = %s\n" % common_name) == -1:
             # if FQDN changed, remove all certificates
             for fn in [cert_cnf, cert_req, cert_crt]:
                 xunlink(fn)
