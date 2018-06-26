@@ -8,6 +8,7 @@
 - name: Check if epel-release is installed
   command: rpm -q epel-release
   ignore_errors: yes
+  changed_when: false
   register: epel_installed
   failed_when: epel_installed.rc == 0
 

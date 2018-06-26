@@ -1,4 +1,5 @@
 ---
+# TODO: skip that task if defconf doesn't need udpate
 - name: Create temporary defconf directory
   tempfile:
     state: directory

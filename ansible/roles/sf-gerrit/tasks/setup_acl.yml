@@ -71,6 +71,7 @@
     - 'label.Workflow.value "+1 Approved" "\+1.*"'
   args:
     chdir: /var/lib/software-factory/git/All-projects
+  changed_when: false
 
 - name: Get project.config checksum
   stat:
