@@ -33,6 +33,7 @@ zuul_executor_packages:
   # We need to install the scheduler for the config-check tenant validation
   # NOTE: the -t argument could probably move to the 'zuul' cli, then we could drop that package
   - rh-python35-zuul-scheduler
+  - rh-python35-logreduce
 
 zuul_web_packages:
   - rh-python35-zuul
