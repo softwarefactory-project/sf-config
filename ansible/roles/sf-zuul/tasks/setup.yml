@@ -133,6 +133,7 @@
         group: zuul
       with_items: "{{ zuul_github_connections }}"
       when: item.app_key
+      no_log: yes
 
     - include_tasks: create_logging.yml _logfile="scheduler"
     - include_tasks: create_logging.yml _logfile="gearman-server"
@@ -222,9 +223,9 @@
   block:
     - name: Delete all emails in gerrit
       command: ssh gerrit 'gerrit set-account --delete-email ALL zuul'
-      deletage_to: "{{ install_server_host }}"
+      delegate_to: "{{ install_server_host }}"
 
     - name: Update email address in gerrit
       command: ssh gerrit 'gerrit set-account --add-email zuul@{{ fqdn }} zuul'
-      deletage_to: "{{ install_server_host }}"
+      delegate_to: "{{ install_server_host }}"
   when: update_fqdn

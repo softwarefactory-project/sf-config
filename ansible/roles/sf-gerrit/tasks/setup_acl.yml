@@ -12,6 +12,7 @@
     - reset --hard origin/meta/config
   args:
     chdir: /var/lib/software-factory/git/All-projects
+  changed_when: false
 
 - name: Get project.config checksum
   stat:

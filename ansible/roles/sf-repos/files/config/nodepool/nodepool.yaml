@@ -1,16 +1,17 @@
----
-diskimages: []
+# Uncomment to enable openstack provider
+#---
+#diskimages:
 #  - name: dib-centos-7
 #    elements:
 #      - centos-minimal
 #      - nodepool-minimal
 #      - zuul-worker-user
-
-labels: []
+#
+#labels:
 #  - name: dib-centos-7
 #    min-ready: 1
-
-providers: []
+#
+#providers:
 #  - name: default
 #    cloud: default
 #    clean-floating-ips: true

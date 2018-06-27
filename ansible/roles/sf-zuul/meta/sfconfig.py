@@ -58,11 +58,14 @@ class ZuulScheduler(Component):
 
         # Add local gerrit if available
         if "gerrit" in args.glue["roles"]:
+            puburl = args.glue["gerrit_pub_url"]
+            if puburl[-1] == "/":
+                puburl = puburl[:-1]
             args.glue.setdefault("zuul_gerrit_connections", []).append({
                 'name': 'gerrit',
                 'port': 29418,
                 'hostname': args.glue["gerrit_host"],
-                'puburl': args.glue["gerrit_pub_url"],
+                'puburl': puburl,
                 'username': 'zuul'
             })
 

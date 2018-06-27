@@ -23,7 +23,7 @@
   with_items:
     - git add zuul/_mirrors.yml jobs/_mirrors_update.yml
     - git commit -m "Add swift mirror periodic update"
-    - git push git+ssh://gerrit/config master
+    - git push {{ config_location }} master
     - ansible-playbook "{{ sf_playbooks_dir }}/sf_configrepo_update.yml"
 
 - name: Remove periodic pipeline from config repo
@@ -37,5 +37,5 @@
   with_items:
     - git rm zuul/_mirrors.yml jobs/_mirrors_update.yml
     - git commit -m "Remove swift mirror periodic update"
-    - git push git+ssh://gerrit/config master
+    - git push {{ config_location }} master
     - ansible-playbook "{{ sf_playbooks_dir }}/sf_configrepo_update.yml"

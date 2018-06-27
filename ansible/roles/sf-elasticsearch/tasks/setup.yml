@@ -48,11 +48,10 @@
     line: "ES_HEAP_SIZE={{ elasticsearch_heap_size }}"
   register: heapsize
 
-- name: Elasticsearch service started and enabled
+- name: Restart elasticsearch if needed
   service:
     name: elasticsearch
     state: restarted
-    enabled: "yes"
   when: listenaddr is changed or heapsize is changed or replicas is changed
 
 - name: Start service

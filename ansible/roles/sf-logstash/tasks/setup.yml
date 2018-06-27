@@ -26,17 +26,17 @@
     - curator.yml
     - delete_old_indices.yml
 
-- name: Enable logstash
-  service:
-    name: logstash
-    enabled: "yes"
-    state: started
-
 - name: Restart logstash if needed
   service:
     name: logstash
     state: restarted
   when: config is changed
+
+- name: Enable logstash
+  service:
+    name: logstash
+    enabled: "yes"
+    state: started
 
 - name: Setup delete old logstash indexes CRON
   cron:
