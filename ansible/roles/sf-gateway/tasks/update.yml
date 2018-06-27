@@ -1,16 +1,20 @@
 ---
-- file:
+- name: Ensure /var/lib/software-factory/state/dashboards_config exists
+  file:
     path: /var/lib/software-factory/state/dashboards_config
     state: touch
+  changed_when: False
 
 - name: "Check local dashboards config"
   command: cat /var/lib/software-factory/state/dashboards_config
+  changed_when: False
   register: localconfig
 
 - name: "Check upstream dashboards config"
   command: git log -n 3 --oneline dashboards/ resources/
   args:
     chdir: /root/config
+  changed_when: False
   register: upstreamconfig
   when: "'gerrit' in roles"
 
