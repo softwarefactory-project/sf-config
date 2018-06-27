@@ -1,3 +1,2 @@
 ---
-- name: "Update default repoxplorer index file"
-  command: /usr/local/bin/resources2repoxplorer.py apply
+- include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml service_name=repoxplorer service_config_dir=/etc/repoxplorer service_config_name=default.yaml"

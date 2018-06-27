@@ -9,6 +9,11 @@
     path: /etc/repoxplorer/index.yaml
     state: absent
 
+- name: "Ensure deprecated resources2repoxplorer absent"
+  file:
+    path: /usr/local/bin/resources2repoxplorer.py
+    state: absent
+
 - name: "Install top menu for repoxplorer"
   lineinfile:
     dest: /usr/share/repoxplorer/public/{{ item }}
@@ -23,12 +28,6 @@
     - contributor.html
     - contributors.html
     - index.html
-
-- name: "Install resources2repoxplorer"
-  template:
-    src: resources2repoxplorer.py.j2
-    dest: /usr/local/bin/resources2repoxplorer.py
-    mode: 0755
 
 - name: Create override directories
   file:
