@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f42aaba_a6be81f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-27T23:38:38Z",
+      "side": 1,
+      "message": "The depends-on can be removed, I added it because sf-ci was not properly validating upgrade.",
+      "revId": "6351b8495c01394149723ba90cb980248e4d5b97",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb70e931_85e4c935",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-27T23:38:38Z",
+      "side": 1,
+      "message": "When adding new default values to sfconfig.yaml, they need to be set in the upgrade.py module, see for example: https://softwarefactory-project.io/cgit/software-factory/sf-config/tree/sfconfig/upgrade.py#n91",
+      "revId": "6351b8495c01394149723ba90cb980248e4d5b97",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
