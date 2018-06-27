@@ -20,6 +20,7 @@
   register: service_user_password_hashed
   changed_when: false
 
+# TODO: do not update cauth config if password didn't changed
 - name: Install cauth config files
   template:
       src: "{{ item.name }}.j2"

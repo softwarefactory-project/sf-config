@@ -41,6 +41,7 @@
   command: systemctl is-active -q grafana-server
   register: _grafana_service
   failed_when: _grafana_service.rc not in [0, 3]
+  changed_when: false
 
 - name: Restart service if required
   service:
