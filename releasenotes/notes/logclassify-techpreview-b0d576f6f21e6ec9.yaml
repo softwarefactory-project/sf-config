@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new log-classify tech-preview post action is available and can
+    be activated using the logclassify_optin job variable.

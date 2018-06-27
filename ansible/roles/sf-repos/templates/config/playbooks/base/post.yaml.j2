@@ -1,15 +1,28 @@
 ---
 - hosts: localhost
-  roles:
-    - role: add-fileserver
-      fileserver: "{{'{{'}} site_sflogs {{'}}'}}"
-    - emit-ara-html
+  tasks:
+    - block:
+        - import_role: name=log-classify
+          when: logclassify_optin|default(False)
+      vars:
+        logclassify_model_store_url: https://{{ fqdn }}/logs/classifiers
+        logclassify_zuul_web: https://{{ fqdn }}/zuul/api/tenant/{{ tenant_name }}
+        logclassify_model_dir: /var/lib/log-classify
+        logclassify_local_dir: "{{'{{'}} zuul.executor.log_root {{'}}'}}"
+
+    - block:
+        - import_role: name=add-fileserver
+      vars:
+        fileserver: "{{'{{'}} site_sflogs {{'}}'}}"
+
+    - import_role: name=emit-ara-html
 
 - hosts: "{{'{{'}} site_sflogs.fqdn {{'}}'}}"
   gather_facts: false
   tasks:
     # Use a block because play vars doesn't take precedence on roles vars
     - block:
+        - import_role: name=upload-log-classify-model
         - import_role: name=upload-logs
         - import_role: name=emit-job-report
         - import_role: name=buildset-artifacts-location

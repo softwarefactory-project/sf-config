@@ -53,6 +53,8 @@
       - zuul
       - zuul.d
       - roles/wait-for-changes-ahead
+      - roles/log-classify
+      - roles/upload-log-classify-model
 
 # Repoxplorer provided files is just a README we want to keep up to date
 - include_tasks: config_sync_dir.yml
