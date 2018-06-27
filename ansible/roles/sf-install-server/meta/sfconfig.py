@@ -79,6 +79,8 @@ class InstallServer(Component):
                 "tenant-deployment"]["name"]
             args.glue["tenant_status_page_url"] = "%s/zuul/status.html" % (
                 args.glue["gateway_url"])
+            args.glue["tenant_zuul_api"] = "%s/zuul/api" % (
+                args.glue["gateway_url"])
             args.glue["tenant_deployment"] = True
             args.glue["config_key_exists"] = False
             self.resolve_tenant_informations(args, host)
@@ -90,6 +92,8 @@ class InstallServer(Component):
             args.glue[
                 "tenant_status_page_url"] = "%s/zuul/t/%s/status.html" % (
                     args.glue["gateway_url"], args.glue["tenant_name"])
+            args.glue["tenant_zuul_api"] = "%s/zuul/api/tenant/%s" % (
+                args.glue["gateway_url"], args.glue["tenant_name"])
             args.glue["tenant_deployment"] = False
             # Master tenant deployment always has config key ready to be used
             args.glue["config_key_exists"] = True

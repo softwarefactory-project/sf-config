@@ -30,6 +30,7 @@ zuul_executor_packages:
   - rh-python35-zuul
   - rh-python35-zuul-executor
   - rh-python35-ara
+  - rh-python35-logreduce
 
 zuul_web_packages:
   - rh-python35-zuul
