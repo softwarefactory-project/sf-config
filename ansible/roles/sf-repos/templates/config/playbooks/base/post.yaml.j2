@@ -8,12 +8,18 @@
       ara_report_run: failure
       ara_report_type: database
       ara_report_path: ara-report
+    - role: log-classify
+      logclassify_model_store_url: https://{{ fqdn }}/logs/classifiers
+      logclassify_zuul_web: {{ tenant_zuul_api }}
+      logclassify_model_dir: /var/lib/log-classify
+      logclassify_local_dir: "{{'{{'}} zuul.executor.log_root {{'}}'}}"
 
 - hosts: "{{'{{'}} site_sflogs.fqdn {{'}}'}}"
   gather_facts: false
   tasks:
     # Use a block because play vars doesn't take precedence on roles vars
     - block:
+        - import_role: name=upload-log-classify-model
         - import_role: name=upload-logs
         - import_role: name=emit-job-report
         - import_role: name=buildset-artifacts-location

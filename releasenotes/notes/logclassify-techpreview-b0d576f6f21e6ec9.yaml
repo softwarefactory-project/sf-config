@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    A new log-classify tech-preview post action is available and can
+    be de-activated using the logclassify_optin job variable.
+    Job report can be injected as a job result using the logclassify_report
+    job variable
