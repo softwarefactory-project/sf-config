@@ -92,6 +92,16 @@ def update_sfconfig(args):
         data['zuul']['periodic_pipeline_mail_rcpt'] = "root@localhost"
         dirty = True
 
+    if "prerelease_regexp" not in data['zuul']:
+        data['zuul']['prerelease_regexp'] = '([0-9]+)\.([0-9]+)\.([0-9]+)' \
+                                            '(?:-([0-9alpha|beta|rc.-]+))?(?:\+([0-9a-zA-Z.-]+))?'
+        dirty = True
+
+    if "release_regexp" not in data['zuul']:
+        data['zuul']['release_regexp'] = '([0-9]+)\.([0-9]+)\.([0-9]+)' \
+                                         '(?:-([0-9a-zA-Z.-]+))?(?:\+([0-9a-zA-Z.-]+))'
+        dirty = True
+
     if "active_directory" not in data["authentication"]:
         data["authentication"]["active_directory"] = {
             "disabled": True,
