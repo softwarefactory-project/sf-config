@@ -247,12 +247,12 @@
 {% if 'gerrit' in roles %}
       {{ config_connection_name }}:
         - event: ref-updated
-          ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
+          ref: ^refs/tags/{{ zuul.prerelease_regexp }}$
 {% endif %}
 {% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         - event: push
-          ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
+          ref: ^refs/tags/{{ zuul.prerelease_regexp }}$
 {% endfor %}
     success:
       sqlreporter:
@@ -281,12 +281,12 @@
 {% if 'gerrit' in roles %}
       {{ config_connection_name }}:
         - event: ref-updated
-          ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
+          ref: ^refs/tags/{{ zuul.release_regexp }}$
 {% endif %}
 {% for github_connection in zuul_github_connections %}
       {{ github_connection.name }}:
         - event: push
-          ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
+          ref: ^refs/tags/{{ zuul.release_regexp }}$
 {% endfor %}
 {% if 'firehose' in roles %}
     start:
