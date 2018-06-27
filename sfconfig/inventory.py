@@ -228,7 +228,8 @@ def config_update(args, pb):
     pb.append(host_play('install-server', tasks={
         'name': 'Get config sha1',
         'command': 'git ls-remote -h {{ config_location }}',
-        'register': 'configsha'
+        'changed_when': 'False',
+        'register': 'configsha',
     }))
 
     # The list of role to run update task
@@ -249,6 +250,7 @@ def config_update(args, pb):
             {'name': 'Exec resources apply',
              'command': '/usr/local/bin/resources.sh apply',
              'register': 'output',
+             'changed_when': 'False',
              'ignore_errors': 'yes'},
             {'debug': {'msg': '{{ output.stdout_lines }}'}},
             {'fail': {'msg': 'Resources apply failed {{ output.rc }}'},
@@ -341,6 +343,7 @@ def enable_action(args):
                     'name': 'Validate deployment with testinfra: %s' % tests,
                     'command': " ".join(testinfra),
                     'register': 'result',
+                    'changed_when': 'False',
                     'until': 'result.rc == 0',
                     'retries': 60,
                     'delay': 1

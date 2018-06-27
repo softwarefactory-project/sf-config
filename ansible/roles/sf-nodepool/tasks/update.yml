@@ -1,16 +1,20 @@
 ---
-- file:
+- name: Ensure /var/lib/software-factory/state/nodepool_config exists
+  file:
     path: /var/lib/software-factory/state/nodepool_config
     state: touch
+  changed_when: False
 
 - name: Check last applied Nodepool config checksum
   command: cat /var/lib/software-factory/state/nodepool_config
+  changed_when: False
   register: localconfig
 
 - name: Check new Nodepool config checksum
   shell: git log -n 3 --oneline nodepool/ && md5sum "{{ nodepool_conf_dir }}/_nodepool.yaml"
   args:
     chdir: /root/config
+  changed_when: False
   register: upstreamconfig
 
 - name: Update nodepool configuration
