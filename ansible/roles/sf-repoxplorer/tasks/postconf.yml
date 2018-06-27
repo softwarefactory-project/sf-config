@@ -1,3 +1,6 @@
 ---
-- name: "Update default repoxplorer index file"
-  command: /usr/local/bin/resources2repoxplorer.py apply
+- name: Update repoXplorer default.yaml by calling managesf
+  uri:
+    url: "{{ managesf_internal_url }}/v2/configurations/repoxplorer"
+    method: GET
+    dest: "/etc/repoxplorer/default.yaml"
