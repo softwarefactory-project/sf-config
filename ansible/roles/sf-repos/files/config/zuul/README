@@ -8,4 +8,4 @@ To test a new repository with zuul, add a file *my-project.yaml*:
         untrusted-projects:
           - my-project-repo-name
 
-Documentation is available here: https://localhost/docs/zuul
+Documentation is available here: https://softwarefactory-project.io/docs/zuul

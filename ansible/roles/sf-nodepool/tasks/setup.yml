@@ -51,7 +51,7 @@
   with_items:
     - /root/.config
     - /var/lib/nodepool/.config
-  when: not nodepool_clouds_file
+  when: nodepool_clouds_file[0]|default(None) != "/"
 
 - name: Copy os-client-config
   copy:
@@ -63,7 +63,7 @@
   with_items:
     - /root/.config
     - /var/lib/nodepool/.config
-  when: nodepool_clouds_file
+  when: nodepool_clouds_file[0]|default(None) == "/"
 
 - name: add nodepool to sudoers
   copy:

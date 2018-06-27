@@ -1,6 +1,6 @@
 ---
 - name: Kill all containers
-  shell: for i in $(runc list -q); do runc delete --force $i; done
+  shell: for i in $(runc list -q | grep oci); do runc delete --force $i; done
   ignore_errors: yes
   when: sf_previous_version < 3.1
 

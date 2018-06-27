@@ -60,6 +60,9 @@ class InstallServer(Component):
 
         args.glue["sf_version"] = get_sf_version()
         args.glue["sf_previous_version"] = get_previous_version()
+        if args.upgrade:
+            print("Going to upgrade from %s to %s" % (
+                args.glue["sf_previous_version"], args.glue["sf_version"]))
 
         if bool(args.sfconfig['config-locations']['config-repo']):
             args.glue["remote_config_repositories"] = True

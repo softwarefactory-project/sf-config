@@ -12,6 +12,7 @@
   command: grep -q "loadTopmenu" /opt/kibana/optimize/bundles/kibana.bundle.js
   register: top_menu
   ignore_errors: "yes"
+  changed_when: false
 
 - name: Add top menu
   lineinfile:

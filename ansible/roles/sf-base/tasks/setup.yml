@@ -72,14 +72,12 @@
     - {name: net.ipv4.conf.default.secure_redirects, value: 0}
     - {name: net.ipv4.icmp_echo_ignore_broadcasts, value: 1}
     - {name: kernel.sysrq, value: 0}
-  when: ansible_virtualization_role != "guest"
 
 - name: Start auditd
   systemd:
     name: auditd
     enabled: "yes"
     state: started
-  when: ansible_virtualization_role != "guest"
 
 - name: Manage /etc/hosts
   template:

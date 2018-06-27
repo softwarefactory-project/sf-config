@@ -399,6 +399,7 @@ def run(args):
     run_cmd = ["scl", "enable", "rh-python35", "--",
                "ansible-playbook", playbook_path]
     if not args.skip_apply:
+        os.chdir("/")
         install_ansible(args)
         enable_ara()
         sfconfig.utils.execute(run_cmd)

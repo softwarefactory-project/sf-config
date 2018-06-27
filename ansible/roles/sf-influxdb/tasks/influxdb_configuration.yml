@@ -12,6 +12,7 @@
   shell: '{{ influxdb_cli }} -execute "SHOW USERS"'
   register: admin_password
   failed_when: false
+  changed_when: false
   no_log: true
 
 - name: Create admin user
@@ -26,6 +27,7 @@
 - name: Check if telegraf db exists
   shell: '{{ influxdb_cli }} -execute "SHOW DATABASES"'
   register: databases
+  changed_when: false
   no_log: true
 
 - name: Create telegraf db
@@ -35,6 +37,7 @@
 - name: Check if telegraf user exists
   shell: '{{ influxdb_cli }} -execute "SHOW USERS"'
   register: users
+  changed_when: false
   no_log: true
 
 - block:

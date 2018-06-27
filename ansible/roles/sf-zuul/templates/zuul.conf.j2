@@ -78,6 +78,7 @@ canonical_hostname={{ conn['canonical_hostname'] }}
 {% if conn['report_only']|default(False) %}
 report_only=True
 {% endif %}
+
 {% endfor %}
 
 {% for conn in zuul_github_connections|default([]) %}
