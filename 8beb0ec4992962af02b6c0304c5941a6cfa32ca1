@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16e0aa8a_2508a5ec",
+        "filename": "ansible/roles/sf-zuul/templates/zuul.conf.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-27T09:27:24Z",
+      "side": 1,
+      "message": "We should drop that and cherry-pick the change in zuul instead",
+      "revId": "8beb0ec4992962af02b6c0304c5941a6cfa32ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
