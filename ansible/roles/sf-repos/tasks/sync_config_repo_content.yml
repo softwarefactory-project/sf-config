@@ -67,7 +67,6 @@
     - zuul.d/_jobs-base.yaml
     - zuul.d/_jobs-pages.yaml
     - zuul.d/_pipelines.yaml
-    - zuul/_main.yaml
     - nodepool/_local_hypervisor_runc.yaml
 
 - name: Update admin email in resources.yaml
