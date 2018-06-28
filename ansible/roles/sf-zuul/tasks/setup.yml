@@ -206,6 +206,7 @@
     - name: "Check if scheduler is running"
       command: systemctl is-active "rh-python35-zuul-scheduler"
       register: zuul_scheduler_service_running
+      changed_when: False
       failed_when: zuul_scheduler_service_running.rc not in [0, 3]
 
     - name: "Manually create database to avoid concurrency issue"

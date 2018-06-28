@@ -1,16 +1,20 @@
 ---
-- file:
+- name: Ensure /var/lib/software-factory/state/zuul_config exists
+  file:
     path: /var/lib/software-factory/state/zuul_config
     state: touch
+  changed_when: False
 
 - name: Check local config
   command: cat /var/lib/software-factory/state/zuul_config
+  changed_when: False
   register: localconfig
 
 - name: Check upstream config
   command: git log -n 3 --oneline zuul/ resources/
   args:
     chdir: /root/config
+  changed_when: False
   register: upstreamconfig
 
 - block:
@@ -39,6 +43,7 @@
     - name: Generate tenant-update secrets
       command: /usr/share/sf-config/ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py "{{ managesf_internal_url }}" "{{ tenant_name }}"
       register: updated_keys
+      changed_when: False
 
     - name: Copy secrets to the install-server
       fetch:
