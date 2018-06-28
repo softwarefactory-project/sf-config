@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff13dbdf_daa8688c",
+        "filename": "ansible/roles/sf-gateway/tasks/defconf.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-28T04:48:06Z",
+      "side": 1,
+      "message": "This was missing a \u0027/\u0027, otherwise the archive root directory is ansible.Ezz2YY",
+      "range": {
+        "startLine": 39,
+        "startChar": 28,
+        "endLine": 39,
+        "endChar": 30
+      },
+      "revId": "ec81eaec6cd6a2ed4851a159260770c673ff4f96",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
