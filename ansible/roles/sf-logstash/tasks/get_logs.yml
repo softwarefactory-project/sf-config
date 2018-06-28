@@ -1,0 +1,7 @@
+---
+- name: Fetch service logs
+  synchronize:
+    mode: pull
+    src: "/var/log/logstash/"
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
