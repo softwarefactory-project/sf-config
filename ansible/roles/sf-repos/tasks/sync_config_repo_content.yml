@@ -153,6 +153,21 @@
       template:
         src: "config/zuul.d/_secret_sfpages.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
+
+    - name: Generate github secrets
+      command: >-
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
+            /var/lib/software-factory/bootstrap-data/certs/config.pub github_app_key \
+            --infile {{ item.app_key }}
+      # TODO: skip connections that do not use an app
+      with_items: "{{ zuul.github_connections|default([]) }}"
+      register: _github_secrets
+
+    - name: Update secret_githubs.yaml
+      template:
+        src: "config/zuul.d/_secret_github.yaml.j2"
+        dest: "{{ config_clone_dir }}/zuul.d/_secret_github.yaml"
+      when: "{{ zuul.github_connections|default([]) }}"
   when:
     - new_config_key
     - config_key_exists
