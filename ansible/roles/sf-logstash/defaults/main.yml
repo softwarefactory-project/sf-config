@@ -3,6 +3,7 @@ role_actions:
   - install
   - setup
   - disable
+  - get_logs
 
 logstash_repo_name: logstash
 logstash_repo_desc: Logstash repository
