@@ -22,7 +22,27 @@
       uri:
         url: "{{ managesf_internal_url }}/v2/configurations/zuul"
         method: GET
-        dest: "{{ zuul_conf_dir }}/main.yaml"
+        dest: "{{ zuul_conf_dir }}/main.new.yaml"
+      retries: 3
+      delay: 10
+
+    - name: Check for differences with the running configuration
+      command: diff main.yaml main.new.yaml
+      args:
+        chdir: "{{ zuul_conf_dir }}"
+      # Ignore errors because during first run, main.yaml doesn't exists
+      failed_when: false
+      ignore_errors: yes
+      register: _zuul_conf_diff
+
+    - debug:
+        var: _zuul_conf_diff.stdout
+
+    - name: Update tenant configuration
+      command: mv main.new.yaml main.yaml
+      args:
+        chdir: "{{ zuul_conf_dir }}"
+      when: _zuul_conf_diff.stdout != "" or _zuul_conf_diff.rc != 0
 
     - name: Check if zuul-scheduler is running
       command: systemctl -q is-active rh-python35-zuul-scheduler
@@ -37,7 +57,10 @@
       when:
         - "'zuul-scheduler' in zuul_services"
         - _zuul_scheduler.rc == 0
-  when: localconfig.stdout != upstreamconfig.stdout or force_update|default(False)
+        - _zuul_conf_diff.stdout != "" or _zuul_conf_diff.rc != 0
+  when:
+    - localconfig.stdout != upstreamconfig.stdout or force_update|default(False)
+    - "'zuul-scheduler' in zuul_services"
 
 - block:
     - name: Generate tenant-update secrets
