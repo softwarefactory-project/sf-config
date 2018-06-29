@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Regular Expression for the pre-release and release pipeline are now
+    configurable via sfconfig.yaml, use the setting `prerelease_regexp`
+    and `release_regexp`. Default values are step to be Semantic Versioning
+    compliant.

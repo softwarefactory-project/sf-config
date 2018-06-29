@@ -198,6 +198,10 @@ zuul:
   #  Default is: https://fqdn/logs/{build.uuid}/
   failure_log_url: ""
 
+  # Regular Expressions used by pre-release and release pipelines
+  prerelease_regexp: '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9alpha|beta|rc.-]+))?(?:\+([0-9a-zA-Z.-]+))?'
+  release_regexp: '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9a-zA-Z.-]+))?(?:\+([0-9a-zA-Z.-]+))'
+
   # Set external gerrit connections to act as third party CI
   gerrit_connections: []
   #  - name: "external_gerrit"
