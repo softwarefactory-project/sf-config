@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ae4cb56_8747b7b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-29T08:52:40Z",
+      "side": 1,
+      "message": "Replace the depends-on with a ChangeId to avoid the uris bug.",
+      "revId": "8afb94bec0ab250e196ebc44145f7d51933bafef",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0f4bc4e7_f12af473",
+        "filename": "ansible/roles/sf-repoxplorer/tasks/postconf.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-29T08:52:40Z",
+      "side": 1,
+      "message": "Maybe use the same mechanism as of : https://softwarefactory-project.io/r/12812  \nOr at least use the retries/delay combo",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 41
+      },
+      "revId": "8afb94bec0ab250e196ebc44145f7d51933bafef",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14e9d6f7_f466f281",
+        "filename": "ansible/roles/sf-repoxplorer/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-06-29T08:52:40Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 45
+      },
+      "revId": "8afb94bec0ab250e196ebc44145f7d51933bafef",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
