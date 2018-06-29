@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "de323fbf_5b63d8cc",
+        "filename": "ansible/roles/sf-repoxplorer/tasks/update.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T15:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79742054_d90a3365",
+      "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7770dbfe_260d814b",
         "filename": "ansible/roles/sf-repoxplorer/tasks/update.yml",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2018-06-29T15:02:40Z",
       "side": 1,
       "message": "changed_when: false",
+      "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "66606270_a3497531",
+        "filename": "ansible/roles/sf-repoxplorer/tasks/update.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T15:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7770dbfe_260d814b",
       "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "fe143acc_7cf9fedc",
+        "filename": "ansible/tasks/fetch_update_configuration.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T15:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a4d049_234363d0",
+      "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7921a4b4_5856f7b5",
         "filename": "ansible/tasks/fetch_update_configuration.yml",
         "patchSetId": 4
@@ -64,6 +118,24 @@
       "writtenOn": "2018-06-29T15:02:40Z",
       "side": 1,
       "message": "diff -up",
+      "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d9c396df_1e5e48d7",
+        "filename": "ansible/tasks/fetch_update_configuration.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T15:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7921a4b4_5856f7b5",
       "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "1ef47255_0ef6ca4c",
+        "filename": "ansible/tasks/fetch_update_configuration.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T15:37:44Z",
+      "side": 1,
+      "message": "diff return 1 when there is a diff. So I\u0027ll use   failed_when: _conf_diff.rc not in [0, 1]",
+      "parentUuid": "cafb02a5_f21b4601",
+      "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a84d1b9f_9ea245e5",
         "filename": "ansible/tasks/fetch_update_configuration.yml",
         "patchSetId": 4
@@ -98,6 +188,24 @@
       "writtenOn": "2018-06-29T15:02:40Z",
       "side": 1,
       "message": "changed_when: false",
+      "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6dd43dae_da555e64",
+        "filename": "ansible/tasks/fetch_update_configuration.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T15:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a84d1b9f_9ea245e5",
       "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "1e273e2f_6cd80b1d",
+        "filename": "ansible/tasks/fetch_update_configuration.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T15:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee6f4f61_1318752e",
+      "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "19a3ab9e_9993bc7b",
         "filename": "ansible/tasks/fetch_update_configuration.yml",
         "patchSetId": 4
@@ -132,6 +258,24 @@
       "writtenOn": "2018-06-29T15:02:40Z",
       "side": 1,
       "message": "let\u0027s use copy here, using remote_src: yes",
+      "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "22fff478_4ad0d625",
+        "filename": "ansible/tasks/fetch_update_configuration.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T15:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19a3ab9e_9993bc7b",
       "revId": "1d9dc14065d34c21a61f5a5070c2695de3613306",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
