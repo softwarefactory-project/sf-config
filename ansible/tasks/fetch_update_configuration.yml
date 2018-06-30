@@ -1,0 +1,41 @@
+---
+- name: Get service configuration via managesf/configurations
+  uri:
+    url: "{{ managesf_internal_url }}/v2/configurations/{{ service_name }}"
+    method: GET
+    dest: "{{ service_config_dir }}/{{ service_config_name }}_new"
+  retries: 3
+  delay: 10
+  changed_when: false
+
+- name: Create empty configuration file if not exists
+  file:
+    path: "{{ service_config_dir }}/{{ service_config_name }}"
+    state: touch
+  changed_when: false
+
+- name: Check for differences with the running configuration
+  command: diff -up {{ service_config_name }} {{ service_config_name }}_new
+  args:
+    chdir: "{{ service_config_dir }}"
+  failed_when: _conf_diff.rc not in [0, 1]
+  register: _conf_diff
+  changed_when: false
+
+- name: configuration update difference
+  debug:
+    var: _conf_diff.stdout
+  when: _conf_diff.stdout != ""
+
+- name: Update service configuration
+  copy:
+    src: "{{ service_config_dir }}/{{ service_config_name }}_new"
+    dest: "{{ service_config_dir }}/{{ service_config_name }}"
+    remote_src: yes
+  when: _conf_diff.stdout != ""
+
+- name: Remove temporary configuration file
+  file:
+    path: "{{ service_config_dir }}/{{ service_config_name }}_new"
+    state: absent
+  changed_when: false
