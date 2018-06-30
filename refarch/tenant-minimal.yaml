@@ -1,0 +1,11 @@
+---
+description: "Minimal Tenant Software Factory deployment"
+inventory:
+  - name: managesf
+    roles:
+      - install-server
+      - mysql
+      - gateway
+      - cauth
+      - managesf
+      - logserver
