@@ -45,6 +45,9 @@ zuul_web_port: 9000
 zuul_gearman_port: 4730
 
 zuul_executor_disk_limit: 1024
+zuul_executor_load_multiplier: 2.5
+zuul_executor_min_avail_hdd: 5.0
+zuul_executor_min_avail_mem: 5.0
 
 zuul_mysql_host: "mysql.example.com"
 zuul_mysql_port: 3306
