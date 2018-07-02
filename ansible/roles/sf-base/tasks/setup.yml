@@ -97,7 +97,6 @@
 - name: "system: setenforce 0"
   command: setenforce 0
   when:
-    - ansible_virtualization_role != "guest"
     - ansible_selinux["mode"] != "permissive"
 
 - name: "system: manage sysctl"
@@ -119,14 +118,12 @@
     - {name: net.ipv4.conf.default.secure_redirects, value: 0}
     - {name: net.ipv4.icmp_echo_ignore_broadcasts, value: 1}
     - {name: kernel.sysrq, value: 0}
-  when: ansible_virtualization_role != "guest"
 
 - name: "system: make sure auditd is enabled"
   systemd:
     name: auditd
     enabled: "yes"
     state: started
-  when: ansible_virtualization_role != "guest"
 
 - name: "system: manage /etc/hosts"
   template:
