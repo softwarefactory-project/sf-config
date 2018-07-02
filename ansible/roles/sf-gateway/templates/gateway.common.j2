@@ -145,8 +145,8 @@
         </Directory>
 
 {% if 'zuul' in roles %}
-        RewriteRule ^/zuul3.*$ /zuul/t/ [R,L]
-        RewriteRule ^/zuul/?$ /zuul/t/ [R,L]
+        RewriteRule ^/zuul3.*$ /zuul/t/{{ tenant_name }}/status.html [R,L]
+        RewriteRule ^/zuul/?$ /zuul/t/{{ tenant_name }}/status.html [R,L]
 
         # Redirect all the static file to webui cache
         AliasMatch "^/zuul/t/.*/(.*)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1"

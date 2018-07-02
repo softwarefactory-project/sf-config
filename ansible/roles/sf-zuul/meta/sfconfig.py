@@ -65,6 +65,7 @@ class ZuulScheduler(Component):
                 'name': 'gerrit',
                 'port': 29418,
                 'hostname': args.glue["gerrit_host"],
+                'canonical_hostname': args.sfconfig["fqdn"],
                 'puburl': puburl,
                 'username': 'zuul'
             })
