@@ -103,6 +103,8 @@ class InstallServer(Component):
                 return
         if name == "local-cgit":
             baseurl = "http://%s/cgit" % host["hostname"]
+        elif name == "git.zuul-ci.org":
+            baseurl = "https://git.zuul-ci.org"
         else:
             baseurl = "file:///var/lib/software-factory/git"
         git_connections.append({
@@ -214,8 +216,8 @@ class InstallServer(Component):
            it's associated connection"""
         if args.sfconfig["zuul"]["upstream_zuul_jobs"]:
             # When using the upstream project, look for the connection name
-            zuul_name = "openstack-infra/zuul-jobs"
-            zuul_loc = "https://git.openstack.org/openstack-infra/zuul-jobs"
+            zuul_name = "zuul-jobs"
+            zuul_loc = "https://git.zuul-ci.org/zuul-jobs"
             zuul_conn = None
             # Check if review.openstack.org is configured
             for connection in args.sfconfig.get("zuul", {}).get(
@@ -231,8 +233,9 @@ class InstallServer(Component):
                         zuul_conn = connection["name"]
                         break
             if not zuul_conn:
-                fail("To use upstream zuul-jobs, configure connection to the"
-                     " remote git")
+                # Automatically adds git.zuul-ci.org connection
+                self.ensure_git_connection("git.zuul-ci.org", args, host)
+                zuul_conn = "git.zuul-ci.org"
         else:
             # When using the zuul-jobs copy, set the right connection name
             zuul_name = "zuul-jobs"
