@@ -48,6 +48,9 @@ trusted_ro_paths=/opt/:/etc/ld.so.cache:/etc/pki
 untrusted_ro_paths=/opt/:/etc/ld.so.cache:/etc/pki
 log_config={{ zuul_conf_dir }}/executor-logging.yaml
 log_stream_file=/var/tmp/zuul-console/{log_uuid}.log
+load_multiplier={{ zuul_executor_load_multiplier|default(2.5) }}
+min_avail_hdd={{ zuul_executor_min_avail_hdd|default(5.0) }}
+min_avail_mem={{ zuul_executor_min_avail_mem|default(5.0) }}
 
 [fingergw]
 state_dir={{ zuul_lib_dir }}
