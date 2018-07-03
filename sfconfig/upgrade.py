@@ -99,7 +99,7 @@ def update_sfconfig(args):
 
     if "release_regexp" not in data['zuul']:
         data['zuul']['release_regexp'] = '([0-9]+)\.([0-9]+)\.([0-9]+)' \
-            '(?:-([0-9a-zA-Z.-]+))?(?:\+([0-9a-zA-Z.-]+))'
+            '(?:-([0-9a-zA-Z.-]+))?(?:\+([0-9a-zA-Z.-]+))?'
         dirty = True
 
     if "active_directory" not in data["authentication"]:
