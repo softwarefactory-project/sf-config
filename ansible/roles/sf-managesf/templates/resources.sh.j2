@@ -117,7 +117,7 @@ SCRIPT
             exit 0
         fi
         clone=$(mktemp -d)
-        git clone http://gerrit/r/config $clone
+        git clone {{ config_location }} $clone
         # Be sure to use the right ref (ZUUL_COMMIT references the commit
         # for which the config-update job is running)
         cd $clone
