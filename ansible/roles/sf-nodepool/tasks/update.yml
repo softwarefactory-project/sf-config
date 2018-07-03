@@ -26,24 +26,6 @@
     - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/ "{{ nodepool_conf_dir }}/nodepool.yaml"
     - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
 
-- name: Fetch nodepool.yaml configuration
-  fetch:
-    flat: "yes"
-    src: "{{ nodepool_conf_dir }}/nodepool.yaml"
-    dest: /var/lib/software-factory/state/nodepool.yaml
-
-- name: Load nodepool configuration
-  include_vars:
-    file: /var/lib/software-factory/state/nodepool.yaml
-    name: nodepool_config
-
-- name: Update logging.conf
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ nodepool_conf_dir }}/{{ item }}"
-  with_items: [launcher-logging.conf, builder-logging.conf]
-  notify: restart nodepool
-
 - name: Ensure service are started and enabled
   service:
     name: "rh-python35-{{ item }}"

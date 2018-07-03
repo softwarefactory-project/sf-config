@@ -149,3 +149,11 @@
   copy:
     content: "{{ localCA_pem }}"
     dest: "{{ nodepool_conf_dir }}/scripts/localCA.pem"
+
+- block:
+    - include_tasks: create_logging.yml _logfile="builder"
+  when: "'nodepool-builder' in nodepool_services"
+
+- block:
+    - include_tasks: create_logging.yml _logfile="launcher"
+  when: "'nodepool-launcher' in nodepool_services"
