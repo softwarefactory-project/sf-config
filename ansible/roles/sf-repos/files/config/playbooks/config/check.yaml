@@ -1,9 +1,6 @@
 ---
 - hosts: localhost
   tasks:
-    - import_role: name=emit-job-header
-    - import_role: name=log-inventory
-
     - name: Set speculative config path
       set_fact:
         config_root: "{{ zuul.executor.src_root }}/{{ zuul.project.canonical_name }}"

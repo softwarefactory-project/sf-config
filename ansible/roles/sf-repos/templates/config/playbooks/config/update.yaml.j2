@@ -1,13 +1,6 @@
 ---
 - hosts: localhost
   tasks:
-    - block:
-        - import_role: name=emit-job-header
-        # This depends-on https://review.openstack.org/578234
-        - import_role: name=log-inventory
-      vars:
-        zuul_log_url: "https://{{ fqdn }}/logs"
-
     - include_tasks: update_local.yaml
 {% if tenant_deployment %}
     - include_tasks: update_tenant.yaml
