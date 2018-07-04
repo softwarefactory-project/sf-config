@@ -5,6 +5,7 @@
       - httpd
       - os-loganalyze
       - mod_wsgi
+      - ara # we can't mix python2 and python3 in mod_wsgi, temporary install py2 version for now
       - rh-python35-ara
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
