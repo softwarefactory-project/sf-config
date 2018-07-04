@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The nodepool-builder service package upgrades may fail when there is a
+    dedicated mountpoint for /var/opt/rh/rh-python35/cache/nodepool that contains
+    leaked dib mounts.
+    Make sure the nodepool cache is un-mounted and update your fstab to use
+    /var/cache/nodepool instead.

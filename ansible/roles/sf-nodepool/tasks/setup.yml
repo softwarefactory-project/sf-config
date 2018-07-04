@@ -118,6 +118,7 @@
     - {path: "/var/www/nodepool-log", owner: "nodepool", group: "apache"}
     - {path: "/var/lib/nodepool/images", owner: "nodepool", group: "nodepool"}
     - {path: "/var/www/html", mode: "0755"}
+    - {path: "/var/cache/nodepool", mode: "0755", owner: "nodepool", group: "nodepool"}
 
 - name: Install httpd conf.d nodepool log
   copy:
