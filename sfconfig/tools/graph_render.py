@@ -258,6 +258,12 @@ def zuul_dashboard(args):
         select_fct='distinct',
         span=6))
     executors_row["panels"].append(graph(
+        "Used HDD",
+        [{"m": "/zuul.executor.*.pct_used_hdd/", 'alias': '$2'}],
+        scale="/ 100",
+        select_fct='distinct',
+        span=6))
+    executors_row["panels"].append(graph(
         "Used RAM",
         [{"m": "/zuul.executor.*.pct_used_ram/", 'alias': '$2'}],
         scale="/ 100",
