@@ -33,7 +33,9 @@ angular.module('sfWelcome', []).controller('mainController', function($scope, $h
             angular.forEach($scope.Projects, function(project, key) {
                 new_sr = [];
                 angular.forEach(project['source-repositories'], function(sr, key) {
-                    new_sr.push(Object.keys(sr)[0]);
+                    if (!('private' in sr[Object.keys(sr)[0]] && sr[Object.keys(sr)[0]]['private'])) {
+                        new_sr.push(Object.keys(sr)[0]);
+                    }
                 })
                 project['source-repositories'] = new_sr;
             })

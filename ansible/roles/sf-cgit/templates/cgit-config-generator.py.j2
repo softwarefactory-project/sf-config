@@ -41,8 +41,6 @@ conf = []
 
 
 def add_repo(repo_name):
-    if isinstance(repo_name, dict):
-        repo_name = list(repo_name.keys())[0]
     repo = repos.get(repo_name)
     if repo is None:
         print("%s: unknown source-repositories" % repo_name)
@@ -57,7 +55,11 @@ def add_repo(repo_name):
 for project_name in projects_name:
     if project_name != "internal":
         conf.append("section=%s" % project_name)
-    for repo_name in projects[project_name].get("source-repositories", []):
+    for sr in projects[project_name].get("source-repositories", []):
+        repo_name = list(sr.keys())[0]
+        if sr[repo_name].get('private') is True:
+            listed_repos.add(repo_name)
+            continue
         add_repo(repo_name)
     conf.append("")
 
