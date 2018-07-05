@@ -35,3 +35,12 @@
         name: "nodepool"
         state: absent
   when: sf_previous_version < 3.0
+
+
+- name: Remove legacy configuration file
+  file:
+    path: "{{ nodepool_conf_dir }}/{{ item }}-logging.conf"
+    state: absent
+  with_items:
+    - builder
+    - launcher

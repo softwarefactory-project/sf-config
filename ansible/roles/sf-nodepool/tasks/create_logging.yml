@@ -4,9 +4,3 @@
     src: "logging.yaml.j2"
     dest: "{{ nodepool_conf_dir }}/{{ _logfile }}-logging.yaml"
   notify: restart nodepool
-
-- name: "Setup (legacy) logging configuration"
-  template:
-    src: "logging.conf.j2"
-    dest: "{{ nodepool_conf_dir }}/{{ _logfile }}-logging.conf"
-  notify: restart nodepool
