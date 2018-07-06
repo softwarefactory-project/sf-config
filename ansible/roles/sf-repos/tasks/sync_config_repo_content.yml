@@ -77,8 +77,15 @@
     - zuul.d/_jobs-pages.yaml
     - zuul.d/_jobs-openshift.yaml
     - zuul.d/_pipelines.yaml
+
+- name: Update nodepool config templates
+  template:
+    src: "config/{{ item }}.j2"
+    dest: "{{ config_clone_dir }}/{{ item }}"
+  with_items:
     - nodepool/_local_hypervisor_runc.yaml
     - nodepool/_local_hypervisor_openshift.yaml
+  when: "'nodepool' in roles"
 
 - name: Update admin email in resources.yaml
   replace:
