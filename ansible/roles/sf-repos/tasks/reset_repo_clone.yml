@@ -1,0 +1,30 @@
+---
+- name: Update clone
+  command: "git {{ item }}"
+  args:
+    chdir: "{{ clone_dir }}"
+  with_items:
+    - "remote set-url origin {{ clone_remote }}"
+    - "fetch --all"
+    - "reset --hard origin/master --"
+    - "clean -f -x -d"
+  changed_when: false
+
+- name: Check for local patch
+  stat:
+    path: "/var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
+  register: _local_patch
+
+- name: Apply local patch
+  command: "git am -3 /var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
+  args:
+    chdir: "{{ clone_dir }}"
+  when:
+    - _local_patch.stat.exists
+    - _local_patch.stat.size > 0
+
+- name: Remove local patch
+  copy:
+    content: ""
+    dest: "/var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
+  when: remove_patch|default(true)|bool
