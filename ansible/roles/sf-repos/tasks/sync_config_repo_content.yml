@@ -53,8 +53,13 @@
       - zuul
       - zuul.d
       - roles/wait-for-changes-ahead
+
+- include_tasks: config_sync_dir.yml
+  vars:
+    repo_dir_names:
       - roles/log-classify
       - roles/upload-log-classify-model
+  when: "'log-classify' in roles"
 
 # Repoxplorer provided files is just a README we want to keep up to date
 - include_tasks: config_sync_dir.yml

@@ -51,6 +51,13 @@
     path: /var/www/static
     state: directory
 
+- name: Configure vuejs location for os-loganalyze
+  ini_file:
+    dest: /etc/os_loganalyze/wsgi.conf
+    section: general
+    option: vuejs_src
+    value: /static/js/vue.min.js
+
 - name: Reload httpd
   service:
     name: httpd
