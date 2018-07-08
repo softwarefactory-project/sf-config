@@ -230,7 +230,8 @@ def main():
 
     if not args.skip_apply:
         execute(["logger", "sfconfig.py: ended"])
-        print("""%s: SUCCESS
+        if not args.disable or not args.erase:
+            print("""%s: SUCCESS
 
 Access dashboard: https://%s
 Login with admin user, get the admin password by running:
@@ -246,6 +247,14 @@ Once you have the Identity Provider metadata, run:
   sfconfig --set-idp-metadata <path/to/metadata.xml>
 
 """)
+
+    try:
+        notification = open(
+            "/var/lib/software-factory/ansible/notification.txt").read()
+        if notification:
+            print(notification)
+    except IOError:
+        pass
 
 
 if __name__ == "__main__":
