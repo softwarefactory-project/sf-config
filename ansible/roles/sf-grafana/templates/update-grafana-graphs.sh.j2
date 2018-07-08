@@ -1,13 +1,5 @@
-#!/bin/bash
+#!/bin/bash -e
 
-set -e
-pushd /root/config
-git fetch --all
-git reset --hard origin/master --
-git clean -f -d -x
-popd
-
-set +e
 sf-graph-render --zuul-url {{ zuul_web_url }} \
                 --enable-logstash "{{ 'logstash' in roles }}" \
                 --config-dir "/root/config" \

@@ -1,0 +1,44 @@
+---
+- name: Touch file to ensure stat results exists
+  file:
+    path: "/var/lib/software-factory/git/{{ item | basename }}.patch"
+    state: touch
+  with_items:
+    - "{{ config_clone_dir }}"
+    - "{{ sf_jobs_clone_dir }}"
+  changed_when: false
+
+- name: Stat local patches
+  stat:
+    path: "/var/lib/software-factory/git/{{ item | basename }}.patch"
+  with_items:
+    - "{{ config_clone_dir }}"
+    - "{{ sf_jobs_clone_dir }}"
+  register: _patches
+
+- name: Check local patch
+  set_fact:
+    _local_patch: "{% for patch in _patches.results %}{% if patch.stat.size > 0 %}Yes{% endif %}{% endfor %}"
+
+- name: Create notification message
+  copy:
+    content: ""
+    dest: /var/lib/software-factory/ansible/notification.txt
+
+- name: Create patch instruction
+  copy:
+    content: |
+      Warning: local patch are needed to be applied to repositories:
+      {% if _patches['results'][0].stat.size > 0 %}
+        - Apply {{ _patches['results'][0]['item'] }} to {{ config_public_location }}
+      {% endif %}
+      {% if _patches['results'][1].stat.size > 0 %}
+        - Apply {{ _patches['results'][1]['item'] }} to {{ sf_jobs_location }}
+      {% endif %}
+      {% if sync_strategy != 'patch' %}
+
+      A Code Review / Pull Request has been proposed, check open review and
+      approve it
+      {% endif %}
+    dest: /var/lib/software-factory/ansible/notification.txt
+  when: _local_patch != ""
