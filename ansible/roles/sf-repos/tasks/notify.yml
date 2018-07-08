@@ -1,13 +1,4 @@
 ---
-- name: Touch file to ensure stat results exists
-  file:
-    path: "/var/lib/software-factory/git/{{ item | basename }}.patch"
-    state: touch
-  with_items:
-    - "{{ config_clone_dir }}"
-    - "{{ sf_jobs_clone_dir }}"
-  changed_when: false
-
 - name: Stat local patches
   stat:
     path: "/var/lib/software-factory/git/{{ item | basename }}.patch"

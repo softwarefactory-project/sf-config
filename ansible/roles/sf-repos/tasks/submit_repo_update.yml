@@ -22,14 +22,6 @@
         chdir: "{{ clone_dir }}"
       when: sync_strategy == 'push' or clone_remote | dirname == "/var/lib/software-factory/git"
 
-    - name: Generate local patch
-      shell: "git format-patch --stdout origin/master > /var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
-      args:
-        chdir: "{{ clone_dir }}"
-      when:
-        - sync_strategy == 'patch' or sync_strategy == 'review'
-        - clone_remote | dirname != "/var/lib/software-factory/git"
-
     - name: Propose git review
       command: "git review -y"
       args:
@@ -38,3 +30,8 @@
         - sync_strategy == 'review'
         - clone_remote | dirname != "/var/lib/software-factory/git"
   when: _clone_updated.stdout
+
+- name: Generate local patch
+  shell: "git format-patch --stdout origin/master > /var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
+  args:
+    chdir: "{{ clone_dir }}"

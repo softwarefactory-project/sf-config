@@ -18,6 +18,7 @@ inventory:
       - zuul-scheduler
       - zuul-executor
       - zuul-web
+      - log-classify
       - gerritbot
       - nodepool-launcher
       - nodepool-builder
