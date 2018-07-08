@@ -21,6 +21,7 @@
     state: directory
     owner: zuul
     mode: 0700
+  when: "'log-classify' in roles"
 
 - name: Symlink SCL to zuul
   file:
