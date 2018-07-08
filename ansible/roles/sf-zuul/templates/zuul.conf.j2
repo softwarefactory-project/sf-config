@@ -43,7 +43,9 @@ git_dir={{ zuul_lib_dir }}/executor/
 disk_limit_per_job={{ zuul_executor_disk_limit|default(250) }}
 private_key_file={{ zuul_lib_dir }}/.ssh/id_rsa
 finger_port=7979
+{% if 'log-classify' in roles %}
 trusted_rw_paths=/var/lib/log-classify
+{% endif %}
 trusted_ro_paths=/opt/:/etc/ld.so.cache:/etc/pki
 untrusted_ro_paths=/opt/:/etc/ld.so.cache:/etc/pki
 log_config={{ zuul_conf_dir }}/executor-logging.yaml
