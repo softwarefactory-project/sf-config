@@ -222,8 +222,6 @@ def setup(args, pb):
     # Create config projects
     pb.append(host_play('install-server', 'repos', action))
 
-
-def config_update(args, pb):
     # Check config repo HEAD and update /root/config copy for each services
     pb.append(host_play('install-server', tasks={
         'name': 'Get config sha1',
@@ -231,18 +229,41 @@ def config_update(args, pb):
         'changed_when': 'False',
         'register': 'configsha',
     }))
+    # During setup, we need to fetch config repos on every host, for example
+    # to update connection list for zuul-merger and zuul-executor hosts.
+    # During regular config-update, we don't update fetch the repos on those
+    # host
+    pb.append(host_play('all', 'repos', {'role_action': 'fetch_config_repo'}))
 
+
+def repos(args, pb):
+    # Simple playbook just to run sf-repos action
+    for action in ("setup", "notify"):
+        pb.append(host_play(
+            'install-server', 'repos', {'role_action': action}))
+
+
+def config_update(args, pb, skip_sync=False):
     # The list of role to run update task
     roles_order = ["gerrit", "pages", "gerritbot",
                    "gateway", "managesf", "mirror", "repoxplorer",
                    "zuul", "nodepool", "grafana", "hound", "dlrn", "cgit"]
     # The extra list of host group to run fetch-config-repo
     roles_group = [
-        "zuul-scheduler", "zuul-merger", "zuul-executor", "zuul-web",
-        "nodepool-launcher", "nodepool-builder",
+        "zuul-scheduler", "nodepool-launcher", "nodepool-builder",
     ]
-    pb.append(host_play(':'.join(roles_order + roles_group),
-                        'repos', {'role_action': 'fetch_config_repo'}))
+
+    if skip_sync:
+        # Check config repo HEAD and update /root/config copy for each services
+        pb.append(host_play('install-server', tasks={
+            'name': 'Get config sha1',
+            'command': 'git ls-remote -h {{ config_location }}',
+            'changed_when': 'False',
+            'register': 'configsha',
+        }))
+
+        pb.append(host_play(':'.join(roles_order + roles_group),
+                            'repos', {'role_action': 'fetch_config_repo'}))
 
     # Call resources apply
     if "gerrit" in args.glue["roles"]:
@@ -264,6 +285,10 @@ def config_update(args, pb):
             if role in host["roles"]:
                 host_roles.append(role)
         pb.append(host_play(host, host_roles, {'role_action': 'update'}))
+
+
+def notify_operator(args, pb):
+    pb.append(host_play('install-server', 'repos', {'role_action': 'notify'}))
 
 
 def tenant_update(args, pb):
@@ -301,7 +326,7 @@ def enable_action(args):
         recover(args, pb)
     if not args.skip_setup:
         setup(args, pb)
-        config_update(args, pb)
+        config_update(args, pb, skip_sync=True)
         postconf(args, pb)
     else:
         playbook_name += "_nosetup"
@@ -348,6 +373,9 @@ def enable_action(args):
                     'retries': 60,
                     'delay': 1
                 }))
+
+    if not args.skip_setup:
+        notify_operator(args, pb)
 
     return playbook_name, pb
 
@@ -546,6 +574,7 @@ def generate(args):
     args.inventory = arch["inventory"]
     for playbook_name, generator in (
             ("sf_configrepo_update", config_update),
+            ("sf_repos", repos),
             ("sf_tenant_update", tenant_update),
             ("get_logs", get_logs),
             ("sf_backup", backup),

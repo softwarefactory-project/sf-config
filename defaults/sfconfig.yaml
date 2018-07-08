@@ -41,7 +41,7 @@ config-locations:
   config-repo:
   jobs-repo:
   strategy:
-    # How remote location are maintained
+    # How remote location are maintained (push or patch)
     sync: push
     # The user to use for submitting changes
     user: git
