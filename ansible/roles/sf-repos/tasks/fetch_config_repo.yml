@@ -15,16 +15,8 @@
 
 - name: Update config repository
   when: localsha.stdout != hostvars[install_server].configsha.stdout
-  command: "{{ item }}"
-  args:
-    chdir: /root/config
-  with_items:
-    # The git config replaces the http address in remote.origin.url.
-    - git config -f .git/config --replace-all remote.origin.url "{{ config_public_location }}"
-    # The sed replaces the ssh address in remote.gerrit.url; however this might
-    # not be set yet and therefore we can't use git config here, otherwise tests
-    # are breaking
-    - sed -i -e 's#url = ssh://admin@.*:29418/config#url = ssh://admin@{{ fqdn }}:29418/config#g' .git/config
-    - git fetch --all
-    - git reset --hard origin/master --
-    - git clean -f -x -d
+  include_tasks: reset_repo_clone.yml
+  vars:
+    clone_dir: /root/config
+    clone_remote: "{{ config_public_location }}"
+    remove_patch: false
