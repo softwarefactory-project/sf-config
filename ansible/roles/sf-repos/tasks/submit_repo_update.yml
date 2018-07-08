@@ -6,12 +6,35 @@
   changed_when: false
   register: _clone_updated
 
-- name: Push change
-  command: "git {{ item }}"
-  args:
-    chdir: "{{ clone_dir }}"
-  with_items:
-    - "add -A"
-    - "commit -m \"{{ update_message|default('Automatic update of defaults') }}\""
-    - "push {{ clone_remote }} master"
+- name: Submit change
+  block:
+    - name: Commit change
+      command: "git {{ item }}"
+      args:
+        chdir: "{{ clone_dir }}"
+      with_items:
+        - "add -A"
+        - "commit -m \"{{ update_message|default('Automatic update of defaults') }}\""
+
+    - name: Push change
+      command: "git push {{ clone_remote }} master"
+      args:
+        chdir: "{{ clone_dir }}"
+      when: sync_strategy == 'push' or clone_remote | dirname == "/var/lib/software-factory/git"
+
+    - name: Generate local patch
+      shell: "git format-patch --stdout origin/master > /var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
+      args:
+        chdir: "{{ clone_dir }}"
+      when:
+        - sync_strategy == 'patch' or sync_strategy == 'review'
+        - clone_remote | dirname != "/var/lib/software-factory/git"
+
+    - name: Propose git review
+      command: "git review -y"
+      args:
+        chdir: "{{ clone_dir }}"
+      when:
+        - sync_strategy == 'review'
+        - clone_remote | dirname != "/var/lib/software-factory/git"
   when: _clone_updated.stdout

@@ -66,11 +66,14 @@ class InstallServer(Component):
 
         if bool(args.sfconfig['config-locations']['config-repo']):
             args.glue["remote_config_repositories"] = True
-            if args.sfconfig['config-locations'][
-                    'strategy'].get('sync', 'push') != 'push':
-                fail("Only push sync strategy is supported at the moment.")
         else:
             args.glue["remote_config_repositories"] = False
+            args.glue["sync_strategy"] = 'push'
+
+        args.glue["sync_strategy"] = args.sfconfig['config-locations'][
+            'strategy'].get('sync', 'push')
+        if args.glue["sync_strategy"] not in ('push', 'patch', 'review'):
+            fail("Only push or patch or review sync strategy is supported.")
         self.resolve_config_location(args, host)
         self.resolve_zuul_jobs_location(args, host)
         if bool(args.sfconfig["tenant-deployment"]):
