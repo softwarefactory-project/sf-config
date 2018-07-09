@@ -7,3 +7,18 @@
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
   with_items: "{{ executor_hosts | union( groups['log-classify'] ) }}"
+
+- name: "Install webui"
+  yum:
+    name: rh-python35-logreduce-webui
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  delegate_to: "{{ gateway_host }}"
+
+- name: "Install server"
+  yum:
+    name: rh-python35-logreduce-server
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"

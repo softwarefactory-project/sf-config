@@ -58,6 +58,13 @@
     option: vuejs_src
     value: /static/js/vue.min.js
 
+- name: Configure log-classify endpoint
+  ini_file:
+    dest: /etc/os_loganalyze/wsgi.conf
+    section: general
+    option: classifier_endpoint
+    value: "{{ gateway_url }}/log-classify/api/anomaly"
+
 - name: Reload httpd
   service:
     name: httpd

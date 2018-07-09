@@ -2,3 +2,11 @@
 role_actions:
   - install
   - setup
+
+log_classify_port: 20004
+
+log_classify_mysql_host:: "mysql.example.com"
+log_classify_mysql_port: 3306
+log_classify_mysql_db: "log_classify"
+log_classify_mysql_user: "log_classify"
+log_classify_mysql_password: "CHANGE_ME"

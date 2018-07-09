@@ -1,1 +1,24 @@
 ---
+- name: Configure log-classify server
+  copy:
+    content: |
+      server:
+        addr: 0.0.0.0
+        port: {{ log_classify_port }}
+        dburi: sqlite:////var/opt/rh/rh-python35/lib/logreduce/db.sqlite
+        # dburi: mysql+pymysql://{{ log_classify_mysql_user }}:{{ log_classify_mysql_password}}@{{ log_classify_mysql_host }}/{{ log_classify_mysql_db }}
+        public_url: {{ gateway_url }}/log-classify
+    dest: /etc/opt/rh/rh-python35/logreduce/config.yaml
+  register: _log_classify_config
+
+- name: Restart service if needed
+  service:
+    name: rh-python35-logreduce-server
+    state: restarted
+  when: _log_classify_config is changed
+
+- name: Enable service
+  service:
+    name: rh-python35-logreduce-server
+    state: restarted
+    enabled: yes

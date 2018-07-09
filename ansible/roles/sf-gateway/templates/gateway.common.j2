@@ -181,6 +181,19 @@
         ProxyPassMatch ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 nocanon  retry=0 disablereuse=on
 
 {% endif %}
+{% if 'log-classify' in roles %}
+        <Directory /opt/rh/rh-python35/root/usr/share/logreduce>
+            Require all granted
+            Order allow,deny
+            Allow from all
+        </Directory>
+
+        # Redirect all the static file to webui cache
+        AliasMatch "^/log-classify/*$" "/opt/rh/rh-python35/root/usr/share/logreduce/index.html"
+        AliasMatch "^/log-classify/(.*)\.(html|js|png|map|woff|ttf|css)$" "/opt/rh/rh-python35/root/usr/share/logreduce/$1.$2"
+        ProxyPass /log-classify/api/ {{ log_classify_url }}/api/
+        ProxyPassReverse /log-classify/api/ {{ log_classify_url }}/api/
+{% endif %}
 {% if 'storyboard' in roles %}
         ProxyPass /storyboard_api/ http://storyboard:20000/v1/ nocanon retry=0
         ProxyPassReverse /storyboard_api/ http://storyboard:20000/v1/

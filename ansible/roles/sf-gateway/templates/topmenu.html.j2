@@ -49,6 +49,9 @@
             {% if 'murmur' in roles %}
                 <li><a href="mumble://{{ fqdn }}/?version=1.2.0">Mumble</a></li>
             {% endif %}
+            {% if 'log-classify' in roles %}
+                <li><a href="/log-classify/" target="_top">Log-Classify</a></li>
+            {% endif %}
             </ul>
             <ul class="nav navbar-nav pull-right">
                 {{ theme["topmenu_custom_entry"] }}
