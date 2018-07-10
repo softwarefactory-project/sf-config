@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a85427fe_15e0c295",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-07-10T09:30:33Z",
+      "side": 1,
+      "message": "\u0027review\u0027 is missing here.",
+      "revId": "02df303124892f382e4fd2252348c32ea5b4c6b3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c510e4c7_ed917354",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-07-10T09:30:33Z",
+      "side": 1,
+      "message": "Is it documented, when strategy is git, that config-repo uri must be ssh:// and install-server ssh pub key must be authorized to push ?",
+      "revId": "02df303124892f382e4fd2252348c32ea5b4c6b3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b329c5b0_11b80de4",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-07-10T09:30:33Z",
+      "side": 1,
+      "message": "That\u0027s already done in fetch_config_repo",
+      "range": {
+        "startLine": 258,
+        "startChar": 0,
+        "endLine": 263,
+        "endChar": 11
+      },
+      "revId": "02df303124892f382e4fd2252348c32ea5b4c6b3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
