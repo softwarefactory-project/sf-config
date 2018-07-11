@@ -9,7 +9,7 @@
 
 - name: Check local patch
   set_fact:
-    _local_patch: "{% for patch in _patches.results %}{% if patch.stat.size > 0 %}Yes{% endif %}{% endfor %}"
+    _local_patch: "{% for patch in _patches.results %}{% if patch.stat.size > 0 %}patch{% endif %}{% endfor %}"
 
 - name: Create notification message
   copy:
@@ -32,4 +32,4 @@
       approve it
       {% endif %}
     dest: /var/lib/software-factory/ansible/notification.txt
-  when: _local_patch != ""
+  when: "'patch' in _local_patch"
