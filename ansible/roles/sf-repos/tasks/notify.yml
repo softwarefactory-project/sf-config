@@ -32,4 +32,4 @@
       approve it
       {% endif %}
     dest: /var/lib/software-factory/ansible/notification.txt
-  when: _local_patch != ""
+  when: "'YES' in _local_patch"
