@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.0.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -14,6 +14,7 @@ BuildArch:      noarch
 Requires:       python-jinja2
 Conflicts:      epel-release
 Requires:       python2-six
+Requires:       PyYAML
 
 Buildrequires:  python2-devel
 Buildrequires:  python-setuptools
@@ -85,6 +86,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Tue Jul 10 2018 Fabien Boucher <fboucher@redhat.com> - 3.0.0-4
+- Add dependency to PyYAML
+
 * Fri Jun  1 2018 Fabien Boucher <fboucher@redhat.com> - 3.0.0-3
 - Move sfconfig directories creation in packaging
 
