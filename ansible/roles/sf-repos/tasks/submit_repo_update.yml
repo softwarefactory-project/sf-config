@@ -32,6 +32,6 @@
   when: _clone_updated.stdout
 
 - name: Generate local patch
-  shell: "git format-patch --stdout origin/master > /var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
+  shell: "git fetch origin; git format-patch --stdout origin/master > /var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
   args:
     chdir: "{{ clone_dir }}"
