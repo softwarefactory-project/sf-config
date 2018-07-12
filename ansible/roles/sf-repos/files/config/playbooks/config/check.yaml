@@ -79,17 +79,20 @@
       command: git config -f gerrit/replication.config -l
       args:
         chdir: "{{ config_root }}"
+      when: '"gerrit" in arch.roles'
 
     # Use "env -" to remove zuul-executor environment that modifies python runtime (e.g. defines a 'zuul' python module)
     - name: Check gerrit commentlinks
       command: env - python -c "import yaml; 'commentlinks' in yaml.safe_load(open('gerrit/commentlinks.yaml'))"
       args:
         chdir: "{{ config_root }}"
+      when: '"gerrit" in arch.roles'
 
     - name: Check dashboards
       command: env - python2 /usr/libexec/software-factory/sf-update-dashboard --check --input dashboards/
       args:
         chdir: "{{ config_root }}"
+      when: '"gerrit" in arch.roles'
 
     - name: Check policy file
       command: env - python -c "import yaml; yaml.safe_load(open('policies/policy.yaml'))"
