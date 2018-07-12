@@ -74,8 +74,14 @@ class InstallServer(Component):
             'strategy'].get('sync', 'push')
         if args.glue["sync_strategy"] not in ('push', 'patch', 'review'):
             fail("Only push or patch or review sync strategy is supported.")
+
+        if bool(args.sfconfig["tenant-deployment"]):
+            # Import master sf connections
+            self.read_master_sf_resources(args, host)
+
         self.resolve_config_location(args, host)
         self.resolve_zuul_jobs_location(args, host)
+
         if bool(args.sfconfig["tenant-deployment"]):
             # This is a tenant deployment, do extra configuration
             args.glue["tenant_name"] = args.sfconfig[
@@ -168,7 +174,11 @@ class InstallServer(Component):
                         continue
                     # Project name is the last two components
                     project_name = "/".join(location.split('/')[-2:])
-                    _loc = "ssh://%s@%s/%s" % (sync_user, host, project_name)
+                    if args.glue["sync_strategy"] != 'push':
+                        _loc = location
+                    else:
+                        _loc = "ssh://%s@%s/%s" % (
+                            sync_user, host, project_name)
                     if repo == "config-repo":
                         conn_name = conn["name"]
                         conf_name = project_name
@@ -264,7 +274,7 @@ class InstallServer(Component):
         args.glue["zuul_jobs_project_name"] = zuul_name
         args.glue["zuul_jobs_location"] = zuul_loc
 
-    def resolve_tenant_informations(self, args, host):
+    def read_master_sf_resources(self, args, host):
         """The goal of this method is fetch resources from master deployment
            and configure a zuul-less deployment"""
 
@@ -280,11 +290,30 @@ class InstallServer(Component):
             req = request.urlopen(
                 "%s/manage/resources" %
                 args.glue["master_sf_url"])
-            master_resource = json.loads(req.read().decode('utf-8'))
+            self.master_resource = json.loads(req.read().decode('utf-8'))
         except Exception:
             fail("Couldn't contact master-sf: %s" % (
                 args.glue["master_sf_url"]))
 
+        # Import master sf connection
+        for name, values in self.master_resource.get("resources", {}).get(
+                "connections", {}).items():
+            if values.get("type") == "gerrit":
+                hostname = parse.urlparse(
+                    values.get("base-url")).hostname
+                args.sfconfig["zuul"]["gerrit_connections"].append({
+                    "name": name,
+                    "hostname": hostname,
+                    "username": "zuul"
+                })
+            elif values.get("type") == "github":
+                args.sfconfig["zuul"]["github_connections"].append({
+                    "name": name,
+                    "app_id": values.get("github-app-name", ""),
+                    "label_name": values.get("github-label", "")
+                })
+
+    def resolve_tenant_informations(self, args, host):
         # TODO: make sfconfig.yaml zuul setting usable without sf-zuul role
         args.glue["zuul_default_retry_attempts"] = args.sfconfig[
             "zuul"].get("default_retry_attempts", 3)
@@ -310,7 +339,7 @@ class InstallServer(Component):
         # Look for master zuul-jobs project name and connection name
         try:
             # TODO: add special attribute to zuul-jobs to better identify it
-            zj = master_resource.get(
+            zj = self.master_resource.get(
                 "resources", {}).get("projects", {}).get(
                     "internal", {}).get("source-repositories")[-1]
             zuul_name = list(zj.keys())[0]
@@ -327,19 +356,20 @@ class InstallServer(Component):
         args.glue["zuul_github_connections"] = []
         args.glue["zuul_periodic_pipeline_mail_rcpt"] = args.sfconfig[
             "zuul"]["periodic_pipeline_mail_rcpt"]
-        tenant_conf = master_resource.get(
+        tenant_conf = self.master_resource.get(
             "resources", {}).get("tenants", {}).get(
                 args.glue["tenant_name"])
+
         if tenant_conf and tenant_conf.get("default-connection"):
             args.glue["config_connection_name"] = \
                 tenant_conf["default-connection"]
-            for name, values in master_resource.get(
+            for name, values in self.master_resource.get(
                     "resources", {}).get("connections", {}).items():
 
                 if name == args.glue["config_connection_name"]:
                     if values.get("type") == "gerrit":
                         hostname = parse.urlparse(
-                            values.get("base_url")).hostname
+                            values.get("base-url")).hostname
                         args.glue["zuul_gerrit_connections"].append(
                             {"name": args.glue["config_connection_name"],
                              "hostname": hostname,

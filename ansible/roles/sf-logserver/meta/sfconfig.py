@@ -35,3 +35,7 @@ class LogServer(Component):
         args.glue["logs_expiry"] = args.sfconfig["logs"]["expiry"]
         args.glue["loguser_authorized_keys"].append(
             args.glue["zuul_logserver_rsa_pub"])
+        # When logserver is hosted on the gateway, we can use fqdn instead
+        args.glue["logserver_hostname"] = args.glue["logserver_host"]
+        if args.glue["logserver_host"] == args.glue["gateway_host"]:
+            args.glue["logserver_hostname"] = args.sfconfig["fqdn"]

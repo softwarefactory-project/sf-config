@@ -1,5 +1,6 @@
 #!/bin/bash
 
+{% if zuul_web_url|default(False) %}
 sf-graph-render --zuul-url {{ zuul_web_url }} \
                 --enable-logstash "{{ 'logstash' in roles }}" \
                 --config-dir "/root/config" \
@@ -15,3 +16,4 @@ elif [ "${RET}" -eq "4" ]; then
     set -o pipefail
     find {{ grafyaml_metrics }} -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard update yaml
 fi
+{% endif %}

@@ -70,6 +70,7 @@ for tenant, inf in tenants.items():
 
     tenant_secret_path = "/var/lib/software-factory/bootstrap-data/" \
                          "tenant-update_%s_secret.yaml" % tenant
+    os.makedirs(os.path.dirname(tenant_secret_path), exist_ok=True)
     if (
             os.path.exists(tenant_secret_path) and
             "pkcs" in open(tenant_secret_path).read()):
@@ -83,7 +84,7 @@ for tenant, inf in tenants.items():
     tenant_config_connection = inf["default-connection"]
 
     tenant_config_name = tenant_config["config-repo"][len(
-        connections[tenant_config_connection]["base_url"]):]
+        connections[tenant_config_connection]["base-url"]):]
 
     private_key_file = "/var/lib/zuul/keys/%s/%s.pem" % (
         tenant_config_connection, tenant_config_name)
