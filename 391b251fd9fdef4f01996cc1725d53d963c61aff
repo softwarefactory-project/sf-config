@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "007f0ce8_8bfff21e",
+        "filename": "ansible/tasks/fetch_update_configuration.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 201
+      },
+      "writtenOn": "2018-07-16T11:26:05Z",
+      "side": 1,
+      "message": "https://github.com/ansible/ansible/issues/20802 says you also need ignore_errors: yes ?",
+      "revId": "391b251fd9fdef4f01996cc1725d53d963c61aff",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
