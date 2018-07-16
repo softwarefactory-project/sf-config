@@ -1,0 +1,20 @@
+# This file is managed by ansible, do not edit directly
+
+- name: Define linters packages fact
+  set_fact:
+    linters_pkgs:
+      - yamllint
+      - bashate
+      - python-flake8
+      - python-tox
+      - traceroute
+      - rpm-build
+      - python2-pelican
+      - python2-sphinx
+      - doc8
+
+- name: Install linters packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ linters_pkgs }}"
