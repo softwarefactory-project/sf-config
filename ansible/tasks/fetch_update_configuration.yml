@@ -7,6 +7,8 @@
   retries: 3
   delay: 10
   changed_when: false
+  register: result
+  until: result | success
 
 - name: Create empty configuration file if not exists
   file:
