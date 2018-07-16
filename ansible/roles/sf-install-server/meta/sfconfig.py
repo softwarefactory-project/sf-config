@@ -75,6 +75,7 @@ class InstallServer(Component):
         if args.glue["sync_strategy"] not in ('push', 'patch', 'review'):
             fail("Only push or patch or review sync strategy is supported.")
 
+        args.glue["resources_connections"] = {}
         if bool(args.sfconfig["tenant-deployment"]):
             # Import master sf connections
             self.read_master_sf_resources(args, host)
@@ -291,6 +292,9 @@ class InstallServer(Component):
                 "%s/manage/resources" %
                 args.glue["master_sf_url"])
             self.master_resource = json.loads(req.read().decode('utf-8'))
+            args.glue["resources_connections"] = self.master_resource.get(
+                'resources', {}).get('connections', {})
+            args.glue["resources_connections"]['__force_dict__'] = True
         except Exception:
             fail("Couldn't contact master-sf: %s" % (
                 args.glue["master_sf_url"]))
