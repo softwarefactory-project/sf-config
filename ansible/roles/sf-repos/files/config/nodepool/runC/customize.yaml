@@ -1,0 +1,6 @@
+---
+# Tasks in that files are executed on the hypervisor-oci node by the config-update
+- include_tasks: _linters-packages.yaml
+
+# Uncomment to configure a fedora environment
+# - include_tasks: fedora-rootfs.yaml
