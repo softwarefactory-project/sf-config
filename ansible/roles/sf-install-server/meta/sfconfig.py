@@ -75,7 +75,8 @@ class InstallServer(Component):
         if args.glue["sync_strategy"] not in ('push', 'patch', 'review'):
             fail("Only push or patch or review sync strategy is supported.")
 
-        args.glue["resources_connections"] = {}
+        args.glue["resources_connections"] = {'__force_dict__': True}
+
         if bool(args.sfconfig["tenant-deployment"]):
             # Import master sf connections
             self.read_master_sf_resources(args, host)
