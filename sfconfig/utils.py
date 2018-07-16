@@ -70,7 +70,7 @@ def fail(msg):
 def yaml_merge_load(inp):
     paths = []
     for root, dirs, files in os.walk(inp, topdown=True):
-        if [True for skip in ("elements", "scripts")
+        if [True for skip in ("elements", "scripts", "runC")
                 if "/%s/" % skip in root or root.endswith("/%s" % skip)]:
             continue
         paths.extend([os.path.join(root, path) for path in files])

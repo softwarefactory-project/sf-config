@@ -286,6 +286,40 @@ def config_update(args, pb, skip_sync=False):
                 host_roles.append(role)
         pb.append(host_play(host, host_roles, {'role_action': 'update'}))
 
+    if 'hypervisor-runc' in args.glue["roles"]:
+        try:
+            # Always run runC customize when sfconfig is executed
+            os.unlink('/var/lib/software-factory/state/runC_config')
+        except Exception:
+            pass
+        pb.append(host_play('install-server', tasks=[
+            {'name': 'Ensure runC state exists',
+             'changed_when': False,
+             'file': {
+                 'path': '/var/lib/software-factory/state/runC_config',
+                 'state': 'touch'
+              }},
+            {'name': 'Check last applied runC config',
+             'command': 'cat /var/lib/software-factory/state/runC_config',
+             'changed_when': False,
+             'register': 'localconfig'},
+            {'name': 'Check new runC config',
+             'command': 'git log -n 3 --oneline nodepool/runC',
+             'args': {'chdir': '/root/config'},
+             'changed_when': False,
+             'register': 'upstreamconfig'},
+            {'name': 'Store runC update fact',
+             'set_fact': {
+                 'runC_update': '{% if localconfig.stdout == '
+                 'upstreamconfig.stdout %}True{% else %}False{% endif %}'}}]))
+        pb.append(host_play('hypervisor-runc', tasks=[
+            {
+             'name': 'Run runC customize tasks',
+             'include_tasks': '/root/config/nodepool/runC/customize.yaml',
+             'when': 'runC_update | bool'}]))
+        pb[-1]['any_errors_fatal'] = False
+        pb[-1]['ignore_errors'] = True
+
 
 def notify_operator(args, pb):
     pb.append(host_play('install-server', 'repos', {'role_action': 'notify'}))
