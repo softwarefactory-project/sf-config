@@ -8,3 +8,5 @@ role_actions:
 zuul_mqtt_start_topic: "zuul/{pipeline}/start/{project}/{branch}"
 zuul_mqtt_failure_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
 zuul_mqtt_success_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
+
+lock_path: /var/lib/software-factory/state/repos
