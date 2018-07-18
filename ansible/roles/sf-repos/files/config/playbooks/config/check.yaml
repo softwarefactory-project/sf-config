@@ -146,11 +146,11 @@
           args:
             chdir: "{{ config_root }}"
 
-        - name: Validate zuul config syntax
-          command: >
-            env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c zuul.conf -t
-          args:
-            chdir: "{{ config_root }}/build"
+#        - name: Validate zuul config syntax
+#          command: >
+#            env - /opt/rh/rh-python35/root/bin/zuul-scheduler -c zuul.conf -t
+#          args:
+#            chdir: "{{ config_root }}/build"
 
     - name: Validate metrics dashboards
       block:
