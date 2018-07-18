@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12a1de21_39c5b744",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-07-18T01:57:47Z",
+      "side": 1,
+      "message": "This doesn\u0027t work, you need to add a continuous query, see L25-L34. Then reference the cg name here.\n\nSame issue as below, this will get rendered stacked on top of the other values. We may need to find a way to make the graph keep this metric not stacked and show it as the maxium of all the other stacks.",
+      "range": {
+        "startLine": 227,
+        "startChar": 16,
+        "endLine": 227,
+        "endChar": 26
+      },
+      "revId": "1104187b732fb31456d1f7ba12d0061c9f32dbce",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a96843f5_4d8f7d62",
+        "filename": "sfconfig/tools/graph_render.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-07-18T01:57:47Z",
+      "side": 1,
+      "message": "max_servers isn\u0027t attached to nodes, it should be nodepool.provider.%s.max_servers.\n\nAlso this get rendered as stacked on top of the other values, which looks odd. Is there a way grafana doesn\u0027t stack this particular metric?",
+      "range": {
+        "startLine": 370,
+        "startChar": 37,
+        "endLine": 370,
+        "endChar": 42
+      },
+      "revId": "1104187b732fb31456d1f7ba12d0061c9f32dbce",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
