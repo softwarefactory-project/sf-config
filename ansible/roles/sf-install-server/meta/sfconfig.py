@@ -78,6 +78,8 @@ class InstallServer(Component):
         args.glue["resources_connections"] = {'__force_dict__': True}
 
         if bool(args.sfconfig["tenant-deployment"]):
+            args.glue["tenant_name"] = args.sfconfig[
+                "tenant-deployment"]["name"]
             # Import master sf connections
             self.read_master_sf_resources(args, host)
 
@@ -86,8 +88,6 @@ class InstallServer(Component):
 
         if bool(args.sfconfig["tenant-deployment"]):
             # This is a tenant deployment, do extra configuration
-            args.glue["tenant_name"] = args.sfconfig[
-                "tenant-deployment"]["name"]
             args.glue["tenant_status_page_url"] = "%s/zuul/status.html" % (
                 args.glue["gateway_url"])
             args.glue["tenant_zuul_api"] = "%s/zuul/api" % (
@@ -108,6 +108,78 @@ class InstallServer(Component):
             args.glue["tenant_deployment"] = False
             # Master tenant deployment always has config key ready to be used
             args.glue["config_key_exists"] = True
+
+        # Convert sfconfig.yaml connections into group vars
+        zuul_config = args.sfconfig.get("zuul", {})
+        args.glue.setdefault("zuul_ssh_known_hosts", [])
+        args.glue.setdefault("zuul_gerrit_connections", [])
+        args.glue.setdefault("zuul_github_connections", [])
+        args.glue.setdefault("zuul_git_connections", [])
+
+        # Add local gerrit if available
+        if "gerrit" in args.glue["roles"]:
+            args.glue["gerrit_pub_url"] = "%s/r/" % args.glue["gateway_url"]
+            puburl = args.glue["gerrit_pub_url"]
+            if puburl[-1] == "/":
+                puburl = puburl[:-1]
+            args.glue["zuul_gerrit_connections"].append({
+                'name': 'gerrit',
+                'port': 29418,
+                'hostname': args.glue["gerrit_host"],
+                'canonical_hostname': args.sfconfig["fqdn"],
+                'puburl': puburl,
+                'username': 'zuul'
+            })
+
+        if not args.sfconfig["network"]["disable_external_resources"]:
+            for extra_gerrit in args.glue.get("zuul_gerrit_connections", []):
+                if extra_gerrit.get("port", 29418) == 22:
+                    host_packed = extra_gerrit["hostname"]
+                else:
+                    host_packed = "[%s]:%s" % (extra_gerrit["hostname"],
+                                               extra_gerrit.get("port", 29418))
+                args.glue["zuul_ssh_known_hosts"].append({
+                    "host_packed": host_packed,
+                    "host": extra_gerrit["hostname"],
+                    "port": extra_gerrit.get("port", 29418)
+                })
+            for github_connection in zuul_config.get("github_connections", []):
+                if github_connection.get("port", 22) == 22:
+                    host_packed = github_connection.get(
+                        "hostname", "github.com")
+                else:
+                    host_packed = "[%s]:%s" % (github_connection["hostname"],
+                                               github_connection["port"])
+                args.glue["zuul_ssh_known_hosts"].append({
+                    "host_packed": host_packed,
+                    "host": github_connection.get("hostname", "github.com"),
+                    "port": github_connection.get("port", 22)
+                })
+                args.glue["zuul_github_connections"].append(github_connection)
+                gh_app_key = github_connection.get('app_key')
+                if gh_app_key and os.path.isfile(gh_app_key):
+                    github_connection['app_key'] = open(gh_app_key).read()
+            for git_connection in zuul_config.get("git_connections", []):
+                args.glue["zuul_git_connections"].append(git_connection)
+
+        # Set auto-configurations of pipelines list
+        args.glue.setdefault("zuul_gerrit_connections_pipelines", [])
+        args.glue.setdefault("zuul_github_connections_pipelines", [])
+        args.glue["zuul_gate_pipeline"] = False
+
+        for gerrit_connection in args.glue["zuul_gerrit_connections"]:
+            if not gerrit_connection.get("default_pipelines", True):
+                continue
+            args.glue["zuul_gerrit_connections_pipelines"].append(
+                gerrit_connection)
+            args.glue["zuul_gate_pipeline"] = True
+        for github_connection in args.glue["zuul_github_connections"]:
+            if not github_connection.get("default_pipelines", True):
+                continue
+            args.glue["zuul_github_connections_pipelines"].append(
+                github_connection)
+            if github_connection.get("app_name"):
+                args.glue["zuul_gate_pipeline"] = True
 
     def ensure_git_connection(self, name, args, host):
         """When no gerrit or github is connection is configured,
@@ -301,8 +373,24 @@ class InstallServer(Component):
                 args.glue["master_sf_url"]))
 
         # Import master sf connection
+        tenant_connections = set()
+        tenant_conf = self.master_resource.get(
+            "resources", {}).get("tenants", {}).get(
+                args.glue["tenant_name"], {})
+        tenant_def_conn = tenant_conf.get("default-connection")
+        if tenant_def_conn:
+            tenant_connections.add(tenant_def_conn)
+        if tenant_conf.get("allowed-reporters"):
+            tenant_connections.update(tenant_conf["allowed-reporters"])
+        if tenant_conf.get("allowed-triggers"):
+            tenant_connections.update(tenant_conf["allowed-triggers"])
+
+        args.glue["zuul_gate"] = False
+
         for name, values in self.master_resource.get("resources", {}).get(
                 "connections", {}).items():
+            if name not in tenant_connections:
+                continue
             if values.get("type") == "gerrit":
                 hostname = parse.urlparse(
                     values.get("base-url")).hostname
@@ -311,17 +399,22 @@ class InstallServer(Component):
                     "hostname": hostname,
                     "username": "zuul"
                 })
+                args.glue["zuul_gate"] = True
             elif values.get("type") == "github":
                 args.sfconfig["zuul"]["github_connections"].append({
                     "name": name,
-                    "app_id": values.get("github-app-name", ""),
+                    "app_name": values.get("github-app-name", ""),
                     "label_name": values.get("github-label", "")
                 })
+                if values.get("github-app-name"):
+                    args.glue["zuul_gate"] = True
 
     def resolve_tenant_informations(self, args, host):
         # TODO: make sfconfig.yaml zuul setting usable without sf-zuul role
         args.glue["zuul_default_retry_attempts"] = args.sfconfig[
             "zuul"].get("default_retry_attempts", 3)
+        args.glue["zuul_periodic_pipeline_mail_rcpt"] = args.sfconfig[
+            "zuul"]["periodic_pipeline_mail_rcpt"]
 
         # Fetch zuul public key from master sf - Needed for:
         # * For registering the master's zuul pub on the tenant's Gerrit
@@ -344,6 +437,7 @@ class InstallServer(Component):
         # Look for master zuul-jobs project name and connection name
         try:
             # TODO: add special attribute to zuul-jobs to better identify it
+            # or add support for tenant custom zuul-jobs location...
             zj = self.master_resource.get(
                 "resources", {}).get("projects", {}).get(
                     "internal", {}).get("source-repositories")[-1]
@@ -357,36 +451,6 @@ class InstallServer(Component):
 
         # Look for tenant default connection name and type to define
         # zuul connections on the master sf
-        args.glue["zuul_gerrit_connections"] = []
-        args.glue["zuul_github_connections"] = []
-        args.glue["zuul_periodic_pipeline_mail_rcpt"] = args.sfconfig[
-            "zuul"]["periodic_pipeline_mail_rcpt"]
-        tenant_conf = self.master_resource.get(
-            "resources", {}).get("tenants", {}).get(
-                args.glue["tenant_name"])
-
-        if tenant_conf and tenant_conf.get("default-connection"):
-            args.glue["config_connection_name"] = \
-                tenant_conf["default-connection"]
-            for name, values in self.master_resource.get(
-                    "resources", {}).get("connections", {}).items():
-
-                if name == args.glue["config_connection_name"]:
-                    if values.get("type") == "gerrit":
-                        hostname = parse.urlparse(
-                            values.get("base-url")).hostname
-                        args.glue["zuul_gerrit_connections"].append(
-                            {"name": args.glue["config_connection_name"],
-                             "hostname": hostname,
-                             "username": "zuul"}
-                        )
-                    elif values.get("type") == "github":
-                        args.glue["zuul_github_connections"].append({
-                            "name": name,
-                            "app_id": values.get("github-app-name", ""),
-                            "label_name": values.get("github-label", "")
-                            })
-
         # Check if tenant config key already exists in master sf
         # If not then it means the tenant have not been defined yet on the
         # master sf. If yes, fetch it. The key will be used to initialize
