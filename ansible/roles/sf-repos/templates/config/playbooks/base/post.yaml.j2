@@ -36,6 +36,6 @@
   ignore_errors: yes
   roles:
     - role: submit-logstash-jobs
-      logstash_gearman_server: "job-logs-gearman-client.{{ fqdn }}"
+      logstash_gearman_server: "{{ job_logs_gearman_client_hostname }}"
       logstash_gearman_server_port: 4731
 {% endif %}
