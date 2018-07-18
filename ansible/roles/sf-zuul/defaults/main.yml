@@ -9,6 +9,7 @@ role_actions:
   - upgrade
   - get_logs
   - disable
+  - postconf
 
 zuul_services:
   - rh-python35-zuul-scheduler
