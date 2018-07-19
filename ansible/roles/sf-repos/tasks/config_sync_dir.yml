@@ -3,4 +3,7 @@
   synchronize:
     src: "/usr/share/sf-config/ansible/roles/sf-repos/files/config/{{ item }}/"
     dest: "{{ config_clone_dir }}/{{ item }}/"
+    rsync_opts:
+      - "--no-motd"
+      - "--exclude=*.py[co]"
   with_items: "{{ repo_dir_names }}"
