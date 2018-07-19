@@ -6,4 +6,5 @@
     rsync_opts:
       # Ignore existing because users may update those files
       - "--ignore-existing"
+      - "--exclude=*.py[co]"
   with_items: "{{ repo_dir_names }}"

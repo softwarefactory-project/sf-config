@@ -28,8 +28,21 @@
     group: root
     mode: 0640
   with_items:
-    - rootfs
     - system
+  notify:
+    - restart monit
+  # Zuul executor are supposed to be overloaded, do not check system
+  when: "zuul_services|default([]) != ['zuul-executor']"
+
+- name: "monit: add rootfs checks"
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/monit.d/{{ item }}"
+    owner: root
+    group: root
+    mode: 0640
+  with_items:
+    - rootfs
   notify:
     - restart monit
 

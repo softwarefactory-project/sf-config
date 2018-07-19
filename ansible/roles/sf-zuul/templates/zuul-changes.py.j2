@@ -51,7 +51,7 @@ def dump(args):
                             "--pipeline %s --project %s --change %s,%s" % (
                                 tenant["name"],
                                 pipeline['name'],
-                                change['project'],
+                                change['project_canonical'],
                                 cid, cps)
                         )
                         if ";" in cmd or "|" in cmd:
