@@ -35,7 +35,10 @@ def merge(inp, _nodepool):
         raise RuntimeError("%s: unknown source" % inp)
     conf = yaml.safe_load(open(_nodepool))
 
-    cache_dir = "/var/cache/nodepool"
+    if "rh-python35" in _nodepool:
+        cache_dir = "/var/opt/rh/rh-python35/cache/nodepool"
+    else:
+        cache_dir = "/var/cache/nodepool"
 
     for dib in user.get('diskimages', []):
         dib.setdefault('username', 'zuul-worker')
