@@ -22,6 +22,30 @@
       "revId": "9732d2e26bb0676fac481f364b9f8de56df012b9",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "42cf0a83_01aa4d8b",
+        "filename": "ansible/roles/sf-gateway/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-07-25T12:45:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0e2526d_d0d2bac0",
+      "range": {
+        "startLine": 58,
+        "startChar": 34,
+        "endLine": 58,
+        "endChar": 39
+      },
+      "revId": "9732d2e26bb0676fac481f364b9f8de56df012b9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
