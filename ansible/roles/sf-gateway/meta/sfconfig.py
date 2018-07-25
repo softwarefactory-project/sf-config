@@ -11,8 +11,10 @@
 # under the License.
 
 import base64
+import os
 
 from sfconfig.components import Component
+from sfconfig.utils import fail
 
 
 def encode_image(path):
@@ -32,7 +34,38 @@ class Gateway(Component):
             args.glue["gateway_force_fqdn_redirection"] = True
 
     def configure(self, args, host):
-        self.get_or_generate_cert(args, "gateway", args.sfconfig["fqdn"])
+        if (
+                bool(args.sfconfig["network"]["tls_cert_file"]) !=
+                bool(args.sfconfig["network"]["tls_key_file"]) or
+                bool(args.sfconfig["network"]["tls_cert_file"]) !=
+                bool(args.sfconfig["network"]["tls_chain_file"])):
+            fail("tls_cert_file, tls_key_file and tls_chain_file "
+                 "all need to be set")
+
+        if args.sfconfig["network"]["tls_cert_file"]:
+            # Check file exists
+            for k in ("tls_cert_file", "tls_chain_file", "tls_key_file"):
+                if not os.path.isfile(args.sfconfig["network"][k]):
+                    fail("%s: doesn't not exists" %
+                         args.sfconfig["network"][k])
+            # Check key is secured
+            if os.stat(
+                    args.sfconfig["network"]["tls_key_file"]).st_mode & 0o7077:
+                fail("%s: insecure file mode, set to 0400" %
+                     args.sfconfig["network"]["tls_key_file"])
+            if os.stat(os.path.dirname(args.sfconfig[
+                    "network"]["tls_key_file"])).st_mode & 0o7077:
+                fail("%s: insecure file mode, set to 0700" %
+                     os.path.dirname(args.sfconfig["network"]["tls_key_file"]))
+            # Use user-provided certificate for the gateway
+            args.glue["gateway_crt"] = open(
+                args.sfconfig["network"]["tls_cert_file"]).read()
+            args.glue["gateway_chain"] = open(
+                args.sfconfig["network"]["tls_chain_file"]).read()
+            args.glue["gateway_key"] = open(
+                args.sfconfig["network"]["tls_key_file"]).read()
+        else:
+            self.get_or_generate_cert(args, "gateway", args.sfconfig["fqdn"])
         args.glue["gateway_topmenu_logo_data"] = encode_image(
             "/etc/software-factory/logo-topmenu.png")
         args.glue["gateway_favicon_data"] = encode_image(
