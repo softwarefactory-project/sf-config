@@ -19,7 +19,7 @@
 - name: create project ImageStream spec
   openshift_raw:
     state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
+    namespace: "{{ zuul_resources['project'].namespace }}"
     definition:
       apiVersion: v1
       kind: ImageStream
@@ -35,7 +35,7 @@
 - name: create project BuildConfig spec
   openshift_raw:
     state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
+    namespace: "{{ zuul_resources['project'].namespace }}"
     definition:
       apiVersion: v1
       kind: BuildConfig
