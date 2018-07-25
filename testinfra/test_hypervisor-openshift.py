@@ -15,4 +15,6 @@ import utils
 
 class TestHypervisorOpenShift(utils.Base):
     def test_oc_login(self, host):
-        assert host.check_output("oc login -u developer -p devel")
+        assert host.check_output("oc login -u developer -p devel "
+                                 "https://localhost:8443 "
+                                 "--insecure-skip-tls-verify=true")
