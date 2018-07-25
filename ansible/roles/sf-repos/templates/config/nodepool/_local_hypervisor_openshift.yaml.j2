@@ -5,6 +5,8 @@
 labels:
   - name: openshift-project
     min-ready: 0
+  - name: openshift-pod-fedora
+    min-ready: 0
 
 {% endif %}{# endif nodepool_openshift_providers #}
 
@@ -14,10 +16,15 @@ providers:
   - name: {{ host.name }}
     driver: openshift
     context: "myproject/{{ host.hostname|replace('.', '-') }}:8443/developer"
+    max-projects: {{ host.get('max-servers', 10) }}
     pools:
       - name: zuul-ci
         labels:
           - name: openshift-project
+            type: project
+          - name: openshift-pod-fedora
+            type: pod
+            image: docker.io/fedora:28
 
 {% endif %}{% endfor %}{# endif endfor host in inventory #}
 

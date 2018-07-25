@@ -2,7 +2,7 @@
 - name: start the project
   openshift_raw:
     state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
+    namespace: "{{ zuul_resources['project'].namespace }}"
     definition:
       apiVersion: v1
       kind: DeploymentConfig
@@ -25,7 +25,7 @@
               deploymentconfig: "{{ zuul.project.short_name }}"
           spec:
             containers:
-              - image: "172.30.1.1:5000/{{ zuul_resources['namespace'].namespace }}/{{ zuul.project.short_name }}"
+              - image: "{{ _image_stream.result.status.docker_image_repository }}"
                 name: "{{ zuul.project.short_name }}"
                 command: [ "/bin/bash", "-c", "--" ]
                 args: [ "while true; do sleep 30; done;" ]

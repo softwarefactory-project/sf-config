@@ -1,69 +1,8 @@
 ---
-- name: setup kube config
-  shell: >
-    oc --namespace {{ zuul_resources['namespace'].namespace }}                \
-       login {{ zuul_resources['namespace'].host }}                           \
-       --insecure-skip-tls-verify={{ zuul_resources['namespace'].skiptls }}   \
-       --token $(echo {{ zuul_resources['namespace'].token }} | base64 -d)
-
-# Note: this can probably be simplified by running a ready to use http server.
-# In this PoC, the http server is constructed using the openshift/httpd-ex template
-- name: create staging-http ImageStream
-  openshift_raw:
-    state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
-    definition:
-      apiVersion: v1
-      kind: ImageStream
-      metadata:
-        labels:
-          app: staging-http-server
-        name: staging-http-server
-      spec:
-        lookupPolicy:
-          local: false
-
-- name: create staging-http BuildConfig
-  openshift_raw:
-    state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
-    definition:
-      apiVersion: v1
-      kind: BuildConfig
-      metadata:
-        labels:
-          app: staging-http-server
-        name: staging-http-server
-      spec:
-        output:
-          to:
-            kind: ImageStreamTag
-            name: 'staging-http-server:latest'
-        postCommit: {}
-        resources: {}
-        runPolicy: Serial
-        source:
-          git:
-            ref: master
-            uri: 'https://github.com/openshift/httpd-ex.git'
-          type: Git
-        strategy:
-          sourceStrategy:
-            from:
-              kind: ImageStreamTag
-              name: 'httpd:2.4'
-              namespace: openshift
-          type: Source
-        triggers:
-          - type: ImageChange
-          - type: ConfigChange
-      status:
-        lastVersion: 1
-
 - name: create staging-http DeploymentConfig
   openshift_raw:
     state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
+    namespace: "{{ zuul_resources['project'].namespace }}"
     definition:
       apiVersion: v1
       kind: DeploymentConfig
@@ -86,7 +25,7 @@
               deploymentconfig: staging-http-server
           spec:
             containers:
-              - image: "172.30.1.1:5000/{{ zuul_resources['namespace'].namespace }}/staging-http-server"
+              - image: "docker.io/softwarefactoryproject/staging-http-server"
                 # imagePullPolicy: Always
                 name: staging-http-server
                 ports:
@@ -98,14 +37,12 @@
             dnsPolicy: ClusterFirst
             restartPolicy: Always
             schedulerName: default-scheduler
-            securityContext: {}
             terminationGracePeriodSeconds: 30
-        test: false
 
 - name: create staging-http Service spec
   openshift_raw:
     state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
+    namespace: "{{ zuul_resources['project'].namespace }}"
     definition:
       apiVersion: v1
       kind: Service

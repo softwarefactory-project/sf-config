@@ -3,9 +3,11 @@
 ---
 {% if config_key_exists %}
 - job:
-    name: base-openshift
+    name: base-openshift-native
     parent: null
-    description: The base job.
+    description: |
+      A base job that build and deploy a container image using the
+      project future state.
     pre-run: playbooks/openshift/pre.yaml
     post-run:
       - playbooks/base/post.yaml
@@ -19,8 +21,30 @@
       - site_sflogs
     nodeset:
       nodes:
-        - name: namespace
+        - name: project
           label: openshift-project
     vars:
       base_image: "python:3.6"
+
+- job:
+    name: base-openshift-pod
+    parent: null
+    description: |
+      A base job to spawn a vanilla container and copy the project
+      future state
+    pre-run: playbooks/openshift/unprivileged-machine.yaml
+    post-run:
+      - playbooks/base/post.yaml
+    roles:
+      - zuul: sf-jobs
+      - zuul: zuul-jobs
+    # Set attempts to 1 until it's working well
+    attempts: 1
+    secrets:
+      - site_sflogs
+    timeout: 1800
+    nodeset:
+      nodes:
+        - name: pod
+          label: openshift-pod-fedora
 {% endif %}

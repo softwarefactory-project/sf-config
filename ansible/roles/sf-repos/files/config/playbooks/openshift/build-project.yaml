@@ -15,11 +15,12 @@
 
 - name: copy project to http server
   command: "oc rsync {{ zuul.executor.work_root }}/{{ zuul.project.src_dir }}.git/ {{ zm_name }}:/opt/app-root/src/{{ zuul.project.src_dir }}.git/"
+  no_log: true
 
 - name: create project ImageStream spec
   openshift_raw:
     state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
+    namespace: "{{ zuul_resources['project'].namespace }}"
     definition:
       apiVersion: v1
       kind: ImageStream
@@ -31,11 +32,12 @@
       spec:
         lookupPolicy:
           local: false
+  register: _image_stream
 
 - name: create project BuildConfig spec
   openshift_raw:
     state: present
-    namespace: "{{ zuul_resources['namespace'].namespace }}"
+    namespace: "{{ zuul_resources['project'].namespace }}"
     definition:
       apiVersion: v1
       kind: BuildConfig
@@ -48,8 +50,6 @@
           to:
             kind: ImageStreamTag
             name: '{{ zuul.project.short_name }}:latest'
-        postCommit: {}
-        resources: {}
         runPolicy: Serial
         source:
           git:
@@ -66,8 +66,6 @@
         triggers:
           - type: ImageChange
           - type: ConfigChange
-      status:
-        lastVersion: 1
 
 - name: wait for project image built
   command: oc get builds -o "jsonpath={.items[?(@.metadata.labels.buildconfig!='staging-http-server')].status.phase}"
