@@ -5,6 +5,8 @@
 labels:
   - name: openshift-project
     min-ready: 0
+  - name: openshift-pod-fedora
+    min-ready: 0
 
 {% endif %}{# endif nodepool_openshift_providers #}
 
@@ -18,6 +20,10 @@ providers:
       - name: zuul-ci
         labels:
           - name: openshift-project
+            type: project
+          - name: openshift-pod-fedora
+            type: pod
+            image: docker.io/fedora:28
 
 {% endif %}{% endfor %}{# endif endfor host in inventory #}
 
