@@ -76,6 +76,7 @@
     - resources/_internal.yaml
     - playbooks/base/pre.yaml
     - playbooks/openshift/pre.yaml
+    - playbooks/openshift/unprivileged-machine.yaml
     - playbooks/base/post.yaml
     - playbooks/config/update.yaml
     - zuul.d/_jobs-base.yaml
