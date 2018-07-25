@@ -28,6 +28,8 @@
     - /var/lib/nodepool/.ssh
     - /var/lib/nodepool/.config/openstack
     - /root/.config/openstack
+    - /var/cache/nodepool/dib_tmp
+    - /var/cache/nodepool/dib_cache
 
 - name: Copy the key
   copy:
