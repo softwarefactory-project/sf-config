@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ec4a370_da0b2a3d",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-07-25T10:12:09Z",
+      "side": 1,
+      "message": "runc",
+      "range": {
+        "startLine": 2,
+        "startChar": 53,
+        "endLine": 2,
+        "endChar": 56
+      },
+      "revId": "ea393e2bbea76456d2911b788599d142e0385e32",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
