@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a0e2526d_d0d2bac0",
+        "filename": "ansible/roles/sf-gateway/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-07-25T10:40:27Z",
+      "side": 1,
+      "message": "directory",
+      "range": {
+        "startLine": 58,
+        "startChar": 34,
+        "endLine": 58,
+        "endChar": 39
+      },
+      "revId": "9732d2e26bb0676fac481f364b9f8de56df012b9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
