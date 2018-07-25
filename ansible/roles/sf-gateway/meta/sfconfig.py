@@ -13,6 +13,7 @@
 import base64
 
 from sfconfig.components import Component
+from sfconfig.utils import fail
 
 
 def encode_image(path):
@@ -31,8 +32,26 @@ class Gateway(Component):
         else:
             args.glue["gateway_force_fqdn_redirection"] = True
 
+    def validate(self, args, host):
+        if (
+                bool(args.sfconfig["network"]["tls_cert_file"]) !=
+                bool(args.sfconfig["network"]["tls_key_file"]) or
+                bool(args.sfconfig["network"]["tls_cert_file"]) !=
+                bool(args.sfconfig["network"]["tls_chain_file"])):
+            fail("tls_cert_file, tls_key_file and tls_chain_file "
+                 "all need to be set")
+
     def configure(self, args, host):
-        self.get_or_generate_cert(args, "gateway", args.sfconfig["fqdn"])
+        if args.sfconfig["network"]["tls_cert_file"]:
+            # Use user-provided certificate for the gateway
+            args.glue["gateway_crt"] = open(
+                args.sfconfig["network"]["tls_cert_file"]).read()
+            args.glue["gateway_chain"] = open(
+                args.sfconfig["network"]["tls_chain_file"]).read()
+            args.glue["gateway_key"] = open(
+                args.sfconfig["network"]["tls_key_file"]).read()
+        else:
+            self.get_or_generate_cert(args, "gateway", args.sfconfig["fqdn"])
         args.glue["gateway_topmenu_logo_data"] = encode_image(
             "/etc/software-factory/logo-topmenu.png")
         args.glue["gateway_favicon_data"] = encode_image(
