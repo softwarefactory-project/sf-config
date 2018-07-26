@@ -1,26 +1,28 @@
 # This file is managed by ansible, do not edit directly
 ---
-{% if zuul_gerrit_connections or zuul_github_connections %}
+{% if zuul_gerrit_connections_pipelines or zuul_github_connections_pipelines %}
 - pipeline:
     name: check
     description: |
       Newly uploaded patchsets enter this pipeline to receive an
       initial +/-1 Verified vote.
     manager: independent
-{% if 'gerrit' in roles %}
+{% if zuul_gerrit_connections_pipelines %}
     require:
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         open: True
         current-patchset: True
+{% endfor %}
 {% endif %}
     trigger:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         - event: patchset-created
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
-{% endif %}
-{% for github_connection in zuul_github_connections %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         - event: pull_request
           action:
@@ -32,50 +34,49 @@
           comment: (?i)^\s*recheck\s*$
 {% endfor %}
     start:
-{% if zuul_github_connections %}
-{% for github_connection in zuul_github_connections %}
+{% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         status: 'pending'
         status-url: "{{ tenant_status_page_url }}"
         comment: false
 {% endfor %}
-{% endif %}
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         verified: 0
-{% endif %}
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_start_topic }}"
 {% endif %}
     success:
-{% for github_connection in zuul_github_connections %}
+{% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         status: 'success'
 {% endfor %}
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         verified: 1
-{% endif %}
+{% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
 {% endif %}
     failure:
-{% for github_connection in zuul_github_connections %}
+{% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         status: 'failure'
 {% endfor %}
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         verified: -1
-{% endif %}
+{% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
 {% endif %}
+{% if zuul_gate_pipeline %}
 
 - pipeline:
     name: gate
@@ -90,16 +91,16 @@
     manager: dependent
     precedence: high
     require:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         open: True
         current-patchset: True
         approval:
           - Verified: [1, 2]
             username: zuul
           - Workflow: 1
-{% endif %}
-{% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}{% if github_connection.app_name|default(False) %}
       {{ github_connection.name }}:
         review:
           # Require an approval from user with write access (e.g. core-reviewer)
@@ -114,8 +115,8 @@
         current-patchset: True
 {% endif %}{% endfor %}
     trigger:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         - event: comment-added
           approval:
             - Workflow: 1
@@ -123,8 +124,8 @@
           approval:
             - Verified: 1
           username: zuul
-{% endif %}
-{% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}{% if github_connection.app_name|default(False) %}
       {{ github_connection.name }}:
         - event: pull_request_review
           action: submitted
@@ -149,11 +150,11 @@
 {% endif %}
 {% endif %}{% endfor %}
     start:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         Verified: 0
-{% endif %}
-{% for github_connection in zuul_github_connections %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         status: 'pending'
         status-url: "{{ tenant_status_page_url }}"
@@ -164,12 +165,12 @@
         topic: "{{ zuul_mqtt_start_topic }}"
 {% endif %}
     success:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         Verified: 2
         submit: true
-{% endif %}
-{% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}{% if github_connection.app_name|default(False) %}
       {{ github_connection.name }}:
         status: 'success'
         merge: true
@@ -181,11 +182,11 @@
         topic: "{{ zuul_mqtt_success_topic }}"
 {% endif %}
     failure:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         Verified: -2
-{% endif %}
-{% for github_connection in zuul_github_connections %}{% if github_connection.app_name|default(False) %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}{% if github_connection.app_name|default(False) %}
       {{ github_connection.name }}:
         status: 'failure'
         comment: true
@@ -197,6 +198,7 @@
 {% endif %}
     window-floor: 20
     window-increase-factor: 2
+{% endif %}
 
 - pipeline:
     name: post
@@ -205,12 +207,12 @@
     manager: independent
     precedence: low
     trigger:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         - event: ref-updated
           ref: ^refs/heads/.*$
-{% endif %}
-{% for github_connection in zuul_github_connections %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         - event: push
           ref: ^refs/heads/.*$
@@ -244,12 +246,12 @@
     precedence: high
     post-review: True
     trigger:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         - event: ref-updated
           ref: ^refs/tags/{{ zuul.prerelease_regexp }}$
-{% endif %}
-{% for github_connection in zuul_github_connections %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         - event: push
           ref: ^refs/tags/{{ zuul.prerelease_regexp }}$
@@ -278,12 +280,12 @@
     manager: independent
     precedence: high
     trigger:
-{% if 'gerrit' in roles %}
-      {{ config_connection_name }}:
+{% for gerrit_connection in zuul_gerrit_connections_pipelines %}
+      {{ gerrit_connection.name }}:
         - event: ref-updated
           ref: ^refs/tags/{{ zuul.release_regexp }}$
-{% endif %}
-{% for github_connection in zuul_github_connections %}
+{% endfor %}
+{% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         - event: push
           ref: ^refs/tags/{{ zuul.release_regexp }}$

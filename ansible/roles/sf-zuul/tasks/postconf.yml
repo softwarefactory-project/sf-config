@@ -1,0 +1,11 @@
+---
+# When updating fqdn, force a zuul restart to kill failing config-update jobs
+- name: Force restart scheduler when fqdn changed
+  service:
+    name: rh-python35-zuul-scheduler
+    state: restarted
+  when:
+    - update_fqdn
+    - "'zuul-scheduler' in zuul_services"
+
+# TODO: add a wait_for pending config-update job that happen when config change are pushed

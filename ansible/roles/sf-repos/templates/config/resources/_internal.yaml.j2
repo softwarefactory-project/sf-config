@@ -18,6 +18,12 @@ resources:
     {{ conn['name'] }}:
       base-url: "https://{{ conn['hostname']|default('github.com') }}"
       type: github
+{% if conn['app_name']|default(False) %}
+      github-app-name: {{ conn['app_name'] }}
+{% endif %}
+{% if conn['label_name']|default(False) %}
+      github-label: {{ conn['label_name'] }}
+{% endif %}
 {% endfor %}
 {% for conn in zuul_git_connections|default([]) %}
     {{ conn['name'] }}:
