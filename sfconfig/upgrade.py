@@ -175,6 +175,12 @@ def update_sfconfig(args):
         data["default-tenant-name"] = "local"
         dirty = True
 
+    if "tls_cert_file" not in data["network"]:
+        data["network"]["tls_cert_file"] = ""
+        data["network"]["tls_chain_file"] = ""
+        data["network"]["tls_key_file"] = ""
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \

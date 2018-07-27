@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    New tls_cert_file, tls_chain_file and tls_key_file sfconfig.yaml option
+    let user set cutom TLS certificates.

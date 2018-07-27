@@ -64,7 +64,6 @@ class Component(object):
         cert_key = "%s/certs/%s.key" % (args.lib, name)
         cert_req = "%s/certs/%s.req" % (args.lib, name)
         cert_crt = "%s/certs/%s.crt" % (args.lib, name)
-        cert_pem = "%s/certs/%s.pem" % (args.lib, name)
 
         def xunlink(filename):
             if os.path.isfile(filename):
@@ -106,17 +105,11 @@ DNS.1 = %s
                      "-key", cert_key, "-out", cert_req])
 
         if not os.path.isfile(cert_crt):
-            if os.path.isfile(cert_pem):
-                xunlink(cert_pem)
             execute(["openssl", "x509", "-req", "-days", "3650", "-sha256",
                      "-extensions", "v3_req", "-extfile", cert_cnf,
                      "-CA", args.ca_file, "-CAkey", args.ca_key_file,
                      "-CAserial", args.ca_srl_file,
                      "-in", cert_req, "-out", cert_crt])
-
-        if not os.path.isfile(cert_pem):
-            open(cert_pem, "w").write("%s\n%s\n" % (
-                open(cert_key).read(), open(cert_crt).read()))
 
         args.glue["%s_crt" % name] = open(cert_crt).read()
         args.glue["%s_key" % name] = open(cert_key).read()
