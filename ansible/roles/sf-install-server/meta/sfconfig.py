@@ -136,7 +136,7 @@ class InstallServer(Component):
             })
 
         if not args.sfconfig["network"]["disable_external_resources"]:
-            for extra_gerrit in args.glue.get("zuul_gerrit_connections", []):
+            for extra_gerrit in zuul_config.get("gerrit_connections", []):
                 if extra_gerrit.get("port", 29418) == 22:
                     host_packed = extra_gerrit["hostname"]
                 else:
@@ -147,6 +147,7 @@ class InstallServer(Component):
                     "host": extra_gerrit["hostname"],
                     "port": extra_gerrit.get("port", 29418)
                 })
+                args.glue["zuul_gerrit_connections"].append(extra_gerrit)
             for github_connection in zuul_config.get("github_connections", []):
                 if github_connection.get("port", 22) == 22:
                     host_packed = github_connection.get(
@@ -172,7 +173,8 @@ class InstallServer(Component):
         args.glue["zuul_gate_pipeline"] = False
 
         for gerrit_connection in args.glue["zuul_gerrit_connections"]:
-            if not gerrit_connection.get("default_pipelines", True):
+            if not gerrit_connection.get("default_pipelines", True) or \
+                    gerrit_connection.get("report_only", False):
                 continue
             args.glue["zuul_gerrit_connections_pipelines"].append(
                 gerrit_connection)
