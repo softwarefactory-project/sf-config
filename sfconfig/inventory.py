@@ -281,6 +281,14 @@ def config_update(args, pb, skip_sync=False):
     # Update all components
     for host in args.inventory:
         host_roles = []
+        if not skip_sync:
+            # Skip host only running mergers or executors
+            if (
+                    host["roles"] == ["zuul"] and
+                    set(host.get("params", {}).get(
+                        "zuul_services", [])).issubset(
+                            set(("zuul-merger", "zuul-executor")))):
+                continue
         for role in roles_order:
             if role in host["roles"]:
                 host_roles.append(role)
