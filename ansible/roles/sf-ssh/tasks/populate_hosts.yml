@@ -47,6 +47,16 @@
   with_items: "{{ public_ssh_host_keys.results }}"
   no_log: true
 
+- name: Force install-server hostname
+  hostname:
+    name: "{{ install_server_host }}"
+  changed_when: false
+  register: _install_server_hostname
+
+- name: Refresh install-server facts
+  setup: {}
+  when: _install_server_hostname is changed
+
 - name: Gather hostnames
   command: hostname -f
   with_items: "{{ servers.stdout_lines }}"
