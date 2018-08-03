@@ -1,7 +1,7 @@
 ---
 features:
   - |
-    sfconfig checks for correct hostname before installing services to prevent
+    sfconfig sets and checks for correct hostname before installing services to prevent
     dns issues.
 upgrade:
   - |

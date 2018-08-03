@@ -213,10 +213,15 @@ def setup(args, pb):
     # Setup mysql role before all components
     pb.append(host_play('mysql', 'mysql', action))
 
+    # Setup hypervisor-openshift before the other components
+    if 'hypervisor-openshift' in args.glue['roles']:
+        pb.append(
+            host_play('hypervisor-openshift', 'hypervisor-openshift', action))
+
     # Setup all components except mysql
     for host in args.inventory:
         host_roles = [role for role in host["roles"] if
-                      role != 'mysql']
+                      role != 'mysql' and role != 'hypervisor-openshift']
         pb.append(host_play(host, host_roles, action))
 
     # Create config projects
