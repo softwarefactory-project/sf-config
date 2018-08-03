@@ -7,7 +7,7 @@
 
 # TODO: setup admin and developer login/password
 - name: Deploy OpenShift cluster
-  command: "oc cluster up --public-hostname {{ ansible_hostname }} --insecure-skip-tls-verify=true"
+  command: "oc cluster up --public-hostname {{ ansible_fqdn }} --insecure-skip-tls-verify=true"
   ignore_errors: true
   register: _oc_cluster_up
 

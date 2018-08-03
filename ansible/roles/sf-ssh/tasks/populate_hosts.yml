@@ -46,3 +46,19 @@
     line: "{{ item.stdout }}"
   with_items: "{{ public_ssh_host_keys.results }}"
   no_log: true
+
+- name: Gather hostnames
+  command: hostname -f
+  with_items: "{{ servers.stdout_lines }}"
+  delegate_to: "{{ item }}"
+  register: _hostnames
+  changed_when: false
+
+- name: Check hostnames
+  fail:
+    msg: >-
+      Hostnames does not match arch.yaml definition,
+      manually fix using hostnamectl set-hostname ....
+      Then run ansible -m setup
+  when: 'item.1 != _hostnames.results[item.0].stdout'
+  with_indexed_items: "{{ servers.stdout_lines }}"

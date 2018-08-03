@@ -199,6 +199,8 @@ zuul:
   #  Default is: https://fqdn/logs/{build.uuid}/
   success_log_url: ""
 
+  ara_report: true
+
   # Set custom zuul log url, the url will be expaned using the build parameters
   #  Default is: https://fqdn/logs/{build.uuid}/
   failure_log_url: ""

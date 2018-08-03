@@ -181,6 +181,10 @@ def update_sfconfig(args):
         data["network"]["tls_key_file"] = ""
         dirty = True
 
+    if "ara_report" not in data["zuul"]:
+        data["zuul"]["ara_report"] = True
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    sfconfig checks for correct hostname before installing services to prevent
+    dns issues.
+upgrade:
+  - |
+    A new zuul.ara_report option in sfconfig.yaml let operator set the default
+    behavior to copy ara report database.
+    Set it to \'failure\' to only copy the result when a job fail.

@@ -5,7 +5,7 @@
       fileserver: "{{'{{'}} site_sflogs {{'}}'}}"
     - role: ara-report
       # This depends-on https://review.openstack.org/577675
-      ara_report_run: failure
+      ara_report_run: {{ zuul.ara_report }}
       ara_report_type: database
       ara_report_path: ara-report
 {% if 'log-classify' in roles %}
