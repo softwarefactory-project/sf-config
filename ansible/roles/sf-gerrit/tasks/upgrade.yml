@@ -16,4 +16,10 @@
     - name: Run gerrit admin password update
       shell: "mysql gerrit < /var/lib/software-factory/sql/gerrit-admin-password-update.sql"
       delegate_to: "{{ mysql_host }}"
+
+    # From a 3.0 (gerrit-2.11), the admin account may have an incorrect mute_common_path_prefixes option set to ''
+    # the schema migration failed with java.lang.IllegalStateException thrown by Schema_119.toBoolean
+    - name: Fix incorrect admin account entry
+      command: mysql -e "UPDATE accounts SET mute_common_path_prefixes = 'N' WHERE mute_common_path_prefixes = '';" gerrit
+      delegate_to: "{{ mysql_host }}"
   when: sf_previous_version < 3.1
