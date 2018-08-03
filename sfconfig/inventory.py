@@ -292,15 +292,16 @@ def config_update(args, pb, skip_sync=False):
             os.unlink('/var/lib/software-factory/state/runC_config')
         except Exception:
             pass
+        runC_state = '/var/lib/software-factory/state/runC_config'
         pb.append(host_play('install-server', tasks=[
             {'name': 'Ensure runC state exists',
              'changed_when': False,
              'file': {
-                 'path': '/var/lib/software-factory/state/runC_config',
+                 'path': runC_state,
                  'state': 'touch'
               }},
             {'name': 'Check last applied runC config',
-             'command': 'cat /var/lib/software-factory/state/runC_config',
+             'command': 'cat %s' % runC_state,
              'changed_when': False,
              'register': 'localconfig'},
             {'name': 'Check new runC config',
@@ -310,13 +311,16 @@ def config_update(args, pb, skip_sync=False):
              'register': 'upstreamconfig'},
             {'name': 'Store runC update fact',
              'set_fact': {
-                 'runC_update': '{% if localconfig.stdout == '
-                 'upstreamconfig.stdout %}True{% else %}False{% endif %}'}}]))
+                 'runC_update': '{% if localconfig.stdout != '
+                 'upstreamconfig.stdout %}True{% else %}False{% endif %}',
+                 'runC_state': '{{ upstreamconfig.stdout }}'}}]))
         pb.append(host_play('hypervisor-runc', tasks=[
-            {
-             'name': 'Run runC customize tasks',
+            {'name': 'Run runC customize tasks',
              'include_tasks': '/root/config/nodepool/runC/customize.yaml',
-             'when': 'runC_update | bool'}]))
+             'when': 'runC_update | bool'},
+            {'name': 'Write config repo state',
+             'delegate_to': '{{ install_server_host }}',
+             'copy': {'content': '{{ runC_state }}', 'dest': runC_state}}]))
         pb[-1]['any_errors_fatal'] = False
         pb[-1]['ignore_errors'] = True
 

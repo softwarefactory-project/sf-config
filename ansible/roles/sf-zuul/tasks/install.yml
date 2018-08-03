@@ -34,3 +34,21 @@
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   with_items: "{{ zuul_web_packages }}"
   when: '"zuul-web" in zuul_services'
+
+- name: "Install openshift client"
+  block:
+    - name: Install repository
+      yum:
+        name: "centos-release-openshift-origin39"
+        state: present
+
+    - name: Install packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - origin-clients
+        - rh-python35-python-openshift
+  when:
+    - "nodepool_openshift_providers|default(False)"
+    - '"zuul-executor" in zuul_services'
