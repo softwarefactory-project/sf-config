@@ -57,7 +57,7 @@
     dest: /lib/systemd/system/grafana-server.service
     section: Service
     option: ExecStartPre
-    value: /usr/libexec/wait4mariadb
+    value: /usr/libexec/software-factory/wait4mariadb
 
 - name: Install sf top menu
   lineinfile:

@@ -73,7 +73,7 @@
     - name: Install zuul-changes.py script
       template:
         src: zuul-changes.py.j2
-        dest: /usr/local/bin/zuul-changes.py
+        dest: /usr/libexec/software-factory/zuul-changes.py
         mode: 0755
       delegate_to: "{{ item }}"
       with_items: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
@@ -81,7 +81,7 @@
     - name: Install gearman-client script
       template:
         src: gearman-client.sh.j2
-        dest: /usr/local/bin/gearman-client
+        dest: /usr/libexec/software-factory/gearman-client
         mode: 0755
 
     - name: Install zuul_worker_rsa key
