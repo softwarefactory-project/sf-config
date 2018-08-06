@@ -11,7 +11,7 @@
 - name: "Install resources management script"
   template:
     src: resources.sh.j2
-    dest: /usr/local/bin/resources.sh
+    dest: /usr/libexec/software-factory/resources.sh
     mode: 0555
   delegate_to: "{{ item }}"
   with_items: "{{ executor_hosts | union( groups['install-server'] ) }}"

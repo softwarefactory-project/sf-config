@@ -25,6 +25,7 @@
         path: "{{ item }}"
         state: 'absent'
       with_items:
+        - /usr/libexec/software-factory
         - /var/lib/software-factory/sql
         - /var/lib/software-factory/state
         - /var/lib/software-factory/.version

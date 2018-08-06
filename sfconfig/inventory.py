@@ -274,7 +274,7 @@ def config_update(args, pb, skip_sync=False):
     if "gerrit" in args.glue["roles"]:
         pb.append(host_play('managesf', tasks=[
             {'name': 'Exec resources apply',
-             'command': '/usr/local/bin/resources.sh apply',
+             'command': '/usr/libexec/software-factory/resources.sh apply',
              'register': 'output',
              'changed_when': 'False',
              'ignore_errors': 'yes'},
@@ -328,6 +328,69 @@ def config_update(args, pb, skip_sync=False):
              'copy': {'content': '{{ runC_state }}', 'dest': runC_state}}]))
         pb[-1]['any_errors_fatal'] = False
         pb[-1]['ignore_errors'] = True
+
+
+def zuul_restart(args, pb):
+    dump_file = '/var/lib/software-factory/state/zuul-change-dump.sh'
+
+    pb.append(host_play('zuul-executor', tasks=[{
+        'name': 'Stop executors',
+        'command': '/opt/rh/rh-python35/root/bin/zuul-executor stop'
+    }]))
+
+    pb.append(host_play('zuul-scheduler', tasks=[{
+        'name': 'Dump changes',
+        'command': ('/usr/libexec/software-factory/zuul-changes.py '
+                    'dump --dump_file %s' % dump_file)
+    }, {
+        'name': 'Stop scheduler',
+        'service': {'name': 'rh-python35-zuul-scheduler', 'state': 'stopped'}
+    }]))
+
+    pb.append(host_play('zuul-web', tasks=[{
+        'name': 'Stop web',
+        'service': {'name': 'rh-python35-zuul-web', 'state': 'stopped'}}]))
+
+    if 'zuul-merger' in args.glue["roles"]:
+        pb.append(host_play('zuul-merger', tasks=[{
+            'name': 'Restart mergers',
+            'service': {'name': 'rh-python35-zuul-merger',
+                        'state': 'restarted'}}]))
+
+    pb.append(host_play('zuul-executor', tasks=[{
+        'name': 'Restart executors',
+        'service': {'name': 'rh-python35-zuul-executor',
+                    'state': 'restarted'}}]))
+
+    pb.append(host_play('zuul-scheduler', tasks=[{
+        'name': 'Restart scheduler',
+        'service': {'name': 'rh-python35-zuul-scheduler',
+                    'state': 'restarted'}}]))
+
+    pb.append(host_play('zuul-web', tasks=[{
+        'name': 'Restart web',
+        'service': {'name': 'rh-python35-zuul-web', 'state': 'restarted'}
+    }, {
+        'name': 'Wait for scheduler reconfiguration',
+        'uri': {
+            'url': '{{ zuul_web_url }}/api/tenant/{{ tenant_name }}/pipelines',
+            'return_content': 'yes',
+            'status_code': '200'
+        },
+        'register': '_zuul_status',
+        'until': (
+            "'json' in _zuul_status and "
+            "_zuul_status.json and "
+            "'periodic' in _zuul_status.content"
+        ),
+        'retries': '900',
+        'delay': '2'
+    }]))
+
+    pb.append(host_play('zuul-scheduler', tasks=[{
+        'name': 'Reload zuul queues',
+        'command': 'bash %s' % dump_file
+    }]))
 
 
 def notify_operator(args, pb):
@@ -616,6 +679,7 @@ def generate(args):
     # Generate playbooks
     args.inventory = arch["inventory"]
     for playbook_name, generator in (
+            ("zuul_restart", zuul_restart),
             ("sf_configrepo_update", config_update),
             ("sf_repos", repos),
             ("sf_tenant_update", tenant_update),
