@@ -16,3 +16,23 @@
   when:
     - _oc_cluster_up is failed
     - "'OpenShift is already running' not in _oc_cluster_up.stderr"
+
+- name: Ensure nodepool service account exists
+  shell: |
+    set -e
+    oc login -u system:admin https://{{ ansible_fqdn }}:8443 --insecure-skip-tls-verify=true
+    if ! oc get sa nodepool; then
+      oc create sa nodepool
+      oc adm policy add-cluster-role-to-user self-provisioner --serviceaccount=nodepool
+      oc policy add-role-to-user admin --serviceaccount=nodepool
+    fi
+  changed_when: false
+
+- name: Get service account token
+  command: oc sa get-token nodepool
+  register: _oc_token
+  changed_when: false
+
+- name: Register service account token
+  set_fact: {"openshift_token_{{ ansible_fqdn|replace('.', '_') }}": "{{ _oc_token.stdout }}"}
+  delegate_to: "{{ install_server_host }}"

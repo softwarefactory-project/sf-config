@@ -43,12 +43,16 @@
     - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
   no_log: true
 
-- name: Install .kube/config
-  command: >
-    oc login {{ item.url }}
-             -u {{ item.username }}
-             -p {{ item.password }}
-             --insecure-skip-tls-verify={{ item.insecure_skip_tls_verify }}
+- name: Setup .kube/config
+  shell: |
+    {% if item.token == 'fact' %}
+      TOKEN="{{ hostvars[install_server_host]['openshift_token_' + item.hostname|replace('.', '_')] }}"
+    {% else %}
+      TOKEN="{{ item.token }}"
+    {% endif %}
+    oc login {{ item.url }} \
+      --insecure-skip-tls-verify={{ item.insecure_skip_tls_verify|default(False) }} \
+      --token ${TOKEN}
   become: yes
   become_user: nodepool
   with_items: "{{ nodepool_openshift_providers }}"

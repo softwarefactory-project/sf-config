@@ -8,3 +8,10 @@
     name: docker
     state: stopped
     enabled: no
+
+- block:
+    - name: Remove origin state data
+      file:
+        path: /var/lib/origin/openshift.local.config
+        state: absent
+  when: erase == True
