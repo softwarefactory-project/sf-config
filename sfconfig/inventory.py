@@ -210,8 +210,11 @@ def setup(args, pb):
             roles_action['manage_etc_hosts'] = False
         pb.append(host_play(host, host_roles, roles_action))
 
-    # Setup mysql role before all components
+    # Setup mysql, cauth and gateway role before all components
+    pre_roles = ("mysql", "cauth", "gateway", "hypervisor-openshift")
     pb.append(host_play('mysql', 'mysql', action))
+    pb.append(host_play('cauth', 'cauth', action))
+    pb.append(host_play('gateway', 'gateway', action))
 
     # Setup hypervisor-openshift before the other components
     if 'hypervisor-openshift' in args.glue['roles']:
@@ -220,8 +223,7 @@ def setup(args, pb):
 
     # Setup all components except mysql
     for host in args.inventory:
-        host_roles = [role for role in host["roles"] if
-                      role != 'mysql' and role != 'hypervisor-openshift']
+        host_roles = [role for role in host["roles"] if role not in pre_roles]
         pb.append(host_play(host, host_roles, action))
 
     # Create config projects
