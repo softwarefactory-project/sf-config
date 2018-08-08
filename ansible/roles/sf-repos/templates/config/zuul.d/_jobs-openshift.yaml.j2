@@ -36,8 +36,8 @@
     post-run:
       - playbooks/base/post.yaml
     roles:
-      - zuul: sf-jobs
-      - zuul: zuul-jobs
+      - zuul: {{ sf_jobs_project_name }}
+      - zuul: {{ zuul_jobs_project_name }}
     # Set attempts to 1 until it's working well
     attempts: 1
     secrets:

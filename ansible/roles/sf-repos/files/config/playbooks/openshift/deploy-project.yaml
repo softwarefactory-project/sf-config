@@ -49,14 +49,8 @@
   delay: 1
   until: "zuul.project.short_name in _pod_name.stdout"
 
-- name: create pods list
-  set_fact:
-    pods_data:
-      pods:
-        - name: "{{ zuul.project.short_name }}"
-          pod: "{{ _pod_name.stdout }}"
-
-- name: store pods list in work_root
-  copy:
-    content: "{{ pods_data | to_yaml }}"
-    dest: "{{ zuul.executor.work_root }}/pods.yaml"
+- name: add pod to the job inventory
+  zuul_return:
+    data:
+      zuul:
+        inventory: {"{{ zuul.project.short_name }}": {'ansible_connection': 'kubectl', 'ansible_host': "{{ _pod_name.stdout }}"}}

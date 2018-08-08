@@ -15,7 +15,7 @@ labels:
 providers:
   - name: {{ host.name }}
     driver: openshift
-    context: "myproject/{{ host.hostname|replace('.', '-') }}:8443/developer"
+    context: "myproject/{{ host.hostname|replace('.', '-') }}:8443/system:serviceaccount:myproject:nodepool"
     max-projects: {{ host.get('max-servers', 10) }}
     pools:
       - name: zuul-ci
