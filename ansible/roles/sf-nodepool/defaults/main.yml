@@ -32,6 +32,7 @@ nodepool_providers:
     region_name: regionOne
 
 nodepool_openshift_providers: []
+nodepool_openshiftpods_providers: []
 
 nodepool_conf_dir: "/etc/opt/rh/rh-python35/nodepool"
 nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"

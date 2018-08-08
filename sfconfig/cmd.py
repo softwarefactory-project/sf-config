@@ -83,6 +83,10 @@ def usage(components):
     p.add_argument("--lib", default="/var/lib/software-factory/bootstrap-data",
                    help="Deployment secrets output directory")
 
+    # common component options
+    p.add_argument("--enable-insecure-slaves", action='store_true',
+                   help="Allow using hypervisor-* on the control plane")
+
     # tunning
     p.add_argument("--skip-apply", default=False, action='store_true',
                    help="Do not execute Ansible playbook")

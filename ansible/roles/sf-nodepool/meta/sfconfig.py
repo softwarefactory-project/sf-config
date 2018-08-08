@@ -41,12 +41,14 @@ class NodepoolLauncher(Component):
 
         args.glue["nodepool_openshift_providers"] = args.sfconfig.get(
             "nodepool", {}).get("openshift_providers", [])
+        args.glue["nodepool_openshiftpods_providers"] = args.sfconfig.get(
+            "nodepool", {}).get("openshiftpods_providers", [])
         for host in args.sfarch['inventory']:
             if 'hypervisor-openshift' in host['roles']:
                 args.glue["nodepool_openshift_providers"].append({
                     "name": "openshift-%s" % host['name'],
                     "url": "https://%s:8443" % host['hostname'],
-                    "username": "developer",
-                    "password": "devel",
+                    "hostname": host['hostname'],
+                    "token": "fact",
                     "insecure_skip_tls_verify": True,
                 })

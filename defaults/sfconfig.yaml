@@ -174,8 +174,15 @@ nodepool:
   openshift_providers: []
   # - name: openshift01
   #   url: https://openshift.example.com:8443
-  #   username: developer
-  #   password: devel
+  #   # service account must have the self-provisioner cluster role to be able to create projects
+  #   token: service-account-token
+  #   insecure_skip_tls_verify: false
+
+  openshiftpods_providers: []
+  # - name: openshift02
+  #   url: https://openshift.example.com:8443
+  #   # regular unprivileged service account allowed to create Pods
+  #   token: service-account-token
   #   insecure_skip_tls_verify: false
 
 elasticsearch:

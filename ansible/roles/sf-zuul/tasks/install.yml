@@ -50,5 +50,5 @@
         - origin-clients
         - rh-python35-python-openshift
   when:
-    - "nodepool_openshift_providers|default(False)"
+    - "nodepool_openshift_providers|default(False) or nodepool_openshiftpods_providers|default(False)"
     - '"zuul-executor" in zuul_services'
