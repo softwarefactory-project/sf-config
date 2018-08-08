@@ -37,4 +37,4 @@
       yum:
         name: origin-clients
         state: present
-  when: "nodepool_openshift_providers|default(False)"
+  when: "nodepool_openshift_providers|default(False) or nodepool_openshiftpods_providers|default(False)"

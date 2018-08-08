@@ -13,17 +13,17 @@
 from sfconfig.components import Component
 
 
-class HypervisorRunC(Component):
-    role = "hypervisor-runc"
+class HypervisorOpenShift(Component):
+    role = "hypervisor-openshift"
 
     def argparse(self, args):
         if args.enable_insecure_slaves:
             args.glue["enable_insecure_slaves"] = True
 
     def validate(self, args, host):
-        if host["roles"] != ["hypervisor-runc"] and \
+        if host["roles"] != ["hypervisor-openshift"] and \
            args.glue.get("enable_insecure_slaves") is not True:
-            print("Can not deploy hypervisor-runc on %s" % host["hostname"])
+            print("Can't deploy hypervisor-openshift on %s" % host["hostname"])
             print("This host is part of the control-plane, use "
                   "--enable-insecure-slaves argument to continue. ")
             print("See https://softwarefactory-project.io/docs/operator/"
