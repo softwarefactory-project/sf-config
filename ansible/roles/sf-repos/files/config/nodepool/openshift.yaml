@@ -1,10 +1,45 @@
 # Uncomment to enable openshift provider
 #---
+# After the provider is registered in sfconfig.yaml, grab the context name using:
+#  sudo -u nodepool oc config get-contexts
+#
+#
+# To use the openshift driver, a self provisioner service account is needed:
+# Request the cluster operator to create:
+#   oc create sa nodepool
+#   oc adm policy add-cluster-role-to-user self-provisioner --serviceaccount=nodepool
+#   oc policy add-role-to-user admin --serviceaccount=nodepool
+#   oc sa get-token nodepool
+# Then register the token in sfconfig.yaml
+#
 #providers:
 #  - name: openshift01
 #    driver: openshift
-#    context: context-name # get it using 'oc config get-contexts'
+#    context: self-provisioner-service-account-context-name
 #    pools:
 #      - name: zuul-ci
 #        labels:
 #          - name: openshift-project
+#            type: project
+#          - name: openshift-pod-fedora
+#            type: pod
+#            image: docker.io/fedora:28
+#
+#
+###############################################################################
+# Or use the openshiftpods driver with a regular service account:
+#   oc new-project nodepool
+#   oc create sa nodepool
+#   oc policy add-role-to-user admin --serviceaccount=nodepool
+#   oc sa get-token nodepool
+# Then register the token in sfconfig.yaml
+#
+#providers:
+#  - name: openshift01
+#    driver: openshiftpods
+#    context: "nodepool/openshift-example-com:8443/system:serviceaccount:nodepool:nodepool"
+#    pools:
+#      - name: nodepool
+#        labels:
+#          - name: openshift-pod
+#            image: docker.io/fedora:28
