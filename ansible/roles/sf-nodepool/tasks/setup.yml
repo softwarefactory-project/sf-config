@@ -117,31 +117,40 @@
     mode: "{{ item.mode | default(0750) }}"
     state: directory
   with_items:
-    - {path: "/var/www/nodepool-log", owner: "nodepool", group: "apache"}
     - {path: "/var/lib/nodepool/images", owner: "nodepool", group: "nodepool"}
     - {path: "/var/www/html", mode: "0755"}
     - {path: "/var/cache/nodepool", mode: "0755", owner: "nodepool", group: "nodepool"}
 
-- name: Install httpd conf.d nodepool log
-  copy:
-    src: nodepool_log.conf
-    dest: /etc/httpd/conf.d/nodepool_log.conf
-  register: nodepool_log_http_conf
+- block:
+    - name: Create nodepool-log directory served by apache
+      file:
+        path: "/var/www/nodepool-log"
+        owner: "nodepool"
+        group: "apache"
+        mode: "0755"
+        state: directory
 
-- name: Reload http on the nodepool-builder node
-  service:
-    name: httpd
-    state: reloaded
-    enabled: "yes"
+    - name: Install httpd conf.d nodepool log
+      copy:
+        src: nodepool_log.conf
+        dest: /etc/httpd/conf.d/nodepool_log.conf
+      register: nodepool_log_http_conf
+
+    - name: Reload http on the nodepool-builder node
+      service:
+        name: httpd
+        state: reloaded
+        enabled: "yes"
+      when:
+        - 'nodepool_log_http_conf is changed'
+
+    - name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log
+      file:
+        path: /var/www/html/nodepool-log
+        src: /var/www/nodepool-log
+        state: link
   when:
-    - 'nodepool_log_http_conf is changed'
     - '"nodepool-builder" in nodepool_services'
-
-- name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log
-  file:
-    path: /var/www/html/nodepool-log
-    src: /var/www/nodepool-log
-    state: link
 
 - name: Setup authorized keys
   copy:
