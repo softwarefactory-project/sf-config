@@ -314,7 +314,7 @@
 {% if authentication["authenticated_only"] %}
     # Make sure static files, docs, git and the topmenu are accessible even if
     # anonymous access is disabled. Git itself is protected by Gerrit
-    <LocationMatch "^(?!/(r/.*/(info/refs|git-upload-pack)|docs|static|auth|index.html|_defconf.tgz|$))">
+    <LocationMatch "^(?!/(r/.*/(info/refs|git-upload-pack)|manage/bind|docs|static|auth|index.html|_defconf.tgz|$))">
         Order deny,allow
         Allow from all
         AuthType mod_auth_pubtkt
