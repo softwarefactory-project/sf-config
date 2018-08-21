@@ -74,6 +74,13 @@
     chdir: /var/lib/software-factory/git/All-projects
   changed_when: false
 
+- name: Remove anonymous access
+  replace:
+    path: /var/lib/software-factory/git/All-projects/project.config
+    regexp: ".*Anonymous Users.*"
+    replace: ""
+  when: authentication.authenticated_only
+
 - name: Get project.config checksum
   stat:
     path: /var/lib/software-factory/git/All-projects/project.config
