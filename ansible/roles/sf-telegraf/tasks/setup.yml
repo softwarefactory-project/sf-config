@@ -19,6 +19,7 @@
     mode: 0440
   with_items:
     - statsd.conf
+    - network.conf
   notify: Restart telegraf
 
 - name: Start service
