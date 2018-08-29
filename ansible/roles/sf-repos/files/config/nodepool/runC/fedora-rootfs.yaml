@@ -53,7 +53,7 @@
     owner: zuul-worker
 
 - name: Install packages
-  command: "{{ bwrap_command }} dnf install -y python3-pip yamllint python3-flake8 python3-tox traceroute rpm-build python3-sphinx python3-pelican"
+  command: "{{ bwrap_command }} dnf install -y rsync iproute git python3-pip yamllint python3-flake8 python3-tox traceroute rpm-build python3-sphinx python3-pelican"
 
 - name: Install pip packages
   command: "{{ bwrap_command }} pip3 install bashate doc8"

@@ -8,4 +8,6 @@ role_actions:
 hypervisor_runc_packages:
   - runc
   - git
+  - rsync
+  - iproute
   - skopeo
