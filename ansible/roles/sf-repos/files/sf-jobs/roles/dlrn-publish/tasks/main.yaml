@@ -1,0 +1,11 @@
+---
+- name: Install required dependencies
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - rh-python35-dlrnapi-client
+  become: true
+
+- name: Publish for each built tag
+  include: publish.yaml
