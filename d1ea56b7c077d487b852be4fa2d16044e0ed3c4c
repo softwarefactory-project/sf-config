@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f8de6138_ef4b3614",
+        "filename": "ansible/roles/sf-repos/tasks/sync_config_repo_content.yml",
+        "patchSetId": 23
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-03T08:32:41Z",
+      "side": 0,
+      "message": "This \"config_repo_updated\" logic does not exist anymore.",
+      "revId": "d1ea56b7c077d487b852be4fa2d16044e0ed3c4c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

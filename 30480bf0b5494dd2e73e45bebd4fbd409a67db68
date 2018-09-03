@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce96d6ae_6543a9e8",
+        "filename": "ansible/roles/sf-repos/tasks/sync_config_repo_content.yml",
+        "patchSetId": 23
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-03T08:32:41Z",
+      "side": 1,
+      "message": "I think the service_user secret is already created, iirc we did that for tenant deployment mode. Maybe this block is no longer need",
+      "revId": "30480bf0b5494dd2e73e45bebd4fbd409a67db68",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6566a66a_9d27451b",
+        "filename": "ansible/roles/sf-repos/templates/config/playbooks/base/pre.yaml.j2",
+        "patchSetId": 23
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-03T08:32:41Z",
+      "side": 1,
+      "message": "TODO can be removed",
+      "revId": "30480bf0b5494dd2e73e45bebd4fbd409a67db68",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cfbbd03a_19208978",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 23
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-03T08:32:41Z",
+      "side": 1,
+      "message": "Maybe adds a note that this is current managesf ssh key?",
+      "revId": "30480bf0b5494dd2e73e45bebd4fbd409a67db68",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
