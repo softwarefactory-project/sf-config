@@ -1,0 +1,9 @@
+Verified+1: Jenkins CI <jenkins@softwarefactory-project.io>
+Code-Review+2: Tristan de Cacqueray <tdecacqu@redhat.com>
+Workflow+1: Tristan de Cacqueray <tdecacqu@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Tue, 04 Sep 2018 08:15:34 +0000
+Reviewed-on: https://softwarefactory-project.io/r/10430
+Project: software-factory/sf-config
+Branch: refs/heads/master
