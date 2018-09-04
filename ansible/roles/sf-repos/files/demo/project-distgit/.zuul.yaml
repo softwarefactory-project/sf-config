@@ -14,5 +14,6 @@
       jobs:
         - demo-rpmbuild
     gate:
+      queue: demo-integrated
       jobs:
         - demo-rpmbuild
