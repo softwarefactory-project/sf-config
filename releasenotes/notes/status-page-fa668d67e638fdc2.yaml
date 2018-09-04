@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A new status page is generated daily to track post failure at
+    fqdn/status
