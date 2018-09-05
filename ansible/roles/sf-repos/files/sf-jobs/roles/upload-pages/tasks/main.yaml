@@ -11,11 +11,17 @@
   when: (not vhost_name is defined or not vhost_name or
          not fqdn is defined or not fqdn)
 
+- name: Check for TLS certificate
+  stat:
+    path: "/etc/letsencrypt/pem/{{ vhost_name }}.{{ fqdn }}.pem"
+  register: tls_cert
+
 - name: Create vhost file
   template:
     src: templates/vhost.conf.j2
     dest: "{{ zuul_pagesvhosts_root }}/pages-{{ zuul.project.name | regex_replace('/', '_') | regex_replace('\\.\\.', '') }}.conf"
     mode: 0644
+  register: apache_conf
 
 - name: Upload website to publication server
   synchronize:
@@ -30,3 +36,4 @@
 # facility fails to match the sudoerd rule.
 - name: reload httpd
   command: sudo /bin/systemctl reload httpd
+  when: apache_conf is changed

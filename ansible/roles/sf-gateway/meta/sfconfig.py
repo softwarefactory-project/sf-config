@@ -23,15 +23,15 @@ def encode_image(path):
 
 class Gateway(Component):
     def usage(self, parser):
-        parser.add_argument("--disable-fqdn-redirection", action="store_true",
+        parser.add_argument("--disable-ssl-redirection", action="store_true",
                             help="Do not redirect direct gateway access "
                             "to fqdn")
 
     def argparse(self, args):
-        if args.disable_fqdn_redirection:
-            args.glue["gateway_force_fqdn_redirection"] = False
+        if args.disable_ssl_redirection:
+            args.glue["gateway_force_ssl_redirection"] = False
         else:
-            args.glue["gateway_force_fqdn_redirection"] = True
+            args.glue["gateway_force_ssl_redirection"] = True
 
     def configure(self, args, host):
         if (
