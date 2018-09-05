@@ -1,13 +1,33 @@
 <VirtualHost *:80>
     ServerName {{ vhost_name }}.{{ fqdn }}
+
+    Alias /.well-known/acme-challenge /etc/letsencrypt/challenges/{{ vhost_name }}.{{ fqdn }}
+    <Directory /etc/letsencrypt/challenges/{{ vhost_name }}.{{ fqdn }}>
+      Require all granted
+    </Directory>
+
+{% if tls_cert.stat.exists %}
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteCond %{REMOTE_HOST} !{{ vhost_name }}.{{ fqdn }}$
+    RewriteRule (.*) https://{{ vhost_name }}.{{ fqdn }}%{REQUEST_URI} [R=301,L]
+{% endif %}
+
     Alias / /var/www/pages/{{ zuul.project.name }}/
+    CustomLog "logs/{{ vhost_name }}.{{ fqdn }}_access_log" combined
+    ErrorLog "logs/{{ vhost_name }}.{{ fqdn }}_error_log"
 </VirtualHost>
 
-#<VirtualHost *:443>
-#    ServerName {{ vhost_name }}.{{ fqdn }}
-#    Alias / /var/www/pages/{{ zuul.project.name }}/
-#    SSLEngine on
-#    SSLCertificateFile /etc/pki/tls/certs/{{ fqdn }}.crt
-#    SSLCertificateChainFile /etc/pki/tls/certs/{{ fqdn }}-chain.crt
-#    SSLCertificateKeyFile  /etc/pki/tls/private/{{ fqdn }}.key
-#</VirtualHost>
+{% if tls_cert.stat.exists %}
+<VirtualHost *:443>
+    ServerName {{ vhost_name }}.{{ fqdn }}
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/pem/{{ vhost_name }}.{{ fqdn }}.pem
+    SSLCertificateChainFile /etc/letsencrypt/pem/lets-encrypt-x3-cross-signed.pem
+    SSLCertificateKeyFile /etc/letsencrypt/private/{{ vhost_name }}.{{ fqdn }}.key
+
+    Alias / /var/www/pages/{{ vhost_name }}.{{ fqdn }}/
+    CustomLog "logs/{{ vhost_name }}.{{ fqdn }}_access_log" combined
+    ErrorLog "logs/{{ vhost_name }}.{{ fqdn }}_error_log"
+</VirtualHost>
+{% endif %}

@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The upload-pages role now setup TLS certificate and force redirection to
+    the https endpoint if a certificate is provided.
