@@ -115,13 +115,6 @@
     path: /etc/httpd/conf/httpd.conf
   register: httpd_conf
 
-- name: Update DocumentRoot to /var/www
-  lineinfile:
-    dest: /etc/httpd/conf/httpd.conf
-    regexp: "^DocumentRoot "
-    line: "DocumentRoot \"/var/www\""
-  when: httpd_conf.stat.exists
-
 - name: Set selinux policies for httpd
   seboolean:
     name: "{{ item }}"
