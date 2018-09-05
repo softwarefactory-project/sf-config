@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    The upload-pages role now setups TLS virtualhost and forces redirection to
+    the https endpoint if a certificate is provided or letsencrypt is configured.
+  - |
+    The --disable-fqdn-redirection sfconfig argument has been renamed
+    --disable-ssl-redirection.
+upgrades:
+  - |
+    The gateway_force_fqdn_redirection fact is no longer supported.
