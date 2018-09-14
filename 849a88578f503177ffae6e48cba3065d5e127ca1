@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0b88781a_2f298bbe",
+        "filename": "ansible/roles/sf-base/tasks/setup.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-14T06:40:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e23aaa99_10acbc59",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 22
+      },
+      "revId": "849a88578f503177ffae6e48cba3065d5e127ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "96d74a23_dd903a27",
         "filename": "ansible/roles/sf-gateway/meta/sfconfig.py",
         "patchSetId": 5
@@ -36,6 +60,30 @@
       "writtenOn": "2018-09-10T16:18:24Z",
       "side": 1,
       "message": "https://fqdn",
+      "range": {
+        "startLine": 28,
+        "startChar": 32,
+        "endLine": 28,
+        "endChar": 36
+      },
+      "revId": "849a88578f503177ffae6e48cba3065d5e127ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c689f1b2_ea8fbcae",
+        "filename": "ansible/roles/sf-gateway/meta/sfconfig.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-14T06:40:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96d74a23_dd903a27",
       "range": {
         "startLine": 28,
         "startChar": 32,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "08ee0b95_02d5ad82",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.conf.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-14T06:40:10Z",
+      "side": 1,
+      "message": "oh good point, perhaps we should drop backward compatibility with that option?",
+      "parentUuid": "3e96071c_488abbde",
+      "range": {
+        "startLine": 6,
+        "startChar": 6,
+        "endLine": 6,
+        "endChar": 50
+      },
+      "revId": "849a88578f503177ffae6e48cba3065d5e127ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "966c1f9b_6c12b514",
         "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/upload-pages/tasks/main.yaml",
         "patchSetId": 5
@@ -82,6 +154,30 @@
       "writtenOn": "2018-09-05T11:25:33Z",
       "side": 1,
       "message": "Maybe the cert path needs to be templated out: This checks for a letsencrypt cert, not a user-supplied ssl cert.\n\nIt\u0027s not an issue if users of private clouds have to copy the certs to one directory, rather than the other, but it\u0027s a little hacky.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 20
+      },
+      "revId": "849a88578f503177ffae6e48cba3065d5e127ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b3064fd4_49a6f3e7",
+        "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/upload-pages/tasks/main.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-14T06:40:10Z",
+      "side": 1,
+      "message": "It might be tricky to get that information from the job definition. Maybe we could check for both letsencrypt and flat files, and use the first one found.\n\nDocumentation would explain where to put static website certificates to enable tls for pages.",
+      "parentUuid": "966c1f9b_6c12b514",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -141,6 +237,30 @@
     },
     {
       "key": {
+        "uuid": "77f0bbad_c344eb6a",
+        "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/upload-pages/templates/vhost.conf.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-14T06:40:10Z",
+      "side": 1,
+      "message": "It seems like looking for both types of certs and use the first found would be easier. I\u0027ll add conditions like \"{% if letsencrypt_tls_cert %} ... {% elseif static_tls_cert %} ...{%endif%}\"",
+      "parentUuid": "50b76daa_137ef3a5",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 27,
+        "endChar": 82
+      },
+      "revId": "849a88578f503177ffae6e48cba3065d5e127ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b0091d44_82782244",
         "filename": "releasenotes/notes/pages-tls-a9ed7da009225e49.yaml",
         "patchSetId": 5
@@ -176,6 +296,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "b0091d44_82782244",
+      "range": {
+        "startLine": 5,
+        "startChar": 26,
+        "endLine": 5,
+        "endChar": 28
+      },
+      "revId": "849a88578f503177ffae6e48cba3065d5e127ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da0d7e24_83061b95",
+        "filename": "releasenotes/notes/pages-tls-a9ed7da009225e49.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-14T06:40:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b81df2eb_d8ed9a17",
       "range": {
         "startLine": 5,
         "startChar": 26,
