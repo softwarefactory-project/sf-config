@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "efa639cc_6e9db8db",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.conf.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-09-14T07:11:31Z",
+      "side": 1,
+      "message": "Yes and a release note.",
+      "parentUuid": "08ee0b95_02d5ad82",
+      "range": {
+        "startLine": 6,
+        "startChar": 6,
+        "endLine": 6,
+        "endChar": 50
+      },
+      "revId": "849a88578f503177ffae6e48cba3065d5e127ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "966c1f9b_6c12b514",
         "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/upload-pages/tasks/main.yaml",
         "patchSetId": 5
@@ -178,6 +202,30 @@
       "side": 1,
       "message": "It might be tricky to get that information from the job definition. Maybe we could check for both letsencrypt and flat files, and use the first one found.\n\nDocumentation would explain where to put static website certificates to enable tls for pages.",
       "parentUuid": "966c1f9b_6c12b514",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 20
+      },
+      "revId": "849a88578f503177ffae6e48cba3065d5e127ca1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bede1900_075c4324",
+        "filename": "ansible/roles/sf-repos/files/sf-jobs/roles/upload-pages/tasks/main.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-09-14T07:11:31Z",
+      "side": 1,
+      "message": "Work for me.",
+      "parentUuid": "b3064fd4_49a6f3e7",
       "range": {
         "startLine": 14,
         "startChar": 0,
