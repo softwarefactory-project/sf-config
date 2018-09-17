@@ -82,9 +82,11 @@
         RewriteRule ^(.*)$ /r/login/ [R,NC,L]
 
         # Logged in in Gerrit, but logged out from cauth
-        RewriteCond %{HTTP_COOKIE} ^GerritAccount.*$ [NC]
-        RewriteCond %{HTTP_COOKIE} !^.*auth_pubtkt.*$ [NC]
-        RewriteRule ^(.*)$ /r/logout [R,NC,L]
+        <If "%{HTTP_COOKIE} !~ /.*auth_pubtkt.*/">
+            # Remove GerritAccount cookie
+            Header add Set-Cookie "GerritAccount='';expires='Thu, 01-Jan-1970 00:00:00 GMT';"
+            RequestHeader unset Cookie
+        </If>
     </LocationMatch>
 
     <LocationMatch "/r/login(/|$)">

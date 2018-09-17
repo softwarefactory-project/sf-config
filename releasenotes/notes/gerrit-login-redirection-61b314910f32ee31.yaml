@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    When logged-out from cauth but still logged in gerrit, the rewrite rule
+    now correctly keeps the referer and does not redirect to the welcome page.
