@@ -12,33 +12,33 @@
 }
 
 .result_SUCCESS {
-    color: #007f00;
+  color: #007f00;
 }
 .result_FAILURE {
-    color: #cf2f19;
+  color: #cf2f19;
 }
 .result_UNSTABLE, .result_WARNING {
-    color: #e39f00;
+  color: #e39f00;
 }
 .result_LOST {
-    color: #e39f00;
+  color: #e39f00;
 }
 li.comment_test {list-style-type: none; }
 
 /* this is for support of 'Display Person Name In Review Category' */
 .cAPPROVAL {
-    max-width: 100px;
-    overflow: hidden;
+  max-width: 100px;
+  overflow: hidden;
 }
 /* fixes to make this like old gerrit */
 .changeTable td.dataCell {
-    height: 1em;
+  height: 1em;
 }
 
 /* don't make the non voting stand out more than the voting */
 table.infoTable td.notVotable,
 .changeTable td.dataCell.labelNotApplicable {
-    background: inherit;
+  background: inherit;
 }
 
 .test_result_table {
@@ -60,11 +60,157 @@ table.infoTable td.notVotable,
 }
 
 .addMemberTextBox {
-    width: 20em;
+  width: 20em;
 }
 
 /* css attribute selector to make -1s show up red in new screen */
 [title="Doesn't seem to work"],
 [title="This patch needs further work before it can be merged"] {
-    color: red;
+  color: red;
+}
+
+/* Bootstrap navbar */
+.gerritTopMenu {
+  padding-top: 52px;
+}
+.pull-right {
+  float: right !important;
+}
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.btn-primary, .btn-primary:visited {
+  color: #ffffff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.btn-primary:hover {
+  color: #ffffff;
+  background-color: #286090;
+  border-color: #204d74;
+  text-decoration: none;
+}
+
+.btn-danger, .btn-danger:visited {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.btn-danger:hover {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+  text-decoration: none;
+}
+
+.navbar-header > a > img {
+  box-sizing: border-box;
+}
+
+.navbar-brand, .navbar-brand:visited {
+  float: left;
+  padding: 15px 15px;
+  font-size: 18px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  line-height: 20px;
+  height: 50px;
+  color: #777;
+}
+
+.navbar-brand:hover {
+  color: #333;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.navbar-btn {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.navbar {
+  background-color: #f8f8f8;
+  border-color: #e7e7e7;
+  border-width: 0 0 1px;
+  border-radius: 4px;
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  top: 0px;
+  min-height: 50px;
+  max-height: 50px;
+  margin-bottom: 20px;
+  border: 1px solid #e7e7e7;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1px;
+  border-left-width: 0px;
+}
+.navbar-header {
+  float: left;
+  margin: 0;
+}
+.nav > ul {
+  list-style: none;
+}
+.navbar-nav > li {
+  float: left;
+  position: relative;
+  display: block;
+}
+.navbar-nav > li > a {
+  color: #777;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  list-style-position: outside;
+  box-sizing: border-box;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  position: relative;
+  display: block;
+}
+.navbar-nav > li > a:hover, .navbar-nav > li > a:focus {
+  color: #333;
+  background-color: transparent;
+  text-decoration: none;
+}
+.navbar-nav {
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-text {
+  color: #777;
+  float: left;
+  margin: 15px;
+  line-height: 20px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
 }
