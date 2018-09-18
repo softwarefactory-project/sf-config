@@ -1,3 +1,8 @@
+    <Directory "/var/www">
+        AllowOverride None
+        Require all granted
+    </Directory>
+
     DocumentRoot /var/www/
 
     Alias /icons/ "/usr/share/httpd/icons/"
@@ -153,34 +158,27 @@
         # Redirect all the static file to webui cache
         AliasMatch "^/zuul/t/.*/(.*)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1"
         AliasMatch "^/zuul/t/(.*)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1"
-{% endif %}
-
-{% if tenant_deployment %}
-
-        AliasMatch "^/zuul/(.*)\.(html|js|png|map|woff|ttf)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
-
-        <location /zuul/api/console-stream>
-            ProxyPass wss://{{ master_sf_fqdn }}/zuul/api/tenant/{{ tenant_name }}/console-stream nocanon retry=0 disablereuse=on
-        </location>
-        <location /zuul/>
-            RequestHeader set Host "{{ master_sf_fqdn }}"
-            ProxyPreserveHost On
-        </location>
-        RewriteRule ^/zuul/?$ /zuul/status.html [R]
-        ProxyPassMatch ^/zuul/.*\.(html|js|png|map|woff|ttf)$ !
-        ProxyPassMatch ^/zuul/api/(.*)$ {{ master_sf_url }}/zuul/api/tenant/{{ tenant_name }}/$1 retry=0 disablereuse=on
-
-        SSLProxyEngine On
-        # TODO: figure out why CheckPeer are needed
-        SSLProxyCheckPeerCN off
-        SSLProxyCheckPeerName off
-
-{% endif %}
-{% if 'zuul' in roles %}
 
         # Redirect api call to zuul-web controllers
         ProxyPassMatch ^/zuul/api/tenant/(.*)/console-stream$ {{ zuul_ws_url }}/api/tenant/$1/console-stream nocanon retry=0 disablereuse=on
         ProxyPassMatch ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 nocanon  retry=0 disablereuse=on
+
+{% endif %}
+{% if tenant_deployment %}
+
+        AliasMatch "^/zuul/(.*)\.(html|js|png|map|woff|ttf)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
+
+        SSLProxyEngine On
+        <location /zuul/>
+            RequestHeader set Host "{{ master_sf_fqdn }}"
+            ProxyPreserveHost Off
+        </location>
+        <location /zuul/api/console-stream>
+            ProxyPass wss://{{ master_sf_fqdn }}/zuul/api/tenant/{{ tenant_name }}/console-stream nocanon retry=0 disablereuse=on
+        </location>
+        RewriteRule ^/zuul/?$ /zuul/status.html [R]
+        ProxyPassMatch ^/zuul/.*\.(html|js|png|map|woff|ttf)$ !
+        ProxyPassMatch ^/zuul/api/(.*)$ {{ master_sf_url }}/zuul/api/tenant/{{ tenant_name }}/$1 retry=0 disablereuse=on
 
 {% endif %}
 {% if 'storyboard' in roles %}
