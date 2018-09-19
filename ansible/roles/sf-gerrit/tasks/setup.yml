@@ -33,6 +33,11 @@
     gerrit_server_id: "{{ _gerrit_server_id.stdout }}"
   when: _gerrit_server_id.rc == 0
 
+- name: Render topmenu links list
+  set_fact:
+    topmenu_links: "{{ lookup('template', '../sf-gateway/templates/topmenu_links.j2') }}"
+  no_log: true
+
 - name: Install configuration files
   template:
     src: "{{ item.name }}.j2"
@@ -57,6 +62,9 @@
     - {name: gerrit,
        path: /etc/sysconfig,
        mode: '0444'}
+    - {name: GerritSiteHeader.html,
+       path: /etc/gerrit,
+       mode: '0444'}
   notify: [restart gerrit]
 
 - name: Install static configuration files for gerrit
@@ -67,7 +75,6 @@
     owner: gerrit
     group: gerrit
   with_items:
-    - {name: GerritSiteHeader.html}
     - {name: GerritSite.css}
 
 - name: Check for replication.config

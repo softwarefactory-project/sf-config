@@ -118,6 +118,11 @@
   register: _nodepool_version
   changed_when: false
 
+- name: Render topmenu links list
+  set_fact:
+    topmenu_links: "{{ lookup('template', './templates/topmenu_links.j2') }}"
+  no_log: true
+
 - name: Install templates
   template:
     src: "{{ item.name }}.j2"

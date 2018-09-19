@@ -1,4 +1,3 @@
-
 function isCookiesEnabled() {
     var isEnabled = (navigator.cookieEnabled) ? true : false;
     if ( typeof navigator.cookieEnabled == "undefined" && !cookieEnabled ) {
@@ -68,9 +67,14 @@ function initAuth() {
     }
     displaySignIn();
     document.getElementById("login-btn").onclick = function () {
-        back=window.parent.location.href.replace(window.parent.location.origin, '')
         window.top.location.href = "auth/login?back=" + encodeURIComponent(window.parent.location.href)
     };
+    if (typeof $ !== 'undefined') {
+      // Set persistent click handler to mitigate gerrit removing click handler...
+      $("body").on('click', '#login-btn', function () {
+        window.parent.location.href = "/auth/login?back=" + encodeURIComponent(window.parent.location.href)
+      });
+    }
 };
 
 /** Init function

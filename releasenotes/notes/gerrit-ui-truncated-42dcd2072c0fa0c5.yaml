@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    When reviewing long file in gerrit, the scroll bar now correctly goes to
+    the bottom of the file.
