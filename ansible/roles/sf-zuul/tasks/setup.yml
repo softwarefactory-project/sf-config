@@ -42,7 +42,11 @@
   when: "'zuul-merger' in zuul_services"
 
 - block:
-    - name: Pre-Create config project rsa key
+    - name: Check zuul version
+      command: rpm -q rh-python35-zuul
+      register: _zuul_version
+
+    - name: Pre-Create config project rsa key (legacy)
       become: "yes"
       become_user: zuul
       command: |
@@ -59,12 +63,44 @@
         pub.close()'
       args:
         creates: "{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/{{ config_project_name }}.pub"
+      when: '"zuul-3.2.0-4" in _zuul_version.stdout'
 
-    - name: Fetch config project pub key on install-server
+    - name: Fetch config project pub key on install-server (legacy)
       fetch:
         flat: "yes"
         src: "{{ zuul_lib_dir }}/keys/{{ config_connection_name }}/{{ config_project_name }}.pub"
         dest: "/var/lib/software-factory/bootstrap-data/certs/config.pub"
+      when: '"zuul-3.2.0-4" in _zuul_version.stdout'
+
+    - name: Pre-Create config project rsa key
+      become: "yes"
+      become_user: zuul
+      command: |
+        /opt/rh/rh-python35/root/bin/python -c 'import zuul.configloader
+        import zuul.lib.encryption
+        import zuul.configloader
+        import os
+        from zuul.lib.keystorage import KeyStorage
+        class ZuulJobs: pass
+        project = ZuulJobs()
+        project.name = "config"
+        print("Remove legacy pub key")
+        os.system("find {{ zuul_lib_dir }}/keys/ -name \"*.pub\" -delete")
+        tp = zuul.configloader.TenantParser(None, None, None, KeyStorage("{{ zuul_lib_dir }}/keys"))
+        tp._loadProjectKeys("{{ config_connection_name }}", project)
+        pub = open("{{ zuul_lib_dir }}/keys/secrets/project/{{ config_connection_name }}/{{ config_project_name }}.pub", "w")
+        pub.write(zuul.lib.encryption.serialize_rsa_public_key(project.public_secrets_key).decode("utf-8"))
+        pub.close()'
+      args:
+        creates: "{{ zuul_lib_dir }}/keys/secrets/project/{{ config_connection_name }}/{{ config_project_name }}.pub"
+      when: '"zuul-3.2.0-4" not in _zuul_version.stdout'
+
+    - name: Fetch config project pub key on install-server (legacy)
+      fetch:
+        flat: "yes"
+        src: "{{ zuul_lib_dir }}/keys/secrets/project/{{ config_connection_name }}/{{ config_project_name }}.pub"
+        dest: "/var/lib/software-factory/bootstrap-data/certs/config.pub"
+      when: '"zuul-3.2.0-4" not in _zuul_version.stdout'
 
     - name: Install zuul-changes.py script
       template:
