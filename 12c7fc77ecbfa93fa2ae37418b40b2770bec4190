@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fc78d710_f2b88071",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-19T07:39:03Z",
+      "side": 1,
+      "message": "oops, this is not legacy.",
+      "range": {
+        "startLine": 97,
+        "startChar": 59,
+        "endLine": 97,
+        "endChar": 67
+      },
+      "revId": "12c7fc77ecbfa93fa2ae37418b40b2770bec4190",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
