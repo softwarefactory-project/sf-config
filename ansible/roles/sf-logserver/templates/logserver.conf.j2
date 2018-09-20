@@ -93,6 +93,6 @@ SetEnv OS_LOGANALYZE_ROOT_PATH /var/www/logs/
 WSGIScriptAlias /htmlify /usr/lib/python2.7/site-packages/os_loganalyze/wsgi.py
 
 SetEnv ARA_WSGI_TMPDIR_MAX_AGE {{ logs_wsgi_ara_tmpdir_max_age }}
-SetEnv ARA_WSGI_LOG_ROOT /var/www/logs
+SetEnv ARA_WSGI_LOG_ROOT /var/www/
 SetEnv ARA_WSGI_DATABASE_DIRECTORY {{ logs_wsgi_ara_directory }}
 WSGIScriptAliasMatch ^.*/{{ logs_wsgi_ara_directory }}(?!/ansible.sqlite) /opt/rh/rh-python35/root/usr/bin/ara-wsgi-sqlite
