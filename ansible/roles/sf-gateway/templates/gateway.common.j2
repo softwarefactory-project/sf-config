@@ -146,41 +146,40 @@
 {% endif %}
 
         <Directory /opt/rh/rh-python35/root/usr/share/zuul>
+            DirectoryIndex index.html
             Require all granted
             Order allow,deny
             Allow from all
         </Directory>
+        Alias /zuul /opt/rh/rh-python35/root/usr/share/zuul
 
 {% if 'zuul' in roles %}
-        RewriteRule ^/zuul3.*$ /zuul/t/{{ tenant_name }}/status.html [R,L]
-        RewriteRule ^/zuul/?$ /zuul/t/{{ tenant_name }}/status.html [R,L]
+        RewriteRule ^/zuul/*$ /zuul/t/{{ tenant_name }}/status [R,L]
 
-        # Redirect all the static file to webui cache
-        AliasMatch "^/zuul/t/.*/(.*)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1"
-        AliasMatch "^/zuul/t/(.*)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1"
-
-        # Redirect api call to zuul-web controllers
-        ProxyPassMatch ^/zuul/api/tenant/(.*)/console-stream$ {{ zuul_ws_url }}/api/tenant/$1/console-stream nocanon retry=0 disablereuse=on
-        ProxyPassMatch ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 nocanon  retry=0 disablereuse=on
-
+        # Rewrite api to zuul-web
+        RewriteRule ^/zuul/api/tenant/(.*)/console-stream$ {{ zuul_ws_url }}/api/tenant/$1/console-stream [P,L]
+        RewriteRule ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 [P,L]
 {% endif %}
 {% if tenant_deployment %}
-
-        AliasMatch "^/zuul/(.*)\.(html|js|png|map|woff|ttf)$" "/opt/rh/rh-python35/root/usr/share/zuul/$1.$2"
+        RewriteRule ^/zuul/*$ /zuul/status [R,L]
 
         SSLProxyEngine On
-        <location /zuul/>
+        <location /zuul>
             RequestHeader set Host "{{ master_sf_fqdn }}"
             ProxyPreserveHost Off
         </location>
-        <location /zuul/api/console-stream>
-            ProxyPass wss://{{ master_sf_fqdn }}/zuul/api/tenant/{{ tenant_name }}/console-stream nocanon retry=0 disablereuse=on
-        </location>
-        RewriteRule ^/zuul/?$ /zuul/status.html [R]
-        ProxyPassMatch ^/zuul/.*\.(html|js|png|map|woff|ttf)$ !
-        ProxyPassMatch ^/zuul/api/(.*)$ {{ master_sf_url }}/zuul/api/tenant/{{ tenant_name }}/$1 retry=0 disablereuse=on
+
+        # Rewrite api to zuul-web
+        RewriteRule ^/zuul/api/console-stream$ wss://{{ master_sf_fqdn }}/zuul/api/tenant/{{ tenant_name }}/console-stream [P,L]
+        RewriteRule ^/zuul/api/(.*)$ {{ master_sf_url }}/zuul/api/tenant/{{ tenant_name }}/$1 [P,L]
 
 {% endif %}
+
+        # Rewrite HTML5 url to the index.html
+        RewriteCond /opt/rh/rh-python35/root/usr/share/%{REQUEST_FILENAME} !-f
+        RewriteCond /opt/rh/rh-python35/root/usr/share/%{REQUEST_FILENAME} !-d
+        RewriteRule ^/zuul/.*$ /opt/rh/rh-python35/root/usr/share/zuul/index.html [L]
+
 {% if 'storyboard' in roles %}
         ProxyPass /storyboard_api/ http://storyboard:20000/v1/ nocanon retry=0
         ProxyPassReverse /storyboard_api/ http://storyboard:20000/v1/
