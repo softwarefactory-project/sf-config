@@ -424,7 +424,7 @@ def get_providers(config_dir):
     result = []
     nodepool_conf = sfconfig.utils.yaml_merge_load(os.path.join(config_dir,
                                                                 "nodepool"))
-    for provider in nodepool_conf["providers"]:
+    for provider in nodepool_conf.get("providers", []):
         result.append(
             {"name": provider["name"],
              "driver": provider.get("driver", "openstack")})
