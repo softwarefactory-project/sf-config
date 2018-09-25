@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A new Zuul pipeline named 'experimental' is added by default in the default Zuul tenant.
+    The pipeline is available for Gerrit and Github connections. Jobs attached to that
+    pipeline are trigger by the 'check experimenal' comment.
