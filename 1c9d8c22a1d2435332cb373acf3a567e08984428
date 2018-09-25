@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ef30e54_380dc07a",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-09-25T08:13:56Z",
+      "side": 1,
+      "message": "Should it be {{ tenant_name }} ?",
+      "range": {
+        "startLine": 155,
+        "startChar": 38,
+        "endLine": 155,
+        "endChar": 43
+      },
+      "revId": "1c9d8c22a1d2435332cb373acf3a567e08984428",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
