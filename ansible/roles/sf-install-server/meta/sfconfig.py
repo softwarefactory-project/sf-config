@@ -276,23 +276,26 @@ class InstallServer(Component):
                     # If location is matching github connections, look for
                     # available gerrit connections.
                     for conn in zuul_config['gerrit_connections']:
-                        conn_url = "ssh://%s@%s" % (
-                            sync_user, conn["hostname"])
-                        url = conn.get('puburl')
-                        if url not in location:
+                        puburl = conn.get('puburl')
+                        if puburl not in location:
                             continue
                         # Project name is the remaining part after the puburl
-                        project_name = location[len(url):]
+                        project_name = location[len(puburl):].lstrip('/')
+                        if args.glue["sync_strategy"] != 'push':
+                            _loc = location
+                        else:
+                            _loc = "ssh://%s@%s/%s" % (
+                                sync_user, conn["hostname"], project_name)
                         if repo == "config-repo":
                             conn_name = conn["name"]
                             conf_name = project_name
-                            conf_loc = "%s/%s" % (conn_url, conf_name)
+                            conf_loc = _loc
                         elif conn_name != conn["name"]:
                             fail("Config and jobs needs to share "
                                  "the same connection")
                         else:
                             jobs_name = project_name
-                            jobs_loc = "%s/%s" % (conn_url, jobs_name)
+                            jobs_loc = _loc
                         found = True
                         break
 

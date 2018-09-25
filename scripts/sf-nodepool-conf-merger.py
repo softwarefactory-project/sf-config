@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -46,7 +46,7 @@ def merge(inp, _nodepool):
         envvars['DIB_CHECKSUM'] = '1'
         # Make sure env-vars are str
         for k, v in envvars.items():
-            if not isinstance(v, basestring):
+            if not isinstance(v, str):
                 envvars[k] = str(v)
 
     if 'cron' in user:
