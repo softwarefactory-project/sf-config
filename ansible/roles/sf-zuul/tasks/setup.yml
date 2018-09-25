@@ -53,7 +53,7 @@
         from zuul.lib.keystorage import KeyStorage
         class ZuulJobs: pass
         project = ZuulJobs()
-        project.name = "config"
+        project.name = "{{ config_project_name }}"
         print("Remove legacy pub key")
         os.system("find {{ zuul_lib_dir }}/keys/ -name \"*.pub\" -delete")
         tp = zuul.configloader.TenantParser(None, None, None, KeyStorage("{{ zuul_lib_dir }}/keys"))
