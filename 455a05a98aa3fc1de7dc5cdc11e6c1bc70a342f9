@@ -22,6 +22,30 @@
       "revId": "455a05a98aa3fc1de7dc5cdc11e6c1bc70a342f9",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "11812dfa_d2e64b80",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-25T12:18:02Z",
+      "side": 1,
+      "message": "nop, i just wasnted to use the \"check experimental\" with the patches stack.",
+      "parentUuid": "335fe012_6324a6e7",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "455a05a98aa3fc1de7dc5cdc11e6c1bc70a342f9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
