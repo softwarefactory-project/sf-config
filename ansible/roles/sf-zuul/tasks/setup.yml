@@ -156,6 +156,11 @@
     - include_tasks: create_logging.yml _logfile="web"
   when: "'zuul-web' in zuul_services"
 
+- name: Install logrotate configuration
+  copy:
+    src: zuul.logrotate.conf
+    dest: /etc/logrotate.d/zuul
+
 - name: "Create ssl directory"
   file:
     path: "{{ zuul_conf_dir }}/ssl"
