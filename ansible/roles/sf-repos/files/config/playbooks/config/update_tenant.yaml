@@ -1,3 +1,4 @@
+# This file is managed by ansible, do not edit directly
 ---
 - name: Discover path of config repository
   command: git rev-parse --show-toplevel
