@@ -52,6 +52,7 @@
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
   with_items:
     - haveged
+    - logrotate
     - git
     - monit
     - ntp

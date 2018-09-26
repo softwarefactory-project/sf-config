@@ -173,3 +173,8 @@
 - block:
     - include_tasks: create_logging.yml _logfile="launcher"
   when: "'nodepool-launcher' in nodepool_services"
+
+- name: Install logrotate configuration
+  copy:
+    src: nodepool.logrotate.conf
+    dest: /etc/logrotate.d/nodepool
