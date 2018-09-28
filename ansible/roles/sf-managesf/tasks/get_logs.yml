@@ -13,5 +13,6 @@
     dest: "{{ log_dest }}/{{ item }}"
   with_items:
     - config.py
+    - config2.py
     - policy.yaml
   ignore_errors: true
