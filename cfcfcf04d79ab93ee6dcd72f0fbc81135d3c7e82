@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d2c38e9f_a61cf575",
+        "filename": "ansible/roles/sf-repos/templates/config/playbooks/base/post.yaml.j2",
+        "patchSetId": 26
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-28T08:08:04Z",
+      "side": 1,
+      "message": "This should be replaced by \"public_keys\" since the variable contains the list.",
+      "range": {
+        "startLine": 48,
+        "startChar": 8,
+        "endLine": 48,
+        "endChar": 50
+      },
+      "revId": "cfcfcf04d79ab93ee6dcd72f0fbc81135d3c7e82",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a83fc50_4e7c63c9",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_jobs-base.yaml.j2",
+        "patchSetId": 26
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-28T08:08:04Z",
+      "side": 1,
+      "message": "I think we should setup a key for managesf instead.",
+      "range": {
+        "startLine": 26,
+        "startChar": 25,
+        "endLine": 26,
+        "endChar": 45
+      },
+      "revId": "cfcfcf04d79ab93ee6dcd72f0fbc81135d3c7e82",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "70844a58_162f9e48",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_secret_managesf.yaml.j2",
+        "patchSetId": 26
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-09-28T08:08:04Z",
+      "side": 1,
+      "message": "why is this secret added?",
+      "range": {
+        "startLine": 2,
+        "startChar": 10,
+        "endLine": 2,
+        "endChar": 25
+      },
+      "revId": "cfcfcf04d79ab93ee6dcd72f0fbc81135d3c7e82",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
