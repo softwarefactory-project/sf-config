@@ -1,3 +1,4 @@
+# This file is managed by ansible, do not edit directly
 ---
 - name: Create SSH private key tempfile
   tempfile:

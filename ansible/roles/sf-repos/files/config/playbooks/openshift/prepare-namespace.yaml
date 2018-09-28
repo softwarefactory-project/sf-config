@@ -1,3 +1,4 @@
+# This file is managed by ansible, do not edit directly
 ---
 - name: create staging-http DeploymentConfig
   openshift_raw:
