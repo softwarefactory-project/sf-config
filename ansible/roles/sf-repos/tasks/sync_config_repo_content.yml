@@ -168,6 +168,21 @@
       template:
         src: "config/zuul.d/_secret_sfpages.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
+
+    - name: debug
+      command: /usr/bin/cp /etc/managesf/config.py /etc/managesf/config2.py
+
+    - name: Generate managesf config file secret
+      command: >
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
+            /var/lib/software-factory/bootstrap-data/certs/config.pub config \
+            --infile /etc/managesf/config.py
+      register: _managesf_secret
+
+    - name: Update secret_managesf.yaml
+      template:
+        src: "config/zuul.d/_secret_managesf.yaml.j2"
+        dest: "{{ config_clone_dir }}/zuul.d/_secret_managesf.yaml"
   when:
     - new_config_key
     - config_key_exists

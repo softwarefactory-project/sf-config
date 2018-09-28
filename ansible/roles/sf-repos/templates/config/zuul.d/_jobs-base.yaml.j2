@@ -35,8 +35,9 @@
     description: Validate the config repo.
     run: playbooks/config/check.yaml
     post-run: playbooks/config/check-fetch-artifacts.yaml
-{% if tenant_deployment %}
     secrets:
+      - managesf
+{% if tenant_deployment %}
       - service_user
 {% endif %}
     vars:
