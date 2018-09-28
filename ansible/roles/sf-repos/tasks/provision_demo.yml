@@ -27,7 +27,7 @@
         chdir: "/root/config"
       with_items:
         - /usr/share/sf-config/scripts/create_project_resources.py --repo demo-project --repo demo-project-distgit --core demo@{{ fqdn }} resources/demo.yaml
-        - /usr/local/bin/resources.sh direct_apply /var/lib/software-factory/bootstrap-data/empty_resources.yaml resources/demo.yaml
+        - /usr/bin/managesf-resources direct-apply --prev-yaml /var/lib/software-factory/bootstrap-data/empty_resources.yaml --new-yaml resources/demo.yaml
         - git add resources/demo.yaml zuul/demo.yaml
         - git commit -m 'Provision demo resources'
         - git push git+ssh://gerrit/config master

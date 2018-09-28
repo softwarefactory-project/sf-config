@@ -8,14 +8,6 @@
     mode: 0750
     group: managesf
 
-- name: "Install resources management script"
-  template:
-    src: resources.sh.j2
-    dest: /usr/local/bin/resources.sh
-    mode: 0555
-  delegate_to: "{{ item }}"
-  with_items: "{{ executor_hosts | union( groups['install-server'] ) }}"
-
 - name: "Setup config.py"
   template:
     src: config.py.j2
@@ -23,6 +15,13 @@
     group: managesf
     mode: 0440
   notify: restart managesf
+
+- name: "Ensure resources.sh absent"
+  file:
+    path: /usr/local/bin/resources.sh
+    state: absent
+  delegate_to: "{{ item }}"
+  with_items: "{{ executor_hosts | union( groups['install-server'] ) }}"
 
 - block:
     - name: Update local config repo remote url if fqdn is updated
