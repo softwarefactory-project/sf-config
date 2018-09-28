@@ -29,7 +29,7 @@ default_tenant_name = sys.argv[2]
 updated_keys = []
 
 try:
-    req = urllib.request.urlopen(gateway + "/resources")
+    req = urllib.request.urlopen(gateway + "/v2/resources")
     data = json.loads(req.read().decode('utf-8'))
     tenants = data.get("resources", {}).get("tenants", {})
     connections = data.get("resources", {}).get("connections", {})
