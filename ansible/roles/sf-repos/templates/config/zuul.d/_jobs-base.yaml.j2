@@ -35,10 +35,8 @@
     description: Validate the config repo.
     run: playbooks/config/check.yaml
     post-run: playbooks/config/check-fetch-artifacts.yaml
-{% if tenant_deployment %}
     secrets:
       - service_user
-{% endif %}
     vars:
       zuul_log_url: "https://{{ fqdn }}/logs"
       gateway_url: "{{ gateway_url }}"

@@ -103,7 +103,7 @@
 ####################################
 # Finaly we manage default secrets #
 ####################################
-- name: Delete config_key_checksum if update fqdn
+- name: Delete config_key_checksum if needed
   file:
     path: /var/lib/software-factory/state/config_key_checksum
     state: absent
