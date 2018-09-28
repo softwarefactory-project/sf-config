@@ -71,8 +71,14 @@
           no_log: true
       when: tenant_config is defined and tenant_config
 
+    - name: Copy managesf config in workspace
+      copy:
+        content: "{{ managesf.config }}"
+        dest: "{{ config_root }}/../config.py"
+      no_log: true
+
     - name: Check resources changes
-      command: env - /usr/local/bin/resources.sh validate {{ remote_gateway | default('') }}
+      command: env - /usr/bin/managesf-resources validate --managesf-config {{ config_root }}/../config.py --cache-dir {{ config_root }}/../.resources --log-output {{ config_root }}/build/resources-engine.log {{ remote_gateway | default('') }}
       args:
         chdir: "{{ config_root }}"
 
