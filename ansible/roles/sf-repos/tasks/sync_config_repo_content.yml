@@ -103,11 +103,16 @@
 ####################################
 # Finaly we manage default secrets #
 ####################################
-- name: Delete config_key_checksum if update fqdn
+- name: Check missing _secret_managesf.yaml
+  stat:
+    path: '{{ config_clone_dir }}/zuul.d/_secret_managesf.yaml'
+  register: _secret_managesf
+
+- name: Delete config_key_checksum if needed
   file:
     path: /var/lib/software-factory/state/config_key_checksum
     state: absent
-  when: update_fqdn
+  when: update_fqdn or not _secret_managesf.stat.exists
 
 - name: Verify if config repository key changed
   block:
@@ -130,6 +135,11 @@
     - name: Set config_key_regenerated fact
       set_fact:
         new_config_key: "{{ config_key_exists and _localconfig.stdout != _config_repo_key.stat.checksum|default(None) }}"
+
+
+- name: Set config_key_regenerated fact
+  set_fact:
+    new_config_key: "{{ _secret_managesf.stat.exists }}"
 
 - name: Default secrets
   block:
@@ -168,6 +178,21 @@
       template:
         src: "config/zuul.d/_secret_sfpages.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
+
+    - name: debug
+      command: /usr/bin/cp /etc/managesf/config.py /etc/managesf/config2.py
+
+    - name: Generate managesf config file secret
+      command: >
+        /usr/share/sf-config/scripts/zuul-encrypt-secret.py \
+            /var/lib/software-factory/bootstrap-data/certs/config.pub config \
+            --infile /etc/managesf/config.py
+      register: _managesf_secret
+
+    - name: Update secret_managesf.yaml
+      template:
+        src: "config/zuul.d/_secret_managesf.yaml.j2"
+        dest: "{{ config_clone_dir }}/zuul.d/_secret_managesf.yaml"
   when:
     - new_config_key
     - config_key_exists
