@@ -271,7 +271,7 @@ def config_update(args, pb, skip_sync=False):
     if "gerrit" in args.glue["roles"]:
         pb.append(host_play('managesf', tasks=[
             {'name': 'Exec resources apply',
-             'command': '/usr/local/bin/resources.sh apply',
+             'command': '/usr/bin/managesf-resources apply',
              'register': 'output',
              'changed_when': 'False',
              'ignore_errors': 'yes'},
