@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf5f5350_1a638dd8",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-02T12:21:03Z",
+      "side": 1,
+      "message": "Could you add a basic test ? It can be to run the playbook (to catch running issues) or better add a change/run the playbook/check the change has been restored. I\u0027m also fine with the first proposal :)",
+      "revId": "e114b6ed6b49087640edf7308bf3d0f669aeb65d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
