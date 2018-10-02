@@ -76,7 +76,6 @@
     mode: "{{ item.mode|default(0444) }}"
   with_items:
     - {name: base64helper, path: /usr/local/sbin, mode: '0755'}
-    - {name: menu.js, path: /var/www/static/js}
     - {name: ssl.conf, path: /etc/httpd/conf.d}
     - {name: user_settings.html, path: /var/www/sf}
     - {name: user_settings.js, path: /var/www/sf}
@@ -134,6 +133,7 @@
     - {name: hideci.js, dest: /var/www/static/js}
     - {name: topmenu.html, dest: /var/www}
     - {name: topmenu.js, dest: /var/www/static/js}
+    - {name: menu.js, dest: /var/www/static/js}
   notify: apache reload
 
 - name: Install Kibana SF gateway rules

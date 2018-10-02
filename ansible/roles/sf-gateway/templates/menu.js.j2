@@ -44,6 +44,13 @@ function displaySignIn() {
 }
 
 function initAuth() {
+    {% if gateway_favicon_data %}
+        var favicon = document.createElement("link");
+        favicon.setAttribute("type", "image/x-icon");
+        favicon.setAttribute("href", "data:image/x-icon;base64,{{ gateway_favicon_data }}");
+        favicon.setAttribute("rel", "icon");
+        document.getElementsByTagName("head")[0].appendChild(favicon);
+    {% endif %}
     if ( isCookiesEnabled() ) {
         var tokens = document.cookie.split(';');
         for ( var i = 0; i < tokens.length; i++ ) {
