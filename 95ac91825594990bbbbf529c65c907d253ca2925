@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "191524c7_91c5638f",
+        "filename": "ansible/roles/sf-nodepool/files/nodepool.logrotate.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-02T12:59:24Z",
+      "side": 1,
+      "message": "daily",
+      "revId": "95ac91825594990bbbbf529c65c907d253ca2925",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4abd5f91_659862d8",
+        "filename": "ansible/roles/sf-nodepool/files/nodepool.logrotate.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-02T12:59:24Z",
+      "side": 1,
+      "message": "compress",
+      "revId": "95ac91825594990bbbbf529c65c907d253ca2925",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93fc0c92_20f8c975",
+        "filename": "ansible/roles/sf-nodepool/files/nodepool.logrotate.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-02T12:59:24Z",
+      "side": 1,
+      "message": "(This only has effect when used  in  combination with  compress.)",
+      "revId": "95ac91825594990bbbbf529c65c907d253ca2925",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b4788379_075991da",
+        "filename": "ansible/roles/sf-zuul/files/zuul.logrotate.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-02T12:59:24Z",
+      "side": 1,
+      "message": "daily\ncompress",
+      "revId": "95ac91825594990bbbbf529c65c907d253ca2925",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
