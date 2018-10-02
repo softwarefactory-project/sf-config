@@ -1,5 +1,6 @@
 # SFCONFIG - Software Factory configuration management
 
+
 ## Ansible roles components
 
 Each roles can define a meta/sfconfig.py file to create a Component class:
