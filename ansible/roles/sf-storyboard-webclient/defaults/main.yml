@@ -2,4 +2,3 @@
 role_actions:
   - install
   - setup
-  - upgrade

@@ -5,6 +5,8 @@ role_actions:
   - disable
   - get_logs
 
+role_package: os-loganalyze
+
 loguser_authorized_keys: []
 
 # 2 months log expiry

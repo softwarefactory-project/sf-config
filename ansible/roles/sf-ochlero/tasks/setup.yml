@@ -1,9 +1,11 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 - name: "Setup ochlero config"
   template:
     src: ochlero.yaml.j2
     dest: /etc/ochlero/ochlero.yaml
-  notify: [restart ochlero]
+  notify: restart ochlero
 
 - name: Start service
   systemd:
