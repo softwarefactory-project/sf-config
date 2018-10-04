@@ -1,4 +1,11 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  command: /bin/true
+  notify: restart managesf
+  when: _version is changed
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=managesf ssh_key=service_rsa"
 
 - name: "Create config directory"
@@ -11,7 +18,7 @@
 - name: "Install resources management script"
   template:
     src: resources.sh.j2
-    dest: /usr/local/bin/resources.sh
+    dest: /usr/libexec/software-factory/resources.sh
     mode: 0555
   delegate_to: "{{ item }}"
   with_items: "{{ executor_hosts | union( groups['install-server'] ) }}"

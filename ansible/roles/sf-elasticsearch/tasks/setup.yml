@@ -1,4 +1,12 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  service:
+    name: elasticsearch
+    state: stopped
+  when: _version is changed
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - name: Create elasticsearch group
   group:
     name: elasticsearch

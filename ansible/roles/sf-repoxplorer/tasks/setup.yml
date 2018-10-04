@@ -1,8 +1,16 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  command: /bin/true
+  notify: restart repoxplorer
+  when: _version is changed
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - name: "Install configuration file"
   template:
     src: config.py.j2
     dest: /etc/repoxplorer/config.py
+  notify: restart repoxplorer
 
 - name: "Remove index.yaml example definition"
   file:
@@ -60,13 +68,9 @@
   when: repoxplorer_override is changed or repoxplorer_webui_override is changed
 
 - name: Restart repoxplorer when fqdn is updated
-  systemd:
-    name: "{{ item }}"
-    state: restarted
+  command: /bin/true
   when: update_fqdn
-  with_items:
-    - repoxplorer-webui
-    - repoxplorer
+  notify: restart repoxplorer
 
 - name: Start service
   systemd:

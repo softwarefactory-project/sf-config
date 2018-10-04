@@ -1,4 +1,8 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+# No update tasks
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - name: "Create dlrn user"
   include_tasks: "{{ sf_tasks_dir }}/create_user.yml ssh_key=dlrn_rsa user_name=dlrn"
 
