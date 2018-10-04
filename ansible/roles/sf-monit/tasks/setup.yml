@@ -1,4 +1,11 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  command: /bin/true
+  notify: restart monit
+  when: _version is changed
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - name: "monit: ensure directories exist"
   file:
     owner: root
@@ -17,8 +24,7 @@
     owner: root
     group: root
     mode: 0600
-  notify:
-    - restart monit
+  notify: restart monit
 
 - name: "monit: add system checks"
   copy:
@@ -29,8 +35,7 @@
     mode: 0640
   with_items:
     - system
-  notify:
-    - restart monit
+  notify: restart monit
   # Zuul executor are supposed to be overloaded, do not check system
   when: "zuul_services|default([]) != ['zuul-executor']"
 
@@ -43,8 +48,7 @@
     mode: 0640
   with_items:
     - rootfs
-  notify:
-    - restart monit
+  notify: restart monit
 
 - name: "monit: start service"
   service:

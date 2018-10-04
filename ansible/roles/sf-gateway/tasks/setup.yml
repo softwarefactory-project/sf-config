@@ -1,4 +1,10 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  include_tasks: upgrade.yml
+  when: _version is changed or sf_version != sf_previous_version
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
 
 - name: Remove un-needed files

@@ -1,4 +1,11 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  command: /bin/true
+  notify: restart etherpad
+  when: _version is changed
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=etherpad"
 
 - name: Apply selinux port labelling

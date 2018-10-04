@@ -10,3 +10,7 @@
     regexp: '  #? ?insecure_skip_verify =.*'
     replace: '  # insecure_skip_verify = true'
   when: _telegraf_conf.stat.exists
+
+- name: Notify telegraf restart handler
+  command: /bin/true
+  notify: restart telegraf

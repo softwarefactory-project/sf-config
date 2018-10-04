@@ -1,4 +1,10 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  include_tasks: upgrade.yml
+  when: _version is changed or sf_version != sf_previous_version
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - name: Add FQDN to prompt
   copy:
     src: prompt.sh
@@ -85,14 +91,6 @@
     dest: /etc/hosts
     mode: 0644
   when: manage_etc_hosts|default(true)
-
-- name: Cleanup known_hosts
-  known_hosts:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - '[192.168.135.101]:29418'
-    - '[localhost]:29418'
 
 - name: Disable root password login
   user:
