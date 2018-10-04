@@ -1,8 +1,8 @@
 %global         sum The Software Factory configuration sfconfig
 
 Name:           sf-config
-Version:        3.0.0
-Release:        4%{?dist}
+Version:        3.1.0
+Release:        1%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -48,6 +48,7 @@ install -p -d -m 0700 %{buildroot}/var/log/software-factory
 install -p -d -m 0755 %{buildroot}/var/lib/software-factory
 install -p -d -m 0700 %{buildroot}/var/lib/software-factory/backup
 install -p -d -m 0750 %{buildroot}/var/lib/software-factory/state
+install -p -d -m 0750 %{buildroot}/var/lib/software-factory/versions
 install -p -d -m 0700 %{buildroot}/var/lib/software-factory/sql
 install -p -d -m 0755 %{buildroot}/var/lib/software-factory/git
 # /usr/
@@ -62,6 +63,7 @@ install -p -d -m 0750 %{buildroot}/usr/share/software-factory
 %dir %attr(0755, root, root) /var/lib/software-factory/
 %dir %attr(0700, root, root) /var/lib/software-factory/backup
 %dir %attr(0750, root, root) /var/lib/software-factory/state
+%dir %attr(0750, root, root) /var/lib/software-factory/versions
 %dir %attr(0700, root, root) /var/lib/software-factory/sql
 %dir %attr(0755, root, root) /var/lib/software-factory/git
 %dir %attr(0700, root, root) /var/log/software-factory
@@ -86,6 +88,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Thu Oct  4 2018 Tristan Cacqueray <tdecacqu@redhat.com> - 3.1.0-1
+- Add versions directory
+
 * Tue Jul 10 2018 Fabien Boucher <fboucher@redhat.com> - 3.0.0-4
 - Add dependency to PyYAML
 

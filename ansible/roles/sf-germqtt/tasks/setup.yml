@@ -1,4 +1,6 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=germqtt home_dir=/var/lib/germqtt ssh_key=zuul_rsa"
 
 - name: "Setup configuration"

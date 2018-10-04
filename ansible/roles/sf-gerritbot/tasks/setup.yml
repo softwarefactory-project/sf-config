@@ -1,4 +1,6 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 # TODO(tristan): create a gerritbot dedicated key and user on gerrit
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=gerritbot ssh_key=zuul_rsa"
 
@@ -6,7 +8,7 @@
   template:
     src: gerritbot.conf.j2
     dest: /etc/gerritbot/gerritbot.conf
-  notify: [restart gerritbot]
+  notify: restart gerritbot
 
 - name: Start service
   service:

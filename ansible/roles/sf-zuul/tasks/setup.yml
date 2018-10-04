@@ -1,4 +1,9 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Set zuul_need_restart fact
+  set_fact:
+    zuul_need_restart: "{{ _version is changed }}"
+
 # Use 0751 to let apache access {{ zuul_lib_dir }}/git
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul_lib_dir }} home_dir_mode=0751"
 
@@ -73,7 +78,7 @@
     - name: Install zuul-changes.py script
       template:
         src: zuul-changes.py.j2
-        dest: /usr/local/bin/zuul-changes.py
+        dest: /usr/libexec/software-factory/zuul-changes.py
         mode: 0755
       delegate_to: "{{ item }}"
       with_items: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
@@ -81,7 +86,7 @@
     - name: Install gearman-client script
       template:
         src: gearman-client.sh.j2
-        dest: /usr/local/bin/gearman-client
+        dest: /usr/libexec/software-factory/gearman-client
         mode: 0755
 
     - name: Install zuul_worker_rsa key

@@ -4,6 +4,8 @@ role_actions:
   - setup
   - disable
 
+role_package: elasticsearch
+
 elasticsearch_repo_name: elasticsearch
 elasticsearch_repo_desc: Elasticsearch repository
 elasticsearch_repo_url: https://packages.elastic.co/elasticsearch/2.x/centos

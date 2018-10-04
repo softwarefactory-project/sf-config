@@ -6,6 +6,8 @@ role_actions:
   - postconf
   - update
 
+role_package: grafana
+
 grafana_repo_name: grafana
 grafana_repo_desc: Grafana repository
 grafana_repo_url: https://packagecloud.io/grafana/stable/el/7/x86_64

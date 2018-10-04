@@ -2,4 +2,5 @@
 role_actions:
   - install
   - setup
-  - upgrade
+
+role_package: storyboard-webclient

@@ -114,9 +114,21 @@
     - ansible-galaxy
     - ansible
 
-- name: Install wait4 scripts
+- name: Create libexec directory
+  file:
+    path: /usr/libexec/software-factory
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: Install libexec scripts
   copy:
     src: "{{ item }}"
-    dest: "/usr/libexec/{{ item }}"
+    dest: "/usr/libexec/software-factory/{{ item }}"
     mode: 0555
-  with_items: [wait4port, wait4mariadb, wait4gerrit]
+  with_items:
+    - wait4port
+    - wait4mariadb
+    - wait4gerrit
+    - smart-restart.py
