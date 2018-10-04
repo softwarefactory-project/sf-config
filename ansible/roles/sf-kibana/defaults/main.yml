@@ -4,6 +4,8 @@ role_actions:
   - setup
   - disable
 
+role_package: kibana
+
 kibana_repo_name: kibana
 kibana_repo_desc: Kibana repository
 kibana_repo_url: https://packages.elastic.co/kibana/4.5/centos

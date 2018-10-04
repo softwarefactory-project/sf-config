@@ -1,4 +1,6 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zookeeper"
 
 - name: Setup zoo.cfg
@@ -6,13 +8,7 @@
     src: zoo.cfg.j2
     dest: /etc/zookeeper/zoo.cfg
     mode: 0644
-  register: _zookeeper_cfg
-
-- name: Restart zookeeper if needed
-  service:
-    name: zookeeper
-    state: restarted
-  when: _zookeeper_cfg is changed
+  notify: restart zookeeper
 
 - name: Start and enable the service
   service:
