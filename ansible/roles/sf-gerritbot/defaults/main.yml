@@ -5,5 +5,7 @@ role_actions:
   - update
   - get_logs
 
+role_package: gerritbot
+
 gerritbot_url: https://git.openstack.org/openstack-infra/gerritbot
 gerritbot_commit: master

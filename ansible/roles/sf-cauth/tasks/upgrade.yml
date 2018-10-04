@@ -4,3 +4,16 @@
   delegate_to: "{{ mysql_host }}"
   ignore_errors: yes
   when: sf_previous_version < 3.1
+
+# TODO: remove this once cauth package release 5 is used
+- name: Fix /var/log/cauth insecure permissions
+  file:
+    path: /var/log/cauth
+    owner: apache
+    group: apache
+    mode: 0750
+    state: directory
+
+- name: For apache reload
+  command: /bin/true
+  notify: apache reload

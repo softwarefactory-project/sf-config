@@ -2,8 +2,9 @@
 role_actions:
   - install
   - setup
-  - upgrade
   - disable
+
+role_package: etherpad
 
 etherpad_mysql_host: "mysql.example.com"
 etherpad_mysql_port: 3306

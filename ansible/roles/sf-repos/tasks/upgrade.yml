@@ -7,55 +7,6 @@
     clone_dir: "{{ config_clone_dir }}"
     clone_remote: "{{ config_location }}"
 
-- block:
-    - name: Move nodepool elements/scripts
-      command: "git mv nodepool/elements nodepool/scripts nodepoolV3/"
-      args:
-        chdir: "{{ config_clone_dir }}"
-
-    - name: Ensure nodepool/zuul are deleted
-      command: "git rm -r {{ item }}"
-      with_items:
-        - zuul
-        - nodepool
-      args:
-        chdir: "{{ config_clone_dir }}"
-
-    - name: Rename nodepool/zuul version
-      command: "git mv {{ item }}V3 {{ item }}"
-      with_items:
-        - zuul
-        - nodepool
-      args:
-        chdir: "{{ config_clone_dir }}"
-
-    - name: Create symlinks to prevent breakage
-      file:
-        src: "{{ item }}"
-        dest: "/root/config/{{ item }}V3"
-        state: link
-      with_items:
-        - zuul
-        - nodepool
-
-    - name: Update nodepool elements names
-      command: >
-        sed -i -e 's/nodepool3-minimal/nodepool-minimal/'
-               -e 's/sf-zuul-worker/zuul-worker-user/'
-               -e 's/sf-zuul3-worker/zuul-worker-user/'
-          {{ item }}
-      with_fileglob: /root/config/nodepool/*
-
-    - name: Push v2 configuration removal
-      command: "git {{ item }}"
-      args:
-        chdir: "{{ config_clone_dir }}"
-      with_items:
-        - "add nodepool zuul"
-        - "commit -m 'Delete Zuul/Nodepool V2 configuration'"
-        - "push {{ config_location }} master"
-  when: sf_previous_version < 3.0
-
 - name: Check for misplaced config.pub
   stat:
     path: /var/lib/software-factory/certs/config.pub
@@ -65,38 +16,20 @@
   command: mv /var/lib/software-factory/certs/config.pub /var/lib/software-factory/bootstrap-data/certs/config.pub
   when: _config_pub.stat.exists
 
-- block:
-    - name: check for zuul/_main.yaml
-      stat:
-        path: /root/config/zuul/_main.yaml
-      register: _zuul_main_yaml
+- name: check for zuul/_main.yaml
+  stat:
+    path: /root/config/zuul/_main.yaml
+  register: _zuul_main_yaml
 
-    - name: remove zuul/_main.yaml
-      command: git rm zuul/_main.yaml
-      args:
-        chdir: /root/config
-      when: _zuul_main_yaml.stat.exists
+- name: remove zuul/_main.yaml
+  command: git rm zuul/_main.yaml
+  args:
+    chdir: /root/config
+  when: _zuul_main_yaml.stat.exists
 
 - include_tasks: sync_config_repo_content.yml
 
-- block:
-    - name: submit policies updates
-      register: config_repo_status
-      blockinfile:
-        path: /root/config/policies/policy.yaml
-        marker: "# -- generic policies added with release 3.0 --"
-        block: |
-          # zuul API
-          'zuul.tenants:get': 'rule:any'
-          'zuul.tenant.status:get': 'rule:any'
-          'zuul.tenant.jobs:get': 'rule:any'
-          'zuul.tenant.builds:get': 'rule:any'
-          'zuul.tenant.console-stream:get': 'rule:any'
-          'zuul.status:get': 'rule:any'
-          'zuul.status.change:get': 'rule:any'
-          'zuul.project.public_keys:get': 'rule:any'
-  when: sf_previous_version < 3.0
-
+# Manually update config repository content before submit update
 - block:
     - name: Remove old policies
       command: sed -i /root/config/policies/policy.yaml -e 's/^.*htpasswd.*//'
@@ -130,6 +63,7 @@
     clone_dir: "{{ config_clone_dir }}"
     clone_remote: "{{ config_location }}"
 
+# Manually update sf-jobs repository content before submit update
 - name: Remove now merged upstream buildset-artifacts-location
   file:
     path: /root/sf-jobs/roles/buildset-artifacts-location/

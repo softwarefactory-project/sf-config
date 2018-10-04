@@ -1,43 +1,5 @@
 ---
 - block:
-    - name: "Remove old configuration"
-      file:
-        path: "{{ item }}"
-        state: absent
-      with_items:
-        - /var/lib/edeploy
-        - /var/lib/software-factory/dashboards_config
-        - /var/lib/software-factory/gerrit_config
-        - /var/lib/software-factory/jenkins_config
-        - /var/lib/software-factory/nodepool_config
-        - /var/lib/software-factory/repoxplorer_config
-        - /var/lib/software-factory/zuul_config
-  when: sf_previous_version < 2.6
-
-- block:
-    - name: "Remove old configuration"
-      file:
-        path: /etc/ssh/ssh_known_hosts
-        state: absent
-  when: sf_previous_version < 2.7
-
-- block:
-    - name: "Remove not existing services"
-      service:
-        name: "{{ item }}"
-        state: stopped
-        enabled: "no"
-      ignore_errors: "yes"
-      with_items:
-        - zuul-server
-        - zuul-merger
-        - zuul-launcher
-        - nodepool-builder
-        - nodepool-launcher
-        - jenkins
-  when: sf_previous_version < 3.0
-
-- block:
     # TODO: could be remove when sf 3.1 will be release
     # repos were added in sf-ci during our tests
     # only used to upgrade from sf-2.7
@@ -95,3 +57,14 @@
         mode: 0755
         state: directory
   when: sf_previous_version < 3.1
+
+- name: Remove renamed files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/libexec/wait4port
+    - /usr/libexec/wait4mariadb
+    - /usr/libexec/wait4gerrit
+    - /usr/local/bin/zuul-changes.py
+    - /usr/local/bin/resources.sh

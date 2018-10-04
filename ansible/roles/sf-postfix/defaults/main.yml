@@ -2,3 +2,5 @@
 role_actions:
   - setup
   - disable
+
+role_package: postfix
