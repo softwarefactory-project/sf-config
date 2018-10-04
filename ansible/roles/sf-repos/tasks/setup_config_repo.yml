@@ -26,7 +26,7 @@
     # Ignoring errors to simplify retry, if direct_apply really failed, then below git clone won't work
     - name: Create initial resources
       command: >
-        /usr/local/bin/resources.sh direct_apply
+        /usr/libexec/software-factory/resources.sh direct_apply
             /var/lib/software-factory/bootstrap-data/empty_resources.yaml
             /var/lib/software-factory/bootstrap-data/resources.yaml
       ignore_errors: yes

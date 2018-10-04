@@ -1,3 +1,26 @@
 ---
-- include_tasks: "{{ role_action }}.yml"
-  when: role_action in role_actions
+- name: 'Store installed packages list'
+  shell: 'rpm -qa | sort > /var/lib/software-factory/package_installed'
+
+- name: "Install new release repo"
+  yum:
+    name: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
+    state: present
+    validate_certs: no
+  when:
+    - sf_version != "master"
+    - sf_version != sf_previous_version
+
+# TODO: check if this is still needed
+- name: "Fix yum contentdir vars"
+  copy:
+    content: "centos"
+    dest: /etc/yum/vars/contentdir
+
+- name: "Update packages"
+  yum:
+    name: "*"
+    update_cache: "yes"
+    state: latest
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'

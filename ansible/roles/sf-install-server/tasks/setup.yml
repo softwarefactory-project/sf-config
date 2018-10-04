@@ -1,4 +1,6 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 - name: Check for ara.cfg
   stat:
     path: /var/lib/software-factory/ansible/ara.cfg

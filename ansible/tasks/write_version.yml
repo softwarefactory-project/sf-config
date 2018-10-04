@@ -1,0 +1,4 @@
+---
+- name: Write new version
+  shell: "rpm -q {{ role_package }} | grep -v 'is not installed' > /var/lib/software-factory/versions/{{ role_name }}"
+  ignore_errors: yes
