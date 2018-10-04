@@ -1,4 +1,11 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  command: /bin/true
+  notify: restart hound
+  when: _version is changed
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - name: Setup hound config generator
   template:
     src: hound-config-generator.py.j2

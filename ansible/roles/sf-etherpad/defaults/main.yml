@@ -2,7 +2,6 @@
 role_actions:
   - install
   - setup
-  - upgrade
   - disable
 
 etherpad_mysql_host: "mysql.example.com"

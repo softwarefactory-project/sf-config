@@ -3,3 +3,5 @@ role_actions:
   - install
   - setup
   - get_logs
+
+role_packages: python-log2gearman-worker

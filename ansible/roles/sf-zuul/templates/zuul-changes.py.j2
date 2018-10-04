@@ -15,8 +15,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import urllib2
-import json
+import requests
 import argparse
 import os
 import time
@@ -26,11 +25,12 @@ dump_file = "/var/lib/zuul/zuul-queues-dump.sh"
 
 
 def dump(args):
-    tenants = json.loads(urllib2.urlopen("%s/tenants" % args.url).read())
+    req = requests.get("%s/tenants" % args.url)
+    tenants = req.json()
     status = {}
     for tenant in tenants:
-        status[tenant["name"]] = json.loads(urllib2.urlopen(
-            "%s/tenant/%s/status" % (args.url, tenant["name"])).read())
+        req = requests.get("%s/tenant/%s/status" % (args.url, tenant["name"]))
+        status[tenant["name"]] = req.json()
     if os.path.isfile(args.dump_file):
         os.rename(args.dump_file, "%s.orig" % args.dump_file)
 
@@ -58,7 +58,8 @@ def dump(args):
                             raise RuntimeError("Forbidden char in [%s]" % cmd)
                         print(cmd)
                         of.write("%s\n" % cmd)
-    of.write("curl %s/info 2>&1 | grep 'capabilities' > /dev/null\n" % args.url)
+    of.write(
+        "curl %s/info 2>&1 | grep 'capabilities' > /dev/null\n" % args.url)
     of.write("echo SUCCESS: zuul queues restored\n")
     of.close()
     os.chmod(args.dump_file, 0o755)

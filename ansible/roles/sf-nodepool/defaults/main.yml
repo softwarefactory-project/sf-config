@@ -7,6 +7,8 @@ role_actions:
   - get_logs
   - disable
 
+role_packages: rh-python35-nodepool rh-python35-python-openstacksdk
+
 nodepool_services:
   - rh-python35-nodepool-launcher
   - rh-python35-nodepool-builder

@@ -6,10 +6,11 @@ role_actions:
   - backup
   - restore
   - update
-  - upgrade
   - get_logs
   - disable
   - postconf
+
+role_packages: rh-python35-zuul
 
 zuul_services:
   - rh-python35-zuul-scheduler

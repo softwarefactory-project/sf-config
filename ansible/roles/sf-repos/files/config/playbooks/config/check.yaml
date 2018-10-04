@@ -72,7 +72,7 @@
       when: tenant_config is defined and tenant_config
 
     - name: Check resources changes
-      command: env - /usr/local/bin/resources.sh validate {{ remote_gateway | default('') }}
+      command: env - /usr/libexec/software-factory/resources.sh validate {{ remote_gateway | default('') }}
       args:
         chdir: "{{ config_root }}"
 
