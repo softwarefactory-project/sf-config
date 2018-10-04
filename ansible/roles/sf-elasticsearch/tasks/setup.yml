@@ -1,4 +1,6 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 - name: Create elasticsearch group
   group:
     name: elasticsearch

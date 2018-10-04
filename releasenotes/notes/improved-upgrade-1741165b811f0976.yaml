@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The --upgrade or --update command line argument does not stop the services
+    when not needed. It is now recommended to run sfconfig --update periodically
+    to automatically restart the service when needed.

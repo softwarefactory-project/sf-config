@@ -6,6 +6,8 @@ role_actions:
   - backup
   - restore
 
+role_package: zookeeper-lite
+
 zookeeper_tickTime: 5000
 # Large min/max session timeout to mitigate network outage between zuul and zk
 zookeeper_minSessionTimeout: 600000

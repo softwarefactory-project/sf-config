@@ -5,6 +5,8 @@ role_actions:
   - disable
   - get_logs
 
+role_package: logstash
+
 logstash_repo_name: logstash
 logstash_repo_desc: Logstash repository
 logstash_repo_url: https://packages.elastic.co/logstash/2.3/centos
