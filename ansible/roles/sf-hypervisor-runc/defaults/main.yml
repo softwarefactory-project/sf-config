@@ -3,7 +3,8 @@ role_actions:
   - install
   - setup
   - disable
-  - upgrade
+
+role_packages: sf-release
 
 hypervisor_runc_packages:
   - runc

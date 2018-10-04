@@ -1,0 +1,18 @@
+---
+- name: Check installed version
+  command: "rpm -q {{ role_packages|default(role_name[3:]) }}"
+  register: _installed_version
+
+- name: Check previous version
+  command: "cat /var/lib/software-factory/versions/{{ role_name }}"
+  ignore_errors: yes
+  register: _previous_version
+
+- name: Define upgraded variable
+  shell: |
+    if [ ! -z "{{ _previous_version.stdout }}" ] && \
+       [ "{{ _previous_version.stdout  }}" != "{{ _installed_version.stdout }}" ]; then
+       echo "changed"
+    fi
+  register: _version
+  changed_when: _version.stdout == "changed"

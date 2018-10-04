@@ -113,9 +113,24 @@
     - ansible-galaxy
     - ansible
 
-- name: Install wait4 scripts
+- name: Create dynamic directories
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  with_items:
+    - /usr/libexec/software-factory
+    - /var/lib/software-factory/versions
+
+- name: Install libexec scripts
   copy:
     src: "{{ item }}"
-    dest: "/usr/libexec/{{ item }}"
+    dest: "/usr/libexec/software-factory/{{ item }}"
     mode: 0555
-  with_items: [wait4port, wait4mariadb, wait4gerrit]
+  with_items:
+    - wait4port
+    - wait4mariadb
+    - wait4gerrit
+    - smart-restart.py
