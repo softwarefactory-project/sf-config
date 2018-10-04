@@ -119,33 +119,37 @@ def disable_action(args):
 
 
 def upgrade(args, pb):
-    # Call pre upgrade task
-    pb.append(host_play('all', 'upgrade', {'role_action': 'pre'}))
-
-    # First turn off all component except gerrit and databases
+    # Ensure versions are set to the current installed packages
+    role_defaults = {}
     for host in args.inventory:
-        roles = [role for role in host["roles"] if
-                 role not in ("mysql", "zookeeper",
-                              "gerrit", "hypervisor-runc")]
-        pb.append(host_play(host, roles, {'role_action': 'disable',
-                                          'erase': False}))
+        tasks = []
+        for role in host['roles']:
+            if role not in role_defaults:
+                role_defaults[role] = sfconfig.utils.yaml_load(
+                    '%s/ansible/roles/sf-%s/defaults/main.yml' % (
+                        args.share, role))
+            packages = role_defaults[role].get('role_packages')
+            if not packages:
+                packages = role
+            tasks.extend([{
+                'include_tasks': (
+                    '{{ sf_tasks_dir }}/check_version.yml '
+                    'role_name=sf-%s '
+                    'role_packages="%s"'
+                ) % (role, packages)
+            }, {
+                'include_tasks': (
+                    '{{ sf_tasks_dir }}/write_version.yml '
+                    'role_name=sf-%s '
+                ) % (role)
+            }])
+        pb.append(host_play(host, tasks=tasks))
 
-    # Upgrade repositories
+    # Apply upgrade role on all hosts to update packages
+    pb.append(host_play('all', 'upgrade'))
+
+    # Upgrade config repositories
     pb.append(host_play('install-server', 'repos', {'role_action': 'upgrade'}))
-
-    # Turn off gerrit
-    pb.append(host_play('gerrit', tasks={'service': {'name': 'gerrit',
-                                                     'state': 'stopped'}}))
-
-    # Install new release and update packages
-    pb.append(host_play('all', 'upgrade', {'role_action': 'packages'}))
-
-    # Start role upgrade
-    action = {'role_action': 'upgrade'}
-    pb.append(host_play('install-server', 'install-server', action))
-    pb.append(host_play('all', 'base', action))
-    for host in args.inventory:
-        pb.append(host_play(host, host['roles'], action))
 
 
 def install(args, pb):
@@ -271,7 +275,7 @@ def config_update(args, pb, skip_sync=False):
     if "gerrit" in args.glue["roles"]:
         pb.append(host_play('managesf', tasks=[
             {'name': 'Exec resources apply',
-             'command': '/usr/local/bin/resources.sh apply',
+             'command': '/usr/libexec/software-factory/resources.sh apply',
              'register': 'output',
              'changed_when': 'False',
              'ignore_errors': 'yes'},
@@ -327,6 +331,69 @@ def config_update(args, pb, skip_sync=False):
         pb[-1]['ignore_errors'] = True
 
 
+def zuul_restart(args, pb):
+    dump_file = '/var/lib/software-factory/state/zuul-change-dump.sh'
+
+    pb.append(host_play('zuul-executor', tasks=[{
+        'name': 'Stop executors',
+        'command': '/opt/rh/rh-python35/root/bin/zuul-executor stop'
+    }]))
+
+    pb.append(host_play('zuul-scheduler', tasks=[{
+        'name': 'Dump changes',
+        'command': ('/usr/libexec/software-factory/zuul-changes.py '
+                    'dump --dump_file %s' % dump_file)
+    }, {
+        'name': 'Stop scheduler',
+        'service': {'name': 'rh-python35-zuul-scheduler', 'state': 'stopped'}
+    }]))
+
+    pb.append(host_play('zuul-web', tasks=[{
+        'name': 'Stop web',
+        'service': {'name': 'rh-python35-zuul-web', 'state': 'stopped'}}]))
+
+    if 'zuul-merger' in args.glue["roles"]:
+        pb.append(host_play('zuul-merger', tasks=[{
+            'name': 'Restart mergers',
+            'service': {'name': 'rh-python35-zuul-merger',
+                        'state': 'restarted'}}]))
+
+    pb.append(host_play('zuul-executor', tasks=[{
+        'name': 'Restart executors',
+        'service': {'name': 'rh-python35-zuul-executor',
+                    'state': 'restarted'}}]))
+
+    pb.append(host_play('zuul-scheduler', tasks=[{
+        'name': 'Restart scheduler',
+        'service': {'name': 'rh-python35-zuul-scheduler',
+                    'state': 'restarted'}}]))
+
+    pb.append(host_play('zuul-web', tasks=[{
+        'name': 'Restart web',
+        'service': {'name': 'rh-python35-zuul-web', 'state': 'restarted'}
+    }, {
+        'name': 'Wait for scheduler reconfiguration',
+        'uri': {
+            'url': '{{ zuul_web_url }}/api/tenant/{{ tenant_name }}/pipelines',
+            'return_content': 'yes',
+            'status_code': '200'
+        },
+        'register': '_zuul_status',
+        'until': (
+            "'json' in _zuul_status and "
+            "_zuul_status.json and "
+            "'periodic' in _zuul_status.content"
+        ),
+        'retries': '900',
+        'delay': '2'
+    }]))
+
+    pb.append(host_play('zuul-scheduler', tasks=[{
+        'name': 'Reload zuul queues',
+        'command': 'bash %s' % dump_file
+    }]))
+
+
 def notify_operator(args, pb):
     pb.append(host_play('install-server', 'repos', {'role_action': 'notify'}))
 
@@ -368,6 +435,11 @@ def enable_action(args):
         setup(args, pb)
         config_update(args, pb, skip_sync=True)
         postconf(args, pb)
+        if args.upgrade:
+            pb.append({
+                'import_playbook': '%s/zuul_restart.yml' % args.ansible_root,
+                'when': 'zuul_need_restart'
+            })
     else:
         playbook_name += "_nosetup"
 
@@ -613,6 +685,7 @@ def generate(args):
     # Generate playbooks
     args.inventory = arch["inventory"]
     for playbook_name, generator in (
+            ("zuul_restart", zuul_restart),
             ("sf_configrepo_update", config_update),
             ("sf_repos", repos),
             ("sf_tenant_update", tenant_update),

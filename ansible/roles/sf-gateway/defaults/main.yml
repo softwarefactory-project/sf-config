@@ -7,7 +7,8 @@ role_actions:
   - disable
   - backup
   - restore
-  - upgrade
+
+role_packages: sf-web-assets
 
 gateway_host: localhost
 nodepool_builder_host: ""

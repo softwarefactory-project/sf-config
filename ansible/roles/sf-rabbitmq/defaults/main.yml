@@ -4,6 +4,8 @@ role_actions:
   - setup
   - disable
 
+role_packages: rabbitmq-server
+
 rabbitmq_users:
   - name: storyboard
     password: "{{ storyboard_rabbitmq_password }}"

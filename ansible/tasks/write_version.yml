@@ -1,0 +1,5 @@
+---
+- name: Write new version
+  copy:
+    content: "{{ _installed_version.stdout }}"
+    dest: "/var/lib/software-factory/versions/{{ role_name }}"

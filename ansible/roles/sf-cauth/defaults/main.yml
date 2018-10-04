@@ -4,7 +4,8 @@ role_actions:
   - setup
   - get_logs
   - disable
-  - upgrade
+
+role_packages: python2-cauth
 
 cauth_loglevel: INFO
 cauth_root_loglevel: WARNING

@@ -4,4 +4,3 @@ role_actions:
   - setup
   - get_logs
   - disable
-  - upgrade

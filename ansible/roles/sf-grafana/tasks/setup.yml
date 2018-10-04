@@ -1,4 +1,12 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Execute upgrade tasks
+  service:
+    name: grafana
+    state: stopped
+  when: _version is changed
+- include_tasks: "{{ sf_tasks_dir }}/write_version.yml"
+
 - include_tasks: '{{ sf_tasks_dir }}/create_user.yml user_name=grafana'
 
 - name: Configure grafana.ini
@@ -57,7 +65,7 @@
     dest: /lib/systemd/system/grafana-server.service
     section: Service
     option: ExecStartPre
-    value: /usr/libexec/wait4mariadb
+    value: /usr/libexec/software-factory/wait4mariadb
 
 - name: Install sf top menu
   lineinfile:

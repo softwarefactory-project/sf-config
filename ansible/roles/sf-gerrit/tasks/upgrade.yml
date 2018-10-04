@@ -1,4 +1,9 @@
 ---
+- name: Stop service
+  service:
+    name: gerrit
+    state: stopped
+
 - block:
     - name: Reset gerrit passwords
       command: >
