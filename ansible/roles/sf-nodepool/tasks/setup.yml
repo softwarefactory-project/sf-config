@@ -1,4 +1,9 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Set nodepool_need_restart fact
+  set_fact:
+    nodepool_need_restart: "{{ _version is changed }}"
+
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa home_dir={{ nodepool_lib_dir }}"
 
 - name: Install nodepool shortcut

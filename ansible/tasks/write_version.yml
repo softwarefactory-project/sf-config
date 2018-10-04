@@ -1,0 +1,13 @@
+---
+- name: Read role version
+  command: "rpm -q {{ role_package }}"
+  ignore_errors: yes
+  register: _installed_version
+  changed_when: false
+  when: role_package != "any"
+
+- name: Write new version
+  copy:
+    content: "{{ _installed_version.stdout }}\n"
+    dest: "/var/lib/software-factory/versions/{{ role_name }}"
+  when: role_package != "any"
