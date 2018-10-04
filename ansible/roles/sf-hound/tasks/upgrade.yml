@@ -1,0 +1,10 @@
+---
+- name: Force service restart
+  command: /bin/true
+  notify: restart hound
+
+- name: Remove previous conf update script location
+  file:
+    path: /usr/local/bin/hound-config-generator.py
+    state: absent
+  when: sf_previous_version < 3.2

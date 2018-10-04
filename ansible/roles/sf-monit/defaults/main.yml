@@ -1,3 +1,5 @@
 ---
 role_actions:
   - setup
+
+role_package: monit

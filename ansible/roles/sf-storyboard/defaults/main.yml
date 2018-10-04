@@ -5,6 +5,8 @@ role_actions:
   - get_logs
   - disable
 
+role_package: storyboard
+
 storyboard_service_token: "CHANGE_ME"
 
 storyboard_http_port: 20000

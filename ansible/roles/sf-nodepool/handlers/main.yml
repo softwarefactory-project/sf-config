@@ -1,7 +1,7 @@
 ---
 - name: restart nodepool
   command: >
-    /usr/share/sf-config/scripts/smart-restart.py nodepool
+    /usr/libexec/software-factory/smart-restart.py nodepool
         --url {{ nodepool_internal_url }}
         --sender root@{{ fqdn }}
         --mail {{ network.admin_mail_forward }}

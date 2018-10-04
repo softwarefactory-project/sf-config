@@ -109,6 +109,7 @@ def usage(components):
     p.add_argument("--disable", action='store_true', help="Turn off services")
     p.add_argument("--erase", action='store_true', help="Erase data")
     p.add_argument("--upgrade", action='store_true', help="Run upgrade task")
+    p.add_argument("--update", action='store_true', help="Run upgrade task")
 
     # Deprecated
     p.add_argument("--skip-install", default=False, action='store_true',
@@ -121,6 +122,9 @@ def usage(components):
         component.usage(p)
 
     args = p.parse_args()
+
+    if args.upgrade:
+        args.update = True
 
     return args
 

@@ -16,7 +16,7 @@
 - block:
     - name: Update hound configuration
       command: >
-        /usr/local/bin/hound-config-generator.py
+        /usr/libexec/software-factory/hound-config-generator.py
           --poll-frequency {{ hound_poll_frequency }}
           /etc/hound/config.json
       register: _hound_config

@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The --upgrade or --update command line argument does not stop the services
+    when not needed. It is now recommended to run sfconfig --update periodically
+    to automatically restart the service when needed.
+  - |
+    A new nodepool_restart.yaml playbook is installed in sf lib to simplify
+    nodepool services restart after an upgrade.
+  - |
+    A new zuul_restart.yaml playbook is installed in sf lib to simplify
+    zuul services restart after an upgrade.

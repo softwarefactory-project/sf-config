@@ -4,3 +4,5 @@ role_actions:
   - setup
   - get_logs
   - disable
+
+role_package: ochlero

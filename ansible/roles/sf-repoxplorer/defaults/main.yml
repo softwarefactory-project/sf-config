@@ -6,4 +6,6 @@ role_actions:
   - update
   - disable
 
+role_package: repoxplorer
+
 repoxplorer_admin_token: "CHANGE_ME"
