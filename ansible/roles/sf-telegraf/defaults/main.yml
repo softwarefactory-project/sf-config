@@ -2,7 +2,6 @@
 role_actions:
   - disable
   - install
-  - upgrade
   - setup
 
 influxdb_repo_name: influxdb

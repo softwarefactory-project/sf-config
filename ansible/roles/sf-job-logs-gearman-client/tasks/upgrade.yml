@@ -1,0 +1,5 @@
+---
+- name: Stop the service
+  service:
+    name: log-gearman-client
+    state: stopped

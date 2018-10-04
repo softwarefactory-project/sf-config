@@ -7,6 +7,8 @@ role_actions:
   - get_logs
   - disable
 
+role_package: rh-python35-nodepool
+
 nodepool_services:
   - rh-python35-nodepool-launcher
   - rh-python35-nodepool-builder
