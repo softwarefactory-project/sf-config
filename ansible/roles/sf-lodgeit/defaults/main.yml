@@ -4,6 +4,8 @@ role_actions:
   - setup
   - disable
 
+role_package: lodgeit
+
 lodgeit_mysql_host: "mysql.example.com"
 lodgeit_mysql_port: 3306
 lodgeit_mysql_db: "lodgeit"

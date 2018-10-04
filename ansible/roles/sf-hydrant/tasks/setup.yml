@@ -1,9 +1,11 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 - name: "Setup hydrant config"
   template:
     src: hydrant.yaml.j2
     dest: /etc/hydrant/hydrant.yaml
-  notify: [restart hydrant]
+  notify: restart hydrant
 
 - name: Start service
   systemd:

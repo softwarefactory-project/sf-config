@@ -1,4 +1,6 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=kibana"
 
 - name: Ensure Kibana access to ElasticSearch

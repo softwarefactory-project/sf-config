@@ -2,3 +2,5 @@
 role_actions:
   - setup
   - populate_hosts
+
+role_package: any
