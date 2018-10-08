@@ -8,6 +8,7 @@
     # otherwise REMOTE_HOST contains only the IP address
     RewriteCond %{HTTPS} off
     RewriteCond %{REMOTE_HOST} !{{ fqdn }}$
+    RewriteCond %{REQUEST_URI} !\.well-known/acme-challenge
     RewriteRule (.*) https://{{ fqdn }}%{REQUEST_URI} [R=301,L]
 {% endif %}
 
