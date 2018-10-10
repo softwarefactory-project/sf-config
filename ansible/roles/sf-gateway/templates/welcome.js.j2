@@ -1,0 +1,89 @@
+// @licstart  The following is the entire license notice for the
+// JavaScript code in this page.
+//
+// Copyright 2016 Red Hat
+//
+// Licensed under the Apache License, Version 2.0 (the "License"); you may
+// not use this file except in compliance with the License. You may obtain
+// a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.
+//
+// @licend  The above is the entire license notice
+// for the JavaScript code in this page.
+
+// Fancy tooltips
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+
+angular.module('sfWelcome', []).controller('mainController', function($scope, $http, $location) {
+    $scope.hide = true;
+    $scope.dlimit = 5;
+    $http.get('/manage/v2/resources').
+        success(function(data) {
+            $scope.Projects = data['resources']['projects'];
+            $scope.p_r_infos = {};
+            $scope.config_project_name = '{{ config_project_name }}';
+            default_tenant_name = '{{ tenant_name }}';
+            {% if 'gerrit' in roles %}
+            $scope.review_service = true;
+            {% else %}
+            $scope.review_service = false;
+            {% endif %}
+            angular.forEach($scope.Projects, function(project, pname) {
+                // Get project's tenant
+                if (project['tenant'] == undefined) {
+                    tenant_name = default_tenant_name;
+                } else {
+                    tenant_name = project['tenant'];
+                }
+                tenant = data['resources']['tenants'][tenant_name];
+                // Get tenant default's connection
+                td_connection = data['resources']['connections'][tenant['default-connection']];
+                // Get project connection
+                if (project['connection'] == undefined) {
+                    p_connection = td_connection;
+                } else {
+                    p_connection = data['resources']['connections'][project['connection']];
+                }
+                new_sr = [];
+                $scope.p_r_infos[pname] = {}
+                angular.forEach(project['source-repositories'], function(sr, key) {
+                    rname = Object.keys(sr)[0]
+                    if (!('private' in sr[rname] && sr[rname]['private'])) {
+                        new_sr.push(rname);
+                        $scope.p_r_infos[pname][rname] = {}
+                        // Check related repository connection
+                        if (sr[rname]['connection'] != undefined) {
+                            r_cnx = data['resources']['connections'][sr[rname]['connection']];
+                        } else {
+                            r_cnx = p_connection;
+                        }
+                        $scope.p_r_infos[pname][rname]['ctype'] = r_cnx['type']
+                        if (r_cnx['type'] == 'gerrit' ) {
+                            $scope.p_r_infos[pname][rname]['gitweb'] = r_cnx['base-url'] + '/gitweb?p=' + rname + '.git';
+                            $scope.p_r_infos[pname][rname]['reviews'] = r_cnx['base-url'] + '/#/q/status:open+project:' + rname;
+                            $scope.p_r_infos[pname][rname]['clone'] = r_cnx['base-url'] + '/' + rname;
+                        } else if (r_cnx['type'] == 'github' ) {
+                            $scope.p_r_infos[pname][rname]['gitweb'] = r_cnx['base-url'] + '/' + rname;
+                            $scope.p_r_infos[pname][rname]['reviews'] = r_cnx['base-url'] + '/' + rname + '/pulls';
+                            $scope.p_r_infos[pname][rname]['clone'] = r_cnx['base-url'] + '/' + rname;
+                        } else {
+                            $scope.p_r_infos[pname][rname]['gitweb'] = undefined;
+                            $scope.p_r_infos[pname][rname]['reviews'] = undefined;
+                            $scope.p_r_infos[pname][rname]['clone'] = r_cnx['base-url'] + '/' + rname;
+                      }
+                    }
+                })
+                project['source-repositories'] = new_sr;
+            })
+            $scope.Repos = data['resources']['repos'];
+        })
+});

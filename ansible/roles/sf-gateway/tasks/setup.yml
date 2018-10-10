@@ -80,7 +80,6 @@
     - {name: user_settings.html, path: /var/www/sf}
     - {name: user_settings.js, path: /var/www/sf}
     - {name: welcome.html, path: /var/www/sf}
-    - {name: welcome.js, path: /var/www/sf}
     - {name: gerrit_dashboard.js, path: /var/www/static/js}
     - {name: jobs.js, path: /var/www/jobs}
     - {name: jobs.html, path: /var/www/jobs, real_name: index.html}
@@ -134,6 +133,7 @@
     - {name: topmenu.html, dest: /var/www}
     - {name: topmenu.js, dest: /var/www/static/js}
     - {name: menu.js, dest: /var/www/static/js}
+    - {name: welcome.js, dest: /var/www/static/js}
   notify: apache reload
 
 - name: Install Kibana SF gateway rules
