@@ -117,10 +117,13 @@
       with_items: "{{ _zuul_known_hosts_results.results }}"
       when: item.stdout == ""
 
+    - set_fact:
+        default_zuul_sshkey: "{{ zuul_lib_dir }}/.ssh/id_rsa"
+
     - name: Check zuul user can connect to gerrit connections
       become_user: zuul
       command: >
-        ssh -i {{ zuul_lib_dir }}/.ssh/id_rsa
+        ssh -i {{ item.sshkey | default(default_zuul_sshkey) }}
             -o UserKnownHostsFile={{ zuul_lib_dir }}/.ssh/known_hosts
             -p {{ item.port|default(29418) }}
             {{ item.username }}@{{ item.hostname }}
