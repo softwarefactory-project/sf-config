@@ -11,13 +11,10 @@ handlers:
     level: INFO
     stream: ext://sys.stdout
   normal:
-    class: logging.handlers.TimedRotatingFileHandler
+    class: logging.handlers.WatchedFileHandler
     formatter: normal
     level: DEBUG
     filename: '{{ nodepool_log_dir }}/{{ _logfile }}.log'
-    when: 'midnight'
-    interval: 1
-    backupCount: 30
 loggers:
   nodepool:
     handlers:
