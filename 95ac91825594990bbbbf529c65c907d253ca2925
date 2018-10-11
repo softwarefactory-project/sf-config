@@ -84,6 +84,24 @@
       "revId": "95ac91825594990bbbbf529c65c907d253ca2925",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "59dfd632_3cc34dc0",
+        "filename": "ansible/roles/sf-zuul/files/zuul.logrotate.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-11T04:49:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4788379_075991da",
+      "revId": "95ac91825594990bbbbf529c65c907d253ca2925",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
