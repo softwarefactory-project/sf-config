@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add sshkey argument for gerrit connection in sfconfig.yaml. This option
+    allow user to specify which key should be used for each connection. If
+    option is not set, the default zuul ssh key will be used.
