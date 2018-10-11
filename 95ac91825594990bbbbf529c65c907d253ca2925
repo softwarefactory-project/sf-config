@@ -53,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "11db8568_ff966d66",
+        "filename": "ansible/roles/sf-nodepool/files/nodepool.logrotate.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-11T04:48:44Z",
+      "side": 1,
+      "message": "til, done",
+      "revId": "95ac91825594990bbbbf529c65c907d253ca2925",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b4788379_075991da",
         "filename": "ansible/roles/sf-zuul/files/zuul.logrotate.conf",
         "patchSetId": 1
