@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b2a2b961_1be571a6",
+        "filename": "ansible/roles/sf-gateway/files/welcome.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-11T04:43:24Z",
+      "side": 1,
+      "message": "tabs*",
+      "revId": "7d93f235370e96e6ae6f832503814afa7b3e94e2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0f09f53a_b23356b3",
+        "filename": "ansible/roles/sf-gateway/files/welcome.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-11T04:43:24Z",
+      "side": 1,
+      "message": "s/If you want to attach/To register/",
+      "revId": "7d93f235370e96e6ae6f832503814afa7b3e94e2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "48aeea3f_1e048f3d",
+        "filename": "ansible/roles/sf-gateway/files/welcome.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-11T04:43:24Z",
+      "side": 1,
+      "message": "\"open reviews\" sounds correct and shorter too.",
+      "revId": "7d93f235370e96e6ae6f832503814afa7b3e94e2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "40b88b63_10b60ca7",
+        "filename": "ansible/roles/sf-gateway/files/welcome.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-11T04:43:24Z",
+      "side": 1,
+      "message": "\"open pull requests\"",
+      "revId": "7d93f235370e96e6ae6f832503814afa7b3e94e2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b92aebbc_d472257d",
+        "filename": "ansible/roles/sf-gateway/templates/welcome.js.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-11T04:43:24Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we add {% if \u0027cgit\u0027 in roles %} and uses cgit links when available?",
+      "revId": "7d93f235370e96e6ae6f832503814afa7b3e94e2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
