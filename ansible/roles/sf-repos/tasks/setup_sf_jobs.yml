@@ -17,7 +17,7 @@
         - git reset --hard origin/master --
         - git clean -f -x -d
         - /usr/share/sf-config/scripts/create_project_resources.py --repo sf-jobs --core admin@{{ fqdn }} resources/_sf-jobs.yaml
-        - /usr/local/bin/resources.sh direct_apply /var/lib/software-factory/bootstrap-data/empty_resources.yaml resources/_sf-jobs.yaml
+        - /usr/bin/managesf-resources direct-apply --prev-yaml /var/lib/software-factory/bootstrap-data/empty_resources.yaml --new-yaml resources/_sf-jobs.yaml
         - git add resources/_sf-jobs.yaml
         - git commit -m 'Create sf-jobs repository'
         - git push git+ssh://gerrit/config master

@@ -35,9 +35,6 @@
 
     - name: Tenant env config-check preparation
       block:
-        - set_fact:
-            remote_gateway: "{{ gateway_url }}"
-
         - name: Create defconf-master directory
           file:
             path: "{{ config_root }}/defconf-master"
@@ -63,16 +60,16 @@
 
         - set_fact:
             tenant_options: "--tenant --master-sf-url {{ master_sf_url }}"
-
-        - name: Copy service_user password in workspace
-          copy:
-            content: "{{ service_user.password }}"
-            dest: "{{ config_root }}/.service_user_password"
-          no_log: true
       when: tenant_config is defined and tenant_config
 
+    - name: Copy service_user password in workspace
+      copy:
+        content: "{{ service_user.password }}"
+        dest: "{{ config_root }}/.service_user_password"
+      no_log: true
+
     - name: Check resources changes
-      command: env - /usr/local/bin/resources.sh validate {{ remote_gateway | default('') }}
+      command: env - /usr/bin/managesf-resources remote-validate --cache-dir {{ config_root }}/../.resources --log-output {{ config_root }}/build/resources-engine.log --remote-gateway {{ gateway_url }}
       args:
         chdir: "{{ config_root }}"
 
