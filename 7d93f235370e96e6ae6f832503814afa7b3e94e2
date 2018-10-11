@@ -70,6 +70,23 @@
     },
     {
       "key": {
+        "uuid": "c5128e8b_344db3ef",
+        "filename": "ansible/roles/sf-gateway/templates/welcome.js.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-11T05:51:50Z",
+      "side": 1,
+      "message": "Need to fix: if (project[\u0027tenant\u0027] \u003d\u003d undefined) instead.",
+      "revId": "7d93f235370e96e6ae6f832503814afa7b3e94e2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b92aebbc_d472257d",
         "filename": "ansible/roles/sf-gateway/templates/welcome.js.j2",
         "patchSetId": 3
@@ -81,6 +98,24 @@
       "writtenOn": "2018-10-11T04:43:24Z",
       "side": 1,
       "message": "Shouldn\u0027t we add {% if \u0027cgit\u0027 in roles %} and uses cgit links when available?",
+      "revId": "7d93f235370e96e6ae6f832503814afa7b3e94e2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "075b4f14_f6a0baf6",
+        "filename": "ansible/roles/sf-gateway/templates/welcome.js.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-11T05:51:50Z",
+      "side": 1,
+      "message": "Yes, but I can do that only if we have an internal gerrit right ?",
+      "parentUuid": "b92aebbc_d472257d",
       "revId": "7d93f235370e96e6ae6f832503814afa7b3e94e2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
