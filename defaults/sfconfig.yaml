@@ -223,8 +223,9 @@ zuul:
   #    port: 29418
   #    puburl: https://external-gerrit-host-name/r/
   #    username: external-gerrit-user-name
-  #    # optional canonical_hostname
+  #    # optional parameters
   #    # canonical_hostname: git.hostname
+  #    # sshkey: key_path
 
   github_connections: []
   #  - name: "github.com"
