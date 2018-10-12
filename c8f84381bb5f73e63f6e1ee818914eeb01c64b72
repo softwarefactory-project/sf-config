@@ -1,0 +1,295 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6321cb6f_48e7107c",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "The spec already add the directory.",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 20
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "94c01749_ce3d1eb9",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "Do not remove the resources.sh, for the reason we already discussed -\u003e ansible.sf-project.io might need it on the master SF until we upgrade it. So safer to keep that file then do the clean up afterward.",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "903ede11_c075e632",
+        "filename": "ansible/roles/sf-cauth/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "The cauth packaging set : %attr(0750, apache, apache) %{_var}/log/%{name}\nLooks like it is safe to remove that ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 20
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "85f16ede_74dfbda5",
+        "filename": "ansible/roles/sf-cauth/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "Force",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "601c966c_e11afb8c",
+        "filename": "ansible/roles/sf-cgit/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "Force",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cf84e4ca_e21538f9",
+        "filename": "ansible/roles/sf-etherpad/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "Don\u0027t think that when statement is needed here as this condition to include upgrade.yaml is handled in check_version.yaml.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 27
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ecf3bd43_6ca0df92",
+        "filename": "ansible/roles/sf-gerrit/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "Nice !",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9234cb2e_1af6d093",
+        "filename": "ansible/roles/sf-gerritbot/defaults/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "Let\u0027s clean that also.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 24
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "18b0204a_594ac74e",
+        "filename": "ansible/roles/sf-hound/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "Don\u0027t you want to move it in libexec ?",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "853590eb_889ebbfb",
+        "filename": "ansible/roles/sf-install-server/tasks/get_logs.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "Every tasks in the get_logs playbooks are for debug. Maybe remove that comment.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 7
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "28b9062f_b9a26770",
+        "filename": "ansible/roles/sf-managesf/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "This is no longer necessary as 22686574be453341dc3ffece888afd92d9d94020 landed.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 72
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "91ee6da5_845a4ce6",
+        "filename": "ansible/roles/sf-telegraf/defaults/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "telegraf instead I bet.",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "11b58b36_f9ebefaf",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "{{ config_project_name }}",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "af358ecd_0aaae676",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "same",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ffbda3c3_763d375e",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:27:59Z",
+      "side": 1,
+      "message": "same",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
