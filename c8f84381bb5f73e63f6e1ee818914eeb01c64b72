@@ -293,6 +293,23 @@
     },
     {
       "key": {
+        "uuid": "ef8a5dfa_c6987f39",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:37:05Z",
+      "side": 1,
+      "message": "Could you remind me where we call the sf-upgrade upgrade task ?",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44f4fcf6_037383ba",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 19
