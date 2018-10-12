@@ -290,6 +290,29 @@
       "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44f4fcf6_037383ba",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-12T09:32:45Z",
+      "side": 1,
+      "message": "May be nice to document them in the sf-docs.",
+      "range": {
+        "startLine": 719,
+        "startChar": 0,
+        "endLine": 720,
+        "endChar": 51
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
