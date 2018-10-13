@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "87957f53_f1d6814d",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Yes, but that\u0027s ok, this also starts the work to not have to install sf-config on every node.",
+      "parentUuid": "6321cb6f_48e7107c",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 20
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "94c01749_ce3d1eb9",
         "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
         "patchSetId": 19
@@ -36,6 +60,24 @@
       "writtenOn": "2018-10-12T09:27:59Z",
       "side": 1,
       "message": "Do not remove the resources.sh, for the reason we already discussed -\u003e ansible.sf-project.io might need it on the master SF until we upgrade it. So safer to keep that file then do the clean up afterward.",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43384a53_77ccfb6b",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "good catch, rebase issue...",
+      "parentUuid": "94c01749_ce3d1eb9",
       "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "5b86a032_89376f08",
+        "filename": "ansible/roles/sf-cauth/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "903ede11_c075e632",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 20
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "85f16ede_74dfbda5",
         "filename": "ansible/roles/sf-cauth/tasks/upgrade.yml",
         "patchSetId": 19
@@ -76,6 +142,24 @@
       "writtenOn": "2018-10-12T09:27:59Z",
       "side": 1,
       "message": "Force",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1582c2d3_349b40e8",
+        "filename": "ansible/roles/sf-cauth/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85f16ede_74dfbda5",
       "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -99,6 +183,24 @@
     },
     {
       "key": {
+        "uuid": "b5b42e84_62a9c90e",
+        "filename": "ansible/roles/sf-cgit/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "601c966c_e11afb8c",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cf84e4ca_e21538f9",
         "filename": "ansible/roles/sf-etherpad/tasks/upgrade.yml",
         "patchSetId": 19
@@ -110,6 +212,30 @@
       "writtenOn": "2018-10-12T09:27:59Z",
       "side": 1,
       "message": "Don\u0027t think that when statement is needed here as this condition to include upgrade.yaml is handled in check_version.yaml.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 27
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8f4d3aa6_b18025bc",
+        "filename": "ansible/roles/sf-etherpad/tasks/upgrade.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Yep, rebase issue.",
+      "parentUuid": "cf84e4ca_e21538f9",
       "range": {
         "startLine": 5,
         "startChar": 0,
@@ -162,6 +288,30 @@
     },
     {
       "key": {
+        "uuid": "8c70ebb3_c41710a1",
+        "filename": "ansible/roles/sf-gerritbot/defaults/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9234cb2e_1af6d093",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 24
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "18b0204a_594ac74e",
         "filename": "ansible/roles/sf-hound/tasks/setup.yml",
         "patchSetId": 19
@@ -179,6 +329,24 @@
     },
     {
       "key": {
+        "uuid": "78622adc_d3945e90",
+        "filename": "ansible/roles/sf-hound/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18b0204a_594ac74e",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "853590eb_889ebbfb",
         "filename": "ansible/roles/sf-install-server/tasks/get_logs.yml",
         "patchSetId": 19
@@ -190,6 +358,30 @@
       "writtenOn": "2018-10-12T09:27:59Z",
       "side": 1,
       "message": "Every tasks in the get_logs playbooks are for debug. Maybe remove that comment.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 7
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae73b69c_bb5b84f0",
+        "filename": "ansible/roles/sf-install-server/tasks/get_logs.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "853590eb_889ebbfb",
       "range": {
         "startLine": 40,
         "startChar": 0,
@@ -225,6 +417,30 @@
     },
     {
       "key": {
+        "uuid": "c17bea04_d47d40c8",
+        "filename": "ansible/roles/sf-managesf/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28b9062f_b9a26770",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 72
+      },
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91ee6da5_845a4ce6",
         "filename": "ansible/roles/sf-telegraf/defaults/main.yml",
         "patchSetId": 19
@@ -242,6 +458,24 @@
     },
     {
       "key": {
+        "uuid": "7dc6e97d_13e11145",
+        "filename": "ansible/roles/sf-telegraf/defaults/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91ee6da5_845a4ce6",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "11b58b36_f9ebefaf",
         "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
         "patchSetId": 19
@@ -253,6 +487,24 @@
       "writtenOn": "2018-10-12T09:27:59Z",
       "side": 1,
       "message": "{{ config_project_name }}",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dedf2862_1d27978e",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "Actually i don\u0027t think we need to worry about this. This is just a temporary storage before the key is copied to the install-server L71.\n\nThe idea here is to not interfer with zuul internal keystorage and keep the public key out of the way.",
+      "parentUuid": "11b58b36_f9ebefaf",
       "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -304,6 +556,24 @@
       "writtenOn": "2018-10-12T09:37:05Z",
       "side": 1,
       "message": "Could you remind me where we call the sf-upgrade upgrade task ?",
+      "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f98c6e75_dd3a1b0f",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-13T00:23:11Z",
+      "side": 1,
+      "message": "L153, s/update/upgrade/ incorrectly replace the comment, let me fix that.\n\nThe sf-upgrade role is now a single main.yaml task, no need for role_action.",
+      "parentUuid": "ef8a5dfa_c6987f39",
       "revId": "c8f84381bb5f73e63f6e1ee818914eeb01c64b72",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
