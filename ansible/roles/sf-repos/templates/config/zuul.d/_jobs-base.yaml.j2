@@ -12,7 +12,6 @@
       - zuul: {{ sf_jobs_project_name }}
       - zuul: {{ zuul_jobs_project_name }}
     timeout: 1800
-    # Set attempts to 1 until it's working well
     attempts: {{ zuul_default_retry_attempts }}
     secrets:
       - site_sflogs
