@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    A new disable_zuul_autorestart extra-vars option enables operator to
+    disable zuul services auto-restart on update to manually control when
+    to perform service restart.
+  - |
+    A new disable_nodepool_autorestart extra-vars option enables operator to
+    disable nodepool services auto-restart on update to manually control when
+    to perform service restart.
