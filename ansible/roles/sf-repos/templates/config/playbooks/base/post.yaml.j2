@@ -30,7 +30,7 @@
         - import_role: name=buildset-artifacts-location
       vars:
         zuul_log_url: "https://{{ fqdn }}/logs"
-        zuul_logserver_root: /var/www/logs
+        zuul_logserver_root: "{{'{{'}} site_sflogs.path {{'}}'}}"
 
 {% if 'job-logs-gearman-client' in roles %}
 - hosts: localhost
