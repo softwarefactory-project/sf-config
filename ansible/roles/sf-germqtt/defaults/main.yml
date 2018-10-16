@@ -4,4 +4,5 @@ role_actions:
   - setup
   - get_logs
   - disable
-  - upgrade
+
+role_package: germqtt

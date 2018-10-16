@@ -1,0 +1,6 @@
+---
+- name: Force nodepool restart when fqdn changed
+  set_fact:
+    nodepool_need_restart: True
+  when:
+    - update_fqdn

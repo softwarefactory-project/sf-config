@@ -6,6 +6,8 @@ role_actions:
   - get_logs
   - disable
 
+role_package: managesf
+
 managesf_loglevel: INFO
 managesf_root_loglevel: WARNING
 

@@ -33,8 +33,8 @@ def get_previous_version():
         if ver == '':
             raise IOError
     except:
-        print("WARNING: couldn't read previous version, defaulting to 2.6")
-        ver = 2.6
+        print("WARNING: couldn't read previous version, defaulting to master")
+        ver = 9999.
     return ver
 
 

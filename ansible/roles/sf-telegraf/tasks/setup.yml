@@ -1,4 +1,6 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
 - name: Install configuration templates
   template:
     src: '{{ item.name }}.j2'

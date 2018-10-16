@@ -1,0 +1,34 @@
+---
+- name: Check installed version
+  command: "rpm -q {{ role_package|default(role_name[3:]) }}"
+  register: _installed_version
+  changed_when: false
+  failed_when: false
+  when: role_package != "any"
+
+- name: Check previous version
+  command: "cat /var/lib/software-factory/versions/{{ role_name }}"
+  changed_when: false
+  failed_when: false
+  register: _previous_version
+  when: role_package != "any"
+
+- name: Define upgraded variable
+  shell: |
+    if [ ! -z "{{ _previous_version.stdout }}" ] && \
+       [ "{{ _previous_version.stdout }}" != "{{ _installed_version.stdout }}" ]; then
+       echo "changed"
+    fi
+  register: _version
+  changed_when: _version.stdout == "changed"
+  when: role_package != "any"
+
+- name: Execute upgrade tasks
+  include: /usr/share/sf-config/ansible/roles/{{ role_name }}/tasks/upgrade.yml
+  when: role_package == "any" or _version is changed
+
+- name: Write new version
+  copy:
+    content: "{{ _installed_version.stdout }}"
+    dest: "/var/lib/software-factory/versions/{{ role_name }}"
+  when: role_package != "any"

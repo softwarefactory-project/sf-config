@@ -6,4 +6,5 @@ role_actions:
   - restore
   - get_logs
   - disable
-  - upgrade
+
+role_package: sf-config

@@ -5,3 +5,5 @@ role_actions:
   - postconf
   - setup
   - update
+
+role_package: any

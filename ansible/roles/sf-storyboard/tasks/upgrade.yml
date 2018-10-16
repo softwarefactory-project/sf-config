@@ -1,0 +1,4 @@
+---
+- name: Force service restart
+  command: /bin/true
+  notify: restart storyboard

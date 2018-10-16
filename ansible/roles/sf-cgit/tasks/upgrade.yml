@@ -1,0 +1,4 @@
+---
+- name: Force service reload
+  command: /bin/true
+  notify: apache reload

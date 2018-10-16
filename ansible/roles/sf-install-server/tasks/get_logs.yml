@@ -35,3 +35,11 @@
     src: "/root/config/"
     dest: "{{ log_dest }}/config-repo/"
   ignore_errors: true
+
+# TODO: remove when upgrade is working as expected
+- name: "Fetch versions informations"
+  synchronize:
+    mode: pull
+    src: "/var/lib/software-factory/versions/"
+    dest: "{{ log_dest }}/versions/"
+  ignore_errors: true

@@ -4,3 +4,7 @@
   delegate_to: "{{ mysql_host }}"
   ignore_errors: yes
   when: sf_previous_version < 3.1
+
+- name: Force apache reload
+  command: /bin/true
+  notify: apache reload

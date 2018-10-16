@@ -31,7 +31,11 @@ def get_type(t):
 
 
 print("Removing any oci requests")
-for req in client.get_children("/nodepool/requests"):
+try:
+    requests = client.get_children("/nodepool/requests")
+except Exception:
+    requests = []
+for req in requests:
     req_path = os.path.join("/nodepool/requests", req)
     req = json.loads(client.get(req_path)[0].decode('utf-8'))
     if get_type(req["node_types"]).endswith("-oci"):
@@ -39,7 +43,11 @@ for req in client.get_children("/nodepool/requests"):
         client.delete(req_path, recursive=True)
 
 print("Removing any oci nodes")
-for node in client.get_children("/nodepool/nodes"):
+try:
+    nodes = client.get_children("/nodepool/nodes")
+except Exception:
+    nodes = []
+for node in nodes:
     node_path = os.path.join("/nodepool/nodes", node)
     node = json.loads(client.get(node_path)[0].decode('utf-8'))
     if get_type(node["type"]).endswith("-oci"):
