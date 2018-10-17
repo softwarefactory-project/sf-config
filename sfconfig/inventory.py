@@ -465,11 +465,17 @@ def enable_action(args):
         postconf(args, pb)
         pb.append({
             'import_playbook': '%s/zuul_restart.yml' % args.ansible_root,
-            'when': 'zuul_need_restart'
+            'when': [
+                'zuul_need_restart',
+                'not disable_zuul_autorestart | default(False) | bool'
+            ]
         })
         pb.append({
             'import_playbook': '%s/nodepool_restart.yml' % args.ansible_root,
-            'when': 'nodepool_need_restart'
+            'when': [
+                'nodepool_need_restart',
+                'not disable_nodepool_autorestart | default(False) | bool'
+            ]
         })
     else:
         playbook_name += "_nosetup"
