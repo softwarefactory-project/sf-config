@@ -59,6 +59,14 @@ authentication:
   # Enforce authentication for all services (such as etherpad and pastebin that doesn't require authentication by default)
   authenticated_only: false
 
+  # In the (non-recommended) case where several Identity Providers are used, use this
+  # option to allow users with the same username on different IdPs to authenticate.
+  # Any user logging in with a username already registered to a different IdP will
+  # get a random hash appended to their username to differentiate them.
+  # By default the option is unset, meaning that any attempt to login with a username already
+  # registered to another IdP will fail.
+  differentiate_users: false
+
   ldap:
     disabled: true
     ldap_url: ldap://sftests.com
