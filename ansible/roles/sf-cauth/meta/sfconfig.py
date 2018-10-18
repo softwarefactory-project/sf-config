@@ -24,12 +24,28 @@ class Cauth(Component):
                                  "The URI can be a file on the system or a "
                                  "URL (the distant server's certificate must "
                                  "be valid)")
+        parser.add_argument("--differentiate-users", action="store_true",
+                            help="In the (non-recommended) case where several "
+                                 "Identity Providers are used, use this "
+                                 "option to allow users with the same "
+                                 "username on different IdPs to authenticate. "
+                                 "Any user logging in with a username "
+                                 "already registered to a different IdP will "
+                                 "get a random hash appended to their "
+                                 "username to differentiate them.\n"
+                                 "If this option is not explicitly set, any "
+                                 "attempt to login with a username already "
+                                 "registered to another IdP will fail.")
 
     def argparse(self, args):
         if args.set_idp_metadata:
             self.idp_metadata_uri = args.set_idp_metadata
         else:
             self.idp_metadata_uri = None
+        if args.differentiate_usernames:
+            args.glue["cauth_username_collision_strategy"] = "DIFFERENTIATE"
+        else:
+            args.glue["cauth_username_collision_strategy"] = "FORBID"
 
     def configure(self, args, host):
         priv_file = "%s/certs/cauth_privkey.pem" % args.lib
