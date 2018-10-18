@@ -47,6 +47,10 @@ class Cauth(Component):
                 args.glue["idp_md_url"] = self.idp_metadata_uri
             else:
                 args.glue["idp_md_file"] = self.idp_metadata_uri
+        if args.sfconfig["authentication"].get("differentiate_usernames"):
+            args.glue["cauth_username_collision_strategy"] = "DIFFERENTIATE"
+        else:
+            args.glue["cauth_username_collision_strategy"] = "FORBID"
 
     def validate(self, args, host):
         if not args.sfconfig["authentication"]["ldap"]["disabled"] and \
