@@ -10,8 +10,10 @@
     <li><a href="/dashboard/" target="_top">Dashboard</a></li>
     <li><a href="/r/" target="_top">Gerrit</a></li>
   {% endif %}
-  {% if tenant_deployment or 'zuul-scheduler' in roles %}
+  {% if tenant_deployment %}
     <li><a href="/zuul/" target="_top">Zuul</a></li>
+  {% else %}
+    <li><a href="/zuul/t/{{ tenant_name }}/status" target="_top">Zuul</a></li>
   {% endif %}
   {% if 'storyboard' in roles %}
     <li><a href="/storyboard/" target="_top">Storyboard</a></li>
