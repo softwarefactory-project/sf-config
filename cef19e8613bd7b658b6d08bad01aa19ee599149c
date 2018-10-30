@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7e1a06ad_b56f263c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-10-30T15:42:50Z",
+      "side": 1,
+      "message": "hmm I did generate a release note but it looks like I forgot to commit it",
+      "parentUuid": "1d7c4b7f_c5b600b9",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "cef19e8613bd7b658b6d08bad01aa19ee599149c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4e87c4bd_8aec471a",
         "filename": "ansible/roles/sf-cauth/meta/sfconfig.py",
         "patchSetId": 3
@@ -36,6 +60,24 @@
       "writtenOn": "2018-10-30T10:47:39Z",
       "side": 1,
       "message": "I\u0027m not a big fan of this implementation as the CLI flag needs to be set at each invocation. Perhaps this could simply be a new option in sfconfig.yaml ? (e.g. drop all of that, and in the cauth config.py template, just use \"{{ authentication.username_collision_strategy|default(\u0027FORBID\u0027) }}\")",
+      "revId": "cef19e8613bd7b658b6d08bad01aa19ee599149c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "17c5f458_5a20ccab",
+        "filename": "ansible/roles/sf-cauth/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-10-30T15:42:50Z",
+      "side": 1,
+      "message": "I wanted to make it hard to use to kind of discourage operators to go the multiple IdP road, but that\u0027s not for me to decide that. I\u0027ll set that as a config option as you suggest.",
+      "parentUuid": "4e87c4bd_8aec471a",
       "revId": "cef19e8613bd7b658b6d08bad01aa19ee599149c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
