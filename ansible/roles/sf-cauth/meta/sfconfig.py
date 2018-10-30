@@ -42,6 +42,7 @@ class Cauth(Component):
         args.glue["cauth_privkey"] = open(priv_file).read()
         args.glue["cauth_pubkey"] = open(pub_file).read()
         self.add_mysql_database(args, "cauth")
+        self.get_or_generate_ssh_key(args, "sf_service_user_rsa")
         if self.idp_metadata_uri:
             if self.idp_metadata_uri.lower().startswith('http'):
                 args.glue["idp_md_url"] = self.idp_metadata_uri

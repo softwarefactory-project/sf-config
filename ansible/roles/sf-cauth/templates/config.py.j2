@@ -145,6 +145,7 @@ auth = {
             "lastname": "SF user for automated tasks",
             "mail": "service.user@{{ fqdn }}",
             "password": "{{ service_user_password_hashed.stdout }}",
+            "ssh_key": "/var/lib/cauth/.ssh/sf_service_user_rsa.pub",
         },
         {% if fqdn == "sftests.com" %}
             "user2": {

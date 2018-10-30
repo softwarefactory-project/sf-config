@@ -3,6 +3,8 @@
 
 - include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
 
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=SF_SERVICE_USER ssh_key=sf_service_user_rsa"
+
 - name: Hash admin password
   shell: python <<<"{{hash_code}}'{{authentication.admin_password}}'{{hash_code_end}}"
   register: admin_password_hashed

@@ -52,6 +52,7 @@ services = [
 managesf = {
     'host': '{{ managesf_host }}',
     'sshkey_priv_path': '/var/lib/managesf/.ssh/id_rsa',
+    'service_user_key': '/var/lib/managesf/.ssh/sf_service_user_rsa',
 }
 
 admin = {
