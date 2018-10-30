@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d7c4b7f_c5b600b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-30T10:47:39Z",
+      "side": 1,
+      "message": "this shouldn\u0027t be documented here but in sf-docs anyway, no need for that mention imo.\n\nA release note would be good though, as the default seems to be a behavior change/fix",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "cef19e8613bd7b658b6d08bad01aa19ee599149c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e87c4bd_8aec471a",
+        "filename": "ansible/roles/sf-cauth/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-10-30T10:47:39Z",
+      "side": 1,
+      "message": "I\u0027m not a big fan of this implementation as the CLI flag needs to be set at each invocation. Perhaps this could simply be a new option in sfconfig.yaml ? (e.g. drop all of that, and in the cauth config.py template, just use \"{{ authentication.username_collision_strategy|default(\u0027FORBID\u0027) }}\")",
+      "revId": "cef19e8613bd7b658b6d08bad01aa19ee599149c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
