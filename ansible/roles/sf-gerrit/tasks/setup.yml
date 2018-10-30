@@ -216,6 +216,10 @@
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
   changed_when: false
 
+- name: Initialize sf service user
+  command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "SF_SERVICE_USER" "ssh-rsa {{ sf_service_user_rsa_pub.split()[1] }}" "service.user@{{ fqdn }}"
+  changed_when: false
+
 - include_tasks: setup_acl.yml
 
 - name: Setup socat service

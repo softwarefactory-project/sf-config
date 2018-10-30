@@ -44,5 +44,14 @@
       mode: 0440
       setype: httpd_sys_content_t
 
+- name: Copy SF_SERVICE_USER's public key
+  copy:
+      content: "{{ sf_service_user_rsa_pub }}"
+      dest: /var/lib/cauth/keys/sf_service_user_rsa.pub
+      owner: root
+      group: apache
+      mode: 0440
+      setype: httpd_sys_content_t
+
 - include_tasks: saml2.yaml
   when: not authentication.SAML2.disabled

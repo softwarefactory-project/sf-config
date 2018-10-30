@@ -18,3 +18,4 @@ class Managesf(Component):
         self.add_mysql_database(args, "managesf")
         args.glue["managesf_internal_url"] = "http://%s:%s" % (
             args.glue["managesf_host"], args.defaults["managesf_port"])
+        self.get_or_generate_ssh_key(args, "sf_service_user_rsa")
