@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0cb9576a_66ba8ae1",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-11-06T08:46:59Z",
+      "side": 1,
+      "message": "That\u0027s not the same value your are checking in the previous file.",
+      "range": {
+        "startLine": 68,
+        "startChar": 2,
+        "endLine": 68,
+        "endChar": 21
+      },
+      "revId": "6c226348e30ec15d2f83c1c581cbbef63dd4ed41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
