@@ -8,4 +8,6 @@ inventory:
       - gateway
       - cauth
       - managesf
+      - gitweb
+      - gerrit
       - logserver
