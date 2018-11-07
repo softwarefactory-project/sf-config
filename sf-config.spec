@@ -56,6 +56,7 @@ install -p -d -m 0755 %{buildroot}/usr/libexec/software-factory
 install -p -d -m 0750 %{buildroot}/usr/share/software-factory
 
 %files
+%license LICENSE
 %{_bindir}/sf*
 %{python2_sitelib}/sfconfig-%{version}-py*.egg-info
 %{python2_sitelib}/sfconfig
