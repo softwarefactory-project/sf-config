@@ -1,9 +1,8 @@
 ---
 - name: "Install DLRN packages"
   yum:
-    name: "{{ item }}"
+    name:
+      - httpd
+      - rh-python35-dlrn
+#      - dlrnclient
     state: present
-  with_items:
-    - httpd
-    - rh-python35-dlrn
-#    - dlrnclient

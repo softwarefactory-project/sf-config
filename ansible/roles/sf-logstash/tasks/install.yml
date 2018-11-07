@@ -1,12 +1,12 @@
 ---
-- name: "Install requirements"
+- name: Install requirements
   yum:
-    name: "java-1.8.0-openjdk"
+    name: java-1.8.0-openjdk
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
 
-- name: "Add the logstash RPM repository"
+- name: Add the logstash RPM repository
   yum_repository:
     name: "{{ logstash_repo_name }}"
     description: "{{ logstash_repo_desc }}"
@@ -14,9 +14,9 @@
     gpgkey: "{{ logstash_repo_gpgkey }}"
     gpgcheck: "{{ logstash_repo_gpgcheck }}"
 
-- name: "Install logstash package"
+- name: Install logstash package
   yum:
-    name: "logstash"
+    name: logstash
     state: present
     disablerepo: "*"
     enablerepo: "{{ logstash_repo_name }}"

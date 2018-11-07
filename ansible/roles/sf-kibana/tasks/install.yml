@@ -1,5 +1,5 @@
 ---
-- name: "Add the kibana RPM repository"
+- name: Add the kibana RPM repository
   yum_repository:
     name: "{{ kibana_repo_name }}"
     description: "{{ kibana_repo_desc }}"
@@ -7,7 +7,7 @@
     gpgkey: "{{ kibana_repo_gpgkey }}"
     gpgcheck: "{{ kibana_repo_gpgcheck }}"
 
-- name: "Install kibana package"
+- name: Install kibana package
   yum:
     name: kibana
     state: present

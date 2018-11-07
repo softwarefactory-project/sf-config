@@ -1,7 +1,7 @@
 ---
-- name: "Install package"
+- name: Install package
   yum:
-    name: "lecm"
+    name: lecm
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
