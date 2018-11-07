@@ -1,5 +1,5 @@
 ---
-- name: "Install package"
+- name: Install package
   yum:
     name: rh-python35-logreduce
     state: present

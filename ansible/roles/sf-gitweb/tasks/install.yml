@@ -1,13 +1,17 @@
 ---
-- name: "Install package"
+- name: Install package
   yum:
-    name: "gitweb, highlight, perl-Digest-MD5, gitweb-theme-kogakure"
+    name:
+      - gitweb
+      - gitweb-theme-kogakure
+      - highlight
+      - perl-Digest-MD5
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
 
-- name: "Copy theme to gitweb.css"
+- name: Copy theme to gitweb.css
   copy:
     src: "/var/www/git/static/{{ gitweb_theme }}.css"
-    dest: "/var/www/git/static/gitweb.css"
+    dest: /var/www/git/static/gitweb.css
     remote_src: true

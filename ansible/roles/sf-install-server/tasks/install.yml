@@ -1,13 +1,12 @@
 ---
 - name: "Install requirements"
   yum:
-    name: "{{ item }}"
+    name:
+      - git
+      - git-review
+      - python2-sfmanager
+      - python-testinfra
+      - rh-python35-zuul-jobs
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  with_items:
-    - git
-    - git-review
-    - python2-sfmanager
-    - python-testinfra
-    - rh-python35-zuul-jobs

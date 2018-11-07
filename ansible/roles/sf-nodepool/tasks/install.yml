@@ -1,36 +1,34 @@
 ---
-- name: "Install launcher package"
+- name: Install launcher package
   yum:
-    name: "{{ item }}"
+    name: "{{ nodepool_launcher_packages }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  with_items: "{{ nodepool_launcher_packages }}"
   when: '"nodepool-launcher" in nodepool_services'
 
-- name: "Install builder package"
+- name: Install builder package
   yum:
-    name: "{{ item }}"
+    name: "{{ nodepool_builder_packages }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  with_items: "{{ nodepool_builder_packages }}"
   when: '"nodepool-builder" in nodepool_services'
 
-- name: "Install package for config-check"
+- name: Install package for config-check
   yum:
-    name: "rh-python35-nodepool"
+    name: rh-python35-nodepool
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
   with_items: "{{ executor_hosts }}"
 
-- name: "Install openshift client"
+- name: Install openshift client
   block:
     - name: Install repository
       yum:
-        name: "centos-release-openshift-origin39"
+        name: centos-release-openshift-origin39
         state: present
 
     - name: Install packages

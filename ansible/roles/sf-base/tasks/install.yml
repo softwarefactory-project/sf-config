@@ -35,40 +35,38 @@
 
 - name: Add repo packages
   yum:
-    name: '{{ item }}'
+    name:
+      - centos-release-openstack-queens
+      - centos-release-scl-rh
     state: present
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
-  with_items:
-    - centos-release-openstack-queens
-    - centos-release-scl-rh
   when: ansible_distribution == "CentOS"
 
 - name: Install useful packages
   yum:
-    name: '{{ item }}'
+    name:
+      - haveged
+      - logrotate
+      - git
+      - monit
+      - ntp
+      - patch
+      - postfix
+      - rsyslog
+      - tmux
+      - vim-enhanced
+      - sf-config
+      # Needed by ansible selinux module
+      - libsemanage-python
+      - policycoreutils-python
+      # Needed for wait4 scripts
+      - nmap-ncat
+      # Needed by sfconfig ansible setup tasks
+      - rh-python35-python-requests
     state: present
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
-  with_items:
-    - haveged
-    - logrotate
-    - git
-    - monit
-    - ntp
-    - patch
-    - postfix
-    - rsyslog
-    - tmux
-    - vim-enhanced
-    - sf-config
-    # Needed by ansible selinux module
-    - libsemanage-python
-    - policycoreutils-python
-    # Needed for wait4 scripts
-    - nmap-ncat
-    # Needed by sfconfig ansible setup tasks
-    - rh-python35-python-requests
 
 - name: Set permissive selinux
   lineinfile:
