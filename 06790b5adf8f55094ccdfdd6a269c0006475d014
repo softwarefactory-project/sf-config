@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "496f897f_fb48df55",
+        "filename": "refarch/tenant-minimal.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-11-07T09:27:56Z",
+      "side": 1,
+      "message": "I thought we\u0027ll just update the guide to add shell command to add gerrit + gitweb in the arch file. I think we don\u0027t need to update that file. If we want a tenant to be use with github then we don\u0027t want gerrit. The first sfconfig run does not fail with the current tenant-minimal.yaml arch right ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "06790b5adf8f55094ccdfdd6a269c0006475d014",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
