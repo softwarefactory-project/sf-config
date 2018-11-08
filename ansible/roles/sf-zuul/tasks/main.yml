@@ -4,6 +4,7 @@
       wait_for:
         path: "{{ lock_path }}_{{ role_action }}.lock"
         state: absent
+        timeout: 600
 
     - name: "Create lock file {{ role_action }}"
       file:
