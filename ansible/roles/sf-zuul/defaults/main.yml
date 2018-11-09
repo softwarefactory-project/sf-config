@@ -74,6 +74,3 @@ nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
 nodepool_webapp_port: 8006
 
 zuul_periodic_pipeline_mail_rcpt: root@localhost
-
-# Prevent zuul update task to run concurently in master/tenant mode
-lock_path: /var/lib/software-factory/state/.zuul_config

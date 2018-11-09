@@ -17,14 +17,16 @@ else
     echo "Triggered outside of Zuul (No ZUUL_COMMIT provided)"
 fi
 
+LOCK_PATH=/var/lib/software-factory/state/ansible.lock
+
 case $ACTION in
     sf_configrepo_update)
         set -o pipefail
-        exec ansible-playbook -v /var/lib/software-factory/ansible/sf_configrepo_update.yml 2>&1 | tee /var/log/software-factory/configrepo_update.log
+        exec flock $LOCK_PATH ansible-playbook -v /var/lib/software-factory/ansible/sf_configrepo_update.yml 2>&1 | tee /var/log/software-factory/configrepo_update.log
         ;;
     sf_tenant_update)
         set -o pipefail
-        exec ansible-playbook -v /var/lib/software-factory/ansible/sf_tenant_update.yml 2>&1 | tee /var/log/software-factory/tenant_update.log
+        exec flock $LOCK_PATH ansible-playbook -v /var/lib/software-factory/ansible/sf_tenant_update.yml 2>&1 | tee /var/log/software-factory/tenant_update.log
         ;;
     sf_mirror_update)
         exec ansible-playbook -v /usr/share/sf-config/ansible/roles/sf-mirror/files/update_playbook.yml &> /var/log/software-factory/mirror_update.log

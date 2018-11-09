@@ -581,7 +581,8 @@ def run(args):
     playbook_path = "%s/%s.yml" % (args.ansible_root, playbook_name)
     write_playbook(playbook_path, playbook)
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
-    run_cmd = ["scl", "enable", "rh-python35", "--",
+    run_cmd = ["flock", "/var/lib/software-factory/state/ansible.lock",
+               "scl", "enable", "rh-python35", "--",
                "ansible-playbook", playbook_path]
     if not args.skip_apply:
         os.chdir("/")
