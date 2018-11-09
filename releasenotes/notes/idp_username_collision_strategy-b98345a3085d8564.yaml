@@ -1,0 +1,9 @@
+---
+features:
+  - Add a "differentiate-users" option to sfconfig.yaml, allowing an operator
+    to specify the strategy for handling usernames collisions when more than
+    one identity provider is specified. The default behavior is to reject
+    any user whose username was already registered to a different IdP.
+    Activating the option will differentiate usernames with a hash, allowing
+    users to log in as distinct entities.
+    Note that it is not advisable to use more than one external IdP.
