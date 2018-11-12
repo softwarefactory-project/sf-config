@@ -33,6 +33,12 @@ class NodepoolLauncher(Component):
             fail("Both clouds_file and providers can not be set "
                  "at the same time")
 
+        args.glue["nodepool_kube_file"] = args.sfconfig.get(
+            "nodepool", {}).get("kube_file", None)
+        if args.glue["nodepool_kube_file"]:
+            if not os.path.isfile(args.glue["nodepool_kube_file"]):
+                fail("%s: does not exists" % args.glue["nodepool_kube_file"])
+
         self.get_or_generate_ssh_key(args, "nodepool_rsa")
         self.get_or_generate_ssh_key(args, "zuul_rsa")
         args.glue["nodepool_internal_url"] = "http://%s:%s" % (

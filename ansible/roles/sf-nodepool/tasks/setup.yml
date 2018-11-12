@@ -32,6 +32,7 @@
   with_items:
     - /var/lib/nodepool/.ssh
     - /var/lib/nodepool/.config/openstack
+    - /var/lib/nodepool/.kube/
     - /root/.config/openstack
     - /var/cache/nodepool/dib_tmp
     - /var/cache/nodepool/dib_cache
@@ -47,6 +48,15 @@
     - {key: "nodepool_rsa", name: "id_rsa", mode: "0400"}
     - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
   no_log: true
+
+- name: Copy provided kube_file config
+  copy:
+    src: "{{ nodepool_kube_file }}"
+    dest: "/var/lib/nodepool/.kube/config"
+    owner: nodepool
+    group: nodepool
+    mode: 0400
+  when: nodepool_kube_file[0]|default(None) == "/"
 
 - name: Setup .kube/config
   shell: |

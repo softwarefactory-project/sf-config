@@ -164,6 +164,8 @@ mirrors:
 nodepool:
   # Copy a clouds.yaml to /etc/software-factory and reference its path here
   clouds_file:
+  # Copy a .kube/config to /etc/software-factory and reference its path here
+  kube_file:
   # OR list the OpenStack provider here
   providers: []
   #  - name: default

@@ -167,6 +167,10 @@ def update_sfconfig(args):
         data["nodepool"]["clouds_file"] = None
         dirty = True
 
+    if "kube_file" not in data["nodepool"]:
+        data["nodepool"]["kube_file"] = None
+        dirty = True
+
     if data["zuul"].get("default_nodeset_label") == "centos-oci":
         data["zuul"]["default_nodeset_label"] = "runc-centos"
         dirty = True
