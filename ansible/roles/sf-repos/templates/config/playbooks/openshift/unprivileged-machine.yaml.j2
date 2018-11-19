@@ -24,8 +24,16 @@
         zuul_log_url: "https://{{ fqdn }}/logs"
 
     - name: Create src directory
-      command: "oc exec {{'{{'}} zuul_resources['pod'].pod {{'}}'}} mkdir src"
+      command: >
+        oc --context "{{'{{'}} zuul_resources['pod'].context {{'}}'}}"
+           --namespace "{{'{{'}} zuul_resources['pod'].namespace {{'}}'}}"
+           exec {{'{{'}} zuul_resources['pod'].pod {{'}}'}} mkdir src
 
     - name: Copy src repos to the pod
-      command: "oc rsync -q --progress=false {{'{{'}} zuul.executor.src_root {{'}}'}}/ {{'{{'}} zuul_resources['pod'].pod {{'}}'}}:src/"
+      command: >
+        oc --context "{{'{{'}} zuul_resources['pod'].context {{'}}'}}"
+           --namespace "{{'{{'}} zuul_resources['pod'].namespace {{'}}'}}"
+        rsync -q --progress=false
+          {{'{{'}} zuul.executor.src_root {{'}}'}}/
+          {{'{{'}} zuul_resources['pod'].pod {{'}}'}}:src/
       no_log: true

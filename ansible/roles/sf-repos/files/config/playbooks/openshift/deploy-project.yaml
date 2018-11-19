@@ -4,6 +4,7 @@
   openshift_raw:
     state: present
     namespace: "{{ zuul_resources['project'].namespace }}"
+    context: "{{ zuul_resources['project'].context }}"
     definition:
       apiVersion: v1
       kind: DeploymentConfig
@@ -44,7 +45,9 @@
         test: false
 
 - name: get project pod name
-  command: oc get pods --field-selector=status.phase=Running -o "jsonpath={.items[?(@.metadata.labels.app=='{{ zuul.project.short_name }}')].metadata.name}"
+  command: >
+    {{ oc_command }} get pods --field-selector=status.phase=Running
+    -o "jsonpath={.items[?(@.metadata.labels.app=='{{ zuul.project.short_name }}')].metadata.name}"
   register: _pod_name
   retries: 600
   delay: 1
