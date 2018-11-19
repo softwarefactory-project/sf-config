@@ -55,7 +55,7 @@
     dest: "/var/lib/nodepool/.kube/config"
     owner: nodepool
     group: nodepool
-    mode: 0400
+    mode: 0600
   when: nodepool_kube_file[0]|default(None) == "/"
 
 - name: Setup .kube/config
