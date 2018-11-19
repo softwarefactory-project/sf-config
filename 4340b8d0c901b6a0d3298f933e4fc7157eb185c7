@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "93fef9df_c0a07fce",
+        "filename": "ansible/roles/sf-managesf/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-11-19T17:06:47Z",
+      "side": 1,
+      "message": "Why not using the service_rsa. I\u0027m not sure to follow, with that patch we wanted to make managesf able to ssh on nodepool nodes ?",
+      "revId": "4340b8d0c901b6a0d3298f933e4fc7157eb185c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
