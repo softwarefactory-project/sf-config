@@ -90,6 +90,7 @@
       http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: dependent
     precedence: high
+    post-review: True
     require:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
