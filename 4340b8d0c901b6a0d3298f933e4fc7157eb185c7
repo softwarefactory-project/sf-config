@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "b07e8f93_291ba567",
+        "filename": "ansible/roles/sf-cauth/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-11-20T08:38:31Z",
+      "side": 1,
+      "message": "Why is this needed, what\u0027s the purpose of this key?",
+      "revId": "4340b8d0c901b6a0d3298f933e4fc7157eb185c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "087aec34_7419369a",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-11-20T08:38:31Z",
+      "side": 1,
+      "message": "let\u0027s use the managesf_rsa key here",
+      "revId": "4340b8d0c901b6a0d3298f933e4fc7157eb185c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c9269173_175ecb7d",
+        "filename": "ansible/roles/sf-managesf/meta/sfconfig.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-11-20T08:38:31Z",
+      "side": 1,
+      "message": "let\u0027s name it managesf_rsa",
+      "revId": "4340b8d0c901b6a0d3298f933e4fc7157eb185c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "93fef9df_c0a07fce",
         "filename": "ansible/roles/sf-managesf/tasks/setup.yml",
         "patchSetId": 3
@@ -13,6 +64,40 @@
       "writtenOn": "2018-11-19T17:06:47Z",
       "side": 1,
       "message": "Why not using the service_rsa. I\u0027m not sure to follow, with that patch we wanted to make managesf able to ssh on nodepool nodes ?",
+      "revId": "4340b8d0c901b6a0d3298f933e4fc7157eb185c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "acfed1ea_1f4e7b0c",
+        "filename": "ansible/roles/sf-managesf/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-11-20T08:38:31Z",
+      "side": 1,
+      "message": "no need to create a system user, instead we need to remove the \u0027ssh_key\u003dservice_rsa\u0027 in the task above, and lets use managesf_rsa",
+      "revId": "4340b8d0c901b6a0d3298f933e4fc7157eb185c7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a65559be_88c4106a",
+        "filename": "ansible/roles/sf-managesf/templates/config.py.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-11-20T08:38:31Z",
+      "side": 1,
+      "message": "why use another key?",
       "revId": "4340b8d0c901b6a0d3298f933e4fc7157eb185c7",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
