@@ -15,6 +15,5 @@
 
 - name: Install linters packages
   yum:
-    name: "{{ item }}"
+    name: "{{ linters_pkgs }}"
     state: present
-  with_items: "{{ linters_pkgs }}"
