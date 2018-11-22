@@ -8,6 +8,8 @@
   patch:
     src: index.html-topmenu.patch
     basedir: /var/www/storyboard
+  # Remove ignore_errors after storyboard-webclient is updated
+  ignore_errors: yes
 
 - name: "Remove logout button"
   replace:

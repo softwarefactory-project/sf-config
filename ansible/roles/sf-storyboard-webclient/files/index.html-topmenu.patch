@@ -1,15 +1,15 @@
 --- index.html.orig	2017-05-02 16:34:50.872384491 +0000
 +++ index.html	2017-05-02 16:39:44.589462198 +0000
-@@ -19,6 +19,7 @@
+@@ -5,6 +5,7 @@
      <meta charset="utf-8">
      <meta name="description" content="">
      <meta name="viewport" content="width=device-width">
 +    <script type="text/javascript" src="/static/js/topmenu.js"></script>
      <title ng-bind-template="{{viewTitle ? viewTitle + ' | ' : ''}} StoryBoard">StoryBoard</title>
- 
-     <!-- Google's Ajax Crawling: https://developers.google.com/webmasters/ajax-crawling -->
-@@ -33,6 +34,17 @@
- 
+
+
+@@ -19,6 +20,18 @@
+
      <script src="js/storyboard.js"></script>
      <script src="js/templates.js"></script>
 +<style>
@@ -23,15 +23,14 @@
 +    z-index: 1008;
 +}
 +</style>
- </head>
- <body ng-class="{'logged-in' : isLoggedIn, 'submenu': hasSubmenu}"
-       ng-controller="ApplicationController">
-@@ -51,7 +63,7 @@
++</head>
+
+ <body ng-class="{'logged-in' : isLoggedIn, 'submenu': hasSubmenu}" ng-controller="ApplicationController">
+
+@@ -36,6 +49,6 @@
          </div>
      </div>
  </div>
 -<div ui-view class="main" ng-if="!isResolving"></div>
 +<div ui-view class="main" ng-if="!isResolving" style="margin-top: 100px"></div>
  <notifications></notifications>
- </body>
- </html>
