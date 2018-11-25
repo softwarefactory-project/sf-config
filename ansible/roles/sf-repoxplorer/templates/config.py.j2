@@ -63,12 +63,14 @@ app = {
 # Additional RepoXplorer configurations
 db_default_file = '/etc/repoxplorer/default.yaml'
 db_path = '/etc/repoxplorer/'
+db_cache_path = '/var/cache/repoxplorer/'
 git_store = '/var/lib/repoxplorer/git_store'
 xorkey = None
 elasticsearch_host = '{{ elasticsearch_host }}'
 elasticsearch_port = 9200
 elasticsearch_index = 'repoxplorer'
 indexer_loop_delay = 300
+indexer_skip_projects = []
 index_custom_html = ""
 users_endpoint = True
 admin_token = '{{ repoxplorer_admin_token }}'
