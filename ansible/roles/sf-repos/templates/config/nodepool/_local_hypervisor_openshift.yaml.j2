@@ -1,22 +1,18 @@
 # This file is managed by sfconfig, do not edit manually
 ---
-{% if not tenant_deployment %}
-{% if nodepool_openshift_providers|default(False) or nodepool_openshiftpods_providers|default(False) %}
+{% if not tenant_deployment and nodepool_openshift_providers %}
 labels:
   - name: openshift-project
     min-ready: 0
   - name: openshift-pod-fedora
     min-ready: 0
-
-{% endif %}{# endif nodepool_openshift_providers #}
-
-{% for host in inventory %}{% if 'hypervisor-openshift' in host['roles'] %}
+{% for openshift_provider in nodepool_openshift_providers %}
 
 providers:
-  - name: {{ host.name }}
+  - name: "managed-openshift-{{ openshift_provider.hostname }}"
     driver: openshift
-    context: "myproject/{{ host.hostname|replace('.', '-') }}:8443/system:serviceaccount:myproject:nodepool"
-    max-projects: {{ host.get('max-servers', 10) }}
+    context: "{{ openshift_provider.context }}"
+    max-projects: {{ openshift_provider.max_servers }}
     pools:
       - name: zuul-ci
         labels:
@@ -26,6 +22,4 @@ providers:
             type: pod
             image: docker.io/fedora:28
 
-{% endif %}{% endfor %}{# endif endfor host in inventory #}
-
-{% endif %}{# endif tenant_deployment #}
+{% endfor %}{% endif %}

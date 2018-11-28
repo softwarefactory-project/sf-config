@@ -45,16 +45,14 @@ class NodepoolLauncher(Component):
             args.glue["nodepool_launcher_host"],
             args.defaults["nodepool_webapp_port"])
 
-        args.glue["nodepool_openshift_providers"] = args.sfconfig.get(
-            "nodepool", {}).get("openshift_providers", [])
-        args.glue["nodepool_openshiftpods_providers"] = args.sfconfig.get(
-            "nodepool", {}).get("openshiftpods_providers", [])
+        # nodepool_openshift_providers is only used to hold managed clusters
+        args.glue["nodepool_openshift_providers"] = []
         for host in args.sfarch['inventory']:
             if 'hypervisor-openshift' in host['roles']:
                 args.glue["nodepool_openshift_providers"].append({
-                    "name": "openshift-%s" % host['name'],
                     "url": "https://%s:8443" % host['hostname'],
                     "hostname": host['hostname'],
-                    "token": "fact",
+                    "context": "local-%s" % host['hostname'].replace('.', '-'),
+                    "max_servers": host.get('max-servers', 10),
                     "insecure_skip_tls_verify": True,
                 })

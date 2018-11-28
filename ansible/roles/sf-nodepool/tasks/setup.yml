@@ -58,19 +58,17 @@
     mode: 0600
   when: nodepool_kube_file[0]|default(None) == "/"
 
-- name: Setup .kube/config
+- name: Add local openshift cluster provided by sf-hypervisor-openshift
   shell: |
-    {% if item.token == 'fact' %}
-      TOKEN="{{ hostvars[install_server_host]['openshift_token_' + item.hostname|replace('.', '_')] }}"
-    {% else %}
-      TOKEN="{{ item.token }}"
-    {% endif %}
+    TOKEN="{{ hostvars[install_server_host]['openshift_token_' + item.hostname.replace('.', '_')] }}"
     oc login {{ item.url }} \
       --insecure-skip-tls-verify={{ item.insecure_skip_tls_verify|default(False) }} \
       --token ${TOKEN}
+    # rename context to match the file generated in the config repo
+    oc config rename-context "$(oc config current-context)" {{ item.context }}
   become: yes
   become_user: nodepool
-  with_items: "{{ nodepool_openshift_providers|default([]) }} + {{ nodepool_openshiftpods_providers|default([]) }}"
+  with_items: "{{ nodepool_openshift_providers|default([]) }}"
 
 - name: Install os-client-config
   template:
