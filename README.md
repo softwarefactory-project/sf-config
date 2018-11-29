@@ -1,3 +1,4 @@
+
 # SFCONFIG - Software Factory configuration management
 
 ## Ansible roles components
