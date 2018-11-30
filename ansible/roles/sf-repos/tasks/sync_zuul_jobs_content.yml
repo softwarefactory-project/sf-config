@@ -7,6 +7,8 @@
     rsync_opts:
       - --exclude=.git
       - --exclude=.gitreview
+      - --exclude=__pycache__
+      - --exclude=*.pyc
       - --exclude=README
 
 - name: Add README

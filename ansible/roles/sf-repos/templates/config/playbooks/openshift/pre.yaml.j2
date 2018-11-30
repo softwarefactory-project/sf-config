@@ -26,8 +26,8 @@
     - name: Set oc_command fact
       set_fact:
         oc_command: >
-          oc --context "{{'{{'}} zuul_resources['project'].context {{'}}'}}"
-             --namespace "{{'{{'}} zuul_resources['project'].namespace {{'}}'}}"
+          oc --context "{{'{{'}} zuul.resources['project'].context {{'}}'}}"
+             --namespace "{{'{{'}} zuul.resources['project'].namespace {{'}}'}}"
 
     - include_tasks: prepare-namespace.yaml
     - include_tasks: build-project.yaml

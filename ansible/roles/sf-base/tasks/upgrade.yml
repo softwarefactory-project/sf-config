@@ -68,3 +68,10 @@
     - /usr/libexec/wait4mariadb
     - /usr/libexec/wait4gerrit
     - /usr/local/bin/zuul-changes.py
+
+# sf-3.3
+- name: Ensure invalid zuul public key are removed
+  lineinfile:
+    path: /var/lib/zuul/.ssh/known_hosts
+    regexp: ".* (ecdsa-sha.*|ssh-ed25519) .*"
+    state: absent
