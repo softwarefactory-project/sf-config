@@ -32,9 +32,13 @@ req = urllib.request.urlopen("{{ managesf_internal_url }}/v2/resources")
 data = json.loads(req.read().decode('utf-8'))
 
 for project, attr in data.get("resources", {}).get("projects", {}).items():
+    if 'hound/skip' in attr.get('options', []):
+        continue
     for sr in attr.get('source-repositories', []):
         repo_name = list(sr.keys())[0]
         if sr[repo_name].get('private') is True:
+            privates.add(repo_name)
+        if sr[repo_name].get('cgit/skip') is True:
             privates.add(repo_name)
 
 for repo, attr in data.get("resources", {}).get("repos", {}).items():
