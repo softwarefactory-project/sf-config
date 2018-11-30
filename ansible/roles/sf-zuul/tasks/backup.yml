@@ -8,3 +8,4 @@
     rsync_opts: --relative
   with_items:
     - "{{ zuul_lib_dir }}/keys/"
+    - "{{ zuul_lib_dir }}/tenant-secrets/"

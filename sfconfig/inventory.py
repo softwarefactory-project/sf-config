@@ -548,6 +548,17 @@ def enable_ara():
     os.environ["ARA_DIR"] = "/var/lib/software-factory/ansible/ara/"
 
 
+def install_openstack_repos_and_update_system(args):
+    '''Install openstack repository from rdoproject.org/repos
+    support both centos and rhel, update system'''
+    rdo_repos_filename = '/etc/yum.repos.d/rdo-release.repo'
+    if os.path.isfile(rdo_repos_filename):
+        return
+    sfconfig.utils.execute(
+        ["yum", "install", "-y", args.glue["rdo_release_url"]])
+    sfconfig.utils.execute(["yum", "update", "-y"])
+
+
 def install_ansible(args):
     if args.update:
         # Update ansible early on if possible
@@ -558,9 +569,6 @@ def install_ansible(args):
     if "centos" in open("/etc/os-release").read():
         sfconfig.utils.execute(
             ["yum", "install", "-y", "centos-release-scl-rh"])
-    else:
-        # TODO: auto-enable scl on rhel
-        pass
 
     try:
         # Replace system ansible with rh-python35
@@ -587,6 +595,7 @@ def run(args):
                "ansible-playbook", playbook_path]
     if not args.skip_apply:
         os.chdir("/")
+        install_openstack_repos_and_update_system(args)
         install_ansible(args)
         enable_ara()
         sfconfig.utils.execute(run_cmd)

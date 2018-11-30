@@ -169,6 +169,10 @@ def main():
                  'logservers': [],
                  'executor_hosts': [],
                  }
+    if args.recover:
+        args.glue['force_update_tasks'] = True
+    else:
+        args.glue['force_update_tasks'] = False
 
     # Make sure the yaml files are updated
     sfconfig.upgrade.update_sfconfig(args)
@@ -213,6 +217,9 @@ def main():
             if role not in components:
                 continue
             components[role].configure(args, host)
+
+    # Set rdo_release_url as global vars to be usable by sf-base and sf-upgrade
+    args.glue["rdo_release_url"] = args.defaults["rdo_release_url"]
 
     # Save config if needed
     if args.save_sfconfig:
