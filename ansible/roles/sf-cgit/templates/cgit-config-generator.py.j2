@@ -55,9 +55,14 @@ def add_repo(repo_name):
 for project_name in projects_name:
     if project_name != "internal":
         conf.append("section=%s" % project_name)
+    if 'cgit/skip' in projects[project_name].get("options", []):
+        continue
     for sr in projects[project_name].get("source-repositories", []):
         repo_name = list(sr.keys())[0]
         if sr[repo_name].get('private') is True:
+            listed_repos.add(repo_name)
+            continue
+        if sr[repo_name].get('cgit/skip') is True:
             listed_repos.add(repo_name)
             continue
         add_repo(repo_name)
