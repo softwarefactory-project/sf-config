@@ -92,10 +92,15 @@
     - name: Install zuul_worker_rsa key
       copy:
         src: /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_worker_rsa
-        dest: /var/lib/zuul/.ssh/zuul_worker_rsa
+        dest: "{{ zuul_lib_dir }}/.ssh/zuul_worker_rsa"
         owner: zuul
         mode: 0400
 
+    - name: Create tenant-secrets directory
+      file:
+        path: "{{ zuul_lib_dir }}/tenant-secrets"
+        state: directory
+        mode: 0700
   when: "'zuul-scheduler' in zuul_services"
 
 - block:
@@ -117,7 +122,7 @@
 
     - name: Scan the missing zuul sources
       shell: >
-        ssh-keyscan -T 10 -p {{ item.item.port }} {{ item.item.host }} >>
+        ssh-keyscan -T 10 -p {{ item.item.port }} {{ item.item.host }} | sort | tac >>
         {{ zuul_lib_dir }}/.ssh/known_hosts
       with_items: "{{ _zuul_known_hosts_results.results }}"
       when: item.stdout == ""

@@ -25,7 +25,7 @@
 
 - name: Execute upgrade tasks
   include: /usr/share/sf-config/ansible/roles/{{ role_name }}/tasks/upgrade.yml
-  when: role_package == "any" or _version is changed
+  when: role_package == "any" or _version is changed or force_update_tasks
 
 - name: Write new version
   copy:

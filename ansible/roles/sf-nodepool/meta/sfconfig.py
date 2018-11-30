@@ -23,6 +23,8 @@ class NodepoolLauncher(Component):
     def configure(self, args, host):
         args.glue["nodepool_providers"] = args.sfconfig.get(
             "nodepool", {}).get("providers", [])
+        args.glue["nodepool_dib_reg_passwords"] = args.sfconfig.get(
+            "nodepool", {}).get("dib_reg_passwords", [])
         args.glue["nodepool_clouds_file"] = args.sfconfig.get(
             "nodepool", {}).get("clouds_file", None)
         if args.glue["nodepool_clouds_file"]:

@@ -126,8 +126,12 @@ class InstallServer(Component):
             puburl = args.glue["gerrit_pub_url"]
             if puburl[-1] == "/":
                 puburl = puburl[:-1]
+            if args.glue["tenant_deployment"]:
+                tenant_name = args.glue["tenant_name"]
+            else:
+                tenant_name = 'gerrit'
             args.glue["zuul_gerrit_connections"].append({
-                'name': 'gerrit',
+                'name': tenant_name,
                 'port': 29418,
                 'hostname': args.glue["gerrit_host"],
                 'canonical_hostname': args.sfconfig["fqdn"],
@@ -444,19 +448,26 @@ class InstallServer(Component):
         args.glue["zuul_rsa_pub"] = zuul_key
 
         # Look for master zuul-jobs project name and connection name
-        try:
-            # TODO: add special attribute to zuul-jobs to better identify it
-            # or add support for tenant custom zuul-jobs location...
-            zj = self.master_resource.get(
-                "resources", {}).get("projects", {}).get(
-                    "internal", {}).get("source-repositories")[-1]
-            zuul_name = list(zj.keys())[0]
-            zuul_conn = zj[zuul_name]["connection"]
-            args.glue["zuul_jobs_connection_name"] = zuul_conn
-            args.glue["zuul_jobs_project_name"] = zuul_name
+        if args.sfconfig["tenant-deployment"].get("zuul-jobs"):
+            # Use the provided configuration
+            zjc = args.sfconfig["tenant-deployment"].get("zuul-jobs")
+            args.glue["zuul_jobs_connection_name"] = zjc["connection"]
+            args.glue["zuul_jobs_project_name"] = zjc["project"]
             args.glue["zuul_upstream_zuul_jobs"] = True
-        except Exception:
-            fail("Couldn't find zuul-jobs location in master sf")
+        else:
+            try:
+                # TODO: add special attribute to zuul-jobs to better identify
+                # it or add support for tenant custom zuul-jobs location...
+                zj = self.master_resource.get(
+                    "resources", {}).get("projects", {}).get(
+                        "internal", {}).get("source-repositories")[-1]
+                zuul_name = list(zj.keys())[0]
+                zuul_conn = zj[zuul_name]["connection"]
+                args.glue["zuul_jobs_connection_name"] = zuul_conn
+                args.glue["zuul_jobs_project_name"] = zuul_name
+                args.glue["zuul_upstream_zuul_jobs"] = True
+            except Exception:
+                fail("Couldn't find zuul-jobs location in master sf")
 
         # Look for tenant default connection name and type to define
         # zuul connections on the master sf

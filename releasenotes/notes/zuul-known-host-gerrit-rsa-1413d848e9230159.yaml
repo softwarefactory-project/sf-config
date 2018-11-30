@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The Zuul user's known_hosts file for gerrit server now list ssh-rsa public
+    key first to prevent a paramiko issue when parsing other public key type.

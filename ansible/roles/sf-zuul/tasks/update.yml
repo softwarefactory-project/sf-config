@@ -44,14 +44,6 @@
       register: updated_keys
       changed_when: False
 
-    - name: Copy secrets to the install-server
-      fetch:
-        src: "{{ item }}"
-        dest: "{{ item }}"
-        flat: yes
-      with_items: "{{ updated_keys.stdout_lines }}"
-      when: updated_keys.stdout
-
     - name: Copy secrets to the gateway
       copy:
         src: "{{ item }}"

@@ -7,4 +7,6 @@ role_actions:
   - get_logs
   - disable
 
+rdo_release_url: "https://rdoproject.org/repos/openstack-queens/rdo-release-queens.rpm"
+
 role_package: sf-config

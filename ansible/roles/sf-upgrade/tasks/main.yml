@@ -11,6 +11,13 @@
     - sf_version != "master"
     - sf_version != sf_previous_version
 
+- name: Add openstack repo package
+  yum:
+    name: '{{ rdo_release_url }}'
+    state: present
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'
+
 # TODO: check if this is still needed
 - name: "Fix yum contentdir vars"
   copy:
