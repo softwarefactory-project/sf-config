@@ -1,0 +1,7 @@
+---
+- name: Disable services
+  service:
+    name: redis
+    state: stopped
+    enabled: "no"
+  ignore_errors: "yes"

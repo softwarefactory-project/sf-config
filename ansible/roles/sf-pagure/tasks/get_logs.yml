@@ -1,0 +1,7 @@
+---
+- name: "Fetch pagure logs"
+  synchronize:
+    mode: pull
+    src: /var/log/pagure/
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
