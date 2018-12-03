@@ -37,10 +37,13 @@ except Exception:
     requests = []
 for req in requests:
     req_path = os.path.join("/nodepool/requests", req)
-    req = json.loads(client.get(req_path)[0].decode('utf-8'))
-    if get_type(req["node_types"]).endswith("-oci"):
-        print("Deleting %s" % req_path)
-        client.delete(req_path, recursive=True)
+    try:
+        req = json.loads(client.get(req_path)[0].decode('utf-8'))
+        if get_type(req["node_types"]).endswith("-oci"):
+            print("Deleting %s" % req_path)
+            client.delete(req_path, recursive=True)
+    except Exception:
+        print("Couldn't decode %s" % req_path)
 
 print("Removing any oci nodes")
 try:
@@ -49,7 +52,10 @@ except Exception:
     nodes = []
 for node in nodes:
     node_path = os.path.join("/nodepool/nodes", node)
-    node = json.loads(client.get(node_path)[0].decode('utf-8'))
-    if get_type(node["type"]).endswith("-oci"):
-        print("Deleting %s" % node_path)
-        client.delete(node_path, recursive=True)
+    try:
+        node = json.loads(client.get(node_path)[0].decode('utf-8'))
+        if get_type(node["type"]).endswith("-oci"):
+            print("Deleting %s" % node_path)
+            client.delete(node_path, recursive=True)
+    except Exception:
+        print("Couldn't decode %s" % node_path)
