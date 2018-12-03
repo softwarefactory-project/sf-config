@@ -1,0 +1,60 @@
+---
+- name: Install required packages
+  yum:
+    name:
+      - libgit2-devel
+      - libjpeg-devel
+      - gcc
+      - libffi-devel
+      - redhat-rpm-config
+      - rh-python35-python-virtualenv
+      - gitolite3
+
+- name: Create virtual env
+  command: /opt/rh/rh-python35/root/bin/virtualenv --system-site-packages /usr/local/pagure
+  args:
+    creates: /opt/pagure
+
+- name: Update virtual env
+  pip:
+    name: "{{ item }}"
+    state: latest
+    virtualenv: /opt/pagure/
+  with_items:
+    - pip
+    - setuptools
+    - pymysql
+    - gunicorn
+
+- name: Clone pagure
+  git:
+    repo: https://pagure.io/pagure.git
+    depth: 1
+    dest: /opt/pagure.git
+
+- name: Replace hook shebang
+  replace:
+    path: /opt/pagure.git/pagure/hooks/files/hookrunner
+    regexp: '#!/usr/bin/env python'
+    replace: '#!/opt/pagure/bin/python'
+
+- name: Install pygit2
+  pip:
+    name: "pygit2==0.26.*"
+    virtualenv: /opt/pagure/
+
+- name: Install pagure requirements
+  pip:
+    requirements: /opt/pagure.git/requirements.txt
+    virtualenv: /opt/pagure/
+
+- name: Install pagure
+  command: /opt/pagure/bin/python setup.py develop
+  args:
+    chdir: /opt/pagure.git
+
+- name: Symlink celery
+  file:
+    src: /opt/pagure/bin/celery
+    dest: /usr/bin/celery
+    state: link
