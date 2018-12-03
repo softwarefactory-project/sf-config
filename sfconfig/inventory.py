@@ -20,6 +20,13 @@ from jinja2.environment import Environment
 
 import sfconfig.utils
 
+openstack_release = 'queens'
+rdo_repos_base_url = 'https://rdoproject.org/repos'
+rdo_repos_subdir = 'openstack-%s' % openstack_release
+rdo_release_rpm = 'rdo-release-%s.rpm' % openstack_release
+rdo_openstack_rpm = '%s/%s/%s' % (rdo_repos_base_url, rdo_repos_subdir,
+                                  rdo_release_rpm)
+
 
 def write_playbook(playbook_path, playbook):
     if os.path.exists(playbook_path):
@@ -548,6 +555,17 @@ def enable_ara():
     os.environ["ARA_DIR"] = "/var/lib/software-factory/ansible/ara/"
 
 
+def install_openstack_repos_and_update_system():
+    '''Install openstack repository from rdoproject.org/repos
+    support both centos and rhel, update system'''
+    rdo_repos_filename = '/etc/yum.repos.d/rdo-release.repo'
+    if os.path.isfile(rdo_repos_filename) and \
+       openstack_release in open(rdo_repos_filename).read():
+        return
+    sfconfig.utils.execute(["yum", "install", "-y", rdo_openstack_rpm])
+    sfconfig.utils.execute(["yum", "update", "-y"])
+
+
 def install_ansible(args):
     if args.update:
         # Update ansible early on if possible
@@ -558,9 +576,6 @@ def install_ansible(args):
     if "centos" in open("/etc/os-release").read():
         sfconfig.utils.execute(
             ["yum", "install", "-y", "centos-release-scl-rh"])
-    else:
-        # TODO: auto-enable scl on rhel
-        pass
 
     try:
         # Replace system ansible with rh-python35
@@ -587,6 +602,7 @@ def run(args):
                "ansible-playbook", playbook_path]
     if not args.skip_apply:
         os.chdir("/")
+        install_openstack_repos_and_update_system()
         install_ansible(args)
         enable_ara()
         sfconfig.utils.execute(run_cmd)

@@ -206,6 +206,9 @@ def main():
         if args.sfconfig['fqdn'] != previous_args['fqdn']:
             args.glue["update_fqdn"] = True
 
+    # Add rdo_openstack_rpm variable
+    args.glue["rdo_openstack_rpm"] = sfconfig.inventory.rdo_openstack_rpm
+
     # Generate group vars
     sfconfig.groupvars.load(args)
     for host in args.sfarch["inventory"]:
