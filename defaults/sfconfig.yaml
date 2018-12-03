@@ -11,6 +11,9 @@ debug: false
 # Default landing web page
 welcome_page_path: "sf/welcome.html"
 
+# Openstack repository to activate for sf deployment
+openstack_repo_rpm: https://rdoproject.org/repos/openstack-queens/rdo-release-queens.rpm
+
 network:
   use_letsencrypt: false
   smtp_relay:
