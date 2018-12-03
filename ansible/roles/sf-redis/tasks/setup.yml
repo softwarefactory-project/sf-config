@@ -1,0 +1,8 @@
+---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
+- name: Start redis
+  service:
+    name: redis
+    state: started
+    enabled: yes

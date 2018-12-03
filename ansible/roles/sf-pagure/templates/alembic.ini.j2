@@ -1,0 +1,37 @@
+[alembic]
+script_location = /opt/pagure.git/alembic
+sqlalchemy.url = mysql+pymysql://{{ pagure_mysql_user }}:{{ pagure_mysql_password }}@{{ pagure_mysql_host }}:{{ pagure_mysql_port }}/{{ pagure_mysql_db }}
+
+[loggers]
+keys = root,sqlalchemy,alembic
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = WARN
+handlers = console
+qualname =
+
+[logger_sqlalchemy]
+level = WARN
+handlers =
+qualname = sqlalchemy.engine
+
+[logger_alembic]
+level = INFO
+handlers =
+qualname = alembic
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(levelname)-5.5s [%(name)s] %(message)s
+datefmt = %H:%M:%S

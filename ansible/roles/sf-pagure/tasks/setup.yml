@@ -1,0 +1,49 @@
+---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=pagure"
+
+- name: "Create pagure directory"
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: pagure
+    mode: 0700
+  with_items:
+    - /etc/pagure
+    - /var/lib/pagure
+    - /var/log/pagure
+
+- name: "Install pagure config"
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/pagure/{{ item }}"
+    group: pagure
+    mode: 0640
+  with_items:
+    - alembic.ini
+    - pagure.cfg
+  notify: restart pagure
+
+- name: "Install gateway config"
+  template:
+    src: "pagure-httpd.conf.j2"
+    dest: "/etc/httpd/conf.d/pagure.conf"
+  delegate_to: "{{ gateway_host }}"
+
+- name: "Setup database"
+  command: /opt/pagure/bin/python /opt/pagure.git/createdb.py --initial /etc/pagure/alembic.ini --config /etc/pagure/pagure.cfg
+
+- name: "Install top-menu"
+  patch:
+    src: pagure-topmenu.patch
+    dest: /opt/pagure.git/
+    strip: 1
+
+- name: "Install wsgi module"
+  copy:
+    src: wsgi.py
+    dest: /opt/pagure.git/pagure/wsgi.py
+
+- name: "Install service"
+  copy:
+    src: pagure_server.service
+    dest: /lib/systemd/system/pagure_server.service

@@ -1,0 +1,15 @@
+[Unit]
+Description=Pagure server
+After=redis.target
+Documentation=https://pagure.io/pagure
+
+[Service]
+ExecStart=/opt/pagure/bin/gunicorn -b 0.0.0.0:5000 pagure.wsgi:app
+Environment="PAGURE_CONFIG=/etc/pagure/pagure.cfg"
+Type=simple
+User=pagure
+Group=pagure
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+---
+role_package: redis
+
+role_actions:
+  - install
+  - setup
+  - get_logs
+  - disable
+  - upgrade

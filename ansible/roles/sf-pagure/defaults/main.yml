@@ -1,0 +1,23 @@
+---
+role_actions:
+  - install
+  - setup
+  - get_logs
+  - disable
+
+# TODO: properly package pagure
+role_package: rh-python35-python-virtualenv
+
+pagure_service_token: "CHANGE_ME"
+pagure_mail_salt: "CHANGE_ME"
+
+pagure_http_port: 20010
+
+pagure_mysql_host: "mysql.example.com"
+pagure_mysql_port: 3306
+pagure_mysql_db: "pagure"
+pagure_mysql_user: "pagure"
+pagure_mysql_password: "CHANGE_ME"
+
+pagure_services:
+  - pagure_server
