@@ -557,7 +557,8 @@ def install_ansible(args):
     # Install scl repository first
     if "centos" in open("/etc/os-release").read():
         sfconfig.utils.execute(
-            ["yum", "install", "-y", "centos-release-scl-rh"])
+            ["yum", "install", "-y", "centos-release-scl-rh",
+             "centos-release-openstack-queens"])
     else:
         # TODO: auto-enable scl on rhel
         pass
