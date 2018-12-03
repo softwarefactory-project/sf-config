@@ -11,6 +11,22 @@
     - sf_version != "master"
     - sf_version != sf_previous_version
 
+- set_fact:
+    os_repo_base_url: https://rdoproject.org/repos
+
+- set_fact:
+    openstack_repo_rpm: |
+      {{ os_repo_base_url }}/openstack-{{ os_release }}/rdo-release-{{ os_release }}.rpm
+
+- name: Add openstack repo package
+  yum:
+    name:
+      - '{{ openstack_repo_rpm }}'
+    state: present
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'
+  register: rdo_repo
+
 # TODO: check if this is still needed
 - name: "Fix yum contentdir vars"
   copy:
@@ -24,3 +40,4 @@
     state: latest
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
+  when: rdo_repo is changed
