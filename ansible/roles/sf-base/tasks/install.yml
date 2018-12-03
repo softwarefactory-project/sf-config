@@ -33,10 +33,15 @@
     state: present
   when: not sf_release_installed.stat.exists
 
+- set_fact:
+    openstack_repo_rpm: |
+      https://rdoproject.org/repos/openstack-{{ os_release }}/
+      rdo-release-{{ os_release }}.rpm
+
 - name: Add repo packages
   yum:
     name:
-      - centos-release-openstack-queens
+      - '{{ openstack_repo_rpm }}'
       - centos-release-scl-rh
     state: present
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
