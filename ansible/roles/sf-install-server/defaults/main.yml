@@ -8,3 +8,6 @@ role_actions:
   - disable
 
 role_package: sf-config
+
+rdo_release: "queens"
+rdo_openstack_rpm: "https://rdoproject.org/repos/openstack-{{ rdo_release }}/rdo-release-{{ rdo_release }}.rpm"
