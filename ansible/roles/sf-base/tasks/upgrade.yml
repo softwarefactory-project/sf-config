@@ -10,10 +10,11 @@
         file: sf-release
       notify: yum-clean-metadata
       with_items:
-        - centos-release-openstack-newton
-        - openstack-pike
-        - centos-release-ceph-jewel
         - centos-opstools
+        - centos-release-ceph-jewel
+        - centos-release-ceph-luminous
+        - centos-release-openstack-queens
+        - openstack-pike
 
     # TODO: could be remove when sf 3.1 will be release.
     # sf-release is removed when openstack-pike is
@@ -30,7 +31,9 @@
         state: absent
       with_items:
         - centos-release-ceph-jewel
+        - centos-release-ceph-luminous
         - centos-release-openstack-pike
+        - centos-release-openstack-queens
         - centos-release-opstools
       when: ansible_distribution == "CentOS"
 
