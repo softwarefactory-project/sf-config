@@ -1,0 +1,80 @@
+---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=pagure"
+
+- name: "Create pagure directory"
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: pagure
+    mode: 0700
+  with_items:
+    - /etc/pagure
+    - /var/log/pagure
+    - /var/lib/pagure
+    - /var/lib/pagure/remotes
+    - /var/lib/pagure/repositories
+    - /var/lib/pagure/repositories/docs
+    - /var/lib/pagure/repositories/forks
+    - /var/lib/pagure/repositories/requests
+    - /var/lib/pagure/repositories/tickets
+    - /var/lib/pagure/.gitolite
+    - /var/lib/pagure/.gitolite/conf
+    - /var/lib/pagure/.gitolite/keydir
+    - /var/lib/pagure/.gitolite/logs
+
+- name: Set file ACLs for git via http access
+  command: "{{ item }}"
+  with_items:
+    - "setfacl -Rdm u:apache:rx /var/lib/pagure/repositories"
+    - "setfacl -Rm u:apache:rx /var/lib/pagure/repositories"
+    - "setfacl -m u:apache:x /var/lib/pagure"
+
+- name: "Install pagure config"
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/pagure/{{ item }}"
+    group: pagure
+    mode: 0640
+  with_items:
+    - alembic.ini
+    - pagure.cfg
+  notify: restart pagure
+
+- name: "Install gitolite.rc"
+  copy:
+    src: gitolite.rc
+    dest: /var/lib/pagure/.gitolite.rc
+
+- name: "Install gateway config"
+  template:
+    src: "pagure-httpd.conf.j2"
+    dest: "/etc/httpd/conf.d/pagure.conf"
+  delegate_to: "{{ gateway_host }}"
+
+- name: "Setup database"
+  command: /opt/pagure/bin/python /opt/pagure.git/createdb.py --initial /etc/pagure/alembic.ini --config /etc/pagure/pagure.cfg
+
+- name: "Install top-menu"
+  patch:
+    src: pagure-topmenu.patch
+    dest: /opt/pagure.git/
+    strip: 1
+
+- name: "Install wsgi module"
+  copy:
+    src: wsgi.py
+    dest: /opt/pagure.git/pagure/wsgi.py
+
+- name: "Install service"
+  copy:
+    src: "{{ item }}.service"
+    dest: "/lib/systemd/system/{{ item }}.service"
+  with_items: "{{ pagure_services }}"
+
+- name: "Start services"
+  systemd:
+    name: "{{ item }}"
+    state: started
+    daemon_reload: yes
+    enabled: yes
+  with_items: "{{ pagure_services }}"
