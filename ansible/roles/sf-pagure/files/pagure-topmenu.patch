@@ -1,0 +1,13 @@
+diff --git a/pagure/templates/master.html b/pagure/templates/master.html
+index 05c6ae6..bda7715 100644
+--- a/pagure/templates/master.html
++++ b/pagure/templates/master.html
+@@ -11,6 +11,8 @@
+     type="text/css" rel="stylesheet" />
+     <link href="{{ url_for('static', filename='vendor/font-awesome/font-awesome.css') }}?version={{ g.version}}"
+     type="text/css" rel="stylesheet" />
++    <script type="text/javascript" src="/static/js/topmenu.js"></script>
++    <style>.navbar { top: -2px; }</style>
+     {% block header %}{% endblock %}
+   </head>
+   <body id="{{ tag }}">

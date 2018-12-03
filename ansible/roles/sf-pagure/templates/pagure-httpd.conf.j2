@@ -1,0 +1,21 @@
+Alias /pagure/static /opt/pagure.git/pagure/static/
+Alias /pagure/releases /var/www/releases
+
+AliasMatch ^/pagure/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$          /var/lib/pagure/repos/$1
+AliasMatch ^/pagure/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ /var/lib/pagure/repos/$1
+
+ProxyPass /pagure/ {{ pagure_internal_url }} nocanon retry=0
+ProxyPassReverse /pagure/ {{ pagure_internal_url }}
+
+<LocationMatch "^/pagure">
+    RequestHeader unset REMOTE_USER
+    <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
+        AuthType mod_auth_pubtkt
+        TKTAuthLoginURL /auth/login
+        TKTAuthFakeBasicAuth on
+        TKTAuthDebug 1
+        require valid-user
+        # Enforce token name to be cauth user
+        RequestHeader set REMOTE_USER "%{REMOTE_USER}s"
+    </If>
+</LocationMatch>
