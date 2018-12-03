@@ -58,7 +58,6 @@
         state: directory
   when: sf_previous_version < 3.1
 
-# sf-3.2
 - name: Remove renamed files
   file:
     path: "{{ item }}"
@@ -68,3 +67,15 @@
     - /usr/libexec/wait4mariadb
     - /usr/libexec/wait4gerrit
     - /usr/local/bin/zuul-changes.py
+  when: sf_previous_version < 3.3
+
+- name: Remove unused openstack repos
+  yum:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - centos-release-ceph-luminous
+    - centos-release-openstack-queens
+  when:
+    - ansible_distribution == "CentOS"
+    - sf_previous_version < 3.4
