@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a661de0_891c0d59",
+        "filename": "ansible/roles/sf-pagure/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-03T11:35:53Z",
+      "side": 1,
+      "message": "oops, should be \u0027pagure_\u0027",
+      "range": {
+        "startLine": 21,
+        "startChar": 19,
+        "endLine": 21,
+        "endChar": 30
+      },
+      "revId": "21e036cc8d0eda3d4df9244085044108846425a3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e9be5a42_7505adea",
+        "filename": "ansible/roles/sf-pagure/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-03T11:35:53Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 28
+      },
+      "revId": "21e036cc8d0eda3d4df9244085044108846425a3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a9ae6aa_4f1748fd",
+        "filename": "ansible/roles/sf-pagure/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-03T11:35:53Z",
+      "side": 1,
+      "message": "actually not used, the service files needs to be adapted to use the \"pagure\" user.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 13
+      },
+      "revId": "21e036cc8d0eda3d4df9244085044108846425a3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f0ed3ff9_6eea2a5b",
+        "filename": "ansible/roles/sf-pagure/templates/pagure-httpd.conf.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-03T11:35:53Z",
+      "side": 1,
+      "message": "not needed.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 54
+      },
+      "revId": "21e036cc8d0eda3d4df9244085044108846425a3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa2dd8ec_c997c7ad",
+        "filename": "ansible/roles/sf-pagure/templates/pagure-httpd.conf.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-03T11:35:53Z",
+      "side": 1,
+      "message": "should be replaced by {{ pagure_internal_url }}",
+      "range": {
+        "startLine": 9,
+        "startChar": 19,
+        "endLine": 9,
+        "endChar": 49
+      },
+      "revId": "21e036cc8d0eda3d4df9244085044108846425a3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
