@@ -467,14 +467,14 @@ def enable_action(args):
         pb.append({
             'import_playbook': '%s/zuul_restart.yml' % args.ansible_root,
             'when': [
-                'zuul_need_restart',
+                'zuul_need_restart | default(False)',
                 'not disable_zuul_autorestart | default(False) | bool'
             ]
         })
         pb.append({
             'import_playbook': '%s/nodepool_restart.yml' % args.ansible_root,
             'when': [
-                'nodepool_need_restart',
+                'nodepool_need_restart | default(False)',
                 'not disable_nodepool_autorestart | default(False) | bool'
             ]
         })
