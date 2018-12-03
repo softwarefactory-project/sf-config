@@ -1,0 +1,4 @@
+---
+- name: Install required packages
+  yum:
+    name: redis

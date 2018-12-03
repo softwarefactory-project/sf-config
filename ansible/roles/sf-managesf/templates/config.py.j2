@@ -47,6 +47,9 @@ services = [
 {% if 'nodepool' in roles %}
     'SFNodepool',
 {% endif %}
+{% if 'pagure' in roles %}
+    'SFPagure',
+{% endif %}
 ]
 
 managesf = {
@@ -99,6 +102,17 @@ storyboard = {
     'db_name': '{{ storyboard_mysql_db }}',
     'db_user': '{{ storyboard_mysql_user }}',
     'db_password': '{{ storyboard_mysql_password }}',
+}
+{% endif %}
+
+{% if 'pagure' in roles %}
+pagure = {
+    'url': '{{ pagure_internal_url }}',
+    'host': '{{ pagure_host }}',
+    'db_host': '{{ pagure_mysql_host }}',
+    'db_name': '{{ pagure_mysql_db }}',
+    'db_user': '{{ pagure_mysql_user }}',
+    'db_password': '{{ pagure_mysql_password }}',
 }
 {% endif %}
 

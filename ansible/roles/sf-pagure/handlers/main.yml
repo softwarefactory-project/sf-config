@@ -1,0 +1,6 @@
+---
+- name: restart pagure
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items: "{{ pagure_services }}"
