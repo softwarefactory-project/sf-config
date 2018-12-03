@@ -7,3 +7,4 @@ role_actions:
 
 sf_release_url: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
 role_package: any
+os_release: queens
