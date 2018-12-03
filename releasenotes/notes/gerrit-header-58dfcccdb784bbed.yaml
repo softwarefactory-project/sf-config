@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The Gerrit top menu only works when the "Show Site Header / Footer"
+    user preference is set (which is the default). User who are missing
+    the top menu navigation need to set the option back.

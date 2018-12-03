@@ -9,3 +9,6 @@
   register: _nodepool_restart_script
   failed_when: _nodepool_restart_script.rc not in [0, 3]
   changed_when: _nodepool_restart_script.rc == 3
+  when:
+    - not nodepool_need_restart
+    - not disable_nodepool_autorestart | default(False) | bool
