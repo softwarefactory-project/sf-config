@@ -214,6 +214,9 @@ def main():
                 continue
             components[role].configure(args, host)
 
+    # Set rdo_release_url as global vars to be usable by sf-base and sf-upgrade
+    args.glue["rdo_release_url"] = args.defaults["rdo_release_url"]
+
     # Save config if needed
     if args.save_sfconfig:
         save_file(args.sfconfig, args.config)
