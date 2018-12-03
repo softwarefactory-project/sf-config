@@ -1,0 +1,17 @@
+[Unit]
+Description=Pagure server
+After=redis.target
+Documentation=https://pagure.io/pagure
+
+[Service]
+# port this needs to be synced with the pagure_http_port ansible default vars
+ExecStart=/opt/pagure/bin/gunicorn -b 0.0.0.0:20010 pagure.wsgi:app
+SyslogIdentifier=pagure-server
+Environment="PAGURE_CONFIG=/etc/pagure/pagure.cfg"
+Type=simple
+User=pagure
+Group=pagure
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

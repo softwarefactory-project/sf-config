@@ -1,0 +1,144 @@
+From f7bc530c11175abbfa30a488f2ea73263ea8aa33 Mon Sep 17 00:00:00 2001
+From: Tristan Cacqueray <tdecacqu@redhat.com>
+Date: Tue, 4 Dec 2018 11:50:59 +0000
+Subject: [PATCH 1/2] Fix auth switch check using elif (nit)
+
+---
+ pagure/flask_app.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pagure/flask_app.py b/pagure/flask_app.py
+index fb6c9a38..286c9b15 100644
+--- a/pagure/flask_app.py
++++ b/pagure/flask_app.py
+@@ -99,7 +99,7 @@ def create_app(config=None):
+ 
+         oidc.init_app(app)
+         app.before_request(fas_user_from_oidc)
+-    if auth == "local":
++    elif auth == "local":
+         # Only import the login controller if the app is set up for local login
+         import pagure.ui.login as login
+ 
+-- 
+2.18.1
+
+
+From e9a97f72f0631746b9aab4f60ee5414c79a916fc Mon Sep 17 00:00:00 2001
+From: Tristan Cacqueray <tdecacqu@redhat.com>
+Date: Tue, 4 Dec 2018 11:56:35 +0000
+Subject: [PATCH 2/2] wip: add remote_user auth
+
+---
+ pagure/flask_app.py      |  6 +++-
+ pagure/ui/remote_user.py | 74 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+), 1 deletion(-)
+ create mode 100644 pagure/ui/remote_user.py
+
+diff --git a/pagure/flask_app.py b/pagure/flask_app.py
+index 286c9b15..1d6905ec 100644
+--- a/pagure/flask_app.py
++++ b/pagure/flask_app.py
+@@ -105,6 +105,10 @@ def create_app(config=None):
+ 
+         app.before_request(login._check_session_cookie)
+         app.after_request(login._send_session_cookie)
++    elif auth == "remote":
++        import pagure.ui.remote_user as remote_user
++        app.before_request(remote_user.check_header)
++        app.after_request(remote_user.login.send_session_cookie)
+ 
+     # Support proxy
+     app.wsgi_app = pagure.proxy.ReverseProxied(app.wsgi_app)
+@@ -227,7 +231,7 @@ def logout():
+         from pagure.ui.oidc_login import oidc_logout
+ 
+         oidc_logout()
+-    elif auth == "local":
++    elif auth in ["local", "remote"]:
+         import pagure.ui.login as login
+ 
+         login.logout()
+diff --git a/pagure/ui/remote_user.py b/pagure/ui/remote_user.py
+new file mode 100644
+index 00000000..74c3cece
+--- /dev/null
++++ b/pagure/ui/remote_user.py
+@@ -0,0 +1,74 @@
++# -*- coding: utf-8 -*-
++
++"""
++ (c) 2018 - Copyright Red Hat Inc
++
++ Authors:
++   Tristan Cacqueray <tdecacqu@redhat.com>
++
++"""
++
++import datetime
++import logging
++import flask
++from sqlalchemy.exc import SQLAlchemyError
++
++import pagure.lib.login
++import pagure.lib.model as model
++import pagure.lib.notify
++import pagure.lib.query
++
++import pagure.ui.login as login
++from pagure.utils import authenticated
++
++_log = logging.getLogger(__name__)
++
++
++def check_header():
++    login._check_session_cookie()
++
++    if hasattr(flask.g, "fas_user"):
++        _log.debug("Session has user: %s" % flask.g.fas_user)
++    if hasattr(flask.g, "token"):
++        _log.debug("Session has token: %s" % flask.g.token)
++
++    if authenticated():
++        return
++
++    remote_user = flask.request.headers.get("REMOTE_USER")
++    _log.debug("Looking for REMOTE_USER header %s" % remote_user)
++    if remote_user:
++        user_obj = pagure.lib.query.search_user(
++            flask.g.session, username=remote_user
++        )
++        if not user_obj:
++            _log.error("Oops, invalid remote_user")
++            return
++        _log.debug("Found user %s" % user_obj)
++
++        visit_key = pagure.lib.login.id_generator(40)
++        now = datetime.datetime.utcnow()
++        expiry = now + datetime.timedelta(days=30)
++        session = model.PagureUserVisit(
++            user_id=user_obj.id,
++            user_ip=flask.request.remote_addr,
++            visit_key=visit_key,
++            expiry=expiry,
++        )
++        _log.debug("Adding a new session %s" % session)
++        flask.g.session.add(session)
++        try:
++            _log.debug("Commiting session")
++            flask.g.session.commit()
++            flask.g.fas_user = user_obj
++            flask.g.fas_session_id = visit_key
++            flask.g.fas_user.login_time = now
++            _log.debug("Sending flash")
++            flask.flash("Welcome %s" % user_obj.username)
++        except SQLAlchemyError as err:  # pragma: no cover
++            flask.flash(
++                "Could not set the session in the db, "
++                "please report this error to an admin",
++                "error",
++            )
++            _log.exception(err)
+-- 
+2.18.1
+

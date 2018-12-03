@@ -1,0 +1,37 @@
+Alias /pagure/static /opt/pagure.git/pagure/static/
+Alias /pagure/releases /var/www/releases
+
+<Directory /var/lib/pagure/repositories/>
+Require all granted
+</Directory>
+
+<Directory "/usr/libexec/git-core*">
+Require all granted
+</Directory>
+
+SetEnv GIT_PROJECT_ROOT /var/lib/pagure/repositories
+AliasMatch ^/pagure/git/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$          /var/lib/pagure/repositories/$1
+AliasMatch ^/pagure/git/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ /var/lib/pagure/repositories/$1
+ScriptAliasMatch \
+  "(?x)^/pagure/git/(.*/(HEAD | \
+   info/refs | \
+   objects/info/[^/]+ | \
+   git-(upload|receive)-pack))$" \
+   /usr/libexec/git-core/git-http-backend/$1
+
+ProxyPass /pagure/git/ !
+ProxyPass /pagure/ {{ pagure_internal_url }} nocanon retry=0
+ProxyPassReverse /pagure/ {{ pagure_internal_url }}
+
+<LocationMatch "^/pagure">
+    RequestHeader unset REMOTE_USER
+    <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
+        AuthType mod_auth_pubtkt
+        TKTAuthLoginURL /auth/login
+        TKTAuthFakeBasicAuth on
+        TKTAuthDebug 1
+        require valid-user
+        # Enforce token name to be cauth user
+        RequestHeader set REMOTE_USER "%{REMOTE_USER}s"
+    </If>
+</LocationMatch>

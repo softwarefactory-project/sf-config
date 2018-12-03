@@ -1,0 +1,14 @@
+---
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
+- name: Configure bind
+  lineinfile:
+    path: /etc/redis.conf
+    regexp: "^bind .*"
+    line: "bind 0.0.0.0"
+
+- name: Start redis
+  service:
+    name: redis
+    state: started
+    enabled: yes
