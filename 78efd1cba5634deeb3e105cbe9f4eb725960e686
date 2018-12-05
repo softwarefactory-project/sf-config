@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "558f59a8_a86b674d",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-05T14:36:32Z",
+      "side": 1,
+      "message": "Ok, I will remove condition \u003d), thanks for the review",
+      "parentUuid": "0105b44d_d3f33592",
+      "range": {
+        "startLine": 70,
+        "startChar": 2,
+        "endLine": 70,
+        "endChar": 33
+      },
+      "revId": "78efd1cba5634deeb3e105cbe9f4eb725960e686",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "413c470a_4b77df9a",
         "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
         "patchSetId": 13
@@ -36,6 +60,24 @@
       "writtenOn": "2018-12-05T14:05:01Z",
       "side": 1,
       "message": "same here.",
+      "revId": "78efd1cba5634deeb3e105cbe9f4eb725960e686",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8a3c69c_b7f8d83b",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-05T14:36:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "413c470a_4b77df9a",
       "revId": "78efd1cba5634deeb3e105cbe9f4eb725960e686",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
