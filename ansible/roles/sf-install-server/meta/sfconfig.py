@@ -371,7 +371,7 @@ class InstallServer(Component):
         # Check master SF connectivity
         try:
             req = request.urlopen(
-                "%s/manage/resources" %
+                "%s/manage/v2/resources" %
                 args.glue["master_sf_url"])
             self.master_resource = json.loads(req.read().decode('utf-8'))
             args.glue["resources_connections"] = self.master_resource.get(
