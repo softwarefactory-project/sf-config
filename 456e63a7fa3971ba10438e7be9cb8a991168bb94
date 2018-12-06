@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81d9b8e3_1f0aa6e3",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 15
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-06T06:36:23Z",
+      "side": 1,
+      "message": "I think we need to \"yum: name\u003d\u0027*\u0027 state\u003dlatest\" if this change.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 53
+      },
+      "revId": "456e63a7fa3971ba10438e7be9cb8a991168bb94",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
