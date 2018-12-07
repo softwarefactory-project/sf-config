@@ -115,16 +115,22 @@
   with_items:
     - zuul_rsa
 
-- name: Install config
+- name: Install nodepool.yaml
   template:
     src: "{{ item }}.j2"
-    dest: "{{ nodepool_conf_dir }}/{{ item }}"
+    dest: "{{ nodepool_conf_dir }}/_nodepool.yaml"
     owner: "root"
     group: "nodepool"
     mode: "0440"
-  with_items:
-    - _nodepool.yaml
-    - secure.conf
+
+- name: Touch secure.conf
+  file:
+    path: "{{ nodepool_conf_dir }}/secure.conf"
+    state: touch
+    owner: "root"
+    group: "nodepool"
+    mode: "0550"
+  changed_when: false
 
 - name: Create nodepool working directories
   file:
