@@ -1,0 +1,8 @@
+{% if nodepool_dib_reg_passwords|default([]) %}
+diskimages:
+{% for dib_reg_password in nodepool_dib_reg_passwords|default([]) %}
+  - name: {{ dib_reg_password['image_name'] }}
+    env-vars:
+      REG_PASSWORD: {{ dib_reg_password['reg_password'] }}
+{% endfor %}
+{% endif %}
