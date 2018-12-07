@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7630b903_b61d8dcf",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-07T09:11:28Z",
+      "side": 1,
+      "message": "On Centos \u0027install\u0027 works, so you mean on rhel there is the issue ? Then why don\u0027t we have the  issue for install_ansible ?",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
