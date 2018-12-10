@@ -57,6 +57,15 @@
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
   when: ansible_distribution == "CentOS"
 
+- name: Add centos extras repository on RHEL
+  yum_repository:
+    name: extras
+    description: CentOS-$releasever - Extras
+    mirrorlist: http://mirrorlist.centos.org/?release=7&arch=$basearch&repo=extras&infra=$infra
+    gpgcheck: no
+    includepkgs: mock, python-ecdsa, python-lockfile, pigz
+  when: ansible_distribution == "RedHat"
+
 - name: Update all packages
   yum:
     name: '*'
