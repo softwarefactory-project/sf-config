@@ -87,6 +87,24 @@
       "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "334159bb_d227b870",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-11T10:07:20Z",
+      "side": 1,
+      "message": "Ok better to do it only when not installed. But still don\u0027t see why \u0027localinstall\u0027 must be used here. Also it is deprecated.",
+      "parentUuid": "ab168645_76778783",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
