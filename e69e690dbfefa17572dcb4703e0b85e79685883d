@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b83ff329_be7f1881",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 201
+      },
+      "writtenOn": "2018-12-11T22:03:24Z",
+      "side": 1,
+      "message": "this URL is 404\nhttps://softwarefactory-project.io/r/14504 works",
+      "revId": "e69e690dbfefa17572dcb4703e0b85e79685883d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
