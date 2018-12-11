@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "cf8d786d_63fea94b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-11T09:14:48Z",
+      "side": 1,
+      "message": "actually, python-ecdsa seems pulled by paramiko\u003c2 which we are not using so I think it can be removed too.",
+      "parentUuid": "68d7df77_b0757073",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "6ba3effe500c407e3679fdd4fe1564a221e21a56",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2370c5ae_b8104fff",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
