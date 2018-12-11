@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ede390a7_c45a6e07",
+        "filename": "ansible/roles/sf-nodepool/templates/secure.conf.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-12-11T17:14:45Z",
+      "side": 1,
+      "message": "This is already defaulted in the defaults file and shouldn\u0027t be necessary here",
+      "range": {
+        "startLine": 1,
+        "startChar": 32,
+        "endLine": 1,
+        "endChar": 44
+      },
+      "revId": "944c608e86b07f5473d668d32adbb2a0fdf12531",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d6e2fc06_0a7e85ba",
+        "filename": "ansible/roles/sf-nodepool/templates/secure.conf.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 277
+      },
+      "writtenOn": "2018-12-11T17:14:45Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 3,
+        "startChar": 53,
+        "endLine": 3,
+        "endChar": 65
+      },
+      "revId": "944c608e86b07f5473d668d32adbb2a0fdf12531",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
