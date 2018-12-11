@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68d7df77_b0757073",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-11T07:07:15Z",
+      "side": 1,
+      "message": "what service needs python-ecdsa?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "6ba3effe500c407e3679fdd4fe1564a221e21a56",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2370c5ae_b8104fff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-11T07:07:15Z",
+      "side": 1,
+      "message": "We should remove that dependencies (and make sure the services that needs can work without it). With systemd, we don\u0027t want python-daemon or python-lockfile.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "6ba3effe500c407e3679fdd4fe1564a221e21a56",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ed79c7e3_d6a73c08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-11T07:07:15Z",
+      "side": 1,
+      "message": "Sounds fair to disable dlrn on rhel7 for now.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 22
+      },
+      "revId": "6ba3effe500c407e3679fdd4fe1564a221e21a56",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2acacb24_babc5ff1",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-11T07:07:15Z",
+      "side": 1,
+      "message": "why is there pigz in the list?",
+      "range": {
+        "startLine": 66,
+        "startChar": 54,
+        "endLine": 66,
+        "endChar": 58
+      },
+      "revId": "6ba3effe500c407e3679fdd4fe1564a221e21a56",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
