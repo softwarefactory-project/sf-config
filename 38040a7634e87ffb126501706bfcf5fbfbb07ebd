@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8956f6bd_98151d18",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 201
+      },
+      "writtenOn": "2018-12-11T22:20:39Z",
+      "side": 1,
+      "message": "So we need RDO Queens only to get ARA deps?\nThis does not seem right, let\u0027s get ARA into CentOS Cfgmgmt SIG.",
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
