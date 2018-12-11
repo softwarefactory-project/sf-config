@@ -115,6 +115,30 @@
       "revId": "6ba3effe500c407e3679fdd4fe1564a221e21a56",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "291990cb_5c4635b0",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-11T13:46:40Z",
+      "side": 1,
+      "message": "mock needs it:\n\n[root@managesf.sftests.com ~]# rpm -q --whatrequires pigz\nmock-1.2.17-1.el7.centos.noarch",
+      "parentUuid": "2acacb24_babc5ff1",
+      "range": {
+        "startLine": 66,
+        "startChar": 54,
+        "endLine": 66,
+        "endChar": 58
+      },
+      "revId": "6ba3effe500c407e3679fdd4fe1564a221e21a56",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
