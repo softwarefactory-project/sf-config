@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7dd6c591_73c7c5f7",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-11T09:54:26Z",
+      "side": 1,
+      "message": "Explication, in sf-upgrade, before doing state\u003dlatest, we need to also ensure that the correct rdo repository is installed to avoid updating the whole system twice. Then here, if there is a when: rdo_repo is changed, then we would not do that second system update.",
+      "parentUuid": "f14ac5d7_f26c03ec",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7630b903_b61d8dcf",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 18
