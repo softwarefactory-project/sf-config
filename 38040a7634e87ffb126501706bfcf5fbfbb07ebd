@@ -16,6 +16,24 @@
       "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a47256fb_9f584b56",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-11T22:52:18Z",
+      "side": 1,
+      "message": "not really, we need to check which package require depends, there is a long list of packages installed from rdo-queens:\n\nhttps://softwarefactory-project.io/paste/show/1348\n\nWe also install rdo-queens in sf-base in the same review",
+      "parentUuid": "8956f6bd_98151d18",
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
