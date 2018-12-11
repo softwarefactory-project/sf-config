@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "cc6e198b_b546e8f6",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-11T21:47:25Z",
+      "side": 1,
+      "message": "it doesn\u0027t work for install server because rdo repo is installed by sfconfig, so when condition will be false for the first run",
+      "parentUuid": "f14ac5d7_f26c03ec",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7630b903_b61d8dcf",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 18
