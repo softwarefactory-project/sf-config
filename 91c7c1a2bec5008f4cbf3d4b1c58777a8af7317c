@@ -37,6 +37,42 @@
     },
     {
       "key": {
+        "uuid": "dc1b5d0a_74f39c5c",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-11T14:51:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f14ac5d7_f26c03ec",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2f9ba525_ba522efa",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-11T14:51:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7dd6c591_73c7c5f7",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7630b903_b61d8dcf",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 18
@@ -102,6 +138,24 @@
       "side": 1,
       "message": "Ok better to do it only when not installed. But still don\u0027t see why \u0027localinstall\u0027 must be used here. Also it is deprecated.",
       "parentUuid": "ab168645_76778783",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dd691855_5d69b079",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-11T14:51:50Z",
+      "side": 1,
+      "message": "we need localinstall, because install fails if the rpm is already installed on the system, localinstall didn\u0027t have the same behavior than install when providing url instead package name",
+      "parentUuid": "334159bb_d227b870",
       "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
