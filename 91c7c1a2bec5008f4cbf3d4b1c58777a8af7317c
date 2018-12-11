@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "f14ac5d7_f26c03ec",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-11T07:01:34Z",
+      "side": 1,
+      "message": "We should not update all on install, this should only be done if the openstack repo changed.\n\nMore over, we should also do those steps in the sf-upgrade module, so that we \u0027name\u003d* state\u003dlatest\u0027 only once.",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7630b903_b61d8dcf",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 18
@@ -31,6 +48,24 @@
       "side": 1,
       "message": "It failed on rhel and centos, when doing yum install $url\n\n[root@centos-7 ~]# yum install -q https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y\nError: Nothing to do\n[root@centos-7 ~]# echo $?\n1\n[root@centos-7 ~]# yum localinstall -q https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y\n[root@centos-7 ~]# echo $?\n0\n\nFor ansible, we do yum install $package_name and it works as expected",
       "parentUuid": "7630b903_b61d8dcf",
+      "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab168645_76778783",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-11T07:01:34Z",
+      "side": 1,
+      "message": "Why are we installing each time? Fabien, the ansible install is only done if ansible-playbook is not there.",
+      "parentUuid": "858ecc43_e67af346",
       "revId": "91c7c1a2bec5008f4cbf3d4b1c58777a8af7317c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
