@@ -37,6 +37,29 @@
     },
     {
       "key": {
+        "uuid": "0884b435_c8790d21",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-12-12T16:18:15Z",
+      "side": 1,
+      "message": "As Fabien mentioned, these should be higher level default vars to make it easier to maintain consistency",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 88
+      },
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6c52fc3_0bdbae28",
         "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
         "patchSetId": 19
@@ -71,6 +94,29 @@
     },
     {
       "key": {
+        "uuid": "de565d0c_0e55d924",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-12-12T16:18:15Z",
+      "side": 1,
+      "message": "Same remark as elsewhere, can this be set in one place only?",
+      "range": {
+        "startLine": 554,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 54
+      },
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "56be8cd9_1c9014cc",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 19
@@ -82,6 +128,30 @@
       "writtenOn": "2018-12-12T14:32:30Z",
       "side": 1,
       "message": "Could you use install then",
+      "range": {
+        "startLine": 569,
+        "startChar": 40,
+        "endLine": 569,
+        "endChar": 45
+      },
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "73682d3b_1ea74c03",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-12-12T16:18:15Z",
+      "side": 1,
+      "message": "according to the TODO above, not until release 8 of CentOS/RHEL, IIUC",
+      "parentUuid": "56be8cd9_1c9014cc",
       "range": {
         "startLine": 569,
         "startChar": 40,
