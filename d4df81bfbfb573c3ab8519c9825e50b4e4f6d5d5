@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff70efb6_22eb7519",
+        "filename": "sfconfig/arch.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-12T20:21:54Z",
+      "side": 1,
+      "message": "fail(\"dlrn component is not supported on a RHEL deployment\")",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 40
+      },
+      "revId": "d4df81bfbfb573c3ab8519c9825e50b4e4f6d5d5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
