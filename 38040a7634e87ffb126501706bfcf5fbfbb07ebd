@@ -34,6 +34,63 @@
       "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d6c52fc3_0bdbae28",
+        "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-12T14:32:30Z",
+      "side": 1,
+      "message": "Could it be put in default var ?",
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "96c5cbd8_e2417363",
+        "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-12T14:32:30Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "56be8cd9_1c9014cc",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-12T14:32:30Z",
+      "side": 1,
+      "message": "Could you use install then",
+      "range": {
+        "startLine": 569,
+        "startChar": 40,
+        "endLine": 569,
+        "endChar": 45
+      },
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
