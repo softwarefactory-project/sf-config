@@ -77,6 +77,11 @@ def process(args):
         if len(args.glue["roles"][requirement]) > 1:
             fail("Only one instance of %s is required" % requirement)
 
+    if 'rhel' in open("/etc/os-release").read() and "dlrn" in args.glue[
+            "roles"]:
+        fail("""please remove DLRN component from arch.yaml, it is not
+        supported on RHEL deployment""")
+
     if len(args.sfarch["inventory"]) > 1 and (
             "cgit" not in args.glue["roles"] and
             "gerrit" not in args.glue["roles"]):
