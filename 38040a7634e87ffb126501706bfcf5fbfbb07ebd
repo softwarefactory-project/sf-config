@@ -77,6 +77,24 @@
     },
     {
       "key": {
+        "uuid": "9dea735e_02f19800",
+        "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-12T16:47:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6c52fc3_0bdbae28",
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "96c5cbd8_e2417363",
         "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
         "patchSetId": 19
@@ -94,6 +112,24 @@
     },
     {
       "key": {
+        "uuid": "a96ccd45_1cbe67a0",
+        "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
+        "patchSetId": 19
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-12T16:47:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96c5cbd8_e2417363",
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "de565d0c_0e55d924",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 19
@@ -105,6 +141,30 @@
       "writtenOn": "2018-12-12T16:18:15Z",
       "side": 1,
       "message": "Same remark as elsewhere, can this be set in one place only?",
+      "range": {
+        "startLine": 554,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 54
+      },
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5b44fbb_97b48ed8",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-12T16:47:23Z",
+      "side": 1,
+      "message": "I will try to set it in sfconfig.yaml",
+      "parentUuid": "de565d0c_0e55d924",
       "range": {
         "startLine": 554,
         "startChar": 0,
@@ -151,6 +211,54 @@
       "writtenOn": "2018-12-12T16:18:15Z",
       "side": 1,
       "message": "according to the TODO above, not until release 8 of CentOS/RHEL, IIUC",
+      "parentUuid": "56be8cd9_1c9014cc",
+      "range": {
+        "startLine": 569,
+        "startChar": 40,
+        "endLine": 569,
+        "endChar": 45
+      },
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fd2856bc_219096d2",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-12T16:47:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73682d3b_1ea74c03",
+      "range": {
+        "startLine": 569,
+        "startChar": 40,
+        "endLine": 569,
+        "endChar": 45
+      },
+      "revId": "38040a7634e87ffb126501706bfcf5fbfbb07ebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f7450a18_c9ac2514",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-12T16:47:23Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "56be8cd9_1c9014cc",
       "range": {
         "startLine": 569,
