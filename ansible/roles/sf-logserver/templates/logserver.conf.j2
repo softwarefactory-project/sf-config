@@ -55,6 +55,9 @@ AddType text/plain .yml
 </Directory>
 
 <LocationMatch "/logs/">
+    # Enable zuul-web ui to access logs
+    Header set Access-Control-Allow-Origin "*"
+
     RewriteEngine On
 
     # Redirect .*/{{ logs_wsgi_ara_directory }} to the ARA sqlite wsgi middleware
