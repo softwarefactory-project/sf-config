@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1dbc28f3_ea71cefd",
+        "filename": "ansible/roles/sf-pagure/files/gitolite.rc",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-12-13T14:21:07Z",
+      "side": 1,
+      "message": "some of these seem interesting to have options for rather than be hard set, WDYT",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 24
+      },
+      "revId": "8f825b2abbeea2f7e375c8e020237d7554b0386b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a9d764a3_026b684f",
+        "filename": "ansible/roles/sf-pagure/files/wsgi.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-12-13T14:21:07Z",
+      "side": 1,
+      "message": "neat!",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 52
+      },
+      "revId": "8f825b2abbeea2f7e375c8e020237d7554b0386b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
