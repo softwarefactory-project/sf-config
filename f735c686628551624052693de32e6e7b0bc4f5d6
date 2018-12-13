@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "2cbd6242_16cfb237",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-13T09:41:34Z",
+      "side": 1,
+      "message": "hum, why not setting this glue in sfconfig.inventory directly? E.g. in the install_openstack_repos_and_update_system",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "68a6d3b5_4a478a4d",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-13T09:41:34Z",
+      "side": 1,
+      "message": "I wonder, shouldn\u0027t we vendor that file? e.g. make it part of sf-release.",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "28dcba51_c9226796",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-13T09:41:34Z",
+      "side": 1,
+      "message": "that condition doesn\u0027t work. You need to read os-release, then check if \"centos\" in os_release_content or \"rhel\" in os_release_content.\nIt seems like \"rhel\" is always in /etc/os-release, so just drop /\"centos\" or/",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74c963cd_501825d3",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 23
@@ -13,6 +64,24 @@
       "writtenOn": "2018-12-13T08:31:40Z",
       "side": 1,
       "message": "why ?",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fffe9b66_c77e01a6",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-13T09:41:34Z",
+      "side": 1,
+      "message": "because we need to update the system when installing that repository.",
+      "parentUuid": "74c963cd_501825d3",
       "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
