@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "74c963cd_501825d3",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-13T08:31:40Z",
+      "side": 1,
+      "message": "why ?",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
