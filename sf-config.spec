@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -15,6 +15,9 @@ Requires:       python-jinja2
 Conflicts:      epel-release
 Requires:       python2-six
 Requires:       PyYAML
+Requires:       iproute
+Requires:       openssh
+Requires:       openssl
 
 Buildrequires:  python2-devel
 Buildrequires:  python-setuptools
@@ -89,6 +92,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Fri Dec 14 2018 Javier Peña <jpena@redhat.com> - 3.1.0-2
+- Add missing dependencies on iproute, openssl and openssh
+
 * Thu Oct  4 2018 Tristan Cacqueray <tdecacqu@redhat.com> - 3.1.0-1
 - Add versions directory
 
