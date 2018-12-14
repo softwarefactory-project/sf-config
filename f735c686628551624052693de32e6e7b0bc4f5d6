@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bece8977_e34b1ef5",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-14T15:30:36Z",
+      "side": 1,
+      "message": "Ok, all glue where added in this file, that why I did that \u003d), will move it to inventory",
+      "parentUuid": "2cbd6242_16cfb237",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68a6d3b5_4a478a4d",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 23
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "583ec165_a277ecd4",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-14T15:30:36Z",
+      "side": 1,
+      "message": "I don\u0027t know, we have to add rdo gpg key to, is not optimal. I will check if it\u0027s possible to add an url in Requires in spec, it will be the best solution",
+      "parentUuid": "68a6d3b5_4a478a4d",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "28dcba51_c9226796",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 23
@@ -47,6 +83,24 @@
       "writtenOn": "2018-12-13T09:41:34Z",
       "side": 1,
       "message": "that condition doesn\u0027t work. You need to read os-release, then check if \"centos\" in os_release_content or \"rhel\" in os_release_content.\nIt seems like \"rhel\" is always in /etc/os-release, so just drop /\"centos\" or/",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "585b39a4_4aaf7441",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-14T15:30:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28dcba51_c9226796",
       "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
