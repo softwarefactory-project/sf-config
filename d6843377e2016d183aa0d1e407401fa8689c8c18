@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bcb3dba2_9a8cc3f7",
+        "filename": "ansible/roles/sf-mysql/tasks/get_logs.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-12-17T14:36:06Z",
+      "side": 1,
+      "message": "if you do\nmysqldump --all-databases | sed \u0027s$VALUES ($VALUES\\n($g\u0027 | sed \u0027s$),($),\\n($g\u0027 | gzip \u003e /var/log/mariadb/dump.gz\n\nI find that the values are more readable in the dump this way.",
+      "revId": "d6843377e2016d183aa0d1e407401fa8689c8c18",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
