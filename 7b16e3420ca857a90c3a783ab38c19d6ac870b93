@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d29e6c85_41e63a37",
+        "filename": "sfconfig/inventory.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2018-12-18T17:03:03Z",
+      "side": 1,
+      "message": "what other cases could we expect here? We only support centos and rhel anyway?\nalso, nit: you could assign the contents of open(\"/etc/os-release\").read() into one variable prior to the check rather than opening the file twice",
+      "revId": "7b16e3420ca857a90c3a783ab38c19d6ac870b93",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
