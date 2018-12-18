@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1ae1527e_caab542d",
+        "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
+        "patchSetId": 24
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-18T18:18:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c037e69_d151c290",
+      "range": {
+        "startLine": 17,
+        "startChar": 8,
+        "endLine": 17,
+        "endChar": 33
+      },
+      "revId": "7b16e3420ca857a90c3a783ab38c19d6ac870b93",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d29e6c85_41e63a37",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 24
