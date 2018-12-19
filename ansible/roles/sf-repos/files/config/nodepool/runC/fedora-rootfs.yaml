@@ -59,6 +59,7 @@
       python3-pip python3-devel
       python3-tox python3-flake8 python3-ansible-lint python3-pycodestyle yamllint
       python3-sphinx python3-pelican python3-jinja2 python3-coverage
+      python2-wheel twine
       rpm-build make gcc
 
 - name: Install pip packages

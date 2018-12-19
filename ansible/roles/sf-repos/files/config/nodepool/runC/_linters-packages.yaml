@@ -12,6 +12,8 @@
       - python2-coverage
       - python2-pelican
       - python2-sphinx
+      - python2-twine
+      - python-wheel
       - doc8
 
 - name: Install linters packages
