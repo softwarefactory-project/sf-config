@@ -16,6 +16,24 @@
       "revId": "4fcf33815b737f994cfb3276617fd870d4844dd4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fc4ee6e4_4def2975",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-19T10:08:39Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "c70c74e9_c72a1398",
+      "revId": "4fcf33815b737f994cfb3276617fd870d4844dd4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
