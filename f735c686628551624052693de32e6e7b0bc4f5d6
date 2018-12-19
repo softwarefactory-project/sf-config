@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "843c0fdb_5872fdff",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-19T06:26:00Z",
+      "side": 1,
+      "message": "This still needs to be moved, adding such variable here isn\u0027t correct. Actually, this shouldn\u0027t even be part of the python module. Let\u0027s move the rdo_openstack_rpm variable content to the roles/sf-install-server/defaults/main.yaml file. Then it will be available in the python module through the args.default, that can be used in the inventory.py module for initial installation.",
+      "parentUuid": "bece8977_e34b1ef5",
+      "revId": "f735c686628551624052693de32e6e7b0bc4f5d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68a6d3b5_4a478a4d",
         "filename": "sfconfig/inventory.py",
         "patchSetId": 23
