@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f150616_f928a54f",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 26
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-19T06:16:49Z",
+      "side": 1,
+      "message": "Add # sf-3.3 here",
+      "revId": "6f946f8c9667a968bbf7c6fafa497aa168fded58",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

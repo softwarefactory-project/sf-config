@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "254a4df2_b3007eb1",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 26
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-19T06:16:49Z",
+      "side": 0,
+      "message": "why is this comment removed? It\u0027s reminder to why is this needed",
+      "revId": "31afeef40e51162fdc15710df5e548d5bbb2e895",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
