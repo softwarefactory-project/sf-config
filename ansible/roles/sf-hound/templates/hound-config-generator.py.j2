@@ -36,6 +36,9 @@ for project, attr in data.get("resources", {}).get("projects", {}).items():
         repo_name = list(sr.keys())[0]
         if sr[repo_name].get('private') is True:
             privates.add(repo_name)
+        if (sr[repo_name].get('hound/skip') is True or
+                'hound/skip' in attr.get('options', [])):
+            privates.add(repo_name)
 
 for repo, attr in data.get("resources", {}).get("repos", {}).items():
     if repo in privates:
