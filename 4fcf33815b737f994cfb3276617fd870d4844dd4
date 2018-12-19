@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c70c74e9_c72a1398",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-19T06:08:34Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we make it generic? For example:\n\ndib-secrets:\n  - image-name: rhel\n    secrets:\n      reg-password: rhsm-password",
+      "revId": "4fcf33815b737f994cfb3276617fd870d4844dd4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
