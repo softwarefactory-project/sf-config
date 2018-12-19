@@ -16,6 +16,24 @@
       "revId": "5010625249a8940a11fdcf498bd4f1f3f4200835",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b44f2000_d9b1d90f",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 29
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-19T15:07:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e10b445_e4247e6a",
+      "revId": "5010625249a8940a11fdcf498bd4f1f3f4200835",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
