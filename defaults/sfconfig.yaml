@@ -180,6 +180,9 @@ nodepool:
   #    # These must be set when using a keystone v3 auth endpoint
   #    # user_domain_name: Default
   #    # project_domain_name: Default
+  dib_reg_passwords: []
+  #  - image_name: rhel
+  #    reg_password: rhsm_password
 
 elasticsearch:
   heap_size: 512m
