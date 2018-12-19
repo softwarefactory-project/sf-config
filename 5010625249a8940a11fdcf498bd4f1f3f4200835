@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e10b445_e4247e6a",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 29
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-12-19T10:45:40Z",
+      "side": 1,
+      "message": "Is this one missing too: centos-release-qemu-ev ?\n\n[root@managesf.pagure.sftests.com ~]# rpm -q --requires centos-release-openstack-queens\ncentos-release\ncentos-release-ceph-luminous\ncentos-release-qemu-ev",
+      "revId": "5010625249a8940a11fdcf498bd4f1f3f4200835",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
