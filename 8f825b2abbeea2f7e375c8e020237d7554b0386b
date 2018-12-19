@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "20767106_3903105f",
+        "filename": "ansible/roles/sf-pagure/files/gitolite.rc",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-19T08:30:14Z",
+      "side": 1,
+      "message": "sure, but let\u0027s keep that for follow-up. The goal here is mostly to set it up for ci test.",
+      "parentUuid": "1dbc28f3_ea71cefd",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 24
+      },
+      "revId": "8f825b2abbeea2f7e375c8e020237d7554b0386b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a9d764a3_026b684f",
         "filename": "ansible/roles/sf-pagure/files/wsgi.py",
         "patchSetId": 8
