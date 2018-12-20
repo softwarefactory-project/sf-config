@@ -201,7 +201,8 @@ def main():
 
     # Check if fqdn should be updated
     args.glue["update_fqdn"] = False
-    if os.path.isfile(allyaml):
+    if os.path.isfile("/var/lib/software-factory/.version") and \
+       os.path.isfile(allyaml):
         previous_args = yaml_load(allyaml)
         if args.sfconfig['fqdn'] != previous_args['fqdn']:
             args.glue["update_fqdn"] = True
@@ -212,7 +213,8 @@ def main():
         for role in host["roles"]:
             if role not in components:
                 continue
-            components[role].configure(args, host)
+            if not args.skip_setup:
+                components[role].configure(args, host)
 
     # Set rdo_release_url as global vars to be usable by sf-base and sf-upgrade
     args.glue["rdo_release_url"] = args.defaults["rdo_release_url"]
