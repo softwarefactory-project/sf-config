@@ -54,6 +54,7 @@
   selinux:
     policy: targeted
     state: permissive
+  when: ansible_virtualization_type != "podman"
 
 - name: Set sysctl values
   sysctl:
@@ -74,12 +75,14 @@
     - {name: net.ipv4.conf.default.secure_redirects, value: 0}
     - {name: net.ipv4.icmp_echo_ignore_broadcasts, value: 1}
     - {name: kernel.sysrq, value: 0}
+  when: ansible_virtualization_type != "podman"
 
 - name: Start auditd
   systemd:
     name: auditd
     enabled: "yes"
     state: started
+  when: ansible_virtualization_type != "podman"
 
 - name: Manage /etc/hosts
   template:
@@ -109,11 +112,13 @@
     name: "{{ item }}"
     state: "yes"
     persistent: "yes"
-  when: ansible_selinux.status == "enabled"
   with_items:
     - httpd_can_network_connect
     - httpd_can_network_connect_db
     - logging_syslogd_can_sendmail
+  when:
+    - ansible_selinux.status == "enabled"
+    - ansible_virtualization_type != "podman"
 
 - name: Configure ntp server
   template:
@@ -126,7 +131,9 @@
     name: ntpd
     enabled: true
     state: restarted
-  when: ntp_config is changed
+  when:
+    - ansible_virtualization_type != "podman"
+    - ntp_config is changed
 
 - name: Add localCA to pki trust
   copy:

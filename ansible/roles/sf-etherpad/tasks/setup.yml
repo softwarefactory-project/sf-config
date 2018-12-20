@@ -9,7 +9,9 @@
     proto: tcp
     setype: http_port_t
     state: present
-  when: ansible_selinux.status == "enabled"
+  when:
+    - ansible_virtualization_type != "podman"
+    - ansible_selinux.status == "enabled"
 
 - name: Setup sysconfig for mariadb wait lock
   copy:
