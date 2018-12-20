@@ -38,5 +38,6 @@ def load(args):
             args.glue["%s_root_loglevel" % service] = "INFO"
 
     # Save secrets to new secrets file
-    yaml_dump(args.secrets, open("%s/secrets.yaml" % args.lib, "w"))
+    if not args.skip_setup:
+        yaml_dump(args.secrets, open("%s/secrets.yaml" % args.lib, "w"))
     args.glue.update(args.secrets)

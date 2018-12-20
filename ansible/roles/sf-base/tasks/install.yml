@@ -78,15 +78,30 @@
       - nmap-ncat
       # Needed by sfconfig ansible setup tasks
       - rh-python35-python-requests
+      # Needed by very minimal instance
+      - rsync
+      - traceroute
+      - sudo
+      - openssh-server
+      - sudo
+      - crontabs
     state: present
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
+
+- name: Check for selinux config
+  stat:
+    path: /etc/selinux/config
+  register: _selinux_config
 
 - name: Set permissive selinux
   lineinfile:
     dest: /etc/selinux/config
     regexp: '^SELINUX='
     line: 'SELINUX=permissive'
+  when:
+    - _selinux_config.stat.exists
+    - ansible_virtualization_type != "podman"
 
 - name: Remove selinux autorelabel
   file:

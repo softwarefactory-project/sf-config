@@ -4,9 +4,9 @@
 
 [{{ role }}]
 {% for host in roles[role] %}{% if 'install-server' in host['roles'] %}
-{{ host['hostname'] }} ansible_connection=local
+{{ host['hostname'] }} ansible_connection=local ansible_python_interpreter=/usr/bin/python
 {% else %}
-{{ host['hostname'] }}
+{{ host['hostname'] }} ansible_python_interpreter=/usr/bin/python
 {% endif %}
 {% endfor %}
 

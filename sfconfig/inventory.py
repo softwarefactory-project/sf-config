@@ -446,7 +446,9 @@ def postconf(args, pb):
 
 def enable_action(args):
     pb = []
-    if not args.skip_populate_hosts:
+
+    if not (args.skip_setup and len(args.glue["inventory"]) == 1) and \
+       not args.skip_populate_hosts:
         pb.append(host_play('install-server', 'ssh',
                             {'role_action': 'populate_hosts'}))
     playbook_name = "sfconfig"
@@ -482,15 +484,16 @@ def enable_action(args):
         playbook_name += "_nosetup"
 
     # Store deployed version to be used by update playbook
-    pb.append(host_play('install-server', tasks={
-        'name': 'Write current version',
-        'copy': {
-            'dest': "/var/lib/software-factory/.version",
-            'content': "{{ sf_version }}"
-        }
-    }))
+    if not args.skip_setup:
+        pb.append(host_play('install-server', tasks={
+            'name': 'Write current version',
+            'copy': {
+                'dest': "/var/lib/software-factory/.version",
+                'content': "{{ sf_version }}"
+            }
+        }))
 
-    if not args.skip_test:
+    if not args.skip_setup and not args.skip_test:
         testinfra_tests = sfconfig.utils.list_testinfra()
         for host in args.glue["inventory"]:
             logfile = "/var/log/software-factory/testinfra.log"

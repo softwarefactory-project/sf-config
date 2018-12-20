@@ -149,7 +149,9 @@
     proto: tcp
     setype: http_port_t
     state: present
-  when: ansible_selinux.status == "enabled"
+  when:
+    - ansible_virtualization_type != "podman"
+    - ansible_selinux.status == "enabled"
 
 - name: Test if gerrit All-Projects exists
   stat:
