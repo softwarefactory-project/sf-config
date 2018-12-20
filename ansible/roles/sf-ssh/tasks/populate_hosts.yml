@@ -51,6 +51,7 @@
   hostname:
     name: "{{ item }}"
   delegate_to: "{{ item }}"
+  when: ansible_virtualization_type != "podman"
   with_items: "{{ servers.stdout_lines }}"
 
 - name: Gather hostnames
