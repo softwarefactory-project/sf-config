@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5514931a_184228c6",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2018-12-20T20:30:36Z",
+      "side": 1,
+      "message": "Don\u0027t we need any new packages to enable podman ?",
+      "range": {
+        "startLine": 81,
+        "startChar": 3,
+        "endLine": 81,
+        "endChar": 18
+      },
+      "revId": "d709f130f1a13622037bfcc7f6d119e879ac7cc1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
