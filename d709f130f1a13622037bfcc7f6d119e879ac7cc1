@@ -22,6 +22,30 @@
       "revId": "d709f130f1a13622037bfcc7f6d119e879ac7cc1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2f902033_4bf14110",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2018-12-21T00:44:15Z",
+      "side": 1,
+      "message": "Podman is used to run software-factory, not the otherway around. We could actually remove packages such as haveged or ntp.",
+      "parentUuid": "5514931a_184228c6",
+      "range": {
+        "startLine": 81,
+        "startChar": 3,
+        "endLine": 81,
+        "endChar": 18
+      },
+      "revId": "d709f130f1a13622037bfcc7f6d119e879ac7cc1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
