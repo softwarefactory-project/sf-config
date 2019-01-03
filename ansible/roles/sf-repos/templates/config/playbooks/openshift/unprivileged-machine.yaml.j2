@@ -25,15 +25,15 @@
 
     - name: Create src directory
       command: >
-        oc --context "{{'{{'}} zuul_resources['pod'].context {{'}}'}}"
-           --namespace "{{'{{'}} zuul_resources['pod'].namespace {{'}}'}}"
-           exec {{'{{'}} zuul_resources['pod'].pod {{'}}'}} mkdir src
+        oc --context "{{'{{'}} zuul.resources['pod'].context {{'}}'}}"
+           --namespace "{{'{{'}} zuul.resources['pod'].namespace {{'}}'}}"
+           exec {{'{{'}} zuul.resources['pod'].pod {{'}}'}} mkdir src
 
     - name: Copy src repos to the pod
       command: >
-        oc --context "{{'{{'}} zuul_resources['pod'].context {{'}}'}}"
-           --namespace "{{'{{'}} zuul_resources['pod'].namespace {{'}}'}}"
+        oc --context "{{'{{'}} zuul.resources['pod'].context {{'}}'}}"
+           --namespace "{{'{{'}} zuul.resources['pod'].namespace {{'}}'}}"
         rsync -q --progress=false
           {{'{{'}} zuul.executor.src_root {{'}}'}}/
-          {{'{{'}} zuul_resources['pod'].pod {{'}}'}}:src/
+          {{'{{'}} zuul.resources['pod'].pod {{'}}'}}:src/
       no_log: true
