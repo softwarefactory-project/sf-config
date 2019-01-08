@@ -125,7 +125,7 @@
     - name: Check zuul user can connect to gerrit connections
       become_user: zuul
       command: >
-        ssh -i {{ zuul_lib_dir }}/.ssh/id_rsa
+        ssh -i {{ item.sshkey | default(zuul_lib_dir + "/.ssh/id_rsa") }}
             -o UserKnownHostsFile={{ zuul_lib_dir }}/.ssh/known_hosts
             -p {{ item.port|default(29418) }}
             {{ item.username }}@{{ item.hostname }}
