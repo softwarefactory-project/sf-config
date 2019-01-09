@@ -117,7 +117,7 @@
 
     - name: Scan the missing zuul sources
       shell: >
-        ssh-keyscan -T 10 -p {{ item.item.port }} {{ item.item.host }} >>
+        ssh-keyscan -T 10 -p {{ item.item.port }} {{ item.item.host }} | sort | tac >>
         {{ zuul_lib_dir }}/.ssh/known_hosts
       with_items: "{{ _zuul_known_hosts_results.results }}"
       when: item.stdout == ""
