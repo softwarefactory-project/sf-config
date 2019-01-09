@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c1399ffc_83206360",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-01-09T13:00:23Z",
+      "side": 1,
+      "message": "sort -r does the same \u003d)",
+      "range": {
+        "startLine": 120,
+        "startChar": 73,
+        "endLine": 120,
+        "endChar": 83
+      },
+      "revId": "27110c9477b34785850723ba7fcd064a0b604012",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
