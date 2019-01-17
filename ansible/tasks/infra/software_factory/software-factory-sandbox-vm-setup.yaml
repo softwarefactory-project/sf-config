@@ -1,0 +1,361 @@
+# this Play is based on https://www.softwarefactory-project.io/how-to-setup-a-software-factory-sandbox.html
+# check the above URL for more information and/or manual setup steps of Software Factory sandbox VM
+# Software Factory docs: https://softwarefactory-project.io/docs/
+
+# tested with ansible 2.4 (on rhel/centos 7.6 hypervisor) and ansible 2.5 (on fedora 28 hypervisor)
+# NOTE: this Play is using 'become: true' so it's mandatory the user that runs this Play is granted with 'sudo' access at least
+
+# modify the 'vars' section below to customize the installation
+# reason for using the below 'cleanup' vars instead of Ansible tags is there's no support for 'always/never' special tags in Ansible <2.5
+
+# you can run this Play with 'ansible-playbook software-factory-sandbox-vm-setup.yaml'
+
+- name: Setup Software Factory Sandbox VM on libvirt hypervisor
+  hosts: localhost
+  become: true
+  any_errors_fatal: true
+  gather_facts: true
+  vars:
+    sf_version: 3.2 # examples: 'master', 3.0
+    vm_disk_size: '20G'
+    vm_ram_size: 4096 # MB
+    vm_cpu_count: 2
+    vm_hostname: 'sftests.com'
+    vm_os_variant: 'centos7.0' # run 'osinfo-query os' on linux shell to get full list
+    vm_image_url: 'http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2'
+    vm_disk_file: '/var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2'
+    vm_image_file: "{{ vm_disk_file | dirname }}/{{ vm_image_url | basename }}"
+
+    destroy_vm: false
+    undefine_vm: false
+
+  vars_prompt:
+    - name: 'cleanup'
+      prompt: "Do you want to do cleanups first (remove Software Factory sandbox VM, disk etc.)? (yes/no)"
+      default: 'no'
+      private: no
+    - name: "update_hosts_file"
+      prompt: "Do you want to remove old SF sandbox VM entries from /etc/hosts on hypervisor and add a new one to it? (yes/no)"
+      default: 'yes'
+      private: no
+  tasks:
+    - name: install required packages
+      package:
+        state: present
+        name: "{{ item }}"
+      with_items:
+        - libosinfo
+        - python-netaddr # required by Ansible's 'ipaddr' filter
+        - virt-install
+        - libguestfs-tools
+      tags:
+        - create_vm
+        - setup_vm_disk
+
+    - name: cleanup - destroy Software Factory sandbox VM
+      virt:
+        state: destroyed
+        name: "{{ vm_hostname }}"
+      failed_when: false
+      when: cleanup | bool or destroy_vm
+
+    - name: cleanup - undefine Software Factory sandbox VM
+      shell: virsh undefine {{ vm_hostname }} --nvram
+      failed_when: false
+      when: cleanup | bool or undefine_vm
+
+    - name: make sure the download directory exists
+      file:
+        path: "{{ vm_disk_file | dirname }}"
+        state: directory
+
+    - name: check if Software Factory VM already exists and/or is running
+      virt:
+        command: status
+        name: "{{ vm_hostname }}"
+      register: vm_info
+      failed_when: false
+      tags: vm_info
+
+    - name: set 'vm_is_running' Ansible fact
+      set_fact:
+        vm_is_running: |-
+          {% if vm_info.get('status', '') == 'running' -%}
+          true
+          {%- else %}
+          false
+          {%- endif %}
+      tags: vm_info
+
+    - name: set 'vm_creation_required' Ansible fact
+      set_fact:
+        vm_creation_required: |-
+          {% if vm_info.get('msg', '') | regex_search('virtual machine.*not found') -%}
+          true
+          {%- else %}
+          false
+          {%- endif %}
+      tags: vm_info
+
+    - name: download image that will be used for Software Factory VM
+      get_url:
+        url: "{{ vm_image_url }}"
+        dest: "{{ vm_image_file }}"
+      when: vm_creation_required
+
+    - name: remove old Software Factory VM disk file
+      file:
+        path: "{{ vm_disk_file }}"
+        state: absent
+      when: cleanup | bool or vm_creation_required
+
+    - block:
+        - block:
+            - name: "get public ssh of current user"
+              command: cat ~{{ ansible_user }}/.ssh/id_rsa.pub
+              register: ssh_pub_key1
+              failed_when: false
+
+            - name: "generate private/public ssh key pair if current user doesn't have one"
+              shell: |
+                mkdir ~{{ ansible_user }}/.ssh
+                chmod 700 ~{{ ansible_user }}/.ssh
+                ssh-keygen -t rsa -b 2048 -N '' -f ~{{ ansible_user }}/.ssh/id_rsa
+              no_log: true
+              when: ssh_pub_key1.rc != 0
+
+            - name: "get public ssh of current user - 2nd attempt"
+              command: cat ~{{ ansible_user }}/.ssh/id_rsa.pub
+              register: ssh_pub_key2
+              when: ssh_pub_key1.rc != 0
+
+            - name: set fact for ssh public key
+              set_fact:
+                ssh_pub_key: "{{ (ssh_pub_key1.rc == 0) | ternary(ssh_pub_key1.stdout, ssh_pub_key2.stdout) }}"
+
+          become: false
+          tags: get_ssh_pub_key
+
+        - name: "resize and pre-allocate VM disk file"
+          shell: |
+            set -ex
+            # export LIBGUESTFS_BACKEND=direct
+            qemu-img create -f qcow2 -o preallocation=metadata {{ vm_disk_file }} {{ vm_disk_size }}
+            virt-resize --format qcow2 --output-format qcow2 -v --expand /dev/sda1 {{ vm_image_file }} {{ vm_disk_file }}
+
+            virt-customize -a {{ vm_disk_file }} \
+              --touch /etc/cloud/cloud-init.disabled \
+              --truncate /etc/hostname \
+              --append-line /etc/hostname:{{ vm_hostname }} \
+              --selinux-relabel
+
+        - name: inject public ssh key to authorized_keys under root user in VM
+          shell: |
+            virt-customize -a {{ vm_disk_file }} \
+              --mkdir /root/.ssh \
+              --chmod 0700:/root/.ssh \
+              --run-command "ssh-keygen -t rsa -b 2048 -N '' -f /root/.ssh/id_rsa" \
+              --append-line "/root/.ssh/authorized_keys:{{ ssh_pub_key }}" \
+              --chmod 0644:/root/.ssh/authorized_keys \
+              --selinux-relabel
+          tags: inject_ssh_pub_key
+
+      when: vm_creation_required
+      tags: setup_vm_disk
+
+    - name: create Software Factory VM
+      shell: |
+        virt-install \
+          --name {{ vm_hostname }} \
+          --disk path={{ vm_disk_file }},device=disk,bus=virtio,format=qcow2,cache=none \
+          --virt-type kvm \
+          --cpu 'host-passthrough' \
+          --ram {{ vm_ram_size }} \
+          --vcpus {{ vm_cpu_count }} \
+          --os-variant {{ vm_os_variant }} \
+          --boot hd \
+          --import \
+          --autostart \
+          --noautoconsole \
+          --vnc \
+          --rng /dev/urandom \
+          --network default
+      when: vm_creation_required
+      tags: create_vm
+
+      # example qemu command of a working sfsandbox VM (may be useful in trobuleshooting issues)
+      # qemu       511  4.8  4.0 6097376 468752 ?      Sl   19:22   0:10 /usr/bin/qemu-system-x86_64 -machine accel=kvm -name guest=sfsandbox,debug-threads=on -S -object secret,id=masterKey0,format=raw,file=/var/lib/libvirt/qemu/domain-61-sfsandbox/master-key.aes -machine pc-i440fx-2.11,accel=kvm,usb=off,dump-guest-core=off -cpu host -m 4096 -realtime mlock=off -smp 2,sockets=2,cores=1,threads=1 -uuid dcf079a3-e2bd-454f-8587-1f6967d0c1f1 -no-user-config -nodefaults -chardev socket,id=charmonitor,path=/var/lib/libvirt/qemu/domain-61-sfsandbox/monitor.sock,server,nowait -mon chardev=charmonitor,id=monitor,mode=control -rtc base=utc,driftfix=slew -global kvm-pit.lost_tick_policy=delay -no-hpet -no-shutdown -global PIIX4_PM.disable_s3=1 -global PIIX4_PM.disable_s4=1 -boot strict=on -device ich9-usb-ehci1,id=usb,bus=pci.0,addr=0x4.0x7 -device ich9-usb-uhci1,masterbus=usb.0,firstport=0,bus=pci.0,multifunction=on,addr=0x4 -device ich9-usb-uhci2,masterbus=usb.0,firstport=2,bus=pci.0,addr=0x4.0x1 -device ich9-usb-uhci3,masterbus=usb.0,firstport=4,bus=pci.0,addr=0x4.0x2 -device virtio-serial-pci,id=virtio-serial0,bus=pci.0,addr=0x5 -drive file=/var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2,format=qcow2,if=none,id=drive-virtio-disk0,cache=none -device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x6,drive=drive-virtio-disk0,id=virtio-disk0,bootindex=1 -netdev tap,fd=30,id=hostnet0,vhost=on,vhostfd=32 -device virtio-net-pci,netdev=hostnet0,id=net0,mac=52:54:00:85:80:7b,bus=pci.0,addr=0x3 -chardev pty,id=charserial0 -device isa-serial,chardev=charserial0,id=serial0 -chardev socket,id=charchannel0,path=/var/lib/libvirt/qemu/channel/target/domain-61-sfsandbox/org.qemu.guest_agent.0,server,nowait -device virtserialport,bus=virtio-serial0.0,nr=1,chardev=charchannel0,id=channel0,name=org.qemu.guest_agent.0 -device usb-tablet,id=input0,bus=usb.0,port=1 -vnc 127.0.0.1:0 -device cirrus-vga,id=video0,bus=pci.0,addr=0x2 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x7 -object rng-random,id=objrng0,filename=/dev/urandom -device virtio-rng-pci,rng=objrng0,id=rng0,bus=pci.0,addr=0x8 -msg timestamp=on
+
+    - name: get IP address of the VM
+      shell: |
+        virsh domifaddr {{ vm_hostname }} | awk '$0 ~ /vnet/ {print $4}' | head -1 2>/dev/null
+      retries: 10
+      delay: 3
+      register: vm_ifaddr
+      until: vm_ifaddr.get('stdout', '') | ipaddr
+      when: vm_is_running | default('true') or vm_creation_required | default('true')
+      tags: vm_ipaddress
+
+    - name: make the IP an Ansible fact
+      set_fact:
+        vm_ipaddress: "{{ vm_ifaddr.stdout | ipaddr('address')}}"
+      tags: vm_ipaddress
+      when: vm_is_running | default('true') or vm_creation_required | default('true')
+
+    - name: remove any old entries of Software Factory VM from /etc/hosts on hypervisor
+      lineinfile:
+        path: /etc/hosts
+        regexp: ".*sftests.com"
+        state: absent
+      tags: vm_ipaddress
+      when:
+        - update_hosts_file | bool
+        - vm_is_running | default('true') or vm_creation_required | default('true') or cleanup | bool
+
+    - name: remove any old entries of Software Factory VM from known_hosts file
+      known_hosts:
+        name: "{{ vm_hostname }}"
+        state: absent
+      become: false
+      tags: vm_ipaddress
+      when:
+        - update_hosts_file | bool
+        - vm_is_running | default('true') or vm_creation_required | default('true')
+
+    - name: add ip/hostname of the VM to hypervisor's /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ vm_ipaddress }} {{ vm_hostname }}"
+      tags: vm_ipaddress
+      when:
+        - update_hosts_file | bool
+        - vm_is_running | default('true') or vm_creation_required | default('true')
+
+    - name: add Software Factory VM to Ansible inventory
+      add_host:
+        name: "{{ vm_hostname }}"
+        host: "{{ vm_ipaddress }}"
+        ansible_ssh_user: 'root'
+        ansible_ssh_private_key_file: "~{{ ansible_user }}/.ssh/id_rsa"
+        ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
+      become: false
+      tags: vm_ipaddress
+
+    - name: wait for SSH to start on the VM
+      wait_for:
+        port: 22
+        host: "{{ vm_ipaddress }}"
+        search_regex: OpenSSH
+        timeout: 10
+      register: vm_ssh_reachable
+      become: false
+      retries: 21
+      until: vm_ssh_reachable|succeeded
+      tags: vm_ssh_access
+      when: vm_creation_required
+
+    - name: Setup Software Factory inside the VM
+      block:
+        - name: wait for VM to accept logging via SSH
+          shell: hostname || echo "NOT_READY"
+          register: vm_ssh_check
+          until: vm_hostname in vm_ssh_check.stdout
+          retries: 20
+          delay: 15
+          tags: vm_ssh_access
+
+        - name: install requirements to run Ansible commands
+          # there's no python available on plain CentOS image hence 'yum/package' module of Ansible will not work
+          # and none of Ansible modules will work
+          raw:
+            yum install -y python
+
+        - name: install other requirements
+          package:
+            state: present
+            name: "{{ item }}"
+            update_cache: true
+          with_items:
+            - firewalld
+
+        - name: make sure firewalld service is started and boot-enabled
+          systemd:
+            name: firewalld
+            state: started
+            enabled: true
+
+        - name: setup firewalld to allow http, https, and gerrit access
+          shell: |
+            firewall-cmd --add-service=http --add-service=https
+            firewall-cmd --add-port=29418/tcp
+            firewall-cmd --runtime-to-permanent
+
+        - name: install Software Factory yum repo
+          yum:
+            name: https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm
+            state: present
+            update_cache: true
+
+        - name: install Software Factory RPMs
+          package:
+            name: "sf-config"
+            state: present
+
+        - name: add custom parameters and install&configure Software Factory (this may take a while (even ~15 minutes)... patience young SF Padawan)
+          shell: |
+            echo '      - hypervisor-runc' >> /etc/software-factory/arch.yaml
+            echo 'gateway_force_fqdn_redirection: False' > /etc/software-factory/custom-vars.yaml
+            echo 'enable_insecure_slaves: True' >> /etc/software-factory/custom-vars.yaml
+            sfconfig
+
+      delegate_to: "{{ vm_hostname }}"
+      when: vm_creation_required | default('true')
+      tags: sf
+
+    - name: get Software Factory admin password
+      shell: |
+        awk '/admin_password/ { print $2}' /etc/software-factory/sfconfig.yaml
+      register: sf_admin_password
+      delegate_to: "{{ vm_hostname }}"
+      when: vm_is_running | default('true')
+      tags: sf_admin_password
+
+    - name: "take snapshot of the VM (NOTE: VM may be not responsive during this task; may take up to 10min)"
+      shell: |
+        virsh snapshot-create {{ vm_hostname }}
+      register: vm_snapshots
+      become: true
+      when: vm_creation_required | default('false')
+      tags: vm_snapshot
+
+    - name: extract snapshot id from command's stdout
+      set_fact:
+        vm_snapshot_id: "{{ vm_snapshots.stdout_lines | regex_replace('Domain snapshot (.*) created', '\\1') }}"
+      when: vm_creation_required | default('false')
+
+    - name: VM and Software Factory Summary
+      vars:
+        # NOTE: the blank lines in the 'summary' variable are mandatory, otherwise the newline (\n) characters are lost and the SUMMARY looks awkward
+        summary: |
+          Initial snapshot of the VM: {% if vm_snapshot_id is defined %} "{{ vm_snapshot_id }} (run 'sudo virsh snapshot-revert sftests.com {{ vm_snapshot_id }}' to restore VM to state from this moment." {% else %} 'not created during this Ansible run' {% endif %}
+
+          Is VM running: {{ vm_is_running | default('not checked during this Ansible run') }}
+          Hostname: {{ vm_hostname }}
+          IP: {{ vm_ipaddress | default('not obtained during this Ansible run') }}
+          SSH public key added to authorized_keys: {%- if ssh_pub_key is defined %} {{ ssh_pub_key.split(' ')[2] }} {% else %} 'not added during this Ansible run' {% endif %}
+
+          URL: https://{{ vm_hostname }}
+          admin_password: {%- if sf_admin_password is defined and sf_admin_password.get('stdout', '') != '' %} {{ sf_admin_password.stdout }} {% else %} 'not obtained during this Ansible run' {% endif %}
+
+      debug:
+        msg: "{{ summary | from_yaml }}"
+      tags: summary
+
+    - name: NEXT STEPS FOR YOU TO DO
+      vars:
+        next_steps: |
+          1: "Save admin_password somewhere (for example web browser's password vault) if you haven't done so already."
+          2: "Also, if VM is running and you haven't done so already, log in to https://{{ vm_hostname }} as admin, go to Gerrit -> click 'Software Factory Administrator' in top-right corner -> Settings -> SSH Public Keys and add your public ssh key there (so you can submit gerrit reviews as admin without using password)."
+      debug:
+        msg: "{{ next_steps | from_yaml }}"
+      tags: summary
