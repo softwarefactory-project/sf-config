@@ -72,7 +72,7 @@ elasticsearch_index = 'repoxplorer'
 indexer_loop_delay = 300
 indexer_skip_projects = []
 index_custom_html = ""
-users_endpoint = True
+users_endpoint = {{ repoxplorer_activate_users_endpoint | default(True) }}
 admin_token = '{{ repoxplorer_admin_token }}'
 git_credential_helper_path = '/usr/bin/repoxplorer-git-credentials-helper'
 
