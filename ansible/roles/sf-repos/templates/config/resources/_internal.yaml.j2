@@ -42,11 +42,19 @@ resources:
       source-repositories:
         - {{ config_project_name }}:
             zuul/config-project: True
+{% if 'repoxplorer' in roles %}
+        - {{ sf_jobs_project_name }}:
+            repoxplorer/skip: True
+{% else %}
         - {{ sf_jobs_project_name }}
+{% endif %}
         - {{ zuul_jobs_project_name }}:
             connection: {{ zuul_jobs_connection_name }}
             zuul/include: [job]
             zuul/shadow: {{ sf_jobs_project_name }}
+{% if 'repoxplorer' in roles %}
+            repoxplorer/skip: True
+{% endif %}
 {% if 'gerrit' in roles %}
 
   repos:
