@@ -96,6 +96,11 @@
         owner: zuul
         mode: 0400
 
+    - name: Create tenant-secrets directory
+      file:
+        path: /var/lib/zuul/tenant-secrets
+        state: directory
+        mode: 0700
   when: "'zuul-scheduler' in zuul_services"
 
 - block:
