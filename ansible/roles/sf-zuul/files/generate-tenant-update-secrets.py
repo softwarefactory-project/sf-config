@@ -47,17 +47,19 @@ if local_url is None:
         default_tenant_name, str(tenants.items())))
 
 
-def zuul_encrypt(private_key_file, secret_file):
+def zuul_encrypt(private_key_file):
     import zuul.lib.encryption
     import subprocess
     pub_key = zuul.lib.encryption.deserialize_rsa_keypair(
         open(private_key_file, "rb").read())[1]
-    with open("%s.pub" % private_key_file, "wb") as pub:
+    pub_file = "/var/lib/zuul/tenant-secrets/%s.pub" % (
+        private_key_file.replace('/', ':'))
+    with open(pub_file, "wb") as pub:
         pub.write(
             zuul.lib.encryption.serialize_rsa_public_key(pub_key))
     p = subprocess.Popen(
-        ["/usr/share/sf-config/scripts/zuul-encrypt-secret.py", "%s.pub" %
-         private_key_file, "ssh_private_key", "--infile", ssh_key],
+        ["/usr/share/sf-config/scripts/zuul-encrypt-secret.py",
+         pub_file, "ssh_private_key", "--infile", ssh_key],
         stdout=subprocess.PIPE)
     p.wait()
     return p.stdout.read().decode('utf-8')
@@ -68,16 +70,24 @@ for tenant, inf in tenants.items():
         # This is a local tenant, no need for tenant-update job
         continue
 
-    tenant_secret_path = "/var/lib/software-factory/bootstrap-data/" \
-                         "tenant-update_%s_secret.yaml" % tenant
+    tenant_secret_path = "/var/lib/zuul/tenant-secrets/" \
+        "tenant-update_%s_secret.yaml" % tenant
     os.makedirs(os.path.dirname(tenant_secret_path), exist_ok=True)
+
+    # Check for sf<3.2 legacy paths
+    old_path = "/var/lib/software-factory/bootstrap-data/" \
+        "tenant-update_%s_secret.yaml" % tenant
+    if os.path.exists(old_path):
+        os.rename(old_path, tenant_secret_path)
+
     if (
             os.path.exists(tenant_secret_path) and
             "pkcs" in open(tenant_secret_path).read()):
         continue
+
     print("Generating secret for tenant %s" % tenant, file=sys.stderr)
 
-    req = urllib.request.urlopen(inf["url"] + "/resources")
+    req = urllib.request.urlopen(inf["url"] + "/v2/resources")
     data = json.loads(req.read().decode('utf-8'))
     tenant_config = data
 
@@ -86,7 +96,7 @@ for tenant, inf in tenants.items():
     tenant_config_name = tenant_config["config-repo"][len(
         connections[tenant_config_connection]["base-url"]):]
 
-    private_key_file = "/var/lib/zuul/keys/%s/%s.pem" % (
+    private_key_file = "/var/lib/zuul/keys/secrets/project/%s/%s/0.pem" % (
         tenant_config_connection, tenant_config_name)
 
     print("Looking for %s key on connection %s (%s)" % (
@@ -98,12 +108,11 @@ for tenant, inf in tenants.items():
         if os.path.exists(private_key_file):
             break
         time.sleep(1)
-    if retry == 59:
+    if retry == 1799:
         print("Couldn't find %s" % private_key_file)
         exit(1)
 
-    tenant_config_secret = zuul_encrypt(
-        private_key_file, "/var/lib/zuul/.ssh/id_rsa")
+    tenant_config_secret = zuul_encrypt(private_key_file)
     open(tenant_secret_path, "w").write(tenant_config_secret)
     updated_keys.append(tenant_secret_path)
 
