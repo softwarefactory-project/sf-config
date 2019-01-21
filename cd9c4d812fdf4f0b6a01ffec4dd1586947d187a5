@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4bdfcdee_f539f839",
+        "filename": "ansible/tasks/infra/software_factory/software-factory-sandbox-vm-setup.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-01-21T13:09:19Z",
+      "side": 1,
+      "message": "python3-netaddr\n\nTASK [get IP address of the VM] ********************************************************************************************************************************************************************\nfatal: [localhost]: FAILED! \u003d\u003e {\"msg\": \"The conditional check \u0027vm_ifaddr.get(\u0027stdout\u0027, \u0027\u0027) | ipaddr\u0027 failed. The error was: The ipaddr filter requires python-netaddr be installed on the ansible controller\"}",
+      "revId": "cd9c4d812fdf4f0b6a01ffec4dd1586947d187a5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "84a25f94_d56bdb92",
+        "filename": "ansible/tasks/infra/software_factory/software-factory-sandbox-vm-setup.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-01-21T13:09:19Z",
+      "side": 1,
+      "message": "This passed the first time, then after the error on get ifaddr, I\u0027ve rerun the playbook then:\nTASK [pre-allocate space and copy downloaded image as VM disk file and resize it to desired size] **************************************************************************************************\nfatal: [localhost]: FAILED! \u003d\u003e {\"changed\": true, \"cmd\": \"set -ex\\n # export LIBGUESTFS_BACKEND\u003ddirect\\n qemu-img create -f qcow2 -o preallocation\u003dmetadata /var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2 20G\\n virt-resize --format qcow2 --output-format qcow2 -v --expand /dev/sda1 /var/lib/libvirt/images/CentOS-7-x86_64-GenericCloud.qcow2 /var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2\\n\\n virt-customize -a /var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2 --touch /etc/cloud/cloud-init.disabled --truncate /etc/hostname --append-line /etc/hostname:sftests.com --selinux-relabel\", \"delta\": \"0:00:00.007669\", \"end\": \"2019-01-21 14:05:58.138572\", \"msg\": \"non-zero return code\", \"rc\": 1, \"start\": \"2019-01-21 14:05:58.130903\", \"stderr\": \"+ qemu-img create -f qcow2 -o preallocation\u003dmetadata /var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2 20G\\nqemu-img: /var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2: Failed to get \\\"write\\\" lock\\nIs another process using the image?\", \"stderr_lines\": [\"+ qemu-img create -f qcow2 -o preallocation\u003dmetadata /var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2 20G\", \"qemu-img: /var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2: Failed to get \\\"write\\\" lock\", \"Is another process using the image?\"], \"stdout\": \"Formatting \u0027/var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2\u0027, fmt\u003dqcow2 size\u003d21474836480 cluster_size\u003d65536 preallocation\u003dmetadata lazy_refcounts\u003doff refcount_bits\u003d16\", \"stdout_lines\": [\"Formatting \u0027/var/lib/libvirt/images/software-factory-sandbox-vm-disk.qcow2\u0027, fmt\u003dqcow2 size\u003d21474836480 cluster_size\u003d65536 preallocation\u003dmetadata lazy_refcounts\u003doff refcount_bits\u003d16\"]}",
+      "revId": "cd9c4d812fdf4f0b6a01ffec4dd1586947d187a5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "30605a9f_c26ef044",
+        "filename": "ansible/tasks/infra/software_factory/software-factory-sandbox-vm-setup.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-01-21T13:09:19Z",
+      "side": 1,
+      "message": "Could it be optional ? I don\u0027t want it touchs my hosts file. I have mulitple sftests.com entries I manage manually.",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 24
+      },
+      "revId": "cd9c4d812fdf4f0b6a01ffec4dd1586947d187a5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
