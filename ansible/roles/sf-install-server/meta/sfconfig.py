@@ -126,8 +126,12 @@ class InstallServer(Component):
             puburl = args.glue["gerrit_pub_url"]
             if puburl[-1] == "/":
                 puburl = puburl[:-1]
+            if args.glue["tenant_deployment"]:
+                tenant_name = args.glue["tenant_name"]
+            else:
+                tenant_name = 'gerrit'
             args.glue["zuul_gerrit_connections"].append({
-                'name': 'gerrit',
+                'name': tenant_name,
                 'port': 29418,
                 'hostname': args.glue["gerrit_host"],
                 'canonical_hostname': args.sfconfig["fqdn"],
