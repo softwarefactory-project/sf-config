@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d10f256d_db60df38",
+        "filename": "ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-22T08:27:27Z",
+      "side": 1,
+      "message": "oh indeed I\u0027ll remove the argument.\n\n~zuul/.ssh/id_rsa is the scheduler key, the zuul_worker is the one which can trigger config-update. Actually executor should also be using zuul_worker and we should set it up for nodepool/runc slaves.",
+      "parentUuid": "9c5fadc3_c6b83610",
+      "range": {
+        "startLine": 50,
+        "startChar": 35,
+        "endLine": 50,
+        "endChar": 46
+      },
+      "revId": "0a86e5f2855c365134c52a22f5e16a1a8a50004a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "24246006_20cf1306",
         "filename": "ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "4324819e_99dc744f",
+        "filename": "ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-22T08:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24246006_20cf1306",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 56
+      },
+      "revId": "0a86e5f2855c365134c52a22f5e16a1a8a50004a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2efb0ba1_bc5c226b",
         "filename": "ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2019-01-21T11:49:11Z",
       "side": 1,
       "message": "That\u0027s not used.",
+      "range": {
+        "startLine": 116,
+        "startChar": 27,
+        "endLine": 116,
+        "endChar": 52
+      },
+      "revId": "0a86e5f2855c365134c52a22f5e16a1a8a50004a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c2ee7b6_dba39e94",
+        "filename": "ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-22T08:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2efb0ba1_bc5c226b",
       "range": {
         "startLine": 116,
         "startChar": 27,
