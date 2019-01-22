@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "859dffda_e6c9064b",
+        "filename": "ansible/tasks/infra/software_factory/software-factory-sandbox-vm-setup.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 452
+      },
+      "writtenOn": "2019-01-22T15:23:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bdfcdee_f539f839",
+      "revId": "cd9c4d812fdf4f0b6a01ffec4dd1586947d187a5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "84a25f94_d56bdb92",
         "filename": "ansible/tasks/infra/software_factory/software-factory-sandbox-vm-setup.yaml",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "7b3fff9a_7831936e",
+        "filename": "ansible/tasks/infra/software_factory/software-factory-sandbox-vm-setup.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 452
+      },
+      "writtenOn": "2019-01-22T15:23:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84a25f94_d56bdb92",
+      "revId": "cd9c4d812fdf4f0b6a01ffec4dd1586947d187a5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "30605a9f_c26ef044",
         "filename": "ansible/tasks/infra/software_factory/software-factory-sandbox-vm-setup.yaml",
         "patchSetId": 3
@@ -47,6 +83,30 @@
       "writtenOn": "2019-01-21T13:09:19Z",
       "side": 1,
       "message": "Could it be optional ? I don\u0027t want it touchs my hosts file. I have mulitple sftests.com entries I manage manually.",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 24
+      },
+      "revId": "cd9c4d812fdf4f0b6a01ffec4dd1586947d187a5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a0247ed_eb419bac",
+        "filename": "ansible/tasks/infra/software_factory/software-factory-sandbox-vm-setup.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 452
+      },
+      "writtenOn": "2019-01-22T15:23:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30605a9f_c26ef044",
       "range": {
         "startLine": 174,
         "startChar": 0,
