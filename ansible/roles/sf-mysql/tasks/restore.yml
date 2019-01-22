@@ -6,3 +6,8 @@
 
 - name: "Restore data"
   shell: cat /root/mysqldump.sql.gz | gunzip | mysql
+
+- name: Add username column to auth_mapping table
+  command: mysql cauth -e "ALTER TABLE auth_mapping ADD username VARCHAR(4096)"
+  delegate_to: "{{ mysql_host }}"
+  ignore_errors: yes
