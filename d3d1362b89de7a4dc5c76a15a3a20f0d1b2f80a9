@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "97299f8c_1004a722",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-01-22T08:35:31Z",
+      "side": 1,
+      "message": "Let\u0027s use {{ zuul_lib_dir }} here too.",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 18
+      },
+      "revId": "d3d1362b89de7a4dc5c76a15a3a20f0d1b2f80a9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
