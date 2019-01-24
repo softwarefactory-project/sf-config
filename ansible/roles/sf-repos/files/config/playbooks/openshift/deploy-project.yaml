@@ -3,8 +3,8 @@
 - name: start the project
   openshift_raw:
     state: present
-    namespace: "{{ zuul_resources['project'].namespace }}"
-    context: "{{ zuul_resources['project'].context }}"
+    namespace: "{{ zuul.resources['project'].namespace }}"
+    context: "{{ zuul.resources['project'].context }}"
     definition:
       apiVersion: v1
       kind: DeploymentConfig
