@@ -1,26 +1,29 @@
 ---
-- file:
+- name: Create state/cgit_config file
+  file:
     path: /var/lib/software-factory/state/cgit_config
     state: touch
+  changed_when: false
 
 - name: Check local config
   command: cat /var/lib/software-factory/state/cgit_config
   register: localconfig
+  changed_when: false
 
 - name: Check upstream config
   command: git log -n 3 --oneline resources/
   args:
     chdir: /root/config
   register: upstreamconfig
+  changed_when: false
 
-- block:
-    - name: Update cgit configuration
-      command: >
-        /usr/local/bin/cgit-config-generator.py
-          /etc/cgitrepos
-      register: _cgit_config
-      changed_when: _cgit_config.rc == 4
-      failed_when: _cgit_config.rc not in [0, 4]
+- name: Update cgit configuration
+  command: >
+    /usr/local/bin/cgit-config-generator.py
+      /etc/cgitrepos
+  register: _cgit_config
+  changed_when: _cgit_config.rc == 4
+  failed_when: _cgit_config.rc not in [0, 4]
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Write config repo sha1 matching current configuration

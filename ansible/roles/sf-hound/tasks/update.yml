@@ -1,17 +1,21 @@
 ---
-- file:
+- name: Create state file
+  file:
     path: /var/lib/software-factory/state/hound_config
     state: touch
+  changed_when: false
 
 - name: Check local config
   command: cat /var/lib/software-factory/state/hound_config
   register: localconfig
+  changed_when: false
 
 - name: Check upstream config
   command: git log -n 3 --oneline resources/
   args:
     chdir: /root/config
   register: upstreamconfig
+  changed_when: false
 
 - block:
     - name: Update hound configuration

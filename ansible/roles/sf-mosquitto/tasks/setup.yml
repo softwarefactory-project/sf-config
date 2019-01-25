@@ -28,6 +28,7 @@
   shell: "{{ item }}"
   with_items:
     - /usr/bin/mosquitto_passwd -b /etc/mosquitto/passwords SF_SERVICE_USER {{sf_service_user_password}}
+  changed_when: false
 
 - name: finish mosquitto configuration
   blockinfile:
