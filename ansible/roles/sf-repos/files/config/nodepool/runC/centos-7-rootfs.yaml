@@ -1,0 +1,49 @@
+---
+- name: Set CentOS version fact
+  set_fact:
+    centos_version: 7
+    target_dir: /srv/centos7
+
+- name: Set bwrap command fact
+  set_fact:
+    bwrap_command: "bwrap --unshare-pid --bind {{ target_dir }} / --proc /proc --dev /dev"
+
+- name: Fetch centos image
+  shell: |
+    set -ex
+    mkdir -p {{ target_dir }}-cache
+    skopeo copy docker://centos:{{ centos_version }} dir:{{ target_dir }}-cache
+
+- name: Find image
+  shell: python -c "import json; print(json.load(open('{{ target_dir }}-cache/manifest.json'))['layers'][0]['digest'])"
+  register: image_sha
+
+- name: Extract image
+  shell: |
+    set -ex
+    mkdir -p {{ target_dir }}
+    tar -C {{ target_dir }} -xzf {{ target_dir }}-cache/{{ image_sha.stdout.split(':')[1] }}
+    rm -Rf {{ target_dir }}-cache
+
+- name: Import resolv.conf from host
+  shell: "cp /etc/resolv.conf /srv/centos{{ centos_version }}/etc/resolv.conf"
+
+- name: Install sshd if needed
+  shell: "{{ bwrap_command }} yum install -y openssh-server"
+  args:
+    creates: "{{ target_dir }}/sbin/sshd"
+
+- include_tasks: _create_zuul_worker_user.yaml
+
+- name: Install the Software Factory repository
+  command: >
+    {{ bwrap_command }} yum install -y https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm && yum update
+
+- name: Install the packages
+  command: "{{ bwrap_command }} yum install -y {{ linters_pkgs | join(' ') }}"
+
+- name: Install other dependencies
+  command: >
+    {{ bwrap_command }} yum install -y
+      rsync python-virtualenv git python-pip python-tox
+      python-wheel twine gettext gcc make
