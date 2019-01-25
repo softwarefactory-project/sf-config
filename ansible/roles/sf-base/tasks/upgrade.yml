@@ -86,3 +86,4 @@
     path: /var/lib/zuul/.ssh/known_hosts
     regexp: ".* (ecdsa-sha.*|ssh-ed25519) .*"
     state: absent
+  changed_when: False

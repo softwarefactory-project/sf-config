@@ -14,6 +14,7 @@
   changed_when: false
 
 # TODO: do not update cauth config if password didn't changed
+# nhicher: do you know what is the best strategy to manage password change ?
 - name: Install cauth config files
   template:
       src: "{{ item.name }}.j2"
