@@ -5,6 +5,14 @@
 labels:
   - name: runc-centos
     min-ready: 2
+  - name: runc-fedora-latest
+    min-ready: 1
+  - name: runc-fedora-29
+    min-ready: 1
+  - name: runc-centos-latest
+    min-ready: 1
+  - name: runc-centos-7
+    min-ready: 1
 
 providers:
   - name: managed-runc-provider
@@ -15,9 +23,28 @@ providers:
       - name: {{ host['hostname'] }}
         max-servers: {{ host.get('max-servers', 10) }}
         labels:
+          # Latest releases
+          - name: runc-centos-latest
+            username: zuul-worker
+            path: /srv/centos7
+          - name: runc-fedora-latest
+            username: zuul-worker
+            path: /srv/f29
+          - name: runc-fedora-rawhide
+            username: zuul-worker
+            path: /srv/frawhide
+          # Named releases
+          # Remove for F29 EoL by Q4 2019
+          - name: runc-fedora-29
+            username: zuul-worker
+            path: /srv/f29
+          # Remove for CentOS7 EoL by Q4 2020 (https://wiki.centos.org/About/Product)
+          - name: runc-centos-7
+            username: zuul-worker
+            path: /srv/centos7
+          # Kept for compatibility, will be phased out in next version of SF
           - name: runc-centos
             username: zuul-worker
-
 {% endif %}
 {% endfor %}
 {% endif %}
