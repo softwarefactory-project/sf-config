@@ -8,3 +8,4 @@
       - "--ignore-existing"
       - "--exclude=*.py[co]"
   with_items: "{{ repo_dir_names }}"
+  changed_when: false

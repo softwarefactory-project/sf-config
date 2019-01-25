@@ -7,12 +7,14 @@
 
 - name: Check local metrics config
   command: cat /var/lib/software-factory/state/metrics_config
+  changed_when: False
   register: localconfig
 
 - name: Check upstream metrics config
   command: git log -n 3 --oneline metrics/
   args:
     chdir: /root/config
+  changed_when: False
   register: upstreamconfig
 
 - name: Update metrics dashboards

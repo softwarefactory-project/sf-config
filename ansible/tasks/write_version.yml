@@ -1,6 +1,8 @@
 ---
 - name: Read role version
   command: "rpm -q {{ role_package }}"
+  args:
+    warn: no
   register: _installed_version
   failed_when: false
   changed_when: false

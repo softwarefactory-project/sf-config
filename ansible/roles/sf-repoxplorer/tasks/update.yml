@@ -1,7 +1,9 @@
 ---
-- file:
+- name: Create repoxplorer state file
+  file:
     path: /var/lib/software-factory/state/repoxplorer_config
     state: touch
+  changed_when: false
 
 - name: Check local repoxplorer config
   command: cat /var/lib/software-factory/state/repoxplorer_config
