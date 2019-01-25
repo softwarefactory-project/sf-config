@@ -1,0 +1,48 @@
+- name: Set fedora version fact
+  set_fact:
+    fedora_version: 29
+    target_dir: /srv/f29
+
+- name: Set bwrap command fact
+  set_fact:
+    bwrap_command: "bwrap --unshare-pid --bind {{ target_dir }} / --proc /proc --dev /dev"
+
+- name: Fetch fedora image
+  shell: |
+    set -ex
+    mkdir -p {{ target_dir }}-cache
+    skopeo copy docker://fedora:{{ fedora_version }} dir:{{ target_dir }}-cache
+
+- name: Find image
+  shell: python -c "import json; print(json.load(open('{{ target_dir }}-cache/manifest.json'))['layers'][0]['digest']).split(':')[1]"
+  register: image_sha
+
+- name: Extract image
+  shell: |
+    set -ex
+    mkdir -p {{ target_dir }}
+    tar -C {{ target_dir }} -xzf {{ target_dir }}-cache/{{ image_sha.stdout }}
+    rm -Rf {{ target_dir }}-cache
+
+- name: Import resolv.conf from host
+  shell: "cp /etc/resolv.conf /srv/f{{ fedora_version }}/etc/resolv.conf"
+
+- name: Install sshd if needed
+  shell: "{{ bwrap_command }} dnf install -y openssh-server"
+  args:
+    creates: "{{ target_dir }}/sbin/sshd"
+
+- include_tasks: _create_zuul_worker_user.yaml
+
+- name: Install packages
+  command: >
+    {{ bwrap_command }} dnf install -y
+      iproute rsync git traceroute
+      python3-pip python3-devel
+      python3-tox python3-flake8 python3-ansible-lint python3-pycodestyle yamllint
+      python3-sphinx python3-pelican python3-jinja2 python3-coverage
+      rpm-build make gcc
+
+- name: Install pip packages
+  command: >
+    {{ bwrap_command }} pip3 install bashate doc8
