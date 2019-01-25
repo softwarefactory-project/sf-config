@@ -1,7 +1,7 @@
 - name: Set fedora version fact
   set_fact:
-    fedora_version: 28
-    target_dir: /srv/f28
+    fedora_version: 29
+    target_dir: /srv/f29
 
 - name: Set bwrap command fact
   set_fact:
@@ -19,38 +19,7 @@
   args:
     creates: "{{ target_dir }}/sbin/sshd"
 
-- name: Create sshd server keys
-  command: "{{ bwrap_command }} /usr/libexec/openssh/sshd-keygen rsa"
-  args:
-    creates: "{{ target_dir }}/etc/ssh/ssh_host_rsa_key"
-
-- name: Read host user id
-  command: awk -F ":" '/zuul-worker/ { print $3 }' /etc/passwd
-  register: _host_uid
-
-- name: Create zuul-worker user
-  command: "{{ bwrap_command }} useradd -u {{ _host_uid.stdout }} -m zuul-worker"
-  args:
-    creates: "{{ target_dir }}/home/zuul-worker"
-
-- name: Create /home/zuul-worker/.ssh
-  file:
-    path: "{{ target_dir }}/home/zuul-worker/.ssh"
-    state: directory
-    mode: 0700
-    owner: zuul-worker
-
-- name: Adds ssh key
-  copy:
-    src: /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_rsa.pub
-    dest: "{{ target_dir }}/home/zuul-worker/.ssh/authorized_keys"
-    owner: zuul-worker
-
-- name: Ensure src dir exists
-  file:
-    path: "{{ target_dir }}/home/zuul-worker/src"
-    state: directory
-    owner: zuul-worker
+- include_tasks: _create_zuul_worker_user.yaml
 
 - name: Install packages
   command: >
