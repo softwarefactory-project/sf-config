@@ -19,8 +19,15 @@
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
         - event: patchset-created
+        - event: change-restored
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
+        - event: comment-added
+          require-approval:
+            - Verified: [-1, -2]
+              username: zuul
+          approval:
+            - Workflow: 1
 {% endfor %}
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
@@ -42,7 +49,7 @@
 {% endfor %}
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
-        verified: 0
+        Verified: 0
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -55,7 +62,7 @@
 {% endfor %}
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
-        verified: 1
+        Verified: 1
 {% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
@@ -69,7 +76,7 @@
 {% endfor %}
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
-        verified: -1
+        Verified: -1
 {% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
