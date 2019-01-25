@@ -216,7 +216,10 @@
 
 - name: Add zuul user
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
-  changed_when: false
+  register: _gerrit_set_ci_user
+  changed_when: _gerrit_set_ci_user.rc == 3
+  failed_when: _gerrit_set_ci_user.rc != 3 and _gerrit_set_ci_user.rc != 0
+
 
 - include_tasks: setup_acl.yml
 

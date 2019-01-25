@@ -3,6 +3,7 @@
   synchronize:
     src: "/usr/share/sf-config/ansible/roles/sf-repos/files/config/{{ item }}/"
     dest: "{{ config_clone_dir }}/{{ item }}/"
+    times: no
     rsync_opts:
       # Ignore existing because users may update those files
       - "--ignore-existing"

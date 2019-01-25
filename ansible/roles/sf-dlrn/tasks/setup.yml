@@ -2,7 +2,7 @@
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
 - name: "Create dlrn user"
-  include_tasks: "{{ sf_tasks_dir }}/create_user.yml ssh_key=dlrn_rsa user_name=dlrn"
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml ssh_key=dlrn_rsa user_name=dlrn home_dir_mode=0755"
 
 - name: "Add dlrn user in the mock group"
   user:
@@ -36,6 +36,10 @@
 
 - name: "Add dlrn gerrit user"
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "dlrn" "ssh-rsa {{ dlrn_rsa_pub.split()[1] }}" "dlrn@{{ fqdn }}"
+  register: _dlrn_set_ci_user
+  changed_when: _dlrn_set_ci_user.rc == 3
+  failed_when: _dlrn_set_ci_user.rc != 3 and _dlrn_set_ci_user.rc != 0
+
 
 - name: "Install dlrn .gitconfig"
   template:
