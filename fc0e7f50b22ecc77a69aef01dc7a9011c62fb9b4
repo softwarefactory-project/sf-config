@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "209fa922_0647a168",
+        "filename": "ansible/roles/sf-cauth/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-01-25T21:59:02Z",
+      "side": 1,
+      "message": "tristanC: do you have any ideas to avoid change this file for every run ?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "fc0e7f50b22ecc77a69aef01dc7a9011c62fb9b4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
