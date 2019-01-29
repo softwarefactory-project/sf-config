@@ -16,6 +16,24 @@
       "revId": "3cd49ab25f04043f65ee8b579cf9125d3f5e4394",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8a0f8584_c196800d",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/fedora-rootfs.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 0,
+      "message": "It might be problems with my recent data recovery, or maybe git didn\u0027t recognize the file due to the renaming",
+      "parentUuid": "830e0f5b_81c90b9c",
+      "revId": "3cd49ab25f04043f65ee8b579cf9125d3f5e4394",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }

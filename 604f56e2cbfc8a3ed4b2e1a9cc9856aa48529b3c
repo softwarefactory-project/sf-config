@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "95702912_32b906d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 1,
+      "message": "This is a WIP to illustrate a US I\u0027d like to discuss at the next grooming: https://tree.taiga.io/project/morucci-software-factory/us/2301\n\nThe idea is to avoid basing the default container(s) on the oci host, but rather build it in /srv/ like we\u0027ve started doing on sf-io. This makes the containers independent from changes on the host, and also from the host\u0027s OS itself.",
+      "parentUuid": "aebaf984_1cfc1cc4",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 71
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "57dad7e0_e6c2f71c",
         "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
         "patchSetId": 10
@@ -36,6 +60,30 @@
       "writtenOn": "2019-01-29T11:55:50Z",
       "side": 1,
       "message": "why is this un-commented?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 38
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88cada10_469f9f49",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 1,
+      "message": "I thought it\u0027d be nice to have fedora 29 by default but it can be commented as before",
+      "parentUuid": "57dad7e0_e6c2f71c",
       "range": {
         "startLine": 5,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "2ba5234d_75110e5a",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 1,
+      "message": "This would be the default one for N+1, and then we remove the previous one on ver. N+2 so that users can migrate",
+      "parentUuid": "c528fe1a_9f96a5f2",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c680424_6730fb8f",
         "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/fedora-29-rootfs.yaml",
         "patchSetId": 10
@@ -82,6 +154,30 @@
       "writtenOn": "2019-01-29T11:55:50Z",
       "side": 1,
       "message": "why is this commented?",
+      "range": {
+        "startLine": 32,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 3
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ccb91e37_6d683012",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/fedora-29-rootfs.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 1,
+      "message": "IIRC it triggered failures in CI, so we might as well install the ssh tools every time. It does take some noticeable time to do so, though",
+      "parentUuid": "5c680424_6730fb8f",
       "range": {
         "startLine": 32,
         "startChar": 2,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "4537643e_69e9867b",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 1,
+      "message": "I didn\u0027t see this defined in the zuul dir unless you mean the zuul_default_label var, where is that?",
+      "parentUuid": "c7ff8898_51051787",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 28
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f8fe342_6fd96fd7",
         "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
         "patchSetId": 10
@@ -128,6 +248,30 @@
       "writtenOn": "2019-01-29T11:55:50Z",
       "side": 1,
       "message": "I don\u0027t think we should be using min-ready. Actually I was thinking about removing all min-ready since this has a cost.",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e1d274a2_ef36449f",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 1,
+      "message": "Fine by me, I was just copying the settings for the default container",
+      "parentUuid": "3f8fe342_6fd96fd7",
       "range": {
         "startLine": 9,
         "startChar": 4,
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "1b5eab5e_79109723",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 1,
+      "message": "I thought it\u0027d be nice but it can be removed",
+      "parentUuid": "c307684b_e45adf54",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 26
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7792cec1_8fdeb81c",
         "filename": "defaults/sfconfig.yaml",
         "patchSetId": 10
@@ -174,6 +342,30 @@
       "writtenOn": "2019-01-29T11:55:50Z",
       "side": 1,
       "message": "That\u0027s ok, but unfortunately we don\u0027t use a real nodeset yet, base job embed the nodeset, we should probably fix that too.",
+      "range": {
+        "startLine": 200,
+        "startChar": 25,
+        "endLine": 200,
+        "endChar": 43
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "92fabf52_9ded2db2",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-01-29T14:03:15Z",
+      "side": 1,
+      "message": "yeah but that var is used to set the embedded nodeset, right?",
+      "parentUuid": "7792cec1_8fdeb81c",
       "range": {
         "startLine": 200,
         "startChar": 25,
