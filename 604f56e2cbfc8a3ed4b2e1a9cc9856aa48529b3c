@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aebaf984_1cfc1cc4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 1,
+      "message": "wait what? :)",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 71
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "57dad7e0_e6c2f71c",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 1,
+      "message": "why is this un-commented?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 38
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c528fe1a_9f96a5f2",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 1,
+      "message": "why are we creating an extra centos image?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c680424_6730fb8f",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/fedora-29-rootfs.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 1,
+      "message": "why is this commented?",
+      "range": {
+        "startLine": 32,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 3
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c7ff8898_51051787",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 1,
+      "message": "Latest should be managed by zuul nodeset, not nodepool labels. Nodepool should provide labels per version, then zuul can decide what is latest (it\u0027s easier to manage update like that).",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 28
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f8fe342_6fd96fd7",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 1,
+      "message": "I don\u0027t think we should be using min-ready. Actually I was thinking about removing all min-ready since this has a cost.",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c307684b_e45adf54",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 1,
+      "message": "why testing fedora slave in ci now?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 26
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7792cec1_8fdeb81c",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 1,
+      "message": "That\u0027s ok, but unfortunately we don\u0027t use a real nodeset yet, base job embed the nodeset, we should probably fix that too.",
+      "range": {
+        "startLine": 200,
+        "startChar": 25,
+        "endLine": 200,
+        "endChar": 43
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

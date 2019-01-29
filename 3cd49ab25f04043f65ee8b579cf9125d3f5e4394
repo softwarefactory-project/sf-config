@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "830e0f5b_81c90b9c",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/fedora-rootfs.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T11:55:50Z",
+      "side": 0,
+      "message": "it\u0027s weird the file is deleted, did you use \"git mv\"?",
+      "revId": "3cd49ab25f04043f65ee8b579cf9125d3f5e4394",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
