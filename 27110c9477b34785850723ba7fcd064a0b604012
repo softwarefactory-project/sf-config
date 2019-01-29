@@ -22,6 +22,30 @@
       "revId": "27110c9477b34785850723ba7fcd064a0b604012",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "55c44a36_f40203bb",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-29T00:09:01Z",
+      "side": 1,
+      "message": "with that logic, we look into adding \"--sort\" to ssh-keyscan, but i find it better to re-use tools that does one thing well ;)",
+      "parentUuid": "c1399ffc_83206360",
+      "range": {
+        "startLine": 120,
+        "startChar": 73,
+        "endLine": 120,
+        "endChar": 83
+      },
+      "revId": "27110c9477b34785850723ba7fcd064a0b604012",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
