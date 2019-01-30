@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "a2b27700_89733014",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T06:15:31Z",
+      "side": 1,
+      "message": "I see, well this is costly, re-using the host was a great benefit from my point of view. What\u0027s the issue?",
+      "parentUuid": "95702912_32b906d8",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 71
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "57dad7e0_e6c2f71c",
         "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
         "patchSetId": 10
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "I thought it\u0027d be nice to have fedora 29 by default but it can be commented as before",
       "parentUuid": "57dad7e0_e6c2f71c",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 38
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0bd73c3b_0411d6c6",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T06:15:31Z",
+      "side": 1,
+      "message": "Well since this running for each CI job, I don\u0027t think we want that by default. Moreover this should be up to the user if they want fedora.",
+      "parentUuid": "88cada10_469f9f49",
       "range": {
         "startLine": 5,
         "startChar": 0,
@@ -143,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "a2540055_b62c831f",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/customize.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T06:15:31Z",
+      "side": 1,
+      "message": "let\u0027s groom that story, i don\u0027t understand the issue you are trying to solve. Please note that creating new images is costly (skopeo + extra yum update).",
+      "parentUuid": "2ba5234d_75110e5a",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 37
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c680424_6730fb8f",
         "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/fedora-29-rootfs.yaml",
         "patchSetId": 10
@@ -178,6 +250,30 @@
       "side": 1,
       "message": "IIRC it triggered failures in CI, so we might as well install the ssh tools every time. It does take some noticeable time to do so, though",
       "parentUuid": "5c680424_6730fb8f",
+      "range": {
+        "startLine": 32,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 3
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2a076426_bd4628cd",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/fedora-29-rootfs.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T06:15:31Z",
+      "side": 1,
+      "message": "What was the CI failure? I think we should look for making those task idempotent, or investigate an ansible connection plugin to remove the bwrap wrapper and use native ansible module.",
+      "parentUuid": "ccb91e37_6d683012",
       "range": {
         "startLine": 32,
         "startChar": 2,
@@ -237,6 +333,30 @@
     },
     {
       "key": {
+        "uuid": "d7c3f363_6b82788f",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T06:15:31Z",
+      "side": 1,
+      "message": "We don\u0027t create nodeset yet. The point is, Nodepool shouldn\u0027t decide what \u0027latest\u0027 is, it should only provide label per version. Managing what \u0027latest\u0027 mean should be done in Zuul by the user, so that we can test jobs before merging the bump.",
+      "parentUuid": "4537643e_69e9867b",
+      "range": {
+        "startLine": 8,
+        "startChar": 10,
+        "endLine": 8,
+        "endChar": 28
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f8fe342_6fd96fd7",
         "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
         "patchSetId": 10
@@ -272,6 +392,30 @@
       "side": 1,
       "message": "Fine by me, I was just copying the settings for the default container",
       "parentUuid": "3f8fe342_6fd96fd7",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d904e743_e582a149",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T06:15:31Z",
+      "side": 1,
+      "message": "IIRC, min-ready is only tested by the infra-test to make sure nodes are created. We should just drop that test now that it is stable. Instead we could check the node is ready, e.g. /srv/host-rootfs is mounted.",
+      "parentUuid": "e1d274a2_ef36449f",
       "range": {
         "startLine": 9,
         "startChar": 4,
@@ -331,6 +475,30 @@
     },
     {
       "key": {
+        "uuid": "17a2fd84_85303ee5",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 10
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T06:15:31Z",
+      "side": 1,
+      "message": "let\u0027s groom that story, i don\u0027t think the cost is worthy.",
+      "parentUuid": "1b5eab5e_79109723",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 26
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7792cec1_8fdeb81c",
         "filename": "defaults/sfconfig.yaml",
         "patchSetId": 10
@@ -366,6 +534,30 @@
       "side": 1,
       "message": "yeah but that var is used to set the embedded nodeset, right?",
       "parentUuid": "7792cec1_8fdeb81c",
+      "range": {
+        "startLine": 200,
+        "startChar": 25,
+        "endLine": 200,
+        "endChar": 43
+      },
+      "revId": "604f56e2cbfc8a3ed4b2e1a9cc9856aa48529b3c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f5fe5840_eb54e8ef",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T06:15:31Z",
+      "side": 1,
+      "message": "right, which shouldn\u0027t point at latest. Again, there should be no \u0027latest\u0027 label, because we can\u0027t test that speculatively, there should only be \u0027latest\u0027 nodeset.",
+      "parentUuid": "92fabf52_9ded2db2",
       "range": {
         "startLine": 200,
         "startChar": 25,
