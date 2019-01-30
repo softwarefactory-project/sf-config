@@ -22,6 +22,30 @@
       "revId": "fc0e7f50b22ecc77a69aef01dc7a9011c62fb9b4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14dccec0_794d60df",
+        "filename": "ansible/roles/sf-cauth/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-01-30T14:03:24Z",
+      "side": 1,
+      "message": "yes, we need to:\n- store the hash somewhere (or generate it from the cauth sfconfig.py component\n- only generate new hash if admin password changed (like we do for fqdn_changed)",
+      "parentUuid": "209fa922_0647a168",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "fc0e7f50b22ecc77a69aef01dc7a9011c62fb9b4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
