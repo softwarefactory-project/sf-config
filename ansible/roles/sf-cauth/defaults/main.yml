@@ -10,13 +10,6 @@ role_package: python2-cauth
 cauth_loglevel: INFO
 cauth_root_loglevel: WARNING
 
-hash_code: |
-    import crypt, random, string, sys
-    salt = '\$6\$' + ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(16)) + '\$'
-    sys.stdout.write(crypt.crypt(
-
-hash_code_end: ", salt))"
-
 cauth_mysql_db: "cauth"
 cauth_mysql_host: "mysql.example.com"
 cauth_mysql_password: "CHANGE_ME"
