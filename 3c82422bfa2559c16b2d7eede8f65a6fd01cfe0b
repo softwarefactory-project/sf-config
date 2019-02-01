@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fcf750c6_decc60da",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-02-01T19:54:11Z",
+      "side": 1,
+      "message": "Because this file is regenerated during setup step",
+      "parentUuid": "56ad692b_57110288",
+      "range": {
+        "startLine": 89,
+        "startChar": 2,
+        "endLine": 89,
+        "endChar": 21
+      },
+      "revId": "3c82422bfa2559c16b2d7eede8f65a6fd01cfe0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "af68bf08_ae9403bf",
         "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2019-01-31T23:53:49Z",
       "side": 1,
       "message": "would be better to update the shell script to, for example, exit 0 if user already exists, and exit 3 if creates a user, then here do \"changed_when: script.rc \u003d\u003d  3\"",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 21
+      },
+      "revId": "3c82422bfa2559c16b2d7eede8f65a6fd01cfe0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c92776cb_c43e9515",
+        "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-02-01T19:54:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af68bf08_ae9403bf",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "fa265e69_5f42a140",
+        "filename": "ansible/roles/sf-mirror/files/mirror2swift-config-merger.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-02-01T19:54:11Z",
+      "side": 1,
+      "message": "Yes, I will propose a new review to delete this service for it\u0027s not tested on our CI",
+      "parentUuid": "0bff73db_51c7759d",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 64
+      },
+      "revId": "3c82422bfa2559c16b2d7eede8f65a6fd01cfe0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c86ad8aa_c2c83d80",
         "filename": "ansible/roles/sf-repos/tasks/config_create_dir.yml",
         "patchSetId": 2
@@ -82,6 +154,30 @@
       "writtenOn": "2019-01-31T23:53:49Z",
       "side": 1,
       "message": "we should check why is this changing, perhaps it\u0027s missing \"time: no\" or something like that.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 21
+      },
+      "revId": "3c82422bfa2559c16b2d7eede8f65a6fd01cfe0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dfcbef53_6e02242e",
+        "filename": "ansible/roles/sf-repos/tasks/config_create_dir.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-02-01T19:54:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c86ad8aa_c2c83d80",
       "range": {
         "startLine": 11,
         "startChar": 0,
