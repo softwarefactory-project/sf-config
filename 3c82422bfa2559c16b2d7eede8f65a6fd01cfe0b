@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "bce8fe50_ed5d0b65",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-02T03:16:41Z",
+      "side": 1,
+      "message": "But upgrade shouldn\u0027t be called when re-running sfconfig. I think this is a legitimate changed status.",
+      "parentUuid": "fcf750c6_decc60da",
+      "range": {
+        "startLine": 89,
+        "startChar": 2,
+        "endLine": 89,
+        "endChar": 21
+      },
+      "revId": "3c82422bfa2559c16b2d7eede8f65a6fd01cfe0b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "af68bf08_ae9403bf",
         "filename": "ansible/roles/sf-dlrn/tasks/setup.yml",
         "patchSetId": 2
