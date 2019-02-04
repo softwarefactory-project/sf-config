@@ -16,6 +16,24 @@
       "revId": "e411fdb53fe72bffe7862e3860a18ff3cb51f97d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c1e38e36_07ccbd51",
+        "filename": "ansible/roles/sf-mirror/tasks/update.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-02-04T15:33:34Z",
+      "side": 1,
+      "message": "yes, during my test, generated filenames were $filename.yaml.yaml.",
+      "parentUuid": "187476f7_9de6611a",
+      "revId": "e411fdb53fe72bffe7862e3860a18ff3cb51f97d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
