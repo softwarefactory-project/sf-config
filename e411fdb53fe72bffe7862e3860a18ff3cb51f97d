@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "187476f7_9de6611a",
+        "filename": "ansible/roles/sf-mirror/tasks/update.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-02-04T15:30:01Z",
+      "side": 1,
+      "message": "is it expected ?",
+      "revId": "e411fdb53fe72bffe7862e3860a18ff3cb51f97d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
