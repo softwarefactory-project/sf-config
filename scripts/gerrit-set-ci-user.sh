@@ -11,6 +11,13 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+# To use in ansible task, use the following syntax:
+# - name: "Add srv_name gerrit user"
+#   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "srv_name" "ssh-rsa {{ srv_name_rsa_pub.split()[1] }}" "srv_name@{{ fqdn }}"
+#   register: _srv_name_set_ci_user
+#   changed_when: _srv_name_set_ci_user.rc == 3
+#   failed_when: _srv_name_set_ci_user.rc != 3 and _srv_name_set_ci_user.rc != 0
+
 set -x
 set -e
 
@@ -29,4 +36,5 @@ if [ -z "$USER_EXISTS" ]; then
         --email "${USER_MAIL}"              \
         --full-name \"${USER_FULLNAME}\"    \
         --ssh-key -
+    exit 3
 fi

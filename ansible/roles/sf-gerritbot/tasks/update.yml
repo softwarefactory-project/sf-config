@@ -6,6 +6,7 @@
 
 - name: Check config-repo configuration
   shell: cat /root/config/gerritbot/*.yaml > /root/config/gerritbot/.channels.yaml
+  changed_when: false
 
 - name: Check config-repo merged file
   stat:

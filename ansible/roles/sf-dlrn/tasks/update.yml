@@ -1,16 +1,20 @@
 ---
-- file:
+- name: Create dlrn state file
+  file:
     path: /var/lib/software-factory/state/dlrn_config
     state: touch
+  changed_when: false
 
 - name: Check local config
   command: cat /var/lib/software-factory/state/dlrn_config
+  changed_when: false
   register: localconfig
 
 - name: Check upstream config
   command: git log -n 3 --oneline dlrn/
   args:
     chdir: /root/config
+  changed_when: false
   register: upstreamconfig
 
 - block:
