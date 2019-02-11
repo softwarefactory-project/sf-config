@@ -9,6 +9,7 @@ labels:
 providers:
   - name: managed-runc-provider
     driver: runc
+    zuul-console-dir: /var/tmp/zuul-console
     pools:
 {% for host in inventory %}
 {% if 'hypervisor-runc' in host['roles'] %}
