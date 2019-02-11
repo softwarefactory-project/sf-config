@@ -1,7 +1,7 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=managesf ssh_key=service_rsa"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=managesf ssh_key=managesf_rsa"
 
 - name: "Create config directory"
   file:
@@ -36,3 +36,9 @@
     state: started
     daemon_reload: "yes"
     enabled: "yes"
+
+- name: Set managesf pub key as authorized key to gerrit admin
+  shell: "ssh gerrit gerrit set-account admin --add-ssh-key \"'$(cat /var/lib/software-factory/bootstrap-data/ssh_keys/managesf_rsa.pub)'\""
+  delegate_to: '{{ install_server_host }}'
+  changed_when: false
+  when: "'gerrit' in roles"
