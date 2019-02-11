@@ -9,11 +9,11 @@ inventory:
       - rabbitmq
       - gateway
       - cauth
+      - gitweb
+      - gerrit
       - managesf
       - etherpad
       - lodgeit
-      - gitweb
-      - gerrit
       - logserver
       - zuul-scheduler
       - zuul-executor

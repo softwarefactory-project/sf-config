@@ -218,7 +218,6 @@
   changed_when: _gerrit_set_ci_user.rc == 3
   failed_when: _gerrit_set_ci_user.rc != 3 and _gerrit_set_ci_user.rc != 0
 
-
 - include_tasks: setup_acl.yml
 
 - name: Setup socat service
@@ -240,16 +239,3 @@
         daemon_reload: yes
       delegate_to: "{{ gateway_host }}"
   when: groups['gerrit'] != groups['gateway']
-
-- name: Copy ssh keys
-  copy:
-    content: "{{ item.content }}"
-    dest: "/var/lib/managesf/.ssh/{{ item.name }}"
-    mode: "{{ item.mode }}"
-    owner: managesf
-    group: managesf
-  with_items:
-    - {content: "{{ gerrit_admin_rsa }}", name: "gerrit_admin_rsa", mode: "0400"}
-    - {content: "{{ gerrit_admin_rsa_pub }}", name: "gerrit_admin_rsa.pub", mode: "0444"}
-  delegate_to: "{{ managesf_host }}"
-  no_log: true
