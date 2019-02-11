@@ -25,7 +25,6 @@
     enabled: "yes"
   when: ansible_virtualization_type != "podman"
 
-
 - name: Start rsyslogd
   service:
     name: rsyslog
