@@ -82,6 +82,12 @@ def merge(inp, _nodepool):
                 break
         if not added:
             raise RuntimeError("%s: couldn't find provider" % extra_labels)
+
+    # Ensure zuul-console-dir is correctly set for runc provider
+    for provider in conf['providers']:
+        if provider.get("driver") == "runc":
+            provider["zuul-console-dir"] = "/var/tmp/zuul-console"
+
     return yaml.safe_dump(conf, default_flow_style=False)
 
 
