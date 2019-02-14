@@ -11,7 +11,6 @@ input {
 
 output {
   elasticsearch {
-    hosts => ['elasticsearch.{{ fqdn }}']
-    flush_size => 1024
+    hosts => ['elasticsearch.{{ fqdn }}:9200']
   }
 }
