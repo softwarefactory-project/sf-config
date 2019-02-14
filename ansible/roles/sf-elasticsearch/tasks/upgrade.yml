@@ -1,4 +1,11 @@
 ---
+- name: Unset Eleasticsearch JAVA HEAP Size in sysconfig
+  lineinfile:
+    dest: /etc/sysconfig/elasticsearch
+    regexp: "^.*ES_HEAP_SIZE=.*$"
+    state: absent
+  register: heapsize
+
 - name: Stop the service
   service:
     name: elasticsearch
