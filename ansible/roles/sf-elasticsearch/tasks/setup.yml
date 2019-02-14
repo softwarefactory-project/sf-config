@@ -36,12 +36,29 @@
     line: "network.host{{':'}} elasticsearch.{{ fqdn }}"
   register: listenaddr
 
-- name: Set Elasticsearch indexes replica count
-  lineinfile:
-    dest: /etc/elasticsearch/elasticsearch.yml
-    regexp: "^index.number_of_replicas{{':'}}.*$"
-    line: "index.number_of_replicas{{':'}} {{ elasticsearch_replicas }}"
-  register: replicas
+# TODO: find a solution to set the replica or elasticsearch won't start:
+# 
+# Found index level settings on node level configuration.
+# 
+# Since elasticsearch 5.x index level settings can NOT be set on the nodes
+# configuration like the elasticsearch.yaml, in system properties or command line
+# arguments.In order to upgrade all indices the settings must be updated via the
+# /${index}/_settings API. Unless all settings are dynamic all indices must be closed
+# in order to apply the upgradeIndices created in the future should use index templates
+# to set default values.
+# 
+# Please ensure all required values are updated on all indices by executing:
+# 
+# curl -XPUT 'http://localhost:9200/_all/_settings?preserve_existing=true' -d '{
+#   "index.number_of_replicas" : "0"
+# }'
+
+#- name: Set Elasticsearch indexes replica count
+#  lineinfile:
+#    dest: /etc/elasticsearch/elasticsearch.yml
+#    regexp: "^index.number_of_replicas{{':'}}.*$"
+#    line: "index.number_of_replicas{{':'}} {{ elasticsearch_replicas }}"
+#  register: replicas
 
 - name: Set Eleasticsearch JAVA HEAP Size
   lineinfile:
@@ -54,7 +71,8 @@
   service:
     name: elasticsearch
     state: restarted
-  when: listenaddr is changed or heapsize is changed or replicas is changed
+  when: listenaddr is changed or heapsize is changed
+# when: listenaddr is changed or heapsize is changed or replicas is changed
 
 - name: Start service
   systemd:
