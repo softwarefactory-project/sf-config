@@ -5,22 +5,35 @@
 
 - name: Ensure Kibana access to ElasticSearch
   lineinfile:
-    dest: /opt/kibana/config/kibana.yml
+    dest: /etc/kibana/kibana.yml
     regexp: "^elasticsearch.url{{':'}}.*"
     line: "elasticsearch.url{{':'}} \"http://elasticsearch.{{ fqdn }}:9200\""
   register: kibanaconf
 
-- name: Look for top menu patch
-  command: grep -q "loadTopmenu" /opt/kibana/optimize/bundles/kibana.bundle.js
-  register: top_menu
-  ignore_errors: "yes"
-  changed_when: false
-
-- name: Add top menu
+- name: Ensure Kibana access to ElasticSearch
   lineinfile:
-    dest: /opt/kibana/optimize/bundles/kibana.bundle.js
-    line: "{{ kibana_topmenu_patch }}"
-  when: top_menu.rc == 1
+    dest: /root/kibana.yml
+    regexp: '^#?{{ item.regexp }}.*'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: 'elasticsearch.hosts'
+      line: 'elasticsearch.hosts: ["http://elasticsearch.{{ fqdn }}:9200"]'
+    - regexp: 'server.host'
+      line: 'server.host: kibana.{{ fqdn }}'
+
+# This file doesn't exit anymore, could be deleted when we validated that
+# everything works as expected.
+# - name: Look for top menu patch
+#   command: grep -q "loadTopmenu" /opt/kibana/optimize/bundles/kibana.bundle.js
+#   register: top_menu
+#   ignore_errors: "yes"
+#   changed_when: false
+
+# - name: Add top menu
+#   lineinfile:
+#     dest: /opt/kibana/optimize/bundles/kibana.bundle.js
+#     line: "{{ kibana_topmenu_patch }}"
+#   when: top_menu.rc == 1
 
 - name: Kibana service started and enabled
   service:
