@@ -1,12 +1,4 @@
----
-- name: Unset Eleasticsearch JAVA HEAP Size in sysconfig
-  lineinfile:
-    dest: /etc/sysconfig/elasticsearch
-    regexp: "^.*ES_HEAP_SIZE=.*$"
-    state: absent
-  register: heapsize
-
-- name: Update replicas for existing indices
+- name: Configure elasticsearch replicas
   uri:
     url: '{{ item.url }}'
     method: PUT
@@ -14,13 +6,15 @@
     body: '{{ item.body }}'
     status_code: 200
   loop:
+    - url: 'http://{{ fqdn }}/elasticsearch/_template/template_1'
+      body: '{
+                "template" : "*",
+                "settings" : {
+                    "number_of_replicas" : {{ elasticsearch_replicas }}
+                }
+            }'
     - url: "http://{{ fqdn }}/elasticsearch/_settings?pretty"
       body: '{ "index":
                { "number_of_replicas": {{ elasticsearch_replicas }}
                }
              }'
-
-- name: Stop the service
-  service:
-    name: elasticsearch
-    state: stopped
