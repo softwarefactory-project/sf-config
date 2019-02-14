@@ -1,0 +1,24 @@
+- name: Check if logstash default index pattern exists
+  uri:
+    url: 'http://{{ fqdn }}/app/kibana/api/saved_objects/index-pattern/logstash'
+    method: GET
+    status_code: 200, 404
+    headers:
+      kbn-xsrf: true
+  register: json_response
+
+- name: Create logstash default index pattern
+  uri:
+    url: 'http://{{ fqdn }}/app/kibana/api/saved_objects/index-pattern/logstash'
+    method: POST
+    body_format: json
+    body: '{
+            "attributes": {
+              "title": "logstash-*",
+              "timeFieldName": "@timestamp"
+            }
+          }'
+    status_code: 200
+    headers:
+      kbn-xsrf: true
+  when: json_response.status == 404
