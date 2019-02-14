@@ -1,0 +1,31 @@
+---
+- name: Remove outdated repositories (and clean up left-over metadata)
+  yum_repository:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - kibana
+    - logstash
+
+- name: Clean yum metadata
+  command: yum clean metadata
+  args:
+    warn: no
+
+- name: Stop service
+  systemd:
+    name: elasticsearch
+    state: stopped
+
+- name: Remove 2.x config files
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+    - /etc/elasticsearch/elasticsearch.yml
+    - /etc/sysconfig/elasticsearch
+
+- name: Install elasticsearch
+  yum:
+    name: elasticsearch
+    state: latest
