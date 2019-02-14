@@ -3,24 +3,36 @@
 
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=kibana"
 
-- name: Ensure Kibana access to ElasticSearch
+- name: Setup kibana.yaml
   lineinfile:
-    dest: /opt/kibana/config/kibana.yml
-    regexp: "^elasticsearch.url{{':'}}.*"
-    line: "elasticsearch.url{{':'}} \"http://elasticsearch.{{ fqdn }}:9200\""
+    dest: /etc/kibana/kibana.yml
+    regexp: '^#?{{ item.regexp }}.*'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: 'elasticsearch.hosts'
+      line: 'elasticsearch.hosts: ["http://elasticsearch.{{ fqdn }}:9200"]'
+    - regexp: 'server.host'
+      line: 'server.host: kibana.{{ fqdn }}'
+    - regexp: 'server.basePath'
+      line: 'server.basePath: "/app/kibana"'
+    - regexp: 'server.rewriteBasePath'
+      line: 'server.rewriteBasePath: false'
   register: kibanaconf
 
-- name: Look for top menu patch
-  command: grep -q "loadTopmenu" /opt/kibana/optimize/bundles/kibana.bundle.js
-  register: top_menu
-  ignore_errors: "yes"
-  changed_when: false
+# TODO: This file doesn't exit anymore, could be deleted when we validated that
+# everything works as expected.
+# - name: Look for top menu patch
+#   command: grep -q "loadTopmenu" /opt/kibana/optimize/bundles/kibana.bundle.js
+#   register: top_menu
+#   ignore_errors: "yes"
+#   changed_when: false
 
-- name: Add top menu
-  lineinfile:
-    dest: /opt/kibana/optimize/bundles/kibana.bundle.js
-    line: "{{ kibana_topmenu_patch }}"
-  when: top_menu.rc == 1
+# TODO: find how to integrate sf top menu, this file doesn't exist anymore
+# - name: Add top menu
+#   lineinfile:
+#     dest: /opt/kibana/optimize/bundles/kibana.bundle.js
+#     line: "{{ kibana_topmenu_patch }}"
+#   when: top_menu.rc == 1
 
 - name: Kibana service started and enabled
   service:
