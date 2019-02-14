@@ -1,0 +1,12 @@
+---
+- name: Update replicas for existing indices
+  uri:
+    url: "http://{{ fqdn }}/elasticsearch/_settings?pretty"
+    method: PUT
+    body_format: json
+    body: '{ "index":
+             { "number_of_replicas": {{ elasticsearch_replicas }}
+             }
+           }'
+    status_code: 200
+  loop:
