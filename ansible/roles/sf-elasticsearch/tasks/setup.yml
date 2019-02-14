@@ -1,24 +1,6 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-
-- name: Create elasticsearch group
-  group:
-    name: elasticsearch
-
-- name: Create elasticsearch user
-  user:
-    name: elasticsearch
-    group: elasticsearch
-    shell: /sbin/nologin
-    home: /var/lib/elasticsearch
-
-- name: Ensure /var/lib/elasticsearch directory exists
-  file:
-    path: /var/lib/elasticsearch
-    state: directory
-    mode: 0700
-    owner: elasticsearch
-    group: elasticsearch
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=elasticsearch"
 
 - name: Ensure /var/run/elasticsearch directory exists
   file:
@@ -28,33 +10,29 @@
     owner: elasticsearch
     group: elasticsearch
 
-- name: Ensure Elasticsearch listen to all addresses
-  lineinfile:
-    dest: /etc/elasticsearch/elasticsearch.yml
-    regexp: "^network.host{{':'}}.*"
-    insertafter: "^# network.host:"
-    line: "network.host{{':'}} elasticsearch.{{ fqdn }}"
-  register: listenaddr
+- name: Get elasticsearch version
+  command: grep -oE '[0-9].[0-9].[0-9]' /var/lib/software-factory/versions/sf-elasticsearch
+  register: elasticsearch_version
 
-- name: Set Elasticsearch indexes replica count
-  lineinfile:
-    dest: /etc/elasticsearch/elasticsearch.yml
-    regexp: "^index.number_of_replicas{{':'}}.*$"
-    line: "index.number_of_replicas{{':'}} {{ elasticsearch_replicas }}"
-  register: replicas
+- include_tasks: bump_version.yml
+  when: elasticsearch_version.stdout == '2.4.6'
 
-- name: Set Eleasticsearch JAVA HEAP Size
+- name: Configure Elasticsearch
   lineinfile:
-    dest: /etc/sysconfig/elasticsearch
-    regexp: "^.*ES_HEAP_SIZE=.*$"
-    line: "ES_HEAP_SIZE={{ elasticsearch_heap_size }}"
-  register: heapsize
-
-- name: Restart elasticsearch if needed
-  service:
-    name: elasticsearch
-    state: restarted
-  when: listenaddr is changed or heapsize is changed or replicas is changed
+    dest: '{{ item.dest }}'
+    regexp: '^#?{{ item.regexp }}.*'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: 'network.host'
+      line: 'network.host:  {{ ansible_default_ipv4.address }}'
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: '-Xms'
+      line: '-Xms{{ elasticsearch_minimum_heap_size }}'
+      dest: /etc/elasticsearch/jvm.options
+    - regexp: '-Xmx'
+      line: '-Xmx{{ elasticsearch_maximum_heap_size }}'
+      dest: /etc/elasticsearch/jvm.options
+  register: elasticsearchconf
 
 - name: Start service
   systemd:
@@ -62,3 +40,9 @@
     state: started
     daemon_reload: "yes"
     enabled: "yes"
+
+- name: Restart elasticsearch if needed
+  systemd:
+    name: elasticsearch
+    state: restarted
+  when: elasticsearchconf is changed
