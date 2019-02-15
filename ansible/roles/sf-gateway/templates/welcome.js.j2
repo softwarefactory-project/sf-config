@@ -67,19 +67,28 @@ angular.module('sfWelcome', []).controller('mainController', function($scope, $h
                             r_cnx = p_connection;
                         }
                         $scope.p_r_infos[pname][rname]['ctype'] = r_cnx['type']
+                        $scope.p_r_infos[pname][rname]['clone'] = r_cnx['base-url'] + '/' + rname;
+                        $scope.p_r_infos[pname][rname]['browse_files'] = undefined;
+                        $scope.p_r_infos[pname][rname]['gitweb'] = undefined;
+                        $scope.p_r_infos[pname][rname]['last_commits'] = undefined;
+                        $scope.p_r_infos[pname][rname]['reviews'] = undefined;
                         if (r_cnx['type'] == 'gerrit' ) {
-                            $scope.p_r_infos[pname][rname]['gitweb'] = r_cnx['base-url'] + '/gitweb?p=' + rname + '.git';
+                            gitweb_url = r_cnx['base-url'] + '/gitweb?p=' + rname + '.git';
+                            $scope.p_r_infos[pname][rname]['browse_files'] = gitweb_url + ';a=tree';
+                            $scope.p_r_infos[pname][rname]['last_commits'] =  gitweb_url + ';a=shortlog';
                             $scope.p_r_infos[pname][rname]['reviews'] = r_cnx['base-url'] + '/#/q/status:open+project:' + rname;
-                            $scope.p_r_infos[pname][rname]['clone'] = r_cnx['base-url'] + '/' + rname;
                         } else if (r_cnx['type'] == 'github' ) {
-                            $scope.p_r_infos[pname][rname]['gitweb'] = r_cnx['base-url'] + '/' + rname;
-                            $scope.p_r_infos[pname][rname]['reviews'] = r_cnx['base-url'] + '/' + rname + '/pulls';
-                            $scope.p_r_infos[pname][rname]['clone'] = r_cnx['base-url'] + '/' + rname;
-                        } else {
-                            $scope.p_r_infos[pname][rname]['gitweb'] = undefined;
-                            $scope.p_r_infos[pname][rname]['reviews'] = undefined;
-                            $scope.p_r_infos[pname][rname]['clone'] = r_cnx['base-url'] + '/' + rname;
-                      }
+                            gitweb_url = r_cnx['base-url'] + '/' + rname;
+                            $scope.p_r_infos[pname][rname]['browse_files'] = gitweb_url;
+                            $scope.p_r_infos[pname][rname]['last_commits'] = gitweb_url; + '/commits';
+                            $scope.p_r_infos[pname][rname]['reviews'] = gitweb_url; + '/pulls';
+                        }
+                        $scope.p_r_infos[pname][rname]['gitweb'] = gitweb_url;
+                        if (r_cnx['base-url'] == 'https://review.gerrithub.io') {
+                            gitweb_url = 'https://github.com' + '/' + rname;
+                            $scope.p_r_infos[pname][rname]['browse_files'] = gitweb_url;
+                            $scope.p_r_infos[pname][rname]['last_commits'] = gitweb_url + '/commits';
+                        }
                     }
                 })
                 project['source-repositories'] = new_sr;

@@ -59,12 +59,11 @@
                         <h4 class="list-group-item-heading">{{ rname }}</h4>
                         <p ng-if="Repos[rname].description" class="list-group-item-text">Description: {{ Repos[rname].description }}</p>
                         <p ng-if="p_r_infos[name][rname]['clone']" class="list-group-item-text">Clone: git clone {{ p_r_infos[name][rname]['clone'] }}</p>
+                        <p class="list-group-item-text">Gitweb: <a href="{{ p_r_infos[name][rname]['last_commits'] }}">last commits</a> / <a href="{{ p_r_infos[name][rname]['browse_files'] }}">browse files</a></p>
                         <div ng-if="p_r_infos[name][rname]['ctype'] == 'gerrit'">
-                            <p class="list-group-item-text">Gitweb: <a href="{{ p_r_infos[name][rname]['gitweb'] }};a=shortlog">last commits</a> / <a href="{{ p_r_infos[name][rname]['gitweb'] }};a=tree">browse files</a></p>
                             <p class="list-group-item-text">Code review: <a href="{{ p_r_infos[name][rname]['reviews'] }}">open reviews</a></p>
                         </div>
                         <div ng-if="p_r_infos[name][rname]['ctype'] == 'github'">
-                            <p class="list-group-item-text">Gitweb: <a href="{{ p_r_infos[name][rname]['gitweb'] }}/commits">last commits</a> / <a href="{{ p_r_infos[name][rname]['gitweb'] }}">browse files</a></p>
                             <p class="list-group-item-text">Pull requests: <a href="{{ p_r_infos[name][rname]['reviews'] }}">open pull requests</a></p>
                         </div>
                     </li>
