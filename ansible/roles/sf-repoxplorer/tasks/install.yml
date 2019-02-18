@@ -1,8 +1,28 @@
 ---
-- name: Install package
+- name: Ensure deprecated repoxplorer services stopped
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    daemon_reload: "yes"
+    enabled: "no"
+  with_items:
+    - rh-python35-repoxplorer-webui
+    - rh-python35-repoxplorer
+
+- name: Ensure deprecated repoxplorer package absent
   yum:
     name:
       - repoxplorer
+    state: absent
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ executor_hosts | union( groups['repoxplorer'] ) }}"
+
+- name: Install package
+  yum:
+    name:
+      - rh-python35-repoxplorer
       - wait4service
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
