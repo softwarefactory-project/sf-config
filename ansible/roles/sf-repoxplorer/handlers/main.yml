@@ -4,5 +4,5 @@
     name: "{{ item }}"
     state: restarted
   with_items:
-    - repoxplorer-webui
-    - repoxplorer
+    - rh-python35-repoxplorer-webui
+    - rh-python35-repoxplorer
