@@ -24,18 +24,18 @@
 
 - name: Create .ssh and .config directories
   file:
-    dest: "{{ item }}"
+    dest: "{{ item.path }}"
     state: directory
-    mode: 0700
+    mode: "{{ item.mode | default(0700) }}"
     owner: nodepool
     group: nodepool
   with_items:
-    - /var/lib/nodepool/.ssh
-    - /var/lib/nodepool/.config/openstack
-    - /var/lib/nodepool/.kube/
-    - /root/.config/openstack
-    - /var/cache/nodepool/dib_tmp
-    - /var/cache/nodepool/dib_cache
+    - {path: "/var/lib/nodepool/.ssh"}
+    - {path: "/root/.config/openstack"}
+    - {path: "/var/cache/nodepool/dib_tmp"}
+    - {path: "/var/cache/nodepool/dib_cache"}
+    - {path: "/var/lib/nodepool/.config/openstack", mode: "0750"}
+    - {path: "/var/lib/nodepool/.kube", mode: "0750"}
 
 - name: Copy the key
   copy:
@@ -55,7 +55,7 @@
     dest: "/var/lib/nodepool/.kube/config"
     owner: nodepool
     group: nodepool
-    mode: 0600
+    mode: 0440
   when: nodepool_kube_file[0]|default(None) == "/"
 
 - name: Add local openshift cluster provided by sf-hypervisor-openshift
@@ -76,7 +76,7 @@
     dest: "{{ item }}/openstack/clouds.yaml"
     owner: nodepool
     group: nodepool
-    mode: 0400
+    mode: 0440
   with_items:
     - /root/.config
     - /var/lib/nodepool/.config
