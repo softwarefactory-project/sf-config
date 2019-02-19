@@ -17,16 +17,7 @@
   register: upstreamconfig
   changed_when: false
 
-- block:
-    - name: Update hound configuration
-      command: >
-        /usr/libexec/software-factory/hound-config-generator.py
-          --poll-frequency {{ hound_poll_frequency }}
-          /etc/hound/config.json
-      register: _hound_config
-      changed_when: _hound_config.rc == 4
-      failed_when: _hound_config.rc not in [0, 4]
-      notify: restart hound
+- include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml service_name=hound service_config_dir=/etc/hound service_config_name=config.json"
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Ensure service is started and enabled

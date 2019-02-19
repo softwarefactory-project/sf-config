@@ -1,12 +1,6 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
-- name: Setup hound config generator
-  template:
-    src: hound-config-generator.py.j2
-    dest: /usr/libexec/software-factory/hound-config-generator.py
-    mode: 0755
-
 - name: Setup sysconfig
   template:
     src: houndd.sysconfig.j2
