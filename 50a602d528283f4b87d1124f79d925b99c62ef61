@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea37f32d_22b0034b",
+        "filename": "ansible/roles/sf-nodepool/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-21T04:58:12Z",
+      "side": 1,
+      "message": "This is actually writable, let\u0027s use 0640.",
+      "range": {
+        "startLine": 58,
+        "startChar": 10,
+        "endLine": 58,
+        "endChar": 14
+      },
+      "revId": "50a602d528283f4b87d1124f79d925b99c62ef61",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
