@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc06fb55_70c2972f",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-21T05:10:45Z",
+      "side": 1,
+      "message": "not sure why you created variales for those objects, they don\u0027t seem to be used beyond the for loop.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 58
+      },
+      "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8816b0f_1b8e8461",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-21T05:10:45Z",
+      "side": 1,
+      "message": "\u0027dict({}.items()) \u003d\u003d {}\u0027, thus, you could write: \u0027connections \u003d data.get(\"resources\", {}).get(\"connections\", {})\u0027.\n\nPerhaps we should define \u0027resources \u003d data.get(\"resources\", {})\u0027 since this variable is re-used multiple time.",
+      "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14834209_9a936ca0",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-21T05:10:45Z",
+      "side": 1,
+      "message": "gerrit may ne bot the correct connection. Please use: \u0027resources.get(\"tenants\", {}).get(project[\"tenant\"]).get(\"default-connection\")\u0027 instead of \u0027gerrit\u0027.",
+      "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b5ec9b7_1fee4daa",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-21T05:10:45Z",
+      "side": 1,
+      "message": "To be safe, you should check that conn is not None.",
+      "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "74b49656_ac20fd3e",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-21T05:10:45Z",
+      "side": 1,
+      "message": "it\u0027s better to write \u0027repo not in\u0027",
+      "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "799b6d6a_484eac98",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-21T05:10:45Z",
+      "side": 1,
+      "message": "this doesn\u0027t work if gerrit is not defined. It seems like we should just skip the repo url in that case.",
+      "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f3857a6d_7737adbf",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-02-21T05:10:45Z",
+      "side": 1,
+      "message": "That doesn\u0027t make sense, could you please comment why the base url is set to github when the repo url is gerrithub?",
+      "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
