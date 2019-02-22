@@ -124,6 +124,24 @@
       "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "450700af_84e9e169",
+        "filename": "ansible/roles/sf-hound/templates/hound-config-generator.py.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-02-22T15:16:27Z",
+      "side": 1,
+      "message": "That how gerrithub works, review are on gerrit, but gitweb is github, check https://tree.taiga.io/project/morucci-software-factory/us/2271",
+      "parentUuid": "f3857a6d_7737adbf",
+      "revId": "fd254f89027c3514cabcdee6f809da452ee9eef6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
