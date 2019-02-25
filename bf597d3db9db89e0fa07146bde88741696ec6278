@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "55dea6f0_ecf89dd5",
+        "filename": "ansible/roles/sf-logstash/templates/indexer.conf.erb",
+        "patchSetId": 13
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-02-25T23:01:55Z",
+      "side": 0,
+      "message": "This parameter is deprecated, we need to find what is the replacement @zoli",
+      "revId": "bf597d3db9db89e0fa07146bde88741696ec6278",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
