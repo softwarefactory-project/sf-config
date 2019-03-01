@@ -3,3 +3,30 @@
   service:
     name: kibana
     state: stopped
+
+- name: Upgrade to major version
+  block:
+    - name: Remove outdated repositories (and clean up left-over metadata)
+      yum_repository:
+        name: kibana
+        state: absent
+      register: kibana_old_repo
+
+    - name: Clean yum metadata
+      command: yum clean metadata
+      args:
+        warn: no
+      when: kibana_old_repo is changed
+
+    - name: Remove 4.x config file
+      file:
+        path: /etc/kibana/kibana.yml
+        state: absent
+
+    - name: Install kibana
+      yum:
+        name: kibana
+        state: latest
+        disablerepo: "*"
+        enablerepo: "{{ elasticsearch_repo_name }}"
+  when: kibana_major_version.stdout | int < elk_stack_version
