@@ -185,10 +185,13 @@ nodepool:
   #    reg_password: rhsm_password
 
 elasticsearch:
-  heap_size: 512m
+  maximum_heap_size: 512m
+  minimum_heap_size: 512m
   replicas: 0
 
 logstash:
+  maximum_heap_size: 256m
+  minimum_heap_size: 256m
   retention_days: 60
 
 logs:
