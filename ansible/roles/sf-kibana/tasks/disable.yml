@@ -6,18 +6,8 @@
     enabled: "no"
   ignore_errors: "yes"
 
-- block:
-    - name: Remove files
-      file:
-        path: "{{ item }}"
-        state: absent
-      with_items:
-        - "/etc/yum.repos.d/{{ kibana_repo_name }}.repo"
-
-    - name: Remove packages
-      yum:
-        name: "{{ item }}"
-        state: absent
-      with_items:
-        - kibana
+- name: Remove packages
+  yum:
+    name: kibana
+    state: absent
   when: erase == True
