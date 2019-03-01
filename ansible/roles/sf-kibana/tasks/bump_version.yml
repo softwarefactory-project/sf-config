@@ -1,0 +1,27 @@
+---
+- name: Remove outdated repositories (and clean up left-over metadata)
+  yum_repository:
+    name: kibana
+    state: absent
+
+- name: Clean yum metadata
+  command: yum clean metadata
+  args:
+    warn: no
+
+- name: Stop service
+  systemd:
+    name: kibana
+    state: stopped
+
+- name: Remove 4.x config file
+  file:
+    path: /etc/kibana/kibana.yml
+    state: absent
+
+- name: Install kibana
+  yum:
+    name: kibana
+    state: latest
+    disablerepo: "*"
+    enablerepo: "{{ elasticsearch_repo_name }}"
