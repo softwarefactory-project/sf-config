@@ -18,3 +18,9 @@ class LogStash(Component):
         if 'retention_days' in args.sfconfig['logstash']:
             args.glue['logstash_retention_days'] = \
                 args.sfconfig['logstash']['retention_days']
+        if 'minimum_heap_size' in args.sfconfig['logstash']:
+            args.glue['logstash_minimum_heap_size'] = args.sfconfig[
+                'logstash']['minimum_heap_size']
+        if 'maximum_heap_size' in args.sfconfig['logstash']:
+            args.glue['logstash_maximum_heap_size'] = args.sfconfig[
+                'logstash']['maximum_heap_size']
