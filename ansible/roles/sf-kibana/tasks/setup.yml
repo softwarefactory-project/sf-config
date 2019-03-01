@@ -1,35 +1,30 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=kibana"
 
-- name: Ensure Kibana access to ElasticSearch
+- name: Configure kibana
   lineinfile:
-    dest: /opt/kibana/config/kibana.yml
-    regexp: "^elasticsearch.url{{':'}}.*"
-    line: "elasticsearch.url{{':'}} \"http://elasticsearch.{{ fqdn }}:9200\""
+    dest: /etc/kibana/kibana.yml
+    regexp: '^#?{{ item.regexp }}.*'
+    line: '{{ item.line }}'
+  loop:
+    - regexp: 'elasticsearch.url'
+      line: 'elasticsearch.url: "http://elasticsearch.{{ fqdn }}:9200"'
+    - regexp: 'server.host'
+      line: 'server.host: kibana.{{ fqdn }}'
+    - regexp: 'server.basePath'
+      line: 'server.basePath: "/analytics"'
   register: kibanaconf
 
-- name: Look for top menu patch
-  command: grep -q "loadTopmenu" /opt/kibana/optimize/bundles/kibana.bundle.js
-  register: top_menu
-  ignore_errors: "yes"
-  changed_when: false
-
-- name: Add top menu
-  lineinfile:
-    dest: /opt/kibana/optimize/bundles/kibana.bundle.js
-    line: "{{ kibana_topmenu_patch }}"
-  when: top_menu.rc == 1
-
-- name: Kibana service started and enabled
-  service:
-    name: kibana
-    state: started
-    enabled: "yes"
-
 - name: Restart kibana after the configuration changed
-  service:
+  systemd:
     name: kibana
     state: restarted
   when: kibanaconf is changed or update_fqdn
+
+- name: Kibana service started and enabled
+  systemd:
+    name: kibana
+    state: started
+    enabled: "yes"
+    daemon_reload: yes

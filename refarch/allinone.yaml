@@ -31,7 +31,8 @@ inventory:
       - mirror
       - storyboard
       - storyboard-webclient
-      - repoxplorer
+# TODO: reactivate repoxplorer when it will support ELK 5.x
+#      - repoxplorer
       - firehose
       - hydrant
       - influxdb
