@@ -1,0 +1,13 @@
+---
+- name: Configure elasticsearch replicas
+  uri:
+    url: 'https://{{ fqdn }}/elasticsearch/_template/template_1'
+    method: PUT
+    body_format: json
+    body: '{
+              "template" : "*",
+              "settings" : {
+                  "number_of_replicas" : {{ elasticsearch_replicas }}
+              }
+          }'
+    status_code: 200
