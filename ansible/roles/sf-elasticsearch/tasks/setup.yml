@@ -1,60 +1,30 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=elasticsearch"
 
-- name: Create elasticsearch group
-  group:
-    name: elasticsearch
-
-- name: Create elasticsearch user
-  user:
-    name: elasticsearch
-    group: elasticsearch
-    shell: /sbin/nologin
-    home: /var/lib/elasticsearch
-
-- name: Ensure /var/lib/elasticsearch directory exists
-  file:
-    path: /var/lib/elasticsearch
-    state: directory
-    mode: 0700
-    owner: elasticsearch
-    group: elasticsearch
-
-- name: Ensure /var/run/elasticsearch directory exists
-  file:
-    path: /var/run/elasticsearch
-    state: directory
-    mode: 0755
-    owner: elasticsearch
-    group: elasticsearch
-
-- name: Ensure Elasticsearch listen to all addresses
+- name: Configure Elasticsearch
   lineinfile:
-    dest: /etc/elasticsearch/elasticsearch.yml
-    regexp: "^network.host{{':'}}.*"
-    insertafter: "^# network.host:"
-    line: "network.host{{':'}} elasticsearch.{{ fqdn }}"
-  register: listenaddr
-
-- name: Set Elasticsearch indexes replica count
-  lineinfile:
-    dest: /etc/elasticsearch/elasticsearch.yml
-    regexp: "^index.number_of_replicas{{':'}}.*$"
-    line: "index.number_of_replicas{{':'}} {{ elasticsearch_replicas }}"
-  register: replicas
-
-- name: Set Eleasticsearch JAVA HEAP Size
-  lineinfile:
-    dest: /etc/sysconfig/elasticsearch
-    regexp: "^.*ES_HEAP_SIZE=.*$"
-    line: "ES_HEAP_SIZE={{ elasticsearch_heap_size }}"
-  register: heapsize
+    dest: '{{ item.dest }}'
+    regexp: '^#?{{ item.regexp }}.*'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: 'network.host'
+      line: 'network.host:  {{ ansible_default_ipv4.address }}'
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: '-Xms'
+      line: '-Xms{{ elasticsearch_minimum_heap_size }}'
+      dest: /etc/elasticsearch/jvm.options
+    - regexp: '-Xmx'
+      line: '-Xmx{{ elasticsearch_maximum_heap_size }}'
+      dest: /etc/elasticsearch/jvm.options
+  register: elasticsearchconf
 
 - name: Restart elasticsearch if needed
-  service:
+  systemd:
     name: elasticsearch
     state: restarted
-  when: listenaddr is changed or heapsize is changed or replicas is changed
+    daemon_reload: "yes"
+  when: elasticsearchconf is changed
 
 - name: Start service
   systemd:
@@ -62,3 +32,42 @@
     state: started
     daemon_reload: "yes"
     enabled: "yes"
+
+- name: Wait for service
+  wait_for:
+    host: 'elasticsearch.{{ fqdn }}'
+    port: 9200
+    delay: 10
+    timeout: 600
+
+- name: Configure elasticsearch replicas
+  uri:
+    url: 'https://{{ fqdn }}/elasticsearch/_template/default_settings'
+    method: PUT
+    body_format: json
+    body: '{
+              "template" : "*",
+              "settings" : {
+                  "number_of_replicas" : {{ elasticsearch_replicas }}
+              }
+          }'
+    status_code: 200
+
+- name: Check if indexes replicas number should be updated
+  uri:
+    url: 'http://{{ fqdn }}/elasticsearch/_settings?pretty'
+    method: GET
+    status_code: 200
+  register: json_response
+
+- name: Update number of replicas for existing indexes
+  uri:
+    url: "http://{{ fqdn }}/elasticsearch/_settings?pretty"
+    method: PUT
+    body_format: json
+    body: '{ "index":
+             { "number_of_replicas": {{ elasticsearch_replicas }}
+             }
+           }'
+    status_code: 200
+  when: json_response.json != {}
