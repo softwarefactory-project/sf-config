@@ -3,3 +3,21 @@
   service:
     name: elasticsearch
     state: stopped
+
+- name: Upgrade to major version
+  block:
+    - name: Remove 2.x config files
+      file:
+        path: '{{ item }}'
+        state: absent
+      loop:
+        - /etc/elasticsearch/elasticsearch.yml
+        - /etc/sysconfig/elasticsearch
+
+    - name: Install elasticsearch
+      yum:
+        name: elasticsearch
+        state: latest
+        disablerepo: "*"
+        enablerepo: "{{ elasticsearch_repo_name }}"
+  when: elasticsearch_major_version.stdout | int < elk_stack_version
