@@ -1,0 +1,22 @@
+---
+- name: Remove outdated repositories (and clean up left-over metadata)
+  yum_repository:
+    name: logstash
+    state: absent
+
+- name: Clean yum metadata
+  command: yum clean metadata
+  args:
+    warn: no
+
+- name: Stop service
+  systemd:
+    name: logstash
+    state: stopped
+
+- name: Install logstash
+  yum:
+    name: logstash
+    state: latest
+    disablerepo: "*"
+    enablerepo: "{{ elasticsearch_repo_name }}"
