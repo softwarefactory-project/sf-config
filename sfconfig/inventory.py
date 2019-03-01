@@ -149,6 +149,10 @@ def update(args, pb):
     # Ensure versions are set to the current installed packages
     sync_installed_version(args, pb)
 
+    # Ensure mirrors are set before upgrade
+    for host in args.inventory:
+        pb.append(host_play(host, host["roles"],
+                            {'role_action': 'configure_mirror'}))
     # Apply upgrade role on all hosts to update packages
     pb.append(host_play('all', 'upgrade'))
 

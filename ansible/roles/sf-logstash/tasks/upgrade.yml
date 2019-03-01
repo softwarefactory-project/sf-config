@@ -1,5 +1,5 @@
 ---
-- name: Stop the service
-  service:
+- name: Stop service
+  systemd:
     name: logstash
     state: stopped
