@@ -1,15 +1,9 @@
 ---
-- name: Add the kibana RPM repository
-  yum_repository:
-    name: "{{ kibana_repo_name }}"
-    description: "{{ kibana_repo_desc }}"
-    baseurl: "{{ kibana_repo_url }}"
-    gpgkey: "{{ kibana_repo_gpgkey }}"
-    gpgcheck: "{{ kibana_repo_gpgcheck }}"
+- include_tasks: configure_mirror.yml
 
 - name: Install kibana package
   yum:
     name: kibana
     state: present
     disablerepo: "*"
-    enablerepo: "{{ kibana_repo_name }}"
+    enablerepo: "{{ elastic_repo_name }}"
