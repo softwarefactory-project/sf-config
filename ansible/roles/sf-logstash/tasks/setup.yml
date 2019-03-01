@@ -1,7 +1,13 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=logstash"
+
+- name: Get logstash major version
+  shell: "echo {{ _installed_version.stdout }} | grep -oE '[0-9]' | head -n 1"
+  register: logstash_major_version
+
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml force_upgrade=true"
+  when: logstash_major_version.stdout | int < elk_stack_version
 
 - name: Install logstash configuration
   template:
@@ -24,15 +30,33 @@
   template:
     src: "{{ item }}.j2"
     dest: "/etc/logstash/{{ item }}"
+  register: logstash_templates
   with_items:
     - curator.yml
     - delete_old_indices.yml
+
+- name: Configure jvm
+  lineinfile:
+    dest: /etc/logstash/jvm.options
+    regexp: '^#?{{ item.regexp }}.*'
+    line: '{{ item.line }}'
+  with_items:
+    - regexp: '-Xms'
+      line: '-Xms{{ logstash_minimum_heap_size }}'
+    - regexp: '-Xmx'
+      line: '-Xmx{{ logstash_maximum_heap_size }}'
+  register: logstash_config
+
+- name: Install x-pack
+  shell: bin/logstash-plugin install x-pack
+  args:
+    chdir: /usr/share/logstash
 
 - name: Restart logstash if needed
   service:
     name: logstash
     state: restarted
-  when: config is changed
+  when: logstash_config is changed or logstash_templates is changed
 
 - name: Enable logstash
   service:
