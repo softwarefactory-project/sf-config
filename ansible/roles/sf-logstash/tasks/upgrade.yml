@@ -1,5 +1,27 @@
 ---
-- name: Stop the service
-  service:
+- name: Stop service
+  systemd:
     name: logstash
     state: stopped
+
+- name: Upgrade Logstash
+  block:
+    - name: Remove outdated repositories (and clean up left-over metadata)
+      yum_repository:
+        name: logstash
+        state: absent
+      register: logstash_old_repo
+
+    - name: Clean yum metadata
+      command: yum clean metadata
+      args:
+        warn: no
+      when: logstash_old_repo is changed
+
+    - name: Upgrade logstash package
+      yum:
+        name: logstash
+        state: latest
+        disablerepo: "*"
+        enablerepo: "{{ elasticsearch_repo_name }}"
+  when: logstash_major_version.stdout | int < elk_stack_version
