@@ -1,15 +1,17 @@
 ---
-- name: Add the kibana RPM repository
-  yum_repository:
-    name: "{{ kibana_repo_name }}"
-    description: "{{ kibana_repo_desc }}"
-    baseurl: "{{ kibana_repo_url }}"
-    gpgkey: "{{ kibana_repo_gpgkey }}"
-    gpgcheck: "{{ kibana_repo_gpgcheck }}"
-
 - name: Install kibana package
   yum:
     name: kibana
     state: present
     disablerepo: "*"
-    enablerepo: "{{ kibana_repo_name }}"
+    enablerepo: "{{ elasticsearch_repo_name }}"
+
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
+- name: Get kibana version
+  shell: grep -oE '[0-9]' /var/lib/software-factory/versions/sf-kibana  | head -n 1
+  register: kibana_version
+
+- include_tasks: bump_version.yml
+  when: kibana_version.stdout | int < 5
+
