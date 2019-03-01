@@ -1,5 +1,42 @@
 ---
+- name: Delete old repoxplorer elasticsearch indices
+  command: 'curl -X DELETE "http://elasticsearch.{{ fqdn }}:9200/{{ item }}"'
+  args:
+    warn: no
+  loop:
+    - repoxplorer
+    - repoxplorer-users
+  when:
+    - elasticsearch_major_version.stdout | int < elk_stack_version
+    - "'repoxplorer' in roles"
+
 - name: Stop the service
   service:
     name: elasticsearch
     state: stopped
+
+- name: Upgrade to major version
+  block:
+    - name: Remove 2.x config files
+      file:
+        path: '{{ item }}'
+        state: absent
+      loop:
+        - /etc/elasticsearch/elasticsearch.yml
+        - /etc/sysconfig/elasticsearch
+
+    - name: Move data in the right dir
+      command: mv /var/lib/elasticsearch/elasticsearch/nodes /var/lib/elasticsearch/
+
+    - name: Remove unused directory
+      file:
+        path: /var/lib/elasticsearch/elasticsearch
+        state: absent
+
+    - name: Install elasticsearch
+      yum:
+        name: elasticsearch
+        state: latest
+        disablerepo: "*"
+        enablerepo: "{{ elasticsearch_repo_name }}"
+  when: elasticsearch_major_version.stdout | int < elk_stack_version
