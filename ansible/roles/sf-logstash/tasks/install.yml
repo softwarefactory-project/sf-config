@@ -6,17 +6,18 @@
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
 
-- name: Add the logstash RPM repository
-  yum_repository:
-    name: "{{ logstash_repo_name }}"
-    description: "{{ logstash_repo_desc }}"
-    baseurl: "{{ logstash_repo_url }}"
-    gpgkey: "{{ logstash_repo_gpgkey }}"
-    gpgcheck: "{{ logstash_repo_gpgcheck }}"
-
 - name: Install logstash package
   yum:
     name: logstash
     state: present
     disablerepo: "*"
-    enablerepo: "{{ logstash_repo_name }}"
+    enablerepo: "{{ elasticsearch_repo_name }}"
+
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
+- name: Get logstash version
+  command: grep -oE '[0-9]' /var/lib/software-factory/versions/sf-logstash  | head -n 1
+  register: logstash_version
+
+- include_tasks: bump_version.yml
+  when: logstash_version.stdout < 5
