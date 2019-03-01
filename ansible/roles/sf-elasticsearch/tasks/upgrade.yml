@@ -3,3 +3,70 @@
   service:
     name: elasticsearch
     state: stopped
+
+- name: Check if new config file exists
+  stat:
+    path: /etc/elasticsearch/elasticsearch.yml.rpmnew
+  register: elasticsearch_config_file
+
+- name: Install new config file
+  block:
+    - name: Copy new config file
+      copy:
+        src: /etc/elasticsearch/elasticsearch.yml.rpmnew
+        dest: /etc/elasticsearch/elasticsearch.yml
+
+    - name: Remove unused config file
+      file:
+        path: /etc/elasticsearch/elasticsearch.yml.rpmnew
+        state: absent
+  when:
+    - elasticsearch_config_file.stat.isreg is defined
+    - elasticsearch_config_file.stat.isreg
+
+- name: Check if new sysconfig file exists
+  stat:
+    path: /etc/sysconfig/elasticsearch.rpmnew
+  register: elasticsearch_sysconfig_file
+
+- name: Install new sysconfig file
+  block:
+    - name: Copy new sysconfig file
+      copy:
+        src: /etc/sysconfig/elasticsearch.rpmnew
+        dest: /etc/sysconfig/elasticsearch
+
+    - name: Remove unused sysconfig file
+      file:
+        path: /etc/sysconfig/elasticsearch.rpmnew
+        state: absent
+  when:
+    - elasticsearch_sysconfig_file.stat.isreg is defined
+    - elasticsearch_sysconfig_file.stat.isreg
+
+- name: Check if 2.x dataset directory exists
+  stat:
+    path: /var/lib/elasticsearch/elasticsearch/nodes
+  register: elasticsearch_old_data_dir
+
+- name: Move data in the right dir
+  command: mv /var/lib/elasticsearch/elasticsearch/nodes /var/lib/elasticsearch/
+  when:
+    - elasticsearch_old_data_dir.stat.isdir is defined
+    - elasticsearch_old_data_dir.stat.isdir
+
+- name: Remove unused directory
+  file:
+    path: /var/lib/elasticsearch/elasticsearch
+    state: absent
+
+- name: Update number of replicas for existing indexes
+  uri:
+    url: "http://{{ fqdn }}/elasticsearch/_settings?pretty"
+    method: PUT
+    body_format: json
+    body: '{ "index":
+             { "number_of_replicas": {{ elasticsearch_replicas }}
+             }
+           }'
+    status_code: 200
