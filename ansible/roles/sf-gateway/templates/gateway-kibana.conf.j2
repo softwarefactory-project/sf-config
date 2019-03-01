@@ -1,10 +1,13 @@
 <IfModule mod_proxy.c>
-    ProxyPass /app/kibana http://kibana.{{ fqdn }}:5601/app/kibana
-    ProxyPassReverse /app/kibana http://kibana.{{ fqdn }}:5601/app/kibana
+    ProxyPass /app/kibana http://kibana.{{ fqdn }}:5601
+    ProxyPassReverse /app/kibana http://kibana.{{ fqdn }}:5601
 
-    ProxyPass /bundles http://kibana.{{ fqdn }}:5601/bundles
-    ProxyPassReverse /bundles http://kibana.{{ fqdn }}:5601/bundles
+    ProxyPass /elasticsearch http://elasticsearch.{{ fqdn }}:9200
+    ProxyPassReverse /elasticsearch http://elasticsearch.{{ fqdn }}:9200
 
-    ProxyPass /elasticsearch http://kibana.{{ fqdn }}:5601/elasticsearch
-    ProxyPassReverse /elasticsearch http://kibana.{{ fqdn }}:5601/elasticsearch
+    Alias /bundles /usr/share/kibana/optimize/bundles
+
+    <Directory /usr/share/kibana>
+        Require all granted
+    </Directory>
 </IfModule>
