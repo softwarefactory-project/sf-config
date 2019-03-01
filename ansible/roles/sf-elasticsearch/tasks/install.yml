@@ -22,3 +22,12 @@
     state: present
     disablerepo: "*"
     enablerepo: "{{ elasticsearch_repo_name }}"
+
+- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+
+- name: Get elasticsearch version
+  shell: grep -oE '[0-9]' /var/lib/software-factory/versions/sf-elasticsearch  | head -n 1
+  register: elasticsearch_version
+
+- include_tasks: bump_version.yml
+  when: elasticsearch_version.stdout < 5

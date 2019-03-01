@@ -15,9 +15,12 @@ from sfconfig.components import Component
 
 class ElasticSearch(Component):
     def configure(self, args, host):
-        if 'heap_size' in args.sfconfig['elasticsearch']:
-            args.glue['elasticsearch_heap_size'] = args.sfconfig[
-                'elasticsearch']['heap_size']
+        if 'minimum_heap_size' in args.sfconfig['elasticsearch']:
+            args.glue['elasticsearch_minimum_heap_size'] = args.sfconfig[
+                'elasticsearch']['minimum_heap_size']
+        if 'maximum_heap_size' in args.sfconfig['elasticsearch']:
+            args.glue['elasticsearch_maximum_heap_size'] = args.sfconfig[
+                'elasticsearch']['maximum_heap_size']
         if 'replicas' in args.sfconfig['elasticsearch']:
             args.glue['elasticsearch_replicas'] = args.sfconfig[
                 'elasticsearch']['replicas']
