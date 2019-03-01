@@ -4,7 +4,7 @@ Disallow: /zuul
 Disallow: /nodepool-log
 Disallow: /paste
 Disallow: /etherpad
-Disallow: /app/kibana
+Disallow: /analytics
 
 User-agent: HTTrack
 User-agent: puf
