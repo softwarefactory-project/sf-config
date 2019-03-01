@@ -21,27 +21,44 @@ def update_sfconfig(args):
     data = args.sfconfig
 
     # 2.6.0: expose elasticsearch config
+    # 3.3.0: update elasticsearch config
     if 'elasticsearch' not in data:
         data['elasticsearch'] = {}
-        dirty = True
-    if 'heap_size' not in data['elasticsearch']:
-        data['elasticsearch']['heap_size'] = '512m'
         dirty = True
     if 'replicas' not in data['elasticsearch']:
         data['elasticsearch']['replicas'] = 0
         dirty = True
+    # Get heap_size value to apply to new parameters, then delete unused key
+    elastic_heap_size = '512m'
+    if 'heap_size' in data['elasticsearch']:
+        elastic_heap_size = data['elasticsearch']['heap_size']
+        del data['elasticsearch']['heap_size']
+        dirty = True
+    if 'maximum_heap_size' not in data['elasticsearch']:
+        data['elasticsearch']['maximum_heap_size'] = elastic_heap_size
+        dirty = True
+    if 'minimum_heap_size' not in data['elasticsearch']:
+        data['elasticsearch']['minimum_heap_size'] = elastic_heap_size
+        dirty = True
 
     # 2.6.0: expose logstash config
+    # 3.3.0: update logstash config
     if 'logstash' not in data:
         data['logstash'] = {}
         dirty = True
     if 'retention_days' not in data['logstash']:
         data['logstash']['retention_days'] = 60
+        dirty = True
+    if 'maximum_heap_size' not in data['logstash']:
+        data['logstash']['maximum_heap_size'] = '128m'
+        dirty = True
+    if 'minimum_heap_size' not in data['logstash']:
+        data['logstash']['minimum_heap_size'] = '128m'
+        dirty = True
 
     if 'disable_external_resources' not in data['network']:
         data['network']['disable_external_resources'] = False
         dirty = True
-
     if args.disable_external_resources and \
        not data['network']['disable_external_resources']:
         data['network']['disable_external_resources'] = True

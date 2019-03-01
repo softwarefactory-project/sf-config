@@ -1,0 +1,20 @@
+---
+- name: Remove outdated repositories (and clean up left-over metadata)
+  yum_repository:
+    name: logstash
+    state: absent
+  register: logstash_old_repo
+
+- name: Clean yum metadata
+  command: yum clean metadata
+  args:
+    warn: no
+  when: logstash_old_repo is changed
+
+- name: Add the elastic RPM repository
+  yum_repository:
+    name: "{{ elastic_repo_name }}"
+    description: "{{ elastic_repo_desc }}"
+    baseurl: "{{ elastic_repo_url }}"
+    gpgkey: "{{ elastic_repo_gpgkey }}"
+    gpgcheck: "{{ elastic_repo_gpgcheck }}"

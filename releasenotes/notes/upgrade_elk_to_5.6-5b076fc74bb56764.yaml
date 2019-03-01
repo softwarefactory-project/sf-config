@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    ELK stack is updated to 5.6. With this new version the kibana's url is
+    now $fqdn/analytics ($fqdn/app/kibana previously).
