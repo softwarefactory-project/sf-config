@@ -2,7 +2,8 @@
 role_actions:
   - setup
   - upgrade
-  - fetch_config_repo
+  - reset_config_repo
+  - copy_config_repo
   - notify
 
 role_package: any
