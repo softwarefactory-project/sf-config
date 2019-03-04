@@ -1,0 +1,6 @@
+- name: Ensure local config repository is up to date
+  include_tasks: reset_repo_clone.yml
+  vars:
+    clone_dir: /root/config
+    clone_remote: "{{ config_public_location }}"
+    remove_patch: false
