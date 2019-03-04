@@ -235,18 +235,11 @@ def setup(args, pb):
     # Create config projects
     pb.append(host_play('install-server', 'repos', action))
 
-    # Check config repo HEAD and update /root/config copy for each services
-    pb.append(host_play('install-server', tasks={
-        'name': 'Get config sha1',
-        'command': 'git ls-remote -h {{ config_location }}',
-        'changed_when': 'False',
-        'register': 'configsha',
-    }))
     # During setup, we need to fetch config repos on every host, for example
     # to update connection list for zuul-merger and zuul-executor hosts.
     # During regular config-update, we don't update fetch the repos on those
     # host
-    pb.append(host_play('all', 'repos', {'role_action': 'fetch_config_repo'}))
+    pb.append(host_play('all', 'repos', {'role_action': 'copy_config_repo'}))
 
 
 def repos(args, pb):
@@ -267,16 +260,10 @@ def config_update(args, pb, skip_sync=False):
     ]
 
     if not skip_sync:
-        # Check config repo HEAD and update /root/config copy for each services
-        pb.append(host_play('install-server', tasks={
-            'name': 'Get config sha1',
-            'command': 'git ls-remote -h {{ config_location }}',
-            'changed_when': 'False',
-            'register': 'configsha',
-        }))
-
+        pb.append(host_play('install-server',
+                            'repos', {'role_action': 'reset_config_repo'}))
         pb.append(host_play(':'.join(roles_order + roles_group),
-                            'repos', {'role_action': 'fetch_config_repo'}))
+                            'repos', {'role_action': 'copy_config_repo'}))
 
     # Call resources apply
     if "gerrit" in args.glue["roles"]:
