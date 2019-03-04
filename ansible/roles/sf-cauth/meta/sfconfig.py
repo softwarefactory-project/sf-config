@@ -14,6 +14,7 @@ import os
 
 from sfconfig.components import Component
 from sfconfig.utils import execute
+from sfconfig.utils import fail
 from sfconfig.utils import yaml_dump
 from sfconfig.utils import yaml_load
 
@@ -78,3 +79,6 @@ class Cauth(Component):
            not args.sfconfig["authentication"]["active_directory"]["disabled"]:
             print("Ldap and ActiveDirectory can't be enabled at the same time")
             exit(1)
+
+        if "gateway" not in host["roles"]:
+            fail("Cauth needs to be deployed on the Gateway host")
