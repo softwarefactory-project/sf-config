@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "270bd31c_0324db1e",
+        "filename": "sfconfig/arch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 528
+      },
+      "writtenOn": "2019-03-04T16:37:38Z",
+      "side": 1,
+      "message": "works for me.",
+      "revId": "b2610ff528a3cf13d082ebaf53105ae44f38f06b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
