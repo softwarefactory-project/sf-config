@@ -10,6 +10,7 @@
     RewriteEngine On
     RewriteCond %{HTTPS} off
     RewriteCond %{REMOTE_HOST} !{{ vhost_name }}.{{ fqdn }}$
+    RewriteCond %{REQUEST_URI} !\.well-known/acme-challenge
     RewriteRule (.*) https://{{ vhost_name }}.{{ fqdn }}%{REQUEST_URI} [R=301,L]
 {% endif %}
 

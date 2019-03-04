@@ -10,14 +10,21 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import crypt
 import os
 import random
+import string
 
 from sfconfig.utils import execute
 
 
 class Component(object):
     require_roles = []
+
+    def hash_password(self, password):
+        salt = '$6$' + ''.join(random.choice(
+            string.ascii_letters + string.digits) for _ in range(16)) + '$'
+        return crypt.crypt(password, salt)
 
     def import_ssh_key(self, args, name, path):
         if not os.path.isfile(path):

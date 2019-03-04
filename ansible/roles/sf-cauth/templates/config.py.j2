@@ -146,33 +146,33 @@ auth = {
         "admin": {
             "lastname": "Software Factory Administrator",
             "mail": "admin@{{ fqdn }}",
-            "password": "{{ admin_password_hashed.stdout }}",
+            "password": "{{ cauth_admin_password_hash }}",
         },
         "SF_SERVICE_USER":{
             "lastname": "SF user for automated tasks",
             "mail": "service.user@{{ fqdn }}",
-            "password": "{{ service_user_password_hashed.stdout }}",
+            "password": "{{ sf_service_user_password_hash }}",
         },
         {% if fqdn == "sftests.com" %}
             "user2": {
                 "lastname": "Demo user2",
                 "mail": "user2@sftests.com",
-                "password": "{{ admin_password_hashed.stdout }}",
+                "password": "{{ cauth_admin_password_hash }}",
             },
             "user3": {
                 "lastname": "Demo user3",
                 "mail": "user3@sftests.com",
-                "password": "{{ admin_password_hashed.stdout }}",
+                "password": "{{ cauth_admin_password_hash }}",
             },
              "user4": {
                 "lastname": "Demo user4",
                 "mail": "user4@sftests.com",
-                "password": "{{ admin_password_hashed.stdout }}",
+                "password": "{{ cauth_admin_password_hash }}",
             },
             "user5": {
                 "lastname": "Demo user5",
                 "mail": "user5@sftests.com",
-                "password": "{{ admin_password_hashed.stdout }}",
+                "password": "{{ cauth_admin_password_hash }}",
             }
         {% endif %}
     }
