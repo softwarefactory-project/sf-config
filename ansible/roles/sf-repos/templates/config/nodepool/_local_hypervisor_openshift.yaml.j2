@@ -20,6 +20,7 @@ providers:
             type: project
           - name: openshift-pod-fedora
             type: pod
-            image: docker.io/fedora:28
+            image: docker.io/fedora:29
+            python-path: /usr/bin/python3
 
 {% endfor %}{% endif %}

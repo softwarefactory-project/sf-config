@@ -24,17 +24,6 @@
     - /root/config/gerrit/commentlinks.yaml
     - /usr/share/sf-config/ansible/roles/sf-repos/files/config/gerrit/commentlinks.yaml
 
-- name: Check for gerrit server id
-  command: awk '/serverId/ { print $3 }'  /etc/gerrit/gerrit.config
-  failed_when: false
-  changed_when: false
-  register: _gerrit_server_id
-
-- name: Set gerrit_server_id fact
-  set_fact:
-    gerrit_server_id: "{{ _gerrit_server_id.stdout }}"
-  when: _gerrit_server_id.rc == 0
-
 - name: Render topmenu links list
   set_fact:
     topmenu_links: "{{ lookup('template', '../sf-gateway/templates/topmenu_links.j2') }}"
@@ -55,7 +44,7 @@
     - {name: change-merged,
        path: /var/lib/gerrit/hooks,
        mode: '0740'}
-    - {name: gerrit.config,
+    - {name: gerrit-ansible.config,
        path: /etc/gerrit,
        mode: '0644'}
     - {name: secure.config,
@@ -68,6 +57,15 @@
        path: /etc/gerrit,
        mode: '0444'}
   notify: [restart gerrit]
+
+- name: Ensure provided config is installed
+  copy:
+    remote_src: true
+    src: /etc/gerrit/gerrit-ansible.config
+    dest: /etc/gerrit/gerrit.config
+    mode: '0600'
+    owner: gerrit
+    group: gerrit
 
 - name: Install static configuration files for gerrit
   copy:
