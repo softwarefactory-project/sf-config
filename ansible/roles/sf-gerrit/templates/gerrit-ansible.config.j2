@@ -2,8 +2,6 @@
     basePath = git
     canonicalWebUrl = {{ gerrit_pub_url }}
     gitHttpUrl =
-{% if gerrit_server_id|default(False) %}    serverId = {{ gerrit_server_id }}
-{% endif %}
 [database]
     type = MYSQL
     hostname = {{ gerrit_mysql_host }}

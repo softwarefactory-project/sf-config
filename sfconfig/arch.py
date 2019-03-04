@@ -79,7 +79,10 @@ def process(args):
 
     if len(args.sfarch["inventory"]) > 1 and (
             "cgit" not in args.glue["roles"] and
-            "gerrit" not in args.glue["roles"]):
+            "gerrit" not in args.glue["roles"] and
+            not args.sfconfig["config-locations"]["config-repo"] and
+            not args.sfconfig["config-locations"]["jobs-repo"] and
+            not args.sfconfig["zuul"]["upstream_zuul_jobs"]):
         fail("Cgit or Gerrit component is required for distributed deployment")
 
     # Add install-server hostname for easy access
