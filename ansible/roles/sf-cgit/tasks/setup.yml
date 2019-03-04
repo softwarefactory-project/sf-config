@@ -16,3 +16,17 @@
     src: cgit-config-generator.py.j2
     dest: /usr/local/bin/cgit-config-generator.py
     mode: 0755
+
+- name: Check if repo are already configured
+  stat:
+    path: /etc/cgitrepos
+  register: _cgit_config
+
+- name: Install a default configuration for the config repo
+  copy:
+    content: |
+      repo.url=config
+      repo.path=/var/lib/software-factory/git/config.git
+      repo.desc=Config repository
+    dest: /etc/cgitrepos
+  when: not _cgit_config.stat.exists
