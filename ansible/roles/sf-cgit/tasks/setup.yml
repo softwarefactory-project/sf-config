@@ -7,9 +7,26 @@
     regexp: "^{{ item.key }}=.*"
     line: "{{ item.key }}={{ item.value }}"
   with_items:
+    - {key: "clone-prefix", value: "{{ gateway_url }}/cgit"}
     - {key: "head-include", value: "/var/www/static/index-header.html"}
     - {key: "include", value: "/etc/cgitrepos"}
     - {key: "logo", value: ""}
+
+- name: Add smart http git transport
+  copy:
+    content: |
+      {% if 'gerrit' in roles %}
+      SetEnv GIT_PROJECT_ROOT /var/lib/gerrit/git/
+      {% else %}
+      SetEnv GIT_PROJECT_ROOT /var/lib/software-factory/git/
+      {% endif %}
+      <Directory /usr/libexec/git-core>
+        Require all granted
+      </Directory>
+      SetEnv GIT_HTTP_EXPORT_ALL
+      ScriptAliasMatch "^/cgit/(.*/(HEAD|info/refs))$" /usr/libexec/git-core/git-http-backend/$1
+      ScriptAliasMatch "^/cgit/(.*/git-(upload|receive)-pack)$" /usr/libexec/git-core/git-http-backend/$1
+    dest: /etc/httpd/conf.d/cgit-smart-http.conf
 
 - name: Setup cgit config generator
   template:
