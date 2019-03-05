@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c896323a_ae5d400a",
+        "filename": "ansible/roles/sf-cgit/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-05T05:56:51Z",
+      "side": 1,
+      "message": "It does not work when repo are on gerrit.\n[Tue Mar 05 00:40:07.473170 2019] [cgi:error] [pid 23605] [client 192.168.99.1:49468] AH01215: Not a git repository: \u0027/var/lib/software-factory/git/sf-jobs\u0027\nIf a link is created it works:\nln -s sf-jobs /var/lib/gerrit/git/sf-jobs.git\n\nShould we have a smarter solution to create/remove links based on the resources ?",
+      "range": {
+        "startLine": 18,
+        "startChar": 30,
+        "endLine": 18,
+        "endChar": 60
+      },
+      "revId": "d8e98c7229bf70897f79413cfab16cd05ccc9a7a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
