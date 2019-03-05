@@ -18,6 +18,19 @@ class ZuulScheduler(Component):
     role = "zuul-scheduler"
     require_role = ["nodepool", "zookeeper"]
 
+    def validate(self, args, _):
+        # Check scheduler is defined before executor, web or merger
+        scheduler_found = False
+        for host in args.sfarch["inventory"]:
+            for role in host["roles"]:
+                if role == "zuul-scheduler":
+                    scheduler_found = True
+                if role in ("zuul-executor", "zuul-merger", "zuul-web") and \
+                   not scheduler_found:
+                    print("Zuul-scheduler needs to be defined before any other"
+                          " Zuul services")
+                    exit(1)
+
     def configure(self, args, host):
         args.glue["zuul_host"] = args.glue["zuul_scheduler_host"]
         self.add_mysql_database(args, "zuul", hosts=list(set((
