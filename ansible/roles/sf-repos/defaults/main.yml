@@ -10,3 +10,31 @@ role_package: any
 zuul_mqtt_start_topic: "zuul/{pipeline}/start/{project}/{branch}"
 zuul_mqtt_failure_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
 zuul_mqtt_success_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
+
+config_repo_acl: |
+  [access "refs/*"]
+    read = group config-core
+    owner = group config-ptl
+  [access "refs/heads/*"]
+    label-Code-Review = -2..+2 group config-core
+    label-Code-Review = -2..+2 group config-ptl
+    label-Verified = -2..+2 group config-ptl
+    label-Workflow = -1..+1 group config-core
+    label-Workflow = -1..+1 group config-ptl
+    label-Workflow = -1..+0 group Registered Users
+    rebase = group config-core
+    abandon = group config-core
+    submit = group config-ptl
+    read = group config-core
+    read = group Registered Users
+  [access "refs/meta/config"]
+    read = group config-core
+    read = group Registered Users
+  [receive]
+    requireChangeId = true
+  [submit]
+    mergeContent = false
+    action = fast forward only
+  groups:
+  - config-ptl
+  - config-core
