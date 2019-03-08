@@ -713,10 +713,6 @@ def generate(args):
             if not host.get("remote", False):
                 host["roles"].append("telegraf")
 
-        if "gateway" in host["roles"] and \
-           args.sfconfig['network']['use_letsencrypt']:
-            host["roles"].insert(0, "lecm")
-
     if 'hydrant' in args.glue["roles"] and \
        "firehose" not in args.glue["roles"]:
         raise RuntimeError("'hydrant' role needs 'firehose'")
