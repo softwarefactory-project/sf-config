@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3b1dc24_51107480",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-11T13:04:45Z",
+      "side": 1,
+      "message": "If you need specific groups in config_repo_acl then you probably need to make that block configurable too.",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
