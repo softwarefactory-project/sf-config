@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "dbeae863_0236a6d7",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:09:43Z",
+      "side": 1,
+      "message": "I will test the solution you proposed to validate it works as expected",
+      "parentUuid": "54c77a84_933faae8",
+      "range": {
+        "startLine": 4,
+        "startChar": 9,
+        "endLine": 4,
+        "endChar": 64
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a30d39d3_3fb95999",
         "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
         "patchSetId": 55
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "425943a0_9cec636a",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:09:43Z",
+      "side": 1,
+      "message": "https://www.elastic.co/guide/en/elasticsearch/reference/5.6/indices-templates.html",
+      "parentUuid": "a30d39d3_3fb95999",
+      "range": {
+        "startLine": 8,
+        "startChar": 14,
+        "endLine": 8,
+        "endChar": 31
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b6b00b17_aa2b44d8",
         "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
         "patchSetId": 55
@@ -59,6 +107,30 @@
       "writtenOn": "2019-03-12T09:29:00Z",
       "side": 1,
       "message": "this condition shouldn\u0027t be needed, the check_version should detect the bump. No need for \"force_upgrade\u003dtrue\" too.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 68
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2b311a1_43c57835",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:09:43Z",
+      "side": 1,
+      "message": "This condition if needed for sf-upgrade execute upgrade with old elk mirrors, the mirror is updated in sf-elasticsearch/tasks/install.yml, check https://softwarefactory-project.io/logs/38/15038/55/check/sf-ci-upgrade-allinone/97dc69a/job-output.txt.gz#_2019-03-11_20_37_25_912211\n\nAnother solution could be to have \u0027state: lastest\u0027 in the install.yml file, but I found adding force_upgrade was a better solution to control version we want to install.\n\nWhat is the best solution for you ?",
+      "parentUuid": "b6b00b17_aa2b44d8",
       "range": {
         "startLine": 10,
         "startChar": 0,
@@ -128,6 +200,24 @@
     },
     {
       "key": {
+        "uuid": "a6036e43_0bdb487d",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/update.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:09:43Z",
+      "side": 1,
+      "message": "I don\u0027t think is needed for package is updated in the previous setup.yml play and elastic api is up and running",
+      "parentUuid": "5827388e_9634ea2c",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c31eab83_eec27501",
         "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
         "patchSetId": 55
@@ -151,6 +241,30 @@
     },
     {
       "key": {
+        "uuid": "eb5457a3_f50a2eae",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:09:43Z",
+      "side": 1,
+      "message": "Ok, I will remove this",
+      "parentUuid": "c31eab83_eec27501",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2eb58422_c3897337",
         "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
         "patchSetId": 55
@@ -162,6 +276,24 @@
       "writtenOn": "2019-03-12T09:29:00Z",
       "side": 1,
       "message": "this should be part of the install task.",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "00041f16_1cb4f604",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:09:43Z",
+      "side": 1,
+      "message": "The issue we have it because elk mirrors are updated during the install step, I have to add check_version in the install file to ensure elk packages will be updated and the remove old config files and move the data, that\u0027s why I added this code here to ensure all components are updated during the upgrade",
+      "parentUuid": "2eb58422_c3897337",
       "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -202,6 +334,30 @@
       "writtenOn": "2019-03-12T09:29:00Z",
       "side": 1,
       "message": "this could use a release note.",
+      "range": {
+        "startLine": 2,
+        "startChar": 15,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bd0df012_907b40ed",
+        "filename": "ansible/roles/sf-gateway/templates/gateway-kibana.conf.j2",
+        "patchSetId": 55
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:09:43Z",
+      "side": 1,
+      "message": "Yes, I\u0027m going to add a release note",
+      "parentUuid": "21688edd_ecced942",
       "range": {
         "startLine": 2,
         "startChar": 15,
