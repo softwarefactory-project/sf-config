@@ -143,13 +143,16 @@
     - ansible-galaxy
     - ansible
 
-- name: Create libexec directory
+- name: Create necessary directories
   file:
-    path: /usr/libexec/software-factory
+    path: "{{ item }}"
     owner: root
     group: root
     mode: 0755
     state: directory
+  with_items:
+    - /usr/libexec/software-factory
+    - /var/lib/software-factory/versions
 
 - name: Install libexec scripts
   copy:
