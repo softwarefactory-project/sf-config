@@ -46,6 +46,53 @@
       "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7be449c0_d8157521",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T15:47:52Z",
+      "side": 1,
+      "message": "All yaml files that own that \"resources: {}\" structure in config/resources/ are resources what ever the name of the file. So not sure to understand: \"Once the ACL disappears from _internal.yaml.j2 there would be no more config repo ACL in the resources.\" it will because in resources.yaml.",
+      "parentUuid": "d58721b3_e2b760e6",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 21
+      },
+      "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9d33b509_03e15429",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T15:47:52Z",
+      "side": 1,
+      "message": "Also revisiting my +1 because you cannot have multiple \u0027resources:\u0027 keys in the same yaml file.",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 33
+      },
+      "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
