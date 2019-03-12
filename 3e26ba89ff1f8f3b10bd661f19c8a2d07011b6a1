@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6b00b17_aa2b44d8",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-12T09:29:00Z",
+      "side": 1,
+      "message": "this condition shouldn\u0027t be needed, the check_version should detect the bump. No need for \"force_upgrade\u003dtrue\" too.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 68
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5827388e_9634ea2c",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/update.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-12T09:29:00Z",
+      "side": 1,
+      "message": "Perhaps add a when check on the elasticsearch version here instead?",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2eb58422_c3897337",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-12T09:29:00Z",
+      "side": 1,
+      "message": "this should be part of the install task.",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "21688edd_ecced942",
+        "filename": "ansible/roles/sf-gateway/templates/gateway-kibana.conf.j2",
+        "patchSetId": 55
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-12T09:29:00Z",
+      "side": 1,
+      "message": "this could use a release note.",
+      "range": {
+        "startLine": 2,
+        "startChar": 15,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "caee9dcb_13794ffb",
+        "filename": "ansible/roles/sf-kibana/tasks/setup.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-12T09:29:00Z",
+      "side": 1,
+      "message": "same comment as for elasticsearch, this should be taken care of by the check_version script.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 61
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c3657df3_d4dcc11b",
+        "filename": "ansible/roles/sf-logstash/tasks/setup.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-12T09:29:00Z",
+      "side": 1,
+      "message": "ditto.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 63
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
