@@ -503,9 +503,6 @@ def enable_action(args):
             logfile = "/var/log/software-factory/testinfra.log"
             testinfra = ["testinfra", "-v", "--result-log=%s" % logfile]
             tests = []
-            # remove rexplorer from arch until it supports ELK 5.6
-            if "repoxplorer" in host["roles"]:
-                host["roles"].remove("repoxplorer")
             if "install-server" not in host["roles"]:
                 testinfra.append("--connection=ssh")
                 testinfra.append("--hosts=%s" % host["hostname"])
