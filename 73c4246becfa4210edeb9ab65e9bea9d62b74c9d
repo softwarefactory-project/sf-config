@@ -190,6 +190,30 @@
       "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "431eea2b_897b9bc1",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T15:03:54Z",
+      "side": 1,
+      "message": "\u003e Fabien: As far as I understand it, that is already the case. I\n \u003e think this block is only used during bootstrapping.\n \nYes, what I mean is I think the config-acl should be moved in resources.yaml.j2 that way both config-acl and config\u0027s group are in config/resources/resources.yaml and can be safely edited in the config repo. Then no need to define config_repo_acl.*.\n \n \u003e Once you install with sfconfig, this block is NOT in the config\n \u003e repo\u0027s _internal.yaml, it is in the resources.yaml and can be user\n \u003e edited without being clobbered by sfconfig.\n \u003e \n \u003e It seems counter-intuitive seeing this block here, but I just\n \u003e bootstrapped a couple SF installs to test things this week, so I am\n \u003e just speaking from what I saw in the deployed config repo.\n\nYes agree and at boostraping we should manage to have direct-apply called with a temp file (_internal.yaml + resources.yaml).",
+      "parentUuid": "54d5e278_04cd6cf1",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
