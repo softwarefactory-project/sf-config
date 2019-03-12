@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "2387487a_357dfbaa",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:23:07Z",
+      "side": 1,
+      "message": "After discussion with fbo about this issue, I will modify sfconfig to ensure upgrade will be executed in the right order, now is:\nsf-upgrade\ninstall plays\nsetup plays\n\nShould be:\ninstall plays (to setup mirrors)\nsf-upgrade\nsetup plays",
+      "parentUuid": "c2b311a1_43c57835",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 68
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0bda145e_86ee5e0b",
         "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
         "patchSetId": 55
