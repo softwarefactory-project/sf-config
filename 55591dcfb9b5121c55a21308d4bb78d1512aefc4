@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "a87cf509_0fe881f5",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T20:20:01Z",
+      "side": 1,
+      "message": "About the upgrade, yes but not the operator, sf-config (maybe an upgrade task) should take care of detecting that the config-acl in the resources is missing from the tree and push a change in config/resources/. But I understand it is out of the scope of your initial change, so that\u0027s fine we can take care of the a following cleaning patch and keep 15160 as it is.",
+      "parentUuid": "f50e2930_856a858c",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 21
+      },
+      "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9d33b509_03e15429",
         "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
         "patchSetId": 1
