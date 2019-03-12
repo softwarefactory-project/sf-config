@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "54c77a84_933faae8",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T13:34:43Z",
+      "side": 1,
+      "message": "Are you sure of that ? what is _template ?\nLooking at the doc I see https://www.elastic.co/guide/en/elasticsearch/reference/5.6/indices-update-settings.html\nthat url have to be /_settings to update all indexes.",
+      "range": {
+        "startLine": 4,
+        "startChar": 9,
+        "endLine": 4,
+        "endChar": 64
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a30d39d3_3fb95999",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T13:34:43Z",
+      "side": 1,
+      "message": "I don\u0027t see this in the doc.",
+      "range": {
+        "startLine": 8,
+        "startChar": 14,
+        "endLine": 8,
+        "endChar": 31
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b6b00b17_aa2b44d8",
         "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
         "patchSetId": 55
@@ -25,6 +71,46 @@
     },
     {
       "key": {
+        "uuid": "0bda145e_86ee5e0b",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T13:34:43Z",
+      "side": 1,
+      "message": "Ensure service started",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 21
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72b3a7cb_660a3e6d",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/update.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T13:34:43Z",
+      "side": 1,
+      "message": "This one sounds correct to me compared to the postconf version (it should be the postconf one imo). Why do we need that config update task ?",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5827388e_9634ea2c",
         "filename": "ansible/roles/sf-elasticsearch/tasks/update.yml",
         "patchSetId": 55
@@ -42,6 +128,29 @@
     },
     {
       "key": {
+        "uuid": "c31eab83_eec27501",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T13:34:43Z",
+      "side": 1,
+      "message": "I don\u0027t think here we must take care of repoxplorer indexes. Also indexes should be compatible but unfortunately current version of repoxplorer on SF master does not support 5.X due to some query keywords now fully deprecated. I think best is to deactivate repoxplorer from arch. Then followup patches on repoxplorer will manage in the repoxplorer upgrade task to delete indexes.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2eb58422_c3897337",
         "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
         "patchSetId": 55
@@ -53,6 +162,29 @@
       "writtenOn": "2019-03-12T09:29:00Z",
       "side": 1,
       "message": "this should be part of the install task.",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "13d432e2_f0c9bee5",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T13:34:43Z",
+      "side": 1,
+      "message": "+1 and already exists in install.yml",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 68
+      },
       "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
