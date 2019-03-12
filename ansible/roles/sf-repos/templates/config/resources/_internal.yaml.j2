@@ -94,12 +94,5 @@ resources:
 {% endif %}
 {% if initial_creation|default(False) %}
 
-  groups:
-    config-ptl:
-      description: Team lead for the config repo
-      members:
-        - admin@{{ fqdn }}
-    config-core:
-      description: Team core for the config repo
-      members: []
+{% include 'resources.yaml.j2' %}
 {% endif %}
