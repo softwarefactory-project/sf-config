@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "6a89373a_912fd557",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T14:43:43Z",
+      "side": 1,
+      "message": "Ok I understand now the template. But should be in setup.py after the service is started.",
+      "parentUuid": "dbeae863_0236a6d7",
+      "range": {
+        "startLine": 4,
+        "startChar": 9,
+        "endLine": 4,
+        "endChar": 64
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a30d39d3_3fb95999",
         "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
         "patchSetId": 55
@@ -201,6 +225,24 @@
       "writtenOn": "2019-03-12T13:34:43Z",
       "side": 1,
       "message": "This one sounds correct to me compared to the postconf version (it should be the postconf one imo). Why do we need that config update task ?",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d27a9ad4_968e7677",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/update.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T14:43:43Z",
+      "side": 1,
+      "message": "This should be in setup.py as well with the template setting.",
+      "parentUuid": "72b3a7cb_660a3e6d",
       "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -388,6 +430,46 @@
         "endLine": 2,
         "endChar": 24
       },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabb9cd5_920a85b9",
+        "filename": "ansible/roles/sf-kibana/tasks/install.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T14:43:43Z",
+      "side": 1,
+      "message": "I think you should set the elasticsearch_repo installation in that file as well. If kibana not deployed on the same host than elasticsearch it will fail. The case for sf.io.",
+      "range": {
+        "startLine": 7,
+        "startChar": 3,
+        "endLine": 7,
+        "endChar": 47
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f01a9c9a_521a3189",
+        "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T14:43:43Z",
+      "side": 1,
+      "message": "Better in the setup.py after service ensure started.",
       "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
