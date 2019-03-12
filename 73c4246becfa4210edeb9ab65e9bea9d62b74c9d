@@ -118,6 +118,30 @@
       "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "461aae31_efe323b5",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-12T02:00:15Z",
+      "side": 1,
+      "message": "it\u0027s kind of related because we need to ensure config_repo_acl.groups is synced with that list. Though I think we could remove that initial_create cruft and handle that chicken-and-egg problem differently. Thus if that config_repo_acl custom vars works for you, it seems like we could keep that change as-is and follow-up with a cleanup. Fabien, what do you think?",
+      "parentUuid": "ac2a47f3_cc2daab9",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
