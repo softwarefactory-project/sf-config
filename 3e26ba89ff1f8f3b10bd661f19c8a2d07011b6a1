@@ -191,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "16672339_7dc88a63",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T14:50:03Z",
+      "side": 1,
+      "message": "After another discussion with fbo, I will create a task setup_mirror.yml, then include it before the sf-upgrade role to ensure mirrors will be updated before running sf-upgrade",
+      "parentUuid": "2387487a_357dfbaa",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 68
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0bda145e_86ee5e0b",
         "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
         "patchSetId": 55
