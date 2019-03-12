@@ -238,6 +238,30 @@
       "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "05bf1372_986b216f",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T20:24:21Z",
+      "side": 1,
+      "message": "Logan, I\u0027m fine with the change. Tristan we should discuss a followup change to make the config-acl alterable in the config repo imo.",
+      "parentUuid": "e2c04d6c_9cdbae28",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
