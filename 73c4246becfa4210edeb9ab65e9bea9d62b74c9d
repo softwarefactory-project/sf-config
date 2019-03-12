@@ -166,6 +166,30 @@
       "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "54d5e278_04cd6cf1",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 533
+      },
+      "writtenOn": "2019-03-12T14:41:30Z",
+      "side": 1,
+      "message": "Fabien: As far as I understand it, that is already the case. I think this block is only used during bootstrapping.\n\nOnce you install with sfconfig, this block is NOT in the config repo\u0027s _internal.yaml, it is in the resources.yaml and can be user edited without being clobbered by sfconfig.\n\nIt seems counter-intuitive seeing this block here, but I just bootstrapped a couple SF installs to test things this week, so I am just speaking from what I saw in the deployed config repo.",
+      "parentUuid": "c563fbde_9c94cabd",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
