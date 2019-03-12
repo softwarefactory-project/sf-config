@@ -153,6 +153,7 @@ class LogMatcher(object):
         # TODO(clarkb) can we do better without duplicated data here?
         fields["build_uuid"] = zuul['build']
         fields["build_short_uuid"] = fields["build_uuid"][:7]
+        fields["build_set"] = zuul["buildset"]
         # TODO: this should be build_pipeline
         fields["build_queue"] = zuul['pipeline']
         # TODO: this is not interesteding anymore
