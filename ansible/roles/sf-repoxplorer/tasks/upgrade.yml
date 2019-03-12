@@ -1,4 +1,22 @@
 ---
-- name: Force service restart
-  command: /bin/true
-  notify: restart repoxplorer
+- name: Stop the service
+  service:
+    # TODO: rh-python35-repoxplorer when 15056 land
+    name: repoxplorer
+    state: stopped
+
+- name: Delete old repoxplorer elasticsearch indices
+  command: 'curl -X DELETE "http://elasticsearch.{{ fqdn }}:9200/{{ item }}"'
+  ignore_errors: true
+  args:
+    warn: no
+  loop:
+    - repoxplorer
+    - repoxplorer-users
+    - repoxplorer-projects
+
+- name: Stop the service
+  service:
+    # TODO: rh-python35-repoxplorer when 15056 land
+    name: repoxplorer 
+    state: started
