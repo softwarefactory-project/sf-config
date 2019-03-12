@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "c0eefac0_a7a33a0c",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T19:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a89373a_912fd557",
+      "range": {
+        "startLine": 4,
+        "startChar": 9,
+        "endLine": 4,
+        "endChar": 64
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a30d39d3_3fb95999",
         "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
         "patchSetId": 55
@@ -267,6 +291,24 @@
       "side": 1,
       "message": "This should be in setup.py as well with the template setting.",
       "parentUuid": "72b3a7cb_660a3e6d",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "02d2b57d_eb104e82",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/update.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T19:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d27a9ad4_968e7677",
       "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -483,6 +525,30 @@
     },
     {
       "key": {
+        "uuid": "24a0ae62_1f5484ff",
+        "filename": "ansible/roles/sf-kibana/tasks/install.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T19:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fabb9cd5_920a85b9",
+      "range": {
+        "startLine": 7,
+        "startChar": 3,
+        "endLine": 7,
+        "endChar": 47
+      },
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f01a9c9a_521a3189",
         "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
         "patchSetId": 55
@@ -494,6 +560,24 @@
       "writtenOn": "2019-03-12T14:43:43Z",
       "side": 1,
       "message": "Better in the setup.py after service ensure started.",
+      "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1db6c92d_28962ab7",
+        "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
+        "patchSetId": 55
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-12T19:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f01a9c9a_521a3189",
       "revId": "3e26ba89ff1f8f3b10bd661f19c8a2d07011b6a1",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
