@@ -118,41 +118,12 @@ def disable_action(args):
     return playbook_name, pb
 
 
-def sync_installed_version(args, pb):
-    # Write to /var/lib/sf/versions the installed version numbers
-    role_defaults = {}
-    for host in args.inventory:
-        tasks = [{
-            'name': 'Ensure versions directory exists',
-            'file': {
-                'path': '/var/lib/software-factory/versions',
-                'state': 'directory'
-            }
-        }]
-        for role in ["base", "monit"] + host['roles']:
-            if role not in role_defaults:
-                role_defaults[role] = sfconfig.utils.yaml_load(
-                    '%s/ansible/roles/sf-%s/defaults/main.yml' % (
-                        args.share, role))
-            package = role_defaults[role]['role_package']
-            tasks.append({
-                'include_tasks': (
-                    '{{ sf_tasks_dir }}/write_version.yml '
-                    'role_name=sf-%s '
-                    'role_package="%s"'
-                ) % (role, package)
-            })
-        pb.append(host_play(host, tasks=tasks))
-
-
 def update(args, pb):
-    # Ensure versions are set to the current installed packages
-    sync_installed_version(args, pb)
-
     # Ensure mirrors are set before upgrade
     for host in args.inventory:
         pb.append(host_play(host, host["roles"],
                             {'role_action': 'configure_mirror'}))
+
     # Apply upgrade role on all hosts to update packages
     pb.append(host_play('all', 'upgrade'))
 
@@ -161,9 +132,6 @@ def update(args, pb):
 
 
 def install(args, pb):
-    if not args.update:
-        sync_installed_version(args, pb)
-
     action = {'role_action': 'install'}
     pb.append(host_play('all', 'base', action))
     for host in args.inventory:
