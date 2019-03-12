@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "f50e2930_856a858c",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 533
+      },
+      "writtenOn": "2019-03-12T15:59:58Z",
+      "side": 1,
+      "message": "On a greenfield, yes.\n\nOn an upgrade, no. The operator would have to place it there. sfconfig does not update resources.yaml after the initial deploy afaik?",
+      "parentUuid": "7be449c0_d8157521",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 21
+      },
+      "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9d33b509_03e15429",
         "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
         "patchSetId": 1
@@ -84,6 +108,30 @@
       "writtenOn": "2019-03-12T15:47:52Z",
       "side": 1,
       "message": "Also revisiting my +1 because you cannot have multiple \u0027resources:\u0027 keys in the same yaml file.",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 33
+      },
+      "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "23c952a5_4034048e",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 533
+      },
+      "writtenOn": "2019-03-12T15:59:58Z",
+      "side": 1,
+      "message": "Ok.. could we just leave the bootstrapping the same as it was? It really has nothing to do with the issue being solved in this change. The groups can already be customized post-install, because they are in resources.yaml.\n\nThe ACL cannot, because it is in _internal.yaml, which is overwritten each time sfconfig runs. That\u0027s why my change was allowing an override path to that section.",
+      "parentUuid": "9d33b509_03e15429",
       "range": {
         "startLine": 97,
         "startChar": 0,
