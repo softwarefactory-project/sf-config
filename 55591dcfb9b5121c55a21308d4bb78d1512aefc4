@@ -141,6 +141,30 @@
       "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f490950b_24f85aeb",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 533
+      },
+      "writtenOn": "2019-03-12T16:00:59Z",
+      "side": 1,
+      "message": "I guess I\u0027m just not sold on the necessity of this change.",
+      "parentUuid": "23c952a5_4034048e",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 33
+      },
+      "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
