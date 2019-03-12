@@ -94,6 +94,30 @@
       "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ac2a47f3_cc2daab9",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 533
+      },
+      "writtenOn": "2019-03-12T01:24:54Z",
+      "side": 1,
+      "message": "Gotcha.. is that related to this change? I\u0027m not sure if that should be done as part of this commit or what to do exactly. Thanks",
+      "parentUuid": "5404d35b_b8fe592f",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
