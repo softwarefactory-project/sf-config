@@ -503,9 +503,6 @@ def enable_action(args):
             logfile = "/var/log/software-factory/testinfra.log"
             testinfra = ["testinfra", "-v", "--result-log=%s" % logfile]
             tests = []
-            # remove rexplorer from arch until it supports ELK 5.6
-            if "repoxplorer" in host["roles"]:
-                host["roles"].remove("repoxplorer")
             if "install-server" not in host["roles"]:
                 testinfra.append("--connection=ssh")
                 testinfra.append("--hosts=%s" % host["hostname"])
@@ -719,10 +716,6 @@ def generate(args):
         if "influxdb" in args.glue["roles"]:
             if not host.get("remote", False):
                 host["roles"].append("telegraf")
-
-        # remove rexplorer from arch until it supports ELK 5.6
-        if "repoxplorer" in args.glue["roles"]:
-            host["roles"].remove("repoxplorer")
 
     if 'hydrant' in args.glue["roles"] and \
        "firehose" not in args.glue["roles"]:
