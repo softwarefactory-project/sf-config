@@ -142,6 +142,30 @@
       "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c563fbde_9c94cabd",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-12T11:07:03Z",
+      "side": 1,
+      "message": "I think we should move the config-acl in resources.yaml.j2 that way after bootstrap it will be possible to change the config-acl and related groups w/o the changes be wiped/restored by sfconfig. It will give more flexibility and also thanks to config-check job it will help the operator to not make format mistakes by setting by hands w/o verification the acl prior to sfconfig run.\n\nIn that case we can remove the initial creation logic and instead find a solution to provide a /var/lib/software-factory/bootstrap-data/resources.yaml to managesf-resources direct-apply that contains _internal.yaml + resources.yaml.\n\nDoes it make sense ? and can it matches your needs Logan ?",
+      "parentUuid": "461aae31_efe323b5",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "73c4246becfa4210edeb9ab65e9bea9d62b74c9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
