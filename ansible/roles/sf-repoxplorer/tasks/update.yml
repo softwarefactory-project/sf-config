@@ -29,6 +29,9 @@
     - include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml service_name=repoxplorer service_config_dir=/etc/repoxplorer service_config_name=default.yaml"
       when: localconfig.stdout != upstreamconfig.stdout
 
+    - name: Dump repoXplorer configuration in EL
+      command: repoxplorer-indexer --refresh-projects-index --config /etc/repoxplorer/config.py
+
     - name: Write config repo sha1 matching current repoxplorer configuration
       copy:
         content: "{{ upstreamconfig.stdout }}"

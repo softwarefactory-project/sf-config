@@ -1,11 +1,34 @@
 ---
-- name: Install package
+- name: Ensure deprecated repoxplorer package absent
   yum:
     name:
       - repoxplorer
+    state: absent
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ executor_hosts | union( groups['repoxplorer'] ) }}"
+
+- name: Install package
+  yum:
+    name:
+      - rh-python35-repoxplorer
       - wait4service
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
   with_items: "{{ executor_hosts | union( groups['repoxplorer'] ) }}"
+
+- name: Symlink repoxplorer SCL bin to /usr/bin
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - src: '/opt/rh/rh-python35/root/bin/repoxplorer-indexer'
+      dest: '/usr/bin/repoxplorer-indexer'
+    - src: '/opt/rh/rh-python35/root/bin/repoxplorer-config-validate'
+      dest: '/usr/bin/repoxplorer-config-validate'
+    - src: '/opt/rh/rh-python35/root/bin/repoxplorer-git-credentials-helper'
+      dest: '/usr/bin/repoxplorer-git-credentials-helper'
