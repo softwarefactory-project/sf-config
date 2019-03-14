@@ -22,6 +22,30 @@
       "revId": "2aea9de51d553be5524ce3428f51349947393339",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "19cc443e_29dceda4",
+        "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
+        "patchSetId": 65
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-14T15:12:47Z",
+      "side": 1,
+      "message": "On elastic, kibana, there are tasks which wait until the service is up and running, I\u0027d like to move these tasks in a postconf play, like that, we don\u0027t loose any time to wait services are ready.",
+      "parentUuid": "ec9fc357_82a79371",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 35
+      },
+      "revId": "2aea9de51d553be5524ce3428f51349947393339",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
