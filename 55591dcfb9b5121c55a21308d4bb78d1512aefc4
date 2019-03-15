@@ -121,6 +121,30 @@
     },
     {
       "key": {
+        "uuid": "f90bbcc6_fefcf544",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 533
+      },
+      "writtenOn": "2019-03-15T18:25:53Z",
+      "side": 1,
+      "message": "Got it! That makes sense to me now.. thank you",
+      "parentUuid": "a87cf509_0fe881f5",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 21
+      },
+      "revId": "55591dcfb9b5121c55a21308d4bb78d1512aefc4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9d33b509_03e15429",
         "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
         "patchSetId": 1
