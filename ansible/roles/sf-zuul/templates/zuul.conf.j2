@@ -36,6 +36,8 @@ git_user_name=zuul
 log_config={{ zuul_conf_dir }}/merger-logging.yaml
 
 [executor]
+ansible_root=/usr/lib/zuul/ansible
+manage_ansible=false
 state_dir={{ zuul_lib_dir }}
 command_socket={{ zuul_lib_dir }}/executor.socket
 git_dir={{ zuul_lib_dir }}/executor/
