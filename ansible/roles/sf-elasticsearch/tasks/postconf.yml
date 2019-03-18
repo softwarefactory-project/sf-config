@@ -8,7 +8,7 @@
 
 - name: Configure elasticsearch replicas
   uri:
-    url: 'https://{{ fqdn }}/elasticsearch/_template/default_settings'
+    url: 'http://elasticsearch.{{ fqdn }}:9200/_template/default_settings'
     method: PUT
     body_format: json
     body: '{
@@ -21,14 +21,14 @@
 
 - name: Check if indexes replicas number should be updated
   uri:
-    url: 'http://{{ fqdn }}/elasticsearch/_settings?pretty'
+    url: 'http://elasticsearch.{{ fqdn }}:9200/_settings?pretty'
     method: GET
     status_code: 200
   register: json_response
 
 - name: Update number of replicas for existing indexes
   uri:
-    url: "http://{{ fqdn }}/elasticsearch/_settings?pretty"
+    url: "http://elasticsearch.{{ fqdn }}:9200/_settings?pretty"
     method: PUT
     body_format: json
     body: '{ "index":
