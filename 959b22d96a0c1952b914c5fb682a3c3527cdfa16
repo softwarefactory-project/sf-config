@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d4a6ed32_2fc3f0a9",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 66
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-18T09:13:59Z",
+      "side": 1,
+      "message": "Scheme is inconsistent with the previous task. Why not using the internal endpoint directly?",
+      "range": {
+        "startLine": 24,
+        "startChar": 10,
+        "endLine": 24,
+        "endChar": 14
+      },
+      "revId": "959b22d96a0c1952b914c5fb682a3c3527cdfa16",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "80f2232c_28cc87e5",
+        "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
+        "patchSetId": 66
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-03-18T09:13:59Z",
+      "side": 1,
+      "message": "same here, we should be use the internal endpoint instead.",
+      "range": {
+        "startLine": 35,
+        "startChar": 10,
+        "endLine": 35,
+        "endChar": 38
+      },
+      "revId": "959b22d96a0c1952b914c5fb682a3c3527cdfa16",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
