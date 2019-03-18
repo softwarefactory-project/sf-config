@@ -1,0 +1,39 @@
+---
+- name: Wait for service
+  wait_for:
+    host: 'elasticsearch.{{ fqdn }}'
+    port: 9200
+    delay: 10
+    timeout: 600
+
+- name: Configure elasticsearch replicas
+  uri:
+    url: 'https://{{ fqdn }}/elasticsearch/_template/default_settings'
+    method: PUT
+    body_format: json
+    body: '{
+              "template" : "*",
+              "settings" : {
+                  "number_of_replicas" : {{ elasticsearch_replicas }}
+              }
+          }'
+    status_code: 200
+
+- name: Check if indexes replicas number should be updated
+  uri:
+    url: 'http://{{ fqdn }}/elasticsearch/_settings?pretty'
+    method: GET
+    status_code: 200
+  register: json_response
+
+- name: Update number of replicas for existing indexes
+  uri:
+    url: "http://{{ fqdn }}/elasticsearch/_settings?pretty"
+    method: PUT
+    body_format: json
+    body: '{ "index":
+             { "number_of_replicas": {{ elasticsearch_replicas }}
+             }
+           }'
+    status_code: 200
+  when: json_response.json != {}
