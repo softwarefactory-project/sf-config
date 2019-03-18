@@ -1,7 +1,7 @@
 input {
   tcp {
-    host => "logstash.{{ fqdn }}"
-    port => 9999
+    host => "{{ logstash_host }}"
+    port => "{{ logstash_input_port }}"
     codec => json_lines {}
     type => "jenkins"
   }
@@ -11,6 +11,6 @@ input {
 
 output {
   elasticsearch {
-    hosts => ['elasticsearch.{{ fqdn }}']
+    hosts => ['{{ elasticsearch_host }}']
   }
 }

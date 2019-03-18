@@ -5,3 +5,6 @@ role_actions:
   - get_logs
 
 role_package: python-log2gearman-worker
+
+logstash_host: logstash.example.com
+logstash_input_port: 9999
