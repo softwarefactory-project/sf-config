@@ -1,8 +1,8 @@
 ---
 - name: Wait for service
   wait_for:
-    host: 'kibana.{{ fqdn }}'
-    port: 5601
+    host: '{{ kibana_host }}'
+    port: '{{ kibana_http_port }}'
     delay: 10
     timeout: 600
 
@@ -32,7 +32,7 @@
 
 - name: Check if logstash default index pattern exists
   uri:
-    url: 'https://{{ fqdn }}/analytics/api/saved_objects/index-pattern/logstash'
+    url: '{{ kibana_internal_url }}/api/saved_objects/index-pattern/logstash'
     method: GET
     status_code: 200, 404
     headers:
@@ -41,7 +41,7 @@
 
 - name: Create logstash default index pattern
   uri:
-    url: 'https://{{ fqdn }}/analytics/api/saved_objects/index-pattern/logstash'
+    url: '{{ kibana_internal_url }}/api/saved_objects/index-pattern/logstash'
     method: POST
     body_format: json
     body: '{
