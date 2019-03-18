@@ -44,6 +44,8 @@ class ZuulScheduler(Component):
 
         args.glue["zuul_periodic_pipeline_mail_rcpt"] = args.sfconfig[
             "zuul"]["periodic_pipeline_mail_rcpt"]
+        args.glue["zuul_github_gate_require_review"] = args.sfconfig[
+            "zuul"].get("github_gate_require_review", True)
 
         # Extra settings
         zuul_config = args.sfconfig.get("zuul", {})
