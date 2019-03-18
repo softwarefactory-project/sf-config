@@ -55,6 +55,8 @@ def merge(inp, _nodepool):
         envvars['DIB_IMAGE_CACHE'] = "%s/dib_cache" % cache_dir
         envvars['DIB_GRUB_TIMEOUT'] = '0'
         envvars['DIB_CHECKSUM'] = '1'
+        # Ensure host CA bundle doesn't interfer with dib
+        envvars['REQUESTS_CA_BUNDLE'] = ''
         # Make sure env-vars are str
         for k, v in envvars.items():
             if not isinstance(v, str):

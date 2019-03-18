@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    The REQUESTS_CA_BUNDLE is no longer set for the disk-image-create process
+    so that using pip install without /etc/ssl/certs/ca-bundle.crt works
+    (e.g. deb system).
