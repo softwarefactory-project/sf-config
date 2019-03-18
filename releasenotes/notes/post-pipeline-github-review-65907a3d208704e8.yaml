@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    A new zuul.github_gate_require_review sfconfig.yaml option enable disabling
+    the review requirements for the gate pipeline.
+upgrade:
+  - |
+    The post pipeline manager is now set to supercedent.

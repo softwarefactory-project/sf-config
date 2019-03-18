@@ -103,10 +103,12 @@
 {% endfor %}
 {% for github_connection in zuul_github_connections_pipelines %}{% if github_connection.app_name|default(False) %}
       {{ github_connection.name }}:
+{% if zuul_github_gate_require_review|default(True) %}
         review:
           # Require an approval from user with write access (e.g. core-reviewer)
           - permission: write
             type: approved
+{% endif %}
 {% if github_connection.label_name|default(False) %}
         # Require label
         label: {{ github_connection.label_name }}
@@ -205,7 +207,7 @@
     name: post
     post-review: true
     description: This pipeline runs jobs that operate after each change is merged.
-    manager: independent
+    manager: supercedent
     precedence: low
     trigger:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}

@@ -207,6 +207,9 @@ zuul:
 
   ara_report: true
 
+  # Require review for github gate pipeline
+  github_gate_require_review: true
+
   # Set custom zuul log url, the url will be expaned using the build parameters
   #  Default is: https://fqdn/logs/{build.uuid}/
   failure_log_url: ""
