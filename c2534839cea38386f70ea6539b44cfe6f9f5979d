@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c092ff35_b91d1cb5",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_pipelines.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-03-18T08:29:01Z",
+      "side": 1,
+      "message": "We will have troubles with the resources apply in the config-update job. The supercedent pipeline will discard jobs already in the pipeline when a new one come then some resources may not be applied in such situation. Why not adding a post-supecedent pipeline in that change instead of changing the behavior of the post pipeline ?\n\nBut we should think that we won\u0027t be able to support all use case with that local tenant config and there is already quite a lot options :). Maybe providing a tool that create an un-managed tenant could be a good solution for the future (there is already a doc for that) but a tool might be nice to have.",
+      "range": {
+        "startLine": 210,
+        "startChar": 4,
+        "endLine": 210,
+        "endChar": 24
+      },
+      "revId": "c2534839cea38386f70ea6539b44cfe6f9f5979d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
