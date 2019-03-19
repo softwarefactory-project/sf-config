@@ -7,7 +7,7 @@
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ executor_hosts | union( groups['repoxplorer'] ) }}"
+  loop: "{{ executor_hosts | union( groups['repoxplorer'] ) }}"
 
 - name: Install package
   yum:
@@ -18,14 +18,14 @@
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ executor_hosts | union( groups['repoxplorer'] ) }}"
+  loop: "{{ executor_hosts | union( groups['repoxplorer'] ) }}"
 
 - name: Symlink repoxplorer SCL bin to /usr/bin
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
-  with_items:
+  loop:
     - src: '/opt/rh/rh-python35/root/bin/repoxplorer-indexer'
       dest: '/usr/bin/repoxplorer-indexer'
     - src: '/opt/rh/rh-python35/root/bin/repoxplorer-config-validate'

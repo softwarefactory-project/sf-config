@@ -29,11 +29,11 @@
   wait_for:
     host: "{{ item }}"
     port: 22
-  with_items: "{{ servers.stdout_lines }}"
+  loop: "{{ servers.stdout_lines }}"
 
 - name: Gathering public ssh servers keys
   shell: "ssh-keyscan -p 22 {{ item }} | grep ssh-rsa"
-  with_items: "{{ servers.stdout_lines }}"
+  loop: "{{ servers.stdout_lines }}"
   register: public_ssh_host_keys
   until: public_ssh_host_keys is success
   retries: 30
@@ -44,7 +44,7 @@
   lineinfile:
     dest: /root/.ssh/known_hosts
     line: "{{ item.stdout }}"
-  with_items: "{{ public_ssh_host_keys.results }}"
+  loop: "{{ public_ssh_host_keys.results }}"
   no_log: true
 
 - name: Force hostnames
@@ -52,11 +52,11 @@
     name: "{{ item }}"
   delegate_to: "{{ item }}"
   when: ansible_virtualization_type != "podman"
-  with_items: "{{ servers.stdout_lines }}"
+  loop: "{{ servers.stdout_lines }}"
 
 - name: Gather hostnames
   command: hostname -f
-  with_items: "{{ servers.stdout_lines }}"
+  loop: "{{ servers.stdout_lines }}"
   delegate_to: "{{ item }}"
   register: _hostnames
   changed_when: false

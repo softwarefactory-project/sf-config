@@ -95,7 +95,7 @@
             password: '{{ grafana_admin_password }}'
             body_format: json
             force_basic_auth: "yes"
-          with_items: '{{ grafana_get_apikeys.json }}'
+          loop: '{{ grafana_get_apikeys.json }}'
           no_log: True
           when: item.name == grafyaml_apikey_data.name
 

@@ -3,7 +3,7 @@
   service:
     name: "{{ item }}"
     state: stopped
-  with_items:
+  loop:
     - rh-python35-repoxplorer
     - rh-python35-repoxplorer-webui
 
@@ -21,6 +21,6 @@
   service:
     name: "{{ item }}"
     state: started
-  with_items:
+  loop:
     - rh-python35-repoxplorer
     - rh-python35-repoxplorer-webui

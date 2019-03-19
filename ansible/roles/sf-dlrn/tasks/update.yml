@@ -32,7 +32,7 @@
         mode: 0755
         owner: dlrn
         state: directory
-      with_items: "{{ projects }}"
+      loop: "{{ projects }}"
       when: projects is defined
 
     # delorean.repo is expected to exists by DLRN workers
@@ -42,7 +42,7 @@
         mode: 0755
         owner: dlrn
         state: touch
-      with_items: "{{ projects }}"
+      loop: "{{ projects }}"
       when: projects is defined
 
     # Set the link only when not already exists
@@ -50,21 +50,21 @@
       shell: "test -L current || ln -s bootstrap current && chown -h dlrn current"
       args:
         chdir: "{{ dlrn_base_dir }}/{{ item.project }}/data/repos/"
-      with_items: "{{ projects }}"
+      loop: "{{ projects }}"
       when: projects is defined
 
     - name: "Setup dlrn projects configuration file"
       template:
         src: projects.ini.j2
         dest: "/etc/dlrn/{{ item.project }}.ini"
-      with_items: "{{ projects }}"
+      loop: "{{ projects }}"
       when: projects is defined
 
     - name: "Setup dlrn api projects configuration file"
       template:
         src: dlrn-api.cfg.j2
         dest: "/etc/dlrn/{{ item.project }}-api.cfg"
-      with_items: "{{ projects }}"
+      loop: "{{ projects }}"
       when: projects is defined
 
     - name: "Setup dlrn projects httpd configuration file"
@@ -72,14 +72,14 @@
         src: dlrn.conf.j2
         dest: "/etc/httpd/conf.d/dlrn-{{ item.project }}.conf"
       notify: apache reload
-      with_items: "{{ projects }}"
+      loop: "{{ projects }}"
       when: projects is defined
 
     - name: "Install dlrn wsgi app"
       template:
         src: dlrn-api.wsgi.j2
         dest: "/var/www/dlrn/dlrn-api-{{ item.project }}.wsgi"
-      with_items: "{{ projects }}"
+      loop: "{{ projects }}"
       notify: apache reload
       when: projects is defined
 

@@ -6,7 +6,7 @@
     dest: "{{ backup_dest }}/"
     delete: "yes"
     rsync_opts: --relative
-  with_items:
+  loop:
     - /etc/letsencrypt/
     - /etc/httpd/pages.d/
     - /var/www/pages/
@@ -19,5 +19,5 @@
     dest: "{{ backup_dest }}/"
     delete: "yes"
     rsync_opts: --relative
-  with_items: "{{ gateway_directories }}"
+  loop: "{{ gateway_directories }}"
   when: gateway_directories

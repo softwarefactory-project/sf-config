@@ -3,7 +3,7 @@
   yum:
     name: "{{ item }}"
     state: latest
-  with_items:
+  loop:
   - rh-python35-dlrnapi-client
   become: true
 

@@ -6,6 +6,6 @@
     dest: "{{ backup_dest }}/"
     delete: "yes"
     rsync_opts: --relative
-  with_items:
+  loop:
     - /var/lib/gerrit/git
     - /var/lib/gerrit/.ssh

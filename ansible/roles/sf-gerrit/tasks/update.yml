@@ -27,7 +27,7 @@
     owner: gerrit
     group: gerrit
     mode: 0644
-  with_items:
+  loop:
     # We need to update the write-only file to prevent reload on next setup run
     - gerrit-ansible.config
     - gerrit.config

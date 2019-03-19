@@ -4,22 +4,16 @@
     name: "{{ item }}"
     state: stopped
     enabled: "no"
-  with_items:
+  loop:
     - storyboard
     - storyboard-worker
   ignore_errors: "yes"
 
 - block:
-    - name: Remove files
-      file:
-        path: "{{ item }}"
-        state: absent
-      with_items: []
-
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - storyboard
   when: erase == True
