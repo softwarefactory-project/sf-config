@@ -4,7 +4,7 @@
     linter_failure: false
 
 - include: "lint_{{ item }}.yaml"
-  with_items: "{{ linters }}"
+  loop: "{{ linters }}"
 
 - name: Fail if one linter failed
   fail:

@@ -24,7 +24,7 @@
     src: "{{ item }}.j2"
     dest: "/etc/logstash/{{ item }}"
   register: logstash_templates
-  with_items:
+  loop:
     - curator.yml
     - delete_old_indices.yml
 
@@ -33,7 +33,7 @@
     dest: /etc/logstash/jvm.options
     regexp: '^#?{{ item.regexp }}.*'
     line: '{{ item.line }}'
-  with_items:
+  loop:
     - regexp: '-Xms'
       line: '-Xms{{ logstash_minimum_heap_size }}'
     - regexp: '-Xmx'

@@ -11,7 +11,7 @@
       owner: apache
       group: apache
   notify: apache reload
-  with_items:
+  loop:
       - {name: config.py, dest: /etc/cauth}
       - {name: login.html, dest: /etc/cauth/templates}
 
@@ -20,7 +20,7 @@
       src: "{{ item.name }}"
       dest: "{{ item.dest }}/{{ item.real_name | default(item.name) }}"
   notify: apache reload
-  with_items:
+  loop:
       - {name: cauth.site, real_name: cauth.conf, dest: /etc/httpd/conf.d/}
       - {name: app.wsgi, dest: /var/www/cauth/}
 
