@@ -47,7 +47,7 @@
     name: ''
     host: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - localhost
     - "{{ ansible_hostname }}"
 
@@ -55,7 +55,7 @@
   mysql_db:
     name: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - test
 
 - name: Create databases

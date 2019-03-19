@@ -18,7 +18,7 @@
 - name: "Check site content type"
   stat:
     path: "{{ item.path }}"
-  with_items:
+  loop:
     - type: sphinx
       path: "{{ source }}/conf.py"
     - type: pelican

@@ -178,7 +178,7 @@ def recover(args, pb):
              'path': '/var/lib/software-factory/backup/{{ item }}',
              'state': 'directory'
          },
-         'with_items': [role for role in args.glue['roles']]}
+         'loop': [role for role in args.glue['roles']]}
     ]))
 
     # Start mysql
@@ -640,7 +640,7 @@ def backup(args, pb):
                   'mode': '0700'}},
         {'file': {'path': "/var/lib/software-factory/backup/{{ item }}",
                   'state': 'directory'},
-         'with_items': list(args.glue['roles'])}]))
+         'loop': list(args.glue['roles'])}]))
 
     # Call backup task
     for host in args.inventory:

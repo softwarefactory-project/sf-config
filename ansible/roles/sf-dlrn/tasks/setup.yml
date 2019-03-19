@@ -15,7 +15,7 @@
     mode: 0755
     owner: "{{ item.owner }}"
     state: directory
-  with_items:
+  loop:
     - path: /etc/dlrn
       owner: root
     - path: /var/www/dlrn

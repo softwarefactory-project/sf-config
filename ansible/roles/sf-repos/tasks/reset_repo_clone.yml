@@ -3,7 +3,7 @@
   command: "git {{ item }}"
   args:
     chdir: "{{ clone_dir }}"
-  with_items:
+  loop:
     - "remote set-url origin {{ clone_remote }}"
     - "fetch --all"
     - "reset --hard origin/master --"

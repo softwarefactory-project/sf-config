@@ -20,7 +20,7 @@
   command: "{{ item }}"
   args:
     chdir: /root/config
-  with_items:
+  loop:
     - git add zuul/_mirrors.yml jobs/_mirrors_update.yml
     - git commit -m "Add swift mirror periodic update"
     - git push {{ config_location }} master
@@ -34,7 +34,7 @@
   command: "{{ item }}"
   args:
     chdir: /root/config
-  with_items:
+  loop:
     - git rm zuul/_mirrors.yml jobs/_mirrors_update.yml
     - git commit -m "Remove swift mirror periodic update"
     - git push {{ config_location }} master

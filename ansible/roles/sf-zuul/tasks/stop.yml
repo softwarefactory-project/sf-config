@@ -3,4 +3,4 @@
   service:
     name: "{{ item }}"
     state: stopped
-  with_items: "{{ zuul_services }}"
+  loop: "{{ zuul_services }}"

@@ -6,7 +6,7 @@
     dest: /etc/cgitrc
     regexp: "^{{ item.key }}=.*"
     line: "{{ item.key }}={{ item.value }}"
-  with_items:
+  loop:
     - {key: "head-include", value: "/var/www/static/index-header.html"}
     - {key: "include", value: "/etc/cgitrepos"}
     - {key: "logo", value: ""}
