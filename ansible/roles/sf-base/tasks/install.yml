@@ -122,7 +122,7 @@
     state: link
     force: yes
   when: _python35_installed.stat.exists
-  with_items:
+  loop:
     - "lib64/libpython3.so.rh-python35"
     - "lib64/libpython3.5m.so.rh-python35-1.0"
     - "lib64/python3.5"
@@ -135,7 +135,7 @@
     dest: "/usr/bin/{{ item }}"
     state: link
     force: yes
-  with_items:
+  loop:
     - ansible-playbook
     - ansible-inventory
     - ansible-pull
@@ -156,7 +156,7 @@
     src: "{{ item }}"
     dest: "/usr/libexec/software-factory/{{ item }}"
     mode: 0555
-  with_items:
+  loop:
     - wait4port
     - wait4mariadb
     - wait4gerrit

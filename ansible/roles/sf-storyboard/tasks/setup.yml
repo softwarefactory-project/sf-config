@@ -10,7 +10,7 @@
     owner: storyboard
     group: storyboard
     mode: 0400
-  with_items:
+  loop:
     - storyboard.conf
     - superuser.yaml
     - service_token.sql
@@ -39,4 +39,4 @@
     name: "{{ item }}"
     state: started
     enabled: "yes"
-  with_items: "{{ storyboard_services }}"
+  loop: "{{ storyboard_services }}"

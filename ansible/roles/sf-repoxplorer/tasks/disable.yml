@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: stopped
     enabled: "no"
-  with_items:
+  loop:
     - repoxplorer
     - repoxplorer-webui
   ignore_errors: "yes"
@@ -14,13 +14,13 @@
       file:
         path: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - /var/lib/repoxplorer
 
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - repoxplorer
   when: erase == True

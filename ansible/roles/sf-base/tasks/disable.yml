@@ -4,7 +4,7 @@
       file:
         path: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - /var/lib/cauth
         - /var/lib/edeploy
         - /etc/pki/ca-trust/source/anchors/localCA.pem
@@ -16,7 +16,7 @@
       yum:
         name: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - python2-pysflib
         - sf-config
 
@@ -24,7 +24,7 @@
       file:
         path: "{{ item }}"
         state: 'absent'
-      with_items:
+      loop:
         - /usr/libexec/software-factory
         - /var/lib/software-factory/sql
         - /var/lib/software-factory/state

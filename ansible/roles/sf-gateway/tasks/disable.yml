@@ -10,7 +10,7 @@
       file:
         path: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - /var/www/sf
         - /var/www/dashboard
         - /var/www/dashboards_data

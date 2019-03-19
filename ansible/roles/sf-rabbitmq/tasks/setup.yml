@@ -30,7 +30,7 @@
   rabbitmq_vhost:
     name: "{{ item.vhost }}"
     state: present
-  with_items: "{{ rabbitmq_users }}"
+  loop: "{{ rabbitmq_users }}"
 
 - name: Create users
   rabbitmq_user:
@@ -42,4 +42,4 @@
     read_priv: .*
     state: present
     node: rabbit
-  with_items: "{{ rabbitmq_users }}"
+  loop: "{{ rabbitmq_users }}"
