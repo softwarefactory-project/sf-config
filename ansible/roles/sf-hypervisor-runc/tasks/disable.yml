@@ -20,7 +20,7 @@
 
     - name: Delete runC containers
       command: "runc delete --force {{ item }}"
-      with_items: "{{ runc_containers.stdout_lines }}"
+      loop: "{{ runc_containers.stdout_lines }}"
       ignore_errors: "yes"
       when: _runc_binary.stat.exists
 
@@ -28,7 +28,7 @@
       file:
         path: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - /var/lib/zuul/src
         - /var/lib/nodepool/oci
   when: erase == True

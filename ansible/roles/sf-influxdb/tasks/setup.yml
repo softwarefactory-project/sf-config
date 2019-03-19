@@ -8,7 +8,7 @@
     setype: cert_t
     seuser: system_u
     serole: object_r
-  with_items:
+  loop:
     - {content: "{{ influxdb_crt}}", dest: "influxdb.crt"}
     - {content: "{{ influxdb_key }}", dest: "influxdb.key", mode: '0400'}
   no_log: true
@@ -19,7 +19,7 @@
     section: '{{ item.section }}'
     option: '{{ item.option }}'
     value: '{{ item.value }}'
-  with_items:
+  loop:
     - {section: http, option: auth-enabled, value: 'true'}
     - {section: http, option: https-enabled, value: 'true'}
     - {section: http, option: https-certificate, value: '"/etc/influxdb/influxdb.crt"'}

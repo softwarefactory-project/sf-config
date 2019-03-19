@@ -3,6 +3,6 @@
   service:
     name: "{{ item }}"
     state: restarted
-  with_items:
+  loop:
     - rh-python35-repoxplorer-webui
     - rh-python35-repoxplorer

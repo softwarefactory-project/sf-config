@@ -11,12 +11,12 @@
       file:
         path: "{{ item }}"
         state: absent
-      with_items: []
+      loop: []
 
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - umurmur
   when: erase == True

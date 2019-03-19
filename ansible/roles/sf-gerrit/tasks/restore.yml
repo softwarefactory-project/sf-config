@@ -3,7 +3,7 @@
   file:
     path: "/var/lib/gerrit/{{ item }}"
     state: absent
-  with_items:
+  loop:
     - git
     - cache
     - index
@@ -20,7 +20,7 @@
     group: "gerrit"
     recurse: "yes"
     state: "directory"
-  with_items:
+  loop:
     - /var/lib/gerrit/git
     - /var/lib/gerrit/.ssh
 

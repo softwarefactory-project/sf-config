@@ -11,7 +11,7 @@
     group: "zuul"
     recurse: "yes"
     state: "directory"
-  with_items:
+  loop:
     - "{{ zuul_lib_dir }}/keys/"
 
 - name: "Ensure zuul home is owned by zuul"

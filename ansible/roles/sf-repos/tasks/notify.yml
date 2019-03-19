@@ -2,7 +2,7 @@
 - name: Stat local patches
   stat:
     path: "/var/lib/software-factory/git/{{ item | basename }}.patch"
-  with_items:
+  loop:
     - "{{ config_clone_dir }}"
     - "{{ sf_jobs_clone_dir }}"
   register: _patches

@@ -7,7 +7,7 @@
     dest: '{{ item.dest }}'
     regexp: '^#?{{ item.regexp }}.*'
     line: '{{ item.line }}'
-  with_items:
+  loop:
     - regexp: 'network.host'
       line: 'network.host:  {{ ansible_default_ipv4.address }}'
       dest: /etc/elasticsearch/elasticsearch.yml

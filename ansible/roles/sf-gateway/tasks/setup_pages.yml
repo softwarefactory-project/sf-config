@@ -43,4 +43,4 @@
   authorized_key:
     user: pagesuser
     key: "{{ item }}"
-  with_items: "{{ pagesuser_authorized_keys }}"
+  loop: "{{ pagesuser_authorized_keys }}"

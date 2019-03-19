@@ -11,6 +11,6 @@
     mode: pull
     src: "/etc/cauth/{{ item }}"
     dest: "{{ log_dest }}/{{ item }}"
-  with_items:
+  loop:
     - config.py
   ignore_errors: true

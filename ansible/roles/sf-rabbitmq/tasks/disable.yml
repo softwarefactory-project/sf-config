@@ -11,13 +11,13 @@
       file:
         path: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - /var/lib/rabbitmq/mnesia
 
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - rabbitmq-server
   when: erase == True

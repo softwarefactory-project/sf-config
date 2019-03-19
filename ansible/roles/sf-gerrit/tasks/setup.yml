@@ -37,7 +37,7 @@
     group: gerrit
     mode: "{{ item.mode }}"
     backup: yes
-  with_items:
+  loop:
     - {name: patchset-created,
        path: /var/lib/gerrit/hooks,
        mode: '0740'}
@@ -74,7 +74,7 @@
     mode: 0644
     owner: gerrit
     group: gerrit
-  with_items:
+  loop:
     - {name: GerritSite.css}
 
 - name: Check for replication.config
@@ -106,7 +106,7 @@
     mode: "{{ item.mode }}"
     owner: gerrit
     group: gerrit
-  with_items:
+  loop:
     - {name: gerrit_service_rsa, file: ssh_host_rsa_key, mode: "0400"}
     - {name: gerrit_service_rsa_pub, file: ssh_host_rsa_key.pub, mode: "0444"}
 
@@ -175,7 +175,7 @@
     dest: "/var/lib/gerrit/.init/{{ item.dest }}"
     owner: gerrit
     mode: 0400
-  with_items:
+  loop:
     - {key: gerrit_admin_password, dest: "admin_http_password"}
     - {key: gerrit_admin_rsa_pub, dest: "admin_ssh_key.pub"}
     - {key: local_admin_mail, dest: "admin_email"}

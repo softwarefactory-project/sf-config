@@ -29,7 +29,7 @@
       mode: 0444
       owner: apache
       group: apache
-  with_items:
+  loop:
       - {name: saml_auth.conf, dest: /etc/httpd/conf.d/}
   notify: apache reload
   when: idp_metadata.stat.exists
