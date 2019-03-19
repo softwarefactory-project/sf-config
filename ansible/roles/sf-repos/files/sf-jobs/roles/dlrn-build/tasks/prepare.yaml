@@ -2,7 +2,7 @@
   yum:
     name: "{{ item }}"
     state: latest
-  with_items:
+  loop:
   - git
   - createrepo
   - python-virtualenv
@@ -27,7 +27,7 @@
     dest: "/usr/{{ item }}"
     state: link
     force: yes
-  with_items:
+  loop:
     - "lib64/libpython3.5m.so"
     - "lib64/libpython3.5m.so.rh-python35-1.0"
     - "lib64/python3.5"

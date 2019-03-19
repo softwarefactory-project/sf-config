@@ -49,7 +49,7 @@
         src: "{{ item }}"
         dest: "/var/www/.config/{{ item | basename }}"
       delegate_to: "{{ gateway_host }}"
-      with_items: "{{ updated_keys.stdout_lines }}"
+      loop: "{{ updated_keys.stdout_lines }}"
       when: updated_keys.stdout
   when: "'zuul-scheduler' in zuul_services"
 
@@ -69,7 +69,7 @@
     name: "rh-python35-{{ item }}"
     state: started
     enabled: "yes"
-  with_items: "{{ zuul_services }}"
+  loop: "{{ zuul_services }}"
 
 - name: Write config repo sha1 matching current configuration
   copy:

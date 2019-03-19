@@ -11,7 +11,7 @@
       file:
         path: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - /var/lib/elasticsearch/elasticsearch
         - "/etc/yum.repos.d/{{ elastic_repo_name }}.repo"
 
@@ -19,6 +19,6 @@
       yum:
         name: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - elasticsearch
   when: erase == True

@@ -4,7 +4,7 @@
 
 - name: Prepare All-project clone
   shell: "git {{ item }}"
-  with_items:
+  loop:
     - init .
     - remote add origin ssh://gerrit/All-Projects || true
     - fetch origin refs/meta/config:refs/remotes/origin/meta/config
@@ -23,7 +23,7 @@
 # This complete Gerrit ACLs set by gerrit init
 - name: Set All-project/project.config ACLs
   shell: "git config -f project.config --replace-all {{ item }}"
-  with_items:
+  loop:
     - 'capability.accessDatabase "group Administrators"'
     - 'access.refs/for/*.addPatchSet "group Administrators" "group Administrator"'
     - 'access.refs/for/*.addPatchSet "group Project Owners" "group Project Owners"'
@@ -81,7 +81,7 @@
 
 - name: Push All-project/project.config ACLs
   command: "git {{ item }}"
-  with_items:
+  loop:
     - add project.config
     - commit -m"Set SF default Gerrit ACLs"
     - push origin meta/config:meta/config

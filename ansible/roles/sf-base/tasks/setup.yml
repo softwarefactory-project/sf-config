@@ -11,7 +11,7 @@
     name: "{{ item }}"
     state: stopped
     enabled: "no"
-  with_items:
+  loop:
     - cloud-init
     - cloud-init-local
     - cloud-config
@@ -61,7 +61,7 @@
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
-  with_items:
+  loop:
     - {name: net.ipv4.ip_forward, value: 0}
     - {name: net.ipv4.ip_dynaddr, value: 0}
     - {name: net.ipv4.tcp_ecn, value: 0}
@@ -113,7 +113,7 @@
     name: "{{ item }}"
     state: "yes"
     persistent: "yes"
-  with_items:
+  loop:
     - httpd_can_network_connect
     - httpd_can_network_connect_db
     - logging_syslogd_can_sendmail
@@ -164,5 +164,5 @@
   when:
     - _python_request.stat.exists
     - new_crt is changed
-  with_items:
+  loop:
     - /usr/lib/python2.7/site-packages/requests/

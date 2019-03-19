@@ -3,4 +3,4 @@
   service:
     name: "{{ item }}"
     state: restarted
-  with_items: "{{storyboard_services}}"
+  loop: "{{storyboard_services}}"

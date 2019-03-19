@@ -8,7 +8,7 @@
     owner: telegraf
     group: root
     mode: 0440
-  with_items:
+  loop:
     - {name: 'output_influxdb.conf', path: '/etc/telegraf/telegraf.d'}
     - {name: 'telegraf.conf', path: '/etc/telegraf'}
   notify: Restart telegraf
@@ -19,7 +19,7 @@
     dest: '/etc/telegraf/telegraf.d/{{ item }}'
     owner: telegraf
     mode: 0440
-  with_items:
+  loop:
     - statsd.conf
     - network.conf
   notify: Restart telegraf

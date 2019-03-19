@@ -7,7 +7,7 @@
     dest: /root/sf-logs
     src: '{{ item }}'
   ignore_errors: true
-  with_items:
+  loop:
     - /var/log/messages
     - /var/log/audit/audit.log
     - /var/log/audit/unconfined_process.txt

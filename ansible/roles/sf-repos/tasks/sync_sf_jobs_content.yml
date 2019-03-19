@@ -3,7 +3,7 @@
   file:
     path: "{{ sf_jobs_clone_dir }}/{{ item }}"
     state: directory
-  with_items:
+  loop:
     - playbooks
     - roles
     - zuul.d
@@ -15,7 +15,7 @@
     rsync_opts:
       # Ignore existing because users may update those files
       - "--ignore-existing"
-  with_items:
+  loop:
     - README
     - playbooks/ansible/
     - playbooks/linters/

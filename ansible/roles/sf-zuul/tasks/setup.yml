@@ -33,7 +33,7 @@
     src: "{{ item.src }}/zuul"
     dest: "{{ item.dest }}/zuul"
     state: link
-  with_items:
+  loop:
     - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
     - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
     - {src: /etc/opt/rh/rh-python35, dest: /etc}
@@ -81,7 +81,7 @@
         dest: /usr/libexec/software-factory/zuul-changes.py
         mode: 0755
       delegate_to: "{{ item }}"
-      with_items: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
+      loop: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
 
     - name: Install gearman-client script
       template:
@@ -115,7 +115,7 @@
 
     - name: Check if the zuul sources are already defined
       command: "ssh-keygen -f {{ zuul_lib_dir }}/.ssh/known_hosts -F {{ item.host_packed }}"
-      with_items: "{{ zuul_ssh_known_hosts }}"
+      loop: "{{ zuul_ssh_known_hosts }}"
       register: _zuul_known_hosts_results
       failed_when: false
       changed_when: false
@@ -124,7 +124,7 @@
       shell: >
         ssh-keyscan -T 10 -p {{ item.item.port }} {{ item.item.host }} | sort | tac >>
         {{ zuul_lib_dir }}/.ssh/known_hosts
-      with_items: "{{ _zuul_known_hosts_results.results }}"
+      loop: "{{ _zuul_known_hosts_results.results }}"
       when: item.stdout == ""
 
     - name: Check zuul user can connect to gerrit connections
@@ -137,7 +137,7 @@
       register: _zuul_connection_test
       failed_when: _zuul_connection_test.stderr.find("Welcome to Gerrit Code Review") == -1
       changed_when: false
-      with_items: "{{ zuul_gerrit_connections }}"
+      loop: "{{ zuul_gerrit_connections }}"
 
     - name: Install github private key
       copy:
@@ -146,7 +146,7 @@
         mode: 0400
         owner: zuul
         group: zuul
-      with_items: "{{ zuul_github_connections }}"
+      loop: "{{ zuul_github_connections }}"
       when: item.app_key
       no_log: yes
 
@@ -184,7 +184,7 @@
     dest: "{{ zuul_conf_dir }}/ssl/{{ item.dest }}"
     mode: 0440
     group: zuul
-  with_items:
+  loop:
     - {content: "{{ localCA_pem }}", dest: "localCA.pem"}
     - {content: "{{ gearman_crt }}", dest: "gearman.crt"}
     - {content: "{{ gearman_key }}", dest: "gearman.key"}

@@ -10,7 +10,7 @@
   command: "{{ item }}"
   args:
     chdir: "{{ update_fqdn_project }}"
-  with_items:
+  loop:
     - git add -A .
     - git commit -m "gitreview update host to {{ fqdn }}"
     - git push

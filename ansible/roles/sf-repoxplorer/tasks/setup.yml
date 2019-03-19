@@ -22,7 +22,7 @@
     dest: /usr/share/repoxplorer/public/{{ item }}
     insertafter: '        <script src="javascript/moment.min.js"></script>'
     line: '    <script src="/static/js/topmenu.js"></script>'
-  with_items:
+  loop:
     - project.html
     - projects.html
     - group.html
@@ -36,7 +36,7 @@
   file:
     path: "{{ item }}"
     state: directory
-  with_items:
+  loop:
     - /etc/systemd/system/rh-python35-repoxplorer.service.d
     - /etc/systemd/system/rh-python35-repoxplorer-webui.service.d
 
@@ -73,6 +73,6 @@
     state: started
     daemon_reload: "yes"
     enabled: "yes"
-  with_items:
+  loop:
     - rh-python35-repoxplorer-webui
     - rh-python35-repoxplorer

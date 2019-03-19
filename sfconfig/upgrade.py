@@ -64,6 +64,11 @@ def update_sfconfig(args):
         data['network']['disable_external_resources'] = True
         dirty = True
 
+    # 3.3.0: update gateway_directories default value
+    if data['gateway_directories'] == '':
+        data['gateway_directories'] = []
+        dirty = True
+
     # 2.7.0: remove useless backup config section
     if 'backup' in data:
         del data['backup']
