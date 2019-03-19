@@ -7,7 +7,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /etc/httpd/conf.d/autoindex.conf
     - /etc/httpd/conf.d/userdir.conf
     - /etc/httpd/conf.d/welcome.conf
@@ -16,7 +16,7 @@
   file:
     path: "{{ item }}"
     state: directory
-  with_items:
+  loop:
     - /var/www/jobs
     - /var/www/sf
     - /var/www/dashboard
@@ -33,7 +33,7 @@
     owner: "{{ item.owner | default('root') }}"
     group: "{{ item.group | default('root') }}"
     recurse: "yes"
-  with_items: "{{ gateway_directories }}"
+  loop: "{{ gateway_directories }}"
   when: gateway_directories
 
 - name: Install sf-update-dashboard command
@@ -42,7 +42,7 @@
     dest: /usr/libexec/software-factory/sf-update-dashboard
     mode: 0555
   delegate_to: "{{ item }}"
-  with_items: "{{ executor_hosts | union( groups['gateway'] ) }}"
+  loop: "{{ executor_hosts | union( groups['gateway'] ) }}"
 
 - name: Set robots.txt
   copy:
@@ -65,7 +65,7 @@
     setype: cert_t
     seuser: system_u
     serole: object_r
-  with_items:
+  loop:
     - {content: "{{gateway_crt}}", path: "certs/{{ fqdn }}.crt"}
     - {content: "{{gateway_chain}}", path: "certs/{{ fqdn }}-chain.crt"}
     - {content: "{{gateway_key}}", path: "private/{{ fqdn }}.key", mode: '0400'}
@@ -76,7 +76,7 @@
     src: "{{ item.name }}"
     dest: "{{ item.path }}/{{ item.real_name|default(item.name) }}"
     mode: "{{ item.mode|default(0444) }}"
-  with_items:
+  loop:
     - {name: base64helper, path: /usr/local/sbin, mode: '0755'}
     - {name: ssl.conf, path: /etc/httpd/conf.d}
     - {name: user_settings.html, path: /var/www/sf}
@@ -128,7 +128,7 @@
     src: "{{ item.name }}.j2"
     dest: "{{item.dest }}/{{ item.name }}"
     mode: "{{ item.mode | default(0444) }}"
-  with_items:
+  loop:
     - {name: gateway.common, dest: /etc/httpd/conf.d}
     - {name: gateway.conf, dest: /etc/httpd/conf.d}
     - {name: hideci.js, dest: /var/www/static/js}
@@ -143,7 +143,7 @@
     src: gateway-kibana.conf.j2
     dest: /etc/httpd/conf.d/gateway-kibana.conf
     mode: 0444
-  with_items: "{{ inventory }}"
+  loop: "{{ inventory }}"
   when: '"kibana" in item["roles"]'
   notify: apache reload
   no_log: true
@@ -153,7 +153,7 @@
     src: gateway-repoxplorer.conf.j2
     dest: /etc/httpd/conf.d/gateway-repoxplorer.conf
     mode: 0444
-  with_items: "{{ inventory }}"
+  loop: "{{ inventory }}"
   when: '"repoxplorer" in item["roles"]'
   notify: apache reload
   no_log: true

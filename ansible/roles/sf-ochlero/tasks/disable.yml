@@ -6,17 +6,10 @@
     enabled: "no"
   ignore_errors: "yes"
 
-- block:
-    - name: Remove files
-      file:
-        path: "{{ item }}"
-        state: absent
-      with_items: []
-
-    - name: Remove packages
-      yum:
-        name: "{{ item }}"
-        state: absent
-      with_items:
-        - ochlero
+- name: Remove packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - ochlero
   when: erase == True

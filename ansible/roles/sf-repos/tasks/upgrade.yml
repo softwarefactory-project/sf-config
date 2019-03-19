@@ -48,7 +48,7 @@
       file:
         path: "/root/config/{{ item }}V3"
         state: absent
-      with_items:
+      loop:
         - zuul
         - nodepool
   when: sf_previous_version < 3.1

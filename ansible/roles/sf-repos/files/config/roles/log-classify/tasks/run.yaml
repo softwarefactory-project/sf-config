@@ -22,7 +22,7 @@
     owner: "{{ ansible_user }}"
     mode: 0700
     state: directory
-  with_items:
+  loop:
     - "{{ _model_path|dirname }}"
     - "{{ logclassify_tmp_dir }}"
 
@@ -103,7 +103,7 @@
     src: "{{ logclassify_tmp_dir }}/{{ _report_name }}.{{ item }}"
     dest: "{{ zuul.executor.log_root }}/{{ _report_name }}.{{ item }}"
     mode: pull
-  with_items:
+  loop:
     - html
     - json
   when:

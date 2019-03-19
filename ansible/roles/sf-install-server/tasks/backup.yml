@@ -6,7 +6,7 @@
     dest: "{{ backup_dest }}/"
     delete: "yes"
     rsync_opts: --relative
-  with_items:
+  loop:
     - /var/lib/software-factory/bootstrap-data
     - /root/config
     - /etc/software-factory

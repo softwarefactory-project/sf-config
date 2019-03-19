@@ -17,7 +17,7 @@
     src: "{{ item.src }}/nodepool"
     dest: "{{ item.dest }}/nodepool"
     state: link
-  with_items:
+  loop:
     - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
     - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
     - {src: /etc/opt/rh/rh-python35, dest: /etc}
@@ -29,7 +29,7 @@
     mode: "{{ item.mode | default(0700) }}"
     owner: nodepool
     group: nodepool
-  with_items:
+  loop:
     - {path: "/var/lib/nodepool/.ssh"}
     - {path: "/root/.config/openstack"}
     - {path: "/var/cache/nodepool/dib_tmp"}
@@ -44,7 +44,7 @@
     mode: "{{ item.mode }}"
     owner: "nodepool"
     group: "nodepool"
-  with_items:
+  loop:
     - {key: "nodepool_rsa", name: "id_rsa", mode: "0400"}
     - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
   no_log: true
@@ -68,7 +68,7 @@
     oc config rename-context "$(oc config current-context)" {{ item.context }}
   become: yes
   become_user: nodepool
-  with_items: "{{ nodepool_openshift_providers|default([]) }}"
+  loop: "{{ nodepool_openshift_providers|default([]) }}"
 
 - name: Install os-client-config
   template:
@@ -77,7 +77,7 @@
     owner: nodepool
     group: nodepool
     mode: 0640
-  with_items:
+  loop:
     - /root/.config
     - /var/lib/nodepool/.config
   when: nodepool_clouds_file[0]|default(None) != "/"
@@ -89,7 +89,7 @@
     owner: nodepool
     group: nodepool
     mode: 0400
-  with_items:
+  loop:
     - /root/.config
     - /var/lib/nodepool/.config
   when: nodepool_clouds_file[0]|default(None) == "/"
@@ -112,7 +112,7 @@
     mode: 0444
     owner: nodepool
     group: nodepool
-  with_items:
+  loop:
     - zuul_rsa
 
 - name: Install config
@@ -122,7 +122,7 @@
     owner: "root"
     group: "nodepool"
     mode: "0440"
-  with_items:
+  loop:
     - _nodepool.yaml
     - secure.conf
 
@@ -133,7 +133,7 @@
     group: "{{ item.group | default('root') }}"
     mode: "{{ item.mode | default(0750) }}"
     state: directory
-  with_items:
+  loop:
     - {path: "/var/lib/nodepool/images", owner: "nodepool", group: "nodepool"}
     - {path: "/var/www/html", mode: "0755"}
     - {path: "/var/cache/nodepool", mode: "0755", owner: "nodepool", group: "nodepool"}

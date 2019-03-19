@@ -11,7 +11,7 @@
       file:
         path: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - /var/lib/mysql
         - /root/.my.cnf
 

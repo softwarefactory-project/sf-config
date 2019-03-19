@@ -12,7 +12,7 @@
       command: "git {{ item }}"
       args:
         chdir: "{{ clone_dir }}"
-      with_items:
+      loop:
         - "add -A"
         - "commit -m \"{{ update_message|default('Automatic update of defaults') }}\""
 

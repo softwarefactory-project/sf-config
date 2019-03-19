@@ -18,14 +18,14 @@
       copy:
         src: "demo/config/{{ item }}"
         dest: "/root/config/{{ item }}"
-      with_items:
+      loop:
         - zuul/demo.yaml
 
     - name: Provision demo resources in config repo
       command: "{{ item }}"
       args:
         chdir: "/root/config"
-      with_items:
+      loop:
         - /usr/share/sf-config/scripts/create_project_resources.py --repo demo-project --repo demo-project-distgit --core demo@{{ fqdn }} resources/demo.yaml
         - /usr/bin/managesf-resources direct-apply --prev-yaml /var/lib/software-factory/bootstrap-data/empty_resources.yaml --new-yaml resources/demo.yaml
         - git add resources/demo.yaml zuul/demo.yaml
@@ -51,7 +51,7 @@
       copy:
         src: "demo/project/{{ item }}"
         dest: "{{ demo_tmp.stdout }}/{{ item }}"
-      with_items:
+      loop:
         - .zuul.yaml
         - setup.py
         - setup.cfg
@@ -62,7 +62,7 @@
       command: "git {{ item }}"
       args:
         chdir: "{{ demo_tmp.stdout }}"
-      with_items:
+      loop:
         - "add -A"
         - "commit -m 'Initialize demo-project repository'"
         - "push git+ssh://gerrit/demo-project master"
@@ -89,7 +89,7 @@
       copy:
         src: "demo/project-distgit/{{ item }}"
         dest: "{{ demo_distgit_tmp.stdout }}/{{ item }}"
-      with_items:
+      loop:
         - .zuul.yaml
         - demo-project.spec
         - build-rpm.yaml
@@ -98,7 +98,7 @@
       command: "git {{ item }}"
       args:
         chdir: "{{ demo_distgit_tmp.stdout }}"
-      with_items:
+      loop:
         - "add -A"
         - "commit -m 'Initialize demo-project-distgit repository'"
         - "push git+ssh://gerrit/demo-project-distgit master"

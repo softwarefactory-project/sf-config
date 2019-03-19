@@ -11,7 +11,7 @@
     mode: pull
     src: "/etc/managesf/{{ item }}"
     dest: "{{ log_dest }}/{{ item }}"
-  with_items:
+  loop:
     - config.py
     - policy.yaml
   ignore_errors: true

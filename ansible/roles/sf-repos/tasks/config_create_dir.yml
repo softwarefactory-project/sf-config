@@ -8,4 +8,4 @@
       # Ignore existing because users may update those files
       - "--ignore-existing"
       - "--exclude=*.py[co]"
-  with_items: "{{ repo_dir_names }}"
+  loop: "{{ repo_dir_names }}"

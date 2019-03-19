@@ -25,7 +25,7 @@
     section: root
     option: "{{ item.option }}"
     value: "{{ item.value }}"
-  with_items:
+  loop:
     - {option: "dburi", value: "mysql://{{ lodgeit_mysql_user }}:{{ lodgeit_mysql_password }}@{{ lodgeit_mysql_host }}:{{ lodgeit_mysql_port }}/{{ lodgeit_mysql_db }}"}
     - {option: "secret_key", value: "{{lodgeit_session_key}}"}
   notify: restart lodgeit

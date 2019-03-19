@@ -14,7 +14,7 @@
   authorized_key:
     user: loguser
     key: "{{ item }}"
-  with_items: "{{ loguser_authorized_keys }}"
+  loop: "{{ loguser_authorized_keys }}"
 
 - name: Install httpd conf.d logserver
   template:
@@ -70,6 +70,6 @@
     name: "{{ item }}"
     state: started
     enabled: "yes"
-  with_items:
+  loop:
     - sshd
     - httpd
