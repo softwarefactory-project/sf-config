@@ -2,12 +2,6 @@
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=logstash"
 
-- name: Install logstash configuration
-  template:
-    src: templates/indexer.conf.erb
-    dest: /etc/logstash/conf.d/indexer.conf
-  register: config
-
 - stat:
     path: /var/log/logstash/logstash.log
   register: logfile
@@ -21,12 +15,13 @@
 
 - name: Install configuration files
   template:
-    src: "{{ item }}.j2"
-    dest: "/etc/logstash/{{ item }}"
+    src: "{{ item.name }}.j2"
+    dest: "{{ item.path | default('/etc/logstash') }}/{{ item.name }}"
   register: logstash_templates
   with_items:
-    - curator.yml
-    - delete_old_indices.yml
+    - {name: 'curator.yml'}
+    - {name: 'delete_old_indices.yml'}
+    - {name: 'indexer.conf', path: '/etc/logstash/conf.d'}
 
 - name: Configure jvm
   lineinfile:
