@@ -7,7 +7,19 @@ input {
   }
 }
 
-# filter {}
+filter {
+  grok {
+    match => ["message", "(?<timestamp>[-0-9]{10}\s+[0-9.:]{12})(?<ms>[0-9]{3}) (?<sep>\|)%{GREEDYDATA:message}"]
+    overwrite => [ "message" ]
+  }
+  if [message] =~ /^\s*$/ {
+      drop { }
+  }
+  date {
+    match => ["timestamp", "yyyy-MM-dd HH:mm:ss.SSS"]
+    timezone => "UTC"
+  }
+}
 
 output {
   elasticsearch {
