@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7b2ba866_90335cf1",
+        "filename": "ansible/roles/sf-logstash/templates/indexer.conf.erb",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-25T13:22:52Z",
+      "side": 1,
+      "message": "hello,\nI\u0027m just catch them to be able to not use them later, I\u0027d just want to get the message without timestamp and sep, because I set the timestamp value to the value we have in the message (not the timestamp logstash create when it receives the message)",
+      "parentUuid": "5c36a0a4_3043b90d",
+      "range": {
+        "startLine": 12,
+        "startChar": 66,
+        "endLine": 12,
+        "endChar": 70
+      },
+      "revId": "c8ef3f6745d0814a32391b1418091279a0df0306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b3e6239_cc43972e",
         "filename": "ansible/roles/sf-logstash/templates/indexer.conf.erb",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-03-25T09:10:47Z",
       "side": 1,
       "message": "What is the meaning of overwrite ? The timestamp in the message will be removed ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 4,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "c8ef3f6745d0814a32391b1418091279a0df0306",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dd1e524e_857a568a",
+        "filename": "ansible/roles/sf-logstash/templates/indexer.conf.erb",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-03-25T13:22:52Z",
+      "side": 1,
+      "message": "Yes, the timestamp cached in the message will be use instead the one logstash\u0027s created",
+      "parentUuid": "8b3e6239_cc43972e",
       "range": {
         "startLine": 13,
         "startChar": 4,
