@@ -140,6 +140,7 @@ authentication:
       uid: XXX
       # optional
       ssh_keys: XXX
+      groups: XXX
 
 theme:
   loginpage_custom_footer: ""

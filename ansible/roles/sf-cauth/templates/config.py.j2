@@ -139,6 +139,9 @@ auth = {
             {% if authentication['SAML2']['mapping']['ssh_keys'] %}
             'ssh_keys': 'MELLON_{{ authentication['SAML2']['mapping']['ssh_keys'] }}',
             {% endif %}
+            {% if authentication['SAML2']['mapping']['groups'] %}
+            'groups': 'MELLON_{{ authentication['SAML2']['mapping']['groups'] }}',
+            {% endif %}
         },
     },
     {% endif %}

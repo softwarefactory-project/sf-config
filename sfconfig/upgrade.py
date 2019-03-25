@@ -154,8 +154,14 @@ def update_sfconfig(args):
         data["zuul"]["git_connections"] = []
         dirty = True
 
+    # 3.3: add SAML2 groups values
+    if 'SAML2' in data['authentication']:
+        if 'groups' not in data['authentication']['SAML2']['mapping']:
+            data['authentication']['SAML2']['mapping']['groups'] = None
+            dirty = True
+
     # 3.1: add SAML2 default auth values
-    if 'SAML2' not in data['authentication']:
+    else:
         data['authentication']['SAML2'] = {
             'disabled': True,
             'login_button_text': 'Replace me with a SAML login prompt',
@@ -166,6 +172,7 @@ def update_sfconfig(args):
                 'name': 'urn:oid:2.5.4.42',
                 'uid': 'uid',
                 'ssh_keys': None,
+                'groups': None,
             },
         }
         dirty = True
