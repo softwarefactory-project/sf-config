@@ -27,7 +27,7 @@
               deploymentconfig: "{{ zuul.project.short_name }}"
           spec:
             containers:
-              - image: "{{ _image_stream.result.status.docker_image_repository }}"
+              - image: "{{ _image_stream.result.status.dockerImageRepository }}"
                 name: "{{ zuul.project.short_name }}"
                 command: [ "/bin/bash", "-c", "--" ]
                 args: [ "while true; do sleep 30; done;" ]
