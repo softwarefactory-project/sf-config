@@ -9,5 +9,6 @@ sys.path.append('/opt/rh/rh-python35/root/lib/python3.5/site-packages/')
 
 def application(environ, start_response):
     os.environ['CONFIG_FILE'] = '/etc/dlrn/{{ item.project }}-api.cfg'
+    os.environ['HOME'] = '/var/lib/dlrn/{{ item.project }}'
     from dlrn.api import app
     return app(environ, start_response)
