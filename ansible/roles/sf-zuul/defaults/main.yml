@@ -76,3 +76,5 @@ nodepool_lib_dir: "/var/lib/nodepool"
 nodepool_webapp_port: 8006
 
 zuul_periodic_pipeline_mail_rcpt: root@localhost
+
+elasticsearch_http_port: 9200
