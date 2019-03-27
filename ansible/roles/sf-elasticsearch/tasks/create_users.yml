@@ -23,6 +23,14 @@
   environment:
     JAVA_HOME: "{{ java_home }}"
 
+- name: Generate hash for zuul user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch_zuul_password }}
+  register: _elk_zuul_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
 - name: Generate hash for readall user
   command: |
     {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch_readonly_password }}
