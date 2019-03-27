@@ -23,6 +23,13 @@ logstash:
     - logstash
   description: Logstash user
   hidden: true
+zuul:
+  hash: {{ _elk_zuul_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - admin
+  description: Zuul user
+  hidden: true
 repoxplorer:
   hash: {{ _elk_repoxplorer_hash.stdout }}
   reserved: false
