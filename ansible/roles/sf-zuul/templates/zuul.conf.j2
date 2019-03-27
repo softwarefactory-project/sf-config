@@ -82,6 +82,13 @@ token_expiry=3600
 driver=sql
 dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}
 
+[connection smtp]
+driver=smtp
+server=localhost
+port=25
+default_from=zuul@{{ fqdn }}
+default_to=admin@{{ fqdn }}
+
 {% for conn in zuul_gerrit_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gerrit
@@ -147,12 +154,14 @@ poll_delay={{ conn['poll_delay']|default('7200') }}
 
 {% endfor %}
 
-[connection smtp]
-driver=smtp
-server=localhost
-port=25
-default_from=zuul@{{ fqdn }}
-default_to=admin@{{ fqdn }}
+{% if 'elasticsearch' in roles %}
+[connection elasticsearch]
+driver=elasticsearch
+uri={{ elasticsearch_host }}:{{ elasticsearch_http_port }}
+use_ssl=false
+
+{% endif %}
+
 {% if 'firehose' in roles %}
 
 [connection mqtt]
