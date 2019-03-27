@@ -9,9 +9,9 @@
     line: '{{ item.line }}'
   loop:
     - regexp: 'elasticsearch.url'
-      line: 'elasticsearch.url: "http://elasticsearch.{{ fqdn }}:9200"'
+      line: 'elasticsearch.url: "{{ elasticsearch_internal_url }}"'
     - regexp: 'server.host'
-      line: 'server.host: kibana.{{ fqdn }}'
+      line: 'server.host: {{ kibana_host }}'
     - regexp: 'server.basePath'
       line: 'server.basePath: "/analytics"'
   register: kibanaconf

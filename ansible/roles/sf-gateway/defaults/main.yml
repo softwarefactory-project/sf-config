@@ -14,6 +14,14 @@ gateway_host: localhost
 nodepool_builder_host: ""
 logserver_host: ""
 
+elasticsearch_http_port: 9200
+elasticsearch_host: elasticsearch.example.com
+elasticsearch_internal_url: "http://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
+
+kibana_http_port: 5601
+kibana_host: kibana.example.com
+kibana_internal_url: "http://{{ kibana_host }}:{{ kibana_http_port }}"
+
 welcome_page_path: "sf/welcome.html"
 
 # Base64 encoded logo data

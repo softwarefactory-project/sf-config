@@ -1,10 +1,10 @@
 <IfModule mod_proxy.c>
     <Location /analytics>
-        ProxyPass http://kibana.{{ fqdn }}:5601
-        ProxyPassReverse http://kibana.{{ fqdn }}:5601
+        ProxyPass {{ kibana_internal_url }}
+        ProxyPassReverse {{ kibana_internal_url }}
     </Location>
     <Location /elasticsearch>
-        ProxyPass http://elasticsearch.{{ fqdn }}:9200
-        ProxyPassReverse http://elasticsearch.{{ fqdn }}:9200
+        ProxyPass {{ elasticsearch_internal_url }}
+        ProxyPassReverse {{ elasticsearch_internal_url }}
     </Location>
 </IfModule>

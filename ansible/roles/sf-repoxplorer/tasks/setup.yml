@@ -46,7 +46,7 @@
     create: yes
     block: |
       [Service]
-      ExecStartPre=/usr/bin/wait4service {{ elasticsearch_host }} 9200
+      ExecStartPre=/usr/bin/wait4service {{ elasticsearch_host }} {{ elasticsearch_http_port }}
   register: repoxplorer_override
 
 - name: Set wait4service for repoxplorer-webui
@@ -55,7 +55,7 @@
     create: yes
     block: |
       [Service]
-      ExecStartPre=/usr/bin/wait4service {{ elasticsearch_host }} 9200
+      ExecStartPre=/usr/bin/wait4service {{ elasticsearch_host }} {{ elasticsearch_http_port }}
   register: repoxplorer_webui_override
 
 - name: Daemon reload
