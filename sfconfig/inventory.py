@@ -262,7 +262,7 @@ def repos(args, pb):
 
 def config_update(args, pb, skip_sync=False):
     # The list of role to run update task
-    roles_order = ["gerrit", "pages", "gerritbot",
+    roles_order = ["managesf", "gerrit", "pages", "gerritbot",
                    "gateway", "managesf", "mirror", "repoxplorer",
                    "zuul", "nodepool", "grafana", "hound", "dlrn", "cgit"]
     # The extra list of host group to run fetch-config-repo
@@ -281,19 +281,6 @@ def config_update(args, pb, skip_sync=False):
 
         pb.append(host_play(':'.join(roles_order + roles_group),
                             'repos', {'role_action': 'fetch_config_repo'}))
-
-    # Call resources apply
-    if "gerrit" in args.glue["roles"]:
-        pb.append(host_play('managesf', tasks=[
-            {'name': 'Exec resources apply',
-             'command': '/usr/bin/managesf-resources apply',
-             'register': 'output',
-             'changed_when': 'False',
-             'ignore_errors': 'yes'},
-            {'debug': {'msg': '{{ output.stdout_lines }}'}},
-            {'fail': {'msg': 'Resources apply failed {{ output.rc }}'},
-             'when': 'output.rc != 0'}
-        ]))
 
     # Update all components
     for host in args.inventory:

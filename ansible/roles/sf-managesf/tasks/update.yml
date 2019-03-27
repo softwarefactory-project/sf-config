@@ -1,4 +1,21 @@
 ---
+- block:
+    - name: Exec resources apply
+      command: /usr/bin/managesf-resources apply
+      register: output
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Show resources apply output
+      debug:
+        msg: "{{ output.stdout_lines }}"
+
+    - name: Check if it failed
+      fail:
+        msg: "Resources apply failed {{ output.rc }}"
+      when: output.rc != 0
+  when: "'gerrit' in roles"
+
 - name: Apply new policy.yaml
   copy:
     src: /root/config/policies/policy.yaml
