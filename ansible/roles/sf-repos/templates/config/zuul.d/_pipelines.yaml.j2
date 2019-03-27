@@ -65,6 +65,9 @@
         Verified: 1
 {% endfor %}
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -79,6 +82,9 @@
         Verified: -1
 {% endfor %}
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -185,6 +191,9 @@
         comment: true
 {% endif %}{% endfor %}
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -200,6 +209,9 @@
         comment: true
 {% endif %}{% endfor %}
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -232,6 +244,9 @@
 {% endif %}
     success:
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -242,6 +257,9 @@
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in post pipeline: {change.project}'
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -266,12 +284,18 @@
 {% endfor %}
     success:
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
 {% endif %}
     failure:
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -305,6 +329,9 @@
 {% endif %}
     success:
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -315,6 +342,9 @@
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in release pipeline: {change.project}'
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -337,6 +367,9 @@
 {% endif %}
     success:
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -347,6 +380,9 @@
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in periodic pipeline: {change.project}'
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -384,6 +420,9 @@
       {{ gerrit_connection.name }}: {}
 {% endfor %}
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -396,6 +435,9 @@
       {{ gerrit_connection.name }}: {}
 {% endfor %}
       sqlreporter:
+{% if 'elasticsearch' in roles %}
+      elasticsearch:
+{% endif %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
