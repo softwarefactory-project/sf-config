@@ -66,6 +66,24 @@ command_socket={{ zuul_lib_dir }}/web.socket
 port={{ zuul_web_port }}
 log_config={{ zuul_conf_dir }}/web-logging.yaml
 
+[auth zuul_operator]
+driver=HS256
+allow_authz_override=true
+realm=zuul_OSP
+client_id=zuul_OSP
+issuer_id=zuul_operator
+secret={{ zuul_hs256_secret }}
+token_expiry=3600
+
+[auth cauth]
+driver=HS256
+allow_authz_override=false
+realm=zuul_OSP
+client_id=zuul_{{ fqdn }}
+issuer_id=cauth_{{ fqdn }}
+secret={{ zuul_hs256_secret }}
+token_expiry=86400
+
 [connection sqlreporter]
 driver=sql
 dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}
