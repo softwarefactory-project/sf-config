@@ -66,6 +66,15 @@ command_socket={{ zuul_lib_dir }}/web.socket
 port={{ zuul_web_port }}
 log_config={{ zuul_conf_dir }}/web-logging.yaml
 
+[auth zuul_operator]
+driver=HS256
+allow_authz_override=true
+realm={{ fqdn }}
+client_id=zuul.{{ fqdn }}
+issuer_id=admin@{{ fqdn }}
+secret={{ zuul_hs256_secret }}
+token_expiry=3600
+
 [connection sqlreporter]
 driver=sql
 dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}
