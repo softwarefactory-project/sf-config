@@ -172,6 +172,10 @@ def main():
                  'logservers': [],
                  'executor_hosts': [],
                  }
+    if args.recover:
+        args.glue['force_update_tasks'] = True
+    else:
+        args.glue['force_update_tasks'] = False
 
     # Make sure the yaml files are updated
     sfconfig.upgrade.update_sfconfig(args)
