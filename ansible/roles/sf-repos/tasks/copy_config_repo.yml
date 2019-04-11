@@ -1,0 +1,6 @@
+---
+- name: Copy the config repo from the install-server to the other hosts
+  synchronize:
+    src: /root/config
+    dest: /root/config
+    delete: yes
