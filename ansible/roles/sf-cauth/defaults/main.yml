@@ -16,5 +16,6 @@ cauth_mysql_host: "mysql.example.com"
 cauth_mysql_password: "CHANGE_ME"
 cauth_mysql_port: 3306
 cauth_mysql_user: "cauth"
+cauth_hs256_secret: "CHANGE_ME"
 
 sf_service_user_password: "CHANGE_ME"
