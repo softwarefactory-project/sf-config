@@ -75,6 +75,15 @@ issuer_id=admin@{{ fqdn }}
 secret={{ zuul_hs256_secret }}
 token_expiry=3600
 
+[auth cauth]
+driver=HS256
+allow_authz_override=true
+realm={{ fqdn }}
+client_id=zuul.{{ fqdn }}
+issuer_id=cauth.{{ fqdn }}
+secret={{ cauth_hs256_secret }}
+token_expiry={{ authentication['sso_cookie_timeout'] }}
+
 [connection sqlreporter]
 driver=sql
 dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}
