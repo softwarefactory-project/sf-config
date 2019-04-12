@@ -216,3 +216,11 @@ repoxplorer = {
     'admin_token'   : '{{ repoxplorer_admin_token }}',
 }
 {% endif %}
+
+{% if 'zuul' in roles %}
+zuul = {
+    'auth': {
+        'secret'    : {{ cauth_hs256_secret }},
+        'algorithm' : 'HS256',
+    }
+}
