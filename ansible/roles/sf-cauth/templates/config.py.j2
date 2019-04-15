@@ -216,3 +216,10 @@ repoxplorer = {
     'admin_token'   : '{{ repoxplorer_admin_token }}',
 }
 {% endif %}
+
+groups = {
+    'local_groups': {
+        'config_file': '/etc/cauth/groups.yaml',
+        'lookup_key': 'email',
+    },
+}

@@ -35,3 +35,8 @@
 
 - include_tasks: saml2.yaml
   when: not authentication.SAML2.disabled
+
+- name: Touch groups.yaml
+  file:
+    path: /etc/cauth/groups.yaml
+    state: touch
