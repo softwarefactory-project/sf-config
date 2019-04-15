@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d0413967_a0ecb120",
+        "filename": "ansible/roles/sf-logserver/templates/purge-logs.sh.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 452
+      },
+      "writtenOn": "2019-04-15T15:43:40Z",
+      "side": 1,
+      "message": "I wonder would it be better as \u0027find -type d ! -iname \"*[0-9]\" or -regex (some examples: https://stackoverflow.com/questions/6844785/how-to-use-regex-with-find-command) but it may as well be reasonable to stick with python to be avoid issues with different versions of find on different versions of operating systems...",
+      "range": {
+        "startLine": 18,
+        "startChar": 8,
+        "endLine": 18,
+        "endChar": 14
+      },
+      "revId": "69b2f6ab79bc8f7371e98e5cb8c983e56e23d330",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    }
+  ]
+}
