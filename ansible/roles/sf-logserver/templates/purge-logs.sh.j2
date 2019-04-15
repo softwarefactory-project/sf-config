@@ -15,8 +15,8 @@ if ls $PAS &> /dev/null; then
          -exec rm -R {} \;
 fi
 # Remove periodic run
-PER="/var/www/logs/periodic*"
+PER="$(python -c "import os,re;print(' '.join(['/var/www/logs/%s' % d for d in os.listdir('/var/www/logs') if os.path.isdir(d) and not re.match('[a-f0-9][a-f0-9]', d) and not re.match('[0-9][0-9]?', d) and d != 'classifiers']))")"
 if ls $PER &> /dev/null; then
-    find $PER -maxdepth 2 -mindepth 2 -mtime +${RETENTION_DAYS} -type d \
+    find $PER -maxdepth 6 -mindepth 5 -regex ".+[a-z0-9]7$" -mtime +${RETENTION_DAYS} -type d \
          -exec rm -R {} \;
 fi
