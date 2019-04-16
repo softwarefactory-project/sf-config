@@ -1,20 +1,49 @@
 ---
+- name: Ensure /var/lib/software-factory/state/managesf_config exists
+  file:
+    path: /var/lib/software-factory/state/managesf_config
+    state: touch
+  changed_when: False
+
+- name: Check local config
+  command: cat /var/lib/software-factory/state/managesf_config
+  changed_when: False
+  register: localconfig
+
+- name: Check upstream config
+  command: git log -n 3 --oneline resources/
+  args:
+    chdir: /root/config
+  changed_when: False
+  register: upstreamconfig
+
 - block:
     - name: Exec resources apply
-      command: /usr/bin/managesf-resources apply
+      command: >
+        /usr/bin/managesf-resources apply
+          --zuul-prev-commit {{ localconfig.stdout_lines[0].split()[0] }}
       register: output
       changed_when: false
       ignore_errors: yes
+      when: localconfig.stdout_lines
+
+    - name: Write config repo sha1 matching current configuration
+      copy:
+        content: "{{ upstreamconfig.stdout }}"
+        dest: /var/lib/software-factory/state/managesf_config
 
     - name: Show resources apply output
       debug:
         msg: "{{ output.stdout_lines }}"
+      when: output.stdout_lines|default(False)
 
     - name: Check if it failed
       fail:
         msg: "Resources apply failed {{ output.rc }}"
-      when: output.rc != 0
-  when: "'gerrit' in roles"
+      when: output.rc|default(0) != 0
+  when:
+    - "'gerrit' in roles"
+    - localconfig.stdout != upstreamconfig.stdout
 
 - name: Apply new policy.yaml
   copy:
