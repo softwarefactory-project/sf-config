@@ -87,6 +87,5 @@
       shell: 'sed -i "s/@.*/@{{ fqdn }}/" {{ item }}'
       args:
         warn: false
-      loop:
-        - '{{ pubkeys.stdout_lines }}'
+      loop: '{{ pubkeys.stdout_lines }}'
   when: update_fqdn
