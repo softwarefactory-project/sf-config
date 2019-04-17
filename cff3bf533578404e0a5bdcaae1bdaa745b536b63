@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6322306d_ab62ef3d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-04-17T07:57:54Z",
+      "side": 1,
+      "message": "i don\u0027t like using \"we\" in such commit message, it feels like we vs them. Instead i prefer to refer to the actual subject, e.g. \"the script searches\"",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 26
+      },
+      "revId": "cff3bf533578404e0a5bdcaae1bdaa745b536b63",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4050671e_757c3ab0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-04-17T07:57:54Z",
+      "side": 1,
+      "message": "\"It takes less than 10 minutes to purge a 200G directory\". Though the previous optimization was more about the object count instead of the size.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 16
+      },
+      "revId": "cff3bf533578404e0a5bdcaae1bdaa745b536b63",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
