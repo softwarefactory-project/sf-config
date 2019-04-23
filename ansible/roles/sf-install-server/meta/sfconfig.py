@@ -200,8 +200,8 @@ class InstallServer(Component):
                 return
         if name == "local-cgit":
             baseurl = "http://%s/cgit" % host["hostname"]
-        elif name == "git.zuul-ci.org":
-            baseurl = "https://git.zuul-ci.org"
+        elif name == "opendev.org":
+            baseurl = "https://opendev.org"
         else:
             baseurl = "file:///var/lib/software-factory/git"
         git_connections.append({
@@ -320,26 +320,25 @@ class InstallServer(Component):
            it's associated connection"""
         if args.sfconfig["zuul"]["upstream_zuul_jobs"]:
             # When using the upstream project, look for the connection name
-            zuul_name = "openstack-infra/zuul-jobs"
-            zuul_loc = "https://git.zuul-ci.org/zuul-jobs"
+            zuul_name = "zuul/zuul-jobs"
+            zuul_loc = "https://opendev.org/zuul/zuul-jobs"
             zuul_conn = None
-            # Check if review.openstack.org is configured
+            # Check if review.opendev.org is configured
             for connection in args.sfconfig.get("zuul", {}).get(
                     "gerrit_connections", []):
-                if connection["hostname"] == "review.openstack.org":
+                if connection["hostname"] == "review.opendev.org":
                     zuul_conn = connection["name"]
                     break
             if not zuul_conn:
-                # Check if git.openstack.org is configured
+                # Check if git opendev.org is configured
                 for connection in args.sfconfig.get("zuul", {}).get(
                         "git_connections", []):
-                    if "git.openstack.org" in connection["baseurl"]:
+                    if connection["baseurl"] == "https://opendev.org":
                         zuul_conn = connection["name"]
                         break
             if not zuul_conn:
-                # Automatically adds git.zuul-ci.org connection
-                zuul_name = "zuul-jobs"
-                zuul_conn = "git.zuul-ci.org"
+                # Automatically adds git opendev.org connection
+                zuul_conn = "opendev.org"
                 self.ensure_git_connection(zuul_conn, args, host)
         else:
             # When using the zuul-jobs copy, set the right connection name
