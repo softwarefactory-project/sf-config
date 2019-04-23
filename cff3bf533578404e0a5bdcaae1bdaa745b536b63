@@ -45,6 +45,29 @@
       "revId": "cff3bf533578404e0a5bdcaae1bdaa745b536b63",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47027c6d_b21415de",
+        "filename": "ansible/roles/sf-logserver/templates/purge-logs.sh.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2019-04-23T08:10:46Z",
+      "side": 1,
+      "message": "Could this cause an issue if a log directory includes symlinks? They might be left there forever.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 58
+      },
+      "revId": "cff3bf533578404e0a5bdcaae1bdaa745b536b63",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
