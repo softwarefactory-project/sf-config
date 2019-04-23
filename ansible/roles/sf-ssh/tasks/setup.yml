@@ -1,11 +1,25 @@
 ---
-- name: "Install service_rsa key"
+- name: Install service_rsa key
   include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=root shell=/bin/bash home_dir=/root ssh_key=service_rsa"
 
-- name: "Allow zuul to run sf-config-update"
+- name: Allow zuul to run sf-config-update
   authorized_key:
     user: root
-    key: "{{ item }}"
+    key: "{{ zuul_worker_rsa_pub }}"
     key_options: 'command="/usr/share/sf-config/scripts/sf-config-update.sh",no-port-forwarding,no-x11-forwarding,no-agent-forwarding,no-pty'
-  loop:
-    - "{{ zuul_worker_rsa_pub }}"
+
+- name: Install sshd_config template
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0600
+    validate: '/usr/sbin/sshd -T -f %s'
+  register: restart_sshd
+
+- name: Restart sshd if needed
+  systemd:
+    name: sshd
+    state: restarted
+  when: restart_sshd is changed
