@@ -1,7 +1,7 @@
 ---
 - name: Create cauth state file
   file:
-    path: /var/lib/software-factory/state/
+    path: /var/lib/software-factory/state/cauth_config
     state: touch
   changed_when: false
 
@@ -19,7 +19,7 @@
 
 - name: Update cauth configuration
   block:
-    - include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml service_name=cauth service_config_dir=/etc/cauth service_config_name=default.yaml"
+    - include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml service_name=cauth service_config_dir=/etc/cauth service_config_name=groups.yaml"
       when: localconfig.stdout != upstreamconfig.stdout
 
     - name: Write config repo sha1 matching current cauth configuration

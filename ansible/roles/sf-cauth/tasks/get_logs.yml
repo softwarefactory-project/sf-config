@@ -13,4 +13,5 @@
     dest: "{{ log_dest }}/{{ item }}"
   loop:
     - config.py
+    - groups.yaml
   ignore_errors: true
