@@ -32,6 +32,14 @@ poll_delay={{ conn['poll_delay']|default('7200') }}
 
 {% endfor %}
 
+{% for conn in zuul_pagure_connections|default([]) %}
+[connection {{ conn['name'] }}]
+driver=pagure
+server={{ conn['server']|default('pagure.io') }}
+baseurl={{ conn['baseurl']|default('https://pagure.io') }}
+
+{% endfor %}
+
 [connection smtp]
 driver=smtp
 server=localhost

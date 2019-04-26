@@ -35,6 +35,11 @@ resources:
       base-url: "{{ conn['baseurl'] }}"
       type: git
 {% endfor %}
+{% for conn in zuul_pagure_connections|default([]) %}
+    {{ conn['name'] }}:
+      base-url: "{{ conn['baseurl'] }}"
+      type: pagure
+{% endfor %}
 {% endif %}
 
   projects:
