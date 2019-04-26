@@ -118,6 +118,7 @@ class InstallServer(Component):
         args.glue.setdefault("zuul_ssh_known_hosts", [])
         args.glue.setdefault("zuul_gerrit_connections", [])
         args.glue.setdefault("zuul_github_connections", [])
+        args.glue.setdefault("zuul_pagure_connections", [])
         args.glue.setdefault("zuul_git_connections", [])
 
         # Add local gerrit if available
@@ -168,12 +169,25 @@ class InstallServer(Component):
                 gh_app_key = github_connection.get('app_key')
                 if gh_app_key and os.path.isfile(gh_app_key):
                     github_connection['app_key'] = open(gh_app_key).read()
+            for pagure_connection in zuul_config.get("pagure_connections", []):
+                host_packed = pagure_connection.get("server", "pagure.io")
+                args.glue["zuul_ssh_known_hosts"].append({
+                    "host_packed": host_packed,
+                    "host": pagure_connection.get("server", "pagure.io"),
+                    "port": 22
+                })
+                if not pagure_connection.get("baseurl"):
+                    pagure_connection["baseurl"] = (
+                        'https://%s' % pagure_connection.get(
+                            'server', 'pagure.io'))
+                args.glue["zuul_pagure_connections"].append(pagure_connection)
             for git_connection in zuul_config.get("git_connections", []):
                 args.glue["zuul_git_connections"].append(git_connection)
 
         # Set auto-configurations of pipelines list
         args.glue.setdefault("zuul_gerrit_connections_pipelines", [])
         args.glue.setdefault("zuul_github_connections_pipelines", [])
+        args.glue.setdefault("zuul_pagure_connections_pipelines", [])
         args.glue["zuul_gate_pipeline"] = False
 
         for gerrit_connection in args.glue["zuul_gerrit_connections"]:
@@ -190,6 +204,9 @@ class InstallServer(Component):
                 github_connection)
             if github_connection.get("app_name"):
                 args.glue["zuul_gate_pipeline"] = True
+        for pagure_connection in args.glue["zuul_pagure_connections"]:
+            args.glue["zuul_pagure_connections_pipelines"].append(
+                pagure_connection)
 
     def ensure_git_connection(self, name, args, host):
         """When no gerrit or github is connection is configured,
@@ -277,7 +294,7 @@ class InstallServer(Component):
                     break
 
                 if not found:
-                    # If location is matching github connections, look for
+                    # If location is not matching github connections, look for
                     # available gerrit connections.
                     for conn in zuul_config['gerrit_connections']:
                         puburl = conn.get('puburl')
@@ -290,6 +307,36 @@ class InstallServer(Component):
                         else:
                             _loc = "ssh://%s@%s/%s" % (
                                 sync_user, conn["hostname"], project_name)
+                        if repo == "config-repo":
+                            conn_name = conn["name"]
+                            conf_name = project_name
+                            conf_loc = _loc
+                        elif conn_name != conn["name"]:
+                            fail("Config and jobs needs to share "
+                                 "the same connection")
+                        else:
+                            jobs_name = project_name
+                            jobs_loc = _loc
+                        found = True
+                        break
+
+                if not found:
+                    # If location is not matching gerrit connections, look for
+                    # available pagure connections.
+                    for conn in zuul_config['pagure_connections']:
+                        baseurl = conn.get('baseurl')
+                        if not baseurl:
+                            baseurl = 'https://%s' % conn.get(
+                                'server', 'pagure.io')
+                        if baseurl not in location:
+                            continue
+                        # Project name is the remaining part after the puburl
+                        project_name = location[len(baseurl):].lstrip('/')
+                        if args.glue["sync_strategy"] != 'push':
+                            _loc = location
+                        else:
+                            _loc = "ssh://%s@%s/%s" % (
+                                sync_user, conn["server"], project_name)
                         if repo == "config-repo":
                             conn_name = conn["name"]
                             conf_name = project_name
