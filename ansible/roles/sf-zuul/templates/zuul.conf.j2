@@ -128,6 +128,20 @@ canonical_hostname={{ conn['canonical_hostname'] }}
 
 {% endfor %}
 
+{% for conn in zuul_pagure_connections|default([]) %}
+[connection {{ conn['name'] }}]
+driver=pagure
+server={{ conn['server']|default('pagure.io') }}
+api_token={{ conn.get('api_token') }}
+{% if conn['baseurl']|default(false) %}
+baseurl={{ conn['baseurl'] }}
+{% endif %}
+{% if conn['cloneurl']|default(false) %}
+baseurl={{ conn['cloneurl'] }}
+{% endif %}
+
+{% endfor %}
+
 {% for conn in zuul_git_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=git

@@ -1,18 +1,22 @@
 # This file is managed by ansible, do not edit directly
 ---
-{% if zuul_gerrit_connections_pipelines or zuul_github_connections_pipelines %}
+{% if zuul_gerrit_connections_pipelines or zuul_github_connections_pipelines or zuul_pagure_connections_pipelines %}
 - pipeline:
     name: check
     description: |
       Newly uploaded patchsets enter this pipeline to receive an
       initial +/-1 Verified vote.
     manager: independent
-{% if zuul_gerrit_connections_pipelines %}
+{% if zuul_gerrit_connections_pipelines or zuul_pagure_connections_pipelines %}
     require:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
         open: True
         current-patchset: True
+{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        merged: False
 {% endfor %}
 {% endif %}
     trigger:
@@ -40,6 +44,16 @@
           action: comment
           comment: (?i)^\s*recheck\s*$
 {% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        - event: pg_pull_request
+          action: comment
+          comment: (?i)^\s*recheck\s*$
+        - event: pg_pull_request
+          action:
+            - opened
+            - changed
+{% endfor %}
     start:
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
@@ -50,6 +64,12 @@
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
         Verified: 0
+{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        status: 'pending'
+        status-url: "{{ tenant_status_page_url }}"
+        comment: false
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -63,6 +83,10 @@
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
         Verified: 1
+{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        status: 'success'
 {% endfor %}
       sqlreporter:
 {% if 'elasticsearch' in roles %}
@@ -80,6 +104,10 @@
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
         Verified: -1
+{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        status: 'failure'
 {% endfor %}
       sqlreporter:
 {% if 'elasticsearch' in roles %}
@@ -130,6 +158,12 @@
         open: True
         current-patchset: True
 {% endif %}{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        score: 1
+        merged: False
+        status: success
+{% endfor %}
     trigger:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
@@ -165,6 +199,14 @@
             - {{ github_connection.label_name }}
 {% endif %}
 {% endif %}{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        - event: pg_pull_request
+          action: status
+          status: success
+        - event: pg_pull_request_review
+          action: thumbsup
+{% endfor %}
     start:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
@@ -172,6 +214,12 @@
 {% endfor %}
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
+        status: 'pending'
+        status-url: "{{ tenant_status_page_url }}"
+        comment: false
+{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
         status: 'pending'
         status-url: "{{ tenant_status_page_url }}"
         comment: false
@@ -192,6 +240,12 @@
         merge: true
         comment: true
 {% endif %}{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        status: 'success'
+        merge: true
+        comment: true
+{% endfor %}
       sqlreporter:
 {% if 'elasticsearch' in roles %}
       elasticsearch:
@@ -210,6 +264,11 @@
         status: 'failure'
         comment: true
 {% endif %}{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        status: 'failure'
+        comment: true
+{% endfor %}
       sqlreporter:
 {% if 'elasticsearch' in roles %}
       elasticsearch:
@@ -237,6 +296,11 @@
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         - event: push
+          ref: ^refs/heads/.*$
+{% endfor %}
+{% for pagure_connection in zuul_pagure_connections_pipelines %}
+      {{ pagure_connection.name }}:
+        - event: pg_push
           ref: ^refs/heads/.*$
 {% endfor %}
 {% if 'firehose' in roles %}
