@@ -404,7 +404,8 @@ class InstallServer(Component):
                 "connections", {}).items():
             if name not in tenant_connections:
                 continue
-            if values.get("type") == "gerrit":
+            if values.get("type") == "gerrit" and args.glue[
+                    "tenant_name"] != values.get("name"):
                 hostname = parse.urlparse(
                     values.get("base-url")).hostname
                 args.sfconfig["zuul"]["gerrit_connections"].append({
