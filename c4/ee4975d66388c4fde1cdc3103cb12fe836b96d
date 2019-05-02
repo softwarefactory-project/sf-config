@@ -1,0 +1,8 @@
+Code-Review+2: Matthieu Huin <mhuin@redhat.com>
+Workflow+1: Matthieu Huin <mhuin@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Thu, 02 May 2019 16:19:58 +0000
+Reviewed-on: https://softwarefactory-project.io/r/15428
+Project: software-factory/sf-config
+Branch: refs/heads/master
