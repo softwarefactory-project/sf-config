@@ -267,8 +267,9 @@ def config_update(args, pb, skip_sync=False):
     if not skip_sync:
         pb.append(host_play('install-server',
                             'repos', {'role_action': 'reset_config_repo'}))
-        pb.append(host_play(':'.join(roles_order + roles_group),
-                            'repos', {'role_action': 'copy_config_repo'}))
+        pb.append(host_play(
+            "%s:!install-server" % ':'.join(roles_order + roles_group),
+            'repos', {'role_action': 'copy_config_repo'}))
 
     # Update all components
     for host in args.inventory:
