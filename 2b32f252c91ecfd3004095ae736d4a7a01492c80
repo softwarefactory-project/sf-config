@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1365b9b8_9dee3e45",
+        "filename": "ansible/roles/sf-ssh/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-05-03T10:04:26Z",
+      "side": 1,
+      "message": "that\u0027s an odd variable name :) I like to prefix those with an \"_\" to indicate they are short lived, e.g. \"_sshd_config\"",
+      "range": {
+        "startLine": 19,
+        "startChar": 12,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "2b32f252c91ecfd3004095ae736d4a7a01492c80",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c873b493_b65913ec",
+        "filename": "ansible/roles/sf-ssh/templates/sshd_config.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-05-03T10:04:26Z",
+      "side": 1,
+      "message": "Why is this changed to no?",
+      "range": {
+        "startLine": 11,
+        "startChar": 21,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "2b32f252c91ecfd3004095ae736d4a7a01492c80",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8d570360_54b370e7",
+        "filename": "ansible/roles/sf-ssh/templates/sshd_config.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-05-03T10:04:26Z",
+      "side": 1,
+      "message": "Perhaps change this to no?",
+      "range": {
+        "startLine": 14,
+        "startChar": 14,
+        "endLine": 14,
+        "endChar": 17
+      },
+      "revId": "2b32f252c91ecfd3004095ae736d4a7a01492c80",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
