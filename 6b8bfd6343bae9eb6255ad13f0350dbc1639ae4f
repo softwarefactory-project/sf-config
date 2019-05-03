@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab409d73_bb2dd162",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-05-03T10:01:39Z",
+      "side": 1,
+      "message": "That\u0027s odd, iiuc this skip tenant that has the same name of a connection?",
+      "revId": "6b8bfd6343bae9eb6255ad13f0350dbc1639ae4f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
