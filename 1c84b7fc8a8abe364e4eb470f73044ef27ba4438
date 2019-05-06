@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "27412838_97050231",
+        "filename": "ansible/roles/sf-ssh/tasks/setup.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-05-06T08:11:29Z",
+      "side": 1,
+      "message": "Nice !",
+      "revId": "1c84b7fc8a8abe364e4eb470f73044ef27ba4438",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
