@@ -16,6 +16,24 @@
       "revId": "6b8bfd6343bae9eb6255ad13f0350dbc1639ae4f",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f92e6201_c8148f16",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-05-06T15:17:51Z",
+      "side": 1,
+      "message": "Yes, in https://softwarefactory-project.io/r/#/c/15451/ tenant and connection have the same name. Do you think I should change that and add a note in the documentation ?",
+      "parentUuid": "ab409d73_bb2dd162",
+      "revId": "6b8bfd6343bae9eb6255ad13f0350dbc1639ae4f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
