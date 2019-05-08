@@ -22,6 +22,30 @@
       "revId": "c2534839cea38386f70ea6539b44cfe6f9f5979d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e2b1fb0c_ff5c8304",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_pipelines.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-05-08T03:35:04Z",
+      "side": 1,
+      "message": "We fixed that at managesf level, config-update should work fine with supercedent pipeline now.",
+      "parentUuid": "c092ff35_b91d1cb5",
+      "range": {
+        "startLine": 210,
+        "startChar": 4,
+        "endLine": 210,
+        "endChar": 24
+      },
+      "revId": "c2534839cea38386f70ea6539b44cfe6f9f5979d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
