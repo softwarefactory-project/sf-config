@@ -3,6 +3,29 @@
 
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=managesf ssh_key=managesf_rsa"
 
+- name: Setup git access to remote gerrit
+  blockinfile:
+    dest: /var/lib/managesf/.ssh/config
+    create: yes
+    mode: 0644
+    block: |
+      {% for conn in zuul_gerrit_connections|default([]) %}
+      Host {{ conn.hostname }}
+        User {{ conn.username }}
+        Port {{ conn.port|default(29418) }}
+      {% endfor %}
+      {% if 'gerrit' in roles %}
+      Host {{ fqdn }}
+        User admin
+        Port 29418
+        IdentityFile /var/lib/managesf/.ssh/gerrit_admin_rsa
+      Host gerrit
+        User admin
+        Hostname {{ gerrit_host }}
+        Port 29418
+        IdentityFile /var/lib/managesf/.ssh/gerrit_admin_rsa
+      {% endif %}
+
 - name: "Create config directory"
   file:
     path: /etc/managesf
