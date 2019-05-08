@@ -13,6 +13,7 @@
 
 import argparse
 import json
+import os
 
 from six.moves import urllib
 
@@ -41,14 +42,16 @@ conf = []
 
 
 def add_repo(repo_name):
-    repo = repos.get(repo_name)
-    if repo is None:
+    repo_path = "%s/%s.git" % (base_path, repo_name)
+    if not os.path.exists(repo_path):
         print("%s: unknown source-repositories" % repo_name)
         return
     listed_repos.add(repo_name)
     conf.append("repo.url=%s" % repo_name)
-    conf.append("repo.path=%s/%s.git" % (base_path, repo_name))
-    conf.append("repo.desc=%s" % repo["description"])
+    conf.append("repo.path=%s" % repo_path)
+    repo = repos.get(repo_name)
+    if repo:
+        conf.append("repo.desc=%s" % repo.get("description", ""))
     conf.append("")
 
 
