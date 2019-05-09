@@ -1,4 +1,6 @@
 ---
+- command: exit 1
+
 - name: Set yum.conf retries
   lineinfile:
     dest: /etc/yum.conf
