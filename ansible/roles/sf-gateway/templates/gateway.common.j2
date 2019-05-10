@@ -102,6 +102,7 @@
         TKTAuthFakeBasicAuth on
         TKTAuthLoginURL /auth/login
         TKTAuthDebug 1
+        TKTAuthDigest SHA256
         require valid-user
     </LocationMatch>
 
@@ -124,6 +125,7 @@
             TKTAuthLoginURL /auth/login
             TKTAuthFakeBasicAuth on
             TKTAuthDebug 1
+            TKTAuthDigest SHA256
             AuthName "Grafana"
             require valid-user
             RewriteEngine On
@@ -271,6 +273,7 @@
             AuthType mod_auth_pubtkt
             TKTAuthLoginURL /auth/login
             TKTAuthFakeBasicAuth on
+            TKTAuthDigest SHA256
             TKTAuthDebug 1
             require valid-user
             # Enforce token name to be cauth user
@@ -288,6 +291,7 @@
             TKTAuthLoginURL /auth/login
             TKTAuthFakeBasicAuth on
             TKTAuthDebug 1
+            TKTAuthDigest SHA256
             require valid-user
             RequestHeader set X-Remote-User %{REMOTE_USER}s
         </If>
@@ -319,6 +323,7 @@
         AuthType mod_auth_pubtkt
         TKTAuthLoginURL /auth/login
         TKTAuthFakeBasicAuth on
+        TKTAuthDigest SHA256
         TKTAuthDebug 1
         require valid-user
     </LocationMatch>
