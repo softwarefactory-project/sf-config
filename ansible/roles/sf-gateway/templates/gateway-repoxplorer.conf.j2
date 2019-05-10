@@ -12,6 +12,7 @@ Alias "/repoxplorer/javascript/" "/var/www/static/js/"
     AuthType mod_auth_pubtkt
     TKTAuthLoginURL /auth/login
     TKTAuthFakeBasicAuth on
+    TKTAuthDigest SHA256
     TKTAuthDebug 1
     require valid-user
     RequestHeader set X-Remote-User %{REMOTE_USER}s
@@ -23,6 +24,7 @@ Alias "/repoxplorer/javascript/" "/var/www/static/js/"
         AuthType mod_auth_pubtkt
         TKTAuthLoginURL /auth/login
         TKTAuthFakeBasicAuth on
+        TKTAuthDigest SHA256
         TKTAuthDebug 1
         require valid-user
         RequestHeader set X-Remote-User %{REMOTE_USER}s
