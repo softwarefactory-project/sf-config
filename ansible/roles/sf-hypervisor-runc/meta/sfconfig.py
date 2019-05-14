@@ -29,3 +29,24 @@ class HypervisorRunC(Component):
             print("See https://softwarefactory-project.io/docs/operator/"
                   "nodepool_operator.html#container-provider")
             exit(1)
+
+    def prepare(self, args):
+        # Create the runc structure based on nodepool.runc_nodes configuration
+        args.glue.setdefault("runc", {})
+        for host in args.sfarch["inventory"]:
+            if "hypervisor-runc" in host["roles"]:
+                self.create_nodes(args, host)
+
+    def create_nodes(self, args, host):
+        args.glue["runc"][host['hostname']] = []
+        port = int(args.glue.get("runc_start_port", 22000))
+        for runc_node in args.sfconfig["nodepool"].get("runc_nodes", []):
+            for idx in range(runc_node["count"]):
+                if runc_node.get("rootfs", "/") == "/":
+                    runc_node["rootfs"] = "/srv/host-rootfs"
+                args.glue["runc"][host['hostname']].append({
+                    'label': runc_node['label'],
+                    'rootfs': runc_node['rootfs'],
+                    'port': port
+                })
+                port += 1

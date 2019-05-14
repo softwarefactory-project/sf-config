@@ -9,3 +9,7 @@
 
 {% for host in (network|default({'static_hostnames':[]}))["static_hostnames"]|default([]) %}{{ host }}
 {% endfor %}
+
+{% for host in inventory %}{% if 'hypervisor-runc' in host['roles'] %}{% for node in runc[host["hostname"]] %}
+{{ host["ip"] }} {{ host["hostname"] }}-{{ node["port"] }}
+{% endfor %}{% endif %}{% endfor %}

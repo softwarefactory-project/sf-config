@@ -1,0 +1,42 @@
+---
+- name: Create bundle directory
+  file:
+    path: "/var/lib/runc/{{ node.port }}/"
+    state: directory
+
+- name: Create user home directory
+  file:
+    path: "{{ item }}"
+    owner: zuul-worker
+    group: zuul-worker
+    mode: 0700
+    state: directory
+  with_items:
+    - "/var/lib/runc/{{ node.port }}/home/"
+    - "/var/lib/runc/{{ node.port }}/home/.ssh"
+
+- name: Create user authorized_keys
+  copy:
+    content: "{{ zuul_rsa_pub }}"
+    dest: "/var/lib/runc/{{ node.port }}/home/.ssh/authorized_keys"
+    owner: zuul-worker
+    group: zuul-worker
+    mode: 0600
+
+- name: Write bundle config
+  template:
+    src: config.json.j2
+    dest: "/var/lib/runc/{{ node.port }}/config.json"
+  register: _bundle_config
+
+- name: Restart bundle if needed
+  service:
+    name: "runc-sshd@{{ node.port }}"
+    state: restarted
+  when: _bundle_config is changed
+
+- name: Start bundle service
+  service:
+    name: "runc-sshd@{{ node.port }}"
+    state: started
+    enabled: yes

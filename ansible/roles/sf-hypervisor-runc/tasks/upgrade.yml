@@ -2,7 +2,7 @@
 - name: Kill all containers
   shell: for i in $(runc list -q | grep oci); do runc delete --force $i; done
   ignore_errors: yes
-  when: sf_previous_version < 3.1
+  when: sf_previous_version < 3.3
 
 - name: Copy zk-clean-runc script
   copy:
@@ -18,4 +18,9 @@
 - name: Fix umount leaks
   shell: while true; do umount -l /srv/host-rootfs || break; done; cat /proc/mounts; mount -a
   ignore_errors: yes
-  when: sf_previous_version < 3.1
+  when: sf_previous_version < 3.3
+
+- name: Remove un-used /var/lib/nodepool/runc
+  file:
+    path: /var/lib/nodepool/runc
+    state: absent

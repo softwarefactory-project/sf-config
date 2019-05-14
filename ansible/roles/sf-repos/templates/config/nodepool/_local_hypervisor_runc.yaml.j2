@@ -1,4 +1,5 @@
 # This file is managed by sfconfig, do not edit manually
+# The nodes list is generated from the sfconfig.nodepool.runc_nodes configuration
 {% if not tenant_deployment %}
 {% if 'hypervisor-runc' in roles %}
 
@@ -8,16 +9,18 @@ labels:
 
 providers:
   - name: managed-runc-provider
-    driver: runc
+    driver: static
     pools:
 {% for host in inventory %}
 {% if 'hypervisor-runc' in host['roles'] %}
       - name: {{ host['hostname'] }}
-        max-servers: {{ host.get('max-servers', 10) }}
-        labels:
-          - name: runc-centos
+        nodes:
+{% for node in runc[host['hostname']] %}
+          - name: {{ host['hostname'] }}-{{ node.port }}
+            labels: runc-centos
+            connection-port: {{ node.port }}
             username: zuul-worker
-
+{% endfor %}
 {% endif %}
 {% endfor %}
 {% endif %}

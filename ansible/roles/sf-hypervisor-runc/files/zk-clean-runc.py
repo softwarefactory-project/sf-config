@@ -30,7 +30,7 @@ def get_type(t):
         return ""
 
 
-print("Removing any oci requests")
+print("Removing any oci/runc requests")
 try:
     requests = client.get_children("/nodepool/requests")
 except Exception:
@@ -39,7 +39,8 @@ for req in requests:
     req_path = os.path.join("/nodepool/requests", req)
     try:
         req = json.loads(client.get(req_path)[0].decode('utf-8'))
-        if get_type(req["node_types"]).endswith("-oci"):
+        if get_type(req["node_types"]).endswith("-oci") or \
+           get_type(req["node_types"]).endswith("-runc"):
             print("Deleting %s" % req_path)
             client.delete(req_path, recursive=True)
     except Exception:
@@ -54,7 +55,8 @@ for node in nodes:
     node_path = os.path.join("/nodepool/nodes", node)
     try:
         node = json.loads(client.get(node_path)[0].decode('utf-8'))
-        if get_type(node["type"]).endswith("-oci"):
+        if get_type(node["type"]).endswith("-oci") or \
+           get_type(node["type"]).endswith("-runc"):
             print("Deleting %s" % node_path)
             client.delete(node_path, recursive=True)
     except Exception:

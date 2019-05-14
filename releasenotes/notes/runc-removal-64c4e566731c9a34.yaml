@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Runc driver is replaced by static nodes. Extra labels are converted to
+    sfconfig.nodepool.runc_nodes.
