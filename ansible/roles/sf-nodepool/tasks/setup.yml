@@ -126,6 +126,21 @@
     - _nodepool.yaml
     - secure.conf
 
+- name: Configure statsd
+  when: "'influxdb' in roles"
+  block:
+    - name: Set statsd environment variable
+      copy:
+        content: |
+          STATSD_HOST={{ influxdb_host }}
+        dest: /etc/sysconfig/nodepool
+      register: _nodepool_env
+
+    - name: Set nodepool_need_restart fact if environment change
+      set_fact:
+        nodepool_need_restart: true
+      when: _nodepool_env is changed
+
 - name: Create nodepool working directories
   file:
     path: "{{ item.path }}"
