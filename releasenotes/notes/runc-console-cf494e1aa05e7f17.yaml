@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Shared nodes' console logs are now stored in /tmp instead of /var/tmp/zuul-console.
