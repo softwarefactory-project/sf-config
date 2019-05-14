@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Nodepool statsd configuration is now being set through the STATSD_HOST
+    environment variable.
