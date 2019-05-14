@@ -218,6 +218,14 @@ def update_sfconfig(args):
         data["zuul"]["ara_report"] = True
         dirty = True
 
+    if "runc_nodes" not in data["nodepool"]:
+        data["nodepool"]["runc_nodes"] = [{
+            "label": "runc-centos",
+            "rootfs": "/",
+            "count": 10
+        }]
+        # TODO: import existing extra labels from config repo
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \

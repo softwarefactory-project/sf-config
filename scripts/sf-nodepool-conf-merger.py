@@ -67,6 +67,7 @@ def merge(inp, _nodepool):
     conf['labels'] = user.get('labels', [])
     conf['providers'] = user.get('providers', [])
     conf['diskimages'] = user.get('diskimages', [])
+    # TODO: auto replace runc by static and skip extra runc labels
     for extra_labels in user.get('extra-labels', []):
         added = False
         for provider in conf['providers']:

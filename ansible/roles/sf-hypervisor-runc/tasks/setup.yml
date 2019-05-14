@@ -20,3 +20,65 @@
     owner: zuul-worker
     group: zuul-worker
     state: directory
+
+- name: "Ensure host-rootfs directory exists"
+  file:
+    path: /srv/host-rootfs
+    state: directory
+
+- name: Create the systemd mount service
+  copy:
+    content: |
+      [Unit]
+      Description=Private bind-mount of the host rootfs
+
+      [Mount]
+      What=/
+      Where=/srv/host-rootfs
+      Type=none
+      Options=bind,ro,private
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/srv-host\x2drootfs.mount
+  register: _systemd_unit
+
+- name: Create the systemd runc-sshd service
+  copy:
+    content: |
+      [Unit]
+      Description=Private bind-mount of the host rootfs
+      After=srv-host\x2drootfs.mount network.target
+
+      [Service]
+      Type=simple
+      Restart=always
+      KillMode=process
+      ExecStart=/bin/runc run --bundle /var/lib/runc/%I runc-%I
+      ExecStopPost=/bin/runc delete --force runc-%I
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/runc-sshd@.service
+  register: _runc_unit
+
+- name: Reload systemd if unit changed
+  systemd:
+    name: srv-host\x2drootfs.mount
+    state: started
+    daemon-reload: yes
+  when: _systemd_unit is changed
+
+- name: Reload systemd if needed
+  command: systemctl daemon-reload
+  when: _runc_unit is changed
+
+- name: Ensure host-rootfs is mounted
+  service:
+    name:  srv-host\x2drootfs.mount
+    state: started
+    enabled: yes
+
+- name: Create bundles
+  include_tasks: create_bundle.yaml node={{ item }}
+  with_items: "{{ runc[ansible_fqdn] }}"

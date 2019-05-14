@@ -185,6 +185,12 @@ nodepool:
   #  - image_name: rhel
   #    reg_password: rhsm_password
 
+  # List of runc nodes to create on hypervisor-runc hosts
+  runc_nodes:
+    - label: runc-centos
+      rootfs: /
+      count: 10
+
 elasticsearch:
   maximum_heap_size: 512m
   minimum_heap_size: 512m
