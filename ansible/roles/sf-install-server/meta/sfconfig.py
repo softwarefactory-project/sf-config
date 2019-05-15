@@ -126,18 +126,16 @@ class InstallServer(Component):
             puburl = args.glue["gerrit_pub_url"]
             if puburl[-1] == "/":
                 puburl = puburl[:-1]
-            if args.glue["tenant_deployment"]:
-                tenant_name = args.glue["tenant_name"]
-            else:
-                tenant_name = 'gerrit'
-            args.glue["zuul_gerrit_connections"].append({
-                'name': tenant_name,
-                'port': 29418,
-                'hostname': args.glue["gerrit_host"],
-                'canonical_hostname': args.sfconfig["fqdn"],
-                'puburl': puburl,
-                'username': 'zuul'
-            })
+            if not args.glue["tenant_deployment"]:
+                # Do not add local gerrit here because we got it from master
+                args.glue["zuul_gerrit_connections"].append({
+                    'name': "gerrit",
+                    'port': 29418,
+                    'hostname': args.glue["gerrit_host"],
+                    'canonical_hostname': args.sfconfig["fqdn"],
+                    'puburl': puburl,
+                    'username': 'zuul'
+                })
 
         if not args.sfconfig["network"]["disable_external_resources"]:
             for extra_gerrit in zuul_config.get("gerrit_connections", []):
@@ -406,20 +404,33 @@ class InstallServer(Component):
             if values.get("type") == "gerrit":
                 hostname = parse.urlparse(
                     values.get("base-url")).hostname
-                args.sfconfig["zuul"]["gerrit_connections"].append({
+                conn = {
                     "name": name,
                     "hostname": hostname,
                     "username": "zuul"
-                })
-                args.glue["zuul_gate"] = True
+                }
+                if name == tenant_def_conn:
+                    # This is the connection of the tenant, use it for gate
+                    args.glue["zuul_gate"] = True
+                else:
+                    # Otherwise, do not use it in the default pipelines
+                    conn["default_pipelines"] = False
+                args.sfconfig["zuul"]["gerrit_connections"].append(conn)
+
             elif values.get("type") == "github":
-                args.sfconfig["zuul"]["github_connections"].append({
+                conn = {
                     "name": name,
                     "app_name": values.get("github-app-name", ""),
                     "label_name": values.get("github-label", "")
-                })
-                if values.get("github-app-name"):
-                    args.glue["zuul_gate"] = True
+                }
+                if name == tenant_def_conn:
+                    # This is the connection of the tenant, use it for gate
+                    if values.get("github-app-name"):
+                        args.glue["zuul_gate"] = True
+                else:
+                    # Otherwise, do not use it in the default pipelines
+                    conn["default_pipelines"] = False
+                args.sfconfig["zuul"]["github_connections"].append(conn)
 
     def resolve_tenant_informations(self, args, host):
         # TODO: make sfconfig.yaml zuul setting usable without sf-zuul role
