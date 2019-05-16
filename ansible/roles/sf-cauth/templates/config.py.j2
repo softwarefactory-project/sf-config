@@ -156,25 +156,25 @@ auth = {
             "mail": "service.user@{{ fqdn }}",
             "password": "{{ sf_service_user_password_hash }}",
         },
-        {% if fqdn == "sftests.com" %}
+        {% if "sftests.com" in fqdn %}
             "user2": {
                 "lastname": "Demo user2",
-                "mail": "user2@sftests.com",
+                "mail": "user2@{{ fqdn }}",
                 "password": "{{ cauth_admin_password_hash }}",
             },
             "user3": {
                 "lastname": "Demo user3",
-                "mail": "user3@sftests.com",
+                "mail": "user3@{{ fqdn }}",
                 "password": "{{ cauth_admin_password_hash }}",
             },
              "user4": {
                 "lastname": "Demo user4",
-                "mail": "user4@sftests.com",
+                "mail": "user4@{{ fqdn }}",
                 "password": "{{ cauth_admin_password_hash }}",
             },
             "user5": {
                 "lastname": "Demo user5",
-                "mail": "user5@sftests.com",
+                "mail": "user5@{{ fqdn }}",
                 "password": "{{ cauth_admin_password_hash }}",
             }
         {% endif %}
