@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7802603d_b8bf4e8b",
+        "filename": "ansible/roles/sf-cauth/templates/config.py.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2019-05-16T20:39:39Z",
+      "side": 1,
+      "message": "should I move this code in sf-ci ? It\u0027s strange to have it in sf-config",
+      "range": {
+        "startLine": 159,
+        "startChar": 1,
+        "endLine": 180,
+        "endChar": 19
+      },
+      "revId": "efc967c86f79c75bb01a4d98eb469e77bf41cf49",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
