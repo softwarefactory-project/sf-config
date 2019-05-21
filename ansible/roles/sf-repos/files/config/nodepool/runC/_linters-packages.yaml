@@ -13,6 +13,7 @@
       - python2-pelican
       - python2-sphinx
       - doc8
+      - ansible-lint
 
 - name: Install linters packages
   yum:
