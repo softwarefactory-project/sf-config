@@ -8,7 +8,7 @@ pid=/var/run/gerritbot/gerritbot.pid
 log_config=/etc/gerritbot/logging.conf
 
 [gerrit]
-user=zuul
+user={{ gerritbot_gerrit_user }}
 key=/var/lib/gerritbot/.ssh/id_rsa
-host=gerrit
-port=29418
+host={{ gerritbot_gerrit_host }}
+port={{ gerritbot_gerrit_port }}

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    A new gerrit option in the gerritbot configuration enable selecting
+    a remote gerrit server for the gerritbot service. Only one connection
+    is currently supported.
