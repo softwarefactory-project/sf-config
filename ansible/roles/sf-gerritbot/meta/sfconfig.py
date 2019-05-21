@@ -16,3 +16,19 @@ from sfconfig.components import Component
 class Gerritbot(Component):
     def configure(self, args, host):
         self.get_or_generate_ssh_key(args, "zuul_rsa")
+        conn = args.sfconfig.get("gerritbot", {}).get("gerrit")
+        if conn:
+            # Lookup zuul gerrit connection
+            gerrit_conn = list(
+                filter(lambda x: x["name"] == conn,
+                       args.glue["zuul_gerrit_connections"]))[0]
+            if not gerrit_conn:
+                raise RuntimeError("%s: unknown gerrit connection" % conn)
+            gerrit_user, gerrit_host, gerrit_port = (
+                gerrit_conn["username"], gerrit_conn["hostname"],
+                gerrit_conn.get("port", 29418))
+        else:
+            gerrit_user, gerrit_host, gerrit_port = "zuul", "gerrit", 29418
+        args.glue["gerritbot_gerrit_user"] = gerrit_user
+        args.glue["gerritbot_gerrit_host"] = gerrit_host
+        args.glue["gerritbot_gerrit_port"] = int(gerrit_port)
