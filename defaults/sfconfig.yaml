@@ -184,6 +184,8 @@ nodepool:
   dib_reg_passwords: []
   #  - image_name: rhel
   #    reg_password: rhsm_password
+  # Set to false to disable default runc label creation on hypervisor-runc host
+  manage_default_runc_labels: True
 
 elasticsearch:
   maximum_heap_size: 512m

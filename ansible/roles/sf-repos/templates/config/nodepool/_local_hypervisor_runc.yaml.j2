@@ -2,9 +2,11 @@
 {% if not tenant_deployment %}
 {% if 'hypervisor-runc' in roles %}
 
+{% if nodepool.manage_default_runc_labels|default(True) %}
 labels:
   - name: runc-centos
     min-ready: 2
+{% endif %}
 
 providers:
   - name: managed-runc-provider
@@ -14,9 +16,13 @@ providers:
 {% if 'hypervisor-runc' in host['roles'] %}
       - name: {{ host['hostname'] }}
         max-servers: {{ host.get('max-servers', 10) }}
+{% if nodepool.manage_default_runc_labels|default(True) %}
         labels:
           - name: runc-centos
             username: zuul-worker
+{% else %}
+        labels: []
+{% endif %}
 
 {% endif %}
 {% endfor %}

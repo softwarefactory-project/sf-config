@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    A nodepool.manage_default_runc_labels option enable to disable the default
+    runc-centos label creation.
