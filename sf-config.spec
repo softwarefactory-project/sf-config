@@ -9,6 +9,9 @@ License:        ASL 2.0
 URL:            https://softwarefactory-project.io/r/p/%{name}
 Source0:        https://github.com/softwarefactory-project/software-factory/archive/%{version}.tar.gz
 
+# Disable automatic requirement because scl repos is installed by sfconfig/inventory.py
+AutoReq: 0
+
 BuildArch:      noarch
 
 Requires:       python-jinja2
