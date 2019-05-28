@@ -1,12 +1,12 @@
 ---
-- name: "Install new release repo"
-  yum:
-    name: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
-    state: present
-    validate_certs: no
-  when:
-    - sf_version != "master"
-    - sf_version != sf_previous_version
+#- name: "Install new release repo"
+#  yum:
+#    name: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
+#    state: present
+#    validate_certs: no
+#  when:
+#    - sf_version != "master"
+#    - sf_version != sf_previous_version
 
 - name: Add openstack repo package
   yum:
