@@ -214,6 +214,7 @@ class InstallServer(Component):
         if not args.glue["remote_config_repositories"]:
             # When config repositories are local, default names are config
             # and sf-jobs
+
             conf_name = "config"
             jobs_name = "sf-jobs"
 
@@ -221,6 +222,11 @@ class InstallServer(Component):
                 # If gerrit is enabled, use it's connection and default push
                 # location
                 conn_name = "gerrit"
+                for name, cnx in args.glue.get(["resources_connections"], {}).items():
+                    if name == "__force_dict__":
+                        continue
+                    if args.glue["gateway_url"] in cnx["base-url"]:
+                        conn_name = name
                 url = "%s/r/config" % args.glue["gateway_url"]
                 conf_loc = "git+ssh://gerrit/config"
                 jobs_loc = "git+ssh://gerrit/sf-jobs"
