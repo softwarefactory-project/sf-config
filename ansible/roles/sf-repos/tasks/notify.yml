@@ -1,4 +1,8 @@
 ---
+- set_fact:
+    config_clone_dir: /root/config
+    sf_jobs_clone_dir: /root/sf-jobs
+
 - name: Stat local patches
   stat:
     path: "/var/lib/software-factory/git/{{ item | basename }}.patch"
