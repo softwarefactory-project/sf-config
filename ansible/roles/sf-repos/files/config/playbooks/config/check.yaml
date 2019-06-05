@@ -101,7 +101,7 @@
       block:
         - name: Check syntax errors in repoxplorer definition files
           command: >
-            env - repoxplorer-config-validate --config {{ config_root }}/defconf/defconf-repoxplorer.py
+            env - /opt/rh/rh-python35/root/bin/repoxplorer-config-validate --config {{ config_root }}/defconf/defconf-repoxplorer.py
           args:
             chdir: "{{ config_root }}"
       when: '"repoxplorer" in arch.roles'
