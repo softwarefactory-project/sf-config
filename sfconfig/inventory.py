@@ -286,7 +286,7 @@ def config_update(args, pb, skip_sync=False):
         pb.append(host_play('hypervisor-runc', tasks=[
             {'name': 'Run runC customize tasks',
              'include_tasks': '/root/config/nodepool/runC/customize.yaml',
-             'when': 'runC_update | bool'}]))
+             'when': "hostvars['install-server'].runC_update | bool"}]))
         pb.append(host_play('install-server', tasks=[
             {'name': 'Write config repo state',
              'delegate_to': '{{ install_server_host }}',
