@@ -35,7 +35,7 @@
         state: stopped
 
     - name: Dump repoXplorer configuration in EL
-      command: repoxplorer-indexer --refresh-projects-index --config /etc/repoxplorer/config.py
+      command: /opt/rh/rh-python35/root/bin/repoxplorer-indexer --refresh-projects-index --config /etc/repoxplorer/config.py
 
     - name: Ensure indexer started
       service:
