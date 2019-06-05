@@ -15,6 +15,7 @@
       copy:
         src: /etc/elasticsearch/elasticsearch.yml.rpmnew
         dest: /etc/elasticsearch/elasticsearch.yml
+        remote_src: yes
 
     - name: Remove unused config file
       file:
@@ -35,6 +36,7 @@
       copy:
         src: /etc/sysconfig/elasticsearch.rpmnew
         dest: /etc/sysconfig/elasticsearch
+        remote_src: yes
 
     - name: Remove unused sysconfig file
       file:
