@@ -65,7 +65,7 @@ def update_sfconfig(args):
         dirty = True
 
     # 3.3.0: update gateway_directories default value
-    if data['gateway_directories'] == '':
+    if data.get('gateway_directories', '') == '':
         data['gateway_directories'] = []
         dirty = True
 
