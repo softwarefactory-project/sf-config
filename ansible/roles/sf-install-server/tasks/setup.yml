@@ -24,11 +24,6 @@
     create: yes
     mode: 0644
     block: |
-      {% for conn in zuul_gerrit_connections|default([]) %}
-      Host {{ conn.hostname }}
-        User {{ conn.username }}
-        Port {{ conn.port|default(29418) }}
-      {% endfor %}
       {% if 'gerrit' in roles %}
       Host {{ fqdn }}
         User admin
@@ -40,6 +35,11 @@
         Port 29418
         IdentityFile /root/.ssh/gerrit_admin
       {% endif %}
+      {% for conn in zuul_gerrit_connections|default([]) %}
+      Host {{ conn.hostname }}
+        User {{ conn.username }}
+        Port {{ conn.port|default(29418) }}
+      {% endfor %}
 
 - name: Setup default ansible.cfg
   copy:
