@@ -1,0 +1,18 @@
+- name: Check if zuul config key exists on the install-server
+  stat:
+    path: "{{ config_key_path }}"
+  register: _config_key
+
+- name: Grab current key from zuul-web
+  get_url:
+    url: "{{ config_key_url }}"
+    dest: "{{ config_key_path }}"
+  register: _new_key
+  # Retry until zuul-scheduler finish full reconfiguration on first start
+  retries: 60
+  delay: 1
+  until: _new_key.status_code == 200 and _new_key.size > 0
+
+- set_fact:
+    config_key_exists: True
+    config_key_changed: "{% if _new_key is changed %}True{% else %}False{% endif %}"
