@@ -111,34 +111,6 @@
 ####################################
 # Finaly we manage default secrets #
 ####################################
-- name: Delete config_key_checksum if update fqdn
-  file:
-    path: /var/lib/software-factory/state/config_key_checksum
-    state: absent
-  when: update_fqdn
-
-- name: Verify if config repository key changed
-  block:
-    - name: Check config repository key
-      stat:
-        path: /var/lib/software-factory/bootstrap-data/certs/config.pub
-      register: _config_repo_key
-
-    - name: Ensure config_key_checksum exists
-      file:
-        path: /var/lib/software-factory/state/config_key_checksum
-        state: touch
-      changed_when: false
-
-    - name: Read last config_key_checksum
-      command: cat /var/lib/software-factory/state/config_key_checksum
-      changed_when: false
-      register: _localconfig
-
-    - name: Set config_key_regenerated fact
-      set_fact:
-        new_config_key: "{{ config_key_exists and _localconfig.stdout != _config_repo_key.stat.checksum|default(None) }}"
-
 - name: Default secrets
   block:
     - name: Generate sflogs ssh_private_key secret
@@ -177,8 +149,8 @@
         src: "config/zuul.d/_secret_sfpages.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_sfpages.yaml"
   when:
-    - new_config_key
     - config_key_exists
+    - config_key_changed
 
 - name: install tenant update secret
   block:
@@ -192,8 +164,8 @@
         dest: "{{ config_clone_dir }}/zuul.d/_secret_tenant_update.yaml"
   when:
     - tenant_deployment
-    - new_config_key
     - config_key_exists
+    - config_key_changed
 
 - block:
     - name: Create temporary service user secret file
@@ -224,11 +196,5 @@
         src: "config/zuul.d/_secret_service_user.yaml.j2"
         dest: "{{ config_clone_dir }}/zuul.d/_secret_service_user.yaml"
   when:
-    - new_config_key
     - config_key_exists
-
-- name: Save config key checksum
-  copy:
-    content: "{{ _config_repo_key.stat.checksum|default(None) }}"
-    dest: /var/lib/software-factory/state/config_key_checksum
-  when: config_key_exists
+    - config_key_changed
