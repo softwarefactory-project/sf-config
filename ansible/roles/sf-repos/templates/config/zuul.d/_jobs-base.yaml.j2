@@ -101,6 +101,10 @@
         - linters
 
 {% endif %}
+{% else %}
+- job:
+    name: base
+    parent: null
 {% endif %}
 
 - job:

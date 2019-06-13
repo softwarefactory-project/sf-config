@@ -4,6 +4,7 @@ role_actions:
   - upgrade
   - reset_config_repo
   - copy_config_repo
+  - fetch_zuul_key
   - notify
 
 role_package: any
