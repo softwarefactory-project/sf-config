@@ -12,7 +12,9 @@
 
 import json
 import os
+import ssl
 
+import urllib.error
 from six.moves.urllib import request
 from six.moves.urllib import parse
 
@@ -97,7 +99,6 @@ class InstallServer(Component):
             args.glue["tenant_zuul_api"] = "%s/zuul/api" % (
                 args.glue["gateway_url"])
             args.glue["tenant_deployment"] = True
-            args.glue["config_key_exists"] = False
             self.resolve_tenant_informations(args, host)
         else:
             if "zuul" not in args.glue["roles"]:
@@ -110,8 +111,10 @@ class InstallServer(Component):
             args.glue["tenant_zuul_api"] = "%s/zuul/api/tenant/%s" % (
                 args.glue["gateway_url"], args.glue["tenant_name"])
             args.glue["tenant_deployment"] = False
-            # Master tenant deployment always has config key ready to be used
-            args.glue["config_key_exists"] = True
+            self.resolve_config_key(args,
+                                    "%s/key/%s.pub" % (
+                                        args.glue["tenant_zuul_api"],
+                                        args.glue["config_project_name"]))
 
         # Convert sfconfig.yaml connections into group vars
         zuul_config = args.sfconfig.get("zuul", {})
@@ -206,6 +209,36 @@ class InstallServer(Component):
             args.glue["zuul_pagure_connections_pipelines"].append(
                 pagure_connection)
             args.glue["zuul_gate_pipeline"] = True
+
+    def resolve_config_key(self, args, url):
+        """The goal of this method is to check and ensure we have the correct
+        zuul public key for the config project to pre-generate secrets."""
+        key_path = "/var/lib/software-factory/bootstrap-data/certs/config.pub"
+        key_data = ""
+        args.glue["config_key_path"] = key_path
+        args.glue["config_key_url"] = url
+        args.glue["config_key_exists"] = False
+        args.glue["config_key_changed"] = False
+        if os.path.exists(key_path):
+            key_data = open(key_path).read()
+        try:
+            req = request.urlopen(url)
+            current_data = req.read().decode("utf-8")
+            if "PUBLIC KEY" not in current_data:
+                raise RuntimeError(
+                    "Invalid public key --[%s]--" % current_data)
+            args.glue["config_key_exists"] = True
+            args.glue["config_key_changed"] = current_data != key_data
+            if args.glue["config_key_changed"]:
+                with open(key_path, "w") as of:
+                    of.write(current_data)
+        except (urllib.error.HTTPError,
+                urllib.error.URLError,
+                ssl.CertificateError):
+            print("%s: config key not available" % url)
+            if "PUBLIC KEY" in key_data:
+                # Assume key_data is correct and zuul may be offline
+                args.glue["config_key_exists"] = True
 
     def ensure_git_connection(self, name, args, host):
         """When no gerrit or github is connection is configured,
@@ -540,28 +573,14 @@ class InstallServer(Component):
         # master sf. If yes, fetch it. The key will be used to initialize
         # Zuul's secrets (like logserver ssh key) into the tenant's sf
         # config repository.
-        key_path = "/var/lib/software-factory/bootstrap-data/certs/config.pub"
-        if (
-                os.path.exists(key_path) and
-                "PUBLIC KEY" in open(key_path).read()):
-            args.glue["config_key_exists"] = True
-        else:
-            try:
-                req = request.urlopen(
-                    "%s/zuul/api/tenant/%s/key/%s.pub" % (
-                        args.glue["master_sf_url"],
-                        args.glue["tenant_name"],
-                        args.glue["config_project_name"]))
-                key_data = req.read().decode("utf-8")
-                if "PUBLIC KEY" in key_data:
-                    open(key_path, "w").write(key_data)
-                    args.glue["config_key_exists"] = True
-                else:
-                    raise RuntimeError(
-                        "Invalid public key --[%s]--" % key_data)
-            except Exception:
-                print("Tenant isn't registered in master deployment, "
-                      "add tenant config and restart sfconfig")
+        self.resolve_config_key(args,
+                                "%s/zuul/api/tenant/%s/key/%s.pub" % (
+                                    args.glue["master_sf_url"],
+                                    args.glue["tenant_name"],
+                                    args.glue["config_project_name"]))
+        if not args.glue["config_key_exists"]:
+            print("Tenant isn't registered in master deployment, "
+                  "add tenant config and restart sfconfig")
 
         # Fetch main install-server tenant-update secret to trigger zuul reload
         secret_path = "/var/lib/software-factory/bootstrap-data/certs/" \
