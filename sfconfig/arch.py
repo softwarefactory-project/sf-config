@@ -10,6 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import sys
 from sfconfig.utils import pread
 from sfconfig.utils import fail
 
@@ -19,6 +20,13 @@ required_roles = (
     "mysql",
     "managesf",
     "cauth",
+)
+
+rhel_unsupported_roles = (
+    "dlrn",
+    "firehose",
+    "gerritbot",
+    "hydrant",
 )
 
 
@@ -76,6 +84,19 @@ def process(args):
             fail("%s role is missing" % requirement)
         if len(args.glue["roles"][requirement]) > 1:
             fail("Only one instance of %s is required" % requirement)
+
+    # Check if unsuported components
+    if 'ID="rhel"' in open("/etc/os-release").read():
+        unsupported_roles = []
+        message = '''The following roles are not supported on RHEL,
+please remove them from /etc/software-factory/arch.yaml file:
+- %s'''
+        for role in rhel_unsupported_roles:
+            if role in args.glue["roles"]:
+                unsupported_roles.append(role)
+        if unsupported_roles:
+            print(message % '\n- '.join(unsupported_roles))
+            sys.exit(1)
 
     if len(args.sfarch["inventory"]) > 1 and (
             "cgit" not in args.glue["roles"] and
