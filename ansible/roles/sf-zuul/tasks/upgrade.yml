@@ -1,4 +1,16 @@
 ---
+- name: Remove legacy public key
+  command: "find {{ zuul_lib_dir }}/keys/ -name \"*.pub\" -delete"
+  when: _previous_version.stdout.startswith('rh-python35-zuul-3.2.0')
+
+- name: Remove legacy public key bis
+  file:
+    path:
+    state: absent
+  with_items:
+    - /var/lib/software-factory/state/config_key_checksum
+    - "{{ zuul_lib_dir }}/config.pub"
+
 - name: Check for legacy state
   stat:
     path: /var/opt/rh/rh-python35/lib/zuul/

@@ -214,11 +214,15 @@ def setup(args, pb):
     pb.append(host_play('all', 'repos', {'role_action': 'copy_config_repo'}))
 
 
-def repos(args, pb):
-    # Simple playbook just to run sf-repos action
-    for action in ("setup", "notify"):
-        pb.append(host_play(
-            'install-server', 'repos', {'role_action': action}))
+def sync_config(args, pb):
+    """Ensure config repo content is up-to-date."""
+    pb.append(host_play('install-server', tasks=[
+        dict(debug=dict(msg="Syncing config repo content")),
+        dict(include_role=dict(name="sf-repos"),
+             vars=dict(role_action="fetch_zuul_key")),
+        dict(include_role=dict(name="sf-repos"),
+             vars=dict(role_action="setup")),
+    ]))
 
 
 def config_update(args, pb, skip_sync=False):
@@ -429,6 +433,16 @@ def enable_action(args):
                 'not disable_nodepool_autorestart | default(False) | bool'
             ]
         })
+        pb.append({
+            'import_playbook': '%s/sync_config.yml' % args.ansible_root,
+            'when': ['not config_key_initialized | bool',
+                     'not tenant_deployment']})
+        # FIXME: zuul doesn't update on git push...
+        pb.append({
+            'import_playbook': '%s/zuul_restart.yml' % args.ansible_root,
+            'when': ['not config_key_initialized | bool',
+                     'not tenant_deployment'
+                     'not disable_zuul_autorestart | default(False) | bool']})
     else:
         playbook_name += "_nosetup"
 
@@ -658,8 +672,8 @@ def generate(args):
     for playbook_name, generator in (
             ("zuul_restart", zuul_restart),
             ("nodepool_restart", nodepool_restart),
+            ("sync_config", sync_config),
             ("sf_configrepo_update", config_update),
-            ("sf_repos", repos),
             ("sf_tenant_update", tenant_update),
             ("get_logs", get_logs),
             ("sf_backup", backup),
