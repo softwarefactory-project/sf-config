@@ -214,9 +214,9 @@ def setup(args, pb):
     pb.append(host_play('all', 'repos', {'role_action': 'copy_config_repo'}))
 
 
-def repos(args, pb):
-    # Simple playbook just to run sf-repos action
-    for action in ("setup", "notify"):
+def sync_config(args, pb):
+    """Ensure config repo content is up-to-date."""
+    for action in ("fetch_zuul_key", "setup"):
         pb.append(host_play(
             'install-server', 'repos', {'role_action': action}))
 
@@ -429,6 +429,10 @@ def enable_action(args):
                 'not disable_nodepool_autorestart | default(False) | bool'
             ]
         })
+        pb.append({
+            'import_playbook': '%s/sync_config.yml' % args.ansible_root,
+            'when': ['not config_key_exists | bool',
+                     'not tenant_deployment']})
     else:
         playbook_name += "_nosetup"
 
@@ -683,8 +687,8 @@ def generate(args):
     for playbook_name, generator in (
             ("zuul_restart", zuul_restart),
             ("nodepool_restart", nodepool_restart),
+            ("sync_config", sync_config),
             ("sf_configrepo_update", config_update),
-            ("sf_repos", repos),
             ("sf_tenant_update", tenant_update),
             ("get_logs", get_logs),
             ("sf_backup", backup),
