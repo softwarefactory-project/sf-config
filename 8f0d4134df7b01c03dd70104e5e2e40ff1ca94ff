@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "29ee84cd_f08a26e1",
+        "filename": "sfconfig/arch.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-06-13T22:32:58Z",
+      "side": 1,
+      "message": "Could we look into that fix for gerritbot please: https://softwarefactory-project.io/r/#/c/15741/",
+      "range": {
+        "startLine": 28,
+        "startChar": 5,
+        "endLine": 28,
+        "endChar": 14
+      },
+      "revId": "8f0d4134df7b01c03dd70104e5e2e40ff1ca94ff",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
