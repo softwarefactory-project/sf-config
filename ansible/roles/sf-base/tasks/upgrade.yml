@@ -86,3 +86,9 @@
     path: /var/lib/zuul/.ssh/known_hosts
     regexp: ".* (ecdsa-sha.*|ssh-ed25519) .*"
     state: absent
+
+# sf-3.3
+- name: Remove unused zuul-console directory
+  file:
+    path: /var/tmp/zuul-console
+    state: absent

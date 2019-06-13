@@ -20,3 +20,12 @@
     owner: zuul-worker
     group: zuul-worker
     state: directory
+
+- name: Add /tmp zuul-worker tidy cron
+  cron:
+    name: "Tidy /tmp zuul-worker"
+    minute: 0
+    # 1 hour offset to avoid regular /tmp tidy conflict
+    hour: 1
+    day: '*'
+    job: "find /tmp/ -mindepth 1 -maxdepth 1 -mtime +2 -user zuul-worker -exec rm -r {} +"

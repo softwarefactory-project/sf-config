@@ -166,3 +166,11 @@
     - new_crt is changed
   loop:
     - /usr/lib/python2.7/site-packages/requests/
+
+- name: Add /tmp tidy cron
+  cron:
+    name: "Tidy /tmp"
+    minute: 0
+    hour: 0
+    day: '*'
+    job: "find /tmp/ -mindepth 1 -maxdepth 1 -mtime +2 -name 'tmp*' -or -name 'console*' -or -name 'bindep*' -exec rm -r {} +"
