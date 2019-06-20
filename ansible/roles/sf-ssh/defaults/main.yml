@@ -1,5 +1,6 @@
 ---
 role_actions:
+  - install
   - setup
   - populate_hosts
 
