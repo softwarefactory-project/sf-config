@@ -93,6 +93,12 @@
     - nodepool/_local_hypervisor_openshift.yaml
   when: "'nodepool' in roles"
 
+- name: Setup _nodepool.yaml
+  template:
+    src: /usr/share/sf-config/ansible/roles/sf-nodepool/templates/_nodepool.yaml.j2
+    dest: "{{ config_clone_dir }}/nodepool/_nodepool.yaml"
+  when: "'nodepool-launcher' in roles"
+
 - name: Update admin email in resources.yaml
   replace:
     path: '{{ config_clone_dir }}/resources/resources.yaml'
