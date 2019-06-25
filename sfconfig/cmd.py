@@ -171,6 +171,7 @@ def main():
                  'sf_playbooks_dir': "%s" % args.ansible_root,
                  'logservers': [],
                  'executor_hosts': [],
+                 'nodepool_hosts': [],
                  }
     if args.recover:
         args.glue['force_update_tasks'] = True
