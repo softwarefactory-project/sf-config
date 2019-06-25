@@ -12,13 +12,6 @@
     content: '{{ {"roles": roles}| to_yaml }}'
   changed_when: False
 
-- name: Setup _nodepool.yaml for config-check test
-  template:
-    src: /usr/share/sf-config/ansible/roles/sf-nodepool/templates/_nodepool.yaml.j2
-    dest: "{{ defconf.path }}/defconf-nodepool.yaml"
-  changed_when: False
-  when: "'nodepool-launcher' in roles"
-
 - name: Setup zuul.conf for config-check test
   template:
     src: fake_zuul.conf.j2
@@ -32,6 +25,13 @@
     dest: "{{ defconf.path }}/defconf-repoxplorer.py"
   changed_when: False
   when: "'repoxplorer' in roles"
+
+- name: Setup nodepool.yaml for config-check test
+  template:
+    src: /usr/share/sf-config/ansible/roles/sf-nodepool/templates/nodepool.yaml.j2
+    dest: "{{ defconf.path }}/defconf-nodepool.yaml"
+  changed_when: False
+  when: "'nodepool-launcher' in roles"
 
 - name: Expose default config archive in gateway
   archive:
