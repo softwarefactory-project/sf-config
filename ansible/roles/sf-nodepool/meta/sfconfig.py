@@ -16,11 +16,20 @@ from sfconfig.components import Component
 from sfconfig.utils import fail
 
 
+class NodepoolBuilder(Component):
+    role = "nodepool-builder"
+    require_roles = ["zookeeper"]
+
+    def configure(self, args, host):
+        args.glue["nodepool_hosts"].append(host["hostname"])
+
+
 class NodepoolLauncher(Component):
     role = "nodepool-launcher"
     require_roles = ["zookeeper"]
 
     def configure(self, args, host):
+        args.glue["nodepool_hosts"].append(host["hostname"])
         args.glue["nodepool_providers"] = args.sfconfig.get(
             "nodepool", {}).get("providers", [])
         args.glue["nodepool_dib_reg_passwords"] = args.sfconfig.get(
