@@ -108,16 +108,10 @@
 
     - name: Validate nodepool configuration
       block:
-        - name: Install fake _nodepool.yaml
-          copy:
-            remote_src: true
-            src: "{{ config_root }}/defconf/defconf-nodepool.yaml"
-            dest: "{{ config_root }}/build/_nodepool.yaml"
-
         - name: Merge nodepool config repo files
           command: >
-            env - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py
-                nodepool/ build/nodepool.yaml
+            env - /bin/managesf-configuration nodepool
+               --cache-dir {{ config_root }}/../.cache --config-dir {{ config_root }} --output build/nodepool.yaml
           args:
             chdir: "{{ config_root }}"
 
