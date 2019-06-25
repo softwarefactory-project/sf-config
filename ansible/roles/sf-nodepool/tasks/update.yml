@@ -11,7 +11,7 @@
   register: localconfig
 
 - name: Check new Nodepool config checksum
-  shell: git log -n 3 --oneline nodepool/ && md5sum "{{ nodepool_conf_dir }}/_nodepool.yaml"
+  shell: git log -n 3 --oneline nodepool/ && md5sum /var/lib/software-factory/conf/nodepool.yaml"
   args:
     chdir: /root/config
   changed_when: False
@@ -22,7 +22,7 @@
   args:
     chdir: /root/config
   loop:
-    - /usr/share/sf-config/scripts/sf-nodepool-conf-merger.py nodepool/ "{{ nodepool_conf_dir }}/nodepool.yaml"
+    - env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml"
     - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
 
 - name: Ensure service are started and enabled
