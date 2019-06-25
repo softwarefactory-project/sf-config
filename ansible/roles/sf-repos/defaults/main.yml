@@ -12,6 +12,8 @@ zuul_mqtt_start_topic: "zuul/{pipeline}/start/{project}/{branch}"
 zuul_mqtt_failure_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
 zuul_mqtt_success_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
 
+nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
+
 config_repo_acl:
   file: |-
     [access "refs/*"]
