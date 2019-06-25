@@ -84,7 +84,9 @@ def yaml_merge_load(inp):
         if not data:
             continue
         for key, value in data.items():
-            user.setdefault(key, []).extend(value)
+            # extend only if value is a list:
+            if isinstance(value, list):
+                user.setdefault(key, []).extend(value)
     return user
 
 
