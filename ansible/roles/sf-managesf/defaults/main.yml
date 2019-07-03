@@ -6,7 +6,7 @@ role_actions:
   - get_logs
   - disable
 
-role_package: managesf
+role_package: rh-python35-managesf
 
 managesf_loglevel: INFO
 managesf_root_loglevel: WARNING
