@@ -1,7 +1,16 @@
 ---
-- name: Install package
+- name: Ensure python2 package absent
   yum:
     name: managesf
+    state: absent
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  delegate_to: "{{ item }}"
+  loop: "{{ executor_hosts | union( groups['managesf'] ) }}"
+
+- name: Install package
+  yum:
+    name: "{{ role_package }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
