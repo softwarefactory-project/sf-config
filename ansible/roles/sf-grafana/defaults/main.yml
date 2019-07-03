@@ -10,8 +10,8 @@ role_package: grafana
 
 grafana_repo_name: grafana
 grafana_repo_desc: Grafana repository
-grafana_repo_url: https://packagecloud.io/grafana/stable/el/7/x86_64
-grafana_repo_gpgkey: https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+grafana_repo_url: https://packages.grafana.com/oss/rpm
+grafana_repo_gpgkey: https://packages.grafana.com/gpg.key
 grafana_repo_gpgcheck: 1
 
 grafana_database_type: mysql
