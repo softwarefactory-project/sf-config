@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3246b0f6_765976bc",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-07-19T12:25:48Z",
+      "side": 1,
+      "message": "Isn\u0027t this going to run locally? IIRC we often experience timeout on managesf endpoint and this shouldn\u0027t need the gateway_url.",
+      "range": {
+        "startLine": 114,
+        "startChar": 86,
+        "endLine": 114,
+        "endChar": 118
+      },
+      "revId": "e344f0395682dd9d030f7ad17282490990bd71dc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bc95b268_57c6680e",
+        "filename": "ansible/roles/sf-repos/tasks/sync_config_repo_content.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-07-19T12:25:48Z",
+      "side": 1,
+      "message": "That\u0027s a bit overkill to generate that file each time... Shouldn\u0027t we install this in /var/lib/managesf/conf/nodepool.yaml and make the configuration cli load that file instead? If we do that, then we need to setup this file only on sfconfig run, but for each nodepool host.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 38
+      },
+      "revId": "e344f0395682dd9d030f7ad17282490990bd71dc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "42d1db7f_49235344",
+        "filename": "ansible/roles/sf-repos/templates/config/nodepool/_local_hypervisor_runc.yaml.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-07-19T12:25:48Z",
+      "side": 1,
+      "message": "Unrelated change.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 3
+      },
+      "revId": "e344f0395682dd9d030f7ad17282490990bd71dc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "12aecfac_292e82c0",
+        "filename": "sfconfig/utils.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-07-19T12:25:48Z",
+      "side": 1,
+      "message": "Why is this needed now?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 45
+      },
+      "revId": "e344f0395682dd9d030f7ad17282490990bd71dc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
