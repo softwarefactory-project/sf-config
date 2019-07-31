@@ -1,0 +1,50 @@
+server:
+  zuul_url: {{ zuul_web_url }}/api/tenant/{{ log_classify_mqtt_tenant }}
+  models_folder: /var/lib/logreduce/models
+  logserver_folder: /var/lib/logreduce/logs
+mqtt:
+  url: {{ firehose_host }}
+  tenants:
+    - {{ logreduce_mqtt_tenant }}
+  jobs:
+{% for job in log_classify_mqtt_jobs %}
+    - {{ job }}
+{% endfor %}
+  model_dest: {{ logreduce_mqtt_model_dest }}
+  log_dest: {{ logreduce_mqtt_log_dest }}
+logging:
+  loggers:
+    logreduce:
+      handlers: ['file', 'console']
+      level: INFO
+      propagate: 0
+    gear:
+      handlers: ['file', 'console']
+      level: WARN
+      propagate: 0
+    sqlalchemy.engine:
+      handlers: ['file', 'console']
+      level: WARN
+      propagate: 0
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: console
+      level: INFO
+      stream: ext://sys.stdout
+    file:
+      class: logging.handlers.TimedRotatingFileHandler
+      formatter: file
+      level: DEBUG
+      filename: '/var/log/logreduce/{service}.log'
+      when: 'midnight'
+      interval: 1
+      backupCount: 30
+  formatters:
+    file:
+      format: '%(asctime)s %(levelname)s %(name)s: %(message)s'
+    console:
+      format: '%(levelname)7s %(name)s: %(message)s'
+  root:
+    handlers: ['file', 'console']
+    level: INFO

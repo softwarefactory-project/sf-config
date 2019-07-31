@@ -1,0 +1,24 @@
+---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=logreduce ssh_key=zuul_logserver_rsa home_dir_mode=0755"
+
+- name: Symlink SCL
+  file:
+    src: "{{ item.src }}/logreduce"
+    dest: "{{ item.dest }}/logreduce"
+    state: link
+  loop:
+    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
+    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
+    - {src: /etc/opt/rh/rh-python35, dest: /etc}
+-
+- name: Install configuration
+  template:
+    src: config.yaml.j2
+    dest: /etc/logreduce/config.yaml
+    group: logreduce
+    mode: 0440
+
+- name: Start the service
+  service:
+    name: rh-python35-logreduce-mqtt
+    state: started
