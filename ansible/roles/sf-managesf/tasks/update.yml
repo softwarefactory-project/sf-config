@@ -45,7 +45,13 @@
     - "'gerrit' in roles"
     - localconfig.stdout != upstreamconfig.stdout
 
+- name: Check policy.yaml
+  stat:
+    path: /root/config/policies/policy.yaml
+  register: _policy_yaml
+
 - name: Apply new policy.yaml
+  when: _policy_yaml.stat.exists
   copy:
     src: /root/config/policies/policy.yaml
     dest: /etc/managesf/policy.yaml
