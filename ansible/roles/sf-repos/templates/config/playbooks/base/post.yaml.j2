@@ -16,6 +16,7 @@
       logclassify_model_dir: /var/lib/log-classify
       logclassify_local_dir: "{{'{{'}} zuul.executor.log_root {{'}}'}}"
 {% endif %}
+    - role: generate-zuul-manifest
 
 - hosts: "{{'{{'}} site_sflogs.fqdn {{'}}'}}"
   gather_facts: false
