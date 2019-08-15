@@ -6,6 +6,11 @@ resources:
       description: "The {{ tenant_name }} tenant."
       url: "{{ gateway_url }}/manage"
       default-connection: {{ config_connection_name }}
+      tenant-options:
+{% if tenant_deployment %}
+        zuul/web-root: {{ gateway_url }}/zuul/
+{% endif %}
+        zuul/report-build-page: {{ zuul_report_build_page|default(True) }}
 
 {% if not initial_creation|default(False) and not tenant_deployment %}
   connections:

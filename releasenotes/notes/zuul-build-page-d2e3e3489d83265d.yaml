@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The zuul build page is now automatically activated. To keep the legacy
+    report url links, add `zuul_report_build_page: false` to
+    /etc/software-factory/custom-vars.yaml
