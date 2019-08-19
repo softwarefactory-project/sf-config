@@ -22,6 +22,30 @@
       "revId": "e620090c3be2f9bf83314b1b41bf109887f8542b",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5b56981f_d7693459",
+        "filename": "ansible/roles/sf-repos/templates/config/resources/_internal.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-08-19T11:38:17Z",
+      "side": 1,
+      "message": "this is not used by another patch, why?",
+      "parentUuid": "e16909f9_c39911ee",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 74
+      },
+      "revId": "e620090c3be2f9bf83314b1b41bf109887f8542b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
