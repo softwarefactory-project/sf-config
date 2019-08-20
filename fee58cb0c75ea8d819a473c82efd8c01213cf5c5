@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e1fe68ba_a8464f32",
+        "filename": "ansible/roles/sf-managesf/tasks/setup.yml",
+        "patchSetId": 17
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-08-20T14:54:41Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be running on the nodepool-launcher/builder hosts?\n\nI don\u0027t really like we bind mount /var/lib/sf/conf in every zuul job just for the local check. Why aren\u0027t we using the defconf anymore?",
+      "revId": "fee58cb0c75ea8d819a473c82efd8c01213cf5c5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6521e9f8_b637aa5b",
+        "filename": "ansible/roles/sf-managesf/templates/nodepool.yaml.j2",
+        "patchSetId": 17
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-08-20T14:54:41Z",
+      "side": 1,
+      "message": "We used that _nodepool trick because there was secret in that file. That doesn\u0027t seem to be the case anymore and this could be shared using the defconf system imo.",
+      "revId": "fee58cb0c75ea8d819a473c82efd8c01213cf5c5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
