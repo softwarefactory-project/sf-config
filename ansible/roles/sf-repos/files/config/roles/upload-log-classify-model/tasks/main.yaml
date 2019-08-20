@@ -36,7 +36,7 @@
       file:
         path: "{{ zuul.executor.log_root }}/model.{{ item }}"
         state: absent
-      loop:
+      with_items:
         - clf
         - name
       delegate_to: localhost
