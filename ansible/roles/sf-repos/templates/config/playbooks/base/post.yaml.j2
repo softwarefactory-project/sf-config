@@ -42,7 +42,6 @@
         - import_role: name=upload-log-classify-model
 {% endif %}
         - import_role: name=upload-logs
-        - import_role: name=emit-job-report
         - import_role: name=buildset-artifacts-location
       vars:
 {% if 'logserver' in roles %}
