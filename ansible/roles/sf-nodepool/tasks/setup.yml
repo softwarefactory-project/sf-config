@@ -70,6 +70,19 @@
   become_user: nodepool
   loop: "{{ nodepool_openshift_providers|default([]) }}"
 
+- name: Add local k1s cluster provided by sf-hypervisor-k1s
+  shell: |
+    oc config set-credentials k1s-managed --token={{ k1s_token }}
+    {% for host in inventory %}{% if 'hypervisor-k1s' in host['roles'] %}
+    oc config set-cluster k1s-managed-{{ host['name']|replace('.', '-') }} --server=https://{{ host['hostname'] }}:9023 --insecure-skip-tls-verify=true
+    oc config set-context /k1s-{{ host['name']|replace('.', '-') }}/managed --cluster=k1s-managed-{{ host['name']|replace('.', '-') }} --user=k1s-managed
+    {# ensure current-context is set #}
+    oc config current-context &> /dev/null || oc config use-context /k1s-{{ host['name'] }}/managed
+    {% endif %}{% endfor %}
+  become: yes
+  become_user: nodepool
+  when: "'hypervisor-k1s' in roles"
+
 - name: Install os-client-config
   template:
     src: clouds.yaml.j2

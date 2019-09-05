@@ -1,0 +1,29 @@
+---
+- name: Ensure state exists
+  file:
+    path: "/var/lib/software-factory/state/k1s-{{ item|basename }}"
+    state: touch
+  changed_when: False
+
+- name: Check last state
+  command: "cat /var/lib/software-factory/state/k1s-{{ item|basename }}"
+  changed_when: False
+  register: localconfig
+
+- name: Check new state
+  shell: "git log -n 3 --oneline containers/{{ item|basename }}/"
+  args:
+    chdir: /root/config
+  changed_when: False
+  register: newconfig
+
+- name: Build image
+  block:
+    - name: Run buildah
+      command: "buildah bud -t localhost/k1s/{{ item|basename }} {{ item }}"
+
+    - name: Write new config
+      copy:
+        content: "{{ newconfig.stdout }}"
+        dest: "/var/lib/software-factory/state/k1s-{{ item|basename }}"
+  when: localconfig.stdout != newconfig.stdout
