@@ -10,7 +10,14 @@
         zuul_log_url: "https://{{ fqdn }}/logs"
 
 - hosts: all
-  roles:
-    - prepare-workspace
-    - role: validate-host
-    - add-build-sshkey
+  tasks:
+    - block:
+        - import_role: name=validate-host
+        - import_role: name=prepare-workspace
+        - import_role: name=add-build-sshkey
+      when: "ansible_connection != 'kubectl'"
+    - block:
+        - import_role: name=prepare-workspace-openshift
+        - import_role: name=remove-zuul-sshkey
+      run_once: true
+      when: "ansible_connection == 'kubectl'"
