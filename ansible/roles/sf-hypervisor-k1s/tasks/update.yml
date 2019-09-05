@@ -1,0 +1,7 @@
+---
+- name: List defined containers
+  shell: find /root/config/containers -maxdepth 1 -mindepth 1 -type d
+  register: _containers
+
+- include_tasks: build-container.yaml
+  loop: "{{ _containers.stdout_lines }}"

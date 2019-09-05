@@ -1,0 +1,11 @@
+---
+role_actions:
+  - install
+  - setup
+  - disable
+  - update
+
+# TODO: replace by k1s package
+role_package: rh-python35-k1s
+
+k1s_token: "CHANGE_ME"
