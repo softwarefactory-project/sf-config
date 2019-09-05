@@ -30,6 +30,9 @@
         - import_role: name=emit-job-report
         - import_role: name=buildset-artifacts-location
       vars:
+{% if 'logserver' in roles %}
+        zuul_log_compress: true
+{% endif %}
         zuul_log_url: "https://{{ fqdn }}/logs"
         zuul_logserver_root: "{{'{{'}} site_sflogs.path {{'}}'}}"
 
