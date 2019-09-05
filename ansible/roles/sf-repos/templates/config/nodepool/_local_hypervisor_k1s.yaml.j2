@@ -1,0 +1,19 @@
+# This file is managed by sfconfig, do not edit manually
+{% if not tenant_deployment %}
+{% if 'hypervisor-k1s' in roles %}
+
+providers:
+{% for host in inventory %}{% if 'hypervisor-k1s' in host['roles'] %}
+  - name: managed-k1s-provider-{{ host['hostname'] }}
+    driver: openshiftpods
+    context: /k1s-{{ host['hostname']|replace('.', '-') }}/managed
+    pools:
+    - name: main
+      max-servers: {{ host.get('max-servers', 10) }}
+      # Use extra-labels to configure labels
+      labels: []
+
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}

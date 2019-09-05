@@ -1,0 +1,10 @@
+---
+role_actions:
+  - install
+  - setup
+  - disable
+
+# TODO: replace by k1s package
+role_package: any
+
+k1s_token: "CHANGE_ME"
