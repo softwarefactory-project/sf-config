@@ -40,6 +40,10 @@
     repo_dir_names: [dlrn]
   when: "'dlrn' in roles"
 
+- include_tasks: config_create_dir.yml
+  vars:
+    repo_dir_names: [containers]
+
 - name: Ensure role directory exists
   file:
     path: "{{ config_clone_dir }}/roles"
@@ -53,6 +57,8 @@
       - zuul
       - zuul.d
       - roles/wait-for-changes-ahead
+      - roles/prepare-workspace-openshift
+      - roles/remove-zuul-sshkey
 
 - include_tasks: config_sync_dir.yml
   vars:
@@ -90,6 +96,7 @@
     dest: "{{ config_clone_dir }}/{{ item }}"
   loop:
     - nodepool/_local_hypervisor_runc.yaml
+    - nodepool/_local_hypervisor_k1s.yaml
     - nodepool/_local_hypervisor_openshift.yaml
   when: "'nodepool' in roles"
 

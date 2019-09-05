@@ -1,0 +1,2 @@
+# Each directory shall contains a Dockerfile
+# The config-update job build those on the k1s hosts using the localhost/k1s tag prefix
