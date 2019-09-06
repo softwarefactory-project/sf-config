@@ -1,0 +1,29 @@
+<VirtualHost *:443>
+    ServerName keycloak.{{ fqdn }}
+    CustomLog /var/log/httpd/keycloak.log combined
+
+    SSLEngine on
+    {% if network["use_letsencrypt"] %}
+    SSLCertificateFile /etc/letsencrypt/pem/keycloak.{{ fqdn }}.pem
+    SSLCertificateChainFile /etc/letsencrypt/pem/lets-encrypt-x3-cross-signed.pem
+    SSLCertificateKeyFile /etc/letsencrypt/private/keycloak.{{ fqdn }}.key
+    {% else %}
+    SSLCertificateFile /etc/pki/tls/certs/keycloak.{{ fqdn }}.crt
+    SSLCertificateChainFile /etc/pki/tls/certs/keycloak.{{ fqdn }}-chain.crt
+    SSLCertificateKeyFile  /etc/pki/tls/private/keycloak.{{ fqdn }}.key
+    SSLStrictSNIVHostCheck Off
+    {% endif %}
+
+    SSLProxyEngine On
+    SSLProxyCheckPeerCN Off
+    SSLProxyCheckPeerName Off
+    SSLProxyVerify none
+#  SSLProxyMachineCertificateFile "/etc/ssl/certs/https/client.pem"
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port "443"
+
+    ProxyPass / http://127.0.0.1:{{ keycloak_port }}/auth
+    ProxyPassReverse / http://127.0.0.1:{{ keycloak_port }}/auth
+    ProxyPreserveHost On
+
+</VirtualHost>
