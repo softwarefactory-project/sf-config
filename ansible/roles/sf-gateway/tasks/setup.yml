@@ -1,6 +1,5 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-
 - include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
 
 - name: Remove un-needed files
@@ -131,10 +130,11 @@
   loop:
     - {name: gateway.common, dest: /etc/httpd/conf.d}
     - {name: gateway.conf, dest: /etc/httpd/conf.d}
+    - {name: headers.conf, dest: /etc/httpd/conf.d}
     - {name: hideci.js, dest: /var/www/static/js}
+    - {name: menu.js, dest: /var/www/static/js}
     - {name: topmenu.html, dest: /var/www}
     - {name: topmenu.js, dest: /var/www/static/js}
-    - {name: menu.js, dest: /var/www/static/js}
     - {name: welcome.js, dest: /var/www/static/js}
   notify: apache reload
 

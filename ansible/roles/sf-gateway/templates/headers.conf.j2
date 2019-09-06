@@ -1,0 +1,8 @@
+<IfModule mod_headers.c>
+   Header set Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://{{ fqdn }}; connect-src 'self'; img-src 'self' data: base64 https://www.gravatar.com; style-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src 'self'; font-src 'self'"
+   Header set X-Content-Type-Options nosniff
+   Header set X-Frame-Options SAMEORIGIN
+   Header set X-XSS-Protection "1; mode=block"
+   Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains;"
+   Header always set Referrer-Policy "same-origin"
+</IfModule>
