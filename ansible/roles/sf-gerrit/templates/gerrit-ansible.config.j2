@@ -13,11 +13,23 @@
     connectionPool = true
     poolLimit = {{ gerrit_connection_pool }}
 {% endif %}
+{% if 'keycloak' in roles %}
+[auth]
+    type = OAUTH
+    trustedOpenID=^.*$
+    gitBasicAuthPolicy = HTTP
+[plugin "gerrit-oauth-provider-keycloak-oauth"]
+    root-url = https://keycloak.{{ fqdn }}
+    realm = sf
+    client-id = gerrit
+    client-secret = XXXXXXXX
+{% else %}
 [auth]
     type = HTTP
     gitBasicAuth = true
     loginUrl = /r/login
     logoutUrl = /auth/logout
+{% endif %}
 [container]
     user = gerrit
     javaHome = /usr/lib/jvm/java-1.8.0-openjdk/jre/
