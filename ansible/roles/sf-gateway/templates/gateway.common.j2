@@ -78,6 +78,7 @@
 
 {% endif %}
 {% if 'gerrit' in roles %}
+{% if 'keycloak' not in roles %}
     <LocationMatch "/r/(?!(login|logout))">
         RewriteEngine On
 
@@ -104,6 +105,7 @@
         TKTAuthDebug 1
         require valid-user
     </LocationMatch>
+{% endif %}
 
     # Redirect a gerrit page that give an easy access to gitweb
     # if user does not have the GerritAccount cookie in its browser
