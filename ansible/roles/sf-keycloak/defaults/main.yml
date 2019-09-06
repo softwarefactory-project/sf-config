@@ -1,0 +1,18 @@
+---
+role_actions:
+  - install
+  - setup
+  - update
+  - get_logs
+  - backup
+  - restore
+  - stop
+  - disable
+
+role_package: keycloak
+
+keycloak_port: 38080
+# TODO we should map SF tenants to keycloak realms
+keycloak_default_realm: local
+
+keycloak_mysql_password: "CHANGE_ME"
