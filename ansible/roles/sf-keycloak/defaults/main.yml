@@ -1,0 +1,14 @@
+---
+role_actions:
+  - install
+  - setup
+  - update
+  - get_logs
+  - backup
+  - restore
+  - stop
+  - disable
+
+role_package: keycloak
+
+keycloak_port: 38080
