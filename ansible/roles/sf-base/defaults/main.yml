@@ -7,3 +7,6 @@ role_actions:
 
 sf_release_url: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
 role_package: any
+
+# set this early in the playbook, so that either sf-cauth or sf-keycloak can handle this
+sf_service_user_password: "CHANGE_ME"
