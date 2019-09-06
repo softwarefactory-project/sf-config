@@ -19,7 +19,6 @@ required_roles = (
     "gateway",
     "mysql",
     "managesf",
-    "cauth",
 )
 
 rhel_unsupported_roles = (
@@ -117,6 +116,12 @@ please remove them from /etc/software-factory/arch.yaml file:
             not args.sfconfig["config-locations"]["jobs-repo"] and
             not args.sfconfig["zuul"]["upstream_zuul_jobs"]):
         fail("Cgit or Gerrit component is required for distributed deployment")
+
+    # TODO activate this once we're ready to switch from cauth
+
+    # if (all(x in args.glue["roles"] for x in ['cauth', 'keycloak']) or
+    #    all(x not in args.glue["roles"] for x in ['cauth', 'keycloak'])):
+    #     fail("Either 'keycloak' OR 'cauth' component is needed")
 
     # Add install-server hostname for easy access
     args.glue["install_server"] = args.glue["roles"]["install-server"][0][
