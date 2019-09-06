@@ -214,6 +214,12 @@ def update_sfconfig(args):
         data["network"]["tls_key_file"] = ""
         dirty = True
 
+    if "kc_tls_cert_file" not in data["network"]:
+        data["network"]["kc_tls_cert_file"] = ""
+        data["network"]["kc_tls_chain_file"] = ""
+        data["network"]["kc_tls_key_file"] = ""
+        dirty = True
+
     if "ara_report" not in data["zuul"]:
         data["zuul"]["ara_report"] = True
         dirty = True
