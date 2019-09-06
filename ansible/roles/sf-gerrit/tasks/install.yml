@@ -11,6 +11,7 @@
       - gerrit-plugin-avatars-gravatar
       - gerrit-plugin-delete-project
       - gerrit-plugin-reviewers-by-blame
+      #- gerrit-plugin-oauth
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
