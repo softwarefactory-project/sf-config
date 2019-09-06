@@ -36,6 +36,11 @@ network:
   tls_chain_file: ""
   tls_key_file: ""
 
+  # Path of user provided certicate files for keycloak vhost, e.g. in /etc/software-factory/ssl
+  kc_tls_cert_file: ""
+  kc_tls_chain_file: ""
+  kc_tls_key_file: ""
+
 # Special deployment mode where zuul and nodepool is not running locally
 tenant-deployment:
   # name: tenant-name
