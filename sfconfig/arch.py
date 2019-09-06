@@ -19,7 +19,6 @@ required_roles = (
     "gateway",
     "mysql",
     "managesf",
-    "cauth",
 )
 
 rhel_unsupported_roles = (
@@ -70,6 +69,8 @@ def process(args):
                 aliases.add(args.sfconfig["fqdn"])
             elif role == "cauth":
                 aliases.add("auth.%s" % args.sfconfig["fqdn"])
+            elif role == "keycloak":
+                aliases.add("keycloak.%s" % args.sfconfig["fqdn"])
             elif role not in args.glue["scalable_roles"]:
                 # Add role name virtual name (as cname)
                 aliases.add("%s.%s" % (role, args.sfconfig["fqdn"]))
@@ -104,6 +105,12 @@ please remove them from /etc/software-factory/arch.yaml file:
             not args.sfconfig["config-locations"]["jobs-repo"] and
             not args.sfconfig["zuul"]["upstream_zuul_jobs"]):
         fail("Cgit or Gerrit component is required for distributed deployment")
+
+    # TODO activate this once we're ready to switch from cauth
+
+    # if (all(x in args.glue["roles"] for x in ['cauth', 'keycloak']) or
+    #    all(x not in args.glue["roles"] for x in ['cauth', 'keycloak'])):
+    #     fail("Either 'keycloak' OR 'cauth' component is needed")
 
     # Add install-server hostname for easy access
     args.glue["install_server"] = args.glue["roles"]["install-server"][0][
