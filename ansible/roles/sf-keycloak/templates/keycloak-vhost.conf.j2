@@ -1,0 +1,23 @@
+<VirtualHost *:443>
+    ServerName keycloak.sfrdotestinstance.org
+    CustomLog /var/log/httpd/keycloak.log combined
+
+    SSLEngine on
+    SSLCertificateFile /etc/pki/tls/certs/{{ fqdn }}.crt
+    SSLCertificateChainFile /etc/pki/tls/certs/{{ fqdn }}-chain.crt
+    SSLCertificateKeyFile  /etc/pki/tls/private/{{ fqdn }}.key
+    SSLStrictSNIVHostCheck Off
+
+    SSLProxyEngine On
+    SSLProxyCheckPeerCN Off
+    SSLProxyCheckPeerName Off
+    SSLProxyVerify none
+#  SSLProxyMachineCertificateFile "/etc/ssl/certs/https/client.pem"
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port "443"
+
+    ProxyPass / http://127.0.0.1:{{ keycloak_port }}/
+    ProxyPassReverse / http://127.0.0.1:{{ keycloak_port }}/
+    ProxyPreserveHost On
+
+</VirtualHost>
