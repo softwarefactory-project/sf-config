@@ -58,6 +58,7 @@ class Cauth(Component):
         # Check if secret hash needs to be generated:
         update_secrets = False
         previous_vars = yaml_load("%s/group_vars/all.yaml" % args.ansible_root)
+        # TODO move this part to sf-base too
         if not args.secrets.get('cauth_admin_password_hash') or \
            previous_vars.get("authentication", {}).get("admin_password") != \
            args.sfconfig["authentication"]["admin_password"]:
