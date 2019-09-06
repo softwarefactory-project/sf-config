@@ -1,0 +1,84 @@
+---
+- name: Create gerrit_config file
+  file:
+    path: /var/lib/software-factory/state/gerrit_config
+    state: touch
+  changed_when: false
+
+- name: Check local config
+  shell: cat /var/lib/software-factory/state/gerrit_config
+  register: localconfig
+  changed_when: false
+
+- name: Check upstream config
+  shell: git log -n 3 --oneline gerrit/; echo "{{ gerrit_replication }}"
+  args:
+    chdir: /root/config
+  register: upstreamconfig
+  changed_when: false
+
+- include_vars: /root/config/gerrit/commentlinks.yaml
+
+- name: Update configuration file
+  when: localconfig.stdout != upstreamconfig.stdout
+  template:
+    src: gerrit-ansible.config.j2
+    dest: "/etc/gerrit/{{ item }}"
+    owner: gerrit
+    group: gerrit
+    mode: 0644
+  loop:
+    # We need to update the write-only file to prevent reload on next setup run
+    - gerrit-ansible.config
+    - gerrit.config
+
+- block:
+    - stat:
+        path: /root/config/gerrit/replication.config
+      register: rstat
+
+    - name: Check if replication.config changed
+      command: diff /root/config/gerrit/replication.config /etc/gerrit/replication.config
+      register: diffstat
+      no_log: true
+      when: rstat.stat.exists == True
+      failed_when: diffstat.rc > 1
+
+    - name: Update Gerrit replication.config
+      command: cp /root/config/gerrit/replication.config /etc/gerrit/
+      when:
+        - rstat.stat.exists == True
+        - diffstat.rc == 1
+
+    - name: Reload the replication plugin
+      command: ssh -p 29418 admin@{{ fqdn }} gerrit plugin reload replication
+      when:
+        - rstat.stat.exists == True
+        - diffstat.rc == 1
+
+    - name: Restart the replication
+      command: ssh -p 29418 admin@{{ fqdn }} replication start --all
+      when:
+        - rstat.stat.exists == True
+        - diffstat.rc == 1
+  when: gerrit_replication and localconfig.stdout != upstreamconfig.stdout
+
+- block:
+    - name: Copy initial replication.config
+      copy:
+        src: replication.config
+        dest: /etc/gerrit
+        mode: 0644
+  when: not gerrit_replication and localconfig.stdout != upstreamconfig.stdout
+
+- name: Reload gerrit service
+  service:
+    name: gerrit
+    state: restarted
+  when: localconfig.stdout != upstreamconfig.stdout
+
+- name: Write config repo sha1 matching current configuration
+  copy:
+    content: "{{ upstreamconfig.stdout }}"
+    dest: /var/lib/software-factory/state/gerrit_config
+  when: localconfig.stdout != upstreamconfig.stdout
