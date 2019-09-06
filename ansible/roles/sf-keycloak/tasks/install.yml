@@ -1,0 +1,8 @@
+---
+- name: Install packages
+  yum:
+    name:
+      - keycloak
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
