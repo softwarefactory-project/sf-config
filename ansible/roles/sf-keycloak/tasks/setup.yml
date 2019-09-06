@@ -1,0 +1,34 @@
+---
+# Use real shell for replication tests. TODO: improve replication test and set /sbin/nologin shell
+- name: Create keycloak user
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=keycloak ssh_key=keycloak_service_rsa shell=/bin/bash home_dir_mode=0755"
+
+- name: Install configuration files
+  template:
+    src: "{{ item.name }}.j2"
+    dest: "{{ item.path }}/{{ item.name }}"
+    owner: gerrit
+    group: gerrit
+    mode: "{{ item.mode }}"
+    backup: yes
+  loop:
+    - {name: standalone.xml,
+       path: /opt/jboss/keycloak/standalone/configuration/,
+       mode: '0740'}
+    - {name: keycloak-vhost.conf,
+       path: /etc/httpd/conf.d/,
+       mode: '0740'}
+  notify:
+    - restart keycloak
+    - apache reload
+
+- name: Create admin user
+  shell: add-user-keycloak.sh -r master -u admin -p admin
+
+# TODO: create SF realm
+
+- name: Start service
+  service:
+    name: keycloak
+    state: started
+    enabled: "yes"
