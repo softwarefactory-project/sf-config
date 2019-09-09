@@ -1,0 +1,20 @@
+# This file is managed by sfconfig, do not edit manually
+---
+{% if not tenant_deployment %}
+labels:
+  - name: pod-centos-7
+
+{% if 'hypervisor-k1s' in roles %}
+extra-labels:
+{% for host in inventory %}{% if 'hypervisor-k1s' in host['roles'] %}
+  - provider: managed-k1s-provider-{{ host['name'] }}
+    pool: main
+    labels:
+      - name: pod-centos-7
+        image: localhost/k1s/centos-7
+        python-path: /bin/python2
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% endif %}

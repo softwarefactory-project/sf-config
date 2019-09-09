@@ -19,8 +19,8 @@
       - site_sflogs
     nodeset:
       nodes:
-        - name: {{ zuul['default_nodeset_name'] }}
-          label: {{ zuul['default_nodeset_label'] }}
+        - name: {{ zuul_default_nodeset_name }}
+          label: {{ zuul_default_nodeset_label }}
 
 - semaphore:
     name: semaphore-config-update
