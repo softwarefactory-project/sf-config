@@ -1,6 +1,11 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
+- name: Create /etc/k1s
+  file:
+    path: /etc/k1s
+    state: directory
+
 - name: Install certificates
   copy:
     content: "{{ item.content }}"
