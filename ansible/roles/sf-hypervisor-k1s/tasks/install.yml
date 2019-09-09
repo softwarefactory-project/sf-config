@@ -1,7 +1,16 @@
 ---
+- name: Install repository
+  yum:
+    name: "{{ openshift_repo }}"
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
 - name: "Install requirements"
   yum:
-    name: "k1s"
+    name:
+      - k1s
+      - "{{ openshift_client }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
