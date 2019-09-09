@@ -101,6 +101,12 @@
     - nodepool/_local_hypervisor_openshift.yaml
   when: "'nodepool' in roles"
 
+- name: Define default nodepool pods
+  template:
+    src: "config/nodepool/_pods.yaml.j2"
+    dest: "{{ config_clone_dir }}/nodepool/_pods.yaml"
+  when: nodepool_default_pods|default(true)
+
 - name: Update admin email in resources.yaml
   replace:
     path: '{{ config_clone_dir }}/resources/resources.yaml'
