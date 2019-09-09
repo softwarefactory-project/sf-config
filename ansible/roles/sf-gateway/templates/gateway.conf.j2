@@ -30,6 +30,6 @@
     SSLCertificateChainFile /etc/pki/tls/certs/{{ fqdn }}-chain.crt
     SSLCertificateKeyFile  /etc/pki/tls/private/{{ fqdn }}.key
 {% endif %}
-
+    Include conf.d/headers.conf
     Include conf.d/gateway.common
 </VirtualHost>
