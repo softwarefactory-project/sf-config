@@ -163,6 +163,8 @@ mirrors:
   swift_mirror_ttl: 15811200  # 6 months ttl
 
 nodepool:
+  # Define default pods
+  default_pods: false
   # Copy a clouds.yaml to /etc/software-factory and reference its path here
   clouds_file:
   # Copy a .kube/config to /etc/software-factory and reference its path here
