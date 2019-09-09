@@ -126,6 +126,19 @@ class InstallServer(Component):
         args.glue.setdefault("zuul_pagure_connections", [])
         args.glue.setdefault("zuul_git_connections", [])
 
+        # Manage default pods
+        args.glue.setdefault("nodepool_default_pods", args.sfconfig.get(
+            "nodepool", {}).get("k1s_default_pods", True))
+        if (
+                args.glue["nodepool_default_pods"] and
+                "hypervisor-runc" not in args.glue["roles"] and
+                "hypervisor-k1s" in args.glue["roles"] and
+                args.sfconfig["zuul"].get(
+                    "default_nodeset_label", "runc-centos") == "runc-centos"):
+            # if hypervisor-runc is not set and default_pods is set then use
+            # the new default nodeset label
+            args.sfconfig["zuul"]["default_nodeset_label"] = "pod-centos-7"
+
         # Add local gerrit if available
         if "gerrit" in args.glue["roles"]:
             args.glue["gerrit_pub_url"] = "%s/r/" % args.glue["gateway_url"]
