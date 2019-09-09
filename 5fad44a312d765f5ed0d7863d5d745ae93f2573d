@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff899d1a_5aef8ed1",
+        "filename": "ansible/roles/sf-repos/files/config/roles/prepare-workspace-openshift/defaults/main.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2019-09-09T12:12:30Z",
+      "side": 1,
+      "message": "typo?",
+      "range": {
+        "startLine": 1,
+        "startChar": 19,
+        "endLine": 1,
+        "endChar": 34
+      },
+      "revId": "5fad44a312d765f5ed0d7863d5d745ae93f2573d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
