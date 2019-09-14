@@ -1,5 +1,15 @@
 # This file is managed by ansible, do not edit directly
 ---
+- hosts: all
+  tasks:
+    - block:
+        - include_role: name=fetch-output
+      when: "ansible_connection != 'kubectl'"
+    - block:
+        - include_role: name=fetch-output-openshift
+      when: "ansible_connection == 'kubectl'"
+    - import_role: name=merge-output-to-logs
+
 - hosts: localhost
   roles:
     - role: add-fileserver
