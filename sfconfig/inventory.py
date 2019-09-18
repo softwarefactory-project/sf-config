@@ -506,11 +506,6 @@ def install_ansible(args):
         sfconfig.utils.execute(["yum", "update", "-y", "rh-python35-ansible"])
     if os.path.isfile("/opt/rh/rh-python35/root/usr/bin/ansible-playbook"):
         return
-    # Install scl repository first
-    if "centos" in open("/etc/os-release").read():
-        sfconfig.utils.execute(
-            ["yum", "install", "-y", "centos-release-scl-rh"])
-
     try:
         # Replace system ansible with rh-python35
         sfconfig.utils.execute(["yum", "remove", "-y", "ansible"])

@@ -35,14 +35,6 @@
     state: present
   when: not sf_release_installed.stat.exists
 
-- name: Add scl repo package
-  yum:
-    name: centos-release-scl-rh
-    state: present
-    disablerepo: '{{ yum_disable_repo|default(omit) }}'
-    enablerepo: '{{ yum_enable_repo|default(omit) }}'
-  when: ansible_distribution == "CentOS"
-
 - name: Install useful packages
   yum:
     name:

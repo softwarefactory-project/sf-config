@@ -78,6 +78,7 @@
     - centos-release-ceph-luminous
     - centos-release-openstack-queens
     - centos-release-qemu-ev
+    - centos-release-scl-rh
   when: ansible_distribution == "CentOS"
 
 # sf-3.3
