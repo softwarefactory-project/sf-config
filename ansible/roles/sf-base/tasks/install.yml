@@ -36,7 +36,6 @@
 - name: Add repo packages
   yum:
     name:
-      - centos-release-openstack-queens
       - centos-release-scl-rh
     state: present
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
