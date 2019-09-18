@@ -35,13 +35,13 @@
     state: present
   when: not sf_release_installed.stat.exists
 
-- name: Add openstack repo package
-  yum:
-    name: '{{ rdo_release_url }}'
-    state: present
-    disablerepo: '{{ yum_disable_repo|default(omit) }}'
-    enablerepo: '{{ yum_enable_repo|default(omit) }}'
-  register: rdo_repo
+# - name: Add openstack repo package
+#   yum:
+#     name: '{{ rdo_release_url }}'
+#     state: present
+#     disablerepo: '{{ yum_disable_repo|default(omit) }}'
+#     enablerepo: '{{ yum_enable_repo|default(omit) }}'
+#   register: rdo_repo
 
 - name: Add scl repo package
   yum:

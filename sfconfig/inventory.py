@@ -547,7 +547,7 @@ def run(args):
                "ansible-playbook", playbook_path]
     if not args.skip_apply:
         os.chdir("/")
-        install_openstack_repos_and_update_system(args)
+        # install_openstack_repos_and_update_system(args)
         install_ansible(args)
         enable_ara()
         sfconfig.utils.execute(run_cmd)
