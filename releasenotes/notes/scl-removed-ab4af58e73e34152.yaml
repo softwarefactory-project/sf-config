@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The SCLs repositories have been removed and will be replaced simple python3
+    packages based on the CentOS 7.7 python3.6 package.
