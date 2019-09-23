@@ -4,5 +4,5 @@
     name: "{{ item }}"
     state: restarted
   loop:
-    - rh-python35-repoxplorer-webui
-    - rh-python35-repoxplorer
+    - repoxplorer-webui
+    - repoxplorer

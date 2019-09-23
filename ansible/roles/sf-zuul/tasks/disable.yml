@@ -1,7 +1,7 @@
 ---
 - name: Disable services
   service:
-    name: "rh-python35-{{ item }}"
+    name: "{{ item }}"
     state: stopped
     enabled: "no"
   loop: "{{ zuul_services }}"
