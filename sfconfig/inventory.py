@@ -299,13 +299,13 @@ def config_update(args, pb, skip_sync=False):
 def nodepool_restart(args, pb):
     pb.append(host_play('nodepool-launcher', tasks=[{
         'name': 'Restart launcher',
-        'service': {'name': 'rh-python35-nodepool-launcher',
+        'service': {'name': 'nodepool-launcher',
                     'state': 'restarted'}}]))
 
     if 'nodepool-builder' in args.glue["roles"]:
         pb.append(host_play('nodepool-builder', tasks=[{
             'name': 'Restart builders',
-            'service': {'name': 'rh-python35-nodepool-builder',
+            'service': {'name': 'nodepool-builder',
                         'state': 'restarted'}}]))
 
 
@@ -314,7 +314,7 @@ def zuul_restart(args, pb):
 
     pb.append(host_play('zuul-executor', tasks=[{
         'name': 'Stop executors',
-        'command': '/opt/rh/rh-python35/root/bin/zuul-executor stop'
+        'command': '/bin/zuul-executor stop'
     }]))
 
     pb.append(host_play('zuul-scheduler', tasks=[{
@@ -323,32 +323,32 @@ def zuul_restart(args, pb):
                     'dump --dump_file %s' % dump_file)
     }, {
         'name': 'Stop scheduler',
-        'service': {'name': 'rh-python35-zuul-scheduler', 'state': 'stopped'}
+        'service': {'name': 'zuul-scheduler', 'state': 'stopped'}
     }]))
 
     pb.append(host_play('zuul-web', tasks=[{
         'name': 'Stop web',
-        'service': {'name': 'rh-python35-zuul-web', 'state': 'stopped'}}]))
+        'service': {'name': 'zuul-web', 'state': 'stopped'}}]))
 
     if 'zuul-merger' in args.glue["roles"]:
         pb.append(host_play('zuul-merger', tasks=[{
             'name': 'Restart mergers',
-            'service': {'name': 'rh-python35-zuul-merger',
+            'service': {'name': 'zuul-merger',
                         'state': 'restarted'}}]))
 
     pb.append(host_play('zuul-executor', tasks=[{
         'name': 'Restart executors',
-        'service': {'name': 'rh-python35-zuul-executor',
+        'service': {'name': 'zuul-executor',
                     'state': 'restarted'}}]))
 
     pb.append(host_play('zuul-scheduler', tasks=[{
         'name': 'Restart scheduler',
-        'service': {'name': 'rh-python35-zuul-scheduler',
+        'service': {'name': 'zuul-scheduler',
                     'state': 'restarted'}}]))
 
     pb.append(host_play('zuul-web', tasks=[{
         'name': 'Restart web',
-        'service': {'name': 'rh-python35-zuul-web', 'state': 'restarted'}
+        'service': {'name': 'zuul-web', 'state': 'restarted'}
     }, {
         'name': 'Wait for scheduler reconfiguration',
         'uri': {

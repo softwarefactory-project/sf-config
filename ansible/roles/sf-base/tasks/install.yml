@@ -24,6 +24,17 @@
     msg: "Software Factory is not compatible with EPEL."
   when: epel_installed.rc == 0
 
+- name: Ensure conflicting packages are removed
+  yum:
+    name:
+      - rh-python35-runtime
+      - rh-git29-runtime
+      - rh-httpd24-runtime
+      - rh-python35-enable-py3
+      - rh-python35-managesf-doc
+      - python-devel
+    state: absent
+
 - name: Check for sf-release
   stat:
     path: /etc/yum.repos.d/sf-release.repo
@@ -63,7 +74,7 @@
       # Needed for wait4 scripts
       - nmap-ncat
       # Needed by sfconfig ansible setup tasks
-      - rh-python35-python-requests
+      - python-requests
       # Needed by very minimal instance
       - rsync
       - traceroute

@@ -5,7 +5,7 @@ import sys
 # As far as I saw the API respond w/o issue. Let's keep
 # that like that until we find a real issue with it.
 
-sys.path.append('/opt/rh/rh-python35/root/lib/python3.5/site-packages/')
+sys.path.append('/usr/lib/python3.6/site-packages/')
 
 def application(environ, start_response):
     os.environ['CONFIG_FILE'] = '/etc/dlrn/{{ item.project }}-api.cfg'

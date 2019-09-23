@@ -13,7 +13,7 @@
 
 class TestNodepoolLauncher:
     def test_service_running_and_enabled(self, host):
-        srv = host.service("rh-python35-nodepool-launcher")
+        srv = host.service("nodepool-launcher")
         assert srv.is_running
         assert srv.is_enabled
         assert host.socket("tcp://0.0.0.0:8006").is_listening

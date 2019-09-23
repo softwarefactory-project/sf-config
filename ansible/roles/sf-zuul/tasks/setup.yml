@@ -4,14 +4,20 @@
   set_fact:
     zuul_need_restart: "{{ _version is changed }}"
 
-# Use 0751 to let apache access {{ zuul_lib_dir }}/git
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=zuul ssh_key=zuul_rsa home_dir={{ zuul_lib_dir }} home_dir_mode=0751"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: zuul
+    ssh_key: zuul_rsa
+    home_dir: "{{ zuul_lib_dir }}"
+    home_dir_mode: "0700"
 
-- name: Install zuul shortcut
+- name: Install service env for rh-git218
   copy:
-    src: zuul.sh
-    dest: /usr/bin/zuul
-    mode: 0755
+    content: |
+      PATH=/opt/rh/rh-git218/root/usr/bin:/bin
+      LD_LIBRARY_PATH=/opt/rh/rh-git218/root/usr/lib64
+      REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt
+    dest: /etc/sysconfig/zuul
 
 - name: Expose public keys
   copy:
@@ -28,30 +34,12 @@
     mode: 0700
   when: "'log-classify' in roles"
 
-- name: Symlink SCL to zuul
-  file:
-    src: "{{ item.src }}/zuul"
-    dest: "{{ item.dest }}/zuul"
-    state: link
-  loop:
-    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
-    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
-    - {src: /etc/opt/rh/rh-python35, dest: /etc}
-
-- name: Setup apache zuul-merger.conf
-  template:
-    src: zuul-merger.httpd.conf.j2
-    dest: /etc/httpd/conf.d/zuul-merger.conf
-    mode: 0444
-  notify: apache reload
-  when: "'zuul-merger' in zuul_services"
-
 - block:
     - name: Pre-Create config project rsa key
       become: "yes"
       become_user: zuul
       command: |
-        /opt/rh/rh-python35/root/bin/python -c 'import zuul.configloader
+        /bin/python3.6 -c 'import zuul.configloader
         import zuul.lib.encryption
         import zuul.configloader
         import os
@@ -150,20 +138,30 @@
       when: item.app_key
       no_log: yes
 
-    - include_tasks: create_logging.yml _logfile="scheduler"
-    - include_tasks: create_logging.yml _logfile="gearman-server"
+    - include_tasks: create_logging.yml
+      vars:
+        _logfile: "scheduler"
+    - include_tasks: create_logging.yml
+      vars:
+        _logfile: "gearman-server"
   when: "'zuul-scheduler' in zuul_services or 'zuul-merger' in zuul_services or 'zuul-executor' in zuul_services"
 
 - block:
-    - include_tasks: create_logging.yml _logfile="executor"
+    - include_tasks: create_logging.yml
+      vars:
+        _logfile: "executor"
   when: "'zuul-executor' in zuul_services"
 
 - block:
-    - include_tasks: create_logging.yml _logfile="merger"
+    - include_tasks: create_logging.yml
+      vars:
+        _logfile: "merger"
   when: "'zuul-merger' in zuul_services"
 
 - block:
-    - include_tasks: create_logging.yml _logfile="web"
+    - include_tasks: create_logging.yml
+      vars:
+        _logfile: "web"
   when: "'zuul-web' in zuul_services"
 
 - name: Install logrotate configuration
@@ -202,12 +200,12 @@
 - block:
     - name: Create override directory
       file:
-        path: /etc/systemd/system/rh-python35-zuul-scheduler.service.d
+        path: /etc/systemd/system/zuul-scheduler.service.d
         state: directory
 
     - name: Set wait4service if gerrit service is present
       blockinfile:
-        path: /etc/systemd/system/rh-python35-zuul-scheduler.service.d/override.conf
+        path: /etc/systemd/system/zuul-scheduler.service.d/override.conf
         create: yes
         block: |
           [Service]
@@ -224,14 +222,14 @@
 
 - block:
     - name: "Check if scheduler is running"
-      command: systemctl is-active "rh-python35-zuul-scheduler"
+      command: systemctl is-active "zuul-scheduler"
       register: zuul_scheduler_service_running
       changed_when: False
       failed_when: zuul_scheduler_service_running.rc not in [0, 3]
 
     - name: "Manually create database to avoid concurrency issue"
       command: |
-        /opt/rh/rh-python35/root/bin/python -c 'import zuul.cmd
+        /bin/python3.6 -c 'import zuul.cmd
         import configparser
         app = zuul.cmd.ZuulApp()
         app.config = configparser.ConfigParser()

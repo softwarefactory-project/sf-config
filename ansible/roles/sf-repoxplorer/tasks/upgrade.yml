@@ -4,8 +4,8 @@
     name: "{{ item }}"
     state: stopped
   loop:
-    - rh-python35-repoxplorer
-    - rh-python35-repoxplorer-webui
+    - repoxplorer
+    - repoxplorer-webui
 
 - name: Delete old repoxplorer elasticsearch indices
   command: 'curl -X DELETE "{{ elasticsearch_internal_url }}/{{ item }}"'
@@ -22,5 +22,5 @@
     name: "{{ item }}"
     state: started
   loop:
-    - rh-python35-repoxplorer
-    - rh-python35-repoxplorer-webui
+    - repoxplorer
+    - repoxplorer-webui

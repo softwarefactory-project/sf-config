@@ -13,6 +13,6 @@
 
 class TestZuulScheduler:
     def test_server_running_and_enabled(self, host):
-        server = host.service("rh-python35-zuul-scheduler")
+        server = host.service("zuul-scheduler")
         assert server.is_running
         assert server.is_enabled

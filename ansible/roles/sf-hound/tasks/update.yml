@@ -17,7 +17,11 @@
   register: upstreamconfig
   changed_when: false
 
-- include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml service_name=hound service_config_dir=/etc/hound service_config_name=config.json"
+- include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml"
+  vars:
+    service_name: hound
+    service_config_dir: /etc/hound
+    service_config_name: config.json
   when: localconfig.stdout != upstreamconfig.stdout
 
 - name: Ensure service is started and enabled

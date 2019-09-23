@@ -30,10 +30,10 @@ gateway_favicon_data: ""
 gateway_splash_image_data: ""
 
 # Default needed to generate _nodepool.yaml defconf
-nodepool_conf_dir: "/etc/opt/rh/rh-python35/nodepool"
-nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
-nodepool_log_dir: "/var/opt/rh/rh-python35/log/nodepool"
-nodepool_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/nodepool"
+nodepool_conf_dir: "/etc/nodepool"
+nodepool_lib_dir: "/var/lib/nodepool"
+nodepool_log_dir: "/var/log/nodepool"
+nodepool_sysconfig: "/etc/sysconfig/nodepool"
 nodepool_webapp_port: 8006
 
 gateway_directories: ""

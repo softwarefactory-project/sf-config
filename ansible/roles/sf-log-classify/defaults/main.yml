@@ -3,4 +3,4 @@ role_actions:
   - install
   - setup
 
-role_package: rh-python35-logreduce
+role_package: logreduce

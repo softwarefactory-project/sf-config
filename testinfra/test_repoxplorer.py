@@ -14,7 +14,7 @@
 class TestRepoxplorer:
     def test_service_running_and_enabled(self, host):
         for service in (
-                "rh-python35-repoxplorer", "rh-python35-repoxplorer-webui"):
+                "repoxplorer", "repoxplorer-webui"):
             srv = host.service(service)
             assert srv.is_running
             assert srv.is_enabled
