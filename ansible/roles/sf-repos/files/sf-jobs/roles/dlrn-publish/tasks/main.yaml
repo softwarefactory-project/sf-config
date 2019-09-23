@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: latest
   loop:
-  - rh-python35-dlrnapi-client
+  - dlrnapi-client
   become: true
 
 - name: Publish for each built tag

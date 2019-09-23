@@ -13,6 +13,6 @@
 
 class TestZuulWeb:
     def test_server_running_and_enabled(self, host):
-        server = host.service("rh-python35-zuul-web")
+        server = host.service("zuul-web")
         assert server.is_running
         assert server.is_enabled

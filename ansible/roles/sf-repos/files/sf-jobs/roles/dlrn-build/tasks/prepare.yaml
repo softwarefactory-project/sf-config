@@ -14,24 +14,9 @@
   - openssl-devel
   - yum-utils
   - policycoreutils
-  - rh-python35-rdopkg
-  - rh-python35-dlrn
+  - rdopkg
+  - dlrn
   become: true
-
-# Task done sf-config/sf-base roles but here the worker
-# is not supposed to be executed in a place where sf-base
-# has been executed first.
-- name: system symlink libpython3.5
-  file:
-    src: "/opt/rh/rh-python35/root/{{ item }}"
-    dest: "/usr/{{ item }}"
-    state: link
-    force: yes
-  loop:
-    - "lib64/libpython3.5m.so"
-    - "lib64/libpython3.5m.so.rh-python35-1.0"
-    - "lib64/python3.5"
-    - "lib/python3.5"
 
 - name: Setup default mock configuration
   blockinfile:

@@ -3,6 +3,6 @@
   yum:
     name:
       - httpd
-      - rh-python35-dlrn
+      - dlrn
 #      - dlrnclient
     state: present

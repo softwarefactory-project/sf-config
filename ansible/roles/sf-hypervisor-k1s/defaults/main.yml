@@ -5,6 +5,6 @@ role_actions:
   - disable
   - update
 
-role_package: rh-python35-k1s
+role_package: k1s
 
 k1s_token: "CHANGE_ME"

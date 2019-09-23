@@ -13,6 +13,6 @@
 
 class TestZuulMerger:
     def test_server_running_and_enabled(self, host):
-        server = host.service("rh-python35-zuul-merger")
+        server = host.service("zuul-merger")
         assert server.is_running
         assert server.is_enabled

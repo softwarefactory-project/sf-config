@@ -1,7 +1,7 @@
 ---
 - name: Sync files
   synchronize:
-    src: "/opt/rh/rh-python35/root/usr/share/zuul-jobs/"
+    src: "/usr/share/zuul-jobs/"
     dest: "{{ zuul_jobs_clone_dir }}/"
     delete: "yes"
     rsync_opts:

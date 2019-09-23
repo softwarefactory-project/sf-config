@@ -19,7 +19,11 @@
 
 - name: Update cauth configuration
   block:
-    - include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml service_name=cauth service_config_dir=/etc/cauth service_config_name=groups.yaml"
+    - include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml"
+      vars:
+        service_name: cauth
+        service_config_dir: /etc/cauth
+        service_config_name: groups.yaml
       when: localconfig.stdout != upstreamconfig.stdout
 
     - name: Write config repo sha1 matching current cauth configuration

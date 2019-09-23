@@ -97,21 +97,21 @@
     mode: 0444
 
 - name: Read zuul-job version
-  command: rpm -q rh-python35-zuul-jobs-doc
+  command: rpm -q zuul-jobs-doc
   args:
     warn: false
   register: _zuul_job_version
   changed_when: false
 
 - name: Read zuul version
-  command: rpm -q rh-python35-zuul-doc
+  command: rpm -q zuul-doc
   args:
     warn: false
   register: _zuul_version
   changed_when: false
 
 - name: Read nodepool version
-  command: rpm -q rh-python35-nodepool-doc
+  command: rpm -q nodepool-doc
   args:
     warn: false
   register: _nodepool_version
