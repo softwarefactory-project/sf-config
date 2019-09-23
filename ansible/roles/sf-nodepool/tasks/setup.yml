@@ -6,22 +6,6 @@
 
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=nodepool ssh_key=nodepool_rsa home_dir={{ nodepool_lib_dir }}"
 
-- name: Install nodepool shortcut
-  copy:
-    src: nodepool.sh
-    dest: /usr/bin/nodepool
-    mode: 0755
-
-- name: Symlink SCL to nodepool
-  file:
-    src: "{{ item.src }}/nodepool"
-    dest: "{{ item.dest }}/nodepool"
-    state: link
-  loop:
-    - {src: /var/opt/rh/rh-python35/lib, dest: /var/lib}
-    - {src: /var/opt/rh/rh-python35/log, dest: /var/log}
-    - {src: /etc/opt/rh/rh-python35, dest: /etc}
-
 - name: Create .ssh and .config directories
   file:
     dest: "{{ item.path }}"
@@ -106,17 +90,6 @@
     - /root/.config
     - /var/lib/nodepool/.config
   when: nodepool_clouds_file[0]|default(None) == "/"
-
-- name: add nodepool to sudoers
-  copy:
-    src: /etc/opt/rh/rh-python35/sudoers.d/nodepool
-    dest: /etc/sudoers.d/nodepool
-    owner: root
-    group: root
-    mode: 0640
-    remote_src: yes
-  when:
-    - '"nodepool-builder" in nodepool_services'
 
 - name: Install zuul public ssh key
   copy:

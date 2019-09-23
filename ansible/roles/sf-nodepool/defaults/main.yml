@@ -8,22 +8,22 @@ role_actions:
   - disable
   - postconf
 
-role_package: rh-python35-nodepool
+role_package: nodepool
 
 nodepool_services:
-  - rh-python35-nodepool-launcher
-  - rh-python35-nodepool-builder
+  - nodepool-launcher
+  - nodepool-builder
 
 nodepool_launcher_packages:
-  - rh-python35-nodepool
-  - rh-python35-nodepool-launcher
+  - nodepool
+  - nodepool-launcher
 
 nodepool_builder_packages:
   - httpd
   - libguestfs-tools
   - libvirt-daemon
-  - rh-python35-nodepool
-  - rh-python35-nodepool-builder
+  - nodepool
+  - nodepool-builder
   - sf-elements
 
 nodepool_cache_ttl: 5
@@ -36,10 +36,10 @@ nodepool_providers:
     password: secret
     region_name: regionOne
 
-nodepool_conf_dir: "/etc/opt/rh/rh-python35/nodepool"
-nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
-nodepool_log_dir: "/var/opt/rh/rh-python35/log/nodepool"
-nodepool_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/nodepool"
+nodepool_conf_dir: "/etc/nodepool"
+nodepool_lib_dir: "/var/lib/nodepool"
+nodepool_log_dir: "/var/log/nodepool"
+nodepool_sysconfig: "/etc/sysconfig/nodepool"
 
 nodepool_webapp_port: 8006
 

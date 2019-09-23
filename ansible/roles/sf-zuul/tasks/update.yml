@@ -21,14 +21,14 @@
     - include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml service_name=zuul service_config_dir={{ zuul_conf_dir }} service_config_name=main.yaml"
 
     - name: Check if zuul-scheduler is running
-      command: systemctl -q is-active rh-python35-zuul-scheduler
+      command: systemctl -q is-active zuul-scheduler
       register: _zuul_scheduler
       failed_when: _zuul_scheduler.rc not in [0, 3]
       when: "'zuul-scheduler' in zuul_services"
 
     - name: Reload zuul-scheduler service
       service:
-        name: rh-python35-zuul-scheduler
+        name: zuul-scheduler
         state: reloaded
       when:
         - "'zuul-scheduler' in zuul_services"
@@ -55,7 +55,7 @@
 
 - name: Start the scheduler first
   service:
-    name: rh-python35-zuul-scheduler
+    name: zuul-scheduler
     state: started
   when: "'zuul-scheduler' in zuul_services"
 
@@ -66,7 +66,7 @@
 
 - name: Ensure all services are started and enabled
   service:
-    name: "rh-python35-{{ item }}"
+    name: "{{ item }}"
     state: started
     enabled: "yes"
   loop: "{{ zuul_services }}"

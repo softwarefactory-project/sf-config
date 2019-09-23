@@ -28,14 +28,14 @@
 
 - name: Ensure service are started and enabled
   service:
-    name: "rh-python35-{{ item }}"
+    name: "{{ item }}"
     state: started
     enabled: "yes"
   loop: "{{ nodepool_services }}"
 
 - name: Restart service when fqdn is updated to refresh statsd client
   service:
-    name: "rh-python35-{{ item }}"
+    name: "{{ item }}"
     state: restarted
   loop: "{{ nodepool_services }}"
   when: update_fqdn
