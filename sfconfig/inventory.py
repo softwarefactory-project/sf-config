@@ -299,13 +299,13 @@ def config_update(args, pb, skip_sync=False):
 def nodepool_restart(args, pb):
     pb.append(host_play('nodepool-launcher', tasks=[{
         'name': 'Restart launcher',
-        'service': {'name': 'rh-python35-nodepool-launcher',
+        'service': {'name': 'nodepool-launcher',
                     'state': 'restarted'}}]))
 
     if 'nodepool-builder' in args.glue["roles"]:
         pb.append(host_play('nodepool-builder', tasks=[{
             'name': 'Restart builders',
-            'service': {'name': 'rh-python35-nodepool-builder',
+            'service': {'name': 'nodepool-builder',
                         'state': 'restarted'}}]))
 
 
@@ -314,7 +314,7 @@ def zuul_restart(args, pb):
 
     pb.append(host_play('zuul-executor', tasks=[{
         'name': 'Stop executors',
-        'command': '/opt/rh/rh-python35/root/bin/zuul-executor stop'
+        'command': '/bin/zuul-executor stop'
     }]))
 
     pb.append(host_play('zuul-scheduler', tasks=[{
@@ -323,32 +323,32 @@ def zuul_restart(args, pb):
                     'dump --dump_file %s' % dump_file)
     }, {
         'name': 'Stop scheduler',
-        'service': {'name': 'rh-python35-zuul-scheduler', 'state': 'stopped'}
+        'service': {'name': 'zuul-scheduler', 'state': 'stopped'}
     }]))
 
     pb.append(host_play('zuul-web', tasks=[{
         'name': 'Stop web',
-        'service': {'name': 'rh-python35-zuul-web', 'state': 'stopped'}}]))
+        'service': {'name': 'zuul-web', 'state': 'stopped'}}]))
 
     if 'zuul-merger' in args.glue["roles"]:
         pb.append(host_play('zuul-merger', tasks=[{
             'name': 'Restart mergers',
-            'service': {'name': 'rh-python35-zuul-merger',
+            'service': {'name': 'zuul-merger',
                         'state': 'restarted'}}]))
 
     pb.append(host_play('zuul-executor', tasks=[{
         'name': 'Restart executors',
-        'service': {'name': 'rh-python35-zuul-executor',
+        'service': {'name': 'zuul-executor',
                     'state': 'restarted'}}]))
 
     pb.append(host_play('zuul-scheduler', tasks=[{
         'name': 'Restart scheduler',
-        'service': {'name': 'rh-python35-zuul-scheduler',
+        'service': {'name': 'zuul-scheduler',
                     'state': 'restarted'}}]))
 
     pb.append(host_play('zuul-web', tasks=[{
         'name': 'Restart web',
-        'service': {'name': 'rh-python35-zuul-web', 'state': 'restarted'}
+        'service': {'name': 'zuul-web', 'state': 'restarted'}
     }, {
         'name': 'Wait for scheduler reconfiguration',
         'uri': {
@@ -485,7 +485,7 @@ def enable_action(args):
 def enable_ara():
     ara_cfg = "/var/lib/software-factory/ansible/ara.cfg"
     if not os.path.isfile(ara_cfg):
-        ara_loc = "/opt/rh/rh-python35/root/lib/python3.5/site-packages/ara/"
+        ara_loc = "/usr/lib/python3.6/site-packages/ara/"
         ansiblecfg = ConfigParser.ConfigParser()
         ansiblecfg.read("/usr/share/sf-config/ansible/ansible.cfg")
         ansiblecfg.set("defaults", "callback_plugins",
@@ -503,23 +503,9 @@ def enable_ara():
 def install_ansible(args):
     if args.update:
         # Update ansible early on if possible
-        sfconfig.utils.execute(["yum", "update", "-y", "rh-python35-ansible"])
-    if os.path.isfile("/opt/rh/rh-python35/root/usr/bin/ansible-playbook"):
-        return
-    # Install scl repository first
-    if "centos" in open("/etc/os-release").read():
-        sfconfig.utils.execute(
-            ["yum", "install", "-y", "centos-release-scl-rh"])
-
-    try:
-        # Replace system ansible with rh-python35
-        sfconfig.utils.execute(["yum", "remove", "-y", "ansible"])
-        sfconfig.utils.execute(
-            ["yum", "install", "-y",
-             "rh-python35-ansible", "rh-python35-ara"])
-    except Exception:
-        print("Install rh-python35 scl first")
-        raise
+        sfconfig.utils.execute(["yum", "update", "-y", "ansible", "ara"])
+    elif not os.path.isfile("/bin/ansible-playbook"):
+        sfconfig.utils.execute(["yum", "install", "-y", "ansible", "ara"])
 
 
 def run(args):
@@ -532,7 +518,6 @@ def run(args):
     write_playbook(playbook_path, playbook)
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
     run_cmd = ["flock", "/var/lib/software-factory/state/ansible.lock",
-               "scl", "enable", "rh-python35", "--",
                "ansible-playbook", playbook_path]
     if not args.skip_apply:
         os.chdir("/")

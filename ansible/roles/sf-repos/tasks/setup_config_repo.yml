@@ -34,7 +34,9 @@
         - not remote_config_repositories
         - "'gerrit' in roles"
 
-    - include_tasks: create_local_repo.yml repo_name=config
+    - include_tasks: create_local_repo.yml
+      vars:
+        repo_name: config
       when:
         - not remote_config_repositories
         - "'gerrit' not in roles"
@@ -83,5 +85,7 @@
     - command: "mv {{ config_clone_dir }} /root/config"
   when: config_done.stat.exists != True
 
-- include_tasks: gitreview_update_fqdn.yaml update_fqdn_project='{{ config_done.stat.path }}'
+- include_tasks: gitreview_update_fqdn.yaml
+  vars:
+    update_fqdn_project: '{{ config_done.stat.path }}'
   when: update_fqdn

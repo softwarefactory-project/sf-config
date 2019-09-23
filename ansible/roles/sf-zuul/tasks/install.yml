@@ -42,7 +42,6 @@
       yum:
         name:
           - origin-clients
-          - rh-python35-python-openshift
         state: present
   when:
     - "nodepool_openshift_providers or nodepool_kube_file or 'hypervisor-k1s' in roles"

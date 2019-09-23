@@ -135,7 +135,7 @@ class Buildah:
         self.log.info("Installing sfconfig and system tools")
         self.run("yum install -y https://softwarefactory-project.io/repos/"
                  "sf-release-%s.rpm" % version)
-        self.run("yum install -y rh-python35-ansible sf-config")
+        self.run("yum install -y ansible sf-config")
 
     def local_fixes(self):
         try:
@@ -212,8 +212,8 @@ exec bash
     def mitogen(self):
         self.log.info("Enabling mitogen")
         # Let's give mitogen a try...
-        self.run("scl enable rh-python35 -- pip3 install mitogen==0.2.3")
-        pypath = "/opt/rh/rh-python35/root/lib/python3.5/site-packages/"
+        self.run("pip3 install mitogen==0.2.3")
+        pypath = "/usr/lib/python3.6/site-packages/"
         execute(["sed",
                  "-e", "2istrategy = mitogen_linear",
                  "-e", "2istrategy_plugins = %s" % os.path.join(

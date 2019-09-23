@@ -116,11 +116,11 @@ def smart_restart(args):
     # Check if jobs are running
     if args.role == "zuul":
         jobs = check_zuul_running_jobs(args)
-        services_order = list(map(lambda x: "rh-python35-zuul-%s" % x,
+        services_order = list(map(lambda x: "zuul-%s" % x,
                                   ("scheduler", "executor", "merger", "web")))
     if args.role == "nodepool":
         jobs = check_nodepool_running_jobs(args)
-        services_order = list(map(lambda x: "rh-python35-nodepool-%s" % x,
+        services_order = list(map(lambda x: "nodepool-%s" % x,
                                   ("launcher", "builder")))
     if jobs:
         log("Can't restart %s because jobs are running: %s" % (
@@ -160,10 +160,6 @@ def restart(args, daemon):
 
 def main():
     args = usage()
-
-    if args.role in ("zuul", "nodepool"):
-        args.services = list(map(lambda x: "rh-python35-%s" % x,
-                                 args.services))
 
     if restart(args, daemon=False):
         # Notify ansible task that will changed_when rc == 3

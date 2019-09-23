@@ -10,40 +10,40 @@ role_actions:
   - disable
   - postconf
 
-role_package: rh-python35-zuul
+role_package: zuul
 
 zuul_services:
-  - rh-python35-zuul-scheduler
-  - rh-python35-zuul-merger
-  - rh-python35-zuul-executor
-  - rh-python35-zuul-web
+  - zuul-scheduler
+  - zuul-merger
+  - zuul-executor
+  - zuul-web
 
 zuul_scheduler_packages:
   - wait4service
-  - rh-python35-zuul
-  - rh-python35-zuul-scheduler
+  - zuul
+  - zuul-scheduler
 
 zuul_merger_packages:
-  - rh-python35-zuul
-  - rh-python35-zuul-merger
+  - zuul
+  - zuul-merger
   - httpd
 
 zuul_executor_packages:
-  - rh-python35-zuul
-  - rh-python35-zuul-executor
-  - rh-python35-ara
+  - zuul
+  - zuul-executor
+  - ara
   # sfauth (part of sfmanager) is required for tenant config-check
   - python2-sfmanager
 
 zuul_web_packages:
-  - rh-python35-zuul
-  - rh-python35-zuul-web
+  - zuul
+  - zuul-web
 
-zuul_conf_dir: "/etc/opt/rh/rh-python35/zuul"
-zuul_lib_dir: "/var/opt/rh/rh-python35/lib/zuul"
-zuul_log_dir: "/var/opt/rh/rh-python35/log/zuul"
-zuul_share_dir: "/opt/rh/rh-python35/root/usr/share/javascript/zuul"
-zuul_sysconfig: "/etc/opt/rh/rh-python35/sysconfig/zuul"
+zuul_conf_dir: "/etc/zuul"
+zuul_lib_dir: "/var/lib/zuul"
+zuul_log_dir: "/var/log/zuul"
+zuul_share_dir: "/usr/share/javascript/zuul"
+zuul_sysconfig: "/etc/sysconfig/zuul"
 
 zuul_web_port: 9000
 zuul_gearman_port: 4730
@@ -70,8 +70,8 @@ zuul_loglevel: INFO
 zuul_root_loglevel: WARNING
 
 # We need those variables to generate config-check nodepool.yaml file
-nodepool_conf_dir: "/etc/opt/rh/rh-python35/nodepool"
-nodepool_lib_dir: "/var/opt/rh/rh-python35/lib/nodepool"
+nodepool_conf_dir: "/etc/nodepool"
+nodepool_lib_dir: "/var/lib/nodepool"
 nodepool_webapp_port: 8006
 
 zuul_periodic_pipeline_mail_rcpt: root@localhost

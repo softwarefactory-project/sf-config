@@ -37,12 +37,12 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /etc/systemd/system/rh-python35-repoxplorer.service.d
-    - /etc/systemd/system/rh-python35-repoxplorer-webui.service.d
+    - /etc/systemd/system/repoxplorer.service.d
+    - /etc/systemd/system/repoxplorer-webui.service.d
 
 - name: Set wait4service for repoxplorer
   blockinfile:
-    path: /etc/systemd/system/rh-python35-repoxplorer.service.d/override.conf
+    path: /etc/systemd/system/repoxplorer.service.d/override.conf
     create: yes
     block: |
       [Service]
@@ -51,7 +51,7 @@
 
 - name: Set wait4service for repoxplorer-webui
   blockinfile:
-    path: /etc/systemd/system/rh-python35-repoxplorer-webui.service.d/override.conf
+    path: /etc/systemd/system/repoxplorer-webui.service.d/override.conf
     create: yes
     block: |
       [Service]
@@ -74,5 +74,5 @@
     daemon_reload: "yes"
     enabled: "yes"
   loop:
-    - rh-python35-repoxplorer-webui
-    - rh-python35-repoxplorer
+    - repoxplorer-webui
+    - repoxplorer

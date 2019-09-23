@@ -27,7 +27,9 @@
     - not remote_config_repositories
     - "'gerrit' in roles"
 
-- include_tasks: create_local_repo.yml repo_name=sf-jobs
+- include_tasks: create_local_repo.yml
+  vars:
+    repo_name: sf-jobs
   when:
     - sf_jobs_done.stat.exists != True
     - not remote_config_repositories
@@ -74,5 +76,7 @@
       command: "mv {{ sf_jobs_clone_dir }} /root/sf-jobs"
   when: sf_jobs_done.stat.exists != True
 
-- include_tasks: gitreview_update_fqdn.yaml update_fqdn_project='{{ sf_jobs_done.stat.path }}'
+- include_tasks: gitreview_update_fqdn.yaml
+  vars:
+    update_fqdn_project: '{{ sf_jobs_done.stat.path }}'
   when: update_fqdn
