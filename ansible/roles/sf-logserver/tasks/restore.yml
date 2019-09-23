@@ -1,6 +1,9 @@
 ---
 - name: Create user
-  include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=loguser shell=/bin/sh"
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: loguser
+    shell: /bin/sh
 
 - name: "Restore data"
   synchronize:

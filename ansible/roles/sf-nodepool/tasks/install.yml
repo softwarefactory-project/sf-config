@@ -17,7 +17,7 @@
 
 - name: Install package for config-check
   yum:
-    name: rh-python35-nodepool
+    name: nodepool
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"

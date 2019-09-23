@@ -12,23 +12,10 @@
 - name: Install package
   yum:
     name:
-      - rh-python35-repoxplorer
+      - repoxplorer
       - wait4service
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
   loop: "{{ executor_hosts | union( groups['repoxplorer'] ) }}"
-
-- name: Symlink repoxplorer SCL bin to /usr/bin
-  file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    state: link
-  loop:
-    - src: '/opt/rh/rh-python35/root/bin/repoxplorer-indexer'
-      dest: '/usr/bin/repoxplorer-indexer'
-    - src: '/opt/rh/rh-python35/root/bin/repoxplorer-config-validate'
-      dest: '/usr/bin/repoxplorer-config-validate'
-    - src: '/opt/rh/rh-python35/root/bin/repoxplorer-git-credentials-helper'
-      dest: '/usr/bin/repoxplorer-git-credentials-helper'

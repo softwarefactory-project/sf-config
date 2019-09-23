@@ -13,6 +13,6 @@
 
 class TestNodepoolBuilder:
     def test_service_running_and_enabled(self, host):
-        srv = host.service("rh-python35-nodepool-builder")
+        srv = host.service("nodepool-builder")
         assert srv.is_running
         assert srv.is_enabled
