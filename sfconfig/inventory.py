@@ -485,7 +485,7 @@ def enable_action(args):
 def enable_ara():
     ara_cfg = "/var/lib/software-factory/ansible/ara.cfg"
     if not os.path.isfile(ara_cfg):
-        ara_loc = "/opt/rh/rh-python35/root/lib/python3.5/site-packages/ara/"
+        ara_loc = "/usr/lib/python3.6/site-packages/ara/"
         ansiblecfg = ConfigParser.ConfigParser()
         ansiblecfg.read("/usr/share/sf-config/ansible/ansible.cfg")
         ansiblecfg.set("defaults", "callback_plugins",
@@ -503,23 +503,9 @@ def enable_ara():
 def install_ansible(args):
     if args.update:
         # Update ansible early on if possible
-        sfconfig.utils.execute(["yum", "update", "-y", "rh-python35-ansible"])
-    if os.path.isfile("/opt/rh/rh-python35/root/usr/bin/ansible-playbook"):
-        return
-    # Install scl repository first
-    if "centos" in open("/etc/os-release").read():
-        sfconfig.utils.execute(
-            ["yum", "install", "-y", "centos-release-scl-rh"])
-
-    try:
-        # Replace system ansible with rh-python35
-        sfconfig.utils.execute(["yum", "remove", "-y", "ansible"])
-        sfconfig.utils.execute(
-            ["yum", "install", "-y",
-             "rh-python35-ansible", "rh-python35-ara"])
-    except Exception:
-        print("Install rh-python35 scl first")
-        raise
+        sfconfig.utils.execute(["yum", "update", "-y", "ansible", "ara"])
+    elif not os.path.isfile("/bin/ansible-playbook"):
+        sfconfig.utils.execute(["yum", "install", "-y", "ansible", "ara"])
 
 
 def run(args):

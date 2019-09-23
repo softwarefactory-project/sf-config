@@ -113,20 +113,6 @@
     - "lib/python3.5"
     - "bin/python3.5"
 
-- name: Symlink scl ansible
-  file:
-    src: "/opt/rh/rh-python35/root/usr/bin/{{ item }}"
-    dest: "/usr/bin/{{ item }}"
-    state: link
-    force: yes
-  loop:
-    - ansible-playbook
-    - ansible-inventory
-    - ansible-pull
-    - ansible-vault
-    - ansible-galaxy
-    - ansible
-
 - name: Create necessary directories
   file:
     path: "{{ item }}"

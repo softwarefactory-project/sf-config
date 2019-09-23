@@ -135,7 +135,7 @@ class Buildah:
         self.log.info("Installing sfconfig and system tools")
         self.run("yum install -y https://softwarefactory-project.io/repos/"
                  "sf-release-%s.rpm" % version)
-        self.run("yum install -y rh-python35-ansible sf-config")
+        self.run("yum install -y ansible sf-config")
 
     def local_fixes(self):
         try:
