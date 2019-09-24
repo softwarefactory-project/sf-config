@@ -3,15 +3,9 @@
 - name: Define linters packages fact
   set_fact:
     linters_pkgs:
-      - yamllint
-      - bashate
-      - python-flake8
-      - python-tox
+      - python3-flake8
       - traceroute
       - rpm-build
-      - python2-pelican
-      - doc8
-      - ansible-lint
 
 - name: Install linters packages
   yum:
