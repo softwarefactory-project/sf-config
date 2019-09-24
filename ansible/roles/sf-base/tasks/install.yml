@@ -111,21 +111,6 @@
     - "lib64/libpython3.5m.so.rh-python35-1.0"
     - "lib64/python3.5"
     - "lib/python3.5"
-    - "bin/python3"
-
-- name: Symlink scl ansible
-  file:
-    src: "/opt/rh/rh-python35/root/usr/bin/{{ item }}"
-    dest: "/usr/bin/{{ item }}"
-    state: link
-    force: yes
-  loop:
-    - ansible-playbook
-    - ansible-inventory
-    - ansible-pull
-    - ansible-vault
-    - ansible-galaxy
-    - ansible
 
 - name: Create necessary directories
   file:
