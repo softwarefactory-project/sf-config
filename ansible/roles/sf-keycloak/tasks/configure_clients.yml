@@ -7,7 +7,7 @@
   no_log: true
 
 - name: "Create public OIDC client for component {{ item.component }} if needed"
-  shell: /opt/jboss/keycloak/bin/kcadm.sh create clients -r {{ keycloak_default_realm }} -s clientId={{ item.component }} -s "enabled=true" -s 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]' --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  shell: /opt/jboss/keycloak/bin/kcadm.sh create clients -r {{ keycloak_default_realm }} -s clientId={{ item.component }} -s "enabled=true" -s 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]' -s 'publicClient=true' --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   register: _client_create
   failed_when: _client_create.rc != 0 and _client_create.stderr.find("already exists") == -1
   when: item.use_secret == False
