@@ -4,4 +4,4 @@ role_actions:
   - setup
   - get_logs
 
-role_package: python-log2gearman-client
+role_package: python3-log2gearman-client
