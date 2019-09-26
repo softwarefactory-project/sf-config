@@ -7,6 +7,27 @@
     user_name: gerritbot
     ssh_key: zuul_rsa
 
+- name: Ensure known_hosts file exists
+  file:
+    path: "/var/lib/gerritbot/.ssh/known_hosts"
+    owner: gerritbot
+    group: gerritbot
+    mode: 0600
+    state: touch
+  changed_when: false
+
+- name: Check if the sources are already defined
+  command: |
+    ssh-keygen -f /var/lib/gerritbot/.ssh/known_hosts -F [{{ gerrit_host }}:29418]
+  register: _known_hosts_results
+  failed_when: false
+  changed_when: false
+
+- name: Scan the missing sources
+  shell: |
+    ssh-keyscan -T 10 -p 29418 {{ gerrit_host }} | sort | tac >> /var/lib/gerritbot/.ssh/known_hosts
+  when: _known_hosts_results.stdout == ""
+
 - name: "Setup gerritbot.conf"
   template:
     src: gerritbot.conf.j2
