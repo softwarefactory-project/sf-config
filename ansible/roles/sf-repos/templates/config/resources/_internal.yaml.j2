@@ -46,9 +46,6 @@ resources:
     internal:
       tenant: {{ tenant_name }}
       description: Internal configuration project
-{% if 'storyboard' in roles %}
-      issue-tracker: SFStoryboard
-{% endif %}
       source-repositories:
         - {{ config_project_name }}:
             zuul/config-project: True

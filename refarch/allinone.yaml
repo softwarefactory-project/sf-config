@@ -29,8 +29,6 @@ inventory:
       - logstash
       - kibana
       - mirror
-      - storyboard
-      - storyboard-webclient
       - repoxplorer
       - firehose
       - hydrant

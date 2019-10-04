@@ -1,6 +1,0 @@
----
-- name: restart storyboard
-  service:
-    name: "{{ item }}"
-    state: restarted
-  loop: "{{storyboard_services}}"
