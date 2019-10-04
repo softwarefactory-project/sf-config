@@ -6,7 +6,6 @@ inventory:
       - install-server
       - mysql
       - zookeeper
-      - rabbitmq
       - gateway
       - cauth
       - gitweb
@@ -29,8 +28,6 @@ inventory:
       - logstash
       - kibana
       - mirror
-      - storyboard
-      - storyboard-webclient
       - repoxplorer
       - firehose
       - hydrant
