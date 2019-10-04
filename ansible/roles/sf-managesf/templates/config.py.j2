@@ -38,9 +38,6 @@ logging = {
 }
 
 services = [
-{% if 'storyboard' in roles %}
-    'SFStoryboard',
-{% endif %}
 {% if 'gerrit' in roles %}
     'SFGerrit',
 {% endif %}
@@ -86,19 +83,6 @@ gerrit = {
 {% if 'zuul' in roles %}
 zuul = {
     'api_root_url': '{{ zuul_web_url }}/'
-}
-{% endif %}
-
-{% if 'storyboard' in roles %}
-storyboard = {
-    'base_url': '{{ gateway_url }}',
-    'url': '{{ storyboard_internal_url }}',
-    'host': 'storyboard',
-    'service_token': '{{ storyboard_service_token }}',
-    'db_host': '{{ storyboard_mysql_host }}',
-    'db_name': '{{ storyboard_mysql_db }}',
-    'db_user': '{{ storyboard_mysql_user }}',
-    'db_password': '{{ storyboard_mysql_password }}',
 }
 {% endif %}
 

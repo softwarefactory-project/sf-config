@@ -66,14 +66,6 @@
         Deny from all
     </Directory>
 
-{% if 'storyboard' in roles %}
-    # Don't login to Storyboard itself, use cauth instead
-    <LocationMatch "/storyboard_api/openid/">
-        RewriteEngine On
-        RewriteRule ^(.*)$ /auth/login [R,NC,L]
-    </LocationMatch>
-
-{% endif %}
 {% if 'gerrit' in roles %}
     <LocationMatch "/r/(?!(login|logout))">
         RewriteEngine On
@@ -177,11 +169,6 @@
         RewriteCond /usr/share/%{REQUEST_FILENAME} !-d
         RewriteRule ^/zuul/.*$ /usr/share/zuul/index.html [L]
 
-{% if 'storyboard' in roles %}
-        ProxyPass /storyboard_api/ http://storyboard:20000/v1/ nocanon retry=0
-        ProxyPassReverse /storyboard_api/ http://storyboard:20000/v1/
-
-{% endif %}
 {% if 'managesf' in roles %}
         ProxyPass /manage/ http://managesf:20001/ retry=0 timeout=2400
         ProxyPassReverse /manage/ http://managesf:20001/ timeout=2400
@@ -261,22 +248,6 @@
         RewriteRule ^(.*) /dashboard/index.html [NC,L]
     </location>
 
-{% if 'storyboard' in roles %}
-    <LocationMatch "^/storyboard_api">
-        # If api requests are authenticated, check cauth cookie
-        <If "%{HTTP:Authorization} =~/Bearer .*/">
-            AuthType mod_auth_pubtkt
-            TKTAuthLoginURL /auth/login
-            TKTAuthFakeBasicAuth on
-            TKTAuthDebug 1
-            require valid-user
-            # Enforce token name to be cauth user
-            RequestHeader set Authorization "Bearer %{REMOTE_USER}e"
-            Header set Cache-Control "no-cache, must-revalidate"
-        </If>
-    </LocationMatch>
-
-{% endif %}
 {% if 'managesf' in roles %}
     <Location "/manage">
         RequestHeader unset X-Remote-User
