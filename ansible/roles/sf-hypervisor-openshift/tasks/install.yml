@@ -1,7 +1,7 @@
 ---
 - name: Install repository
   yum:
-    name: centos-release-openshift-origin39
+    name: centos-release-openshift-origin311
     state: present
 
 - name: Install packages
