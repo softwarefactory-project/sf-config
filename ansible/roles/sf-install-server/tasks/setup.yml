@@ -1,22 +1,16 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
-- name: Check for ara.cfg
-  stat:
-    path: /var/lib/software-factory/ansible/ara.cfg
-  register: _ara_cfg
-
 - name: Setup logrotate.conf
   copy:
     src: logrotate.conf
     dest: /etc/logrotate.d/software-factory
 
 - name: Setup ~/.ansible.cfg
-  copy:
+  file:
     src: /var/lib/software-factory/ansible/ara.cfg
     dest: /root/.ansible.cfg
-    remote_src: true
-  when: _ara_cfg.stat.exists
+    state: link
 
 - name: Setup git access to remote gerrit
   blockinfile:
@@ -40,13 +34,6 @@
         User {{ conn.username }}
         Port {{ conn.port|default(29418) }}
       {% endfor %}
-
-- name: Setup default ansible.cfg
-  copy:
-    src: /usr/share/sf-config/ansible/ansible.cfg
-    dest: /root/.ansible.cfg
-    remote_src: true
-  when: not _ara_cfg.stat.exists
 
 - name: Initalize version control for yaml files
   shell: git init .; git add *; git commit -m 'init'
