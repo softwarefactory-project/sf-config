@@ -107,7 +107,7 @@
 - name: Configure GitHub identity provider
   block:
     - name: Create the identity provider if needed
-      shell: /opt/jboss/keycloak/bin/kcadm.sh create identity-provider/instances -r {{ keycloak_default_realm }} -s alias=github -s providerId=github -s enabled=true  -s 'config.useJwksUrl="true"' -s config.clientId={{ authentication.oauth2.github.client_id }} -s config.clientSecret={{ authentication.oauth2.github.client_secret }}  --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      shell: /opt/jboss/keycloak/bin/kcadm.sh create identity-provider/instances -r {{ keycloak_default_realm }} -s alias=github -s providerId=github -s enabled=true -s 'config.useJwksUrl="true"' -s config.clientId={{ authentication.oauth2.github.client_id }} -s config.clientSecret={{ authentication.oauth2.github.client_secret }}  --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
     # Fail if error not due to idp already existing
       register: _gh_idp
       failed_when: _gh_idp.rc != 0 and _gh_idp.stderr.find("Identity Provider github already exists") == -1
@@ -121,6 +121,44 @@
       when: _gh_key_mapper.stdout.find("publicKey") == -1
       no_log: true
   when: not authentication.oauth2.github.disabled
+
+- name: Configure Google OAuth2 identity provider
+  block:
+    - name: Create the identity provider if needed
+      shell: /opt/jboss/keycloak/bin/kcadm.sh create identity-provider/instances -r {{ keycloak_default_realm }} -s alias=google -s providerId=google -s enabled=true -s 'config.useJwksUrl="true"' -s config.clientId={{ authentication.oauth2.google.client_id }} -s config.clientSecret={{ authentication.oauth2.google.client_secret }}  --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    # Fail if error not due to idp already existing
+      register: _google_idp
+      failed_when: _google_idp.rc != 0 and _google_idp.stderr.find("Identity Provider google already exists") == -1
+      no_log: true
+  when: not authentication.oauth2.google.disabled
+
+- name: Configure BitBucket OAuth2 identity provider
+  block:
+    - name: Create the identity provider if needed
+      shell: /opt/jboss/keycloak/bin/kcadm.sh create identity-provider/instances -r {{ keycloak_default_realm }} -s alias=bitbucket -s providerId=bitbucket -s enabled=true -s 'config.useJwksUrl="true"' -s config.clientId={{ authentication.oauth2.bitbucket.client_id }} -s config.clientSecret={{ authentication.oauth2.bitbucket.client_secret }}  --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    # Fail if error not due to idp already existing
+      register: _bitbucket_idp
+      failed_when: _bitbucket_idp.rc != 0 and _bitbucket_idp.stderr.find("Identity Provider bitbucket already exists") == -1
+      no_log: true
+  when: not authentication.oauth2.bitbucket.disabled
+
+- name: Configure OpenID Connect provider
+  block:
+    - name: Fetch the Provider configuration
+      uri:
+        url: "{{ authentication.openid_connect.issuer_url }}/.well-known/openid-configuration"
+        return_content: yes
+      register: _oidc_config_json
+    - set_fact:
+        _oidc_config: "{{ _oidc_config_json.content | from_json }}"
+    - name: Create the identity provider if needed
+      shell: /opt/jboss/keycloak/bin/kcadm.sh create identity-provider/instances -r {{ keycloak_default_realm }} -s displayName='{{ authentication.openid_connect.login_button_text }}' -s alias=oidc -s providerId=oidc -s enabled=true -s 'config.useJwksUrl="true"' -s config.authorizationUrl={{ _oidc_config['authorization_endpoint'] }} -s config.userInfoUrl={{ _oidc_config['userinfo_endpoint'] }} -s config.tokenUrl={{ _oidc_config['token_endpoint'] }} -s config.issuer={{ _oidc_config['issuer'] }} -s config.clientId={{ authentication.openid_connect.client_id }} -s config.clientSecret={{ authentication.openid_connect.client_secret }}  --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    # Fail if error not due to idp already existing
+      register: _oidc_idp
+      failed_when: _oidc_idp.rc != 0 and _oidc_idp.stderr.find("Identity Provider oidc already exists") == -1
+      no_log: true
+  when: not authentication.openid_connect.disabled
+
 
 # components OIDC clients
 
