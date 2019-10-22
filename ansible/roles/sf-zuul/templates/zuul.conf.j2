@@ -26,6 +26,8 @@ state_dir={{ zuul_lib_dir }}
 command_socket={{ zuul_lib_dir }}/scheduler.socket
 tenant_config={{ zuul_conf_dir }}/main.yaml
 log_config={{ zuul_conf_dir }}/scheduler-logging.yaml
+max_hold_expiration={{ zuul_max_hold_expiration|default(0) }}
+default_hold_expiration={{ zuul_default_hold_expiration|default(3600) }}
 
 [merger]
 state_dir={{ zuul_lib_dir }}
