@@ -93,6 +93,7 @@ canonical_hostname={{ conn['canonical_hostname'] }}
 {% endif %}
 {% if conn['report_only']|default(False) %}
 report_only=True
+stream_events=False
 {% endif %}
 
 {% endfor %}
