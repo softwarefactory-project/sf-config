@@ -1,4 +1,16 @@
 ---
+- name: Check if CentOS system
+  set_fact:
+    os_repository: centos-release-openshift-origin311
+    os_client_package: origin-clients
+  when: ansible_distribution == "CentOS"
+
+- name: Check if RedHat system
+  set_fact:
+    os_repository: rhel-7-server-ose-3.11-rpms
+    os_client_package: atomic-openshift-clients
+  when: ansible_distribution == "RedHat"
+
 - name: Install launcher package
   yum:
     name: "{{ nodepool_launcher_packages }}"
@@ -28,11 +40,11 @@
   block:
     - name: Install repository
       yum:
-        name: centos-release-openshift-origin311
+        name: '{{ os_repository }}'
         state: present
 
     - name: Install packages
       yum:
-        name: origin-clients
+        name: '{{ os_client_package }}'
         state: present
   when: "nodepool_openshift_providers or nodepool_kube_file or 'hypervisor-k1s' in roles"
