@@ -275,6 +275,11 @@ def update_arch(args):
                                                                 'nodepool')
                 dirty = True
 
+        # Remove storyboard
+        for sb in ("rabbitmq", "storyboard", "storyboard-webclient"):
+            if sb in host['roles']:
+                host['roles'].remove(sb)
+
     # Remove deployments related information
     for deploy_key in ("cpu", "mem", "hostid", "rolesname"):
         for host in data["inventory"]:
