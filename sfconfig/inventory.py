@@ -509,6 +509,22 @@ def install_ansible(args):
         sfconfig.utils.execute(["yum", "install", "-y", "ansible", "ara"])
 
 
+def fix_rhel_centos_name(glue):
+    """Set correct names once and for all depending on the os id"""
+    osid = list(filter(lambda x: x.startswith("id="),
+                       map(str.lower,
+                           open("/etc/os-release").readlines()))
+    )[0].split('=')[1].strip()[1:-1]
+    if osid == "rhel":
+        glue["openshift_repo"] = "rhel-7-server-ose-3.11-rpms"
+        glue["openshift_client"] = "atomic-openshift-clients"
+        glue["openshift_server"] = "atomic-openshift"
+
+    else:
+        glue["openshift_repo"] = "centos-release-openshift-origin311"
+        glue["openshift_client"] = "origin-clients"
+        glue["openshift_server"] = "origin"
+
 def run(args):
     if args.disable or args.erase:
         playbook_name, playbook = disable_action(args)
@@ -520,8 +536,10 @@ def run(args):
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
     run_cmd = ["flock", "/var/lib/software-factory/state/ansible.lock",
                "ansible-playbook", playbook_path]
+
     if not args.skip_apply:
         os.chdir("/")
+        fix_rhel_centos_name(args.glue)
         install_ansible(args)
         configure_ansible()
         sfconfig.utils.execute(run_cmd)
