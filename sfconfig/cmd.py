@@ -129,6 +129,24 @@ def usage(components):
     return args
 
 
+def fix_rhel_centos_name(glue):
+    """Set correct names once and for all depending on the os id"""
+    osid = list(
+        filter(lambda x: x.startswith("id="),
+               map(str.lower,
+                   open("/etc/os-release").readlines()))
+        )[0].split('=')[1].strip()[1:-1]
+    if osid == "rhel":
+        glue["openshift_repo"] = "rhel-7-server-ose-3.11-rpms"
+        glue["openshift_client"] = "atomic-openshift-clients"
+        glue["openshift_server"] = "atomic-openshift"
+
+    else:
+        glue["openshift_repo"] = "centos-release-openshift-origin311"
+        glue["openshift_client"] = "origin-clients"
+        glue["openshift_server"] = "origin"
+
+
 def main():
     components = sfconfig.utils.load_components()
     args = usage(components)
@@ -181,6 +199,7 @@ def main():
     # Make sure the yaml files are updated
     sfconfig.upgrade.update_sfconfig(args)
     sfconfig.upgrade.update_arch(args)
+    fix_rhel_centos_name(args.glue)
 
     # Save arch if needed
     if args.save_arch:

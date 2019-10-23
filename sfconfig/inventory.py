@@ -520,6 +520,7 @@ def run(args):
     os.environ["ANSIBLE_CONFIG"] = "%s/ansible/ansible.cfg" % args.share
     run_cmd = ["flock", "/var/lib/software-factory/state/ansible.lock",
                "ansible-playbook", playbook_path]
+
     if not args.skip_apply:
         os.chdir("/")
         install_ansible(args)
