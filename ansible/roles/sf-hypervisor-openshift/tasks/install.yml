@@ -1,13 +1,13 @@
 ---
 - name: Install repository
   yum:
-    name: centos-release-openshift-origin311
+    name: "{{ openshift_repo }}"
     state: present
 
 - name: Install packages
   yum:
     name:
-      - origin
+      - "{{ openshift_server }}"
       - docker
     state: present
 

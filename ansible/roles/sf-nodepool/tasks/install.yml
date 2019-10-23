@@ -28,11 +28,11 @@
   block:
     - name: Install repository
       yum:
-        name: centos-release-openshift-origin311
+        name: '{{ openshift_repo }}'
         state: present
 
     - name: Install packages
       yum:
-        name: origin-clients
+        name: '{{ openshift_client }}'
         state: present
   when: "nodepool_openshift_providers or nodepool_kube_file or 'hypervisor-k1s' in roles"
