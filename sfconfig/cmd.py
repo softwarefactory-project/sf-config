@@ -137,7 +137,6 @@ def fix_rhel_centos_name(glue):
                    open("/etc/os-release").readlines()))
         )[0].split('=')[1].strip()[1:-1]
     if osid == "rhel":
-        glue["openshift_repo"] = "rhel-7-server-ose-3.11-rpms"
         glue["openshift_client"] = "atomic-openshift-clients"
         glue["openshift_server"] = "atomic-openshift"
 
