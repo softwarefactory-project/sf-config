@@ -3,6 +3,7 @@
   yum:
     name: "{{ openshift_repo }}"
     state: present
+  when: ansible_distribution == 'CentOS'
 
 - name: Install packages
   yum:
