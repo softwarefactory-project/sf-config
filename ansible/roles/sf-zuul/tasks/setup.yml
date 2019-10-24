@@ -15,7 +15,7 @@
   copy:
     content: |
       PATH=/opt/rh/rh-git218/root/usr/bin:/bin
-      LD_LIBRARY_PATH=/opt/rh/rh-git218/root/usr/lib64
+      LD_LIBRARY_PATH=/opt/rh/rh-git218/root/usr/lib64:/opt/rh/httpd24/root/lib64/
       REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt
     dest: /etc/sysconfig/zuul
 
