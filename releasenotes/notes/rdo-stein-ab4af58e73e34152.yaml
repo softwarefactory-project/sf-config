@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The RDO repository has been replaced by the stein release.
