@@ -1,0 +1,12 @@
+---
+- set_fact:
+    cmd:
+      - "--append-line '/etc/sysctl.conf:net.ipv6.conf.all.disable_ipv6 = 1'"
+      - "--append-line '/etc/sysctl.conf:net.ipv6.conf.default.disable_ipv6 = 1'"
+      - "--append-line '/etc/sysconfig/network:IPV6INIT=no'"
+      - "--append-line '/etc/sysconfig/network:IPV6_AUTOCONF=no'"
+      - "--append-line '/etc/sysconfig/network:IPV6_DEFROUTE=no'"
+      - "--append-line '/etc/yum.conf:ip_resolve=4'"
+
+- set_fact:
+    virt_customize_cmd: "{{ virt_customize_cmd + cmd }}"
