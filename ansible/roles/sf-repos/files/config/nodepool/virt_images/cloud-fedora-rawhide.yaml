@@ -1,0 +1,36 @@
+---
+- name: Build a fedora cloud image suitable for Zuul
+  hosts: localhost
+  vars:
+    image: Fedora-Cloud-Base-Rawhide.x86_64.qcow2
+    extra_packages:
+      # Extra system tools
+      - pigz
+      - bridge-utils
+      - wget
+      - unzip
+      # Basic CI tools
+      - make
+      - gcc
+      - patch
+  tasks:
+    - block:
+      - import_role:
+          name: discover-rawhide
+      - import_role:
+          name: base
+      - import_role:
+          name: sshd-config
+      - import_role:
+          name: network-config
+      - import_role:
+          name: zuul-user
+      - import_role:
+          name: base-install-packages
+      - import_role:
+          name: base-customize
+      - import_role:
+          name: base-finalize
+      always:
+      - import_role:
+          name: base-cleanup

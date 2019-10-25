@@ -25,6 +25,7 @@
     - cp /var/lib/software-factory/conf/nodepool.yaml nodepool/_nodepool.yaml
     - env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml"
     - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
+    - rsync -avi --delete nodepool/virt_images/ "{{ nodepool_conf_dir }}/virt_images/"
 
 - name: Ensure service are started and enabled
   service:
