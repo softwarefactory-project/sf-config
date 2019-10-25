@@ -1,0 +1,5 @@
+---
+- name: Remove tmp directory
+  file:
+    path: "{{ image_tmp_dir }}"
+    state: absent

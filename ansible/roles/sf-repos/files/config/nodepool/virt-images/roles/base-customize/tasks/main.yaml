@@ -1,0 +1,6 @@
+---
+- debug:
+    msg: "Running: {{ ' '.join(virt_customize_cmd) }}"
+
+- name: Run virt-customize
+  command: "{{ ' '.join(virt_customize_cmd) }}"

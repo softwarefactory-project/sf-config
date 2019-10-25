@@ -1,0 +1,74 @@
+---
+- assert:
+    that:
+      - image_url is defined
+      - image_checksum is defined
+      - image is defined
+      - image_url != ''
+      - image_checksum != ''
+      - image != ''
+
+- name: Set some runtime facts
+  set_fact:
+    image_cache_file: "{{ image_cache_dir }}/{{ image }}"
+    image_tmp_dir: "/var/tmp/{{ image_output | basename }}"
+
+- name: Ensure libvirt is started
+  service:
+    name: libvirtd
+    state: started
+
+- name: Make sure cache directory exist
+  file:
+    path: "{{ image_cache_dir }}"
+    state: directory
+
+- name: Delete previous image cache
+  file:
+    path: "{{ image_cache_file }}"
+    state: absent
+  when: image_wipe_cache
+
+- name: Check if image is already downloaded
+  stat:
+    path: "{{ image_cache_file }}"
+  register: _image_cache_file_stat
+
+- name: Download if checksum doesn't match
+  get_url:
+    url: "{{ image_url }}"
+    dest: "{{ image_cache_file }}"
+    checksum: "{{ image_checksum }}"
+  when: not _image_cache_file_stat.stat.exists
+
+- name: Extract the image if necessary
+  command: "xz -k -d {{ image_cache_file }}.xz"
+  args:
+    chdir: "{{ image_cache_dir }}"
+    creates: "{{ image_cache_file }}"
+
+- name: Update the cache
+  command: "virt-customize -m 1024 -a {{ image_cache_file }} --update"
+
+- name: Create tmp directory
+  file:
+    path: "{{ image_tmp_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Set filename copy fact
+  set_fact:
+    image_file: "{{ image_tmp_dir }}/{{ image_cache_file | basename }}"
+
+- name: Copy the image
+  copy:
+    src: "{{ image_cache_file }}"
+    dest: "{{ image_file }}"
+    remote_src: true
+    mode: 0644
+
+- set_fact:
+    virt_customize_cmd:
+      - "virt-customize -m 1024 -a {{ image_file }}"
+      - "--selinux-relabel"
+      - "--install '{{ base_packages | join(',') }}'"

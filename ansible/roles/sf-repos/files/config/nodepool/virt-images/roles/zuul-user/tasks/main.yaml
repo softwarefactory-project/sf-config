@@ -1,0 +1,27 @@
+---
+- name: Prepare the sudoers file
+  copy:
+    content: |
+      Defaults    !requiretty
+      zuul-worker ALL=(ALL) NOPASSWD:ALL
+    dest: "{{ image_tmp_dir }}/zuul-worker"
+
+- name: Prepare the authorized_keys file
+  copy:
+    src: /var/lib/nodepool/.ssh/zuul_rsa.pub
+    dest: "{{ image_tmp_dir }}/authorized_keys"
+    remote_src: true
+
+- set_fact:
+    cmd:
+      - "--run-command 'adduser -m zuul-worker'"
+      - "--mkdir '/home/zuul-worker/.ssh'"
+      - "--chmod '0700:/home/zuul-worker/.ssh'"
+      - "--copy-in '{{ image_tmp_dir }}/authorized_keys:/home/zuul-worker/.ssh/'"
+      - "--chmod '0600:/home/zuul-worker/.ssh/authorized_keys'"
+      - "--run-command 'chown -R zuul-worker:zuul-worker /home/zuul-worker/.ssh/'"
+      - "--copy-in '{{ image_tmp_dir }}/zuul-worker:/etc/sudoers.d/'"
+      - "--chmod '0440:/etc/sudoers.d/zuul-worker'"
+
+- set_fact:
+    virt_customize_cmd: "{{ virt_customize_cmd + cmd }}"

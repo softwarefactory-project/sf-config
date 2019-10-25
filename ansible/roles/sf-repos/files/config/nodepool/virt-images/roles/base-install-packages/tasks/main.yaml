@@ -1,0 +1,7 @@
+---
+- set_fact:
+    cmd:
+      - "--install '{{ extra_packages | join(',') }}'"
+
+- set_fact:
+    virt_customize_cmd: "{{ virt_customize_cmd + cmd }}"
