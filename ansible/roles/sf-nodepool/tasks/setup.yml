@@ -170,6 +170,11 @@
         path: /var/www/html/nodepool-log
         src: /var/www/nodepool-log
         state: link
+
+    - name: Install dib-virt-customize script
+      copy:
+        src: dib-virt-customize.py
+        dest: /usr/bin/dib-virt-customize
   when:
     - '"nodepool-builder" in nodepool_services'
 

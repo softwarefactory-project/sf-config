@@ -1,0 +1,8 @@
+---
+- name: Create raw file
+  command: "qemu-img convert -O raw {{ image_file }} {{ image_output }}.raw"
+  when: raw_type | default(False) | bool
+
+- name: Create qcow file
+  command: "mv {{ image_file }} {{ image_output }}.qcow2"
+  when: qcow2_type | default(False) | bool
