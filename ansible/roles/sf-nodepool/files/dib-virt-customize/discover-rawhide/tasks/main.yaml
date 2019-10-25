@@ -1,0 +1,45 @@
+- tempfile:
+    state: file
+  register: tempfile
+
+- file:
+    path: "{{ tempfile.path }}"
+    state: absent
+
+- name: Fetch publication page
+  get_url:
+    url: "{{ base_url }}"
+    dest: "{{ tempfile.path }}"
+
+- name: Find rawhide qcow2 url
+  command: sed -n "/qcow2/ s/.*\(Fedora-Cloud-Base-Rawhide-.*\)<\/a>.*/\1/p" {{ tempfile.path }}
+  register: get_qcow_image_name
+
+- name: Find checksum file url
+  command: sed -n "/CHECKSUM/ s/.*\(Fedora-Cloud-Rawhide-.*\)<\/a>.*/\1/p" {{ tempfile.path }}
+  register: get_checksum_name
+
+- set_fact:
+    checksums_url: "{{ base_url }}{{ get_checksum_name.stdout }}"
+
+- file:
+    path: "{{ tempfile.path }}"
+    state: absent
+
+- name: Fetch checksum file
+  get_url:
+    url: "{{ checksums_url }}"
+    dest: "{{ tempfile.path }}"
+
+- name: Find checksum
+  command: sed -n "/SHA256 ({{ get_qcow_image_name.stdout }}) = / s/.* = \(.*\)/\1/p" {{ tempfile.path }}
+  register: get_checksum
+
+- set_fact:
+    image_url: "{{ base_url }}{{ get_qcow_image_name.stdout }}"
+    image_checksum: "sha256:{{ get_checksum.stdout }}"
+
+- debug:
+    msg: |
+      Discovered image_url: {{ image_url }}
+      Discovered image_checksum: {{ image_checksum }}

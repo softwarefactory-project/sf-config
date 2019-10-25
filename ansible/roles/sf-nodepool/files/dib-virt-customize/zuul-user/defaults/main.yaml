@@ -1,0 +1,2 @@
+---
+image_tmp_dir: "/var/tmp/{{ image_output | basename }}"

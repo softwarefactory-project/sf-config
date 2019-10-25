@@ -1,0 +1,13 @@
+---
+- name: Prepare sshd_config file
+  copy:
+    src: files/sshd_config
+    dest: "{{ image_tmp_dir }}/sshd_config"
+
+- set_fact:
+    cmd:
+      - "--copy-in '{{ image_tmp_dir }}/sshd_config:/etc/ssh/'"
+      - "--chmod '0600:/etc/ssh/sshd_config'"
+
+- set_fact:
+    virt_customize_cmd: "{{ virt_customize_cmd + cmd }}"
