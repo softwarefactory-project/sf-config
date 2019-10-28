@@ -44,7 +44,7 @@ class Component(object):
         comment = '%s@%s' % (name, args.sfconfig["fqdn"])
 
         if not os.path.isfile(priv):
-            execute(["ssh-keygen", "-t", "rsa", "-N", "",
+            execute(["ssh-keygen", "-t", "rsa", "-m", "PEM", "-N", "",
                      "-f", priv, "-q", '-C', comment])
         args.glue[name] = open(priv).read()
         args.glue["%s_pub" % name] = open(pub).read()
