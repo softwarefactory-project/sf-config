@@ -49,13 +49,6 @@ DocumentRoot /var/www/
     ForceType text/css
 </FilesMatch>
 
-<Directory "/usr/bin/">
-    <Files "ara-wsgi-sqlite">
-        Allow from all
-        Satisfy Any
-    </Files>
-</Directory>
-
 <LocationMatch "/logs/">
     # Enable zuul-web ui to access logs
     Header set Access-Control-Allow-Origin "*"
@@ -97,7 +90,4 @@ Alias "/logs-raw" "/var/www/logs"
 SetEnv OS_LOGANALYZE_ROOT_PATH /var/www/logs/
 WSGIScriptAlias /htmlify /usr/lib/python2.7/site-packages/os_loganalyze/wsgi.py
 
-SetEnv ARA_WSGI_TMPDIR_MAX_AGE {{ logs_wsgi_ara_tmpdir_max_age }}
-SetEnv ARA_WSGI_LOG_ROOT /var/www/
-SetEnv ARA_WSGI_DATABASE_DIRECTORY {{ logs_wsgi_ara_directory }}
-WSGIScriptAliasMatch ^.*/{{ logs_wsgi_ara_directory }}(?!/ansible.sqlite) /bin/ara-wsgi-sqlite
+RewriteRule ^.*/ara-report(?!/ansible.sqlite) http://localhost:20003%{REQUEST_URI} [P,L]
