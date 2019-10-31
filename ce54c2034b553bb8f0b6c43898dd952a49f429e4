@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d1a015b0_f60aab30",
+        "filename": "ansible/roles/sf-keycloak/defaults/main.yml",
+        "patchSetId": 26
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-10-31T19:47:03Z",
+      "side": 1,
+      "message": "Unfortunately the roles currently needs to define the vars they need. Thus if a variable is needed by 2 roles, it needs to be set in the two roles defaults.\nNot sure how can this be improved...",
+      "range": {
+        "startLine": 20,
+        "startChar": 63,
+        "endLine": 20,
+        "endChar": 64
+      },
+      "revId": "ce54c2034b553bb8f0b6c43898dd952a49f429e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1e9f2d79_09740c94",
+        "filename": "ansible/roles/sf-keycloak/tasks/configure_clients.yml",
+        "patchSetId": 26
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-10-31T19:47:03Z",
+      "side": 1,
+      "message": "This could be simply command. Then you can split long line like so:\n\n  command: \u003e\n    /opt/.../kcadm.sh create clients\n      -r ...\n      -s ....\n      --server ...\n\nNo need for \\\\ with \u003e",
+      "range": {
+        "startLine": 3,
+        "startChar": 2,
+        "endLine": 3,
+        "endChar": 7
+      },
+      "revId": "ce54c2034b553bb8f0b6c43898dd952a49f429e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ed39b8cd_11951adb",
+        "filename": "ansible/roles/sf-keycloak/tasks/create_or_update_user.yml",
+        "patchSetId": 26
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-10-31T19:47:03Z",
+      "side": 1,
+      "message": "ditto, use command if you don\u0027t use pipes or redirections",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 11
+      },
+      "revId": "ce54c2034b553bb8f0b6c43898dd952a49f429e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "637676d7_6ce34099",
+        "filename": "ansible/roles/sf-keycloak/tasks/stop.yml",
+        "patchSetId": 26
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-10-31T19:47:03Z",
+      "side": 1,
+      "message": "Why keycloak stop action stops gerrit?",
+      "revId": "ce54c2034b553bb8f0b6c43898dd952a49f429e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f0b7fbd9_80076387",
+        "filename": "ansible/roles/sf-keycloak/tasks/update.yml",
+        "patchSetId": 26
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-10-31T19:47:03Z",
+      "side": 1,
+      "message": "These update tasks seems incorrect.",
+      "revId": "ce54c2034b553bb8f0b6c43898dd952a49f429e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c700ec15_79e222a1",
+        "filename": "ansible/roles/sf-keycloak/tasks/upgrade.yml",
+        "patchSetId": 26
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-10-31T19:47:03Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "ce54c2034b553bb8f0b6c43898dd952a49f429e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5e0f2271_db54657c",
+        "filename": "ansible/roles/sf-keycloak/templates/keycloak-vhost.conf.j2",
+        "patchSetId": 26
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-10-31T19:47:03Z",
+      "side": 1,
+      "message": "that is likely incorrect",
+      "range": {
+        "startLine": 2,
+        "startChar": 15,
+        "endLine": 2,
+        "endChar": 45
+      },
+      "revId": "ce54c2034b553bb8f0b6c43898dd952a49f429e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "421cefe2_24b44b8e",
+        "filename": "sfconfig/arch.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-10-31T19:47:03Z",
+      "side": 1,
+      "message": "that\u0027s not required, it is automatically done in the next elif block",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 66
+      },
+      "revId": "ce54c2034b553bb8f0b6c43898dd952a49f429e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
