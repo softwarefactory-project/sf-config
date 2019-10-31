@@ -12,12 +12,13 @@
 - hosts: all
   tasks:
     - block:
-        - import_role: name=validate-host
-        - import_role: name=prepare-workspace
-        - import_role: name=add-build-sshkey
+        - include_role: name=validate-host
+        - include_role: name=prepare-workspace
+        - include_role: name=add-build-sshkey
       when: "ansible_connection != 'kubectl'"
     - block:
-        - import_role: name=prepare-workspace-openshift
-        - import_role: name=remove-zuul-sshkey
+        - include_role: name=prepare-workspace-openshift
+        - include_role: name=remove-zuul-sshkey
       run_once: true
       when: "ansible_connection == 'kubectl'"
+    - import_role: name=ensure-output-dirs

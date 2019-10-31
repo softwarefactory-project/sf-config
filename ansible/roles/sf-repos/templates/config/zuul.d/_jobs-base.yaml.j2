@@ -11,6 +11,8 @@
     roles:
       - zuul: {{ sf_jobs_project_name }}
       - zuul: {{ zuul_jobs_project_name }}
+    extra-vars:
+      zuul_use_fetch_output: true
     timeout: 1800
     attempts: {{ zuul_default_retry_attempts }}
     secrets:
