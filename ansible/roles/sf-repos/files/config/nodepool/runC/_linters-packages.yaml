@@ -9,7 +9,6 @@
       - python-tox
       - traceroute
       - rpm-build
-      - python2-coverage
       - python2-pelican
       - python2-sphinx
       - doc8
