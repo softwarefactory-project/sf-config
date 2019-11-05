@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/bin/env python3
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
@@ -28,7 +28,7 @@ def execute(cmd):
         print("Debug: execute: %s" % cmd)
     p = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     if p.wait():
-        fail(p.stdout.read())
+        fail(p.stdout.read().decode('utf-8'))
     return p.stdout.read().decode("utf-8")
 
 

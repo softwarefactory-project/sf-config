@@ -143,20 +143,16 @@
     src: gateway-kibana.conf.j2
     dest: /etc/httpd/conf.d/gateway-kibana.conf
     mode: 0444
-  loop: "{{ inventory }}"
-  when: '"kibana" in item["roles"]'
+  when: '"kibana" in roles'
   notify: apache reload
-  no_log: true
 
 - name: Install repoXplorer SF gateway rules
   template:
     src: gateway-repoxplorer.conf.j2
     dest: /etc/httpd/conf.d/gateway-repoxplorer.conf
     mode: 0444
-  loop: "{{ inventory }}"
-  when: '"repoxplorer" in item["roles"]'
+  when: '"repoxplorer" in roles'
   notify: apache reload
-  no_log: true
 
 - name: Load ssl module in apache configuration
   lineinfile:

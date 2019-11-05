@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 #
 # Copyright (C) 2016 Red Hat
 #
@@ -53,7 +53,7 @@ payload = p.parse_args().__dict__
 p = subprocess.Popen(["git", "cat-file", "-p", payload['commit']],
                      stdout=subprocess.PIPE)
 p.wait()
-payload['commit_message'] = p.stdout.read()
+payload['commit_message'] = p.stdout.read().decode('utf-8')
 
 # Call managesf
 r = requests.post("%s/hooks/patchset_created" % MANAGESF_BASE_URL,
