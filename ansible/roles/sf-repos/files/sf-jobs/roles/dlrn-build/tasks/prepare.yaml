@@ -5,7 +5,7 @@
   loop:
   - git
   - createrepo
-  - python-virtualenv
+  - python3-virtualenv
   - mock
   - gcc
   - redhat-rpm-config

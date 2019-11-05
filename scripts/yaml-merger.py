@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
@@ -49,7 +49,7 @@ def loadConfig(config_path):
             if key in final_data:
                 try:
                     final_data[key] += data[key]
-                except:
+                except Exception:
                     raise RuntimeError("Could not merge '%s' from %s" %
                                        (key, path))
             else:
@@ -62,6 +62,7 @@ def main(argv):
         print("usage: %s dir" % argv[0])
     data = loadConfig(argv[1])
     print(yaml.safe_dump(data, indent=4))
+
 
 if __name__ == "__main__":
     import sys

@@ -32,7 +32,7 @@ def get_previous_version():
         ver = float(open("/var/lib/software-factory/.version").read().strip())
         if ver == '':
             raise IOError
-    except:
+    except Exception:
         print("WARNING: couldn't read previous version, defaulting to master")
         ver = 9999.
     return ver
