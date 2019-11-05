@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 #
 # Copyright 2016 Red Hat
 #
@@ -51,10 +51,10 @@ for arg in ("change", "change-url", "project", "branch", "topic", "submitter",
 payload = p.parse_args().__dict__
 
 # Get commit message
-p = subprocess.Popen(["git", "cat-file", "-p", payload['commit']],
-                     stdout=subprocess.PIPE)
-p.wait()
-payload['commit_message'] = p.stdout.read()
+proc = subprocess.Popen(["git", "cat-file", "-p", payload['commit']],
+                        stdout=subprocess.PIPE)
+proc.wait()
+payload['commit_message'] = proc.stdout.read().decode('utf-8')
 
 # Call managesf
 r = requests.post("%s/hooks/change_merged" % MANAGESF_BASE_URL,

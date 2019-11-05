@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/bin/env python3
 #
 # Copyright 2016 Red Hat
 #

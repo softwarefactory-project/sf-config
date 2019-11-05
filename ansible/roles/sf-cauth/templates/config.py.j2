@@ -192,7 +192,7 @@ services = [
 ]
 
 sqlalchemy = {
-    'url'           : 'mysql://{{ cauth_mysql_user }}:{{ cauth_mysql_password }}@{{ cauth_mysql_host }}:{{ cauth_mysql_port }}/{{ cauth_mysql_db }}',
+    'url'           : 'mysql://{{ cauth_mysql_user }}:{{ cauth_mysql_password }}@{{ cauth_mysql_host }}:{{ cauth_mysql_port }}/{{ cauth_mysql_db }}?charset=utf8',
     'echo'          : True,
     'encoding'      : 'utf-8'
 }
