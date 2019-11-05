@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/bin/env python3
 
 """ Remove resources from common files that are now managed in _internal.yaml
 """

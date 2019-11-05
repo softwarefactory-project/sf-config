@@ -18,7 +18,7 @@ from sfconfig.utils import fail
 
 
 def encode_image(path):
-    return base64.b64encode(open(path).read())
+    return base64.b64encode(open(path, "rb").read())
 
 
 class Gateway(Component):

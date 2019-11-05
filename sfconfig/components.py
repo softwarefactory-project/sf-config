@@ -14,12 +14,13 @@ import crypt
 import os
 import random
 import string
+from typing import List
 
 from sfconfig.utils import execute
 
 
 class Component(object):
-    require_roles = []
+    require_roles: List[str] = []
 
     def hash_password(self, password):
         salt = '$6$' + ''.join(random.choice(
