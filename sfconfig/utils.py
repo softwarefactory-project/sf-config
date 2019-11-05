@@ -63,7 +63,7 @@ def pread(argv):
 
 
 def fail(msg):
-    print >>sys.stderr, msg
+    print(msg, file=sys.stderr)
     exit(1)
 
 

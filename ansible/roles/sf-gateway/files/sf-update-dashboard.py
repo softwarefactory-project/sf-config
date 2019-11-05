@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 # Convert dash files to json representation for custom dashboard
 
 try:
@@ -125,5 +125,7 @@ def main(argv=sys.argv[1:]):
     for name, data in dashboards.items():
         with open("%s/data_%s.json" % (args.output, name), "w") as of:
             of.write(json.dumps(data))
+
+
 if __name__ == "__main__":
     main()

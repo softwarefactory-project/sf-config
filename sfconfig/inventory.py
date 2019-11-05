@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import ConfigParser
+import configparser
 import copy
 import os
 import yaml
@@ -484,7 +484,7 @@ def enable_action(args):
 
 def configure_ansible():
     ansible_cfg = "/var/lib/software-factory/ansible/ansible.cfg"
-    ansiblecfg = ConfigParser.ConfigParser()
+    ansiblecfg = configparser.ConfigParser()
     ansiblecfg.read("/usr/share/sf-config/ansible/ansible.cfg")
     ara_loc = "/usr/lib/python3.6/site-packages/ara/"
     if os.path.isdir(ara_loc):

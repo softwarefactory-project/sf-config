@@ -11,7 +11,7 @@ Source0: https://tarball.softwarefactory-project.io/demo-project-%{version}.tar.
 
 BuildArch: noarch
 
-BuildRequires: python-setuptools
+BuildRequires: python3-setuptools
 
 %description
 %{sum}
@@ -20,13 +20,13 @@ BuildRequires: python-setuptools
 %autosetup -n demo-project-%{version}
 
 %build
-%{__python2} setup.py build
+%{__python3} setup.py build
 
 %install
-%{__python2} setup.py install --skip-build --root %{buildroot}
+%{__python3} setup.py install --skip-build --root %{buildroot}
 
 %files
-%{python2_sitelib}/*
+%{python3_sitelib}/*
 
 %changelog
 * Tue Nov 14 2017 Demo User <demo@softwarefactory-project.io> - 0.0.1-1

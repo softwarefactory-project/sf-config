@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -14,17 +14,20 @@ AutoReq: 0
 
 BuildArch:      noarch
 
-Requires:       python-jinja2
 Conflicts:      epel-release
-Requires:       python-six
-Requires:       PyYAML
+
+Requires:       python3-jinja2
+Requires:       python3-requests
+Requires:       python3-selinux
+Requires:       python3-six
+Requires:       python3-PyYAML
 Requires:       iproute
 Requires:       openssh
 Requires:       openssl
 
-Buildrequires:  python2-devel
-Buildrequires:  python-setuptools
-Buildrequires:  python2-pbr
+Buildrequires:  python3-devel
+Buildrequires:  python3-setuptools
+Buildrequires:  python3-pbr
 
 %description
 %{sum}
@@ -34,12 +37,12 @@ Buildrequires:  python2-pbr
 
 %build
 export PBR_VERSION=%{version}
-%{__python2} setup.py build
+%{__python3} setup.py build
 
 %install
 # The sfconfig module
 export PBR_VERSION=%{version}
-%{__python2} setup.py install --skip-build --root %{buildroot}
+%{__python3} setup.py install --skip-build --root %{buildroot}
 # /etc/software-factory
 install -p -D -m 0644 defaults/arch.yaml %{buildroot}%{_sysconfdir}/software-factory/arch.yaml
 install -p -D -m 0644 defaults/sfconfig.yaml %{buildroot}%{_sysconfdir}/software-factory/sfconfig.yaml
@@ -65,8 +68,8 @@ install -p -d -m 0750 %{buildroot}/usr/share/software-factory
 %files
 %license LICENSE
 %{_bindir}/sf*
-%{python2_sitelib}/sfconfig-%{version}-py*.egg-info
-%{python2_sitelib}/sfconfig
+%{python3_sitelib}/sfconfig-%{version}-py*.egg-info
+%{python3_sitelib}/sfconfig
 %dir %attr(0750, root, root) %{_sysconfdir}/software-factory/
 %dir %attr(0755, root, root) /var/lib/software-factory/
 %dir %attr(0700, root, root) /var/lib/software-factory/backup
@@ -97,6 +100,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Tue Nov  5 2019  <user@tmacs> - 3.1.0-3
+- Switch to python3
+
 * Fri Dec 14 2018 Javier Peña <jpena@redhat.com> - 3.1.0-2
 - Add missing dependencies on iproute, openssl and openssh
 
