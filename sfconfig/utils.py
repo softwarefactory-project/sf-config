@@ -59,11 +59,12 @@ def execute(argv):
 
 
 def pread(argv):
-    return subprocess.Popen(argv, stdout=subprocess.PIPE).stdout.read()
+    return subprocess.Popen(
+        argv, stdout=subprocess.PIPE).stdout.read().decode('utf-8')
 
 
 def fail(msg):
-    print >>sys.stderr, msg
+    print(msg, file=sys.stderr)
     exit(1)
 
 

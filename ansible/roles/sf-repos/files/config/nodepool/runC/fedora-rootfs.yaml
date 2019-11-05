@@ -12,7 +12,7 @@
     set -ex
     skopeo copy docker://fedora:{{ fedora_version }} dir:{{ target_dir }}-cache
     mkdir -p {{ target_dir }}
-    tar -C {{ target_dir }} -xzf {{ target_dir }}-cache/$(python -c "import json; print(json.load(open('{{ target_dir }}-cache/manifest.json'))['layers'][0]['digest']).split(':')[1]")
+    tar -C {{ target_dir }} -xzf {{ target_dir }}-cache/$(python3 -c "import json; print(json.load(open('{{ target_dir }}-cache/manifest.json'))['layers'][0]['digest']).split(':')[1]")
     cp /etc/resolv.conf /srv/f{{ fedora_version }}/etc/resolv.conf
     {{ bwrap_command }} dnf install -y openssh-server
     rm -Rf {{ target_dir }}-cache

@@ -76,8 +76,6 @@
       - policycoreutils-python
       # Needed for wait4 scripts
       - nmap-ncat
-      # Needed by sfconfig ansible setup tasks
-      - python-requests
       # Needed by very minimal instance
       - rsync
       - traceroute
