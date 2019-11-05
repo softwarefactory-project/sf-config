@@ -228,8 +228,8 @@ class Tests(unittest.TestCase):
             self.assertTrue("backup" in [e['host'][0] for
                             e in config._config])
 
-# ## End of unittest
 
+# ## End of unittest
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Helper for gerrit/.ssh/config')

@@ -151,7 +151,7 @@
 
 - name: Check for python-requests
   stat:
-    path: /usr/lib/python2.7/site-packages/requests/
+    path: /usr/lib/python3.6/site-packages/requests/
   register: _python_request
 
 - name: Update CA list for python-requests
@@ -165,4 +165,4 @@
     - _python_request.stat.exists
     - new_crt is changed
   loop:
-    - /usr/lib/python2.7/site-packages/requests/
+    - /usr/lib/python3.6/site-packages/requests/
