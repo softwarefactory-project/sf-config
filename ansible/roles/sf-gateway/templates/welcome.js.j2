@@ -45,6 +45,11 @@ angular.module('sfWelcome', []).controller('mainController', function($scope, $h
                     tenant_name = project['tenant'];
                 }
                 tenant = data['resources']['tenants'][tenant_name];
+                if (!tenant) {
+                    // fallback to default as the provided tenant name does not exist
+                    tenant_name = default_tenant_name;
+                    tenant = data['resources']['tenants'][tenant_name];
+                }
                 // Get tenant default's connection
                 td_connection = data['resources']['connections'][tenant['default-connection']];
                 // Get project connection
