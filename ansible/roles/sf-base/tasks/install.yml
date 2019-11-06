@@ -54,6 +54,7 @@
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
   with_items:
     - scl-rh
+    # TODO: keep in sync with sf-upgrade/tasks/main.yaml when changing openstack release
     - openstack-stein
   when: ansible_distribution == "CentOS"
 
