@@ -14,6 +14,17 @@
     content: "centos"
     dest: /etc/yum/vars/contentdir
 
+# TODO: keep in sync with sf-base/tasks/install.yaml when change openstack release
+- name: Update openstack release before the upgrade
+  yum:
+    name: "centos-release-{{ item }}"
+    state: present
+    disablerepo: '{{ yum_disable_repo|default(omit) }}'
+    enablerepo: '{{ yum_enable_repo|default(omit) }}'
+  loop:
+    - openstack-stein
+  when: ansible_distribution == "CentOS"
+
 - name: "Update packages"
   yum:
     name: "*"
