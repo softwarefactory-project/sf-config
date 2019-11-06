@@ -168,16 +168,16 @@ class InstallServer(Component):
                 if gh_app_key and os.path.isfile(gh_app_key):
                     github_connection['app_key'] = open(gh_app_key).read()
             for pagure_connection in zuul_config.get("pagure_connections", []):
-                host_packed = pagure_connection.get("server", "pagure.io")
+                host_packed = pagure_connection.get("hostname", "pagure.io")
                 args.glue["zuul_ssh_known_hosts"].append({
                     "host_packed": host_packed,
-                    "host": pagure_connection.get("server", "pagure.io"),
+                    "host": pagure_connection.get("hostname", "pagure.io"),
                     "port": 22
                 })
                 if not pagure_connection.get("baseurl"):
                     pagure_connection["baseurl"] = (
                         'https://%s' % pagure_connection.get(
-                            'server', 'pagure.io'))
+                            'hostname', 'pagure.io'))
                 args.glue["zuul_pagure_connections"].append(pagure_connection)
             for git_connection in zuul_config.get("git_connections", []):
                 args.glue["zuul_git_connections"].append(git_connection)
@@ -332,7 +332,7 @@ class InstallServer(Component):
                         baseurl = conn.get('baseurl')
                         if not baseurl:
                             baseurl = 'https://%s' % conn.get(
-                                'server', 'pagure.io')
+                                'hostname', 'pagure.io')
                         if baseurl not in location:
                             continue
                         # Project name is the remaining part after the puburl
@@ -341,7 +341,7 @@ class InstallServer(Component):
                             _loc = location
                         else:
                             _loc = "ssh://%s@%s/%s" % (
-                                sync_user, conn["server"], project_name)
+                                sync_user, conn["hostname"], project_name)
                         if repo == "config-repo":
                             conn_name = conn["name"]
                             conf_name = project_name
@@ -485,6 +485,21 @@ class InstallServer(Component):
                     # Otherwise, do not use it in the default pipelines
                     conn["default_pipelines"] = False
                 args.sfconfig["zuul"]["github_connections"].append(conn)
+
+            elif values.get("type") == "pagure":
+                hostname = parse.urlparse(
+                    values.get("base-url")).hostname
+                conn = {
+                    "name": name,
+                    "hostname": hostname,
+                }
+                if name == tenant_def_conn:
+                    # This is the connection of the tenant, use it for gate
+                    args.glue["zuul_gate"] = True
+                else:
+                    # Otherwise, do not use it in the default pipelines
+                    conn["default_pipelines"] = False
+                args.sfconfig["zuul"]["pagure_connections"].append(conn)
 
     def resolve_tenant_informations(self, args, host):
         # TODO: make sfconfig.yaml zuul setting usable without sf-zuul role
