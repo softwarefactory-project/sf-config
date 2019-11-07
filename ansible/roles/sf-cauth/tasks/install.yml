@@ -1,9 +1,18 @@
 ---
+- name: Uninstall previous python2-cauth and conflicting deps
+  package:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    # python2-sphinx is conflicting with python3-sphinx
+    - python2-sphinx
+    - python2-cauth
+
 - name: "Install requirements"
   package:
     name:
       - mod_auth_pubtkt
-      - python2-cauth
+      - "{{ role_package }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
