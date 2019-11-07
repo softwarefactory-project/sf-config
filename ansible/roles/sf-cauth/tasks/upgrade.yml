@@ -5,6 +5,15 @@
   ignore_errors: yes
   when: sf_previous_version < 3.1
 
+- name: Uninstall previous python2-cauth
+  package:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    # python2-sphinx is conflicting with python3-sphinx
+    - python2-sphinx
+    - python2-cauth
+
 - name: Force apache reload
   command: /bin/true
   notify: apache reload
