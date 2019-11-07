@@ -5,6 +5,11 @@
   ignore_errors: yes
   when: sf_previous_version < 3.1
 
+- name: Uninstall previous python2-cauth
+  package:
+    name: python2-cauth
+    state: absent
+
 - name: Force apache reload
   command: /bin/true
   notify: apache reload

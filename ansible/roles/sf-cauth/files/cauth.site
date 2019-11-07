@@ -1,9 +1,4 @@
-WSGIScriptAlias /auth /var/www/cauth/app.wsgi
-WSGIDaemonProcess cauth
-<Location /auth>
-    WSGIPassAuthorization On
-    WSGIProcessGroup cauth
-    WSGIApplicationGroup %{GLOBAL}
-    Order deny,allow
-    Allow from all
-</Location>
+<IfModule mod_proxy.c>
+    ProxyPass /auth http://127.0.0.1:8888
+    ProxyPassReverse /auth http://127.0.0.1:8888
+</IfModule>
