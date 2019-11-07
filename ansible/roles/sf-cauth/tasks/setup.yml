@@ -8,9 +8,8 @@
       src: "{{ item.name }}.j2"
       dest: "{{ item.dest }}/{{ item.name }}"
       mode: 0444
-      owner: apache
-      group: apache
-  notify: apache reload
+      owner: cauth
+      group: cauth
   loop:
       - {name: config.py, dest: /etc/cauth}
       - {name: login.html, dest: /etc/cauth/templates}
@@ -22,16 +21,14 @@
   notify: apache reload
   loop:
       - {name: cauth.site, real_name: cauth.conf, dest: /etc/httpd/conf.d/}
-      - {name: app.wsgi, dest: /var/www/cauth/}
 
 - name: Install cauth private key
   copy:
       content: "{{ cauth_privkey }}"
       dest: /var/lib/cauth/keys/privkey.pem
       owner: root
-      group: apache
+      group: cauth
       mode: 0440
-      setype: httpd_sys_content_t
 
 - include_tasks: saml2.yaml
   when: not authentication.SAML2.disabled
