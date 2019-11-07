@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7e95a1bf_802da0d3",
+        "filename": "ansible/roles/sf-base/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-07T16:32:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6a31806_3d1a0c44",
+      "range": {
+        "startLine": 55,
+        "startChar": 2,
+        "endLine": 55,
+        "endChar": 12
+      },
+      "revId": "952b04fad95bc681f92473df5193ea6185a5ba9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "83c9c69c_a0caf776",
         "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2019-11-07T14:04:32Z",
       "side": 1,
       "message": "Yum doesn\u0027t need with_item, could be name: \u0027{{ item }}\u0027, it\u0027s more efficient (in particular with only one item \u003d)). Also the new keyword is loop (with_* are deprecated)",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 13
+      },
+      "revId": "952b04fad95bc681f92473df5193ea6185a5ba9d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ec856849_396b6cde",
+        "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-07T16:32:15Z",
+      "side": 1,
+      "message": "I replaced with loop, but kept the structure so that it is similar to the one of the other file.",
+      "parentUuid": "83c9c69c_a0caf776",
       "range": {
         "startLine": 24,
         "startChar": 2,
