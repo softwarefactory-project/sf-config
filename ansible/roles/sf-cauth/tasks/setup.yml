@@ -1,16 +1,43 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: cauth
+
 - include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
+
+- name: Setup perms
+  file:
+      path: "{{ item.path }}"
+      mode: "{{ item.mode }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+  loop:
+      - path: /var/log/cauth
+        owner: root
+        group: cauth
+        mode: '0770'
+      - path: /var/log/cauth/cauth.log
+        owner: cauth
+        group: cauth
+        mode: '0660'
+      - path: /etc/cauth
+        owner: root
+        group: cauth
+        mode: '0770'
+      - path: /etc/cauth/templates
+        owner: root
+        group: cauth
+        mode: '0770'
 
 - name: Install cauth config files
   template:
       src: "{{ item.name }}.j2"
       dest: "{{ item.dest }}/{{ item.name }}"
       mode: 0444
-      owner: apache
-      group: apache
-  notify: apache reload
+      owner: cauth
+      group: cauth
   loop:
       - {name: config.py, dest: /etc/cauth}
       - {name: login.html, dest: /etc/cauth/templates}
@@ -22,16 +49,14 @@
   notify: apache reload
   loop:
       - {name: cauth.site, real_name: cauth.conf, dest: /etc/httpd/conf.d/}
-      - {name: app.wsgi, dest: /var/www/cauth/}
 
 - name: Install cauth private key
   copy:
       content: "{{ cauth_privkey }}"
       dest: /var/lib/cauth/keys/privkey.pem
-      owner: root
-      group: apache
+      owner: cauth
+      group: cauth
       mode: 0440
-      setype: httpd_sys_content_t
 
 - include_tasks: saml2.yaml
   when: not authentication.SAML2.disabled
@@ -40,3 +65,17 @@
   file:
     path: /etc/cauth/groups.yaml
     state: touch
+
+- name: Restart service when fqdn is updated
+  systemd:
+    name: cauth
+    state: restarted
+    daemon_reload: "yes"
+  when: update_fqdn
+
+- name: Start service
+  systemd:
+    name: cauth
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
