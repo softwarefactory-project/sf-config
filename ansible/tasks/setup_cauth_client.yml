@@ -1,15 +1,22 @@
 ---
 - name: "auth: ensure /var/lib/cauth/keys exists"
   file:
-    path: "/var/lib/cauth/keys"
+    path: "{{ item }}"
+    owner: cauth
+    group: apache
     state: directory
+    mode: 0750
+  loop:
+    - /var/lib/cauth
+    - /var/lib/cauth/keys
 
 - name: "auth: install pubkey.pem"
   copy:
     content: "{{ cauth_pubkey }}"
     dest: "/var/lib/cauth/keys/pubkey.pem"
+    owner: cauth
+    group: apache
     mode: 0444
-    setype: httpd_sys_content_t
 
 - name: "auth: install tkt apache module configuration"
   copy:
