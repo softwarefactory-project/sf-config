@@ -3,7 +3,7 @@
   package:
     name:
       - mod_auth_pubtkt
-      - python2-cauth
+      - "{{ role_package }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
