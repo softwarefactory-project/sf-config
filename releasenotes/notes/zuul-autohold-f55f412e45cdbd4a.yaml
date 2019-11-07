@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The zuul autohold can now be restricted using the zuul_max_hold_experiration
+    and zuul_default_hold_expiration variables.
+upgrade:
+  - |
+    The default max hold duration is set to 24h.
