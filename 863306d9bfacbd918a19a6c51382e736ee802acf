@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b63f5759_68d3ab0b",
+        "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-12T11:12:54Z",
+      "side": 1,
+      "message": "maybe even sf-config ? wdyt ?",
+      "revId": "863306d9bfacbd918a19a6c51382e736ee802acf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
