@@ -5,7 +5,7 @@ role_actions:
   - disable
   - get_logs
 
-role_package: os-loganalyze
+role_package: ara
 
 loguser_authorized_keys: []
 
