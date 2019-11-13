@@ -9,7 +9,7 @@
 - name: Dump current architecture for config-check test
   copy:
     dest: "{{ defconf.path }}/arch.yaml"
-    content: '{{ {"roles": roles}| to_yaml }}'
+    content: '{{ {"roles": roles, "launcher_hosts": launcher_hosts}| to_yaml }}'
   changed_when: False
 
 - name: Setup zuul.conf for config-check test

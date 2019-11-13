@@ -23,9 +23,13 @@
     chdir: /root/config
   loop:
     - cp /var/lib/software-factory/conf/nodepool.yaml nodepool/_nodepool.yaml
-    - env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml"
+    - env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml" {% if ansible_hostname != first_launcher %}--extra-launcher{% endif %} --hostname {{ ansible_hostname }} {% if "nodepool-builder" in nodepool_services %}--builder{% endif %}
     - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
     - rsync -avi --delete nodepool/virt_images/ "{{ nodepool_conf_dir }}/virt_images/"
+
+- name: Check if providers are enabled
+  command: python3 -c "import yaml; print(len(yaml.load(open('/etc/nodepool/nodepool.yaml')).get('providers', [])))"
+  register: _provider_count
 
 - name: Ensure service are started and enabled
   service:
@@ -33,13 +37,16 @@
     state: started
     enabled: "yes"
   loop: "{{ nodepool_services }}"
+  when: _provider_count.stdout != "0"
 
 - name: Restart service when fqdn is updated to refresh statsd client
   service:
     name: "{{ item }}"
     state: restarted
   loop: "{{ nodepool_services }}"
-  when: update_fqdn
+  when:
+    - _provider_count.stdout != "0"
+    - update_fqdn
 
 - name: Write config repo checksum matching current configuration
   copy:

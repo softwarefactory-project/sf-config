@@ -116,13 +116,47 @@
         - name: Merge nodepool config repo files
           command: >
             env - /bin/managesf-configuration nodepool
-               --cache-dir {{ config_root }}/../.cache --config-dir {{ config_root }} --output build/nodepool.yaml
+               --cache-dir {{ config_root }}/../.cache --builder --config-dir {{ config_root }} --output build/nodepool-builder.yaml
           args:
             chdir: "{{ config_root }}"
 
+        - name: Check all launcher-hosts exists
+          shell: >
+            find {{ config_root }}/nodepool/ -name "*.yaml" | xargs grep '^ *launcher-host: ' | awk '{ print $2 }' |
+            grep -v '^\({{ arch.launcher_hosts | join('\|') }}\)$'
+          register: _unknown_launcher_hosts
+          failed_when: _unknown_launcher_hosts.stdout
+          changed_when: false
+
+        - name: Collect launcher-hosts
+          shell: >
+            find {{ config_root }}/nodepool/ -name "*.yaml" | xargs grep '^ *launcher-host: ' | awk '{ print $2 }'
+          register: _launcher_hosts
+          changed_when: false
+
+        - name: Generate per launcher-hosts configuration
+          block:
+            - name: Generate configuration
+              command: >
+                env - /bin/managesf-configuration nodepool
+                  --cache-dir {{ config_root }}/../.cache
+                  --hostname {{ item }}
+                  --config-dir {{ config_root }} --output build/nodepool-{{ item }}.yaml
+              args:
+                chdir: "{{ config_root }}"
+              loop: "{{ _launcher_hosts.stdout_lines }}"
+
+            - name: Run nodepool config-validate
+              command: >
+                env - /bin/nodepool -c build/nodepool-{{ item }}.yaml config-validate
+              args:
+                chdir: "{{ config_root }}"
+              loop: "{{ _launcher_hosts.stdout_lines }}"
+          when: _launcher_hosts.stdout_lines
+
         - name: Run nodepool config-validate
           command: >
-            env - /bin/nodepool -c build/nodepool.yaml
+            env - /bin/nodepool -c build/nodepool-builder.yaml
                 config-validate
           args:
             chdir: "{{ config_root }}"
