@@ -116,9 +116,17 @@
         - name: Merge nodepool config repo files
           command: >
             env - /bin/managesf-configuration nodepool
-               --cache-dir {{ config_root }}/../.cache --config-dir {{ config_root }} --output build/nodepool.yaml
+               --cache-dir {{ config_root }}/../.cache --builder --config-dir {{ config_root }} --output build/nodepool.yaml
           args:
             chdir: "{{ config_root }}"
+
+        - name: Check all launcher-hosts exists
+          shell: >
+            find {{ config_root }}/nodepool/ -name "*.yaml" | xargs grep '^ *launcher-host: ' | awk '{ print $2 }' |
+            grep -v '\({{ arch.hosts | join('\|') }}\)'
+          register: _unknown_launcher_hosts
+          failed_when: _unknown_launcher_hosts.stdout
+          changed_when: false
 
         - name: Run nodepool config-validate
           command: >
