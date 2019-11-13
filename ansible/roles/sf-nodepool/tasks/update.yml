@@ -23,7 +23,7 @@
     chdir: /root/config
   loop:
     - cp /var/lib/software-factory/conf/nodepool.yaml nodepool/_nodepool.yaml
-    - env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml"
+    - env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml" --hostname {{ ansible_hostname }} {% if "nodepool-builder" in nodepool_services %}--builder{% endif %}
     - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
 
 - name: Ensure service are started and enabled
