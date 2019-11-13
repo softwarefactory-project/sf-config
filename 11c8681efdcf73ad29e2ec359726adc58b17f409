@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd66f21f_82a90076",
+        "filename": "ansible/roles/sf-repos/tasks/fetch_zuul_key.yml",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-13T15:06:58Z",
+      "side": 1,
+      "message": "You do not use the stat result here ?",
+      "revId": "11c8681efdcf73ad29e2ec359726adc58b17f409",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
