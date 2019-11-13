@@ -22,3 +22,4 @@
       run_once: true
       when: "ansible_connection == 'kubectl'"
     - import_role: name=ensure-output-dirs
+      when: ansible_user_dir is defined
