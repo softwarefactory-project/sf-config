@@ -34,12 +34,19 @@ def process(args):
     # this indicate that we don't need $role.$fqdn aliases
     # TODO: remove this logic when $role.$fqdn are no longer used
     args.glue["scalable_roles"] = [
-        "zuul", "zuul-merger", "zuul-executor",
+        "zuul",
+        "zuul-merger",
+        "zuul-executor",
+        "nodepool-launcher",
         "hypervisor-runc",
     ]
 
     # roles is a dictwith roles name as key and host list as value
     args.glue["roles"] = {}
+
+    # hosts is a list of hostname
+    args.glue["hosts"] = []
+    args.glue["first_launcher"] = ""
 
     # hosts_files is a dict with host ip as key and hostname list as value
     args.glue["hosts_file"] = {}
@@ -58,6 +65,8 @@ def process(args):
         else:
             host["public_url"] = host["public_url"].rstrip("/")
 
+        args.glue["hosts"].append(host['name'])
+
         # TODO: remove this aliases logic when $role.$fqdn are no longer used
         aliases = set()
         if 'name' in host:
@@ -74,6 +83,9 @@ def process(args):
                 # Add role name virtual name (as cname)
                 aliases.add("%s.%s" % (role, args.sfconfig["fqdn"]))
                 aliases.add(role)
+            # Check if this is the first nodepool-launcher
+            if role == "nodepool-launcher" and not args.glue["first_launcher"]:
+                args.glue["first_launcher"] = host['name']
         args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
             list(aliases)
 
