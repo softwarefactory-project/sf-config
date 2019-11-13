@@ -15,3 +15,12 @@
     src: "{{ pages_artifacts_dir }}"
     verify_host: true
   no_log: true
+
+- name: Define zuul artifacts
+  delegate_to: localhost
+  zuul_return:
+    data:
+      zuul:
+        artifacts:
+          - name: "Pages preview"
+            url: "pages/"
