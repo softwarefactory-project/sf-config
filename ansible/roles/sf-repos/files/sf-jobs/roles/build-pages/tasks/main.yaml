@@ -12,7 +12,7 @@
 
 - name: "Ensure pages-artifacts exists"
   file:
-    path: "{{ workspace }}/{{ pages_build_dir }}"
+    path: "{{ ansible_user_dir }}/zuul-output/logs/pages"
     state: directory
 
 - name: "Check site content type"
@@ -34,7 +34,7 @@
   when: success_check|length > 1
 
 - name: "Build sphinx site"
-  command: "sphinx-build -b html . {{ workspace }}/{{ pages_build_dir }}/"
+  command: "sphinx-build -b html . {{ ansible_user_dir }}/zuul-output/logs/pages"
   args:
     chdir: "{{ source }}"
   when:
@@ -42,7 +42,7 @@
     - success_check.0.item.type == "sphinx"
 
 - name: "Build pelican site"
-  command: "pelican content -o {{ workspace }}/{{ pages_build_dir }}/"
+  command: "pelican content -o {{ ansible_user_dir }}/zuul-output/logs/pages"
   args:
     chdir: "{{ source }}"
   when:
@@ -50,5 +50,14 @@
     - success_check.0.item.type == "pelican"
 
 - name: "Copy {{ source }} to {{ pages_build_dir }}/"
-  shell: "cp -Rf {{ source }}/* {{ workspace }}/{{ pages_build_dir }}/"
+  shell: "cp -Rf {{ source }}/* {{ ansible_user_dir }}/zuul-output/logs/pages"
   when: not success_check
+
+- name: Define zuul artifacts
+  delegate_to: localhost
+  zuul_return:
+    data:
+      zuul:
+        artifacts:
+          - name: "Pages preview"
+            url: "pages/"

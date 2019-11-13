@@ -30,7 +30,6 @@
     - roles/ensure-rake/
     - roles/emit-job-report/
     - roles/fetch-buildset-artifacts/
-    - roles/fetch-pages/
     - roles/linters/
     - roles/submit-log-processor-jobs/
     - roles/submit-logstash-jobs/

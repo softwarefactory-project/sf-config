@@ -7,10 +7,15 @@
     description: Base build and publish pages job
     run: playbooks/pages/build.yaml
     post-run:
-      - playbooks/pages/fetch.yaml
       - playbooks/pages/publish.yaml
     secrets:
       - site_pages
+{% if pages_nodeset_label is defined %}
+    nodeset:
+      nodes:
+        - name: builder
+          label: {{ pages_nodeset_label }}
+{% endif %}
     protected: true
     vars:
       src_dir: /
@@ -21,9 +26,12 @@
     parent: base
     description: Pages build
     run: playbooks/pages/build.yaml
-    post-run:
-      - playbooks/pages/fetch.yaml
-    success-url: 'pages/'
+{% if pages_nodeset_label is defined %}
+    nodeset:
+      nodes:
+        - name: builder
+          label: {{ pages_nodeset_label }}
+{% endif %}
     vars:
       src_dir: /
 
