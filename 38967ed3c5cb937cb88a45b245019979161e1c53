@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0974f2f9_d5a95ac7",
+        "filename": "ansible/roles/sf-logserver/templates/logserver.conf.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-14T08:20:36Z",
+      "side": 1,
+      "message": "This should be removed too right ?",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 79
+      },
+      "revId": "38967ed3c5cb937cb88a45b245019979161e1c53",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
