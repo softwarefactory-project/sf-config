@@ -1,6 +1,6 @@
 # This file is managed by ansible, do not edit directly
 ---
-{% if zuul_gerrit_connections or zuul_github_connections or zuul_pagure_connections or (tenant_deployment and config_key_exists) %}
+{% if config_key_exists and (zuul_gerrit_connections or zuul_github_connections or zuul_pagure_connections) %}
 - job:
     name: build-and-publish-pages
     parent: base
@@ -27,4 +27,7 @@
     vars:
       src_dir: /
 
+{% else %}
+{# Make the yaml an empty list to please zuul configloader #}
+[]
 {% endif %}
