@@ -16,6 +16,11 @@ DocumentRoot /var/www/
     HeaderName /static/index-header.html
 </Directory>
 
+<FilesMatch \.txt\.gz$>
+    ForceType text/json
+    AddDefaultCharset UTF-8
+    AddEncoding x-gzip gz
+</FilesMatch>
 <FilesMatch \.html\.gz$>
     ForceType text/html
     AddDefaultCharset UTF-8
@@ -67,10 +72,6 @@ DocumentRoot /var/www/
     RewriteCond %{REQUEST_URI} ^.*/{{ logs_wsgi_ara_directory }} [NC]
     RewriteRule .* - [L]
 
-    # Redirect plain text file to htmlify middleware
-    RewriteRule ^/var/www/logs/(.*console\.html)$ /htmlify/$1 [QSA,L,PT]
-    RewriteRule ^/var/www/logs/(.*\.txt\.gz)$ /htmlify/$1 [QSA,L,PT]
-
     # Implicit redirect from ara directories to the index file
     RewriteRule ^/var/www/logs/(.*)/ara/$ /logs/$1/ara/index.html.gz [QSA,L,PT]
     RewriteRule ^/var/www/logs/(.*)/ara/(file|result)/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/$ /logs/$1/ara/$2/$3/index.html.gz [QSA,L,PT]
@@ -82,12 +83,5 @@ DocumentRoot /var/www/
 </LocationMatch>
 
 Alias "/logs-raw" "/var/www/logs"
-
-<Directory "/usr/lib/python2.7/site-packages/os_loganalyze/">
-    Require all granted
-</Directory>
-
-SetEnv OS_LOGANALYZE_ROOT_PATH /var/www/logs/
-WSGIScriptAlias /htmlify /usr/lib/python2.7/site-packages/os_loganalyze/wsgi.py
 
 RewriteRule ^.*/ara-report(?!/ansible.sqlite) http://localhost:20003%{REQUEST_URI} [P,L]
