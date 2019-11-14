@@ -22,6 +22,30 @@
       "revId": "38967ed3c5cb937cb88a45b245019979161e1c53",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "31a72fa9_33ec9ae5",
+        "filename": "ansible/roles/sf-logserver/templates/logserver.conf.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-14T13:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0974f2f9_d5a95ac7",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 79
+      },
+      "revId": "38967ed3c5cb937cb88a45b245019979161e1c53",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
