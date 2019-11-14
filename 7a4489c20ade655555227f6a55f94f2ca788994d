@@ -22,6 +22,30 @@
       "revId": "7a4489c20ade655555227f6a55f94f2ca788994d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c0cff4ea_0192d391",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_pipelines.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 450
+      },
+      "writtenOn": "2019-11-14T13:18:25Z",
+      "side": 1,
+      "message": "I considered this initially but this may break email filters some people may have! The proposed one should not.",
+      "parentUuid": "181161e4_cd02870b",
+      "range": {
+        "startLine": 80,
+        "startChar": 6,
+        "endLine": 80,
+        "endChar": 59
+      },
+      "revId": "7a4489c20ade655555227f6a55f94f2ca788994d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
