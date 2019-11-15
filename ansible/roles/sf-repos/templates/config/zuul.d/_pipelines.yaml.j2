@@ -75,6 +75,9 @@
       mqtt:
         topic: "{{ zuul_mqtt_start_topic }}"
 {% endif %}
+{# Adds status_url to improve UX for running jobs #}
+    start-message: |
+      Starting {pipeline.name} jobs. Status at {status_url}
     success:
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
