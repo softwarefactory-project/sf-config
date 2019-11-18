@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c32bb4d6_a60c9d6c",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-18T13:21:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31913fac_6dd09d03",
+      "revId": "c91012571d90329a59bbaa28041778d61539dcca",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1cde13a6_1002e7af",
         "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
         "patchSetId": 10
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "327e393b_35edd94e",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-18T13:21:23Z",
+      "side": 1,
+      "message": "That is correct, perhaps we should rename the arch.hosts into arch.launcher_hosts and only list host that has the launcher role.",
+      "parentUuid": "1cde13a6_1002e7af",
+      "revId": "c91012571d90329a59bbaa28041778d61539dcca",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "466d1bbe_3e57a753",
         "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
         "patchSetId": 10
@@ -47,6 +83,24 @@
       "writtenOn": "2019-11-18T09:01:03Z",
       "side": 1,
       "message": "We should also validate nodepool-{{ item }}.yaml files.",
+      "revId": "c91012571d90329a59bbaa28041778d61539dcca",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1de7561b_bf55501b",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-18T13:21:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "466d1bbe_3e57a753",
       "revId": "c91012571d90329a59bbaa28041778d61539dcca",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
