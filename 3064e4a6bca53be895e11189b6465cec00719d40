@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f960ee0b_b095bd66",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-18T13:48:55Z",
+      "side": 1,
+      "message": "Why not looping over nodepool-{{ host }}.yml too ?",
+      "revId": "3064e4a6bca53be895e11189b6465cec00719d40",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
