@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31913fac_6dd09d03",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-18T09:01:03Z",
+      "side": 1,
+      "message": "Maybe call it nodepool-builder.yaml for clarity ?",
+      "revId": "c91012571d90329a59bbaa28041778d61539dcca",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1cde13a6_1002e7af",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-18T09:01:03Z",
+      "side": 1,
+      "message": "I have the feeling this assumes all host in arch.hosts are supposed to be defined as launcher. Is it expected I could have a host that is just a log server or a gerrit server.",
+      "revId": "c91012571d90329a59bbaa28041778d61539dcca",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "466d1bbe_3e57a753",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-18T09:01:03Z",
+      "side": 1,
+      "message": "We should also validate nodepool-{{ item }}.yaml files.",
+      "revId": "c91012571d90329a59bbaa28041778d61539dcca",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
