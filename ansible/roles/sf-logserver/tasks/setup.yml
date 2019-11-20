@@ -30,7 +30,7 @@
       User=ara
       Group=ara
       SyslogIdentifier=ara
-      ExecStart=/bin/gunicorn_pecan-3 --workers 1 -t 1800 --access-logfile - --access-logformat '%(h)s %(l)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"' --chdir / -b 0.0.0.0:20003 -e 'ARA_WSGI_USE_VIRTUALENV=false' -e 'ARA_WSGI_VIRTUALENV_PATH=None' -e 'ARA_WSGI_TMPDIR_MAX_AGE={{ logs_wsgi_ara_tmpdir_max_age }}' -e 'ARA_WSGI_LOG_ROOT=/var/www/logs' -e 'ARA_WSGI_DATABASE_DIRECTORY=ara-report' --name ara ara.wsgi_sqlite
+      ExecStart=/bin/gunicorn-3 --workers 4 -t 1800 --access-logfile - --access-logformat '%(h)s %(l)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"' --chdir / -b 0.0.0.0:20003 -e 'ARA_WSGI_USE_VIRTUALENV=false' -e 'ARA_WSGI_VIRTUALENV_PATH=None' -e 'ARA_WSGI_TMPDIR_MAX_AGE={{ logs_wsgi_ara_tmpdir_max_age }}' -e 'ARA_WSGI_LOG_ROOT=/var/www/logs' -e 'ARA_WSGI_DATABASE_DIRECTORY=ara-report' --name ara ara.wsgi_sqlite
 
       [Install]
       WantedBy=multi-user.target
