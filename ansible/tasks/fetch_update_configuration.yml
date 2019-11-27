@@ -1,8 +1,8 @@
 ---
 - name: Get service configuration via managesf/configurations
-  uri:
+  get_url:
     url: "{{ managesf_internal_url }}/v2/configurations/{{ service_name }}"
-    method: GET
+    timeout: 45
     dest: "{{ service_config_dir }}/{{ service_config_name }}_new"
   retries: 3
   delay: 10
