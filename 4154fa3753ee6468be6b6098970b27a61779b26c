@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c721e86c_73f2838c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-28T15:26:19Z",
+      "side": 1,
+      "message": "What is the issue? IIRC we need it for rh-git",
+      "revId": "4154fa3753ee6468be6b6098970b27a61779b26c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
