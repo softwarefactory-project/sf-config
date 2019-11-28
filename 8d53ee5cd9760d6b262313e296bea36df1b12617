@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd1653a9_c8a8af02",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/_linters-packages.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-28T15:25:12Z",
+      "side": 1,
+      "message": "Well, this is not a linter package... I had to remove those because they are provided by rdo. Could it be part of a pre run for the demo-project? Or could the demo-project using something else than tox?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "8d53ee5cd9760d6b262313e296bea36df1b12617",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
