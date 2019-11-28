@@ -37,6 +37,7 @@
       mode: 0444
       owner: cauth
       group: cauth
+  notify: cauth restart
   loop:
       - {name: config.py, dest: /etc/cauth}
       - {name: login.html, dest: /etc/cauth/templates}
