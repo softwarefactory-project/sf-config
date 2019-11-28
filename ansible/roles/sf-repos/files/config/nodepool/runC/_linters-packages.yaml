@@ -5,6 +5,7 @@
     linters_pkgs:
       - yamllint
       - python3-flake8
+      - python-tox
       - traceroute
       - rpm-build
 

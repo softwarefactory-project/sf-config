@@ -3,9 +3,9 @@
     name: demo-project
     check:
       jobs:
-        - tox-py27
+        - tox-py36
         - demo-rpmbuild
     gate:
       queue: demo-integrated
       jobs:
-        - tox-py27
+        - tox-py36
