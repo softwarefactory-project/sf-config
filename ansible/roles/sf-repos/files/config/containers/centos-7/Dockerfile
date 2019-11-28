@@ -17,7 +17,11 @@ FROM registry.centos.org/centos:7
 RUN yum-config-manager --enable cr && yum update -y && \
   yum install -y sudo rsync git traceroute iproute \
   python3-setuptools python2-setuptools \
-  python3 python3-devel gcc gcc-c++ unzip bzip2 make cmake
+  python3 python3-devel gcc gcc-c++ unzip bzip2 make cmake \
+  rpm-build
+
+# Install base Python linter for the demo project
+RUN pip install flake8
 
 # Zuul except /bin/pip to be available
 RUN ln -sf /bin/pip3 /bin/pip && /bin/pip3 install --user "tox>=3.8.0"
