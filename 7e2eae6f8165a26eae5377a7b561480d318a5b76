@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8538a2ca_a31e688b",
+        "filename": "ansible/roles/sf-nodepool/files/dib-virt-customize.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-28T15:12:08Z",
+      "side": 1,
+      "message": "why changing the file mode?",
+      "revId": "7e2eae6f8165a26eae5377a7b561480d318a5b76",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
