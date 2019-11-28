@@ -21,6 +21,10 @@
   block:
     - name: Run buildah
       command: "buildah bud -t localhost/k1s/{{ item|basename }} {{ item }}"
+      register: _buildah
+      retries: 3
+      delay: 10
+      until: _buildah.rc == 0
 
     - name: Write new config
       copy:
