@@ -6,9 +6,15 @@
 #      - centos-minimal
 #      - nodepool-minimal
 #      - zuul-worker-user
+#  - name: cloud-fedora-rawhide
+#    python-path: /usr/bin/python3
+#    dib-cmd: /usr/bin/dib-virt-customize /etc/nodepool/virt_images/cloud-fedora-rawhide.yaml
+#
 #
 #labels:
 #  - name: dib-centos-7
+#    min-ready: 1
+#  - name: cloud-fedora-rawhide
 #    min-ready: 1
 #
 #providers:
@@ -20,6 +26,7 @@
 #    rate: 10.0
 #    diskimages:
 #      - name: dib-centos-7
+#      - name: cloud-fedora-rawhide
 #    pools:
 #      - name: main
 #        max-servers: 5
@@ -29,3 +36,6 @@
 #          - name: dib-centos-7
 #            min-ram: 1024
 #            diskimage: dib-centos-7
+#          - name: cloud-fedora-rawhide
+#            min-ram: 1024
+#            diskimage: cloud-fedora-rawhide
