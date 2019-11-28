@@ -46,6 +46,30 @@
       "revId": "8d53ee5cd9760d6b262313e296bea36df1b12617",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cccb17cb_76cd1872",
+        "filename": "ansible/roles/sf-repos/files/config/nodepool/runC/_linters-packages.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-11-28T15:52:40Z",
+      "side": 1,
+      "message": "Right, I think it would be much easier to just replace tox by linters.",
+      "parentUuid": "9590d8be_83f3c1b7",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "8d53ee5cd9760d6b262313e296bea36df1b12617",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
