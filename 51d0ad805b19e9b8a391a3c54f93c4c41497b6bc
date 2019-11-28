@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "29e3595f_c8b5fa3e",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-28T16:02:25Z",
+      "side": 1,
+      "message": "Why not on true ? Could you expand in the comment or name it k1s_default_pods ?",
+      "revId": "51d0ad805b19e9b8a391a3c54f93c4c41497b6bc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
