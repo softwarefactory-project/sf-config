@@ -175,6 +175,7 @@
       copy:
         src: dib-virt-customize.py
         dest: /usr/bin/dib-virt-customize
+        mode: "0755"
   when:
     - '"nodepool-builder" in nodepool_services'
 
