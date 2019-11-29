@@ -16,6 +16,24 @@
       "revId": "4154fa3753ee6468be6b6098970b27a61779b26c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "957a4b75_62d20826",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-11-29T09:26:38Z",
+      "side": 1,
+      "message": "No issue I thought we were SCL free now :). Let\u0027s abandon it then.",
+      "parentUuid": "c721e86c_73f2838c",
+      "revId": "4154fa3753ee6468be6b6098970b27a61779b26c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
