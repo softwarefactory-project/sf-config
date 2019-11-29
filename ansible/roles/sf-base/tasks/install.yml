@@ -35,17 +35,6 @@
       - python-devel
     state: absent
 
-- name: Check for sf-release
-  stat:
-    path: /etc/yum.repos.d/sf-release.repo
-  register: sf_release_installed
-
-- name: Install sf-release if needed
-  yum:
-    name: "{{ sf_release_url }}"
-    state: present
-  when: not sf_release_installed.stat.exists
-
 - name: Add required repo package
   yum:
     name: "centos-release-{{ item }}"
