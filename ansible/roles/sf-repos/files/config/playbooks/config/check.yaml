@@ -122,7 +122,7 @@
 
         - name: Check all launcher-hosts exists
           shell: >
-            find {{ config_root }}/nodepool/ -name "*.yaml" | xargs grep '^ *launcher-host: ' | awk '{ print $2 }' |
+            find {{ config_root }}/nodepool/ -name "*.yaml" | xargs grep '^ *launcher-host: ' | awk '{ print $3 }' |
             grep -v '^\({{ arch.launcher_hosts | join('\|') }}\)$'
           register: _unknown_launcher_hosts
           failed_when: _unknown_launcher_hosts.stdout
@@ -130,7 +130,7 @@
 
         - name: Collect launcher-hosts
           shell: >
-            find {{ config_root }}/nodepool/ -name "*.yaml" | xargs grep '^ *launcher-host: ' | awk '{ print $2 }'
+            find {{ config_root }}/nodepool/ -name "*.yaml" | xargs grep '^ *launcher-host: ' | awk '{ print $3 }'
           register: _launcher_hosts
           changed_when: false
 
