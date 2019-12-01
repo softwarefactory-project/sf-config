@@ -28,7 +28,6 @@
     - roles/ensure-ansible-review/
     - roles/ensure-ansible_spec/
     - roles/ensure-rake/
-    - roles/emit-job-report/
     - roles/fetch-buildset-artifacts/
     - roles/linters/
     - roles/submit-log-processor-jobs/
