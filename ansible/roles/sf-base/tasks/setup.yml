@@ -148,21 +148,3 @@
 - name: Trust crt
   shell: update-ca-trust
   when: new_crt is changed
-
-- name: Check for python-requests
-  stat:
-    path: /usr/lib/python3.6/site-packages/requests/
-  register: _python_request
-
-- name: Update CA list for python-requests
-  copy:
-    src: /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt
-    dest: "{{ item }}/cacert.pem"
-    mode: 0444
-    owner: root
-    group: root
-  when:
-    - _python_request.stat.exists
-    - new_crt is changed
-  loop:
-    - /usr/lib/python3.6/site-packages/requests/

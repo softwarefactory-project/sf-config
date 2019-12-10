@@ -34,5 +34,5 @@
         name: "{{ item }}"
         state: absent
       loop:
-        - python2-sfmanager
+        - python3-sfmanager
   when: erase == True

@@ -3,11 +3,15 @@
   command: >
     sfmanager user create --username demo --password demo
         --email demo@{{ fqdn }} --fullname "Demo User"
+  environment:
+    REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
   # TODO: fix sfmanager to not fail when user already exists
   ignore_errors: yes
 
 - name: Logging to create user
   command: sfmanager --auth demo:demo sf_user list
+  environment:
+    REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
 
 - name: Check if repository exists
   command: python3 -c "import requests; print('demo-project' in requests.get('{{ managesf_internal_url }}/v2/resources').json().get('resources', {}).get('repos', {}))"
