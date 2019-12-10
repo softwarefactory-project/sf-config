@@ -11,6 +11,8 @@
 - block:
     - name: Make a first admin connexion through SF SSO (force sf_users admin id:1)
       command: sfmanager sf_user list
+      environment:
+        REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
 
     - set_fact:
         initial_creation: True
