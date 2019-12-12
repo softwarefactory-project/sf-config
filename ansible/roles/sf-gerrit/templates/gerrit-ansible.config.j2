@@ -25,6 +25,7 @@
     war = /usr/lib64/gerrit/release.war
 [sshd]
     listenAddress = *:29418
+    idleTimeout = 2d
 [httpd]
     listenUrl = proxy-https://0.0.0.0:{{ gerrit_port }}/r/
 [commentlink "changeid"]
