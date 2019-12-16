@@ -43,6 +43,7 @@
 - include_tasks: config_create_dir.yml
   vars:
     repo_dir_names: [containers]
+  when: not tenant_deployment
 
 - name: Ensure role directory exists
   file:
@@ -105,7 +106,9 @@
   template:
     src: "config/nodepool/_pods.yaml.j2"
     dest: "{{ config_clone_dir }}/nodepool/_pods.yaml"
-  when: nodepool_default_pods|default(true)
+  when:
+    - not tenant_deployment
+    - nodepool_default_pods|default(true)
 
 - name: Update admin email in resources.yaml
   replace:
