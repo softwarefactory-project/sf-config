@@ -136,6 +136,9 @@ baseurl={{ conn['baseurl'] }}
 {% if conn['cloneurl']|default(false) %}
 baseurl={{ conn['cloneurl'] }}
 {% endif %}
+{% if conn['source_whitelist']|default(false) %}
+source_whitelist={{ conn['source_whitelist'] }}
+{% endif %}
 
 {% endfor %}
 
