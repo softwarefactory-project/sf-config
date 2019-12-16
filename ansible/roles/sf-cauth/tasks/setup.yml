@@ -16,8 +16,9 @@
       state: "{{ item.state|default('directory') }}"
   loop:
       - path: /var/log/cauth
-        owner: root
+        owner: cauth
         group: cauth
+        mode: '0750'
       - path: /var/log/cauth/cauth.log
         owner: cauth
         group: cauth

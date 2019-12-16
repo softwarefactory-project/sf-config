@@ -20,6 +20,7 @@ zuul_services:
 
 zuul_scheduler_packages:
   - wait4service
+  - managesf
   - zuul
   - zuul-scheduler
 

@@ -4,7 +4,8 @@
     name:
       - httpd
       - mod_wsgi
-      - ara # we can't mix python2 and python3 in mod_wsgi, temporary install py2 version for now
+      - python3-gunicorn # fixme: add this to ara require
+      - ara
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
