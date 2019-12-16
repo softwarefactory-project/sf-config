@@ -225,6 +225,8 @@ class InstallServer(Component):
             if github_connection.get("app_name"):
                 args.glue["zuul_gate_pipeline"] = True
         for pagure_connection in args.glue["zuul_pagure_connections"]:
+            if not pagure_connection.get("default_pipelines", True):
+                continue
             args.glue["zuul_pagure_connections_pipelines"].append(
                 pagure_connection)
             args.glue["zuul_gate_pipeline"] = True
