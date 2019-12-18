@@ -48,7 +48,7 @@
     creates: "{{ image_cache_file }}"
 
 - name: Update the cache
-  command: "virt-customize -m 1024 -a {{ image_cache_file }} --update"
+  command: "virt-customize -m {{ memsize }} -a {{ image_cache_file }} --update"
 
 - name: Create tmp directory
   file:
@@ -69,6 +69,6 @@
 
 - set_fact:
     virt_customize_cmd:
-      - "virt-customize -m 1024 -a {{ image_file }}"
+      - "virt-customize -m {{ memsize }} -a {{ image_file }}"
       - "--selinux-relabel"
       - "--install '{{ base_packages | join(',') }}'"
