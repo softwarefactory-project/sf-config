@@ -1,6 +1,7 @@
 ---
 image_cache_dir: "/var/cache/nodepool"
 image_wipe_cache: False
+memsize: 1024
 base_packages:
   - traceroute
   - iproute
