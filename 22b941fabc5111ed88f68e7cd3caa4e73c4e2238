@@ -16,6 +16,24 @@
       "revId": "22b941fabc5111ed88f68e7cd3caa4e73c4e2238",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd0f1e1d_aee0db74",
+        "filename": "ansible/roles/sf-repos/templates/config/zuul.d/_pipelines.yaml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2019-12-18T12:10:53Z",
+      "side": 0,
+      "message": "yes, this is not working, Zuul CI start comment are : `Starting check jobs. Status at`",
+      "parentUuid": "bd52f3d8_902639d6",
+      "revId": "22b941fabc5111ed88f68e7cd3caa4e73c4e2238",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
