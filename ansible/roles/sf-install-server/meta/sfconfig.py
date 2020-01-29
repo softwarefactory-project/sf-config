@@ -94,10 +94,11 @@ class InstallServer(Component):
 
         # Assume the config key has been initialized
         args.glue["config_key_initialized"] = True
+        change_url_path = "change/{change.number},{change.patchset}"
         if bool(args.sfconfig["tenant-deployment"]):
             # This is a tenant deployment, do extra configuration
-            args.glue["tenant_status_page_url"] = "%s/zuul/status.html" % (
-                args.glue["gateway_url"])
+            args.glue["build_status_page_url"] = "%s/zuul/status/%s" % (
+                args.glue["gateway_url"], change_url_path)
             args.glue["tenant_zuul_api"] = "%s/zuul/api" % (
                 args.glue["gateway_url"])
             args.glue["tenant_deployment"] = True
@@ -108,8 +109,9 @@ class InstallServer(Component):
             # This is the master deployment, set default configuration
             args.glue["tenant_name"] = args.sfconfig["default-tenant-name"]
             args.glue[
-                "tenant_status_page_url"] = "%s/zuul/t/%s/status.html" % (
-                    args.glue["gateway_url"], args.glue["tenant_name"])
+                "build_status_page_url"] = "%s/zuul/t/%s/status/%s" % (
+                    args.glue["gateway_url"], args.glue["tenant_name"],
+                    change_url_path)
             args.glue["tenant_zuul_api"] = "%s/zuul/api/tenant/%s" % (
                 args.glue["gateway_url"], args.glue["tenant_name"])
             args.glue["tenant_deployment"] = False

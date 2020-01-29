@@ -58,7 +58,7 @@
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         status: 'pending'
-        status-url: "{{ tenant_status_page_url }}"
+        status-url: "{{ build_status_page_url }}"
         comment: false
 {% endfor %}
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
@@ -68,7 +68,7 @@
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         status: 'pending'
-        status-url: "{{ tenant_status_page_url }}"
+        status-url: "{{ build_status_page_url }}"
         comment: false
 {% endfor %}
 {% if 'firehose' in roles %}
@@ -206,13 +206,13 @@
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         status: 'pending'
-        status-url: "{{ tenant_status_page_url }}"
+        status-url: "{{ build_status_page_url }}"
         comment: false
 {% endfor %}
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         status: 'pending'
-        status-url: "{{ tenant_status_page_url }}"
+        status-url: "{{ build_status_page_url }}"
         comment: false
 {% endfor %}
 {% if 'firehose' in roles %}
