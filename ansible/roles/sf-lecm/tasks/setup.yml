@@ -44,5 +44,5 @@
 - name: Install renew crontab
   cron:
     name: "Renew let's encrypt with lecm"
-    special_time: weekly
+    special_time: daily
     job: PATH=$PATH:/usr/sbin /usr/bin/lecm --renew
