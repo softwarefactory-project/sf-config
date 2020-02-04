@@ -11,6 +11,7 @@ resources:
         zuul/web-root: {{ gateway_url }}/zuul/
 {% endif %}
         zuul/report-build-page: {{ zuul_report_build_page|default(True) }}
+        zuul/max-job-timeout: {{ zuul_max_job_timeout|default(10800) }}
 
 {% if not initial_creation|default(False) and not tenant_deployment %}
   connections:
