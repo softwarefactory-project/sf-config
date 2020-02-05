@@ -54,16 +54,6 @@
   notify:
     - restart postfix
 
-- name: Add monit postfix check
-  copy:
-    src: monit
-    dest: /etc/monit.d/postfix
-    owner: root
-    group: root
-    mode: 0640
-  notify:
-    - restart monit
-
 - name: Start service
   service:
     name: postfix
