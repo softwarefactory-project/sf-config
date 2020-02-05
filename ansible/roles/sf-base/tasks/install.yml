@@ -64,7 +64,6 @@
       - haveged
       - logrotate
       - git
-      - monit
       - ntp
       - patch
       - postfix

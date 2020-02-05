@@ -1,3 +1,0 @@
----
-mail_from: "monit@{{ fqdn }}"
-mail_to: "root@localhost"

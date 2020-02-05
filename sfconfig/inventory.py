@@ -186,7 +186,7 @@ def setup(args, pb):
     # Setup base role on all hosts
     for host in args.inventory:
         roles_action = {'role_action': 'setup', 'manage_etc_hosts': True}
-        host_roles = ["postfix", "base", "monit"]
+        host_roles = ["postfix", "base"]
         if host.get("remote", False):
             # This host is running on isolated network
             host_roles = ["base"]

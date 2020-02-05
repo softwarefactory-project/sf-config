@@ -94,16 +94,6 @@
     mode: 0644
   when: not gerrit_replication_config.stat.exists
 
-- name: Add monit service check
-  copy:
-    src: monit
-    dest: /etc/monit.d/gerrit
-    owner: root
-    group: root
-    mode: 0640
-  notify:
-    - restart monit
-
 - name: Copy gerrit service key
   copy:
     content: "{{ hostvars[inventory_hostname][item.name] }}\n"

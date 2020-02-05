@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The monit service is no longer deployed and configured. System monitoring
+    is no longer managed by Software Factory and it needs to be setup manually.
