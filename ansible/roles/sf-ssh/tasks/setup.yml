@@ -1,12 +1,4 @@
 ---
-- name: Install service_rsa key
-  include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: root
-    shell: /bin/bash
-    home_dir: /root
-    ssh_key: service_rsa
-
 - name: Allow zuul to run sf-config-update
   authorized_key:
     user: root

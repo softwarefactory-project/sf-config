@@ -57,7 +57,6 @@ class InstallServer(Component):
 
     def configure(self, args, host):
         self.get_or_generate_CA(args)
-        self.get_or_generate_ssh_key(args, "service_rsa")
         self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
         # When install-server is hosted on the gateway, we can use fqdn instead
         args.glue["install_server_hostname"] = args.glue["install_server_host"]

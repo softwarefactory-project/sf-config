@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    The ssh configuration is no longer managed by sf-config. The operator
+    needs to ensure that the install-server root user has access to all
+    the instances root user.
