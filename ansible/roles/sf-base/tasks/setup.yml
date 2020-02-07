@@ -103,11 +103,6 @@
     state: absent
     regexp: "^Defaults.*requiretty"
 
-- name: Configure install-server access
-  authorized_key:
-    user: root
-    key: "{{ service_rsa_pub }}"
-
 - name: Set selinux policies for httpd
   seboolean:
     name: "{{ item }}"
