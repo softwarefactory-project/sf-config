@@ -1,0 +1,65 @@
+---
+- name: Setup docker-ce repository
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+
+- name: Install docker
+  package:
+    name: docker-ce
+    state: latest
+
+- name: Create docker group
+  group:
+    name: docker
+    state: present
+
+- name: Add zuul-user to docker group
+  user:
+    name: zuul-user
+    groups: docker
+    append: yes
+
+- name: Enable docker
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Setup elasticsearch repository
+  yum_repository:
+    name: elasticsearch-2.x
+    description: Elastic search repository for 2.x packages
+    baseurl: http://packages.elastic.co/elasticsearch/2.x/centos
+    gpgkey: http://packages.elastic.co/GPG-KEY-elasticsearch
+    gpgcheck: yes
+    enabled: yes
+
+- name: Install elasticsearch
+  package:
+    name: elasticsearch
+    state: latest
+
+- name: Enable elasticsearch service
+  service:
+    name: elasticsearch
+    enabled: yes
+    state: started
+
+- name: Add tox through pip
+  pip:
+    name: tox
+    extra_args: -U
+
+- name: Install additional packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ dci_packages }}"
+
+- name: Install ansible stuff
+  pip:
+    name:
+      - ansible-lint
+      - ansible-review
+    extra_args: -U

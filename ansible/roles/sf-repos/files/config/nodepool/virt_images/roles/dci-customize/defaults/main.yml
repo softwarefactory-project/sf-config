@@ -1,0 +1,6 @@
+---
+dci_packages:
+  - python27
+  - python36
+  - http-parser
+  - inotify-tools
