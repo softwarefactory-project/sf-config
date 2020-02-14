@@ -196,12 +196,48 @@
   when: "'nodepool-builder' in nodepool_services"
 
 - block:
+    - name: Create nodepool launcher log dir
+      file:
+        path: "{{ nodepool_launcher_dir }}"
+        owner: "nodepool"
+        group: "apache"
+        mode: "0755"
+        state: directory
+
+    - name: Create www nodepool dir
+      file:
+        path: /var/www/html/nodepool-launcher/logs
+        state: directory
+        owner: "nodepool"
+        group: "apache"
+        recurse: yes
+
+    - name: "Ensure nodepool-launcher link to {{ nodepool_launcher_dir }}"
+      file:
+        path: "/var/www/html/nodepool-launcher/logs"
+        src: "{{ nodepool_launcher_dir }}"
+        state: link
+
     - include_tasks: create_logging.yml
       vars:
         _logfile: launcher
+
+    - name: Create nodepool-launcher index.html file
+      template:
+        src: nodepool-launcher-index.html.j2
+        dest: "{{ nodepool_launcher_dir }}/index.html"
+        owner: nodepool
+        group: nodepool
+        mode: 0644
+
   when: "'nodepool-launcher' in nodepool_services"
 
 - name: Install logrotate configuration
   copy:
     src: nodepool.logrotate.conf
     dest: /etc/logrotate.d/nodepool
+
+- name: Install logrotate configuration for www exception logs
+  copy:
+    src: nodepool_www.logrotate.conf
+    dest: /etc/logrotate.d/nodepool_www
