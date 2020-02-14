@@ -42,6 +42,7 @@ nodepool_conf_dir: "/etc/nodepool"
 nodepool_lib_dir: "/var/lib/nodepool"
 nodepool_log_dir: "/var/log/nodepool"
 nodepool_sysconfig: "/etc/sysconfig/nodepool"
+nodepool_exception_log_file: "/var/www/nodepool-launcher.log"
 
 nodepool_webapp_port: 8006
 

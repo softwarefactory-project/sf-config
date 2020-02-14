@@ -4,3 +4,12 @@
     src: "logging.yaml.j2"
     dest: "{{ nodepool_conf_dir }}/{{ _logfile }}-logging.yaml"
   notify: restart nodepool
+
+- name: "Create nodepool exception log"
+  become: true
+  file:
+    path: "{{ nodepool_exception_log_file }}"
+    owner: nodepool
+    group: nodepool
+    mode: '0644'
+    state: touch
