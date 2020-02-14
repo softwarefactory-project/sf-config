@@ -205,3 +205,8 @@
   copy:
     src: nodepool.logrotate.conf
     dest: /etc/logrotate.d/nodepool
+
+- name: Install logrotate configuration for www exception logs
+  copy:
+    src: nodepool_www.logrotate.conf
+    dest: /etc/logrotate.d/nodepool_www
