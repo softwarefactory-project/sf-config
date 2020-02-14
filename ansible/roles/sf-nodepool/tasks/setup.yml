@@ -151,6 +151,22 @@
         mode: "0755"
         state: directory
 
+    - name: Create nodepool launcher log dir
+      file:
+        path: "{{ nodepool_launcher_dir }}"
+        owner: "nodepool"
+        group: "apache"
+        mode: "0755"
+        state: directory
+
+    - name: Create nodepool exception log
+      file:
+        path: "{{ nodepool_launcher_dir }}/logs"
+        owner: "nodepool"
+        group: "apache"
+        mode: "0755"
+        state: directory
+
     - name: Install httpd conf.d nodepool log
       copy:
         src: nodepool_log.conf
@@ -169,6 +185,12 @@
       file:
         path: /var/www/html/nodepool-log
         src: /var/www/nodepool-log
+        state: link
+
+    - name: "Ensure nodepool-launcher link to {{ nodepool_launcher_dir }}"
+      file:
+        path: "/var/www/html/nodepool-launcher"
+        src: "{{ nodepool_launcher_dir }}"
         state: link
 
     - name: Install dib-virt-customize script
@@ -199,9 +221,22 @@
     - include_tasks: create_logging.yml
       vars:
         _logfile: launcher
+
+    - name: Create nodepool-launcher index.html file
+      template:
+        src: nodepool-launcher-index.html.j2
+        dest: "{{ nodepool_launcher_dir }}/index.html"
+        owner: nodepool
+        group: nodepool
+        mode: 0644
   when: "'nodepool-launcher' in nodepool_services"
 
 - name: Install logrotate configuration
   copy:
     src: nodepool.logrotate.conf
     dest: /etc/logrotate.d/nodepool
+
+- name: Install logrotate configuration for www exception logs
+  copy:
+    src: nodepool_www.logrotate.conf
+    dest: /etc/logrotate.d/nodepool_www
