@@ -2,6 +2,7 @@ User-agent: *
 Disallow: /logs
 Disallow: /zuul
 Disallow: /nodepool-log
+Disallow: /nodepool-launcher
 Disallow: /paste
 Disallow: /etherpad
 Disallow: /analytics
