@@ -203,8 +203,28 @@
 {% if 'nodepool-builder' in roles and gateway_host != nodepool_builder_host %}
         ProxyPass /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
         ProxyPassReverse /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
-
 {% endif %}
+{% if 'nodepool-launcher' in roles and gateway_host != nodepool_builder_host %}
+
+    {# if request goes to /nodepool-launcher/<hostname>/logs show the directory #}
+        <Directory /var/www/nodepool-launcher/logs>
+            IndexOptions FancyIndexing FoldersFirst
+            Options MultiViews Indexes
+            AllowOverride None
+            Order allow,deny
+            Allow from all
+        </Directory>
+
+    {# it should redirect /nodepool-launcher/test1 host to http://<hostip>/nodepool-launcher>/ #}
+        Alias /nodepool-launcher /var/www/html/nodepool-launcher
+
+    {% for nl in groups['nodepool-launcher'] %}
+        Alias /nodepool-launcher/{{ nl }} /var/www/html/nodepool-launcher/logs
+        ProxyPass /nodepool-launcher/{{ nl }} http://{{ hostvars[nl]['ansible_default_ipv4']['address'] }}/nodepool-launcher/
+        ProxyPassReverse /nodepool-launcher/{{ nl }} http://{{ hostvars[nl]['ansible_default_ipv4']['address'] }}/nodepool-launcher/
+    {% endfor %}
+{% endif %}
+
 {% if 'logserver' in roles and gateway_host != logserver_host %}
         ProxyPass /logs/ http://{{ logserver_host }}/logs/
         ProxyPassReverse /logs/ http://{{ logserver_host }}/logs/
