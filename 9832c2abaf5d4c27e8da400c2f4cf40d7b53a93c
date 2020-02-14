@@ -22,6 +22,30 @@
       "revId": "9832c2abaf5d4c27e8da400c2f4cf40d7b53a93c",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15f7b481_1f9a4931",
+        "filename": "ansible/roles/sf-nodepool/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-02-14T13:53:06Z",
+      "side": 1,
+      "message": "sure we can!\nSo it will also change TG-3321",
+      "parentUuid": "f3e67619_61f4a30c",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 61
+      },
+      "revId": "9832c2abaf5d4c27e8da400c2f4cf40d7b53a93c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
