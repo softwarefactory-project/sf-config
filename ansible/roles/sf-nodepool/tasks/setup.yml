@@ -151,6 +151,14 @@
         mode: "0755"
         state: directory
 
+    - name: Create nodepool exception log
+      file:
+        path: "{{ nodepool_exception_log_dir }}"
+        owner: "nodepool"
+        group: "apache"
+        mode: "0755"
+        state: directory
+
     - name: Install httpd conf.d nodepool log
       copy:
         src: nodepool_log.conf
@@ -169,6 +177,12 @@
       file:
         path: /var/www/html/nodepool-log
         src: /var/www/nodepool-log
+        state: link
+
+    - name: "Ensure nodepool-exception-log link to {{ nodepool_exception_log_dir }}"
+      file:
+        path: "/var/www/html/nodepool-exception-log"
+        src: "{{ nodepool_exception_log_dir }}"
         state: link
 
     - name: Install dib-virt-customize script
@@ -205,3 +219,8 @@
   copy:
     src: nodepool.logrotate.conf
     dest: /etc/logrotate.d/nodepool
+
+- name: Install logrotate configuration for www exception logs
+  copy:
+    src: nodepool_www.logrotate.conf
+    dest: /etc/logrotate.d/nodepool_www

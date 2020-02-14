@@ -204,6 +204,9 @@
         ProxyPass /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
         ProxyPassReverse /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
 
+        ProxyPass /nodepool-exception-log/ http://{{ nodepool_builder_host }}/nodepool-exception-log/
+        ProxyPassReverse /nodepool-exception-log/ http://{{ nodepool_builder_host }}/nodepool-exception-log/
+
 {% endif %}
 {% if 'logserver' in roles and gateway_host != logserver_host %}
         ProxyPass /logs/ http://{{ logserver_host }}/logs/

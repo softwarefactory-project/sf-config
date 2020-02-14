@@ -15,11 +15,17 @@ handlers:
     formatter: normal
     level: DEBUG
     filename: '{{ nodepool_log_dir }}/{{ _logfile }}.log'
+  exception:
+    class: logging.handlers.WatchedFileHandler
+    formatter: normal
+    level: ERROR
+    filename: '{{ nodepool_exception_log_dir }}/{{ _logfile }}.log'
 loggers:
   nodepool:
     handlers:
       - console
       - normal
+      - exception
     level: {{ nodepool_loglevel }}
     propagate: 0
 root:
