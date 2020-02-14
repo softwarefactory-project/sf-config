@@ -15,6 +15,7 @@
       loop:
         - /etc/httpd/conf.d/nodepool_log.conf
         - /var/www/nodepool-log
+        - "{{ nodepool_launcher_dir }}"
         - "{{ nodepool_lib_dir }}"
         - "{{ nodepool_conf_dir }}"
         - /root/.kube/config
