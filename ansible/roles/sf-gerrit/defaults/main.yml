@@ -43,3 +43,5 @@ gerrit_mysql_user: "gerrit"
 
 gerrit_heap_limit: "512m"
 gerrit_connection_pool: 225
+
+gerrit_max_ssh_connection_per_user: 128
