@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ddc2107_2df4de58",
+        "filename": "ansible/roles/sf-gerrit/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 534
+      },
+      "writtenOn": "2020-02-17T13:06:19Z",
+      "side": 1,
+      "message": "every job takes about 8-10 connections, there are about 8 jobs, so let\u0027s make it bigger. about 300",
+      "range": {
+        "startLine": 47,
+        "startChar": 35,
+        "endLine": 47,
+        "endChar": 39
+      },
+      "revId": "3ab276fb3acc9e0d1d91f217d6ae1199d3f7c36f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
