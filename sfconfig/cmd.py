@@ -53,11 +53,10 @@ def copy_backup(backup):
 
 def bootstrap_backup():
     # Copy software-factory conf
-    execute(["rsync", "-a", "--exclude", "arch.yaml",
-             "%s/install-server/etc/software-factory/" % bdir,
+    execute(["rsync", "-a", "%s/install-server/etc/software-factory/" % bdir,
              "/etc/software-factory/"])
     # Copy bootstrap data
-    execute(["rsync", "-a", "--exclude", "arch.yaml",
+    execute(["rsync", "-a",
              "%s/install-server/var/lib/software-factory/" % bdir,
              "/var/lib/software-factory/"])
     print("Boostrap data prepared from the backup. Done.")
