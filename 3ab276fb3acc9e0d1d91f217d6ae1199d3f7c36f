@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "6c31c7a0_db6318aa",
+        "filename": "ansible/roles/sf-gerrit/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-02-17T13:35:40Z",
+      "side": 1,
+      "message": "64 as the default is correct. The reproducer needs are special case we\u0027ll set on the rdoproject.org gerrit.",
+      "parentUuid": "c57c7a68_be43acce",
+      "range": {
+        "startLine": 47,
+        "startChar": 35,
+        "endLine": 47,
+        "endChar": 39
+      },
+      "revId": "3ab276fb3acc9e0d1d91f217d6ae1199d3f7c36f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7ac9c618_1501b34f",
         "filename": "ansible/roles/sf-gerrit/templates/gerrit-ansible.config.j2",
         "patchSetId": 1
