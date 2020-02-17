@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70ebfcd8_2d7e4d2b",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-02-17T14:29:40Z",
+      "side": 1,
+      "message": "should it be nodepool-launcher instead ?",
+      "range": {
+        "startLine": 207,
+        "startChar": 62,
+        "endLine": 207,
+        "endChar": 70
+      },
+      "revId": "8c9ef6808cbfac7f2a7ca240c1d9d33f10d34892",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
