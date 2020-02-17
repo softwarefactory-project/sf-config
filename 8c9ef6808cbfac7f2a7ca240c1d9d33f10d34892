@@ -22,6 +22,30 @@
       "revId": "8c9ef6808cbfac7f2a7ca240c1d9d33f10d34892",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "62bbfd50_c05b4cb5",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-02-17T18:11:57Z",
+      "side": 1,
+      "message": "yeah, and it\u0027s a bit tricky since there could be multiple launchers... So think we need a generic alias for the first launcher, but also one redirection per launcher too.",
+      "parentUuid": "70ebfcd8_2d7e4d2b",
+      "range": {
+        "startLine": 207,
+        "startChar": 62,
+        "endLine": 207,
+        "endChar": 70
+      },
+      "revId": "8c9ef6808cbfac7f2a7ca240c1d9d33f10d34892",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
