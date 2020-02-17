@@ -26,6 +26,7 @@
 [sshd]
     listenAddress = *:29418
     idleTimeout = 2d
+    maxConnectionsPerUser = {{ gerrit_max_ssh_connection_per_user }}
 [httpd]
     listenUrl = proxy-https://0.0.0.0:{{ gerrit_port }}/r/
 [commentlink "changeid"]
