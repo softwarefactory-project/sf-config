@@ -19,12 +19,40 @@ trap "rm -f $VALIDATED_OUTPUT && rm -f $APPLIED_OUTPUT" EXIT
         GATEWAY_URL=$2
         echo "Requesting a resources validation for $GATEWAY_URL"
         # We are going to call a remote resources endpoint
-        # We need a cauth cookie - request by username/passowrd
+        # We need a cauth cookie or a keycloak JWT - request by username/passowrd
         [ ! -f .service_user_password ] && {
             echo "Unable to find service user password file"
             exit 1
         }
         username="SF_SERVICE_USER"
+{% if 'keycloak' in roles %}
+        token=$(env env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt python3 <<SCRIPT
+import requests
+
+gw = '$GATEWAY_URL'
+if gw.startswith('https://'):
+    gw = gw.replace('https://', 'https://keycloak.')
+else:
+    gw = 'keycloak.' + gw
+conf_url = "%s/auth/realms/sf/.well-known/openid-configuration"
+conf = requests.get(conf_url % gw).json()
+token_endpoint = conf.get('token_endpoint')
+
+data = {'username': '$username', 'password': open('.service_user_password').read(), 'client_id': 'managesf', 'grant-type': 'password'}
+token_request = requests.post(token_endpoint, data, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+print(token_request.json().get('access_token'))
+
+SCRIPT
+)
+
+[ -z "$token" ] && {
+    echo "Unabled to fetch the JWT"
+    exit 1
+}
+ENDPOINT="$GATEWAY_URL/manage/v2/resources/"
+QUERY_OPTIONS="--header 'Authorization: Bearer $token'"
+
+{% else %}
         cookie_payload=$(env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt python3 <<SCRIPT
 from sfmanager import sfauth
 print(sfauth.get_cookie('$GATEWAY_URL', username='$username', password=open('.service_user_password').read()))
@@ -35,9 +63,10 @@ SCRIPT
             exit 1
         }
         ENDPOINT="$GATEWAY_URL/manage/v2/resources/"
-        COOKIE="--cookie 'auth_pubtkt=$cookie_payload'"
+        QUERY_OPTIONS="--cookie 'auth_pubtkt=$cookie_payload'"
+{% endif %}
     } || {
-        COOKIE=""
+        QUERY_OPTIONS=""
     }
 }
 
@@ -78,7 +107,7 @@ data = dict([(os.path.join('resources', f), open(os.path.join('resources', f)).r
 	     for f in os.listdir('resources') if f.endswith('.yaml') or f.endswith('.yml')])
 json.dump({'data': data}, open('data.json', 'w'))
 SCRIPT
-        http_code=$(curl -s $COOKIE -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
+        http_code=$(curl -s $QUERY_OPTIONS -w "%{http_code}" -H "X-Remote-User: SF_SERVICE_USER" \
          -H "Content-Type: application/json" \
          -d @data.json -X POST $ENDPOINT -o $VALIDATED_OUTPUT)
         rm -f data.json
