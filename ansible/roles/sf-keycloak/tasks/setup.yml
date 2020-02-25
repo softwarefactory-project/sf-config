@@ -155,10 +155,9 @@
 - name: Create or update OIDC clients
   include_tasks: configure_clients.yml
   loop:
-    - {component: "managesf", use_secret: True}
+    - {component: "managesf", use_secret: False}
     - {component: "gerrit", use_secret: True}
     - {component: "zuul", use_secret: True}
-    - {component: "gateway", use_secret: False}
   when: item.component in roles
 
 - name: Set up the firehose
