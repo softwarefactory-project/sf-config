@@ -104,3 +104,9 @@ api = {
         'jobs': [],
     }
 }
+
+{% if 'keycloak' in roles %}
+auth = {
+    'type': 'keycloak',
+}
+{% endif %}
