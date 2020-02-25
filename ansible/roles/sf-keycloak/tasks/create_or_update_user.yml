@@ -11,7 +11,7 @@
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   register: _user_create
   failed_when: _user_create.rc != 0 and _user_create.stderr.find("User exists") == -1
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
 
 - debug:
     var: _user_create
@@ -39,7 +39,7 @@
         --new-password {{ item.password }}
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   register: _user_update
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
 
 - debug:
     var: _user_update
@@ -52,7 +52,7 @@
         -s 'email={{ item.email }}'
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   register: _user_email_update
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
   when: update_fqdn
 
 - name: allow {{ item.username }} to manage the realm

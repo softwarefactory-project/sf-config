@@ -38,7 +38,7 @@
 - name: Create master admin user
   shell: /opt/jboss/keycloak/bin/add-user-keycloak.sh -r master -u admin -p {{ authentication.admin_password }}
   when: not _keycloak_user_file.stat.exists
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
 
 - name: Start service
   service:
@@ -56,7 +56,7 @@
   delay: 3
   until: _default_realm.rc == 0 or _default_realm.stderr.find("Resource not found") != -1
   ignore_errors: true
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
 
 - name: Create default realm
   command: |
@@ -65,7 +65,7 @@
         -s enabled=true
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   when: _default_realm.rc != 0
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
 
 - name: Create default realm users
   include_tasks: create_or_update_user.yml
@@ -90,7 +90,7 @@
         -s "registrationAllowed=true"
         -s "resetPasswordAllowed=true"
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
 
 - name: Apply custom themes to default realm
   command: |
@@ -98,7 +98,7 @@
         -s "loginTheme=sf"
         -s "accountTheme=sf"
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
 
 - name: Configure SMTP service
   command: |
@@ -109,7 +109,7 @@
         -s "smtpServer.replyTo=admin@{{ fqdn }}"
         -s 'smtpServer.fromDisplayName="Software Factory IAM"'
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
 
 # Identity Providers
 
@@ -129,14 +129,14 @@
     # Fail if error not due to idp already existing
       register: _gh_idp
       failed_when: _gh_idp.rc != 0 and _gh_idp.stderr.find("Identity Provider github already exists") == -1
-      no_log: hide_logs
+      no_log: show_hidden_logs == False
     - name: check for an existing SSH key mapper
       command: |
         /opt/jboss/keycloak/bin/kcadm.sh get identity-provider/instances/github/mappers
             -r {{ keycloak_default_realm }}
             --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
       register: _gh_key_mapper
-      no_log: hide_logs
+      no_log: show_hidden_logs == False
     - name: Create the SSH key mapper if needed
       command: |
         /opt/jboss/keycloak/bin/kcadm.sh create identity-provider/instances/github/mappers
@@ -147,7 +147,7 @@
             -s identityProviderAlias=github
             --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
       when: _gh_key_mapper.stdout.find("publicKey") == -1
-      no_log: hide_logs
+      no_log: show_hidden_logs == False
   when: not authentication.oauth2.github.disabled
 
 # components OIDC clients
@@ -155,10 +155,9 @@
 - name: Create or update OIDC clients
   include_tasks: configure_clients.yml
   loop:
-    - {component: "managesf", use_secret: True}
+    - {component: "managesf", use_secret: False}
     - {component: "gerrit", use_secret: True}
     - {component: "zuul", use_secret: True}
-    - {component: "gateway", use_secret: False}
   when: item.component in roles
 
 - name: Set up the firehose
@@ -170,4 +169,4 @@
         -s enabledEventTypes=[]
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   when: "'firehose' in roles"
-  no_log: hide_logs
+  no_log: show_hidden_logs == False
