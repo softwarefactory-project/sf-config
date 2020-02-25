@@ -35,4 +35,18 @@ ServerTokens Prod
 {% endif %}
     Include conf.d/headers.conf
     Include conf.d/gateway.common
+
+{% if 'keycloak' in roles %}
+    OIDCOAuthRemoteUserClaim    preferred_username
+    OIDCRemoteUserClaim    preferred_username
+    OIDCOAuthClientID           managesf
+    OIDCClientID           managesf
+    # Bug in mod_auth_openidc, fixed in later versions
+    OIDCClientSecret           dummy
+    OIDCRedirectURI https://{{ fqdn }}/oauth2callback
+    OIDCCryptoPassphrase TODO_SET_TO_RANDOM
+    OIDCResponseType        id_token
+    OIDCProviderMetadataURL     https://keycloak.{{ fqdn }}/auth/realms/SF/.well-known/openid-configuration
+    OIDCOAuthVerifyJwksUri     https://keycloak.{{ fqdn }}/auth/realms/SF/protocol/openid-connect/certs
+{% endif %}
 </VirtualHost>
