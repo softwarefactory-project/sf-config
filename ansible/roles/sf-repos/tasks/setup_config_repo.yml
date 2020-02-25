@@ -13,6 +13,7 @@
       command: sfmanager sf_user list
       environment:
         REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
+      when: "'keycloak' not in roles"
 
     - set_fact:
         initial_creation: True
