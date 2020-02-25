@@ -8,7 +8,6 @@
       - httpd
       - mod_ssl
       - mod_wsgi
-      - mod_auth_pubtkt
       - zuul-jobs-doc
       - zuul-doc
       - nodepool-doc
@@ -16,3 +15,21 @@
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: Install cauth-related dependencies
+  yum:
+    name:
+      - mod_auth_pubtkt
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  when: "'cauth' in roles"
+
+- name: Install keycloak-related dependencies
+  yum:
+    name:
+      - mod_auth_openidc
+    state: present
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+  when: "'keycloak' in roles"
