@@ -22,6 +22,6 @@ keycloak_mysql_password: "CHANGE_ME"
 # TODO is there a way to have this in the components themselves?
 keycloak_gerrit_client_secret: "CHANGE_ME"
 keycloak_zuul_client_secret: "CHANGE_ME"
-keycloak_managesf_client_secret: "CHANGE_ME"
+# keycloak_managesf_client_secret: "CHANGE_ME"
 
 sf_service_user_password: "CHANGE_ME"
