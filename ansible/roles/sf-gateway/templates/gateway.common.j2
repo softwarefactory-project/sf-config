@@ -110,6 +110,16 @@
 {% if 'grafana' in roles %}
     <LocationMatch "^/grafana/">
         RequestHeader unset X-Forwarded-User
+{% if 'keycloak' in roles %}
+        AuthType openid-connect
+        AuthName "Grafana"
+        require valid-user
+        RewriteEngine On
+        RewriteCond %{LA-U:REMOTE_USER} (.+)
+        RewriteRule .* - [E=RU:%1,NS]
+        RequestHeader set X-Forwarded-User %{RU}e
+        RequestHeader unset Authorization
+{% else %}
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
             AuthType mod_auth_pubtkt
             TKTAuthLoginURL /auth/login
@@ -123,6 +133,7 @@
             RequestHeader set X-Forwarded-User %{RU}e
             RequestHeader unset Authorization
         </If>
+{% endif %}
     </LocationMatch>
 
 {% endif %}
@@ -292,6 +303,11 @@
 {% if 'managesf' in roles %}
     <Location "/manage">
         RequestHeader unset X-Remote-User
+{% if 'keycloak' in roles %}
+        AuthType oauth20
+        Require valid-user
+        RequestHeader set X-Remote-User %{REMOTE_USER}s
+{% else %}
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
             AuthType mod_auth_pubtkt
             TKTAuthLoginURL /auth/login
@@ -300,6 +316,12 @@
             require valid-user
             RequestHeader set X-Remote-User %{REMOTE_USER}s
         </If>
+{% endif %}
+    </Location>
+
+    <Location "/manage/about">
+        Allow from All
+        Satisfy Any
     </Location>
 
     <Location "/manage/bind">
@@ -309,6 +331,7 @@
 
 {% endif %}
 {% if 'gerrit' in roles %}
+{% if 'keycloak' not in roles %}
     # Gerrit API fake auth requires password to set at 'password'
     # Don't give a chance to a user to change it
     <LocationMatch "^/r/accounts/.*/password.http">
@@ -317,7 +340,7 @@
         Allow from {{ fqdn }}
       </limit>
     </LocationMatch>
-
+{% endif %}
 {% endif %}
 # TODO support keycloak
 {% if authentication["authenticated_only"] %}
@@ -326,10 +349,16 @@
     <LocationMatch "^(?!/(r/.*/(info/refs|git-upload-pack)|docs|static|auth|index.html|_defconf.tgz|.well-known|zuul/api/connection/[^\/]+/payload|$))">
         Order deny,allow
         Allow from all
+{% if 'keycloak' in roles %}
+        AuthType openid-connect
+        Require valid-user
+{% else %}
         AuthType mod_auth_pubtkt
+        require valid-user
         TKTAuthLoginURL /auth/login
         TKTAuthFakeBasicAuth on
         TKTAuthDebug 1
-        require valid-user
+{% endif %}
+
     </LocationMatch>
 {% endif %}
