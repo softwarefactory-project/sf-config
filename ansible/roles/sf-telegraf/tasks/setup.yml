@@ -21,7 +21,6 @@
     mode: 0440
   loop:
     - statsd.conf
-    - network.conf
   notify: Restart telegraf
 
 - name: Start service
