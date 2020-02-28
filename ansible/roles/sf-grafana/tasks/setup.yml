@@ -92,15 +92,6 @@
     mode: 0755
   delegate_to: '{{ install_server_host }}'
 
-- name: Install default dashboard
-  template:
-    src: sf-system-metrics.json
-    dest: /usr/share/grafana/public/dashboards/home.json
-    owner: root
-    group: root
-    mode: 0444
-  notify: restart grafana
-
 # Retry start to mitigate initial service start bug with grafana-5.1.3-1
 - name: Start grafana service
   systemd:
