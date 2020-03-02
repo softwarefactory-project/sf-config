@@ -24,6 +24,9 @@ kibana_internal_url: "http://{{ kibana_host }}:{{ kibana_http_port }}"
 
 welcome_page_path: "sf/welcome.html"
 
+# TODO this should be defined once only
+keycloak_default_realm: SF
+
 # Base64 encoded logo data
 gateway_topmenu_logo_data: ""
 gateway_favicon_data: ""
