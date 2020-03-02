@@ -99,6 +99,9 @@ class InstallServer(Component):
             # This is a tenant deployment, do extra configuration
             args.glue["build_status_page_url"] = "%s/zuul/status/%s" % (
                 args.glue["gateway_url"], change_url_path)
+            args.glue["build_result_page_url"] = \
+                "%s/zuul/buildset/{buildset.uuid}" % (
+                    args.glue["gateway_url"])
             args.glue["tenant_zuul_api"] = "%s/zuul/api" % (
                 args.glue["gateway_url"])
             args.glue["tenant_deployment"] = True
@@ -112,6 +115,10 @@ class InstallServer(Component):
                 "build_status_page_url"] = "%s/zuul/t/%s/status/%s" % (
                     args.glue["gateway_url"], args.glue["tenant_name"],
                     change_url_path)
+            args.glue[
+                "build_result_page_url"] = \
+                "%s/zuul/t/%s/buildset/{buildset.uuid}" % (
+                        args.glue["gateway_url"], args.glue["tenant_name"])
             args.glue["tenant_zuul_api"] = "%s/zuul/api/tenant/%s" % (
                 args.glue["gateway_url"], args.glue["tenant_name"])
             args.glue["tenant_deployment"] = False

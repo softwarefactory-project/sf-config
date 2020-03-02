@@ -79,6 +79,7 @@
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         status: 'success'
+        status-url: "{{ build_result_page_url }}"
 {% endfor %}
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
@@ -87,6 +88,7 @@
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         status: 'success'
+        status-url: "{{ build_result_page_url }}"
 {% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
@@ -97,6 +99,7 @@
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
         status: 'failure'
+        status-url: "{{ build_result_page_url }}"
 {% endfor %}
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
@@ -105,6 +108,7 @@
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         status: 'failure'
+        status-url: "{{ build_result_page_url }}"
 {% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
@@ -228,12 +232,14 @@
 {% for github_connection in zuul_github_connections_pipelines %}{% if github_connection.app_name|default(False) %}
       {{ github_connection.name }}:
         status: 'success'
+        status-url: "{{ build_result_page_url }}"
         merge: true
         comment: true
 {% endif %}{% endfor %}
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         status: 'success'
+        status-url: "{{ build_result_page_url }}"
         merge: true
         comment: true
 {% endfor %}
@@ -250,11 +256,13 @@
 {% for github_connection in zuul_github_connections_pipelines %}{% if github_connection.app_name|default(False) %}
       {{ github_connection.name }}:
         status: 'failure'
+        status-url: "{{ build_result_page_url }}"
         comment: true
 {% endif %}{% endfor %}
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         status: 'failure'
+        status-url: "{{ build_result_page_url }}"
         comment: true
 {% endfor %}
       sqlreporter:
