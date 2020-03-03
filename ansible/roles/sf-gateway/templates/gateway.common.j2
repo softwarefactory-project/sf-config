@@ -110,16 +110,7 @@
 {% if 'grafana' in roles %}
     <LocationMatch "^/grafana/">
         RequestHeader unset X-Forwarded-User
-{% if 'keycloak' in roles %}
-        AuthType openid-connect
-        AuthName "Grafana"
-        require valid-user
-        RewriteEngine On
-        RewriteCond %{LA-U:REMOTE_USER} (.+)
-        RewriteRule .* - [E=RU:%1,NS]
-        RequestHeader set X-Forwarded-User %{RU}e
-        RequestHeader unset Authorization
-{% else %}
+{% if 'cauth' in roles %}
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
             AuthType mod_auth_pubtkt
             TKTAuthLoginURL /auth/login
