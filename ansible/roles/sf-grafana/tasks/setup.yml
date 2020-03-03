@@ -22,14 +22,44 @@
     - {section: users, option: allow_sign_up, value: '{{ grafana_users_allow_sign_up }}'}
     - {section: auth.anonymous, option: enabled, value: '{{ grafana_auth_anonymous_enabled }}'}
     - {section: auth.anonymous, option: org_role, value: '{{ grafana_auth_anonymous_org_role }}'}
+    - {section: security, option: admin_password, value: '{{ grafana_admin_password }}'}
+  register: _grafana_ini
+  no_log: true
+
+- name: Configure authentication
+  ini_file:
+    dest: /etc/grafana/grafana.ini
+    section: '{{ item.section }}'
+    option: '{{ item.option }}'
+    value: '{{ item.value }}'
+  loop:
     - {section: auth.proxy, option: enabled, value: '{{ grafana_auth_proxy_enabled }}'}
     - {section: auth.proxy, option: header_name, value: '{{ grafana_auth_proxy_header_name }}'}
     - {section: auth.proxy, option: header_property, value: '{{ grafana_auth_proxy_header_property }}'}
     - {section: auth.proxy, option: auto_sign_up, value: '{{ grafana_auth_proxy_auto_sign_up }}'}
     - {section: auth.basic, option: enabled, value: '{{ grafana_auth_basic_enabled }}'}
-    - {section: security, option: admin_password, value: '{{ grafana_admin_password }}'}
-  register: _grafana_ini
+  register: _grafana_ini_auth
   no_log: true
+  when: '"cauth" in roles'
+
+- name: Configure authentication
+  ini_file:
+    dest: /etc/grafana/grafana.ini
+    section: '{{ item.section }}'
+    option: '{{ item.option }}'
+    value: '{{ item.value }}'
+  loop:
+    - {section: auth.generic_oauth, option: enabled, value: 'true'}
+    - {section: auth.generic_oauth, option: name, value: 'Software Factory SSO'}
+    - {section: auth.generic_oauth, option: client_id, value: 'grafana'}
+    - {section: auth.generic_oauth, option: client_secret, value: '{{ keycloak_grafana_client_secret }}'}
+    - {section: auth.generic_oauth, option: scopes, value: 'openid;profile'}
+    - {section: auth.generic_oauth, option: auth_url, value: 'https://{{ fqdn }}/auth/realms/{{ keycloak_default_realm }}/protocol/openid-connect/auth'}
+    - {section: auth.generic_oauth, option: token_url, value: 'https://{{ fqdn }}/auth/realms/{{ keycloak_default_realm }}/protocol/openid-connect/token'}
+    - {section: auth.generic_oauth, option: api_url, value: 'https://{{ fqdn }}/auth/realms/{{ keycloak_default_realm }}/protocol/openid-connect/userinfo'}
+  register: _grafana_ini_auth
+  no_log: true
+  when: '"keycloak" in roles'
 
 # See https://community.grafana.com/t/grafana-will-not-start-after-update-from-4-1-3-to-4-3-6/5212/2
 # and https://github.com/puppetlabs/puppetlabs-pe_metrics_dashboard/issues/12
@@ -55,6 +85,7 @@
   when:
     - _grafana_service.rc == 0
     - _grafana_ini is changed
+    - _grafana_ini_auth is changed
 
 - name: Fix systemd file to wait for mysql
   ini_file:
