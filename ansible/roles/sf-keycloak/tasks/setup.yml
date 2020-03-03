@@ -158,6 +158,7 @@
     - {component: "managesf", use_secret: False}
     - {component: "gerrit", use_secret: True}
     - {component: "zuul", use_secret: True}
+    - {component: "grafana", use_secret: True}
   when: item.component in roles
 
 - name: Set up the firehose

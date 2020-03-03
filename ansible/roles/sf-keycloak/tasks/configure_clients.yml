@@ -57,7 +57,7 @@
         -s "directAccessGrantsEnabled=true"
         --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   when: item.use_secret == False
-  no_log: true
+  no_log: hide_logs
 
 # Any components deployed before keycloak will have to be reloaded "manually".
 # At this point it only concerns httpd.
