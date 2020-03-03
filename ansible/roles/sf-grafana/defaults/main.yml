@@ -60,3 +60,5 @@ grafana_data_source:
 grafyaml_apikey_data:
   name: 'grafyaml'
   role: 'Admin'
+
+keycloak_default_realm: SF
