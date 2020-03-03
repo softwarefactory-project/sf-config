@@ -158,6 +158,8 @@
     - {component: "managesf", use_secret: False}
     - {component: "gerrit", use_secret: True}
     - {component: "zuul", use_secret: True}
+    - {component: "grafana", use_secret: True}
+    - {component: "repoxplorer", use_secret: False}
   when: item.component in roles
 
 - name: Set up the firehose
@@ -170,3 +172,17 @@
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   when: "'firehose' in roles"
   no_log: show_hidden_logs == False
+
+- name: Copy keycloak js adapter to gateway's /var/www/static/javascript
+  block:
+    - get_url:
+        url: "http://127.0.0.1:{{ keycloak_http_port }}/auth/js/keycloak.min.js"
+        dest: /tmp/keycloak.min.js
+    - fetch:
+        src: /tmp/keycloak.min.js
+        dest: /var/www/static/javascript/
+        flat: yes
+      delegate_to: '{{ gateway_host }}'
+    - file:
+        path: /tmp/keycloak.min.js
+        state: absent
