@@ -55,7 +55,7 @@
     /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
         -r {{ keycloak_default_realm }}
         -s "directAccessGrantsEnabled=true"
-        --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+        --no-config --server {{ keycloak_internal_url }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   when: item.use_secret == False
   no_log: hide_logs
 

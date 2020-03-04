@@ -43,7 +43,7 @@ ServerTokens Prod
     OIDCClientID           managesf
     # Bug in mod_auth_openidc, fixed in later versions
     OIDCClientSecret           dummy
-    OIDCRedirectURI https://{{ fqdn }}/oauth2callback
+    OIDCRedirectURI https://{{ fqdn }}/redirect/oauth2callback
     OIDCCryptoPassphrase {{ lookup('password', '/dev/null chars=ascii_letters,digits') | to_uuid }}
     OIDCResponseType        id_token
     OIDCProviderMetadataURL     https://{{ fqdn }}/auth/realms/SF/.well-known/openid-configuration
