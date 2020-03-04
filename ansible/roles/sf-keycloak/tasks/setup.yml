@@ -150,6 +150,7 @@
     - {component: "zuul", use_secret: True}
     - {component: "gateway", use_secret: False}
     - {component: "grafana", use_secret: True}
+    - {component: "repoxplorer", use_secret: False}
   when: item.component in roles
 
 - name: Set up the firehose
@@ -161,3 +162,9 @@
         -s enabledEventTypes=[]
         --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   no_log: true
+
+# TODO should be done on gateway host
+- name: Copy keycloak js adapter to /var/www/static/javascript
+  get_url:
+    url: https://{{ fqdn }}/auth/js/keycloak.min.js
+    dest: /var/www/static/js/keycloak.min.js
