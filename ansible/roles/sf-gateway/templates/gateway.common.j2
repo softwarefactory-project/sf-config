@@ -354,3 +354,11 @@
 {% endif %}
     </LocationMatch>
 {% endif %}
+
+{% if 'keycloak' in roles %}
+# Needed for redirection to work
+    <Location "/redirect">
+        AuthType openid-connect
+        require valid-user
+    </Location>
+{% endif %}
