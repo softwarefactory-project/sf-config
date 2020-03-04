@@ -131,11 +131,36 @@ def update(args, pb):
     pb.append(host_play('install-server', 'repos', {'role_action': 'update'}))
 
 
+def is_single_zuul(host):
+    """This host only run a single zuul service"""
+    if hosts['roles'] == ["zuul"] and (
+            hosts["params"]["zuul_services"] == ["zuul-executor"] or
+            hosts["params"]["zuul_services"] == ["zuul-merger"]):
+        return hosts["params"]["zuul_services"][0]
+    return None
+
+
+def add_zuul_group(zuul, action):
+    return dict(
+        hosts=zuul,
+        roles=["zuul"],
+        vars=dict(
+            role_action=action
+            zuul_services=[zuul]))
+
+
 def install(args, pb):
     action = {'role_action': 'install'}
     pb.append(host_play('all', 'base', action))
+    zuuls = set()
     for host in args.inventory:
+        zuul = is_single_zuul(host)
+        if zuul:
+            zuuls.add(zuul)
+            continue
         pb.append(host_play(host, host['roles'], action))
+    for zuul in zuuls:
+        pb.append(add_zuul_group(zuul, 'install'))
 
 
 def recover(args, pb):
@@ -200,9 +225,16 @@ def setup(args, pb):
             pb.append(host_play(role, role, action))
 
     # Setup all components except infra roles
+    zuuls = set()
     for host in args.inventory:
+        zuul = is_single_zuul(host)
+        if zuul:
+            zuuls.add(zuul)
+            continue
         host_roles = [role for role in host["roles"] if role not in pre_roles]
         pb.append(host_play(host, host_roles, action))
+    for zuul in zuuls:
+        pb.append(add_zuul_group(zuul, 'setup'))
 
     # Create config projects
     pb.append(host_play('install-server', 'repos', action))
