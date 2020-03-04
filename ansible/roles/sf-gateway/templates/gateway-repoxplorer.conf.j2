@@ -5,8 +5,12 @@ Alias "/repoxplorer/javascript/bootstrap.min.js" "/var/www/static/bootstrap/js/b
 Alias "/repoxplorer/css/images/" "/var/www/static/jquery-ui/images/"
 Alias "/repoxplorer/css/static/bootstrap/" "/var/www/static/bootstrap/css/static/bootstrap/"
 Alias "/repoxplorer/css/" "/var/www/static/css/"
+{% if 'keycloak' in roles %}
+Alias "/repoxplorer/keycloak.json" "/var/www/static/repoxplorer.keycloak.json"
+{% endif %}
 Alias "/repoxplorer/javascript/" "/var/www/static/js/"
 
+{% if 'cauth' in roles %}
 <Location "/repoxplorer/home.html">
     RequestHeader unset X-Remote-User
     AuthType mod_auth_pubtkt
@@ -28,10 +32,14 @@ Alias "/repoxplorer/javascript/" "/var/www/static/js/"
         RequestHeader set X-Remote-User %{REMOTE_USER}s
     </If>
 </Location>
+{% endif %}
 
 <IfModule mod_proxy.c>
     ProxyPassMatch "/repoxplorer/css/(?!repoxplorer\.css).*" !
     ProxyPassMatch "/repoxplorer/javascript/(?!(repoxplorer\.js)|(jquery\.min\.js)).*" !
+{% if 'keycloak' in roles %}
+    ProxyPass "/repoxplorer/keycloak.json" !
+{% endif %}
     ProxyPass /repoxplorer/ http://repoxplorer.{{ fqdn }}:20002/
     ProxyPassReverse /repoxplorer/ http://repoxplorer.{{ fqdn }}:20002/
 </IfModule>
