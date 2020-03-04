@@ -159,6 +159,7 @@
     - {component: "gerrit", use_secret: True}
     - {component: "zuul", use_secret: True}
     - {component: "grafana", use_secret: True}
+    - {component: "repoxplorer", use_secret: False}
   when: item.component in roles
 
 - name: Set up the firehose
@@ -170,4 +171,14 @@
         -s enabledEventTypes=[]
         --no-config --server {{ keycloak_internal_url }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   when: "'firehose' in roles"
+<<<<<<< HEAD
   no_log: show_hidden_logs == False
+=======
+  no_log: hide_logs
+
+# TODO should be done on gateway host
+- name: Copy keycloak js adapter to /var/www/static/javascript
+  get_url:
+    url: "{{ keycloak_internal_url }}/auth/js/keycloak.min.js"
+    dest: /var/www/static/js/keycloak.min.js
+>>>>>>> 0a68eac8... keycloak: support repoxplorer
