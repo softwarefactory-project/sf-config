@@ -147,13 +147,20 @@
   when: '"kibana" in roles'
   notify: apache reload
 
-- name: Install repoXplorer SF gateway rules
-  template:
-    src: gateway-repoxplorer.conf.j2
-    dest: /etc/httpd/conf.d/gateway-repoxplorer.conf
-    mode: 0444
+- block:
+    - name: Install repoXplorer SF gateway rules
+      template:
+        src: gateway-repoxplorer.conf.j2
+        dest: /etc/httpd/conf.d/gateway-repoxplorer.conf
+        mode: 0444
+      notify: apache reload
+    - name: Install repoXplorer keycloak parameters
+      template:
+        src: repoxplorer.keycloak.json.j2
+        dest: /var/www/static/repoxplorer.keycloak.json
+        mode: 0444
+      when: '"keycloak" in roles'
   when: '"repoxplorer" in roles'
-  notify: apache reload
 
 - name: Load ssl module in apache configuration
   lineinfile:
