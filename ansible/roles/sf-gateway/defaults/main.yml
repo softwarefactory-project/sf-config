@@ -23,6 +23,7 @@ kibana_host: kibana.example.com
 kibana_internal_url: "http://{{ kibana_host }}:{{ kibana_http_port }}"
 
 keycloak_port: 38080
+keycloak_default_realm: SF
 
 welcome_page_path: "sf/welcome.html"
 
