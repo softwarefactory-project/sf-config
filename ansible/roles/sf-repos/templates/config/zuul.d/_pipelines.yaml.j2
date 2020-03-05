@@ -17,6 +17,7 @@
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         merged: False
+        open: True
 {% endfor %}
 {% endif %}
     trigger:
