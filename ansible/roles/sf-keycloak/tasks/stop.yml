@@ -1,0 +1,5 @@
+---
+- name: "Stop keycloak"
+  service:
+    name: keycloak
+    state: stopped

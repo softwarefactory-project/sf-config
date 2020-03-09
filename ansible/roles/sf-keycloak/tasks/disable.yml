@@ -1,0 +1,7 @@
+---
+- name: Disable services
+  service:
+    name: keycloak
+    state: stopped
+    enabled: "no"
+  ignore_errors: "yes"
