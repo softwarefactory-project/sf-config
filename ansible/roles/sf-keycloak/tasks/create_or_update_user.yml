@@ -1,0 +1,56 @@
+---
+- name: create user {{ item.username }} if needed
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh create users
+        -r {{ keycloak_default_realm }}
+        -s 'username={{ item.username }}'
+        -s 'email={{ item.email }}'
+        -s 'firstName={{ item.firstName }}'
+        -s 'lastName={{ item.lastName }}'
+        -s 'enabled=true'
+        --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  register: _user_create
+  failed_when: _user_create.rc != 0 and _user_create.stderr.find("User exists") == -1
+  no_log: true
+
+- debug:
+    var: _user_create
+    verbosity: 3
+
+- name: get user ID
+  block:
+    - command: >
+        /opt/jboss/keycloak/bin/kcadm.sh get users
+            -r {{ keycloak_default_realm }}
+            -q username={{ item.username }}
+            --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      register: _uid
+    - set_fact:
+        uid: "{{ _uid.stdout | from_json }}"
+    - debug:
+        var: _uid
+        verbosity: 3
+
+- name: update {{ item.username }}'s password
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh set-password
+        -r {{ keycloak_default_realm }}
+        --userid {{ uid[0]['id'] }}
+        --new-password {{ item.password }}
+        --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  register: _user_update
+  no_log: true
+
+- debug:
+    var: _user_update
+    verbosity: 3
+
+- name: update {{ item.username }}'s email if fqdn has changed
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh update users/{{ uid[0]['id'] }}
+        -r {{ keycloak_default_realm }}
+        -s 'email={{ item.email }}'
+        --no-config --server http://127.0.0.1:{{ keycloak_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  register: _user_email_update
+  no_log: true
+  when: update_fqdn
