@@ -1,5 +1,5 @@
 ---
-- name: Create demo user
+- name: Create demo user (cauth)
   command: >
     sfmanager user create --username demo --password demo
         --email demo@{{ fqdn }} --fullname "Demo User"
@@ -7,11 +7,63 @@
     REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
   # TODO: fix sfmanager to not fail when user already exists
   ignore_errors: yes
+  when:
+    - "'cauth' in roles"
 
-- name: Logging to create user
+- name: Create demo user (keycloak)
+  # TODO this exists already in sf-keycloak
+  block:
+    - name: create user demo if needed
+      command: >
+        /opt/jboss/keycloak/bin/kcadm.sh create users
+            -r SF
+            -s 'username=demo'
+            -s 'email=demo@{{ fqdn }}'
+            -s 'firstName=Demo'
+            -s 'lastName=User'
+            -s 'enabled=true'
+            --no-config --server {{ keycloak_internal_url }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      register: _user_create
+      failed_when: _user_create.rc != 0 and _user_create.stderr.find("User exists") == -1
+      no_log: true
+    - command: >
+        /opt/jboss/keycloak/bin/kcadm.sh get users
+            -r SF
+            -q username=demo
+            --no-config --server {{ keycloak_internal_url }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      register: _uid
+      no_log: true
+    - set_fact:
+        uid: "{{ _uid.stdout | from_json }}"
+    - name: set demo user's password
+      command: >
+        /opt/jboss/keycloak/bin/kcadm.sh set-password
+            -r SF
+            --userid {{ uid[0]['id'] }}
+            --new-password demo
+            --no-config --server {{ keycloak_internal_url }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      no_log: true
+  when:
+    - "'keycloak' in roles"
+
+- name: Log in to create user
   command: sfmanager --auth demo:demo sf_user list
   environment:
     REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
+  when:
+    - "'cauth' in roles"
+
+# with keycloak there is no callback provisioning as with cauth. With this
+# task we talk directly to gerrit to pre-provision the user.
+# TODO use kc's mqtt event exporter to implement the user provisioning in gerrit.
+- name: pre-provision user in gerrit
+  command: >
+    ssh gerrit gerrit create-account demo
+        --email "demo@{{ fqdn }}"
+        --full-name \"Demo User\"
+        --http-password demo
+  when:
+    - "'keycloak' in roles"
 
 - name: Check if repository exists
   command: python3 -c "import requests; print('demo-project' in requests.get('{{ managesf_internal_url }}/v2/resources').json().get('resources', {}).get('repos', {}))"

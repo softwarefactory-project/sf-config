@@ -45,3 +45,6 @@ gerrit_heap_limit: "512m"
 gerrit_connection_pool: 225
 
 gerrit_max_ssh_connection_per_user: 64
+
+# Already defined in sf-keycloak but needs to be here?
+keycloak_default_realm: "SF"
