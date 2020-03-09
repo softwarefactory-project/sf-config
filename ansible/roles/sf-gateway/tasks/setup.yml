@@ -1,6 +1,7 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 - include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
+  when: '"cauth" in roles'
 
 - name: Remove un-needed files
   file:
@@ -10,6 +11,16 @@
     - /etc/httpd/conf.d/autoindex.conf
     - /etc/httpd/conf.d/userdir.conf
     - /etc/httpd/conf.d/welcome.conf
+
+- name: Remove cauth config files if keycloak is the identity provider
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/httpd/conf.d/cauth.conf
+    - /etc/httpd/saml2/idp_metadata.xml
+  when: '"keycloak" in roles'
+  notify: apache reload
 
 - name: Create working directories
   file:
