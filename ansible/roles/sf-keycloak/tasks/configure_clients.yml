@@ -1,0 +1,52 @@
+---
+- name: "Create confidential OIDC client for component {{ item.component }} if needed"
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh create clients
+        -r {{ keycloak_default_realm }}
+        -s clientId={{ item.component }}
+        -s "enabled=true"
+        -s clientAuthenticatorType=client-secret
+        -s 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  register: _client_create
+  failed_when: _client_create.rc != 0 and _client_create.stderr.find("already exists") == -1
+  when: item.use_secret == True
+  no_log: hide_logs
+
+- name: "Create public OIDC client for component {{ item.component }} if needed"
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh create clients
+        -r {{ keycloak_default_realm }}
+        -s clientId={{ item.component }}
+        -s "enabled=true"
+        -s 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  register: _client_create
+  failed_when: _client_create.rc != 0 and _client_create.stderr.find("already exists") == -1
+  when: item.use_secret == False
+  no_log: hide_logs
+
+- name: "Get {{ item.component }} client ID"
+  block:
+    - command: >
+        /opt/jboss/keycloak/bin/kcadm.sh get clients
+            -r {{ keycloak_default_realm }}
+            -q clientId={{ item.component }}
+            --fields id
+            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      register: _cid
+    - set_fact:
+        cid: "{{ _cid.stdout | from_json }}"
+  no_log: hide_logs
+
+- name: "Update {{ item.component }} client password"
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
+        -r {{ keycloak_default_realm }}
+        -s secret={{ vars['keycloak_' + item.component + '_client_secret'] }}
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  when: item.use_secret == True
+  no_log: hide_logs
+
+# Any components deployed before keycloak will have to be reloaded "manually".
+# At this point it only concerns httpd.
