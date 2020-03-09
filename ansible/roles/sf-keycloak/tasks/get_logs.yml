@@ -1,0 +1,7 @@
+---
+- name: "Fetch keycloak logs"
+  synchronize:
+    mode: pull
+    src: /opt/jboss/keycloak/standalone/log/
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true
