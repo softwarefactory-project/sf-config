@@ -67,6 +67,7 @@
     </Directory>
 
 {% if 'gerrit' in roles %}
+{% if 'cauth' in roles %}
     <LocationMatch "/r/(?!(login|logout))">
         RewriteEngine On
 
@@ -93,6 +94,7 @@
         TKTAuthDebug 1
         require valid-user
     </LocationMatch>
+{% endif %}
 
     # Redirect a gerrit page that give an easy access to gitweb
     # if user does not have the GerritAccount cookie in its browser
@@ -108,6 +110,7 @@
 {% if 'grafana' in roles %}
     <LocationMatch "^/grafana/">
         RequestHeader unset X-Forwarded-User
+{% if 'cauth' in roles %}
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
             AuthType mod_auth_pubtkt
             TKTAuthLoginURL /auth/login
@@ -121,6 +124,7 @@
             RequestHeader set X-Forwarded-User %{RU}e
             RequestHeader unset Authorization
         </If>
+{% endif %}
     </LocationMatch>
 
 {% endif %}
@@ -224,6 +228,11 @@
         ProxyPassReverse /codesearch/ {{ hound_internal_url }}/
 
 {% endif %}
+{% if 'keycloak' in roles %}
+        ProxyPass /auth/ http://{{ keycloak_host }}:{{ keycloak_http_port }}/auth/
+        ProxyPassReverse /auth/ http://{{ keycloak_host }}:{{ keycloak_http_port }}/auth/
+
+{% endif %}
         ProxyPreserveHost On
         AllowEncodedSlashes NoDecode
         <Proxy *>
@@ -275,9 +284,17 @@
         RewriteRule ^(.*) /dashboard/index.html [NC,L]
     </location>
 
+{% if 'keycloak' in roles %}
+    <Location "/auth">
+        RequestHeader add "X-forwarded-proto" "https"
+        RequestHeader set x-ssl-client-cert "%{SSL_CLIENT_CERT}s"
+    </Location>
+
+{% endif %}
 {% if 'managesf' in roles %}
     <Location "/manage">
         RequestHeader unset X-Remote-User
+{% if 'cauth' in roles %}
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
             AuthType mod_auth_pubtkt
             TKTAuthLoginURL /auth/login
@@ -286,6 +303,7 @@
             require valid-user
             RequestHeader set X-Remote-User %{REMOTE_USER}s
         </If>
+{% endif %}
     </Location>
 
     <Location "/manage/bind">
@@ -305,9 +323,12 @@
     </LocationMatch>
 
 {% endif %}
+
 {% if authentication["authenticated_only"] %}
     # Make sure static files, docs, git and the topmenu are accessible even if
     # anonymous access is disabled. Git itself is protected by Gerrit
+# TODO support keycloak
+{% if 'cauth' in roles %}
     <LocationMatch "^(?!/(r/.*/(info/refs|git-upload-pack)|docs|static|auth|index.html|_defconf.tgz|.well-known|zuul/api/connection/[^\/]+/payload|$))">
         Order deny,allow
         Allow from all
@@ -317,4 +338,5 @@
         TKTAuthDebug 1
         require valid-user
     </LocationMatch>
+{% endif %}
 {% endif %}

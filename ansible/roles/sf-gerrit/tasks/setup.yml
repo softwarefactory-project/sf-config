@@ -175,19 +175,42 @@
     - {key: gerrit_admin_rsa_pub, dest: "admin_ssh_key.pub"}
     - {key: local_admin_mail, dest: "admin_email"}
 
+- name: Restart service if fqdn is updated
+  systemd:
+    name: gerrit
+    state: restarted
+  when:
+    - update_fqdn
+
 - name: Update gerrit email address when fqdn is updated
   block:
-    - name: Restart service if fqdn is updated to apply gerrit_email update
-      systemd:
-        name: gerrit
-        state: restarted
-
     - name: Delete all emails in gerrit
       command: ssh gerrit 'gerrit set-account --delete-email ALL admin'
-
     - name: Update email address in gerrit
       command: ssh gerrit 'gerrit set-account --add-email admin@{{ fqdn }} admin'
-  when: update_fqdn
+  when:
+    - update_fqdn
+
+- name: create test accounts
+  command: ssh gerrit 'gerrit create-account --full-name "\'{{ item.fullname}}\'" --email {{ item.email }} --http-password {{ item.password }} {{ item.username }}'
+  loop:
+    - {username: "user2",
+       password: "{{ authentication.admin_password }}",
+       fullname: "Demo User2",
+       email: "user2@{{ fqdn }}"}
+    - {username: "user3",
+       password: "{{ authentication.admin_password }}",
+       fullname: "Demo User3",
+       email: "user3@{{ fqdn }}"}
+    - {username: "user4",
+       password: "{{ authentication.admin_password }}",
+       fullname: "Demo User4",
+       email: "user4@{{ fqdn }}"}
+    - {username: "user5",
+       password: "{{ authentication.admin_password }}",
+       fullname: "Demo User5",
+       email: "user5@{{ fqdn }}"}
+  when: "'sftests.com' in fqdn"
 
 - name: Initialize/Upgrade gerrit when service is not running
   command: /usr/bin/java -jar /usr/lib64/gerrit/release.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins

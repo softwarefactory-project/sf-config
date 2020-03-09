@@ -1,0 +1,201 @@
+---
+# Use real shell for replication tests. TODO: improve replication test and set /sbin/nologin shell
+# TODO: check if keycloak user is needed
+# - name: Create keycloak user
+#   include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=keycloak ssh_key=keycloak_service_rsa shell=/bin/bash home_dir_mode=0755"
+
+- name: Install configuration files
+  template:
+    src: "{{ item.name }}.j2"
+    dest: "{{ item.path }}/{{ item.name }}"
+    owner: "{{ item.user | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode }}"
+    backup: yes
+  loop:
+    -  name: standalone.xml
+       path: /opt/jboss/keycloak/standalone/configuration/
+       mode: '0440'
+       user: keycloak
+       group: keycloak
+  notify:
+    - restart keycloak
+    - apache reload
+
+- name: Install custom themes
+  copy:
+    src: files/themes/sf
+    dest: /opt/jboss/keycloak/themes
+    owner: keycloak
+    group: keycloak
+    mode: '0644'
+
+- name: Check if admin user is already created
+  stat:
+    path: /opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json
+  register: _keycloak_user_file
+
+- name: Create master admin user
+  shell: /opt/jboss/keycloak/bin/add-user-keycloak.sh -r master -u admin -p {{ authentication.admin_password }}
+  when: not _keycloak_user_file.stat.exists
+  no_log: hide_logs
+
+- name: Start service
+  service:
+    name: keycloak
+    state: started
+    enabled: "yes"
+
+- name: check for default realm
+  command: |
+    /opt/jboss/keycloak/bin/kcadm.sh get realms/{{ keycloak_default_realm }}
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  register: _default_realm
+  # account for time needed to start the service
+  retries: 50
+  delay: 3
+  until: _default_realm.rc == 0 or _default_realm.stderr.find("Resource not found") != -1
+  ignore_errors: true
+  no_log: hide_logs
+
+- name: Create default realm
+  command: |
+    /opt/jboss/keycloak/bin/kcadm.sh create realms
+        -s realm={{ keycloak_default_realm }}
+        -s enabled=true
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  when: _default_realm.rc != 0
+  no_log: hide_logs
+
+- name: Create default realm users
+  include_tasks: create_or_update_user.yml
+  vars:
+    - realm_admin: true
+  loop:
+    - {username: "admin",
+       password: "{{ authentication.admin_password }}",
+       firstName: "Admin",
+       lastName: "Software Factory",
+       email: "admin@{{ fqdn }}"}
+    - {username: "SF_SERVICE_USER",
+       password: "{{ sf_service_user_password }}",
+       firstName: "Service User",
+       lastName: "Software Factory",
+       email: "sf_service_user@{{ fqdn }}"}
+
+- name: Create test users
+  include_tasks: create_or_update_user.yml
+  vars:
+    - realm_admin: false
+  loop:
+    - {username: "user2",
+       password: "{{ authentication.admin_password }}",
+       firstName: "Demo",
+       lastName: "User2",
+       email: "user2@{{ fqdn }}"}
+    - {username: "user3",
+       password: "{{ authentication.admin_password }}",
+       firstName: "Demo",
+       lastName: "User3",
+       email: "user3@{{ fqdn }}"}
+    - {username: "user4",
+       password: "{{ authentication.admin_password }}",
+       firstName: "Demo",
+       lastName: "User4",
+       email: "user4@{{ fqdn }}"}
+    - {username: "user5",
+       password: "{{ authentication.admin_password }}",
+       firstName: "Demo",
+       lastName: "User5",
+       email: "user5@{{ fqdn }}"}
+  when: "'sftests.com' in fqdn"
+
+
+# TODO: these could be sfconfig options
+- name: Allow user registration, password reset
+  command: |
+    /opt/jboss/keycloak/bin/kcadm.sh update realms/{{ keycloak_default_realm }}
+        -s "registrationAllowed=true"
+        -s "resetPasswordAllowed=true"
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  no_log: hide_logs
+
+- name: Apply custom themes to default realm
+  command: |
+    /opt/jboss/keycloak/bin/kcadm.sh update realms/{{ keycloak_default_realm }}
+        -s "loginTheme=sf"
+        -s "accountTheme=sf"
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  no_log: hide_logs
+
+- name: Configure SMTP service
+  command: |
+    /opt/jboss/keycloak/bin/kcadm.sh update realms/{{ keycloak_default_realm }}
+        -s "smtpServer.host=127.0.0.1"
+        -s "smtpServer.port=25"
+        -s "smtpServer.from=keycloak@{{ fqdn }}"
+        -s "smtpServer.replyTo=admin@{{ fqdn }}"
+        -s 'smtpServer.fromDisplayName="Software Factory IAM"'
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  no_log: hide_logs
+
+# Identity Providers
+
+- name: Configure GitHub identity provider
+  block:
+    - name: Create the identity provider if needed
+      command: |
+        /opt/jboss/keycloak/bin/kcadm.sh create identity-provider/instances
+            -r {{ keycloak_default_realm }}
+            -s alias=github
+            -s providerId=github
+            -s enabled=true
+            -s 'config.useJwksUrl="true"'
+            -s config.clientId={{ authentication.oauth2.github.client_id }}
+            -s config.clientSecret={{ authentication.oauth2.github.client_secret }}
+            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    # Fail if error not due to idp already existing
+      register: _gh_idp
+      failed_when: _gh_idp.rc != 0 and _gh_idp.stderr.find("Identity Provider github already exists") == -1
+      no_log: hide_logs
+    - name: check for an existing SSH key mapper
+      command: |
+        /opt/jboss/keycloak/bin/kcadm.sh get identity-provider/instances/github/mappers
+            -r {{ keycloak_default_realm }}
+            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      register: _gh_key_mapper
+      no_log: hide_logs
+    - name: Create the SSH key mapper if needed
+      command: |
+        /opt/jboss/keycloak/bin/kcadm.sh create identity-provider/instances/github/mappers
+            -r {{ keycloak_default_realm }}
+            -s name=pubkey_mapper
+            -s identityProviderMapper=github-ssh-key-mapper
+            -s 'config={"keyAttribute":"publicKey"}'
+            -s identityProviderAlias=github
+            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      when: _gh_key_mapper.stdout.find("publicKey") == -1
+      no_log: hide_logs
+  when: not authentication.oauth2.github.disabled
+
+# components OIDC clients
+
+- name: Create or update OIDC clients
+  include_tasks: configure_clients.yml
+  loop:
+    - {component: "managesf", use_secret: True}
+    - {component: "gerrit", use_secret: True}
+    - {component: "zuul", use_secret: True}
+    - {component: "gateway", use_secret: False}
+  when: item.component in roles
+
+- name: Set up the firehose
+  command: |
+    /opt/jboss/keycloak/bin/kcadm.sh update events/config
+        -r {{ keycloak_default_realm }}
+        -s 'eventsListeners=["jboss-logging","mqtt"]'
+        -s eventsEnabled=true
+        -s enabledEventTypes=[]
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  when: "'firehose' in roles"
+  no_log: hide_logs
