@@ -1,0 +1,25 @@
+---
+role_actions:
+  - install
+  - setup
+  - update
+  - get_logs
+  - backup
+  - restore
+  - stop
+  - disable
+
+role_package: keycloak
+
+keycloak_http_port: 38080
+# TODO we should map SF tenants to keycloak realms
+keycloak_default_realm: SF
+
+keycloak_mysql_password: "CHANGE_ME"
+
+# TODO is there a way to have this in the components themselves?
+keycloak_gerrit_client_secret: "CHANGE_ME"
+keycloak_zuul_client_secret: "CHANGE_ME"
+keycloak_managesf_client_secret: "CHANGE_ME"
+
+sf_service_user_password: "CHANGE_ME"

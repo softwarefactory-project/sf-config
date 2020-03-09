@@ -215,8 +215,12 @@
     - name: Delete all emails in gerrit
       command: ssh gerrit 'gerrit set-account --delete-email ALL zuul'
       delegate_to: "{{ install_server_host }}"
+  when:
+    - update_fqdn
+    - "'keycloak' not in roles"
 
-    - name: Update email address in gerrit
-      command: ssh gerrit 'gerrit set-account --add-email zuul@{{ fqdn }} zuul'
-      delegate_to: "{{ install_server_host }}"
-  when: update_fqdn
+- name: Update email address in gerrit
+  command: ssh gerrit 'gerrit set-account --add-email zuul@{{ fqdn }} zuul'
+  delegate_to: "{{ install_server_host }}"
+  when:
+    - update_fqdn
