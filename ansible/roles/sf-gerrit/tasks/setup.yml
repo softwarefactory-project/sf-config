@@ -187,7 +187,9 @@
 
     - name: Update email address in gerrit
       command: ssh gerrit 'gerrit set-account --add-email admin@{{ fqdn }} admin'
-  when: update_fqdn
+  when:
+    - update_fqdn
+    - "'keycloak' not in roles"
 
 - name: Initialize/Upgrade gerrit when service is not running
   command: /usr/bin/java -jar /usr/lib64/gerrit/release.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins
