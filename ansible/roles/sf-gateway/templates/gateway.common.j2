@@ -67,6 +67,7 @@
     </Directory>
 
 {% if 'gerrit' in roles %}
+{% if 'keycloak' not in roles %}
     <LocationMatch "/r/(?!(login|logout))">
         RewriteEngine On
 
@@ -93,6 +94,7 @@
         TKTAuthDebug 1
         require valid-user
     </LocationMatch>
+{% endif %}
 
     # Redirect a gerrit page that give an easy access to gitweb
     # if user does not have the GerritAccount cookie in its browser
@@ -224,6 +226,11 @@
         ProxyPassReverse /codesearch/ {{ hound_internal_url }}/
 
 {% endif %}
+{% if 'keycloak' in roles %}
+        ProxyPass /auth/ http://{{ keycloak_host }}:{{ keycloak_port }}/auth/
+        ProxyPassReverse /auth/ http://{{ keycloak_host }}:{{ keycloak_port }}/auth/
+
+{% endif %}
         ProxyPreserveHost On
         AllowEncodedSlashes NoDecode
         <Proxy *>
@@ -275,6 +282,13 @@
         RewriteRule ^(.*) /dashboard/index.html [NC,L]
     </location>
 
+{% if 'keycloak' in roles %}
+    <Location "/auth">
+        RequestHeader add "X-forwarded-proto" "https"
+        RequestHeader set x-ssl-client-cert "%{SSL_CLIENT_CERT}s"
+    </Location>
+
+{% endif %}
 {% if 'managesf' in roles %}
     <Location "/manage">
         RequestHeader unset X-Remote-User
@@ -305,6 +319,7 @@
     </LocationMatch>
 
 {% endif %}
+# TODO support keycloak
 {% if authentication["authenticated_only"] %}
     # Make sure static files, docs, git and the topmenu are accessible even if
     # anonymous access is disabled. Git itself is protected by Gerrit
