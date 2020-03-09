@@ -194,7 +194,9 @@ def setup(args, pb):
         pb.append(host_play(host, host_roles, roles_action))
 
     # Setup infra role firsts
-    pre_roles = ("mysql", "cauth", "gateway", "hypervisor-openshift")
+    pre_roles = ("mysql",
+                 "cauth", "keycloak",
+                 "gateway", "hypervisor-openshift")
     for role in pre_roles:
         if role in args.glue["roles"]:
             pb.append(host_play(role, role, action))
