@@ -1,6 +1,7 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 - include_tasks: "{{ sf_tasks_dir }}/setup_cauth_client.yml"
+  when: '"cauth" in roles'
 
 - name: Remove un-needed files
   file:
