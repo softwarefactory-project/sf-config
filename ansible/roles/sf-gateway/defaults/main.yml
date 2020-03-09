@@ -22,6 +22,8 @@ kibana_http_port: 5601
 kibana_host: kibana.example.com
 kibana_internal_url: "http://{{ kibana_host }}:{{ kibana_http_port }}"
 
+keycloak_port: 38080
+
 welcome_page_path: "sf/welcome.html"
 
 # Base64 encoded logo data

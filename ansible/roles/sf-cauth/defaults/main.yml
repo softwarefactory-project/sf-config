@@ -17,4 +17,5 @@ cauth_mysql_password: "CHANGE_ME"
 cauth_mysql_port: 3306
 cauth_mysql_user: "cauth"
 
+# TODO: This is duplicated in sf-keycloak. Find a way to factor this bit
 sf_service_user_password: "CHANGE_ME"
