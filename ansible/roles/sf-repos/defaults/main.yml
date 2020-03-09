@@ -13,6 +13,10 @@ zuul_mqtt_start_topic: "zuul/{pipeline}/start/{project}/{branch}"
 zuul_mqtt_failure_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
 zuul_mqtt_success_topic: "zuul/{pipeline}/result/{project}/{branch}/{change}"
 
+keycloak_http_port: 38080
+keycloak_host: keycloak.example.com
+keycloak_internal_url: "http://{{ keycloak_host }}:{{ keycloak_http_port }}"
+
 config_repo_acl:
   file: |-
     [access "refs/*"]

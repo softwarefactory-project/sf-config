@@ -214,9 +214,8 @@
   block:
     - name: Delete all emails in gerrit
       command: ssh gerrit 'gerrit set-account --delete-email ALL zuul'
-      delegate_to: "{{ install_server_host }}"
-
     - name: Update email address in gerrit
       command: ssh gerrit 'gerrit set-account --add-email zuul@{{ fqdn }} zuul'
-      delegate_to: "{{ install_server_host }}"
-  when: update_fqdn
+  when:
+    - update_fqdn
+  delegate_to: "{{ install_server_host }}"
