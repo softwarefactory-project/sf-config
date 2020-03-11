@@ -8,7 +8,7 @@ role_actions:
 
 role_package: kibana
 
-elk_stack_version: 5
+elk_stack_version: 6
 
 elastic_repo_name: elastic
 elastic_repo_desc: Elastic repository
