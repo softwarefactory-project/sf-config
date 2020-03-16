@@ -84,10 +84,10 @@
     name: {{ zuul_jobs_project_name }}
     check:
       jobs:
-        - linters
+        - noop
     gate:
       jobs:
-        - linters
+        - noop
 
 {% endif %}
 
