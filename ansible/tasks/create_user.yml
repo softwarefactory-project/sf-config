@@ -15,7 +15,7 @@
     group: "{{ group_name|default(user_name) }}"
     shell: "{{ shell|default('/sbin/nologin') }}"
     home: "{{ home_dir|default('/var/lib/' + user_name) }}"
-  when: user_exists.rc == 1 or update_user|default(true) != 'no'
+  when: user_exists.rc == 1 or update_user|default(false) is true
 
 - name: "Create home dir"
   file:
