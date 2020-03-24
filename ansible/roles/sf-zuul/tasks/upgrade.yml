@@ -15,23 +15,3 @@
   stat:
     path: /var/opt/rh/rh-python35/lib/zuul/
   register: _zuul_scl
-
-- name: Move state directory to system directory
-  shell: |
-    if test -L {{ item.dst }}; then
-        rm {{ item.dst }}
-        mkdir -m {{ item.mode|default('0700') }} {{ item.dst }}
-        chown {{ item.owner|default('zuul') }}:{{ item.owner|default('zuul') }} {{ item.dst }}
-    fi
-    mv {{ item.src }}/* {{ item.src }}/.[a-zA-Z0-9]* {{ item.dst }}/
-    rmdir {{ item.src }}
-  with_items:
-    - src: /var/opt/rh/rh-python35/lib/zuul
-      dst: /var/lib/zuul
-    - src: /var/opt/rh/rh-python35/log/zuul
-      dst: /var/log/zuul
-    - src: /etc/opt/rh/rh-python35/zuul
-      dst: /etc/zuul
-      owner: root
-      mode: "0755"
-  when: _zuul_scl.stat.exists
