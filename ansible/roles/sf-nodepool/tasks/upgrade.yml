@@ -11,23 +11,3 @@
   stat:
     path: /var/opt/rh/rh-python35/lib/nodepool/
   register: _nodepool_scl
-
-- name: Move state directory to system directory
-  shell: |
-    if test -L {{ item.dst }}; then
-        rm {{ item.dst }}
-        mkdir -m {{ item.mode|default('0700') }} {{ item.dst }}
-        chown {{ item.owner|default('nodepool') }}:{{ item.owner|default('nodepool') }} {{ item.dst }}
-    fi
-    mv {{ item.src }}/* {{ item.src }}/.[a-zA-Z0-9]* {{ item.dst }}/
-    rmdir {{ item.src }}
-  with_items:
-    - src: /var/opt/rh/rh-python35/lib/nodepool
-      dst: /var/lib/nodepool
-    - src: /var/opt/rh/rh-python35/log/nodepool
-      dst: /var/log/nodepool
-    - src: /etc/opt/rh/rh-python35/nodepool
-      dst: /etc/nodepool
-      owner: root
-      mode: "0755"
-  when: _nodepool_scl.stat.exists
