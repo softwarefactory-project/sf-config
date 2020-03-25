@@ -12,6 +12,7 @@ loguser_authorized_keys: []
 # 2 months log expiry
 logs_expiry: 60
 
+logs_directory_prefix: logs/
 # wsgi configuration
 logs_wsgi_processes: 8
 logs_wsgi_threads: 1
