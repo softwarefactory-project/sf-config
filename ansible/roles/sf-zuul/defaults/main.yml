@@ -32,6 +32,8 @@ zuul_merger_packages:
 zuul_executor_packages:
   - zuul
   - zuul-executor
+  - unzip
+  - bzip2
   - ara
   # sfauth (part of sfmanager) is required for tenant config-check
   - python3-sfmanager
