@@ -68,6 +68,8 @@
     - /usr/libexec/wait4mariadb
     - /usr/libexec/wait4gerrit
     - /usr/local/bin/zuul-changes.py
+  when:
+    - sf_previous_version < 3.3
 
 # sf-3.3
 - name: Remove unused openstack repos
@@ -78,7 +80,9 @@
     - centos-release-ceph-luminous
     - centos-release-openstack-queens
     - centos-release-qemu-ev
-  when: ansible_distribution == "CentOS"
+  when:
+    - ansible_distribution == "CentOS"
+    - sf_previous_version < 3.4
 
 # sf-3.3
 - name: Ensure invalid zuul public key are removed
