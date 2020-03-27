@@ -74,6 +74,9 @@
     - 'label.Workflow.value "-1 Work in progress" "-1.*"'
     - 'label.Workflow.value "0 Ready for reviews" "0.*"'
     - 'label.Workflow.value "+1 Approved" "\+1.*"'
+    - 'plugin.reviewers-by-blame.maxReviewers "5" ".*"'
+    - 'plugin.reviewers-by-blame.ignoreDrafts "true" ".*"'
+    - 'plugin.reviewers-by-blame.ignoreSubjectRegEx "WIP(.*)" ".*"'
   args:
     chdir: /var/lib/software-factory/git/All-projects
   changed_when: false
