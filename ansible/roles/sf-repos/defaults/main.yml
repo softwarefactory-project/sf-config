@@ -38,6 +38,10 @@ config_repo_acl:
     [submit]
       mergeContent = false
       action = fast forward only
+    [plugin "reviewers-by-blame"]
+      maxReviewers = 5
+      ignoreDrafts = true
+      ignoreSubjectRegEx = WIP(.*)
   groups:
     - config-ptl
     - config-core
