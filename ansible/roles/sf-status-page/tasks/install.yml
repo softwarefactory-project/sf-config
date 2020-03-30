@@ -1,0 +1,6 @@
+---
+- name: "Install status page required packages"
+  yum:
+    name:
+      - pymysqld
+    state: present

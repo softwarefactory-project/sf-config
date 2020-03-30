@@ -1,0 +1,17 @@
+---
+- block:
+  - name: Remove files
+    file:
+      path: "/var/www/status"
+      state: absent
+
+  - name: Remove crontab
+    cron:
+      name: "Generate status page"
+      state: absent
+
+  - name: "Remove status page required packages"
+    yum:
+      name:
+        - pymysqld
+      state: absent

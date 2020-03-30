@@ -18,6 +18,7 @@ inventory:
   - firehose
   - grafana
   - zookeeper
+  - sf-status-page
 - name: elk
   ip: 192.168.240.14
   roles:

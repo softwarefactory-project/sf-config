@@ -1,0 +1,19 @@
+---
+- name: Install required packages for status page
+  copy:
+    src: status-page-update.py
+    dest: /usr/libexec/software-factory/status-page-update.py
+    mode: '0755'
+
+- name: Create status directory
+  file:
+    path: /var/www/status
+    state: directory
+    mode: '0755'
+
+- name: Remove crontab
+  cron:
+    name: "Generate status page"
+    minute: "0"
+    hour: "0"
+    job: "/usr/libexec/software-factory/status-page-update.py --lib /var/lib/software-factory/backup/status_history.yaml --output /var/www/status/index.html"
