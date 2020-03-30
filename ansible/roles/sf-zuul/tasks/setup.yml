@@ -220,3 +220,11 @@
       command: ssh gerrit 'gerrit set-account --add-email zuul@{{ fqdn }} zuul'
       delegate_to: "{{ install_server_host }}"
   when: update_fqdn
+
+- name: Set read access to the zuul DB for zuul user
+  mysql_user:
+    name: "{{ zuul_mysql_user }}"
+    host: "{{ ansible_hostname }}"
+    password: "{{ zuul_mysql_password }}"
+    priv: 'zuul.*:ALL'
+    state: present
