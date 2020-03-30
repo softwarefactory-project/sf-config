@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fedd37cc_9f8d9d55",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-03-30T13:51:59Z",
+      "side": 1,
+      "message": "the mariadb service may not be running on this host. When we create the zuul database, there are options to enable access from other hosts, this is where we should enable the gateway to connect. Let\u0027s do that in the related change directly: https://softwarefactory-project.io/r/#/c/13563/",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 230,
+        "endChar": 18
+      },
+      "revId": "d513c46e9ba9b37827e9166b18bfa91418dd89b7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
