@@ -1,0 +1,6 @@
+---
+- name: "Install status page required packages"
+  yum:
+    name:
+      - python3-PyMySQL
+    state: present
