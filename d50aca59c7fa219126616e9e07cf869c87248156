@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2d326d3_4ee0b1de",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-03-30T14:10:34Z",
+      "side": 1,
+      "message": "shebang python3",
+      "revId": "d50aca59c7fa219126616e9e07cf869c87248156",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
