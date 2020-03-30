@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d0185eb_040f94a6",
+        "filename": "ansible/tasks/create_user.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-03-30T18:13:46Z",
+      "side": 1,
+      "message": "why is the condition not removed?",
+      "range": {
+        "startLine": 18,
+        "startChar": 27,
+        "endLine": 18,
+        "endChar": 65
+      },
+      "revId": "df14b6e7f89da5d86a827a3c493f690f371cb7d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
