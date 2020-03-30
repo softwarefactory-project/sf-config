@@ -3,6 +3,12 @@
   shell: mysql -ANe "SELECT schema_name FROM information_schema.schemata WHERE schema_name NOT IN ('mysql','information_schema','performance_schema')" | tr '\n' ' '
   register: dblist
 
+- name: Ensure mariadb is started
+  service:
+    name: mariadb
+    enabled: "yes"
+    state: started
+
 - name: "Dump database locally"
   shell: mysqldump --databases {{dblist.stdout}} | gzip -9 > /root/mysqldump.sql.gz
 
