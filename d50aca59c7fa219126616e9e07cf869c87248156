@@ -16,6 +16,24 @@
       "revId": "d50aca59c7fa219126616e9e07cf869c87248156",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "69e106d9_9fe2390e",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-03-30T14:15:31Z",
+      "side": 1,
+      "message": "I mean python3 here should be added because shebang is missing in the script",
+      "parentUuid": "f2d326d3_4ee0b1de",
+      "revId": "d50aca59c7fa219126616e9e07cf869c87248156",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
