@@ -6,6 +6,7 @@
     user_name: germqtt
     home_dir: /var/lib/germqtt
     ssh_key: zuul_rsa
+    update_user: true
 
 - name: "Setup configuration"
   template:
