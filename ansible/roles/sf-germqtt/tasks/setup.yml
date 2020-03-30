@@ -7,6 +7,13 @@
     home_dir: /var/lib/germqtt
     ssh_key: zuul_rsa
 
+- name: Create germqtt user
+  user:
+    name: "{{ user_name}}"
+    shell: "/sbin/nologin"
+    home: "{{ home_dir }}"
+    create_home: true
+
 - name: "Setup configuration"
   template:
     src: germqtt.conf.j2
