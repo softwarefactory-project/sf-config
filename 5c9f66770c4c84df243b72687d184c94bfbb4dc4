@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3b7f5a8c_ff11dbd7",
+        "filename": "ansible/tasks/create_user.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-03-31T09:30:19Z",
+      "side": 1,
+      "message": "it should work without \u0027\u003d\u003d true\u0027",
+      "range": {
+        "startLine": 18,
+        "startChar": 31,
+        "endLine": 18,
+        "endChar": 65
+      },
+      "revId": "5c9f66770c4c84df243b72687d184c94bfbb4dc4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
