@@ -22,6 +22,30 @@
       "revId": "df14b6e7f89da5d86a827a3c493f690f371cb7d6",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706e3744_a3835527",
+        "filename": "ansible/tasks/create_user.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-03-31T08:30:33Z",
+      "side": 1,
+      "message": "there is a case, that germqtt user was created, but its home dir was bad.",
+      "parentUuid": "4d0185eb_040f94a6",
+      "range": {
+        "startLine": 18,
+        "startChar": 27,
+        "endLine": 18,
+        "endChar": 65
+      },
+      "revId": "df14b6e7f89da5d86a827a3c493f690f371cb7d6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
