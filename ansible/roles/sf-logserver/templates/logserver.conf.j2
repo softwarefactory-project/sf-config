@@ -54,7 +54,7 @@ DocumentRoot /var/www/
     ForceType text/css
 </FilesMatch>
 
-<LocationMatch "/logs/.*/{{ logs_wsgi_ara_directory }}(?!/ansible.sqlite)/>
+<LocationMatch "/{{ logs_directory_prefix }}.*/{{ logs_wsgi_ara_directory }}(?!/ansible.sqlite)/>
     # This ARA sqlite middleware automatically loads the ARA web application
     # with the database located inside the {{ logs_wsgi_ara_directory }}
     # directories.
@@ -64,7 +64,7 @@ DocumentRoot /var/www/
     ProxyPassReverse  http://localhost:20003
 </LocationMatch>
 
-<LocationMatch "/logs/">
+<LocationMatch "/{{ logs_directory_prefix }}">
     # Enable zuul-web ui to access logs
     Header set Access-Control-Allow-Origin "*"
 
