@@ -22,6 +22,30 @@
       "revId": "ccfd651befc29335c90d04cd1f675cf7e71426d0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e02d7bbd_2744f121",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup_acl.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-01T06:46:36Z",
+      "side": 1,
+      "message": "okey, it can be a situation when someone want to check something and share with others.\nWIP is mostly confusing",
+      "parentUuid": "a10d7180_dcb73fef",
+      "range": {
+        "startLine": 79,
+        "startChar": 53,
+        "endLine": 79,
+        "endChar": 56
+      },
+      "revId": "ccfd651befc29335c90d04cd1f675cf7e71426d0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
