@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "daef0a28_573c24c6",
+        "filename": "ansible/roles/sf-zuul/templates/zuul.conf.j2",
+        "patchSetId": 5
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-01T06:53:20Z",
+      "side": 1,
+      "message": "what if the key will be checked in dict:\n\n{% if \u0027source_whitelist\u0027 in conn %}\n...\n\ndefault will be not required",
+      "range": {
+        "startLine": 139,
+        "startChar": 3,
+        "endLine": 139,
+        "endChar": 45
+      },
+      "revId": "19d2ad950d08cef2b68a4371d2e21d103378eb46",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
