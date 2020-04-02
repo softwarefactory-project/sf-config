@@ -18,6 +18,7 @@ nodepool_launcher_packages:
   - nodepool
   - nodepool-launcher
   - managesf
+  - httpd
 
 nodepool_builder_packages:
   - httpd
@@ -42,6 +43,7 @@ nodepool_conf_dir: "/etc/nodepool"
 nodepool_lib_dir: "/var/lib/nodepool"
 nodepool_log_dir: "/var/log/nodepool"
 nodepool_sysconfig: "/etc/sysconfig/nodepool"
+nodepool_launcher_dir: "/var/www/nodepool-launcher"
 
 nodepool_webapp_port: 8006
 
