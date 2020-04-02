@@ -12,6 +12,14 @@
     mode: 0644
   notify: restart zookeeper
 
+- name: "make /var/lib/zookeeper/version-2 writable by zookeeper"
+  file:
+    path: "/var/lib/zookeeper/version-2"
+    owner: "zookeeper"
+    group: "zookeeper"
+    recurse: "yes"
+    state: "directory"
+
 - name: Start and enable the service
   service:
     name: zookeeper
