@@ -1,8 +1,9 @@
 #!/bin/bash
 
 RETENTION_DAYS="{{ logs_expiry }}"
+LOG_DIRECTORY="/var/www/logs"
 
-[ ! -d /var/www/logs ] && exit 0
+[ ! -d $LOG_DIRECTORY ] && exit 0
 
-find /var/www/logs -type f -mtime +$RETENTION_DAYS -delete
-find /var/www/logs -type d -empty -delete
+find $LOG_DIRECTORY -type f -mtime +$RETENTION_DAYS -delete
+find $LOG_DIRECTORY -type d ! -path $LOG_DIRECTORY -empty -delete
