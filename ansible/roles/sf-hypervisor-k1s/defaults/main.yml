@@ -8,3 +8,5 @@ role_actions:
 role_package: k1s
 
 k1s_token: "CHANGE_ME"
+k1s_mtu: 1500
+k1s_bridge_name: "cni0"
