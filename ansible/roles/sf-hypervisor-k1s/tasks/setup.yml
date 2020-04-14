@@ -22,6 +22,13 @@
     dest: /etc/sysconfig/k1s
     mode: 0400
 
+- name: Ensure mtu for default bridge
+  lineinfile:
+    path: /etc/cni/net.d/87-podman-bridge.conflist
+    regexp: '^\s*"mtu":.*'
+    insertafter: '^\s*"bridge":.*'
+    line: '        "mtu": "{{ k1s_mtu }}",'
+
 - name: Start service
   service:
     name: k1s
