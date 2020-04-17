@@ -1,0 +1,318 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f55ea502_068a31c1",
+        "filename": "ansible/roles/sf-gateway/defaults/main.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Don\u0027t you need the keycloak_host and keycloak_internal_url ?",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d25f4fe5_18f94698",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 63
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Is it more logical to have if \u0027cauth\u0027 in role instead ?",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "83d6a565_837014b7",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 63
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Do you want to add if cauth in role ?",
+      "range": {
+        "startLine": 111,
+        "startChar": 2,
+        "endLine": 125,
+        "endChar": 13
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa175850_72aa49e3",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 63
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Same if cauth in roles",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4f94eff5_6b15ba0a",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Why you don\u0027t need to remove the emails from gerrit for the admin in case of keycloak ? How this is different from with cauth ?",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "de7cceeb_00daf60b",
+        "filename": "ansible/roles/sf-keycloak/meta/sfconfig.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Why do we need certificate for keycloak ? Is keycloak behind the gateway ?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "de7eff12_b4bdde89",
+        "filename": "ansible/roles/sf-keycloak/meta/sfconfig.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Yes that could go in sf-base probably",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 42
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c84bb17_c5b44f13",
+        "filename": "ansible/roles/sf-keycloak/tasks/configure_clients.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "The yaml rendering of gerrit bug.",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "efe68102_3b968f4c",
+        "filename": "ansible/roles/sf-keycloak/tasks/create_or_update_user.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "The script looks to be generic but not completely.",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "99a91877_63c3736a",
+        "filename": "ansible/roles/sf-keycloak/tasks/create_or_update_user.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "item.password ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 109,
+        "endLine": 11,
+        "endChar": 145
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "577c2b88_8dd6b8d3",
+        "filename": "ansible/roles/sf-keycloak/tasks/create_or_update_user.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "{{ item.username }} ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 93,
+        "endLine": 11,
+        "endChar": 98
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "35b2f223_c2bc8c75",
+        "filename": "ansible/roles/sf-keycloak/tasks/setup.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Could you remove curly brackets ?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 23
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "83871ebc_f5352201",
+        "filename": "ansible/roles/sf-keycloak/tasks/setup.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "do not forget to uncomment",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1829cd4a_fcb888fc",
+        "filename": "ansible/roles/sf-repos/tasks/provision_demo.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "no_log: true ?",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9383edce_aef24375",
+        "filename": "ansible/roles/sf-repos/tasks/provision_demo.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "Isn\u0027t it supposed to work w/o this ?",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 27
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1693d066_10260e7c",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-17T09:44:53Z",
+      "side": 1,
+      "message": "You did it differently elsewhere in this change.",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
