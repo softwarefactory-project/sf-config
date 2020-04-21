@@ -59,6 +59,30 @@
     },
     {
       "key": {
+        "uuid": "3c8814b8_dcb1aca6",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 63
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-21T15:26:38Z",
+      "side": 1,
+      "message": "it\u0027s done in subsequent patches",
+      "parentUuid": "83d6a565_837014b7",
+      "range": {
+        "startLine": 111,
+        "startChar": 2,
+        "endLine": 125,
+        "endChar": 13
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aa175850_72aa49e3",
         "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
         "patchSetId": 63
@@ -93,6 +117,24 @@
     },
     {
       "key": {
+        "uuid": "e65bcbe3_569c2683",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-21T15:26:38Z",
+      "side": 1,
+      "message": "gerrit does not allow email operations if the auth is OAuth. This is because this information is managed by the identity provider.\nAttempting to run this command with oauth configured results in an error.",
+      "parentUuid": "4f94eff5_6b15ba0a",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "de7cceeb_00daf60b",
         "filename": "ansible/roles/sf-keycloak/meta/sfconfig.py",
         "patchSetId": 63
@@ -104,6 +146,30 @@
       "writtenOn": "2020-04-17T09:44:53Z",
       "side": 1,
       "message": "Why do we need certificate for keycloak ? Is keycloak behind the gateway ?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fb655421_79f7e0b2",
+        "filename": "ansible/roles/sf-keycloak/meta/sfconfig.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-21T15:26:38Z",
+      "side": 1,
+      "message": "remnant from vhost config, will remove this",
+      "parentUuid": "de7cceeb_00daf60b",
       "range": {
         "startLine": 31,
         "startChar": 0,
@@ -219,6 +285,30 @@
     },
     {
       "key": {
+        "uuid": "a58dd48f_8ea7d98a",
+        "filename": "ansible/roles/sf-keycloak/tasks/create_or_update_user.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-21T15:26:38Z",
+      "side": 1,
+      "message": "No this is correct. To create the user described by {{ item }}, we log into the master realm as admin + admin password.",
+      "parentUuid": "577c2b88_8dd6b8d3",
+      "range": {
+        "startLine": 11,
+        "startChar": 93,
+        "endLine": 11,
+        "endChar": 98
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "35b2f223_c2bc8c75",
         "filename": "ansible/roles/sf-keycloak/tasks/setup.yml",
         "patchSetId": 63
@@ -299,6 +389,30 @@
     },
     {
       "key": {
+        "uuid": "6958a48c_da7f8e68",
+        "filename": "ansible/roles/sf-repos/tasks/provision_demo.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-21T15:26:38Z",
+      "side": 1,
+      "message": "The problem is that accounts are created only the first time they hit gerrit\u0027s GUI. The account would be mapped later anyway.",
+      "parentUuid": "9383edce_aef24375",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 27
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1693d066_10260e7c",
         "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
         "patchSetId": 63
@@ -310,6 +424,24 @@
       "writtenOn": "2020-04-17T09:44:53Z",
       "side": 1,
       "message": "You did it differently elsewhere in this change.",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6ec3df7_8fc5e99a",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-21T15:26:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1693d066_10260e7c",
       "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
