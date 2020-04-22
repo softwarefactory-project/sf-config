@@ -63,6 +63,57 @@
       "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1fa4617f_f429edb9",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.conf.j2",
+        "patchSetId": 25
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-22T09:46:43Z",
+      "side": 1,
+      "message": "Do not forget to change this.",
+      "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6b736fb_6dc49605",
+        "filename": "ansible/roles/sf-keycloak/tasks/setup.yml",
+        "patchSetId": 25
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-22T09:46:43Z",
+      "side": 1,
+      "message": "Why gateway use_secret: False",
+      "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "12d7f405_a7ecaa5a",
+        "filename": "ansible/roles/sf-managesf/templates/resources.sh.j2",
+        "patchSetId": 25
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-22T09:46:43Z",
+      "side": 1,
+      "message": "This is no longer used. Please remove this file.",
+      "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
