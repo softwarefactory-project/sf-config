@@ -45,7 +45,7 @@
     dest: /root/.ssh/known_hosts
     line: "{{ item.stdout }}"
   loop: "{{ public_ssh_host_keys.results }}"
-  no_log: true
+  no_log: hide_logs
 
 - name: Force hostnames
   hostname:

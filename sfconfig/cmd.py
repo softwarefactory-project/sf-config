@@ -117,6 +117,9 @@ def usage(components):
     p.add_argument("--skip-setup", default=False, action='store_true',
                    help="Do not call setup tasks")
 
+    p.add_argument("--extra-logs", default=False, action='store_true',
+                   help='Show logs of tasks set as "no_log: true" by default')
+
     # Add components options
     for component in components.values():
         component.usage(p)
@@ -256,6 +259,7 @@ def main():
         if os.path.isfile(args.extra):
             args.glue.update(yaml_load(args.extra))
         args.glue.update(args.sfarch)
+        args.glue['hide_logs'] = not args.extra_logs
         yaml_dump(args.glue, allvars_file)
 
     # Validate role settings

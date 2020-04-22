@@ -40,7 +40,7 @@
     - name: Check if replication.config changed
       command: diff /root/config/gerrit/replication.config /etc/gerrit/replication.config
       register: diffstat
-      no_log: true
+      no_log: hide_logs
       when: rstat.stat.exists == True
       failed_when: diffstat.rc > 1
 
