@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e55d4731_2a9c5ece",
+        "filename": "ansible/roles/sf-gateway/tasks/setup.yml",
+        "patchSetId": 65
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-22T09:08:19Z",
+      "side": 1,
+      "message": "I think you need to notify httpd reload",
+      "revId": "35e82d0c5585cb1ddb16775581a1e1b5f8607617",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
