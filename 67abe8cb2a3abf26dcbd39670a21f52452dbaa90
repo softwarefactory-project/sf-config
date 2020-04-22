@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f96d87a0_c24c91f5",
+        "filename": "ansible/roles/sf-gateway/defaults/main.yml",
+        "patchSetId": 63
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T09:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f55ea502_068a31c1",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d25f4fe5_18f94698",
         "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
         "patchSetId": 63
@@ -94,6 +112,24 @@
       "writtenOn": "2020-04-17T09:44:53Z",
       "side": 1,
       "message": "Same if cauth in roles",
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6992ab06_a3da8768",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 63
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T09:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa175850_72aa49e3",
       "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -193,6 +229,30 @@
       "writtenOn": "2020-04-17T09:44:53Z",
       "side": 1,
       "message": "Yes that could go in sf-base probably",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 42
+      },
+      "revId": "67abe8cb2a3abf26dcbd39670a21f52452dbaa90",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6cfa824_3220452e",
+        "filename": "ansible/roles/sf-keycloak/meta/sfconfig.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T09:06:06Z",
+      "side": 1,
+      "message": "given that the sf-cauth role is bound to disappear I\u0027m not too keen on the refactor effort.",
+      "parentUuid": "de7eff12_b4bdde89",
       "range": {
         "startLine": 67,
         "startChar": 0,
