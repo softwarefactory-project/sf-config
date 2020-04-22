@@ -33,6 +33,5 @@
       yum:
         name: "{{ item }}"
         state: absent
-      loop:
-        - python3-sfmanager
+      loop: []
   when: erase == True

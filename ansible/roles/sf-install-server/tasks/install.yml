@@ -4,7 +4,6 @@
     name:
       - git
       - git-review
-      - python3-sfmanager
       - python-testinfra
       - zuul-jobs
     state: present
