@@ -39,6 +39,30 @@
       "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a132e2c1_4ec5d3cd",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 25
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T09:44:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7dff8b64_6d529abe",
+      "range": {
+        "startLine": 359,
+        "startChar": 8,
+        "endLine": 359,
+        "endChar": 26
+      },
+      "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
