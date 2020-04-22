@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "38d74f2b_5ad3c2f1",
+        "filename": "ansible/roles/sf-gateway/tasks/install.yml",
+        "patchSetId": 25
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T15:29:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac8d150f_2de70e65",
+      "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7dff8b64_6d529abe",
         "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
         "patchSetId": 25
@@ -83,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "16b3e2cc_cd6d70dd",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.conf.j2",
+        "patchSetId": 25
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T15:29:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fa4617f_f429edb9",
+      "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6b736fb_6dc49605",
         "filename": "ansible/roles/sf-keycloak/tasks/setup.yml",
         "patchSetId": 25
@@ -100,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "fdf22120_4aaa9606",
+        "filename": "ansible/roles/sf-keycloak/tasks/setup.yml",
+        "patchSetId": 25
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T15:29:54Z",
+      "side": 1,
+      "message": "\"gateway\" is the client intended to be used with the top menu (login button). There\u0027s a workflow -1 patch for this I need to work on later, it\u0027s a bit low priority for now.",
+      "parentUuid": "c6b736fb_6dc49605",
+      "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "12d7f405_a7ecaa5a",
         "filename": "ansible/roles/sf-managesf/templates/resources.sh.j2",
         "patchSetId": 25
@@ -111,6 +165,24 @@
       "writtenOn": "2020-04-22T09:46:43Z",
       "side": 1,
       "message": "This is no longer used. Please remove this file.",
+      "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5d45710_54bb7a61",
+        "filename": "ansible/roles/sf-managesf/templates/resources.sh.j2",
+        "patchSetId": 25
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T15:29:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12d7f405_a7ecaa5a",
       "revId": "c733bcf6857a57d6f6154511e6aecae40137451e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
