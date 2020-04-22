@@ -19,7 +19,7 @@
         rsync -q --progress=false
           {{ item.1.pod }}:{{ output.src }}/
           {{ output.dst }}/
-  no_log: yes
+  no_log: true
   delegate_to: localhost
   loop:
     - src: "{{ zuul_output_dir }}/logs"

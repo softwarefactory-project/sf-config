@@ -108,7 +108,7 @@
         group: zuul
       loop: "{{ zuul_github_connections }}"
       when: item.app_key
-      no_log: yes
+      no_log: hide_logs
 
     - include_tasks: create_logging.yml
       vars:
@@ -158,7 +158,7 @@
     - {content: "{{ localCA_pem }}", dest: "localCA.pem"}
     - {content: "{{ gearman_crt }}", dest: "gearman.crt"}
     - {content: "{{ gearman_key }}", dest: "gearman.key"}
-  no_log: true
+  no_log: hide_logs
 
 - name: "Setup configuration"
   template:

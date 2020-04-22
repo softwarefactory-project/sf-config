@@ -13,12 +13,12 @@
   register: admin_password
   failed_when: false
   changed_when: false
-  no_log: true
+  no_log: hide_logs
 
 - name: Create admin user
   shell: "{{ influxdb_cli }} -execute \"CREATE USER admin WITH PASSWORD '{{ influxdb_admin_password }}' WITH ALL PRIVILEGES\""
   when: "'create admin user' in admin_password.stdout"
-  no_log: true
+  no_log: hide_logs
 
 - name: Set influxdb cli fact
   set_fact:
@@ -28,7 +28,7 @@
   shell: '{{ influxdb_cli }} -execute "SHOW DATABASES"'
   register: databases
   changed_when: false
-  no_log: true
+  no_log: hide_logs
 
 - name: Create telegraf db
   shell: '{{ influxdb_cli }} -execute "CREATE DATABASE telegraf"'
@@ -38,7 +38,7 @@
   shell: '{{ influxdb_cli }} -execute "SHOW USERS"'
   register: users
   changed_when: false
-  no_log: true
+  no_log: hide_logs
 
 - block:
     - name: Create telegraf user
@@ -47,7 +47,7 @@
     - name: Grant access for telegraf user
       shell: "{{ influxdb_cli }} -execute 'GRANT ALL ON \"telegraf\" TO \"telegraf\"'"
   ignore_errors: true
-  no_log: true
+  no_log: hide_logs
   when: "'telegraf' not in users.stdout"
 
 - name: Create continuous query
