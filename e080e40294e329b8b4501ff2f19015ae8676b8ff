@@ -16,6 +16,24 @@
       "revId": "e080e40294e329b8b4501ff2f19015ae8676b8ff",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c266c7bd_b80fd366",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 22
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-22T15:39:32Z",
+      "side": 1,
+      "message": "Yes, it is part of the configuration of mod_auth_openidc.",
+      "parentUuid": "15d13a17_185fd8a1",
+      "revId": "e080e40294e329b8b4501ff2f19015ae8676b8ff",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
