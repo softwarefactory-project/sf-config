@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dd46805a_fe62ea63",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-04-23T12:04:02Z",
+      "side": 1,
+      "message": "Let\u0027s be consistent here, why naming this `extra-logs` and `hide_logs` ?\n\nIt seems like the intend is to show sensitive content to debug ansible task. How about we name that option `--debug-log-secret` and use the same name in snake_case in the ansible task.",
+      "revId": "0b94991fe7356aed1909757b1539cce1dca508a7",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
