@@ -32,7 +32,7 @@
 - name: Render topmenu links list
   set_fact:
     topmenu_links: "{{ lookup('template', '../sf-gateway/templates/topmenu_links.j2') }}"
-  no_log: true
+  no_log: show_hidden_logs == False
 
 - name: Install configuration files
   template:

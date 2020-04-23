@@ -96,7 +96,7 @@
             body_format: json
             force_basic_auth: "yes"
           loop: '{{ grafana_get_apikeys.json }}'
-          no_log: True
+          no_log: show_hidden_logs == False
           when: item.name == grafyaml_apikey_data.name
 
         - set_fact:

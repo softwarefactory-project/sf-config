@@ -258,6 +258,9 @@ def main():
         args.glue.update(args.sfarch)
         yaml_dump(args.glue, allvars_file)
 
+    if 'show_hidden_logs' not in args.glue:
+        args.glue['show_hidden_logs'] = False
+
     # Validate role settings
     for host in args.sfarch["inventory"]:
         for role in host["roles"]:
