@@ -35,7 +35,7 @@
   loop:
     - {key: "nodepool_rsa", name: "id_rsa", mode: "0400"}
     - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
-  no_log: true
+  no_log: show_hidden_logs == False
 
 - name: Copy provided kube_file config
   copy:

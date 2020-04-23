@@ -11,7 +11,7 @@
   loop:
     - {content: "{{ influxdb_crt}}", dest: "influxdb.crt"}
     - {content: "{{ influxdb_key }}", dest: "influxdb.key", mode: '0400'}
-  no_log: true
+  no_log: show_hidden_logs == False
 
 - name: Configure influxdb to use tls
   ini_file:
