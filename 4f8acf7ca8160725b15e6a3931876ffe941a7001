@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "37fb6c92_92b9bb40",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 30
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-24T12:50:44Z",
+      "side": 1,
+      "message": "why not merge condition into one?",
+      "range": {
+        "startLine": 336,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 25
+      },
+      "revId": "4f8acf7ca8160725b15e6a3931876ffe941a7001",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "294437ce_53ec9ad2",
+        "filename": "ansible/roles/sf-keycloak/defaults/main.yml",
+        "patchSetId": 30
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-24T12:50:44Z",
+      "side": 1,
+      "message": "is it expected?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 2
+      },
+      "revId": "4f8acf7ca8160725b15e6a3931876ffe941a7001",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa6696af_477c4d65",
+        "filename": "ansible/roles/sf-keycloak/tasks/configure_clients.yml",
+        "patchSetId": 30
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-24T12:50:44Z",
+      "side": 1,
+      "message": "IMHO show_hidden_logs \u003d\u003d False is also ok here.",
+      "range": {
+        "startLine": 60,
+        "startChar": 10,
+        "endLine": 60,
+        "endChar": 14
+      },
+      "revId": "4f8acf7ca8160725b15e6a3931876ffe941a7001",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
