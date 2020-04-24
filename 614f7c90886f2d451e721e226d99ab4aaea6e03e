@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "696ad78a_53c64319",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 70
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-24T13:15:14Z",
+      "side": 1,
+      "message": "I guess there is a handler for restarting gerrit",
+      "range": {
+        "startLine": 179,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 20
+      },
+      "revId": "614f7c90886f2d451e721e226d99ab4aaea6e03e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
