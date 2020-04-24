@@ -22,6 +22,30 @@
       "revId": "68bce731641298a7a5c6fb31a10be50a7b9190aa",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "555b7cc7_4a0c95cf",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 70
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-04-24T14:01:17Z",
+      "side": 0,
+      "message": "It\u0027s at the end of the block",
+      "parentUuid": "0d31c41e_43e02ccf",
+      "range": {
+        "startLine": 217,
+        "startChar": 6,
+        "endLine": 217,
+        "endChar": 46
+      },
+      "revId": "68bce731641298a7a5c6fb31a10be50a7b9190aa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
