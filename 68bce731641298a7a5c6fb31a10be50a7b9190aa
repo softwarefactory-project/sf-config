@@ -46,6 +46,30 @@
       "revId": "68bce731641298a7a5c6fb31a10be50a7b9190aa",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ff09ba2_89ceaa5f",
+        "filename": "ansible/roles/sf-zuul/tasks/setup.yml",
+        "patchSetId": 70
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-28T07:17:37Z",
+      "side": 0,
+      "message": "right!",
+      "parentUuid": "555b7cc7_4a0c95cf",
+      "range": {
+        "startLine": 217,
+        "startChar": 6,
+        "endLine": 217,
+        "endChar": 46
+      },
+      "revId": "68bce731641298a7a5c6fb31a10be50a7b9190aa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }

@@ -46,6 +46,30 @@
       "revId": "614f7c90886f2d451e721e226d99ab4aaea6e03e",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9898354b_f7409cc3",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 70
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-04-28T07:17:37Z",
+      "side": 1,
+      "message": "so why not use handler ?",
+      "parentUuid": "0e2ef6fd_d5c1b166",
+      "range": {
+        "startLine": 179,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 20
+      },
+      "revId": "614f7c90886f2d451e721e226d99ab4aaea6e03e",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
