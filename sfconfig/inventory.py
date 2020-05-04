@@ -183,6 +183,9 @@ def setup(args, pb):
     # Setup install-server ssh keys
     pb.append(host_play('install-server', 'ssh', action))
 
+    pb.append(host_play('all', tasks=[
+        dict(name="Update facts", setup=dict())]))
+
     # Setup base role on all hosts
     for host in args.inventory:
         roles_action = {'role_action': 'setup', 'manage_etc_hosts': True}
