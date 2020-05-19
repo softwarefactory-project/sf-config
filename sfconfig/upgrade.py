@@ -218,6 +218,10 @@ def update_sfconfig(args):
         data["zuul"]["ara_report"] = True
         dirty = True
 
+    if "all_projects_config" not in data["gerrit"]:
+        data["gerrit"]["all_projects_config"] = []
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \

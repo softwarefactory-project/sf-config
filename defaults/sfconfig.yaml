@@ -276,3 +276,11 @@ gerritbot:
 
 mumble:
   password: false
+
+gerrit:
+  # Additional parameters that should be included in projects.config file
+  # in All-Projects repository.
+  all_projects_config:
+    - 'plugin.reviewers-by-blame.maxReviewers "5" ".*"'
+    - 'plugin.reviewers-by-blame.ignoreDrafts "true" ".*"'
+    - 'plugin.reviewers-by-blame.ignoreSubjectRegEx "(WIP|DNM)(.*)" ".*"'
