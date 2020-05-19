@@ -276,3 +276,6 @@ gerritbot:
 
 mumble:
   password: false
+
+gerrit:
+  configure_all_project_plugins: true
