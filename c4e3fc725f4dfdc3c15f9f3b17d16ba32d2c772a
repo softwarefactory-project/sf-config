@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4205ce3c_5eea82f8",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup_acl.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-05-19T15:54:46Z",
+      "side": 1,
+      "message": "this is not necessary, sfconfig content is already part of the group vars all.yaml",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 14
+      },
+      "revId": "c4e3fc725f4dfdc3c15f9f3b17d16ba32d2c772a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
