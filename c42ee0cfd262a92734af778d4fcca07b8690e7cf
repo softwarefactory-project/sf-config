@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f658bc95_d650eb3a",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup_acl.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-05-19T09:25:29Z",
+      "side": 1,
+      "message": "These should be settable in the sfconfig.yaml file. For example, deployers might want to apply a different regex by default than this one.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 73
+      },
+      "revId": "c42ee0cfd262a92734af778d4fcca07b8690e7cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
