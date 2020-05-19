@@ -218,6 +218,15 @@ def update_sfconfig(args):
         data["zuul"]["ara_report"] = True
         dirty = True
 
+    if "gerrit" not in data:
+        data["gerrit"] = {"all_projects_config": [
+            'plugin.reviewers-by-blame.maxReviewers "5" ".*"',
+            'plugin.reviewers-by-blame.ignoreDrafts "true" ".*"',
+            'plugin.reviewers-by-blame.ignoreSubjectRegEx "(WIP|DNM)(.*)" ".*"'
+            ]
+        }
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \
