@@ -81,6 +81,17 @@
     chdir: /var/lib/software-factory/git/All-projects
   changed_when: false
 
+- include_vars: /etc/software-factory/sfconfig.yaml
+  become: true
+
+- name: Add defined options for All-Project project.config file
+  shell: "git config -f project.config --replace-all {{ item }}"
+  loop: "{{ gerrit.all_projects_config }}"
+  args:
+    chdir: /var/lib/software-factory/git/All-projects
+  changed_when: false
+  when: gerrit is defined and gerrit.all_projects_config != []
+
 - name: Get project.config checksum
   stat:
     path: /var/lib/software-factory/git/All-projects/project.config
