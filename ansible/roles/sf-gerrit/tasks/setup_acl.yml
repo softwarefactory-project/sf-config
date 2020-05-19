@@ -74,12 +74,17 @@
     - 'label.Workflow.value "-1 Work in progress" "-1.*"'
     - 'label.Workflow.value "0 Ready for reviews" "0.*"'
     - 'label.Workflow.value "+1 Approved" "\+1.*"'
-    - 'plugin.reviewers-by-blame.maxReviewers "5" ".*"'
-    - 'plugin.reviewers-by-blame.ignoreDrafts "true" ".*"'
-    - 'plugin.reviewers-by-blame.ignoreSubjectRegEx "(WIP|DNM)(.*)" ".*"'
   args:
     chdir: /var/lib/software-factory/git/All-projects
   changed_when: false
+
+- name: Add defined options for All-Project project.config file
+  shell: "git config -f project.config --replace-all {{ item }}"
+  loop: "{{ gerrit.all_projects_config }}"
+  args:
+    chdir: /var/lib/software-factory/git/All-projects
+  changed_when: false
+  when: gerrit.all_projects_config != []
 
 - name: Get project.config checksum
   stat:
