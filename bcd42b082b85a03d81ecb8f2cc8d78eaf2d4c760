@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f3102ede_00899f91",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-05-20T13:07:26Z",
+      "side": 1,
+      "message": "This is not the value, it\u0027s a regex defining what to replace.",
+      "range": {
+        "startLine": 284,
+        "startChar": 50,
+        "endLine": 284,
+        "endChar": 53
+      },
+      "revId": "bcd42b082b85a03d81ecb8f2cc8d78eaf2d4c760",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fd56db34_0ed4d9fa",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-05-20T13:07:26Z",
+      "side": 1,
+      "message": "Do we want to only allow parameters related to the reviewers-by-blame plugin? or should it be completely free-form?",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 286,
+        "endChar": 73
+      },
+      "revId": "bcd42b082b85a03d81ecb8f2cc8d78eaf2d4c760",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
