@@ -33,6 +33,8 @@ zuul_executor_packages:
   - zuul
   - zuul-executor
   - ara
+  # for config-check
+  - dhall
   # sfauth (part of sfmanager) is required for tenant config-check
   - python3-sfmanager
 
