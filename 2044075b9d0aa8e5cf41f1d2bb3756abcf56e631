@@ -22,6 +22,30 @@
       "revId": "2044075b9d0aa8e5cf41f1d2bb3756abcf56e631",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1c2e44af_b4113eea",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-05-20T12:07:32Z",
+      "side": 1,
+      "message": "Good point",
+      "parentUuid": "9d1ebc08_9c3c1117",
+      "range": {
+        "startLine": 222,
+        "startChar": 49,
+        "endLine": 222,
+        "endChar": 52
+      },
+      "revId": "2044075b9d0aa8e5cf41f1d2bb3756abcf56e631",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
