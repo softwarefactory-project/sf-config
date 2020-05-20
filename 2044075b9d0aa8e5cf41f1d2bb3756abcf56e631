@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d1ebc08_9c3c1117",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-05-20T11:58:01Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be seeded with the new defaults?",
+      "range": {
+        "startLine": 222,
+        "startChar": 49,
+        "endLine": 222,
+        "endChar": 52
+      },
+      "revId": "2044075b9d0aa8e5cf41f1d2bb3756abcf56e631",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
