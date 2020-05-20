@@ -17,6 +17,7 @@ nodepool_services:
 nodepool_launcher_packages:
   - nodepool
   - nodepool-launcher
+  - dhall
   - managesf
   - httpd
 
@@ -26,6 +27,7 @@ nodepool_builder_packages:
   - libvirt-daemon
   - nodepool
   - nodepool-builder
+  - dhall
   - sf-elements
   - managesf
 
