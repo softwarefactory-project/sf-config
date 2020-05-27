@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d93d4a4a_26cef929",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup_acl.yml",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-05-27T13:29:17Z",
+      "side": 1,
+      "message": "I think we should have something like this:\n  \u0027git config -f project.config --replace-all {{ item.name }} \"{{ item.value }}\" \".*\"\u0027",
+      "revId": "84e1e1ca2a0bef37a9db2b81a105c481f166f436",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "85e4a9ea_0773c382",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-05-27T13:29:17Z",
+      "side": 1,
+      "message": "- name: plugin.reviewers-by-blame.maxReviewers\n  value: 5\n\netc",
+      "range": {
+        "startLine": 284,
+        "startChar": 4,
+        "endLine": 284,
+        "endChar": 50
+      },
+      "revId": "84e1e1ca2a0bef37a9db2b81a105c481f166f436",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
