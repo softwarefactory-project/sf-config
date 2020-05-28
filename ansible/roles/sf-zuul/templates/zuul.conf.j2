@@ -7,7 +7,12 @@ ssl_key={{ zuul_conf_dir }}/ssl/gearman.key
 
 {% if 'influxdb' in roles %}
 [statsd]
+{% if statsd_host is defined %}
+server={{ statsd_host }}
+{% else %}
 server={{ influxdb_host }}
+{% endif %}
+port={{ statsd_port }}
 {% endif %}
 
 [zookeeper]

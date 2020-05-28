@@ -201,6 +201,9 @@ logs:
   # 2 months log expiry
   expiry: 60
 
+statsd_host:
+statsd_port: 8125
+
 zuul:
   default_nodeset_name: container
   default_nodeset_label: runc-centos
