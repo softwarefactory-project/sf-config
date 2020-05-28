@@ -200,6 +200,14 @@ def update_sfconfig(args):
         data["nodepool"]["kube_file"] = None
         dirty = True
 
+    if "statsd_host" not in data["nodepool"]:
+        data["nodepool"]["statsd_host"] = None
+        dirty = True
+
+    if "statsd_port" not in data["nodepool"]:
+        data["nodepool"]["statsd_port"] = 8125
+        dirty = True
+
     if data["zuul"].get("default_nodeset_label") == "centos-oci":
         data["zuul"]["default_nodeset_label"] = "runc-centos"
         dirty = True

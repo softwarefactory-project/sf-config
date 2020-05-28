@@ -186,6 +186,8 @@ nodepool:
   dib_reg_passwords: []
   #  - image_name: rhel
   #    reg_password: rhsm_password
+  statsd_host:
+  statsd_port: 8125
 
 elasticsearch:
   maximum_heap_size: 512m
