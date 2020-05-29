@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "15ce49ca_bacd5aaa",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-05-29T08:08:48Z",
+      "side": 1,
+      "message": "should we make sure that influxdb_host exists in that case?",
+      "range": {
+        "startLine": 204,
+        "startChar": 8,
+        "endLine": 204,
+        "endChar": 46
+      },
+      "revId": "5ac40954991be012ee545b6609029d5801ecbe9b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
