@@ -46,6 +46,30 @@
       "revId": "5ac40954991be012ee545b6609029d5801ecbe9b",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bfa4f8c5_9eb1df8b",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-05-29T11:17:21Z",
+      "side": 1,
+      "message": "It doesn\u0027t seem useful to support such fine grain configuration. What about having a global `statsd_host` option to be used like that: `{{ statsd_host | default(influxdb_host) }}` ?\n\nSuch global doesn\u0027t have to be exposed in sfconfig.yaml, there is quite a few example, e.g. zuul_executor_min_avail_mem, which can be set using the `/etc/software-factory/extra-vars.yaml` file.",
+      "parentUuid": "6053bb05_f1584638",
+      "range": {
+        "startLine": 204,
+        "startChar": 8,
+        "endLine": 204,
+        "endChar": 46
+      },
+      "revId": "5ac40954991be012ee545b6609029d5801ecbe9b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
