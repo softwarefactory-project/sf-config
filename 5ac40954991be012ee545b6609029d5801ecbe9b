@@ -22,6 +22,30 @@
       "revId": "5ac40954991be012ee545b6609029d5801ecbe9b",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6053bb05_f1584638",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-05-29T09:54:47Z",
+      "side": 1,
+      "message": "if the influxdb_host exist and is deployed, it will be set as default value in playbook. IMHO it is not required to add it at this point",
+      "parentUuid": "15ce49ca_bacd5aaa",
+      "range": {
+        "startLine": 204,
+        "startChar": 8,
+        "endLine": 204,
+        "endChar": 46
+      },
+      "revId": "5ac40954991be012ee545b6609029d5801ecbe9b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
