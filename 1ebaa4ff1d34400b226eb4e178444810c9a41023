@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48b20e4d_45c05bf7",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2020-06-01T13:15:39Z",
+      "side": 1,
+      "message": "You don\u0027t have to add this in this file, if it\u0027s added on /etc/software-factory/extra-vars.yaml or custom.yaml, it will be loaded when we generate ansible vars",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 17
+      },
+      "revId": "1ebaa4ff1d34400b226eb4e178444810c9a41023",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca5ce4e2_c478078e",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2020-06-01T13:15:39Z",
+      "side": 1,
+      "message": "you don\u0027t need to add this if data are in /etc/software-factory/extra-vars.yaml. It\u0027s only used to update data from /etc/software-factory/sfconfig.yaml",
+      "revId": "1ebaa4ff1d34400b226eb4e178444810c9a41023",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
