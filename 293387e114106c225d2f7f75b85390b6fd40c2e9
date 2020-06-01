@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d77e4905_59847b93",
+        "filename": "ansible/roles/sf-nodepool/tasks/setup.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-06-01T14:03:58Z",
+      "side": 1,
+      "message": "should be using `statsd_host | default(influxdb_host | default (\u0027\u0027))`",
+      "range": {
+        "startLine": 124,
+        "startChar": 25,
+        "endLine": 124,
+        "endChar": 37
+      },
+      "revId": "293387e114106c225d2f7f75b85390b6fd40c2e9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
