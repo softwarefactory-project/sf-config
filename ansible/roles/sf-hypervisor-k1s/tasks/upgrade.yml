@@ -1,1 +1,5 @@
 ---
+- name: Stop the service
+  service:
+    name: k1s
+    state: stopped
