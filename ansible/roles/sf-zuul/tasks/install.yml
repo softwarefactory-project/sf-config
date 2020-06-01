@@ -43,6 +43,7 @@
       yum:
         name:
           - "{{ openshift_client }}"
+          - socat
         state: present
   when:
     - "nodepool_openshift_providers or nodepool_kube_file or 'hypervisor-k1s' in roles"

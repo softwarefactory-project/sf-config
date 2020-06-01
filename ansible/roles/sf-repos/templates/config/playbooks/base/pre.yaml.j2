@@ -11,6 +11,7 @@
 
 - hosts: all
   tasks:
+    - include_role: name=start-zuul-console
     - block:
         - include_role: name=validate-host
         - include_role: name=prepare-workspace
