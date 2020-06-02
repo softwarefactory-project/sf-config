@@ -121,7 +121,8 @@
     - name: Set statsd environment variable
       copy:
         content: |
-          STATSD_HOST={{ influxdb_host }}
+          STATSD_HOST={{ statsd_host | default(influxdb_host | default ('')) }}
+          STATSD_PORT={{ statsd_port | default(8125) }}
         dest: /etc/sysconfig/nodepool
       register: _nodepool_env
 
