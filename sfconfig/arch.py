@@ -27,6 +27,8 @@ rhel_unsupported_roles = (
     "hydrant",
 )
 
+correct_order = ['gerrit', 'managesf']
+
 
 def process(args):
     # scalable_roles are the roles that can be instantiate multiple time
@@ -108,6 +110,18 @@ please remove them from /etc/software-factory/arch.yaml file:
         if unsupported_roles:
             print(message % '\n- '.join(unsupported_roles))
             sys.exit(1)
+
+    # Check if inventory role order is correct
+    correct_order_indexes = []
+    for role in correct_order:
+        if role in host["roles"]:
+            correct_order_indexes.append(host["roles"].index(role))
+
+    if sorted(correct_order_indexes) != correct_order_indexes:
+        print("There is wrong order set in roles. Please change it to:")
+        for role_index in sorted(correct_order_indexes):
+            print("- %s" % correct_order[role_index])
+        sys.exit(1)
 
     if len(args.sfarch["inventory"]) > 1 and (
             "cgit" not in args.glue["roles"] and
