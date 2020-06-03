@@ -10,7 +10,12 @@ webapp:
 
 zookeeper-servers:
   - host: {{ zookeeper_host }}
-    port: 2181
+    port: 2281
+
+zookeeper-tls:
+  cert: {{ nodepool_conf_dir }}/ssl/zookeeper.crt
+  key: {{ nodepool_conf_dir }}/ssl/zookeeper.key
+  ca: {{ nodepool_conf_dir }}/ssl/zk-ca.pem
 
 labels: []
 providers: []
