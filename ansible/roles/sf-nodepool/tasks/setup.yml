@@ -105,6 +105,25 @@
   loop:
     - zuul_rsa
 
+- name: "Create ssl directory"
+  file:
+    path: "{{ nodepool_conf_dir }}/ssl"
+    mode: 0550
+    group: zuul
+    state: directory
+
+- name: "Setup zookeeper certificates"
+  copy:
+    content: "{{ item.content }}"
+    dest: "{{ nodepool_conf_dir }}/ssl/{{ item.dest }}"
+    mode: 0440
+    group: zuul
+  loop:
+    - {content: "{{ localCA_pem }}", dest: "localCA.pem"}
+    - {content: "{{ zk_client_crt }}", dest: "zookeeper.crt"}
+    - {content: "{{ zk_client_key }}", dest: "zookeeper.key"}
+  no_log: show_hidden_logs == False
+
 - name: Install config
   template:
     src: "{{ item }}.j2"

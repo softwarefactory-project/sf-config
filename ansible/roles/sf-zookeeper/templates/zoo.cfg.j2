@@ -8,3 +8,14 @@ dataDir=/var/lib/zookeeper
 clientPort=2181
 
 autopurge.purgeInterval=24
+autopurge.snapRetainCount=3
+
+maxClientCnxns=60
+standaloneEnabled=true
+admin.enableServer=true
+
+server.1={{ ansible_fqdn }}:2888:3888
+serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
+secureClientPort=2281
+ssl.keyStore.location=/etc/zookeeper/server.pem
+ssl.trustStore.location=/etc/pki/ca-trust/source/anchors/localCA.pem

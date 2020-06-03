@@ -1,4 +1,5 @@
 ---
-- name: Force service restart
-  command: /bin/true
-  notify: restart zookeeper
+- name: Stop the service
+  service:
+    name: zookeeper
+    state: stopped
