@@ -5,6 +5,20 @@
   vars:
     user_name: zookeeper
 
+- name: Setup CA file
+  copy:
+    content: "{{ zk_ca_pem }}"
+    dest: /etc/zookeeper/zk-ca.pem
+    mode: 0444
+
+- name: Setup TLS file
+  copy:
+    content: "{{ zk_keys[ansible_fqdn] }}"
+    dest: /etc/zookeeper/server.pem
+    mode: 0400
+    owner: zookeeper
+  notify: restart zookeeper
+
 - name: Setup zoo.cfg
   template:
     src: zoo.cfg.j2
