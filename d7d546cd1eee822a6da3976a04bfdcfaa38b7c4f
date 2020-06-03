@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e8f3ecd_5c10b153",
+        "filename": "ansible/roles/sf-zuul/templates/zuul.conf.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-06-03T21:49:52Z",
+      "side": 1,
+      "message": "This is missing a check here, in case a custom statsd_host is set without the influxdb roles.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 28
+      },
+      "revId": "d7d546cd1eee822a6da3976a04bfdcfaa38b7c4f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
