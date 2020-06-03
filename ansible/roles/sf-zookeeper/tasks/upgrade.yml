@@ -1,4 +1,10 @@
 ---
+# See https://issues.apache.org/jira/browse/ZOOKEEPER-3056
+- name: Ensure snapshot exists
+  file:
+    path: /var/lib/zookeeper/snapshot.0
+    state: touch
+
 - name: Force service restart
   command: /bin/true
   notify: restart zookeeper
