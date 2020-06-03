@@ -148,7 +148,7 @@
     group: zuul
     state: directory
 
-- name: "Setup gearman certificates"
+- name: "Setup gearman and zookeeper certificates"
   copy:
     content: "{{ item.content }}"
     dest: "{{ zuul_conf_dir }}/ssl/{{ item.dest }}"
@@ -158,6 +158,9 @@
     - {content: "{{ localCA_pem }}", dest: "localCA.pem"}
     - {content: "{{ gearman_crt }}", dest: "gearman.crt"}
     - {content: "{{ gearman_key }}", dest: "gearman.key"}
+    - {content: "{{ zk_client_crt }}", dest: "zookeeper.crt"}
+    - {content: "{{ zk_client_key }}", dest: "zookeeper.key"}
+    - {content: "{{ zk_ca_pem }}", dest: "zk-ca.pem"}
   no_log: show_hidden_logs == False
 
 - name: "Setup configuration"
