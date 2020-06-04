@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3d84ac4_84be1d05",
+        "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-06-04T15:43:23Z",
+      "side": 1,
+      "message": "ls nodepool/{{ ansible_hostname }}.dhall {% if ansible_hostname \u003d\u003d first_launcher or \"nodepool-builder\" in nodepool_services %}nodepool/nodepool.dhall{% endif %}",
+      "revId": "f215e87a33e56154fe6635c8b7064a1861d61100",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2a7569f6_6661936d",
+        "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-06-04T15:43:23Z",
+      "side": 1,
+      "message": "args:\n    chdir: /root/config",
+      "revId": "f215e87a33e56154fe6635c8b7064a1861d61100",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "05ac4051_f3a6efeb",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-06-04T15:43:23Z",
+      "side": 1,
+      "message": "{{config_root}}/build/",
+      "revId": "f215e87a33e56154fe6635c8b7064a1861d61100",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
