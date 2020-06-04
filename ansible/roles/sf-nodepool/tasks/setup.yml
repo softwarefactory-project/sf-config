@@ -116,7 +116,7 @@
     - secure.conf
 
 - name: Configure statsd
-  when: "'influxdb' in roles"
+  when: "'influxdb' in roles or statsd_host is defined"
   block:
     - name: Set statsd environment variable
       copy:
