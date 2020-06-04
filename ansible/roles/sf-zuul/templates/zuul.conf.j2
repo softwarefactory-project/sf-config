@@ -5,7 +5,7 @@ ssl_ca={{ zuul_conf_dir }}/ssl/localCA.pem
 ssl_cert={{ zuul_conf_dir }}/ssl/gearman.crt
 ssl_key={{ zuul_conf_dir }}/ssl/gearman.key
 
-{% if 'influxdb' in roles %}
+{% if 'influxdb' in roles or (statsd_host is defined and statsd_host != '') %}
 [statsd]
 server={{ statsd_host | default(influxdb_host | default ('')) }}
 port={{ statsd_port | default(8125) }}
