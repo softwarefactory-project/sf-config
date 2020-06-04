@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c3a84834_7f1d6fe9",
+        "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-06-04T15:56:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3d84ac4_84be1d05",
+      "revId": "f215e87a33e56154fe6635c8b7064a1861d61100",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2a7569f6_6661936d",
         "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
         "patchSetId": 4
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "fff49f90_bb19693a",
+        "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-06-04T15:56:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a7569f6_6661936d",
+      "revId": "f215e87a33e56154fe6635c8b7064a1861d61100",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05ac4051_f3a6efeb",
         "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
         "patchSetId": 4
@@ -47,6 +83,24 @@
       "writtenOn": "2020-06-04T15:43:23Z",
       "side": 1,
       "message": "{{config_root}}/build/",
+      "revId": "f215e87a33e56154fe6635c8b7064a1861d61100",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f526c289_bcaed9f0",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-06-04T15:56:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05ac4051_f3a6efeb",
       "revId": "f215e87a33e56154fe6635c8b7064a1861d61100",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
