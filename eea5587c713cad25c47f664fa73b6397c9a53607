@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7704a504_5743c404",
+        "filename": "ansible/roles/sf-mysql/tasks/get_logs.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-06-18T08:20:59Z",
+      "side": 1,
+      "message": "I\u0027m not sure if its good sulution",
+      "range": {
+        "startLine": 3,
+        "startChar": 38,
+        "endLine": 3,
+        "endChar": 89
+      },
+      "revId": "eea5587c713cad25c47f664fa73b6397c9a53607",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
