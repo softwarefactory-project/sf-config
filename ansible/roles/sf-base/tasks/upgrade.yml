@@ -58,31 +58,33 @@
         state: directory
   when: sf_previous_version < 3.1
 
-# sf-3.2
-- name: Remove renamed files
-  file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /usr/libexec/wait4port
-    - /usr/libexec/wait4mariadb
-    - /usr/libexec/wait4gerrit
-    - /usr/local/bin/zuul-changes.py
+- block:
+    # sf-3.2
+    - name: Remove renamed files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /usr/libexec/wait4port
+        - /usr/libexec/wait4mariadb
+        - /usr/libexec/wait4gerrit
+        - /usr/local/bin/zuul-changes.py
 
-# sf-3.3
-- name: Remove unused openstack repos
-  yum:
-    name: '{{ item }}'
-    state: absent
-  loop:
-    - centos-release-ceph-luminous
-    - centos-release-openstack-queens
-    - centos-release-qemu-ev
-  when: ansible_distribution == "CentOS"
+    # sf-3.3
+    - name: Remove unused openstack repos
+      yum:
+        name: '{{ item }}'
+        state: absent
+      loop:
+        - centos-release-ceph-luminous
+        - centos-release-openstack-queens
+        - centos-release-qemu-ev
+      when: ansible_distribution == "CentOS"
 
-# sf-3.3
-- name: Ensure invalid zuul public key are removed
-  lineinfile:
-    path: /var/lib/zuul/.ssh/known_hosts
-    regexp: ".* (ecdsa-sha.*|ssh-ed25519) .*"
-    state: absent
+    # sf-3.3
+    - name: Ensure invalid zuul public key are removed
+      lineinfile:
+        path: /var/lib/zuul/.ssh/known_hosts
+        regexp: ".* (ecdsa-sha.*|ssh-ed25519) .*"
+        state: absent
+  when: sf_previous_version < 3.4
