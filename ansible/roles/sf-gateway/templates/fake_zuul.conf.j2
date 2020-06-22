@@ -40,6 +40,14 @@ baseurl={{ conn['baseurl']|default('https://pagure.io') }}
 
 {% endfor %}
 
+{% for conn in zuul_gitlab_connections|default([]) %}
+[connection {{ conn['name'] }}]
+driver=gitlab
+server={{ conn['server']|default('gitlab.com') }}
+baseurl={{ conn['baseurl']|default('https://gitlab.com') }}
+
+{% endfor %}
+
 [connection smtp]
 driver=smtp
 server=localhost
