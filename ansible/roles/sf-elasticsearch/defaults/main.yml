@@ -8,7 +8,7 @@ role_actions:
 
 role_package: elasticsearch
 
-elk_stack_version: 5
+elk_stack_version: 7
 
 elastic_repo_name: elastic
 elastic_repo_desc: Elastic repository
@@ -17,6 +17,7 @@ elastic_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 elastic_repo_gpgcheck: 1
 
 elasticsearch_http_port: 9200
+elasticsearch_transport_port: 9300
 elasticsearch_host: elasticsearch.example.com
 elasticsearch_internal_url: "http://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
 
