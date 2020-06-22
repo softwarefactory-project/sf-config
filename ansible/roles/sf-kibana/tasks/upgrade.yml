@@ -3,3 +3,8 @@
   service:
     name: kibana
     state: stopped
+
+- name: Remove config file
+  file:
+    path: /etc/kibana/kibana.yml
+    state: absent
