@@ -10,12 +10,14 @@
     regexp: '^#?{{ item.regexp }}.*'
     line: '{{ item.line }}'
   loop:
-    - regexp: 'elasticsearch.url'
-      line: 'elasticsearch.url: "{{ elasticsearch_internal_url }}"'
     - regexp: 'server.host'
       line: 'server.host: {{ kibana_host }}'
     - regexp: 'server.basePath'
       line: 'server.basePath: "/analytics"'
+    - regexp: 'elasticsearch.hosts'
+      line: 'elasticsearch.hosts: ["{{ elasticsearch_internal_url }}"]'
+    - regexp: 'telemetry.enabled'
+      line: 'telemetry.enabled: false'
   register: kibanaconf
 
 - name: Restart kibana after the configuration changed
