@@ -6,6 +6,7 @@
   get_url:
     url: "{{ config_key_url }}"
     dest: "{{ config_key_path }}"
+    force: yes
   register: _new_key
   # Retry until zuul-scheduler finish full reconfiguration on first start
   retries: 60
