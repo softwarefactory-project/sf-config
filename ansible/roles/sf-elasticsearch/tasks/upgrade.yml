@@ -25,6 +25,27 @@
     - elasticsearch_config_file.stat.isreg is defined
     - elasticsearch_config_file.stat.isreg
 
+- name: Check if new jvm file exists
+  stat:
+    path: /etc/elasticsearch/jvm.options.rpmnew
+  register: elasticsearch_jvm_config_file
+
+- name: Install new jvm config file
+  block:
+    - name: Copy new config file
+      copy:
+        src: /etc/elasticsearch/jvm.options.rpmnew
+        dest: /etc/elasticsearch/jvm.options
+        remote_src: yes
+
+    - name: Remove unused config file
+      file:
+        path: /etc/elasticsearch/jvm.options.rpmnew
+        state: absent
+  when:
+    - elasticsearch_jvm_config_file.stat.isreg is defined
+    - elasticsearch_jvm_config_file.stat.isreg
+
 - name: Check if new sysconfig file exists
   stat:
     path: /etc/sysconfig/elasticsearch.rpmnew
@@ -61,3 +82,10 @@
   file:
     path: /var/lib/elasticsearch/elasticsearch
     state: absent
+
+# NOTE: on performing upgrade from 5.6 to 7.8, Elasticsearch is
+# failing during the node state. This directory should be removed
+# if you don't want to upgrade step by step with manual:
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html
+- name: Move old node state to other directory
+  command: mv /var/lib/elasticsearch/nodes /var/lib/elasticsearch/nodes-old
