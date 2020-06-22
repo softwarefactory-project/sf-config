@@ -16,3 +16,12 @@
     state: present
     disablerepo: "*"
     enablerepo: "{{ elastic_repo_name }}"
+  register: el_installed
+
+- when: el_installed is changed
+  name: Bootstrap Elasticsearch with default config
+  systemd:
+    name: elasticsearch
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"

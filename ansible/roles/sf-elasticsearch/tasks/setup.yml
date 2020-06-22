@@ -13,6 +13,9 @@
     - regexp: 'network.host'
       line: 'network.host:  {{ ansible_default_ipv4.address }}'
       dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'discovery.seed_hosts'
+      line: 'discovery.seed_hosts:  []'
+      dest: /etc/elasticsearch/elasticsearch.yml
     - regexp: '-Xms'
       line: '-Xms{{ elasticsearch_minimum_heap_size }}'
       dest: /etc/elasticsearch/jvm.options
