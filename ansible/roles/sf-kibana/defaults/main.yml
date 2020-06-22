@@ -8,7 +8,7 @@ role_actions:
 
 role_package: kibana
 
-elk_stack_version: 5
+elk_stack_version: 7
 
 elastic_repo_name: elastic
 elastic_repo_desc: Elastic repository
@@ -41,4 +41,10 @@ kibana_style_css_patch: |
   body > div > .global-nav {
     position: absolute;
     top: 0px;
+  }
+  body .euiHeader {
+    position: absolute;
+  }
+  .euiBody--headerIsFixed {
+    all: unset;
   }

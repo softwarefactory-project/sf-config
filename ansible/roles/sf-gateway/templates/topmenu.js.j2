@@ -11,6 +11,8 @@ function loadTopmenu() {
 
 if (document.addEventListener) {
     document.addEventListener("DOMContentLoaded", loadTopmenu, false);
+} else if (window.attachEvent) {
+    window.attachEvent("onload", loadTopmenu);
 } else {
-    window.onload = loadTopmenu;
+    window.onload = loadTopmenu();
 }
