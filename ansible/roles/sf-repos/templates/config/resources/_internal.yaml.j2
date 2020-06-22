@@ -41,6 +41,11 @@ resources:
       base-url: "{{ conn['baseurl'] }}"
       type: pagure
 {% endfor %}
+{% for conn in zuul_gitlab_connections|default([]) %}
+    {{ conn['name'] }}:
+      base-url: "{{ conn['baseurl'] }}"
+      type: gitlab
+{% endfor %}
 {% endif %}
 
   projects:
