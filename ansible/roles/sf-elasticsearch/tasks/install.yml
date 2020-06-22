@@ -13,6 +13,6 @@
 - name: Install Elasticsearch package
   yum:
     name: "elasticsearch"
-    state: present
+    state: latest
     disablerepo: "*"
     enablerepo: "{{ elastic_repo_name }}"

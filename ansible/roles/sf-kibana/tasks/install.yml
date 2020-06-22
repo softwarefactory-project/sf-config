@@ -4,6 +4,6 @@
 - name: Install kibana package
   yum:
     name: kibana
-    state: present
+    state: latest
     disablerepo: "*"
     enablerepo: "{{ elastic_repo_name }}"
