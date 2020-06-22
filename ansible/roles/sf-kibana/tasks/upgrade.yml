@@ -3,3 +3,8 @@
   service:
     name: kibana
     state: stopped
+
+- name: Cleanup config file
+  copy:
+    content: '# THIS FILE WAS CLEANED ON UPGRADE SF.IO'
+    dest: /etc/kibana/kibana.yml
