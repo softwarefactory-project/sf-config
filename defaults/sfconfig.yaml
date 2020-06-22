@@ -191,6 +191,10 @@ elasticsearch:
   maximum_heap_size: 512m
   minimum_heap_size: 512m
   replicas: 0
+  # NOTE: This option is required to be true, on upgrading
+  # ELK stack from 5 to 7.
+  # WARNING: ALL Elasticsearch data will be deleted!
+  remove_old_state_dir: true
 
 logstash:
   maximum_heap_size: 128m
