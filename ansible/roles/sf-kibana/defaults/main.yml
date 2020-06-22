@@ -8,7 +8,7 @@ role_actions:
 
 role_package: kibana
 
-elk_stack_version: 5
+elk_stack_version: 7
 
 elastic_repo_name: elastic
 elastic_repo_desc: Elastic repository
@@ -25,20 +25,36 @@ kibana_host: kibana.example.com
 kibana_internal_url: "http://{{ kibana_host }}:{{ kibana_http_port }}"
 
 kibana_bundle_js_patch: |
-  function load_menu() { loadTopmenu(); }
+  function isReady() {
+    return (document.getElementsByClassName("euiHeader").length > 0);
+  }
+  function injectTopMenu() {
+  if (!isReady()) {
+    setTimeout(injectTopMenu, 500);
+  }
   newScript = document.createElement('script');
   newScript.type = 'text/javascript';
   newScript.src = '/static/js/topmenu.js';
-  newScript.onload = load_menu;
+  newScript.onload = function() {
+    loadTopmenu();
+  };
   document.getElementsByTagName('head')[0].appendChild(newScript);
+  }
+  injectTopMenu()
 kibana_style_css_patch: |
   /* sf loadTopmenu */
-  div.content {
-  position: absolute;
-  overflow: visible;
-  top: 51px;
-  }
-  body > div > .global-nav {
+  body .euiHeader {
     position: absolute;
-    top: 0px;
+    margin-top: 50px;
+  }
+  .euiBody--headerIsFixed {
+    all: unset;
+  }
+  .euiPage {
+    margin-top: 100px;
+  }
+  iframe{
+    height:50px;
+    position:absolute;
+    z-index: 99999;
   }
