@@ -13,6 +13,15 @@
     - regexp: 'network.host'
       line: 'network.host:  {{ ansible_default_ipv4.address }}'
       dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'discovery.type'
+      line: 'discovery.type: single-node'
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'path.data'
+      line: 'path.data: /var/lib/elasticsearch'
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'path.logs'
+      line: 'path.logs: /var/log/elasticsearch'
+      dest: /etc/elasticsearch/elasticsearch.yml
     - regexp: '-Xms'
       line: '-Xms{{ elasticsearch_minimum_heap_size }}'
       dest: /etc/elasticsearch/jvm.options
