@@ -15,6 +15,7 @@ nodepool_services:
   - nodepool-builder
 
 nodepool_launcher_packages:
+  - python3-nose
   - nodepool
   - nodepool-launcher
   - dhall
