@@ -139,15 +139,10 @@ class InstallServer(Component):
             "nodepool", {}).get("k1s_default_pods", True))
         if (
                 args.glue["nodepool_default_pods"] and
-                "hypervisor-runc" not in args.glue["roles"] and
-                "hypervisor-k1s" in args.glue["roles"] and
-                args.sfconfig["zuul"].get(
-                    "default_nodeset_label", "runc-centos") == "runc-centos"):
-            # if hypervisor-runc is not set and default_pods is set then use
-            # the new default nodeset label
+                "hypervisor-k1s" in args.glue["roles"]):
             args.sfconfig["zuul"]["default_nodeset_label"] = "pod-centos-7"
         args.glue["zuul_default_nodeset_label"] = \
-            args.sfconfig["zuul"].get("default_nodeset_label", "runc-centos")
+            args.sfconfig["zuul"].get("default_nodeset_label", "pod-centos-7")
         args.glue["zuul_default_nodeset_name"] = \
             args.sfconfig["zuul"].get("default_nodeset_name", "container")
 

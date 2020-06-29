@@ -2,15 +2,3 @@
 - service:
     name: k1s
     state: stopped
-
-- block:
-    - name: List running containers
-      shell: "podman ps -a | awk '/k1s-/ { print $1 }'"
-      register: _containers
-      ignore_errors: "yes"
-
-    - name: Delete runC containers
-      command: "podman rm {{ item }}"
-      loop: "{{ _containers.stdout_lines }}"
-      ignore_errors: "yes"
-  when: erase == True
