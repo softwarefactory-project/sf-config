@@ -261,46 +261,6 @@ def config_update(args, pb, skip_sync=False):
                 host_roles.append(role)
         pb.append(host_play(host, host_roles, {'role_action': 'update'}))
 
-    if 'hypervisor-runc' in args.glue["roles"]:
-        try:
-            # Always run runC customize when sfconfig is executed
-            os.unlink('/var/lib/software-factory/state/runC_config')
-        except Exception:
-            pass
-        runC_state = '/var/lib/software-factory/state/runC_config'
-        pb.append(host_play('install-server', tasks=[
-            {'name': 'Ensure runC state exists',
-             'changed_when': False,
-             'file': {
-                 'path': runC_state,
-                 'state': 'touch'
-              }},
-            {'name': 'Check last applied runC config',
-             'command': 'cat %s' % runC_state,
-             'changed_when': False,
-             'register': 'localconfig'},
-            {'name': 'Check new runC config',
-             'command': 'git log -n 3 --oneline nodepool/runC',
-             'args': {'chdir': '/root/config'},
-             'changed_when': False,
-             'register': 'upstreamconfig'},
-            {'name': 'Store runC update fact',
-             'set_fact': {
-                 'runC_update': '{% if localconfig.stdout != '
-                 'upstreamconfig.stdout %}True{% else %}False{% endif %}',
-                 'runC_state': '{{ upstreamconfig.stdout }}'}}]))
-        pb.append(host_play('hypervisor-runc', tasks=[
-            {'name': 'Run runC customize tasks',
-             'include_tasks': '/root/config/nodepool/runC/customize.yaml',
-             'when': "hostvars[groups['install-server'][0]]"
-                     "['runC_update'] | bool"}]))
-        pb.append(host_play('install-server', tasks=[
-            {'name': 'Write config repo state',
-             'delegate_to': '{{ install_server_host }}',
-             'copy': {'content': '{{ runC_state }}', 'dest': runC_state}}]))
-        pb[-1]['any_errors_fatal'] = False
-        pb[-1]['ignore_errors'] = True
-
 
 def nodepool_restart(args, pb):
     pb.append(host_play('nodepool-launcher', tasks=[{
