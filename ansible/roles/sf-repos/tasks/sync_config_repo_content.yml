@@ -97,7 +97,6 @@
     src: "config/{{ item }}.j2"
     dest: "{{ config_clone_dir }}/{{ item }}"
   loop:
-    - nodepool/_local_hypervisor_runc.yaml
     - nodepool/_local_hypervisor_k1s.yaml
     - nodepool/_local_hypervisor_openshift.yaml
   when: "'nodepool' in roles"

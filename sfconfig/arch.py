@@ -37,7 +37,7 @@ def process(args):
         "zuul-merger",
         "zuul-executor",
         "nodepool-launcher",
-        "hypervisor-runc",
+        "hypervisor-k1s",
     ]
 
     # roles is a dictwith roles name as key and host list as value

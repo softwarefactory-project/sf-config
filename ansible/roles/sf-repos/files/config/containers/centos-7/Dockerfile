@@ -13,18 +13,15 @@
 # under the License.
 
 FROM registry.centos.org/centos:7
-# Remove cr once CentOS-7.7 is released
-RUN yum-config-manager --enable cr && yum update -y && \
-  yum install -y sudo rsync git traceroute iproute \
-  python3-setuptools python2-setuptools \
-  python3 python3-devel gcc gcc-c++ unzip bzip2 make cmake \
-  rpm-build
+
+# Zuul minimal package
+RUN yum install -y sudo rsync git traceroute iproute python3-setuptools python3-pip
 
 # Zuul except /bin/pip to be available
 RUN ln -sf /bin/pip3 /bin/pip && /bin/pip3 install --user "tox>=3.8.0"
 
 # Install base Python linter for the demo project
-RUN /bin/pip install flake8
+RUN /bin/pip install flake8 yamllint
 
 # Zuul uses revoke-sudo. We can simulate that by moving the default sudoers to zuul
 # And this will prevent root from using sudo when the file is removed by revoke-sudo

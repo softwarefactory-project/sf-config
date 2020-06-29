@@ -13,6 +13,7 @@
 import sys
 import uuid
 import re
+from sfconfig.utils import pread
 
 
 def update_sfconfig(args):
@@ -200,10 +201,6 @@ def update_sfconfig(args):
         data["nodepool"]["kube_file"] = None
         dirty = True
 
-    if data["zuul"].get("default_nodeset_label") == "centos-oci":
-        data["zuul"]["default_nodeset_label"] = "runc-centos"
-        dirty = True
-
     if "default-tenant-name" not in data:
         data["default-tenant-name"] = "local"
         dirty = True
@@ -246,6 +243,10 @@ def update_sfconfig(args):
             "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
 
 
+def runc_provider_exists():
+    return pread(["grep", "-r", "driver: runc", "/etc/software-factory"]) != ''
+
+
 def update_arch(args):
     dirty = False
     data = args.sfarch
@@ -256,17 +257,12 @@ def update_arch(args):
         sf_version = "master"
 
     for host in data['inventory']:
-        # Set remote flag
-        if host['roles'] in ("hypervisor-oci", "hypervisor-runc"):
-            if not host.get('remote'):
-                host['remote'] = True
-                dirty = True
-
-        # Rename oci role to runC
-        if "hypervisor-oci" in host['roles']:
-            host['roles'].remove('hypervisor-oci')
-            host['roles'].append('hypervisor-runc')
-            dirty = True
+        if "hypervisor-oci" in host["roles"] or \
+           "hypervisor-runc" in host["roles"] or \
+           runc_provider_exists():
+            print("Runc providers needs to be removed manually "
+                  "before performing the upgrade.")
+            exit(1)
 
         # Remove legacy roles
         if 'pages' in host['roles']:
