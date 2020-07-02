@@ -1,5 +1,5 @@
 ---
-# TODO: fix zookeeper restore to only restore what is needed, e.g.: not the running slaves
+# TODO: fix zookeeper restore to only restore what is needed, e.g.: not the running workers
 #- name: "Restore data"
 #  synchronize:
 #    src: "{{ backup_src }}/"

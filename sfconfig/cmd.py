@@ -84,7 +84,7 @@ def usage(components):
                    help="Deployment secrets output directory")
 
     # common component options
-    p.add_argument("--enable-insecure-slaves", action='store_true',
+    p.add_argument("--enable-insecure-workers", action='store_true',
                    help="Allow using hypervisor-* on the control plane")
 
     # tunning
@@ -121,10 +121,20 @@ def usage(components):
     for component in components.values():
         component.usage(p)
 
-    args = p.parse_args()
+    # Hidden 3.4 backward compatible command line interface
+    argv = sys.argv
+    legacy_value, legacy_name = False, '--enable-insecure-slaves'
+    if legacy_name in argv:
+        argv.remove(legacy_name)
+        legacy_value = True
+
+    args = p.parse_args(argv)
 
     if args.upgrade:
         args.update = True
+
+    if legacy_value:
+        args.enable_insecure_workers = True
 
     return args
 
@@ -256,6 +266,10 @@ def main():
         if os.path.isfile(args.extra):
             args.glue.update(yaml_load(args.extra))
         args.glue.update(args.sfarch)
+        # 3.4 backward compatible extra vars
+        legacy_name = 'enable_insecure_slaves'
+        if legacy_name in args.glue:
+            args.glue['enable_insecure_workers'] = args.glue[legacy_name]
         yaml_dump(args.glue, allvars_file)
 
     if 'show_hidden_logs' not in args.glue:
