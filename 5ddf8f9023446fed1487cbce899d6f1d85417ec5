@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "00ec7431_1c6e79a7",
+        "filename": "sfconfig/arch.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-07-02T08:54:06Z",
+      "side": 1,
+      "message": "Here host variable is used outside of the for loop line 55. That\u0027s an issue. You could probably move that in the for loop block.",
+      "revId": "5ddf8f9023446fed1487cbce899d6f1d85417ec5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
