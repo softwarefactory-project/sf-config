@@ -17,15 +17,15 @@ class HypervisorOpenShift(Component):
     role = "hypervisor-openshift"
 
     def argparse(self, args):
-        if args.enable_insecure_slaves:
-            args.glue["enable_insecure_slaves"] = True
+        if args.enable_insecure_workers:
+            args.glue["enable_insecure_workers"] = True
 
     def validate(self, args, host):
         if host["roles"] != ["hypervisor-openshift"] and \
-           args.glue.get("enable_insecure_slaves") is not True:
+           args.glue.get("enable_insecure_workers") is not True:
             print("Can't deploy hypervisor-openshift on %s" % host["hostname"])
             print("This host is part of the control-plane, use "
-                  "--enable-insecure-slaves argument to continue. ")
+                  "--enable-insecure-workers argument to continue. ")
             print("See https://softwarefactory-project.io/docs/operator/"
                   "nodepool_operator.html#container-provider")
             exit(1)

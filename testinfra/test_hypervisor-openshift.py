@@ -20,10 +20,10 @@ class TestHypervisorOpenShift(utils.Base):
                                  "https://localhost:8443 "
                                  "--insecure-skip-tls-verify=true")
 
-    def test_slaves_are_isolated(self, host):
+    def test_workers_are_isolated(self, host):
         group_vars = yaml.safe_load(open(
             "/var/lib/software-factory/ansible/group_vars/all.yaml"))
-        if group_vars.get("enable_insecure_slaves") is not True:
+        if group_vars.get("enable_insecure_workers") is not True:
             # Make sure managesf internal url access fails
             assert host.run("curl --connect-timeout 3 %s" % group_vars[
                 "managesf_internal_url"]).rc in (7, 28)
