@@ -1,5 +1,5 @@
 ---
 features:
   - |
-    A basic nodepool OCI driver is enabled by default to provides some slaves
+    A basic nodepool OCI driver is enabled by default to provides some workers
     in order to run config-check and config-update jobs.
