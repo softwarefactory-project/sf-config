@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "812d468d_8b162b01",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/install.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-02T17:23:23Z",
+      "side": 1,
+      "message": "that shouldn\u0027t be necessary. during the upgrade all * the packages are set to latest.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 17
+      },
+      "revId": "97337a4687de6654f7243872b434f7f4603f1327",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dc5f1f12_eb0721e3",
+        "filename": "ansible/roles/sf-gateway/templates/topmenu.js.j2",
+        "patchSetId": 16
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-02T17:23:23Z",
+      "side": 1,
+      "message": "that shouldn\u0027t be necessary, and if it is, then we should drop the `window.onload` assignment.",
+      "range": {
+        "startLine": 15,
+        "startChar": 31,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "97337a4687de6654f7243872b434f7f4603f1327",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9d9b9be9_8c9cb327",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-02T17:23:23Z",
+      "side": 1,
+      "message": "left over debug",
+      "range": {
+        "startLine": 32,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 32
+      },
+      "revId": "97337a4687de6654f7243872b434f7f4603f1327",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26e669df_b4f7e1d1",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-02T17:23:23Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 36
+      },
+      "revId": "97337a4687de6654f7243872b434f7f4603f1327",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "533e857f_3ccc0d50",
+        "filename": "ansible/roles/sf-kibana/tasks/install.yml",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-02T17:23:23Z",
+      "side": 1,
+      "message": "ditto, that shouldn\u0027t be necessary",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 17
+      },
+      "revId": "97337a4687de6654f7243872b434f7f4603f1327",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
