@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "196d2871_8bfe03bf",
+        "filename": "ansible/roles/sf-zuul/templates/zuul.conf.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-03T09:54:49Z",
+      "side": 1,
+      "message": "if in L152 you define default, maybe here you should also do that?",
+      "revId": "0255567917642043194da55562da54b2d47cf872",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
