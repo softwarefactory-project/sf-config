@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "1df5ca2f_f7f92137",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2020-07-06T13:34:38Z",
+      "side": 1,
+      "message": "Can we have a mechanism to remove this directory instead move data in another dir (on prod, we don\u0027t have space for that).\n\nAlso, you should add a check to do that only if we upgrade from 5 to 7 (or we will lose data during next upgrade)",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 46
+      },
+      "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f704b06f_7b27247f",
         "filename": "ansible/roles/sf-kibana/defaults/main.yml",
         "patchSetId": 18
@@ -18,6 +41,29 @@
         "startChar": 0,
         "endLine": 30,
         "endChar": 3
+      },
+      "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "932b5a48_c0aa1430",
+        "filename": "ansible/roles/sf-kibana/tasks/setup.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2020-07-06T13:34:38Z",
+      "side": 1,
+      "message": "Can you have a look to disable telemetry: https://www.elastic.co/guide/en/kibana/current/telemetry-settings-kbn.html",
+      "range": {
+        "startLine": 7,
+        "startChar": 1,
+        "endLine": 7,
+        "endChar": 24
       },
       "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
