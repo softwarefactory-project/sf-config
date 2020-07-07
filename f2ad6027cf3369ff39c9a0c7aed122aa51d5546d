@@ -95,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "60c4c5a1_0eb2f50c",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-07T12:32:28Z",
+      "side": 1,
+      "message": "Problem is on few setting pages, where euiHeader is not loaded.... and seems that on those site none class is repeating, but I will dig more.",
+      "parentUuid": "f704b06f_7b27247f",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 3
+      },
+      "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "932b5a48_c0aa1430",
         "filename": "ansible/roles/sf-kibana/tasks/setup.yml",
         "patchSetId": 18
