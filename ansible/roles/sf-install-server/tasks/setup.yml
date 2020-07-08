@@ -77,3 +77,34 @@
         warn: false
       loop: '{{ pubkeys.stdout_lines }}'
   when: update_fqdn
+
+
+- name: Status page generator
+  block:
+    - name: Install status page generator
+      copy:
+        src: status-page-update.py
+        dest: /usr/libexec/software-factory/status-page-update.py
+        mode: 0555
+
+    - name: Create status directory
+      file:
+        path: /var/www/status
+        state: directory
+
+    - name: Set read access to the zuul DB for zuul user
+      mysql_user:
+        name: "{{ zuul_mysql_user }}"
+        host: "{{ zuul_mysql_host }}"
+        password: "{{ zuul_mysql_password }}"
+        priv: 'zuul.*:ALL'
+        state: present
+
+    - name: Setup status page update cron
+      cron:
+        name: update_status_page
+        minute: 0
+        hour: 0
+        day: '*'
+        job: "/usr/libexec/software-factory/status-page-update.py --lib /var/lib/software-factory/backup/status_history.yaml --output /var/www/status/index.html"
+  when: "'zuul' in roles"
