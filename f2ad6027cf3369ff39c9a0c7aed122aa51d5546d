@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "50cb5995_1f1ec96f",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-08T06:11:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5129a424_4e099774",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 17
+      },
+      "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1df5ca2f_f7f92137",
         "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
         "patchSetId": 18
@@ -60,6 +84,30 @@
       "side": 1,
       "message": "Agree that we should remove the directory. This playbook should be run only in case of an elasticsearch package update. You can add a condition on sf_previous_version. You will find example in others roles */tasks/upgrade.yml",
       "parentUuid": "1df5ca2f_f7f92137",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 46
+      },
+      "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26e0ae8d_f70d511a",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/upgrade.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-08T06:11:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a52508d8_a61185a9",
       "range": {
         "startLine": 90,
         "startChar": 0,
@@ -142,6 +190,30 @@
     },
     {
       "key": {
+        "uuid": "fc1203ae_52243b14",
+        "filename": "ansible/roles/sf-kibana/tasks/setup.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-08T06:11:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "932b5a48_c0aa1430",
+      "range": {
+        "startLine": 7,
+        "startChar": 1,
+        "endLine": 7,
+        "endChar": 24
+      },
+      "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8d3904_9d9a11ea",
         "filename": "ansible/roles/sf-kibana/tasks/upgrade.yml",
         "patchSetId": 18
@@ -153,6 +225,24 @@
       "writtenOn": "2020-07-07T08:15:07Z",
       "side": 1,
       "message": "Why do we need an empty file ? Could the file be removed instead ?",
+      "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6db6599f_67f9ab75",
+        "filename": "ansible/roles/sf-kibana/tasks/upgrade.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-08T06:11:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b8d3904_9d9a11ea",
       "revId": "f2ad6027cf3369ff39c9a0c7aed122aa51d5546d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
