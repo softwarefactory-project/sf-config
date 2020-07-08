@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "60dda111_24ced768",
+        "filename": "ansible/roles/sf-kibana/tasks/upgrade.yml",
+        "patchSetId": 22
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-08T10:22:43Z",
+      "side": 1,
+      "message": "as I expect: upgrading package will not recreate missing files.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 17
+      },
+      "revId": "e408ed4dce88b116721e7777b8ee8f9610737680",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
