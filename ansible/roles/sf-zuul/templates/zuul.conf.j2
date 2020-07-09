@@ -146,6 +146,21 @@ source_whitelist={{ conn['source_whitelist'] }}
 
 {% endfor %}
 
+{% for conn in zuul_gitlab_connections|default([]) %}
+[connection {{ conn['name'] }}]
+driver=gitlab
+server={{ conn['server']|default('gitlab.com') }}
+api_token={{ conn.get('api_token') }}
+webhook_token={{ conn.get('webhook_token') }}
+{% if conn['baseurl']|default(false) %}
+baseurl={{ conn['baseurl'] }}
+{% endif %}
+{% if conn['cloneurl']|default(false) %}
+cloneurl={{ conn['cloneurl'] }}
+{% endif %}
+
+{% endfor %}
+
 {% for conn in zuul_git_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=git

@@ -132,6 +132,7 @@ class InstallServer(Component):
         args.glue.setdefault("zuul_gerrit_connections", [])
         args.glue.setdefault("zuul_github_connections", [])
         args.glue.setdefault("zuul_pagure_connections", [])
+        args.glue.setdefault("zuul_gitlab_connections", [])
         args.glue.setdefault("zuul_git_connections", [])
 
         # Manage default pods
@@ -204,6 +205,18 @@ class InstallServer(Component):
                         'https://%s' % pagure_connection.get(
                             'hostname', 'pagure.io'))
                 args.glue["zuul_pagure_connections"].append(pagure_connection)
+            for gitlab_connection in zuul_config.get("gitlab_connections", []):
+                host_packed = gitlab_connection.get("server", "gitlab.com")
+                args.glue["zuul_ssh_known_hosts"].append({
+                    "host_packed": host_packed,
+                    "host": gitlab_connection.get("server", "gitlab.com"),
+                    "port": 22
+                })
+                if not gitlab_connection.get("baseurl"):
+                    gitlab_connection["baseurl"] = (
+                        'https://%s' % gitlab_connection.get(
+                            'server', 'gitlab.com'))
+                args.glue["zuul_gitlab_connections"].append(gitlab_connection)
             for git_connection in zuul_config.get("git_connections", []):
                 args.glue["zuul_git_connections"].append(git_connection)
 
