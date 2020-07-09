@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb4b93be_210c85f5",
+        "filename": "ansible/roles/sf-logserver/templates/purge-logs.sh.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-09T13:05:36Z",
+      "side": 1,
+      "message": "nit: could have been replaced by `-mindepth 1`",
+      "range": {
+        "startLine": 9,
+        "startChar": 28,
+        "endLine": 9,
+        "endChar": 51
+      },
+      "revId": "2de264e7dae39775e3bd64d942a9828108abb793",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
