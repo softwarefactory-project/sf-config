@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "09f1b587_19f60905",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-07-09T13:03:20Z",
+      "side": 1,
+      "message": "We should print a warning to stdout about the deprecation of this option, so that operators can be aware of the change even if they don\u0027t bother reading the release notes; something like\n\n\"warning: this argument is deprecated and will disappear in the next release of Software Factory, please use \u0027--enable-insecure-workers\u0027 instead\"",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 32
+      },
+      "revId": "9455bbb1cd43e74d9510f0d66500f30706806b76",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
