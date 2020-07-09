@@ -68,15 +68,15 @@
         state: link
 
 - name: Install purge-logs script
-  template:
-    src: purge-logs.sh.j2
-    dest: /usr/local/bin/purge-logs.sh
+  copy:
+    src: purge-logs.py
+    dest: /usr/local/bin/purge-logs.py
     mode: 0755
 
 - name: Install purge-logs expiry
   cron:
     name: purge-logs
-    job: /usr/local/bin/purge-logs.sh
+    job: /usr/local/bin/purge-logs.py --retention-days "{{ logs_expiry }}"
     hour: 5
     minute: 0
 
