@@ -22,6 +22,30 @@
       "revId": "9455bbb1cd43e74d9510f0d66500f30706806b76",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4ee907b1_795fb9b3",
+        "filename": "sfconfig/cmd.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-09T13:31:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09f1b587_19f60905",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 32
+      },
+      "revId": "9455bbb1cd43e74d9510f0d66500f30706806b76",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
