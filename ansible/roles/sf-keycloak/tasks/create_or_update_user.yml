@@ -25,11 +25,11 @@
             -q username={{ item.username }}
             --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
       register: _uid
-    - set_fact:
-        uid: "{{ _uid.stdout | from_json }}"
     - debug:
         var: _uid
         verbosity: 3
+    - set_fact:
+        uid: "{{ _uid.stdout | from_json }}"
 
 - name: update {{ item.username }}'s password
   command: >
