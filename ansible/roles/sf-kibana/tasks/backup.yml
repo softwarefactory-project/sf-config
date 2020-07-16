@@ -1,0 +1,18 @@
+---
+- name: Check if Kibana service is alive
+  wait_for:
+    host: "{{ kibana_host }}"
+    port: 5601
+    timeout: 1
+  register: kibana_status
+  ignore_errors: true
+
+- name: "Ensure {{ kibana_backup_dir }} exists"
+  file:
+    path: "{{ kibana_backup_dir }}"
+    state: directory
+
+- name: Create backup of all Kibana objects
+  command: |
+    /usr/local/bin/kibana-backup.py --kibana-url "{{ kibana_internal_url }}" --backup-dir {{ kibana_backup_dir }} backup
+  when: kibana_status is successful
