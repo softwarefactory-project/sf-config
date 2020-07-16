@@ -1,0 +1,21 @@
+---
+- name: Check if Kibana service is alive
+  wait_for:
+    host: "{{ kibana_host }}"
+    port: 5601
+    timeout: 1
+  register: kibana_status
+
+- name: Send restore script
+  copy:
+    src: restore-kibana.sh
+    dest: /usr/local/bin/restore-kibana.sh
+    mode: '0755'
+
+- name: Restore objects from backup
+  command: |
+    /usr/local/bin/restore-kibana.sh
+  environment:
+    KIBANA_HOST: "{{ kibana_host }}"
+    BACKUP_DIR: "{{ kibana_backup_dir }}"
+  when: kibana_status is successful
