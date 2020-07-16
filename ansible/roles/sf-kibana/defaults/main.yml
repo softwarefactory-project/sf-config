@@ -4,6 +4,8 @@ role_actions:
   - setup
   - configure_mirror
   - postconf
+  - restore
+  - backup
   - disable
 
 role_package: kibana
@@ -61,3 +63,5 @@ kibana_style_css_patch: |
     position:absolute;
     z-index: 99999;
   }
+
+kibana_backup_dir: "/usr/share/sf-config/kibana-backup"
