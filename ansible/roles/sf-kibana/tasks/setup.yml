@@ -24,6 +24,7 @@
   systemd:
     name: kibana
     state: restarted
+    daemon_reload: yes
   when: kibanaconf is changed or update_fqdn
 
 - name: Kibana service started and enabled
