@@ -26,7 +26,7 @@
             --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
       register: _uid
     - set_fact:
-        uid: "{{ _uid.stdout | from_json }}"
+        uid: "{{ _uid.stdout_lines[1:] | join('\n') | from_json }}"
     - debug:
         var: _uid
         verbosity: 3
