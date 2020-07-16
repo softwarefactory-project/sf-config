@@ -1,0 +1,20 @@
+---
+# NOTE(dpawlik) uncomment that, when sf-config will have a feature,
+# that restore backup will be after service is running.
+
+#- name: Check if Kibana service is alive
+#  wait_for:
+#    host: "{{ kibana_host }}"
+#    port: 5601
+#    timeout: 1
+#  register: kibana_status
+#  ignore_errors: true
+#
+#- name: Fail when Kibana is not available
+#  fail:
+#    msg: "Can not connect to Kibana to restore backup"
+#  when: kibana_status is not successful
+#
+#- name: Restore objects from backup
+#  command: |
+#    /usr/local/bin/kibana-backup.py --kibana-url "{{ kibana_internal_url }}" --restore-file {{ backup_src }}/backup.ndjson restore
