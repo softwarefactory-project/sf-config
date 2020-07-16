@@ -61,3 +61,5 @@ kibana_style_css_patch: |
     position:absolute;
     z-index: 99999;
   }
+
+kibana_backup_dir: "/usr/share/sf-config/kibana-backup"
