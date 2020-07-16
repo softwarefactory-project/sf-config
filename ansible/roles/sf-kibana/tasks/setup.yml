@@ -24,6 +24,7 @@
   systemd:
     name: kibana
     state: restarted
+    daemon_reload: yes
   when: kibanaconf is changed or update_fqdn
 
 - name: Kibana service started and enabled
@@ -32,3 +33,37 @@
     state: started
     enabled: "yes"
     daemon_reload: yes
+
+- name: Send backup and restore script
+  copy:
+    src: kibana-backup.py
+    dest: /usr/local/bin/kibana-backup.py
+    mode: '0755'
+
+# NOTE(dpawlik) Remove that when sf-config will have a feature, that
+# restore backup will be done after starting the service.
+- name: Set backup src var
+  set_fact:
+    backup_src: "/var/lib/software-factory/backup/kibana"
+
+- name: Check if Kibana service is alive
+  wait_for:
+    host: "{{ kibana_host }}"
+    port: 5601
+    timeout: 1
+  register: kibana_status
+
+- name: Check it there is a backup.ndjson file
+  stat:
+    path: "{{ backup_src }}/backup.ndjson"
+  register: kibana_backup_file
+
+- name: Restore backup, when file exists
+  block:
+    - name: Restore objects from backup
+      command: |
+        /usr/local/bin/kibana-backup.py --kibana-url "{{ kibana_internal_url }}" --restore-file {{ backup_src }}/backup.ndjson restore
+    - name: Rename backup.ndjson to other name
+      command: |
+        mv {{ backup_src }}/backup.ndjson {{ backup_src }}/backup.ndjson-restored
+  when: kibana_backup_file.stat.exists
