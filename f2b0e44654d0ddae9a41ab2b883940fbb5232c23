@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aa7e4bd7_f1898eb5",
+        "filename": "ansible/roles/sf-kibana/files/backup-kibana.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-22T10:06:22Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 3,
+        "startChar": 30,
+        "endLine": 3,
+        "endChar": 60
+      },
+      "revId": "f2b0e44654d0ddae9a41ab2b883940fbb5232c23",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6635c4ad_ce060905",
+        "filename": "ansible/roles/sf-kibana/files/restore-kibana.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-22T10:06:22Z",
+      "side": 1,
+      "message": "maybe localhost will be more universal for others",
+      "range": {
+        "startLine": 4,
+        "startChar": 30,
+        "endLine": 4,
+        "endChar": 59
+      },
+      "revId": "f2b0e44654d0ddae9a41ab2b883940fbb5232c23",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
