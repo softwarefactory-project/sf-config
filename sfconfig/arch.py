@@ -27,6 +27,8 @@ rhel_unsupported_roles = (
     "hydrant",
 )
 
+correct_order = ['gerrit', 'managesf']
+
 
 def process(args):
     # scalable_roles are the roles that can be instantiate multiple time
@@ -88,6 +90,18 @@ def process(args):
                 args.glue["first_launcher"] = host['name']
         args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
             list(aliases)
+
+        # Check if inventory role order is correct
+        correct_order_indexes = []
+        for role in correct_order:
+            if role in host["roles"]:
+                correct_order_indexes.append(host["roles"].index(role))
+
+        if sorted(correct_order_indexes) != correct_order_indexes:
+            print("There is wrong order set in roles. Please change it to:")
+            for role_index in sorted(correct_order_indexes):
+                print("- %s" % host["roles"][role_index])
+            sys.exit(1)
 
     # Check roles
     for requirement in required_roles:
