@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f6c47fd_5a6bf9c9",
+        "filename": "ansible/roles/sf-kibana/files/kibana-backup.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-07-27T12:24:26Z",
+      "side": 1,
+      "message": "Could you try to open a PR to the source project ?",
+      "revId": "94f00e6d02d6c26e123923b2f77a708d6d2cf6f9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
