@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d69305be_0a69b725",
+        "filename": "ansible/roles/sf-grafana/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2020-07-27T21:43:10Z",
+      "side": 1,
+      "message": "To fix:\n[WARNING]: The value False (type bool) in a string field was converted to u\u0027False\u0027 (type string). If this does not look like what you expect, quote the entire value to ensure it does not change.\n\nI will validate grafana works as expected with these values",
+      "parentUuid": "56a552fe_6ec1027a",
+      "range": {
+        "startLine": 30,
+        "startChar": 29,
+        "endLine": 30,
+        "endChar": 36
+      },
+      "revId": "7446bc6f94f32bb7b8afd675b63f7ddb52bc88d3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c940e971_0f36a415",
         "filename": "ansible/roles/sf-logserver/tasks/setup.yml",
         "patchSetId": 1
