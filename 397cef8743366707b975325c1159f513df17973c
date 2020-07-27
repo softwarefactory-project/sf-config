@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d83c09d9_a3559dc4",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-27T14:50:17Z",
+      "side": 1,
+      "message": "The backup playbook provides a variable named `backup_dest`",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 17
+      },
+      "revId": "397cef8743366707b975325c1159f513df17973c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8de3407a_744dec54",
+        "filename": "ansible/roles/sf-kibana/tasks/backup.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-27T14:50:17Z",
+      "side": 1,
+      "message": "The backup playbook is taking care of that already.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "397cef8743366707b975325c1159f513df17973c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f562c4e5_36457de9",
+        "filename": "ansible/roles/sf-kibana/tasks/backup.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-27T14:50:17Z",
+      "side": 1,
+      "message": "What happen if kibana is not available, shouldn\u0027t we fail the backup instead?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 35
+      },
+      "revId": "397cef8743366707b975325c1159f513df17973c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "74c30fb1_50d2ea8d",
+        "filename": "ansible/roles/sf-kibana/tasks/restore.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-27T14:50:17Z",
+      "side": 1,
+      "message": "Use `backup_src` here",
+      "range": {
+        "startLine": 12,
+        "startChar": 95,
+        "endLine": 12,
+        "endChar": 113
+      },
+      "revId": "397cef8743366707b975325c1159f513df17973c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c563301b_5ce64350",
+        "filename": "ansible/roles/sf-kibana/tasks/restore.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-27T14:50:17Z",
+      "side": 1,
+      "message": "Same here, I think we should fail the restore if kibana is not working.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 35
+      },
+      "revId": "397cef8743366707b975325c1159f513df17973c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
