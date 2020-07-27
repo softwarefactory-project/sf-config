@@ -16,6 +16,29 @@
       "revId": "94f00e6d02d6c26e123923b2f77a708d6d2cf6f9",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ff416c6_1457bd7f",
+        "filename": "ansible/roles/sf-kibana/files/kibana-backup.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-27T14:24:00Z",
+      "side": 1,
+      "message": "ups",
+      "range": {
+        "startLine": 116,
+        "startChar": 4,
+        "endLine": 116,
+        "endChar": 59
+      },
+      "revId": "94f00e6d02d6c26e123923b2f77a708d6d2cf6f9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
