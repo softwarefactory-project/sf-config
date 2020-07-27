@@ -9,7 +9,7 @@
     dest: /etc/my.cnf.d/mariadb-server.cnf
     section: server
     option: wait_timeout
-    value: 1209600
+    value: '1209600'
 
 - name: Start mariadb
   service:
@@ -47,6 +47,7 @@
     name: ''
     host: "{{ item }}"
     state: absent
+  no_log: true
   loop:
     - localhost
     - "{{ ansible_hostname }}"
