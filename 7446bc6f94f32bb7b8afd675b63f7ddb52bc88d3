@@ -39,6 +39,24 @@
       "revId": "7446bc6f94f32bb7b8afd675b63f7ddb52bc88d3",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab02d69_7ddf84d9",
+        "filename": "ansible/roles/sf-logserver/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-27T19:57:28Z",
+      "side": 1,
+      "message": "Oh, they aren\u0027t: https://docs.ansible.com/ansible/latest/modules/cron_module.html",
+      "parentUuid": "c940e971_0f36a415",
+      "revId": "7446bc6f94f32bb7b8afd675b63f7ddb52bc88d3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
