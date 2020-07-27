@@ -12,7 +12,6 @@ debug: false
 welcome_page_path: "sf/welcome.html"
 
 network:
-  use_letsencrypt: false
   smtp_relay:
   # NTP main reference server
   ntp_main_server: pool.ntp.org

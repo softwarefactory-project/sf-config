@@ -18,5 +18,3 @@ influxdb_admin_password: CHANGE_ME
 service_name: telegraf
 telegraf_influxdb_user: telegraf
 telegraf_influxdb_password: CHANGE_ME
-
-use_letsencrypt: false
