@@ -65,8 +65,13 @@
     dest: "/var/www/keys/localCA.pem"
     mode: "0444"
 
+- name: Check for letsencrypt TLS certificate
+  stat:
+    path: "/etc/letsencrypt/pem/{{ fqdn }}.pem"
+  register: tls_letsencrypt_gateway_cert
+
 - name: Add embedded TLS certificate for apache
-  when: not network['use_letsencrypt']
+  when: not tls_letsencrypt_gateway_cert.stat.exists
   notify: apache reload
   copy:
     content: "{{ item.content }}\n"

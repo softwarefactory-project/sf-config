@@ -24,7 +24,7 @@ ServerTokens Prod
     RewriteEngine On
 
     SSLEngine on
-{% if network["use_letsencrypt"] %}
+{% if tls_letsencrypt_gateway_cert.stat.exists %}
     SSLCertificateFile /etc/letsencrypt/pem/{{ fqdn }}.pem
     SSLCertificateChainFile /etc/letsencrypt/pem/lets-encrypt-x3-cross-signed.pem
     SSLCertificateKeyFile /etc/letsencrypt/private/{{ fqdn }}.key
