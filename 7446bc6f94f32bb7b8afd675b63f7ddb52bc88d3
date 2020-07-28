@@ -121,6 +121,30 @@
     },
     {
       "key": {
+        "uuid": "fa6bd700_aa500d0a",
+        "filename": "ansible/roles/sf-grafana/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2020-07-28T13:47:26Z",
+      "side": 1,
+      "message": "on ini_file module, the value is a string not a boolean https://docs.ansible.com/ansible/latest/modules/ini_file_module.html#parameter-value\n\nOn grafana.ini, the result is \u0027allow_sign_up \u003d False\u0027 as expected",
+      "parentUuid": "80d98117_1046d3ad",
+      "range": {
+        "startLine": 30,
+        "startChar": 29,
+        "endLine": 30,
+        "endChar": 36
+      },
+      "revId": "7446bc6f94f32bb7b8afd675b63f7ddb52bc88d3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7b08e9d0_f24986a6",
         "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
         "patchSetId": 1
@@ -149,6 +173,24 @@
       "writtenOn": "2020-07-28T12:08:50Z",
       "side": 1,
       "message": "+1",
+      "parentUuid": "7b08e9d0_f24986a6",
+      "revId": "7446bc6f94f32bb7b8afd675b63f7ddb52bc88d3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f8572b30_3e25f2f3",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2020-07-28T13:47:26Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "7b08e9d0_f24986a6",
       "revId": "7446bc6f94f32bb7b8afd675b63f7ddb52bc88d3",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
