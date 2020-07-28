@@ -77,8 +77,8 @@
   cron:
     name: purge-logs
     job: /usr/local/bin/purge-logs.py --retention-days "{{ logs_expiry }}"
-    hour: 5
-    minute: 0
+    hour: '5'
+    minute: '0'
 
 - name: Ensure /var/www/static exist
   file:
