@@ -15,7 +15,7 @@
 FROM registry.centos.org/centos:7
 
 # Zuul minimal package
-RUN yum install -y sudo rsync git traceroute iproute python3-setuptools python3-pip
+RUN yum install -y sudo rsync git traceroute iproute python3-setuptools python3-pip rpm-build python3-rpm-macros
 
 # Zuul except /bin/pip to be available
 RUN ln -sf /bin/pip3 /bin/pip && /bin/pip3 install --user "tox>=3.8.0"
