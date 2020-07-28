@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "62123abb_a91c5d1a",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-28T11:07:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d83c09d9_a3559dc4",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 17
+      },
+      "revId": "397cef8743366707b975325c1159f513df17973c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8de3407a_744dec54",
         "filename": "ansible/roles/sf-kibana/tasks/backup.yml",
         "patchSetId": 13
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "6c2d32ed_9d5db084",
+        "filename": "ansible/roles/sf-kibana/tasks/backup.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-28T11:07:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8de3407a_744dec54",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "397cef8743366707b975325c1159f513df17973c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f562c4e5_36457de9",
         "filename": "ansible/roles/sf-kibana/tasks/backup.yml",
         "patchSetId": 13
@@ -59,6 +107,30 @@
       "writtenOn": "2020-07-27T14:50:17Z",
       "side": 1,
       "message": "What happen if kibana is not available, shouldn\u0027t we fail the backup instead?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 35
+      },
+      "revId": "397cef8743366707b975325c1159f513df17973c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d460aa62_23f22fd4",
+        "filename": "ansible/roles/sf-kibana/tasks/backup.yml",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-07-28T11:07:26Z",
+      "side": 1,
+      "message": "IMHO yes. Good point",
+      "parentUuid": "f562c4e5_36457de9",
       "range": {
         "startLine": 18,
         "startChar": 0,
