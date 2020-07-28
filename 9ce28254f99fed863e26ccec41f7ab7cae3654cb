@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "445b56c5_6718e454",
+        "filename": "ansible/roles/sf-kibana/tasks/restore.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-28T12:06:54Z",
+      "side": 1,
+      "message": "This is not working because the restore happens when the services are not running. See: https://softwarefactory-project.io/cgit/software-factory/sf-config/tree/sfconfig/inventory.py#n377\n\nThere is no setting (yet) to differentiate backup that needs to be restore before or after a service is deployed. Thus I think we need to:\n\n  * In the restore phase, move the backup.ndjson file to /etc/kibana\n  * At the end of the setup phase, check if the ndjson file exists\n  * If it does, run the kibana-backup restore command, and remove the file.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 137
+      },
+      "revId": "9ce28254f99fed863e26ccec41f7ab7cae3654cb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
