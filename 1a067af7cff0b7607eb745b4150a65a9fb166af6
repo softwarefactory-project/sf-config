@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e7619f55_997cce0b",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-07-28T10:52:07Z",
+      "side": 0,
+      "message": "You can remove the full block.",
+      "revId": "1a067af7cff0b7607eb745b4150a65a9fb166af6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

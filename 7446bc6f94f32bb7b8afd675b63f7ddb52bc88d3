@@ -49,6 +49,47 @@
     },
     {
       "key": {
+        "uuid": "79c6b314_66c9450f",
+        "filename": "ansible/roles/sf-grafana/defaults/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-07-28T10:52:07Z",
+      "side": 1,
+      "message": "I did the same fix in my version of that patch. The grafana.ini file is as expected and the service is up (we can authenticate too)",
+      "parentUuid": "d69305be_0a69b725",
+      "range": {
+        "startLine": 30,
+        "startChar": 29,
+        "endLine": 30,
+        "endChar": 36
+      },
+      "revId": "7446bc6f94f32bb7b8afd675b63f7ddb52bc88d3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7b08e9d0_f24986a6",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-07-28T10:52:07Z",
+      "side": 1,
+      "message": "no_log: true is need here as well to remove a warning",
+      "revId": "7446bc6f94f32bb7b8afd675b63f7ddb52bc88d3",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c940e971_0f36a415",
         "filename": "ansible/roles/sf-logserver/tasks/setup.yml",
         "patchSetId": 1
