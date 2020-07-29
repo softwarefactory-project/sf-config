@@ -22,6 +22,30 @@
       "revId": "6043c93d4d39f0676c73da36cd9ee024f8c4c886",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dbabeb28_51136d92",
+        "filename": "ansible/roles/sf-repos/tasks/reset_repo_clone.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-07-29T12:30:25Z",
+      "side": 1,
+      "message": "right.\nWhat do you suggest ? I tried with \"when: zuul_commit\" but -\u003e [DEPRECATION WARNING]: evaluating \u0027zuul_commit\u0027 as a bare variable, this behaviour will go away and you might need to add |bool to the expression in the future. Also see CONDITIONAL_BARE_VARS configuration \ntoggle. This feature will be removed in version 2.12. Deprecation warnings can be disabled by setting deprecation_warnings\u003dFalse in ansible.cfg.",
+      "parentUuid": "60f05027_bf33b8c6",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 25
+      },
+      "revId": "6043c93d4d39f0676c73da36cd9ee024f8c4c886",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
