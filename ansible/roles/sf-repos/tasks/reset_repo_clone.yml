@@ -10,6 +10,17 @@
     - "clean -f -x -d"
   changed_when: false
 
+- name: Discover the ZUUL_COMMIT env var
+  set_fact:
+    zuul_commit: "{{ lookup('env','ZUUL_COMMIT') }}"
+
+- name: Reset to ZUUL_COMMIT
+  command: "git reset --hard {{ zuul_commit }}"
+  args:
+    chdir: "{{ clone_dir }}"
+  changed_when: false
+  when: zuul_commit != ""
+
 - name: Check for local patch
   stat:
     path: "/var/lib/software-factory/git/{{ clone_dir | basename }}.patch"
