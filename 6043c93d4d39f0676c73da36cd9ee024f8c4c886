@@ -46,6 +46,30 @@
       "revId": "6043c93d4d39f0676c73da36cd9ee024f8c4c886",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "08aaa69e_605c6c21",
+        "filename": "ansible/roles/sf-repos/tasks/reset_repo_clone.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-07-29T13:08:40Z",
+      "side": 1,
+      "message": "That sounds like an ansible-lint issue.",
+      "parentUuid": "dbabeb28_51136d92",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 25
+      },
+      "revId": "6043c93d4d39f0676c73da36cd9ee024f8c4c886",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
