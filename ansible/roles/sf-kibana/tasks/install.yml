@@ -1,9 +1,9 @@
 ---
 - include_tasks: configure_mirror.yml
 
-- name: Install kibana package
+- name: Install Opendistro Kibana package
   yum:
-    name: kibana
+    name: opendistroforelasticsearch-kibana
     state: present
     disablerepo: "*"
-    enablerepo: "{{ elastic_repo_name }}"
+    enablerepo: "{{ opendistro_repos_name }}"
