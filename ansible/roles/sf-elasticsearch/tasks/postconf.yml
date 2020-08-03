@@ -18,22 +18,120 @@
               }
           }'
     status_code: 200
+    user: "{{ elasticsearch_admin_user }}"
+    password: "{{ elasticsearch_admin_pass | default(authentication.admin_password) }}"
+    validate_certs: no
 
 - name: Check if indexes replicas number should be updated
   uri:
     url: '{{ elasticsearch_internal_url }}/_settings?pretty'
     method: GET
     status_code: 200
+    user: "{{ elasticsearch_admin_user }}"
+    password: "{{ elasticsearch_admin_pass | default(authentication.admin_password) }}"
+    validate_certs: no
   register: json_response
 
+# FROM: https://github.com/opendistro-for-elasticsearch/security/issues/100
 - name: Update number of replicas for existing indexes
   uri:
-    url: "{{ elasticsearch_internal_url }}/_settings?pretty"
+    url: "{{ elasticsearch_internal_url }}/.opendistro_security/_settings"
     method: PUT
     body_format: json
+    client_cert: /etc/elasticsearch/kirk.pem
+    client_key: /etc/elasticsearch/kirk-key.pem
     body: '{ "index":
              { "number_of_replicas": {{ elasticsearch_replicas }}
              }
            }'
     status_code: 200
+    validate_certs: no
   when: json_response.json != {}
+
+- name: Generate hash for admin user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch_admin_pass | default(authentication.admin_password) }}
+  register: _elk_admin_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for kibana user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ kibanaserver_password | default('kibanaserver') }}
+  register: _elk_kibana_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for logstash user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ logstash_password | default('logstash') }}
+  register: _elk_logstash_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for readall user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ readonly_password | default('test1234') }}
+  register: _elk_readall_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for repoXplorer user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ repoxplorer_password | default('repoxplorer') }}
+  register: _elk_repoxploer_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Set the internal users
+  template:
+    src: internal_users.yml.j2
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/internal_users.yml"
+  notify: Restart elasticsearch
+
+- name: Setup config.yaml security plugin
+  template:
+    src: config.yml.j2
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/config.yml"
+  notify: Restart elasticsearch
+
+# FIXME: do we want to change the file in the future?
+- name: Setup roles.yml security plugin
+  template:
+    src: roles.yml.j2
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/roles.yml"
+  notify: Restart elasticsearch
+
+# FIXME: do we want to change the file in the future?
+- name: Setup roles_mapping.yml security plugin
+  template:
+    src: roles_mapping.yml.j2
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/roles_mapping.yml"
+  notify: Restart elasticsearch
+
+# FROM: https://github.com/opendistro/for-elasticsearch-docs/issues/5
+- name: Reconfigure RBAC
+  command: >
+    {{ opendistro_plugin_dir }}/tools/securityadmin.sh \
+        -cd {{ opendistro_plugin_dir }}/securityconfig/ \
+        -icl -nhnv -cacert /etc/elasticsearch/root-ca.pem \
+        -cert /etc/elasticsearch/kirk.pem \
+        -key /etc/elasticsearch/kirk-key.pem \
+        -h {{ kibana_host }}
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: test
+  copy:
+    dest: /tmp/test-pass
+    content: |
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ elasticsearch_admin_pass | default(authentication.admin_password) }}
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ kibanaserver_password | default('kibanaserver') }}
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ logstash_password | default('logstash') }}
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ readonly_password | default('test1234') }}
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ repoxplorer_password | default('repoxplorer') }}
