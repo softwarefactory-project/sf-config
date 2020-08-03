@@ -190,6 +190,13 @@ elasticsearch:
   maximum_heap_size: 512m
   minimum_heap_size: 512m
   replicas: 0
+  kibanaserver_password: kibanaserver
+  repoxplorer_password: repoxplorer
+  logstash_password: logstash
+  readonly_user: kibana
+  readonly_password: kibana
+  # Admin password for Opendistro Elasticsearch
+  elasticsearch_password: admin
 
 logstash:
   maximum_heap_size: 128m
