@@ -1,0 +1,87 @@
+---
+- name: Generate hash for admin user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch['elasticsearch_password'] }}
+  register: _elk_admin_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for kibana user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch['kibanaserver_password'] }}
+  register: _elk_kibana_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for logstash user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch['logstash_password'] }}
+  register: _elk_logstash_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for readall user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch['readonly_password'] }}
+  register: _elk_readall_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for repoXplorer user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch['repoxplorer_password'] }}
+  register: _elk_repoxplorer_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for curator user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch['curator_password'] }}
+  register: _elk_curator_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Set the security plugin configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/{{ item }}"
+  loop:
+    - internal_users.yml
+    - tenants.yml
+    - config.yml
+    - roles.yml
+    - roles_mapping.yml
+
+- name: Ensure that Elasticsearch service is running before reconfiguration
+  systemd:
+    name: elasticsearch
+    state: started
+
+# https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/generate-certificates/#run-securityadminsh
+- name: Reconfigure Elasticsearch security plugin
+  shell: >
+    {{ opendistro_plugin_dir }}/tools/securityadmin.sh \
+      -cd {{ opendistro_plugin_dir }}/securityconfig/ \
+      -icl -nhnv -cacert {{ elk_stack_certs }}/root-ca.pem \
+      -cert {{ elk_stack_certs }}/admin.pem \
+      -key {{ elk_stack_certs }}/admin-key.pem \
+      -h {{ elasticsearch_host }}
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Write credentials to file
+  copy:
+    dest: /etc/software-factory/elasticsearch.yml
+    content: |
+      admin: {{ elasticsearch['elasticsearch_password']  }}
+      kibanaserver: {{ elasticsearch['kibanaserver_password'] }}
+      logstash: {{ elasticsearch['logstash_password'] }}
+      readonly: {{ elasticsearch['readonly_password'] }}
+      repoxplorer: {{ elasticsearch['repoxplorer_password'] }}
+      curator: {{ elasticsearch['curator_password'] }}
