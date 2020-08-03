@@ -4,6 +4,22 @@
   vars:
     user_name: kibana
 
+
+- name: Create cert dir
+  file:
+    path: "/etc/kibana/certs"
+    owner: kibana
+    group: root
+    state: directory
+
+- name: Copy certs
+  copy:
+    src: "/var/lib/software-factory/bootstrap-data/certs/localCA.pem"
+    dest: "/etc/kibana/certs/localCA.pem"
+    mode: 0600
+    owner: kibana
+    group: root
+
 - name: Configure kibana
   lineinfile:
     dest: /etc/kibana/kibana.yml
@@ -16,8 +32,22 @@
       line: 'server.basePath: "/analytics"'
     - regexp: 'elasticsearch.hosts'
       line: 'elasticsearch.hosts: ["{{ elasticsearch_internal_url }}"]'
+    - regexp: 'elasticsearch.ssl.verificationMode'
+      line: 'elasticsearch.ssl.verificationMode: full'
+    - regexp: 'elasticsearch.ssl.certificateAuthorities'
+      line: 'elasticsearch.ssl.certificateAuthorities: ["/etc/kibana/certs/localCA.pem"]'
     - regexp: 'telemetry.enabled'
       line: 'telemetry.enabled: false'
+    - regexp: 'elasticsearch.username'
+      line: "elasticsearch.username: kibanaserver"
+    - regexp: 'elasticsearch.password'
+      line: "elasticsearch.password: {{ elasticsearch_kibanaserver_password }}"
+    - regexp: 'elasticsearch.requestHeadersWhitelist'
+      line: 'elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]'
+    - regexp: 'opendistro_security.multitenancy.enabled'
+      line: 'opendistro_security.multitenancy.enabled: false'
+    - regexp: 'opendistro_security.multitenancy.tenants.preferred'
+      line: 'opendistro_security.multitenancy.tenants.preferred: ["Global"]'
   register: kibanaconf
 
 - name: Restart kibana after the configuration changed
