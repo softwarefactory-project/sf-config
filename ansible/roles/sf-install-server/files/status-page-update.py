@@ -99,7 +99,6 @@ def table(dom, columns, rows):
 class StatusPage:
     columns = [
         "zuul_build.uuid",
-        "zuul_buildset.event_id",
         "zuul_buildset.pipeline",
         "zuul_build.job_name",
         "zuul_buildset.project",
