@@ -4,6 +4,10 @@
   vars:
     user_name: elasticsearch
 
+- include_tasks: "{{ sf_tasks_dir }}/setup_elk_certs.yml"
+  vars:
+    elk_stack_certs: /etc/elasticsearch/certs
+
 - name: Configure Elasticsearch
   lineinfile:
     dest: '{{ item.dest }}'
@@ -22,6 +26,30 @@
     - regexp: '-Xmx'
       line: '-Xmx{{ elasticsearch_maximum_heap_size }}'
       dest: /etc/elasticsearch/jvm.options
+    - regexp: 'opendistro_security.allow_unsafe_democertificates'
+      line: 'opendistro_security.allow_unsafe_democertificates: true'
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: '  - CN=kirk,OU=client,O=client,L=test, C=de'
+      line: '  - CN=kirk,OU=client,O=client,L=test, C=us'
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemcert_filepath:'
+      line: "opendistro_security.ssl.transport.pemcert_filepath: {{ elk_stack_certs }}/agent.crt"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemkey_filepath'
+      line: "opendistro_security.ssl.transport.pemkey_filepath: {{ elk_stack_certs }}/agent.key"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemtrustedcas_filepath'
+      line: "opendistro_security.ssl.transport.pemtrustedcas_filepath: {{ elk_stack_certs }}/ca.crt"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemcert_filepath'
+      line: "opendistro_security.ssl.http.pemcert_filepath: {{ elk_stack_certs }}/elasticsearch.crt"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemkey_filepath'
+      line: "opendistro_security.ssl.http.pemkey_filepath: {{ elk_stack_certs }}/elasticsearch.key"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemtrustedcas_filepath'
+      line: "opendistro_security.ssl.http.pemtrustedcas_filepath: {{ elk_stack_certs }}/ca.crt"
+      dest: /etc/elasticsearch/elasticsearch.yml
   register: elasticsearchconf
 
 - name: Restart elasticsearch if needed

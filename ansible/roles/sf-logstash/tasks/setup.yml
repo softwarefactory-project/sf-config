@@ -35,13 +35,29 @@
       line: '-Xms{{ logstash_minimum_heap_size }}'
     - regexp: '-Xmx'
       line: '-Xmx{{ logstash_maximum_heap_size }}'
-  register: logstash_config
+  register: logstash_jvm_config
+
+  ## FIXME: set the password for user logstash
+  #- name: Configure logstash conf
+  #  lineinfile:
+  #    dest: /etc/logstash/logstash.yml
+  #    regexp: '^#?{{ item.regexp }}.*'
+  #    line: '{{ item.line }}'
+  #  loop:
+  #    - regexp: 'xpack.management.elasticsearch.username'
+  #      line: 'xpack.management.elasticsearch.username: logstash'
+  #    - regexp: 'xpack.management.elasticsearch.password'
+  #      line: 'xpack.management.elasticsearch.password: logstash'
+  #    - regexp: 'xpack.management.elasticsearch.hosts: '
+  #      line: 'xpack.management.elasticsearch.hosts: ["{{ elasticsearch_host }}"]'
+  #  no_log: show_hidden_logs == False
+  #  register: logstash_config
 
 - name: Restart logstash if needed
   service:
     name: logstash
     state: restarted
-  when: logstash_config is changed or logstash_templates is changed
+  when: logstash_jvm_config.changed or logstash_templates.changed or logstash_config.changed
 
 - name: Enable logstash
   service:

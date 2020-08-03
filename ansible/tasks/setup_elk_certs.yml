@@ -1,0 +1,281 @@
+---
+# Taken from: https://github.com/HASecuritySolutions/TacticalDataHandlingatScalewithLogstash
+
+- name: Create cert dir
+  file:
+    path: "{{ elk_stack_certs }}"
+    state: directory
+
+- name: Check if CA certs was done. If yes, skip generation
+  stat:
+    path: "{{ elk_stack_certs }}/ca.crt"
+  register: _ca_cert
+
+- name: Create ca.conf
+  copy:
+    dest: "{{ elk_stack_certs }}/ca.conf"
+    content: |
+      [req]
+      distinguished_name = req_distinguished_name
+      prompt = no
+
+      [req_distinguished_name]
+      countryName                     = US
+      stateOrProvinceName             = IL
+      localityName                    = Nowhere
+      postalCode                      = 00000
+      organizationName                = Softwarefactory-Project
+      organizationalUnitName          = IT
+      commonName                      = elasticsearch
+      emailAddress                    = info@sf.io
+  when: not _ca_cert.stat.exists
+
+- name: Copy sample config ssl file for elasticsearch
+  copy:
+    dest: "{{ elk_stack_certs }}/elasticsearch.conf"
+    content: |
+      [req]
+      distinguished_name = req_distinguished_name
+      req_extensions = v3_req
+      prompt = no
+      [req_distinguished_name]
+      countryName                     = US
+      stateOrProvinceName             = IL
+      localityName                    = Nowhere
+      postalCode                      = 00000
+      organizationName                = Softwarefactory-Project
+      organizationalUnitName          = IT
+      commonName                      = elasticsearch
+      emailAddress                    = info@sf.io
+      [ usr_cert ]
+      basicConstraints = CA:FALSE
+      nsCertType = client, server
+      nsComment = "OpenSSL SERVICEUSE Certificate"
+      subjectKeyIdentifier = hash
+      authorityKeyIdentifier = keyid,issuer:always
+      keyUsage = critical, digitalSignature, keyEncipherment, keyAgreement, nonRepudiation
+      extendedKeyUsage = serverAuth, clientAuth
+      [v3_req]
+      keyUsage = keyEncipherment, dataEncipherment, digitalSignature
+      extendedKeyUsage = serverAuth, clientAuth
+      subjectAltName = @alt_names
+      [alt_names]
+      DNS.1 = elasticsearch
+      DNS.2 = client
+  when: not _ca_cert.stat.exists
+
+- name: Generate CA cert
+  shell: >
+    openssl genrsa -out {{ elk_stack_certs }}/ca.key 2048 && \
+    openssl req -x509 -new -nodes -key {{ elk_stack_certs }}/ca.key -sha256 \
+      -days 3650 \
+      -out {{ elk_stack_certs }}/ca.crt \
+      -config {{ elk_stack_certs }}/ca.conf && \
+    openssl x509 -in {{ elk_stack_certs }}/ca.crt \
+      -text -noout \
+      -serial | grep serial= | cut -d"=" -f2 > {{ elk_stack_certs }}/serial
+  when: not _ca_cert.stat.exists
+
+- name: Generate Elasticserch certs
+  shell: >
+    openssl genrsa -out {{ elk_stack_certs }}/elasticsearch.key 2048 && \
+    openssl req -sha512 -new \
+      -key {{ elk_stack_certs }}/elasticsearch.key \
+      -out {{ elk_stack_certs }}/elasticsearch.csr \
+      -config {{ elk_stack_certs }}/elasticsearch.conf && \
+
+    openssl x509 -days 3650 -req -sha512 \
+      -in {{ elk_stack_certs }}/elasticsearch.csr \
+      -CAserial {{ elk_stack_certs }}/serial \
+      -CA {{ elk_stack_certs }}/ca.crt \
+      -CAkey {{ elk_stack_certs }}/ca.key \
+      -out {{ elk_stack_certs }}/elasticsearch.crt \
+      -extensions v3_req -extfile {{ elk_stack_certs }}/elasticsearch.conf && \
+
+    openssl pkcs12 -export -in {{ elk_stack_certs }}/elasticsearch.crt \
+      -inkey {{ elk_stack_certs }}/elasticsearch.key \
+      -certfile {{ elk_stack_certs }}/elasticsearch.crt \
+      -out {{ elk_stack_certs }}/elasticsearch.p12 \
+      -passout pass:
+
+    # && \
+    # /usr/share/elasticsearch/jdk/bin/keytool -importkeystore -srckeystore {{ elk_stack_certs }}/elasticsearch.p12 \
+    #   -srcstoretype pkcs12 \
+    #   -srcstorepass sec455 \
+    #   -destkeystore {{ elk_stack_certs }}/elasticsearch.jks \
+    #   -deststoretype JKS \
+    #   -storepass sec455 && \
+    # /usr/share/elasticsearch/jdk/bin/keytool -import -keystore {{ elk_stack_certs }}/elasticsearch.jks \
+    #   -storepass sec455 \
+    #   -file {{ elk_stack_certs }}/ca.crt \
+    #   --noprompt
+  when: not _ca_cert.stat.exists
+
+- name: Copy sample config ssl file for Elasticsearch agent
+  copy:
+    dest: "{{ elk_stack_certs }}/agent.conf"
+    content: |
+      [req]
+      distinguished_name = req_distinguished_name
+      req_extensions = v3_req
+      prompt = no
+      [req_distinguished_name]
+      countryName                     = US
+      stateOrProvinceName             = IL
+      localityName                    = Nowhere
+      postalCode                      = 00000
+      organizationName                = Softwarefactory-Project
+      organizationalUnitName          = IT
+      commonName                      = elasticsearch
+      emailAddress                    = info@sf.io
+      [ usr_cert ]
+      basicConstraints = CA:FALSE
+      nsCertType = client, server
+      nsComment = "OpenSSL SERVICEUSE Certificate"
+      subjectKeyIdentifier = hash
+      authorityKeyIdentifier = keyid,issuer:always
+      keyUsage = critical, digitalSignature, keyEncipherment, keyAgreement, nonRepudiation
+      extendedKeyUsage = serverAuth, clientAuth
+      [v3_req]
+      keyUsage = keyEncipherment, dataEncipherment, digitalSignature
+      extendedKeyUsage = serverAuth, clientAuth
+      subjectAltName = @alt_names
+      [alt_names]
+      DNS.1 = agent
+  when: not _ca_cert.stat.exists
+
+- name: Generate Elasticsearch node certs
+  shell: |
+    openssl genrsa -out {{ elk_stack_certs }}/agent.key 2048 && \
+    openssl req -sha512 -new \
+      -key {{ elk_stack_certs }}/agent.key \
+      -out {{ elk_stack_certs }}/agent.csr \
+      -config {{ elk_stack_certs }}/agent.conf && \
+    openssl x509 -days 3650 -req -sha512 \
+      -in {{ elk_stack_certs }}/agent.csr \
+      -CAserial {{ elk_stack_certs }}/serial \
+      -CA {{ elk_stack_certs }}/ca.crt \
+      -CAkey {{ elk_stack_certs }}/ca.key \
+      -out {{ elk_stack_certs }}/agent.crt \
+      -extensions v3_req \
+      -extfile {{ elk_stack_certs }}/agent.conf
+  when: not _ca_cert.stat.exists
+
+- name: Copy sample config ssl file for Logstash
+  copy:
+    dest: "{{ elk_stack_certs }}/logstash.conf"
+    content: |
+      [req]
+      distinguished_name = req_distinguished_name
+      req_extensions = v3_req
+      prompt = no
+      [req_distinguished_name]
+      countryName                     = US
+      stateOrProvinceName             = IL
+      localityName                    = Nowhere
+      postalCode                      = 00000
+      organizationName                = Softwarefactory-Project
+      organizationalUnitName          = IT
+      commonName                      = elasticsearch
+      emailAddress                    = info@sf.io
+      [ usr_cert ]
+      basicConstraints = CA:FALSE
+      nsCertType = client, server
+      nsComment = "OpenSSL SERVICEUSE Certificate"
+      subjectKeyIdentifier = hash
+      authorityKeyIdentifier = keyid,issuer:always
+      keyUsage = critical, digitalSignature, keyEncipherment, keyAgreement, nonRepudiation
+      extendedKeyUsage = serverAuth, clientAuth
+      [v3_req]
+      keyUsage = keyEncipherment, dataEncipherment, digitalSignature
+      extendedKeyUsage = serverAuth, clientAuth
+      [alt_names]
+      DNS.1 = logstash
+  when: not _ca_cert.stat.exists
+
+- name: Generate logstash cert
+  shell: >
+    openssl genrsa -out {{ elk_stack_certs }}/logstash.key 2048 && \
+    openssl req -sha512 -new \
+      -key {{ elk_stack_certs }}/logstash.key \
+      -out {{ elk_stack_certs }}/logstash.csr \
+      -config {{ elk_stack_certs }}/logstash.conf && \
+    openssl x509 -days 3650 -req -sha512 -in {{ elk_stack_certs }}/logstash.csr \
+      -CAserial {{ elk_stack_certs }}/serial \
+      -CA {{ elk_stack_certs }}/ca.crt \
+      -CAkey {{ elk_stack_certs }}/ca.key \
+      -out {{ elk_stack_certs }}/logstash.crt \
+      -extensions v3_req \
+      -extfile {{ elk_stack_certs }}/logstash.conf && \
+    cp {{ elk_stack_certs }}/logstash.key {{ elk_stack_certs }}/logstash.key.orig && \
+    mv {{ elk_stack_certs }}/logstash.key {{ elk_stack_certs }}/logstash.pem && \
+    openssl pkcs8 -in {{ elk_stack_certs }}/logstash.pem \
+      -topk8 -nocrypt \
+      -out {{ elk_stack_certs }}/logstash.key && \
+    openssl pkcs12 -export -in {{ elk_stack_certs }}/logstash.crt \
+      -inkey {{ elk_stack_certs }}/logstash.key \
+      -certfile {{ elk_stack_certs }}/ca.crt \
+      -out {{ elk_stack_certs }}/logstash.p12 \
+      -passout pass:
+
+    # && \
+    #/usr/share/elasticsearch/jdk/bin/keytool -importkeystore -srckeystore {{ elk_stack_certs }}/logstash.p12 \
+    #  -srcstoretype pkcs12 \
+    #  -srcstorepass sec455 \
+    #  -destkeystore {{ elk_stack_certs }}/logstash.jks \
+    #  -deststoretype JKS \
+    #  -storepass sec455 && \
+    #/usr/share/elasticsearch/jdk/bin/keytool -import -keystore {{ elk_stack_certs }}/logstash.jks \
+    #  -storepass sec455 \
+    #  -file {{ elk_stack_certs }}/ca.crt \
+    #  --noprompt
+  when: not _ca_cert.stat.exists
+
+- name: Copy sample config ssl file for Kibana
+  copy:
+    dest: "{{ elk_stack_certs }}/kibana.conf"
+    content: |
+      [req]
+      distinguished_name = req_distinguished_name
+      req_extensions = v3_req
+      prompt = no
+
+      [req_distinguished_name]
+      countryName                     = US
+      stateOrProvinceName             = IL
+      localityName                    = Nowhere
+      postalCode                      = 00000
+      organizationName                = Softwarefactory-Project
+      organizationalUnitName          = IT
+      commonName                      = elasticsearch
+      emailAddress                    = info@sf.io
+      [ usr_cert ]
+      basicConstraints = CA:FALSE
+      nsCertType = client, server
+      nsComment = "OpenSSL SERVICEUSE Certificate"
+      subjectKeyIdentifier = hash
+      authorityKeyIdentifier = keyid,issuer:always
+      keyUsage = critical, digitalSignature, keyEncipherment, keyAgreement, nonRepudiation
+      extendedKeyUsage = serverAuth, clientAuth
+      [v3_req]
+      keyUsage = keyEncipherment, dataEncipherment, digitalSignature
+      extendedKeyUsage = serverAuth, clientAuth
+      subjectAltName = @alt_names
+      [alt_names]
+      DNS.1 = kibana
+  when: not _ca_cert.stat.exists
+
+- name: Generate Kibana certs
+  shell: >
+    openssl genrsa -out {{ elk_stack_certs }}/kibana.key 2048 && \
+    openssl req -sha512 -new -key {{ elk_stack_certs }}/kibana.key \
+      -out {{ elk_stack_certs }}/kibana.csr \
+      -config {{ elk_stack_certs }}/kibana.conf && \
+    openssl x509 -days 3650 -req -sha512 -in {{ elk_stack_certs }}/kibana.csr \
+      -CAserial {{ elk_stack_certs }}/serial \
+      -CA {{ elk_stack_certs }}/ca.crt \
+      -CAkey {{ elk_stack_certs }}/ca.key \
+      -out {{ elk_stack_certs }}/kibana.crt \
+      -extensions v3_req \
+      -extfile {{ elk_stack_certs }}/kibana.conf
+  when: not _ca_cert.stat.exists
