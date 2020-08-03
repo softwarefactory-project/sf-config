@@ -6,10 +6,35 @@
     delay: 10
     timeout: 600
 
+- name: Check if bundle is updated
+  stat:
+    path: /usr/share/kibana/optimize/bundles/security-login.bundle.js
+  register: _kibana_bundle_status
+
+- name: Trigger Kibana optimize command
+  become: true
+  become_user: kibana
+  shell: |
+    /usr/share/kibana/bin/kibana -c /etc/kibana/kibana.yml --optimize
+  when: not _kibana_bundle_status.stat.exists
+
+- name: Wait for bundle update
+  wait_for:
+    path: /usr/share/kibana/optimize/bundles/security-login.bundle.js
+    state: present
+    delay: 10
+    timeout: 600
+
 - name: Check if bundle js top menu patch was applied
   command: grep -q "loadTopmenu" /usr/share/kibana/optimize/bundles/kibana.bundle.js
   register: kibana_patch_bundle_js
   failed_when: kibana_patch_bundle_js.rc != 0 and kibana_patch_bundle_js.rc != 1
+  changed_when: false
+
+- name: Check if bundle js top menu patch for login screen
+  command: grep -q "loadTopmenu" /usr/share/kibana/optimize/bundles/security-login.bundle.js
+  register: kibana_patch_security_bundle_js
+  failed_when: kibana_patch_security_bundle_js.rc != 0 and kibana_patch_security_bundle_js.rc != 1
   changed_when: false
 
 - name: Check if style css top menu patch_style_ was applied
@@ -20,9 +45,19 @@
 
 - name: Patch kibana bundle js file
   lineinfile:
-    dest: /usr/share/kibana/optimize/bundles/kibana.bundle.js
+    dest: "{{ item }}"
     line: "{{ kibana_bundle_js_patch }}"
   when: kibana_patch_bundle_js.rc == 1
+  loop:
+    - /usr/share/kibana/optimize/bundles/kibana.bundle.js
+
+- name: Patch kibana security bundle js file
+  lineinfile:
+    dest: "{{ item }}"
+    line: "{{ kibana_bundle_js_patch }}"
+  when: kibana_patch_security_bundle_js.rc == 1
+  loop:
+    - /usr/share/kibana/optimize/bundles/security-login.bundle.js
 
 - name: Patch kibana style css file
   lineinfile:
@@ -30,20 +65,25 @@
     line: "{{ kibana_style_css_patch }}"
   when: kibana_patch_style_css.rc == 1
 
-- name: Check if logstash default index pattern exists
+- name: Check if logstash default index pattern exists in Elasticsearch
   uri:
-    url: '{{ kibana_internal_url }}/api/saved_objects/index-pattern/logstash'
+    url: '{{ elasticsearch_internal_url }}/logstash/_search'
     method: GET
-    status_code: 200, 404
+    user: "kibanaserver"
+    password: "{{ elasticsearch['kibanaserver_password'] }}"
+    status_code: 200, 404, 302
     headers:
       kbn-xsrf: true
+    validate_certs: no
   register: json_response
 
-- name: Create logstash default index pattern
+- name: Create logstash default index pattern in Elasticsearch
   uri:
-    url: '{{ kibana_internal_url }}/api/saved_objects/index-pattern/logstash'
+    url: '{{ elasticsearch_internal_url }}/logstash'
     method: POST
     body_format: json
+    client_cert: /etc/elasticsearch/kirk.pem
+    client_key: /etc/elasticsearch/kirk-key.pem
     body: '{
             "attributes": {
               "title": "logstash-*",
@@ -53,4 +93,6 @@
     status_code: 200
     headers:
       kbn-xsrf: true
-  when: json_response.status == 404
+    validate_certs: no
+  when:
+    - json_response.status == 404
