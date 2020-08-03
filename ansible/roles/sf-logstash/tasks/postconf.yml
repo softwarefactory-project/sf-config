@@ -1,0 +1,8 @@
+---
+# The Elasticsearch repo is in conflict with
+# Opendistro packages. Sometimes it block `yum update`
+# command so let's disable it on the end.
+- name: Disable Elasticsearch repository
+  yum_repository:
+    name: "{{ elastic_repo_name }}"
+    enabled: no
