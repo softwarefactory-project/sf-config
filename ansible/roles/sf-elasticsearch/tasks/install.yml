@@ -3,6 +3,8 @@
   yum:
     name:
       - java-1.8.0-openjdk
+      - wget
+      - unzip
       - elasticsearch-curator
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
@@ -10,10 +12,40 @@
 
 - include_tasks: configure_mirror.yml
 
-- name: Install Elasticsearch package
+# NOTE: If logstash was configured before Opendistro Elasticsearch,
+# the official package will be in conflict with Opendistro.
+# Let's remove it before Opendistro.
+- name: Remove official Elasticsearch if it was earlier installed
   yum:
-    name: "elasticsearch-{{ elk_stack_version }}.{{ elk_sub_version }}.0-1"
+    name: elasticsearch
+    state: absent
+  register: _official_es_package
+
+- name: Remove official Elasticsearch artifacts after package remove
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/lib/elasticsearch
+    - /usr/share/elasticsearch
+    - /etc/elasticsearch
+  when: _official_es_package.changed
+
+- name: Install Opendistro Elasticsearch package
+  yum:
+    name: "opendistroforelasticsearch-{{ opendistro_version }}"
     state: present
     disablerepo: "*"
-    enablerepo: "{{ elastic_repo_name }}"
-    allow_downgrade: true
+    enablerepo: "{{ opendistro_repos_name }}"
+
+# NOTE: below params are required in other roles.
+- name: Set Elasticsearch users as a fact
+  set_fact:
+    elasticsearch_admin_password: "{{ elasticsearch['elasticsearch_password'] | default(elasticsearch_admin_password) }}"
+    elasticsearch_kibanaserver_password: "{{ elasticsearch['kibanaserver_password'] | default(elasticsearch_kibanaserver_password) }}"
+    elasticsearch_repoxplorer_password: "{{ elasticsearch['repoxplorer_password'] | default(elasticsearch_repoxplorer_password) }}"
+    elasticsearch_logstash_password: "{{ elasticsearch['logstash_password'] | default(elasticsearch_logstash_password) }}"
+    elasticsearch_curator_password: "{{ elasticsearch['curator_password'] | default(elasticsearch_curator_password) }}"
+    elasticsearch_readonly_user: "{{ elasticsearch['readonly_user'] | default(elasticsearch_readonly_user) }}"
+    elasticsearch_readonly_password: "{{ elasticsearch['readonly_password'] | default(elasticsearch_readonly_password) }}"
+  no_log: true

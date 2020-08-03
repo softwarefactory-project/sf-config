@@ -1,6 +1,10 @@
+# FIXME: change admin password when it is auto generated
 mqtt:
   host: {{ firehose_host }}
   port: 1883
 elasticsearch:
   host: {{ elasticsearch_host }}
   port: {{ elasticsearch_http_port }}
+  http_auth: admin:admin
+  use_ssl: true
+  verify_certs: true

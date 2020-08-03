@@ -4,6 +4,52 @@
   vars:
     user_name: elasticsearch
 
+- name: Create cert dir
+  file:
+    path: "{{ elk_stack_certs }}"
+    owner: elasticsearch
+    group: root
+    state: directory
+
+- name: Rename name of Elasticsearch admin key
+  copy:
+    src: "{{ elastic_admin_key }}"
+    dest: "{{ elastic_admin_key }}-default"
+  vars:
+    elastic_admin_key: /var/lib/software-factory/bootstrap-data/certs/elasticsearch-admin.key
+
+- name: Convert elasticsearch admin private key to pkcs8
+  shell: |
+    openssl pkcs8 -in {{ sf_cert_path }}/elasticsearch-admin.key-default -topk8 -out {{sf_cert_path }}/elasticsearch-admin.key -nocrypt
+  vars:
+    sf_cert_path: /var/lib/software-factory/bootstrap-data/certs
+
+- name: Copy certs
+  copy:
+    src: "/var/lib/software-factory/bootstrap-data/certs/{{ item }}"
+    dest: "{{ elk_stack_certs }}/{{ item }}"
+    mode: 0600
+    owner: elasticsearch
+    group: root
+  loop:
+    - elasticsearch-admin.crt
+    - elasticsearch-admin.key
+    - localCA.pem
+
+# This is required to set opendistro_security.authcz.elasticsearch_dn
+- name: Take elasticsearch subject
+  shell: |
+    openssl x509 -subject -nameopt RFC2253 -noout -in {{ elk_stack_certs }}/elasticsearch-admin.crt | sed 's/subject= //g'
+  register: elk_cert_subject
+
+- name: Start Elasticsearch with demo certs setup
+  systemd:
+    name: elasticsearch
+    state: restarted
+    daemon_reload: "yes"
+  ignore_errors: true
+  when: elasticsearch_certs_generated is defined and elasticsearch_certs_generated
+
 - name: Configure Elasticsearch
   lineinfile:
     dest: '{{ item.dest }}'
@@ -22,7 +68,45 @@
     - regexp: '-Xmx'
       line: '-Xmx{{ elasticsearch_maximum_heap_size }}'
       dest: /etc/elasticsearch/jvm.options
+    - regexp: '  - CN='
+      line: "  - {{ elk_cert_subject.stdout | default('CN=Admin,O=SoftwareFactory,L=WROCLAW,ST=WROCLAW,C=PL') }}"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemcert_filepath:'
+      line: "opendistro_security.ssl.transport.pemcert_filepath: {{ elk_stack_certs }}/elasticsearch-admin.crt"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemkey_filepath'
+      line: "opendistro_security.ssl.transport.pemkey_filepath: {{ elk_stack_certs }}/elasticsearch-admin.key"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemtrustedcas_filepath'
+      line: "opendistro_security.ssl.transport.pemtrustedcas_filepath: {{ elk_stack_certs }}/localCA.pem"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemcert_filepath'
+      line: "opendistro_security.ssl.http.pemcert_filepath: {{ elk_stack_certs }}/elasticsearch-admin.crt"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemkey_filepath'
+      line: "opendistro_security.ssl.http.pemkey_filepath: {{ elk_stack_certs }}/elasticsearch-admin.key"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemtrustedcas_filepath'
+      line: "opendistro_security.ssl.http.pemtrustedcas_filepath: {{ elk_stack_certs }}/localCA.pem"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: '########'
+      line: ''
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.allow_unsafe_democertificates'
+      line: 'opendistro_security.allow_unsafe_democertificates: false'
+      dest: /etc/elasticsearch/elasticsearch.yml
   register: elasticsearchconf
+
+- name: Remove demo certs before restart
+  file:
+    path: "/etc/elasticsearch/{{ item }}"
+    state: absent
+  loop:
+    - esnode-key.pem
+    - esnode.pem
+    - kirk-key.pem
+    - kirk.pem
+    - root-ca.pem
 
 - name: Restart elasticsearch if needed
   systemd:
@@ -30,6 +114,19 @@
     state: restarted
     daemon_reload: "yes"
   when: elasticsearchconf is changed
+
+# Setup ELK stack users
+- include_tasks: create_users.yml
+
+- name: Replace Elasticsearch certificates
+  shell: >
+    {{ opendistro_plugin_dir }}/tools/securityadmin.sh \
+      -cd {{ opendistro_plugin_dir }}/securityconfig/ \
+      -icl -nhnv -cacert {{ elk_stack_certs }}/localCA.pem \
+      -cert {{ elk_stack_certs }}/elasticsearch-admin.crt \
+      -key {{ elk_stack_certs }}/elasticsearch-admin.key \
+      -h {{ elasticsearch_host }}
+  when: elasticsearch_certs_generated is defined and elasticsearch_certs_generated
 
 - name: Start service
   systemd:

@@ -190,6 +190,10 @@ elasticsearch:
   maximum_heap_size: 512m
   minimum_heap_size: 512m
   replicas: 0
+  # All passwords are stored in /etc/software-factory/elasticsearch.yml file
+  elasticsearch_password: CHANGE_ME
+  readonly_user: kibana
+  readonly_password: CHANGE_ME
 
 logstash:
   maximum_heap_size: 128m

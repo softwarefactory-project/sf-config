@@ -18,3 +18,4 @@
     baseurl: "{{ elastic_repo_url }}"
     gpgkey: "{{ elastic_repo_gpgkey }}"
     gpgcheck: "{{ elastic_repo_gpgcheck }}"
+    enabled: yes
