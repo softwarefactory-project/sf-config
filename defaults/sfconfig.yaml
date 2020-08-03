@@ -190,6 +190,7 @@ elasticsearch:
   maximum_heap_size: 512m
   minimum_heap_size: 512m
   replicas: 0
+  elasticsearch_password: CHANGE_ME
 
 logstash:
   maximum_heap_size: 128m
