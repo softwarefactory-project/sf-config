@@ -8,18 +8,40 @@ role_actions:
 
 role_package: elasticsearch
 
-elk_stack_version: 7
-elk_sub_version: 8
+opendistro_version: 1.10.1
+opendistro_repos_name: elasticsearch-6.x,elasticsearch-7.x,opendistroforelasticsearch-artifacts
+opendistro_plugin_dir: /usr/share/elasticsearch/plugins/opendistro_security
+opendistro_repos:
+  - name: elasticsearch-6.x
+    desc: Elasticsearch repository for 6.x packages
+    url: https://artifacts.elastic.co/packages/oss-6.x/yum
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    gpgcheck: 1
+  - name: elasticsearch-7.x
+    desc: Elasticsearch repository for 7.x packages
+    url: https://artifacts.elastic.co/packages/oss-7.x/yum
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    gpgcheck: 1
+  - name: opendistroforelasticsearch-artifacts
+    desc: Release RPM artifacts of OpenDistroForElasticsearch
+    url: https://d3g5vo6xdbdb9a.cloudfront.net/yum/noarch/
+    gpgkey: https://d3g5vo6xdbdb9a.cloudfront.net/GPG-KEY-opendistroforelasticsearch
+    gpgcheck: 1
 
-elastic_repo_name: elastic
-elastic_repo_desc: Elastic repository
-elastic_repo_url: 'https://artifacts.elastic.co/packages/{{ elk_stack_version }}.x/yum'
-elastic_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-elastic_repo_gpgcheck: 1
+java_home: /usr/lib/jvm/jre
+elk_stack_certs: /etc/elasticsearch/certs
+
+elasticsearch_password: "CHANGE_ME"
+elasticsearch_kibanaserver_password: "CHANGE_ME"
+elasticsearch_repoxplorer_password: "CHANGE_ME"
+elasticsearch_logstash_password: "CHANGE_ME"
+elasticsearch_curator_password: "CHANGE_ME"
+elasticsearch_readonly_user: kibana
+elasticsearch_readonly_password: "CHANGE_ME"
 
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
-elasticsearch_internal_url: "http://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
+elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
 
 elasticsearch_maximum_heap_size: 256m
 elasticsearch_minimum_heap_size: 256m

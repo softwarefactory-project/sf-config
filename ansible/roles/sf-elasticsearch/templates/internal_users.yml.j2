@@ -1,0 +1,45 @@
+---
+_meta:
+  type: internalusers
+  config_version: 2
+admin:
+  hash: {{ _elk_admin_hash.stdout }}
+  reserved: true
+  backend_roles:
+    - admin
+  description: Admin user
+  hidden: true
+kibanaserver:
+  hash: {{ _elk_kibana_hash.stdout }}
+  reserved: true
+  backend_roles:
+    - kibanauser
+  description: Kibanaserver user
+  hidden: true
+logstash:
+  hash: {{ _elk_logstash_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - logstash
+  description: Logstash user
+  hidden: true
+repoxplorer:
+  hash: {{ _elk_repoxplorer_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - admin
+  description: RepoXplorer user
+  hidden: true
+{{ elasticsearch_readonly_user | default('kibana') }}:
+  hash: {{ _elk_readall_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - kibana_viewer
+  description: Kibana viewer user
+curator:
+  hash: {{ _elk_curator_hash.stdout }}
+  reserved: true
+  backend_roles:
+    - admin
+  description: Curator user
+  hidden: true
