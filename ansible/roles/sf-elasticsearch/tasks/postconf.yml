@@ -11,6 +11,8 @@
     url: '{{ elasticsearch_internal_url }}/_template/default_settings'
     method: PUT
     body_format: json
+    client_cert: "{{ elk_stack_certs }}/admin.pem"
+    client_key: "{{ elk_stack_certs }}/admin-key.pem"
     body: '{
               "template" : "*",
               "settings" : {
@@ -18,22 +20,30 @@
               }
           }'
     status_code: 200
+    validate_certs: no
 
 - name: Check if indexes replicas number should be updated
   uri:
     url: '{{ elasticsearch_internal_url }}/_settings?pretty'
     method: GET
     status_code: 200
+    user: "{{ elasticsearch_admin_user }}"
+    password: "{{ elasticsearch['elasticsearch_password'] | default('admin') }}"
+    validate_certs: no
   register: json_response
 
-- name: Update number of replicas for existing indexes
+# FROM: https://github.com/opendistro-for-elasticsearch/security/issues/100
+- name: Update number of replicas for all existing indexes
   uri:
-    url: "{{ elasticsearch_internal_url }}/_settings?pretty"
+    url: "{{ elasticsearch_internal_url }}/*/_settings"
     method: PUT
     body_format: json
+    client_cert: "{{ elk_stack_certs }}/admin.pem"
+    client_key: "{{ elk_stack_certs }}/admin-key.pem"
     body: '{ "index":
              { "number_of_replicas": {{ elasticsearch_replicas }}
              }
            }'
     status_code: 200
+    validate_certs: no
   when: json_response.json != {}
