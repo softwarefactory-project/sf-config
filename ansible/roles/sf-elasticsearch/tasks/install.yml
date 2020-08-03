@@ -2,8 +2,10 @@
 - name: Install requirements
   yum:
     name:
-      - java-1.8.0-openjdk
+      - java-11-openjdk-devel
       - elasticsearch-curator
+      - wget
+      - unzip
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
@@ -12,7 +14,7 @@
 
 - name: Install Elasticsearch package
   yum:
-    name: "elasticsearch"
+    name: "opendistroforelasticsearch-{{ opendistro_version }}"
     state: present
     disablerepo: "*"
-    enablerepo: "{{ elastic_repo_name }}"
+    enablerepo: "{{ opendistro_repos_name }}"

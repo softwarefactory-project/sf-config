@@ -1,8 +1,30 @@
 <IfModule mod_proxy.c>
-    <Location /analytics>
-        ProxyPass {{ kibana_internal_url }}
-        ProxyPassReverse {{ kibana_internal_url }}
-    </Location>
+{% if 'cauth' in roles %}
+#<Location "/analytics/app/kibana">
+#    RequestHeader unset X-Remote-User
+#    AuthType mod_auth_pubtkt
+#    TKTAuthLoginURL /auth/login
+#    TKTAuthFakeBasicAuth on
+#    TKTAuthDebug 1
+#    require valid-user
+#    RequestHeader set X-Remote-User %{REMOTE_USER}s
+#</Location>
+
+<Location "/analytics">
+    RequestHeader unset X-Remote-User
+    <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
+        AuthType mod_auth_pubtkt
+        TKTAuthLoginURL /auth/login
+        TKTAuthFakeBasicAuth on
+        TKTAuthDebug 1
+        require valid-user
+        RequestHeader set X-Remote-User %{REMOTE_USER}s
+    </If>
+    ProxyPass {{ kibana_internal_url }}
+    ProxyPassReverse {{ kibana_internal_url }}
+</Location>
+{% endif %}
+
     <Location /elasticsearch>
         ProxyPass {{ elasticsearch_internal_url }}
         ProxyPassReverse {{ elasticsearch_internal_url }}

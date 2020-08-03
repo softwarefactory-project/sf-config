@@ -34,7 +34,7 @@
   uri:
     url: '{{ kibana_internal_url }}/api/saved_objects/index-pattern/logstash'
     method: GET
-    status_code: 200, 404
+    status_code: 200, 404,302
     headers:
       kbn-xsrf: true
   register: json_response
@@ -53,4 +53,9 @@
     status_code: 200
     headers:
       kbn-xsrf: true
-  when: json_response.status == 404
+    user: "{{ elasticsearch_admin_user }}"
+    password: "{{ elasticsearch_admin_pass }}"
+    validate_certs: no
+  when:
+    - json_response.status == 404
+    - "'Not Found' in {{ json_response.stdout }}"
