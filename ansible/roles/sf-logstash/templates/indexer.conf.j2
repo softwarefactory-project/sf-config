@@ -23,6 +23,12 @@ filter {
 
 output {
   elasticsearch {
-    hosts => ['{{ elasticsearch_host }}']
+    hosts => ['{{ elasticsearch_internal_url }}']
+    user => 'logstash'
+    password => 'logstash'
+    ssl => true
+    ssl_certificate_verification => false
+    ilm_enabled => false
+    index => "logstash"
   }
 }

@@ -25,7 +25,7 @@ saved_objects_types = (
     'visualization', 'search', 'dashboard', 'url')
 
 
-def backup(kibana_url, space_id, user, password, backup_dir):
+def backup(kibana_url, space_id, user, password, backup_dir, verify):
     """Return string with newline-delimitered json containing
     Kibana saved objects"""
     saved_objects = {}
@@ -45,7 +45,8 @@ def backup(kibana_url, space_id, user, password, backup_dir):
             auth=(user, password),
             headers={'Content-Type': 'application/json',
                      'kbn-xsrf': 'reporting'},
-            data='{ "type": "' + obj_type + '" }'
+            data='{ "type": "' + obj_type + '" }',
+            verify=verify
         )
         r.raise_for_status()  # Raises stored HTTPError, if one occurred.
         saved_objects[obj_type] = r.text
@@ -65,7 +66,8 @@ def backup(kibana_url, space_id, user, password, backup_dir):
     return '\n'.join(saved_objects.values())
 
 
-def restore(kibana_url, space_id, user, password, text, resolve_conflicts):
+def restore(kibana_url, space_id, user, password, text, resolve_conflicts,
+            verify):
     """Restore given newline-delimitered json containing
     saved objects to Kibana"""
 
@@ -82,7 +84,7 @@ def restore(kibana_url, space_id, user, password, text, resolve_conflicts):
             print("Spotted empty object. Continue...")
             continue
 
-        r = make_request(url, user, password, kib_obj)
+        r = make_request(url, user, password, kib_obj, verify)
 
         if not r:
             print("Can not import %s into Kibana" % kib_obj)
@@ -107,7 +109,7 @@ def remove_reference(text):
     return json.dumps(text)
 
 
-def make_request(url, user, password, text, retry=True):
+def make_request(url, user, password, text, verify, retry=True):
     r = None
     try:
         r = requests.post(
@@ -115,13 +117,19 @@ def make_request(url, user, password, text, retry=True):
             auth=(user, password),
             headers={'kbn-xsrf': 'reporting'},
             files={'file': ('backup.ndjson', text)},
-            timeout=10
+            timeout=10,
+            verify=verify
         )
     except requests.exceptions.ReadTimeout:
         if not retry:
             print("Importing failed. Retrying...")
             time.sleep(10)
-            make_request(url, user, password, text)
+            make_request(url, user, password, text, verify)
+
+    if "Please enter your credentials" in r.text:
+        print("Please provide correct username and password")
+        sys.exit(1)
+
     return r
 
 
@@ -149,6 +157,9 @@ if __name__ == '__main__':
     args_parser.add_argument('--resolve-conflicts', default=True,
                              help='Resolve conflicts by removing index '
                                   'id reference in backup file')
+    args_parser.add_argument('--verify', action='store_true',
+                             help='Use that option to check if SSL cert '
+                                  'has been verified by root CA')
     args = args_parser.parse_args()
 
     kibana_url = args.kibana_url
@@ -158,7 +169,7 @@ if __name__ == '__main__':
 
     if args.action == 'backup':
         print(backup(kibana_url, args.space_id, args.user, args.password,
-                     args.backup_dir)
+                     args.backup_dir, args.verify)
               )
     elif args.action == 'restore':
         if args.restore_file:
@@ -168,4 +179,4 @@ if __name__ == '__main__':
             text = ''.join(sys.stdin.readlines())
 
         restore(kibana_url, args.space_id, args.user, args.password,
-                text, args.resolve_conflicts)
+                text, args.resolve_conflicts, args.verify)
