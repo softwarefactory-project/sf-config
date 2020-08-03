@@ -11,11 +11,11 @@
     warn: no
   when: kibana_old_repo is changed
 
-- name: Add the elastic RPM repository
+- name: Configure Opendistro repos
   yum_repository:
-    name: "{{ elastic_repo_name }}"
-    description: "{{ elastic_repo_desc }}"
-    baseurl: "{{ elastic_repo_url }}"
-    gpgkey: "{{ elastic_repo_gpgkey }}"
-    gpgcheck: "{{ elastic_repo_gpgcheck }}"
-    enabled: 0
+    name: "{{ item.name }}"
+    description: "{{ item.desc }}"
+    baseurl: "{{ item.url }}"
+    gpgkey: "{{ item.gpgkey }}"
+    gpgcheck: "{{ item.gpgcheck }}"
+  loop: "{{ opendistro_repos }}"
