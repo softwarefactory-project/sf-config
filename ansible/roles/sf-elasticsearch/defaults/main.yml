@@ -7,18 +7,52 @@ role_actions:
   - disable
 
 role_package: elasticsearch
+opendistro_repos:
+  - name: elasticsearch-6.x
+    desc: Elasticsearch repository for 6.x packages
+    url: https://artifacts.elastic.co/packages/oss-6.x/yum
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    gpgcheck: 1
+  - name: elasticsearch-7.x
+    desc: Elasticsearch repository for 7.x packages
+    url: https://artifacts.elastic.co/packages/oss-7.x/yum
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    gpgcheck: 1
+  - name: opendistroforelasticsearch-artifacts
+    desc: Release RPM artifacts of OpenDistroForElasticsearch
+    url: https://d3g5vo6xdbdb9a.cloudfront.net/yum/noarch/
+    gpgkey: https://d3g5vo6xdbdb9a.cloudfront.net/GPG-KEY-opendistroforelasticsearch
+    gpgcheck: 1
 
-elk_stack_version: 7
+opendistro_repos_name: elasticsearch-6.x,elasticsearch-7.x,opendistroforelasticsearch-artifacts
+opendistro_version: 1.9.0
+opendistro_plugin_dir: /usr/share/elasticsearch/plugins/opendistro_security
 
-elastic_repo_name: elastic
-elastic_repo_desc: Elastic repository
-elastic_repo_url: 'https://artifacts.elastic.co/packages/{{ elk_stack_version }}.x/yum'
-elastic_repo_gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-elastic_repo_gpgcheck: 1
+openjdk_release: java-1.8.0-openjdk
+java_home: /usr/lib/jvm/jre
+
+elasticsearch_admin_user: admin
+elasticsearch_admin_pass: admin
+
+kibanaserver_password: kibanaserver
+logstash_password: logstash
+repoxplorer_password: repoxplorer
+readonly_user: kibana
+readonly_password: kibana
+
+elasticsearch:
+  kibanaserver_password: kibanaserver
+  repoxplorer_password: repoxplorer
+  logstash_password: logstash
+  readonly_user: kibana
+  readonly_password: kibana
+  elasticsearch_password: admin
+
+elk_stack_certs: /etc/elasticsearch/certs
 
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
-elasticsearch_internal_url: "http://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
+elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
 
 elasticsearch_maximum_heap_size: 256m
 elasticsearch_minimum_heap_size: 256m

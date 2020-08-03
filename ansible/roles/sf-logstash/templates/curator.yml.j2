@@ -1,7 +1,7 @@
 ---
 client:
   hosts:
-    - {{ elasticsearch_host }}:{{ elasticsearch_http_port }}
+    - {{ elasticsearch_internal_url }}
   timeout: 30
 
 logging:
