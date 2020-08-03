@@ -14,3 +14,4 @@
     state: present
     disablerepo: "*"
     enablerepo: "{{ elastic_repo_name }}"
+    install_weak_deps: no
