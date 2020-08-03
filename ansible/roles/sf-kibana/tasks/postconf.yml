@@ -6,43 +6,34 @@
     delay: 10
     timeout: 600
 
-- name: Check if bundle js top menu patch was applied
-  command: grep -q "loadTopmenu" /usr/share/kibana/optimize/bundles/kibana.bundle.js
-  register: kibana_patch_bundle_js
-  failed_when: kibana_patch_bundle_js.rc != 0 and kibana_patch_bundle_js.rc != 1
-  changed_when: false
-
-- name: Check if style css top menu patch_style_ was applied
-  command: grep -q "loadTopmenu" /usr/share/kibana/optimize/bundles/kibana.style.css
-  register: kibana_patch_style_css
-  failed_when: kibana_patch_style_css.rc != 0 and kibana_patch_style_css.rc != 1
-  changed_when: false
-
 - name: Patch kibana bundle js file
-  lineinfile:
-    dest: /usr/share/kibana/optimize/bundles/kibana.bundle.js
-    line: "{{ kibana_bundle_js_patch }}"
-  when: kibana_patch_bundle_js.rc == 1
+  replace:
+    path: "/usr/share/kibana/plugins/opendistro_security/server/index.js"
+    regexp: "If you have forgotten your username or password, please ask your system administrator"
+    replace: "{{ kibana_bundle_js_patch }}"
+  register: kibana_login_page
 
-- name: Patch kibana style css file
-  lineinfile:
-    dest: /usr/share/kibana/optimize/bundles/kibana.style.css
-    line: "{{ kibana_style_css_patch }}"
-  when: kibana_patch_style_css.rc == 1
-
-- name: Check if logstash default index pattern exists
+- name: Check if logstash default index pattern exists in Elasticsearch
   uri:
     url: '{{ kibana_internal_url }}/api/saved_objects/index-pattern/logstash'
+    force_basic_auth: yes
     method: GET
-    status_code: 200, 404
+    user: admin
+    password: "{{ elasticsearch_password }}"
+    status_code: 200, 404, 302
     headers:
       kbn-xsrf: true
+    validate_certs: yes
   register: json_response
+  no_log: true
 
-- name: Create logstash default index pattern
+- name: Create logstash default index pattern in Elasticsearch
   uri:
     url: '{{ kibana_internal_url }}/api/saved_objects/index-pattern/logstash'
+    force_basic_auth: yes
     method: POST
+    user: admin
+    password: "{{ elasticsearch_password }}"
     body_format: json
     body: '{
             "attributes": {
@@ -50,7 +41,17 @@
               "timeFieldName": "@timestamp"
             }
           }'
-    status_code: 200
+    status_code: 200, 409
     headers:
       kbn-xsrf: true
-  when: json_response.status == 404
+      charset: utf-8
+    validate_certs: yes
+  when:
+    - json_response.status == 404
+  no_log: false
+
+- name: Restart Kibana after changing login page
+  systemd:
+    name: kibana
+    state: restarted
+  when: kibana_login_page.changed
