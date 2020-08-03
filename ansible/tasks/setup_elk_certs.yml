@@ -1,0 +1,65 @@
+---
+# Taken from: https://opendistro.github.io/for-elasticsearch-docs/old/0.9.0/docs/security/generate-certificates/
+- name: Create cert dir
+  file:
+    path: "{{ elk_stack_certs }}"
+    owner: root
+    group: elasticsearch
+    state: directory
+
+- name: Check if CA certs was done earlier
+  stat:
+    path: "{{ elk_stack_certs }}/root-ca.crt"
+  register: _ca_cert
+
+- name: Generate cert
+  when: not _ca_cert.stat.exists
+  block:
+    - name: Generate CA cert
+      shell: >
+        openssl genrsa -out {{ elk_stack_certs }}/root-ca-key.pem 2048 && \
+        openssl req -new -x509 -sha256 -days 3650\
+          -subj "/C=PL/ST=WROCLAW/L=WROCLAW/O=SoftwareFactory/CN=Admin" \
+          -key {{ elk_stack_certs }}/root-ca-key.pem \
+          -out {{ elk_stack_certs }}/root-ca.pem
+      register: _elk_ca_cert
+
+- name: Generate certs for Elasticsearch
+  when: "'elasticsearch' in roles"
+  block:
+    - name: Check if Elastcisearch admin certs was done earlier
+      stat:
+        path: "{{ elk_stack_certs }}/admin.pem"
+      register: _elk_admin_cert
+
+    - name: Generate admin certs
+      shell: >
+        openssl genrsa -out {{ elk_stack_certs }}/admin-key-temp.pem 2048 && \
+        openssl pkcs8 -inform PEM -outform PEM \
+          -topk8 -nocrypt -v1 PBE-SHA1-3DES \
+          -in {{ elk_stack_certs }}/admin-key-temp.pem \
+          -out {{ elk_stack_certs }}/admin-key.pem && \
+        openssl req -new -key {{ elk_stack_certs }}/admin-key.pem \
+          -subj '/C=PL/ST=WROCLAW/L=WROCLAW/O=SoftwareFactory/CN=Admin' \
+          -out {{ elk_stack_certs }}/admin.csr && \
+        openssl x509 -req -days 3650 \
+          -CA {{ elk_stack_certs }}/root-ca.pem \
+          -CAkey {{ elk_stack_certs }}/root-ca-key.pem \
+          -CAcreateserial -sha256 \
+          -in {{ elk_stack_certs }}/admin.csr \
+          -out {{ elk_stack_certs }}/admin.pem
+      register: _elk_elasticsearch_cert
+      when: not _elk_admin_cert.stat.exists
+
+    - name: Set elk cert fact
+      set_fact:
+        elasticsearch_certs_generated: true
+      when:
+        - not _elk_admin_cert.stat.exists
+        - _elk_ca_cert is defined and _elk_ca_cert.changed or _elk_elasticsearch_cert.changed
+
+    # This is required to set opendistro_security.authcz.elasticsearch_dn
+    - name: Take elasticsearch subject
+      shell: |
+        openssl x509 -subject -nameopt RFC2253 -noout -in {{ elk_stack_certs }}/admin.pem | sed 's/subject= //g'
+      register: elk_elasticsearch_subject
