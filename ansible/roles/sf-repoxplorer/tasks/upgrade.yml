@@ -8,7 +8,7 @@
     - repoxplorer-webui
 
 - name: Delete old repoxplorer elasticsearch indices
-  command: 'curl -X DELETE "{{ elasticsearch_internal_url }}/{{ item }}"'
+  command: 'curl -k -X DELETE "{{ elasticsearch_internal_url }}/{{ item }}"'
   ignore_errors: true
   args:
     warn: no
