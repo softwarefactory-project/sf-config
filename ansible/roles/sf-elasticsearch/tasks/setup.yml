@@ -4,6 +4,17 @@
   vars:
     user_name: elasticsearch
 
+# Setup Opendistro certificates
+- include_tasks: "{{ sf_tasks_dir }}/setup_elk_certs.yml"
+
+- name: Start Elasticsearch with demo certs setup
+  systemd:
+    name: elasticsearch
+    state: restarted
+    daemon_reload: "yes"
+  ignore_errors: true
+  when: elasticsearch_certs_generated is defined and elasticsearch_certs_generated
+
 - name: Configure Elasticsearch
   lineinfile:
     dest: '{{ item.dest }}'
@@ -22,7 +33,45 @@
     - regexp: '-Xmx'
       line: '-Xmx{{ elasticsearch_maximum_heap_size }}'
       dest: /etc/elasticsearch/jvm.options
+    - regexp: '  - CN='
+      line: "  - {{ elk_admin_subject.stdout | default('CN=Admin,O=SoftwareFactory,L=WROCLAW,ST=WROCLAW,C=PL') }}"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemcert_filepath:'
+      line: "opendistro_security.ssl.transport.pemcert_filepath: {{ elk_stack_certs }}/admin.pem"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemkey_filepath'
+      line: "opendistro_security.ssl.transport.pemkey_filepath: {{ elk_stack_certs }}/admin-key.pem"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.transport.pemtrustedcas_filepath'
+      line: "opendistro_security.ssl.transport.pemtrustedcas_filepath: {{ elk_stack_certs }}/root-ca.pem"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemcert_filepath'
+      line: "opendistro_security.ssl.http.pemcert_filepath: {{ elk_stack_certs }}/admin.pem"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemkey_filepath'
+      line: "opendistro_security.ssl.http.pemkey_filepath: {{ elk_stack_certs }}/admin-key.pem"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.ssl.http.pemtrustedcas_filepath'
+      line: "opendistro_security.ssl.http.pemtrustedcas_filepath: {{ elk_stack_certs }}/root-ca.pem"
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: '########'
+      line: ''
+      dest: /etc/elasticsearch/elasticsearch.yml
+    - regexp: 'opendistro_security.allow_unsafe_democertificates'
+      line: 'opendistro_security.allow_unsafe_democertificates: false'
+      dest: /etc/elasticsearch/elasticsearch.yml
   register: elasticsearchconf
+
+- name: Remove demo certs before restart
+  file:
+    path: "/etc/elasticsearch/{{ item }}"
+    state: absent
+  loop:
+    - esnode-key.pem
+    - esnode.pem
+    - kirk-key.pem
+    - kirk.pem
+    - root-ca.pem
 
 - name: Restart elasticsearch if needed
   systemd:
@@ -30,6 +79,16 @@
     state: restarted
     daemon_reload: "yes"
   when: elasticsearchconf is changed
+
+- name: Replace Elasticsearch certificates
+  shell: >
+    {{ opendistro_plugin_dir }}/tools/securityadmin.sh \
+      -cd {{ opendistro_plugin_dir }}/securityconfig/ \
+      -icl -nhnv -cacert {{ elk_stack_certs }}/root-ca.pem \
+      -cert {{ elk_stack_certs }}/admin.pem \
+      -key {{ elk_stack_certs }}/admin-key.pem \
+      -h {{ kibana_host }}
+  when: elasticsearch_certs_generated is defined and elasticsearch_certs_generated
 
 - name: Start service
   systemd:

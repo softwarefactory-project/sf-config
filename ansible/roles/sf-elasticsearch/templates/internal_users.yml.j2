@@ -1,0 +1,40 @@
+---
+_meta:
+  type: internalusers
+  config_version: 2
+admin:
+  hash: {{ _elk_admin_hash.stdout }}
+  reserved: true
+  backend_roles:
+    - admin
+  description: Admin user
+  hidden: true
+kibanaserver:
+  hash: {{ _elk_kibana_hash.stdout }}
+  reserved: true
+  backend_roles:
+    - kibanauser
+  description: Kibanaserver user
+  hidden: true
+logstash:
+  hash: {{ _elk_logstash_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - logstash
+  description: Logstash user
+  hidden: true
+repoxplorer:
+  hash: {{ _elk_repoxploer_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - admin
+  description: RepoXplorer user
+  hidden: true
+# readall does not provide what we want
+# more: https://opendistro.github.io/for-elasticsearch-docs/docs/security/access-control/users-roles/#predefined-roles
+test:
+  hash: {{ _elk_readall_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - kibana_read_only
+  description: Readall user
