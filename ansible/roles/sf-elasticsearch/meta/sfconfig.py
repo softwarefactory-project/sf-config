@@ -24,3 +24,5 @@ class ElasticSearch(Component):
         if 'replicas' in args.sfconfig['elasticsearch']:
             args.glue['elasticsearch_replicas'] = args.sfconfig[
                 'elasticsearch']['replicas']
+
+        self.get_or_generate_cert(args, "elasticsearch-admin", "localhost")

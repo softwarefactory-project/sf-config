@@ -4,6 +4,7 @@
   vars:
     user_name: kibana
 
+# FIXME: change username and password
 - name: Configure kibana
   lineinfile:
     dest: /etc/kibana/kibana.yml
@@ -16,8 +17,20 @@
       line: 'server.basePath: "/analytics"'
     - regexp: 'elasticsearch.hosts'
       line: 'elasticsearch.hosts: ["{{ elasticsearch_internal_url }}"]'
+    - regexp: 'elasticsearch.ssl.verificationMode'
+      line: 'elasticsearch.ssl.verificationMode: none'
     - regexp: 'telemetry.enabled'
       line: 'telemetry.enabled: false'
+    - regexp: 'elasticsearch.username'
+      line: "elasticsearch.username: kibanaserver"
+    - regexp: 'elasticsearch.password'
+      line: "elasticsearch.password: {{ elasticsearch_kibanaserver_password }}"
+    - regexp: 'elasticsearch.requestHeadersWhitelist'
+      line: 'elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]'
+    - regexp: 'opendistro_security.multitenancy.enabled'
+      line: 'opendistro_security.multitenancy.enabled: false'
+    - regexp: 'opendistro_security.multitenancy.tenants.preferred'
+      line: 'opendistro_security.multitenancy.tenants.preferred: ["Global"]'
   register: kibanaconf
 
 - name: Restart kibana after the configuration changed
