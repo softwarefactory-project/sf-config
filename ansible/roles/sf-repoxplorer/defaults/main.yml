@@ -12,7 +12,7 @@ repoxplorer_admin_token: "CHANGE_ME"
 
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
-elasticsearch_internal_url: "http://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
+elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
 
 # Already defined in sf-keycloak but needs to be here?
 keycloak_default_realm: "SF"
