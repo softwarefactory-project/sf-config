@@ -35,13 +35,13 @@
       line: '-Xms{{ logstash_minimum_heap_size }}'
     - regexp: '-Xmx'
       line: '-Xmx{{ logstash_maximum_heap_size }}'
-  register: logstash_config
+  register: logstash_jvm_config
 
 - name: Restart logstash if needed
   service:
     name: logstash
     state: restarted
-  when: logstash_config is changed or logstash_templates is changed
+  when: logstash_jvm_config.changed or logstash_templates.changed
 
 - name: Enable logstash
   service:
