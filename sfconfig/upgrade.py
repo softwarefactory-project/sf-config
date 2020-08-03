@@ -243,6 +243,30 @@ def update_sfconfig(args):
         open(args.config, 'w').write(re.sub(
             "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
 
+    if 'elasticsearch_password' not in data['elasticsearch']:
+        data['elasticsearch']['elasticsearch_password'] = elasticsearch_password
+        dirty = True
+
+    if 'kibanaserver_password' not in data['elasticsearch']:
+        data['elasticsearch']['kibanaserver_password'] = kibanaserver_password
+        dirty = True
+
+    if 'logstash_password' not in data['elasticsearch']:
+        data['elasticsearch']['logstash_password'] = logstash_password
+        dirty = True
+
+    if 'readonly_user' not in data['elasticsearch']:
+        data['elasticsearch']['readonly_user'] = readonly_user
+        dirty = True
+
+    if 'readonly_password' not in data['elasticsearch']:
+        data['elasticsearch']['readonly_password'] = readonly_password
+        dirty = True
+
+    if 'repoxplorer_password' not in data['elasticsearch']:
+        data['elasticsearch']['repoxplorer_password'] = repoxplorer_password
+        dirty = True
+
 
 def runc_provider_exists():
     runc = ''
