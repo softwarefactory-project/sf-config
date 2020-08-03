@@ -1,0 +1,88 @@
+---
+# FIXME: add ca, client cert and client key generation. It will replace
+# the cert generated in /usr/share/elasticsearch/plugins/opendistro_security/tools/install_demo_configuration.sh
+# that are done in package installation.
+
+- name: Generate hash for admin user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch_admin_pass | default(authentication.admin_password) }}
+  register: _elk_admin_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for kibana user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ kibanaserver_password | default('kibanaserver') }}
+  register: _elk_kibana_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for logstash user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ logstash_password | default('logstash') }}
+  register: _elk_logstash_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for readall user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ readonly_password | default('test1234') }}
+  register: _elk_readall_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Generate hash for repoXplorer user
+  command: |
+    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ repoxplorer_password | default('repoxplorer') }}
+  register: _elk_repoxploer_hash
+  no_log: show_hidden_logs == False
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: Set the internal users
+  template:
+    src: internal_users.yml.j2
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/internal_users.yml"
+
+- name: Setup config.yaml security plugin
+  template:
+    src: config.yml.j2
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/config.yml"
+
+# FIXME: do we want to change the file in the future?
+- name: Setup roles.yml security plugin
+  template:
+    src: roles.yml.j2
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/roles.yml"
+
+# FIXME: do we want to change the file in the future?
+- name: Setup roles_mapping.yml security plugin
+  template:
+    src: roles_mapping.yml.j2
+    dest: "{{ opendistro_plugin_dir }}/securityconfig/roles_mapping.yml"
+
+# FROM: https://github.com/opendistro/for-elasticsearch-docs/issues/5
+- name: Reconfigure Elasticsearch security plugin
+  shell: >
+    {{ opendistro_plugin_dir }}/tools/securityadmin.sh \
+      -cd {{ opendistro_plugin_dir }}/securityconfig/ \
+      -icl -nhnv -cacert {{ elk_stack_certs }}/root-ca.pem \
+      -cert {{ elk_stack_certs }}/admin.pem \
+      -key {{ elk_stack_certs }}/admin-key.pem \
+      -h {{ kibana_host }}
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+
+- name: test
+  copy:
+    dest: /tmp/test-pass
+    content: |
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ elasticsearch_admin_pass | default(authentication.admin_password) }}
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ kibanaserver_password | default('kibanaserver') }}
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ logstash_password | default('logstash') }}
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ readonly_password | default('test1234') }}
+      {{ opendistro_plugin_dir }}/tools/hash.sh -p {{ repoxplorer_password | default('repoxplorer') }}

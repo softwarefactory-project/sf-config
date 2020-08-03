@@ -1,0 +1,34 @@
+---
+_meta:
+  type: internalusers
+  config_version: 2
+admin:
+  hash: {{ _elk_admin_hash.stdout }}
+  reserved: true
+  backend_roles:
+    - admin
+  description: Admin user
+kibanaserver:
+  hash: {{ _elk_kibana_hash.stdout }}
+  reserved: true
+  backend_roles:
+    - kibanauser
+  description: Kibanaserver user
+logstash:
+  hash: {{ _elk_logstash_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - logstash
+  description: Logstash user
+readall:
+  hash: {{ _elk_readall_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - readall
+  description: Readall user
+repoxplorer:
+  hash: {{ _elk_repoxploer_hash.stdout }}
+  reserved: false
+  backend_roles:
+    - readall
+  description: RepoXplorer user
