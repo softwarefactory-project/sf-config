@@ -231,6 +231,18 @@ def update_sfconfig(args):
         }
         dirty = True
 
+    elasticsearch_credentials = ['elasticsearch_admin_password',
+                                 'kibanaserver_password',
+                                 'logstash_password',
+                                 'readonly_password',
+                                 'repoxplorer_password',
+                                 'curator_password']
+
+    for credential in elasticsearch_credentials:
+        if credential not in data['elasticsearch']:
+            data['elasticsearch'][credential] = uuid.uuid4().hex
+            dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \
