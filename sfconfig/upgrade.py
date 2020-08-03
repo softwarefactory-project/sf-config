@@ -231,6 +231,38 @@ def update_sfconfig(args):
         }
         dirty = True
 
+    if 'elasticsearch_password' not in data['elasticsearch']:
+        data['elasticsearch']['elasticsearch_password'] = 'admin'
+        dirty = True
+
+    if 'kibanaserver_password' not in data['elasticsearch']:
+        data['elasticsearch']['kibanaserver_password'] = 'kibanasever'
+        dirty = True
+
+    if 'logstash_password' not in data['elasticsearch']:
+        data['elasticsearch']['logstash_password'] = 'logstash'
+        dirty = True
+
+    if 'readonly_user' not in data['elasticsearch']:
+        data['elasticsearch']['readonly_user'] = 'kibana'
+        dirty = True
+
+    if 'readonly_password' not in data['elasticsearch']:
+        data['elasticsearch']['readonly_password'] = 'kibana'
+        dirty = True
+
+    if 'repoxplorer_password' not in data['elasticsearch']:
+        data['elasticsearch']['repoxplorer_password'] = 'repoxplorer'
+        dirty = True
+
+    if 'curator_user' not in data['elasticsearch']:
+        data['elasticsearch']['curator_user'] = 'curator'
+        dirty = True
+
+    if 'curator_password' not in data['elasticsearch']:
+        data['elasticsearch']['curator_password'] = 'curator'
+        dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \
