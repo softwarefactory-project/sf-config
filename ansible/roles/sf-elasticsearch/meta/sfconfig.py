@@ -24,3 +24,27 @@ class ElasticSearch(Component):
         if 'replicas' in args.sfconfig['elasticsearch']:
             args.glue['elasticsearch_replicas'] = args.sfconfig[
                 'elasticsearch']['replicas']
+        if 'kibanaserver_password' in args.sfconfig['elasticsearch']:
+            args.glue['kibanaserver_password'] = args.sfconfig[
+                'elasticsearch']['kibanaserver_password']
+        if 'repoxplorer_password' in args.sfconfig['elasticsearch']:
+            args.glue['repoxplorer_password'] = args.sfconfig['elasticsearch'][
+                'repoxplorer_password']
+        if 'logstash_password' in args.sfconfig['elasticsearch']:
+            args.glue['logstash_password'] = args.sfconfig['elasticsearch'][
+                'logstash_password']
+        if 'readonly_user' in args.sfconfig['elasticsearch']:
+            args.glue['readonly_user'] = args.sfconfig['elasticsearch'][
+                'readonly_user']
+        if 'readonly_password' in args.sfconfig['elasticsearch']:
+            args.glue['readonly_password'] = args.sfconfig['elasticsearch'][
+                'readonly_password']
+        if 'elasticsearch_password' in args.sfconfig['elasticsearch']:
+            args.glue['elasticsearch_password'] = args.sfconfig[
+                'elasticsearch']['elasticsearch_password']
+        if 'curator_user' in args.sfconfig['elasticsearch']:
+            args.glue['curator_user'] = args.sfconfig[
+                'elasticsearch']['curator_user']
+        if 'curator_password' in args.sfconfig['elasticsearch']:
+            args.glue['curator_password'] = args.sfconfig[
+                'elasticsearch']['curator_password']
