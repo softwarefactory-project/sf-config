@@ -13,5 +13,10 @@
   when: kibana_status is not successful
 
 - name: Create backup of all Kibana objects
-  command: |
-    /usr/local/bin/kibana-backup.py --kibana-url "{{ kibana_internal_url }}" --backup-dir {{ backup_dest }} backup
+  shell: |
+    /usr/local/bin/kibana-backup.py \
+      --user kibanaserver \
+      --password {{ "{{ elasticsearch['kibanaserver_password'] | default(elasticsearch_kibanaserver_password) }}" }} \
+      --kibana-url "{{ kibana_internal_url }}" \
+      --backup-dir {{ backup_dest }} \
+      backup

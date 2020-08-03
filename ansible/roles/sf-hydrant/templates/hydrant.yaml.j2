@@ -4,3 +4,6 @@ mqtt:
 elasticsearch:
   host: {{ elasticsearch_host }}
   port: {{ elasticsearch_http_port }}
+  http_auth: admin:{{ elasticsearch['elasticsearch_password'] | default(elasticsearch_password) }}
+  use_ssl: true
+  verify_certs: true
