@@ -231,6 +231,15 @@ def update_sfconfig(args):
         }
         dirty = True
 
+    elasticsearch_credentials = ['elasticsearch_password']
+
+    for credential in elasticsearch_credentials:
+        if ((credential in data['elasticsearch']
+             and data['elasticsearch'][credential] == 'CHANGE_ME')
+                or credential not in data['elasticsearch']):
+            data['elasticsearch'][credential] = uuid.uuid4().hex
+            dirty = True
+
     args.save_sfconfig = dirty
 
     if data['authentication']['admin_password'] == 'CHANGE_ME' or \
