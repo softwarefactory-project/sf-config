@@ -27,7 +27,7 @@ rhel_unsupported_roles = (
     "hydrant",
 )
 
-correct_order = ['gerrit', 'managesf']
+correct_order = ['gerrit', 'managesf', 'elasticsearch', 'logstash', 'kibana']
 
 
 def process(args):
