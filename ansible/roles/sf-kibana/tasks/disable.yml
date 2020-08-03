@@ -8,6 +8,6 @@
 
 - name: Remove packages
   yum:
-    name: kibana
+    name: opendistroforelasticsearch-kibana
     state: absent
   when: erase == True

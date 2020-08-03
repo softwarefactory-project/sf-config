@@ -8,6 +8,6 @@
 
 - name: Remove packages
   yum:
-    name: logstash
+    name: logstash-oss
     state: absent
   when: erase == True

@@ -13,12 +13,14 @@
         state: absent
       loop:
         - /var/lib/elasticsearch
-        - "/etc/yum.repos.d/{{ elastic_repo_name }}.repo"
+        - /etc/yum.repos.d/elasticsearch-7.x.repo
+        - /etc/yum.repos.d/opendistroforelasticsearch-artifacts.repo
 
     - name: Remove packages
       yum:
         name: "{{ item }}"
         state: absent
       loop:
-        - elasticsearch
+        - elasticsearch-oss
+        - opendistroforelasticsearch
   when: erase == True
