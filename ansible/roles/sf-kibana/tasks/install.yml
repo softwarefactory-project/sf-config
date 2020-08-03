@@ -1,9 +1,24 @@
 ---
 - include_tasks: configure_mirror.yml
 
-- name: Install kibana package
+# NOTE: If logstash was configured before Opendistro Kibana,
+# the official package will be in conflict with Opendistro.
+# Let's remove it before Opendistro.
+- name: Remove official Elasticsearch if it was earlier installed
   yum:
     name: kibana
+    state: absent
+  register: _official_kibana_package
+
+- name: Remove official Kibana artifacts after package remove
+  file:
+    path: /var/lib/kibana
+    state: absent
+  when: _official_kibana_package.changed
+
+- name: Install Opendistro Kibana package
+  yum:
+    name: opendistroforelasticsearch-kibana
     state: present
     disablerepo: "*"
-    enablerepo: "{{ elastic_repo_name }}"
+    enablerepo: "{{ opendistro_repos_name }}"
