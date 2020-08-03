@@ -1,5 +1,16 @@
 <IfModule mod_proxy.c>
-    <Location /analytics>
+
+{% if 'cauth' in roles %}
+    <Location "/analytics/login">
+        RequestHeader unset X-Remote-User
+        AuthType mod_auth_pubtkt
+        TKTAuthLoginURL /auth/login
+        TKTAuthFakeBasicAuth on
+        TKTAuthDebug 1
+        require valid-user
+    </Location>
+{% endif %}
+    <Location "/analytics">
         ProxyPass {{ kibana_internal_url }}
         ProxyPassReverse {{ kibana_internal_url }}
     </Location>

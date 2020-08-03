@@ -1,8 +1,11 @@
 ---
 client:
   hosts:
-    - {{ elasticsearch_host }}:{{ elasticsearch_http_port }}
+    - {{ elasticsearch_internal_url }}
   timeout: 30
+  use_ssl: True
+  ssl_no_validate: True
+  http_auth: admin:{{ elasticsearch_password }}
 
 logging:
   loglevel: INFO
