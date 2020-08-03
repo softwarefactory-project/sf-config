@@ -21,8 +21,15 @@ filter {
   }
 }
 
+# From https://opendistro.github.io/for-elasticsearch-docs/docs/troubleshoot/#logstash
 output {
   elasticsearch {
-    hosts => ['{{ elasticsearch_host }}']
+    hosts => ['{{ elasticsearch_internal_url }}']
+    index => "logstash-%{+YYYY.MM.dd}"
+    user => 'logstash'
+    password => "{{ elasticsearch_logstash_password | default('logstash') }}"
+    ssl => true
+    ssl_certificate_verification => true
+    ilm_enabled => false
   }
 }
