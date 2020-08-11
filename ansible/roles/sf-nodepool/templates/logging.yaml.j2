@@ -15,17 +15,21 @@ handlers:
     formatter: normal
     level: DEBUG
     filename: '{{ nodepool_log_dir }}/{{ _logfile }}.log'
+{% if _logile == 'launcher' %}
   exception:
     class: logging.handlers.WatchedFileHandler
     formatter: normal
     level: ERROR
     filename: '{{ nodepool_launcher_dir }}/{{ _logfile }}.log'
+{% endif %}
 loggers:
   nodepool:
     handlers:
       - console
       - normal
+{% if _logile == 'launcher' %}
       - exception
+{% endif %}
     level: {{ nodepool_loglevel }}
     propagate: 0
 root:
