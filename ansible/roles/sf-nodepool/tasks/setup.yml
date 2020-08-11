@@ -251,6 +251,12 @@
 
   when: "'nodepool-launcher' in nodepool_services"
 
+- name: Ensure httpd is started node
+  service:
+    name: httpd
+    state: started
+    enabled: "yes"
+
 - name: Install logrotate configuration
   copy:
     src: nodepool.logrotate.conf
