@@ -63,3 +63,11 @@ kibana_style_css_patch: |
     position:absolute;
     z-index: 99999;
   }
+  /* Fixing visualization/dashboard save navbar */
+  .kbnTopNavMenu {
+    padding-top: 110px !important;
+  }
+
+  .globalQueryBar{
+    all: unset;
+  }
