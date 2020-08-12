@@ -133,8 +133,8 @@
         ProxyRequests Off
 
 {% if 'gerrit' in roles %}
-        ProxyPass /r/ {{ gerrit_internal_url }} nocanon retry=0
-        ProxyPassReverse /r/ {{ gerrit_internal_url }}
+        ProxyPass /r {{ gerrit_internal_url | regex_replace('\\/$', '') }} nocanon retry=0
+        ProxyPassReverse /r {{ gerrit_internal_url | regex_replace('\\/$', '') }}
 
 {% endif %}
 
