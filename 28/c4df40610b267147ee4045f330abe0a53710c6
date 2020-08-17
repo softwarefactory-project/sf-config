@@ -1,0 +1,10 @@
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Code-Review+2: Fabien Boucher <fboucher@redhat.com>
+Code-Review+2: Tristan de Cacqueray <tdecacqu@redhat.com>
+Workflow+1: Tristan de Cacqueray <tdecacqu@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Mon, 17 Aug 2020 12:36:19 +0000
+Reviewed-on: https://softwarefactory-project.io/r/19280
+Project: software-factory/sf-config
+Branch: refs/heads/master
