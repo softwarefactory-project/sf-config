@@ -190,8 +190,14 @@ class StatusPage:
                     if column == "log_url":
                         value = "<a href='%s'>logs</a>" % (value)
                     elif column == "uuid":
-                        value = "<a href='/zuul/t/%s/build/%s'>%s</a>" % (
-                            tenant, value, value[:7])
+                        try:
+                            value = "<a href='/zuul/t/%s/build/%s'>%s</a>" % (
+                                tenant, value, value[:7])
+                        except TypeError:
+                            # It can be a situation, that there will be no
+                            # build status because of NODE_FAILURE
+                            pass
+
                     row.append(value)
                 rows.append(row)
             table(statusInfo, columns, rows)
