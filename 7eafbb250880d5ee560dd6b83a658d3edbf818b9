@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c7a9dce3_5c9d8ee5",
+        "filename": "ansible/roles/sf-install-server/files/status-page-update.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-08-18T09:34:34Z",
+      "side": 1,
+      "message": "we can leave the \u0027try\u0027 here, but with that patch it will be not required",
+      "range": {
+        "startLine": 194,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 32
+      },
+      "revId": "7eafbb250880d5ee560dd6b83a658d3edbf818b9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
