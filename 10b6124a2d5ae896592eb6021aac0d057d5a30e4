@@ -22,6 +22,30 @@
       "revId": "10b6124a2d5ae896592eb6021aac0d057d5a30e4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "685ac1d8_5eba04ef",
+        "filename": "ansible/roles/sf-install-server/files/status-page-update.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-08-18T08:55:57Z",
+      "side": 1,
+      "message": "So now is \"None\" everywhere where the exception was raised.\nN/A can be confusing, but \u0027-\u0027 or just \"ERROR\" will be ok for that.",
+      "parentUuid": "320888b7_4d02f4c4",
+      "range": {
+        "startLine": 199,
+        "startChar": 28,
+        "endLine": 199,
+        "endChar": 32
+      },
+      "revId": "10b6124a2d5ae896592eb6021aac0d057d5a30e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
