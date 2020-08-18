@@ -99,6 +99,7 @@ def table(dom, columns, rows):
 class StatusPage:
     columns = [
         "zuul_build.uuid",
+        "zuul_buildset.event_id",
         "zuul_buildset.pipeline",
         "zuul_build.job_name",
         "zuul_buildset.project",
@@ -187,7 +188,7 @@ class StatusPage:
                 row = []
                 for column in columns:
                     value = failure[column]
-                    if column == "log_url":
+                    if column == "log_url" and value is not None:
                         value = "<a href='%s'>logs</a>" % (value)
                     elif column == "uuid":
                         try:
@@ -197,6 +198,8 @@ class StatusPage:
                             # It can be a situation, that there will be no
                             # build status because of NODE_FAILURE
                             pass
+                    if value is None:
+                        value = '-'
 
                     row.append(value)
                 rows.append(row)
