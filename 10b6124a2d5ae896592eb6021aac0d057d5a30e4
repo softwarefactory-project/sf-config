@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "320888b7_4d02f4c4",
+        "filename": "ansible/roles/sf-install-server/files/status-page-update.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2020-08-18T08:45:54Z",
+      "side": 1,
+      "message": "how about value \u003d \u0027N/A\u0027 or \u0027-\u0027",
+      "range": {
+        "startLine": 199,
+        "startChar": 28,
+        "endLine": 199,
+        "endChar": 32
+      },
+      "revId": "10b6124a2d5ae896592eb6021aac0d057d5a30e4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
