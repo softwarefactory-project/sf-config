@@ -10,7 +10,8 @@
 
 - name: Install logstash package
   yum:
-    name: logstash
+    name: "logstash-{{ elk_stack_version }}.{{ elk_sub_version }}.0-1"
     state: present
     disablerepo: "*"
     enablerepo: "{{ elastic_repo_name }}"
+    allow_downgrade: true
