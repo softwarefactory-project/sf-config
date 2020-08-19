@@ -3,7 +3,7 @@
 
 - name: Install kibana package
   yum:
-    name: kibana
+    name: "kibana-{{ elk_stack_version }}.{{ elk_sub_version }}.0-1"
     state: present
     disablerepo: "*"
     enablerepo: "{{ elastic_repo_name }}"

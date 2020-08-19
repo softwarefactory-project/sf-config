@@ -12,7 +12,7 @@
 
 - name: Install Elasticsearch package
   yum:
-    name: "elasticsearch"
+    name: "elasticsearch-{{ elk_stack_version }}.{{ elk_sub_version }}.0-1"
     state: present
     disablerepo: "*"
     enablerepo: "{{ elastic_repo_name }}"
