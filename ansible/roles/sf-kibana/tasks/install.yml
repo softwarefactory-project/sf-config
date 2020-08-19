@@ -3,7 +3,17 @@
 
 - name: Install kibana package
   yum:
-    name: kibana
+    name: "kibana-{{ elk_stack_version }}.{{ elk_sub_version }}.1-1"
     state: present
     disablerepo: "*"
     enablerepo: "{{ elastic_repo_name }}"
+    allow_downgrade: true
+
+# NOTE: Seems that allow_downgrade does not work as expected in
+# current Ansible version. The ELK stack packages are made in RPM tool,
+# where there is not set conflict for previous version and also new
+# package version is providing all other versions back (tested on 7.8.1-1,
+# 7.7.0-1, 7.6.0-1). In that case, run downgrade command manually.
+- name: Run downgrade command manually
+  command: |
+    yum downgrade -y "kibana-{{ elk_stack_version }}.{{ elk_sub_version }}.1-1"
