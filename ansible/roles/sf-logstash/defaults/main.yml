@@ -9,6 +9,7 @@ role_actions:
 role_package: logstash
 
 elk_stack_version: 7
+elk_sub_version: 8
 
 elastic_repo_name: elastic
 elastic_repo_desc: Elastic repository
