@@ -33,3 +33,7 @@
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   when: "'keycloak' in roles"
+
+- name: test fail
+  fail:
+    msg: "test if it fail"
