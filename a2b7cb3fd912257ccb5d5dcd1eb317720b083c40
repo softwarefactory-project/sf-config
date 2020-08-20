@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "072e6286_18d61649",
+        "filename": "ansible/roles/sf-install-server/files/status-page-update.py",
+        "patchSetId": 23
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-08-20T10:41:08Z",
+      "side": 0,
+      "message": "add it",
+      "range": {
+        "startLine": 102,
+        "startChar": 8,
+        "endLine": 102,
+        "endChar": 33
+      },
+      "revId": "a2b7cb3fd912257ccb5d5dcd1eb317720b083c40",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
