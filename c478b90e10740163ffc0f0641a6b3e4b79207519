@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb1e9c52_a76c9dee",
+        "filename": "ansible/roles/sf-upgrade/tasks/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-08-26T07:04:49Z",
+      "side": 1,
+      "message": "good that you remove that ;)",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 16
+      },
+      "revId": "c478b90e10740163ffc0f0641a6b3e4b79207519",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
