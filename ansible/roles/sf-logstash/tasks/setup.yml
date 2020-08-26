@@ -15,6 +15,27 @@
     group: logstash
   when: logfile.stat.exists
 
+- name: Check if logstash-filter-multiline plugin is already installed
+  shell: |
+    /usr/share/logstash/bin/logstash-plugin list
+  register: _logstash_plugins
+
+- name: Install logstash-filter-multiline plugin
+  when: "'logstash-filter-multiline' not in _logstash_plugins"
+  block:
+    # NOTE: plugin install requires more than 128MB of Xmx.
+    # This value later will be overwritten
+    - name: Increase temporary logstash_maximum_heap_size
+      lineinfile:
+        dest: /etc/logstash/jvm.options
+        regexp: '^#?-Xmx.*'
+        line: "-Xmx512"
+
+    - name: Install plugin
+      shell: |
+        /usr/share/logstash/bin/logstash-plugin install logstash-filter-multiline
+      register: _multiline_plugin_setup
+
 - name: Install configuration files
   template:
     src: "{{ item.name }}.j2"
