@@ -7,20 +7,85 @@ input {
   }
 }
 
+
 filter {
+  grok {
+      match => [
+        "message", "%{TIMESTAMP_ISO8601} \| container \| ok: Runtime: (?<container_runtime>[0-9]:[0-9]{2}:[0-9]{2}.[0-9]{6})" ,
+	"message", "%{TIMESTAMP_ISO8601} \| primary \| ok: Runtime: (?<tripleo_runtime>[0-9]:[0-9]{2}:[0-9]{2}.[0-9]{6})",
+	"message", "%{TIMESTAMP_ISO8601} \| install-server \| ok: Runtime: (?<sf_runtime>[-0-9]{1}:[-0-9]{2}:[-0-9]{2}.[-0-9]{6})",
+	"message", "%{TIMESTAMP_ISO8601:start_time} \| Job console starting...",
+	"message", "%{TIMESTAMP_ISO8601:end_time} \| LOOP \[upload-logs : gzip console log and json output\]"
+      ]
+
+      add_field => {
+        "container_runtime" => "%{container_runtime}"
+	"tripleo_runtime" => "%{tripleo_runtime}"
+	"sf_runtime" => "%{sf_runtime}"
+        "start_time" => "%{start_time}"
+	"end_time" => "%{end_time}"
+      }
+  }
+
+  if [start_time] and [end_time] {
+    ruby {
+      code => "require 'time'; duration = Time.parse(event.get('end_time')) - Time.parse(event.get('start_time'))"
+      add_field => { "duration" => "%{duration}" }
+    }
+
+    ruby {
+      init => "require 'time'"
+      code => "
+             starttime = Time.iso8601(event.get('start_time').to_s).to_f;
+             endtime   = Time.iso8601(event.get('end_time').to_s).to_f;
+             event.set('time_diff', endtime - starttime);
+              "
+      add_tag => [ "calculated_time_difference" ]
+    }
+  }
+
+  if ! ("_grokparsefailure" in [tags]) {
+    date {
+      match => ["timestamp", "yyyy-MM-dd HH:mm:ss.SSS"]
+      timezone => "UTC"
+    }
+
+    date {
+      match => ["start_time", "yyyy-MM-dd HH:mm:ss.SSS"]
+      timezone => "UTC"
+    }
+
+    date {
+      match => ["end_time", "yyyy-MM-dd HH:mm:ss.SSS"]
+      timezone => "UTC"
+    }
+
+    date {
+      match => ["container_runtime", "H:mm:ss.SSSSSS"]
+      timezone => "UTC"
+    }
+
+    date {
+      match => ["tripleo_runtime", "H:mm:ss.SSSSSS"]
+      timezone => "UTC"
+    }
+
+    date {
+      match => ["sf_runtime", "H:mm:ss.SSSSSS"]
+      timezone => "UTC"
+    }
+  }
+
+
   grok {
     match => ["message", "(?<timestamp>[-0-9]{10}\s+[0-9.:]{12})(?<ms>[0-9]{3}) (?<sep>\|)%{GREEDYDATA:message}"]
     overwrite => [ "message" ]
   }
+
   if [message] =~ /^\s*$/ {
       drop { }
   }
-  date {
-    match => ["timestamp", "yyyy-MM-dd HH:mm:ss.SSS"]
-    timezone => "UTC"
-  }
 }
-
 output {
   elasticsearch {
     hosts => ['{{ elasticsearch_host }}']
