@@ -7,17 +7,81 @@ input {
   }
 }
 
+# Partially taken from https://opendev.org/openstack/logstash-filters/src/branch/master/filters/openstack-filters.conf
 filter {
-  grok {
-    match => ["message", "(?<timestamp>[-0-9]{10}\s+[0-9.:]{12})(?<ms>[0-9]{3}) (?<sep>\|)%{GREEDYDATA:message}"]
-    overwrite => [ "message" ]
-  }
   if [message] =~ /^\s*$/ {
       drop { }
   }
-  date {
-    match => ["timestamp", "yyyy-MM-dd HH:mm:ss.SSS"]
-    timezone => "UTC"
+  multiline {
+    negate => true
+    pattern => "^%{TIMESTAMP_ISO8601} \|"
+    what => "previous"
+    stream_identity => "%{host}.%{filename}"
+  }
+  grok {
+    # Do multiline matching as the above mutliline filter may add newlines
+    # to the log messages.
+    match => { "message" => "(?m)^%{TIMESTAMP_ISO8601:logdate} \| %{GREEDYDATA:logmessage}" }
+    add_field => { "received_at" => "%{@timestamp}" }
+  }
+
+  if ! ("_grokparsefailure" in [tags]) {
+    date {
+      match => [ "logdate",
+                 "yyyy-MM-dd HH:mm:ss.SSS",
+                 "yyyy-MM-dd HH:mm:ss.SSSSSS",
+                 "yyyy-MM-dd HH:mm:ss,SSS",
+                 "yyyy-MM-dd HH:mm:ss",
+                 "MMM  d HH:mm:ss",
+                 "MMM dd HH:mm:ss",
+                 "MMM dd HH:mm:ss.SSSSSS",
+                 "dd/MMM/yyyy:HH:mm:ss Z",
+                 "yyyy-MM-dd HH:mm:ss.SSSZ",
+                 "E MMM dd HH:mm:ss yyyy Z",
+                 "E MMM dd HH:mm:ss yyyy",
+                 "ISO8601"
+               ]
+      timezone => "UTC"
+    }
+    mutate {
+      replace => { "message" => "%{logmessage}" }
+    }
+    mutate {
+      remove_field => [ "logdate", "logmessage" ]
+    }
+  }
+}
+
+
+filter {
+  grok {
+      match => ["message", "((?<start_time>[-0-9]{10}\s+[0-9.:]{12})(?<ms>[0-9]{3}) (?<sep>\|) Job console starting)"]
+  }
+  grok {
+      match => ["message", "((?<end_time>[-0-9]{10}\s+[0-9.:]{12})(?<ms>[0-9]{3}) (?<sep>\|) LOOP \[upload-logs : gzip console log and json output\])"]
+  }
+}
+
+filter {
+  if [start_time] and [end_time] {
+    ruby {
+        code => "require 'time'; duration = Time.parse(event['end_time']) - Time.parse(event['start_time']);"
+    }
+  }
+}
+
+filter {
+  grok {
+      match => ["message", "(([-0-9]{10}\s+[0-9.:]{12})(?<ms>[0-9]{3}) (?<sep>\|) install-server (?<sep>\|) ok: Runtime: (?<sf_runtime>[-0-9]{1}:[-0-9]{2}:[-0-9]{2}.[-0-9]{
+))"]
+  }
+}
+
+
+filter {
+  grok {
+      match => ["message", "(([-0-9]{10}\s+[0-9.:]{12})(?<ms>[0-9]{3}) (?<sep>\|) primary (?<sep>\|) ok: Runtime: (?<tripleo_runtime>[-0-9]{1}:[-0-9]{2}:[-0-9]{2}.[-0-9]{6}
+"]
   }
 }
 
