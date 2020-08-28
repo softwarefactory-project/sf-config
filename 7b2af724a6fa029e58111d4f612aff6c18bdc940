@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ab2a69a_a7d37b14",
+        "filename": "ansible/roles/sf-logstash/defaults/main.yml",
+        "patchSetId": 32
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-08-28T14:00:29Z",
+      "side": 1,
+      "message": "to remove",
+      "range": {
+        "startLine": 26,
+        "startChar": 2,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "7b2af724a6fa029e58111d4f612aff6c18bdc940",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
