@@ -23,6 +23,17 @@
     dest: /root/.gitconfig
   delegate_to: "{{ install_server_host }}"
 
+- name: Initialize managesf git config
+  template:
+    src: gitconfig.j2
+    dest: /var/lib/managesf/.gitconfig
+  delegate_to: "{{ managesf_host }}"
+
+- name: Initialize gerrit git config
+  template:
+    src: gitconfig.j2
+    dest: /var/lib/gerrit/.gitconfig
+
 # During the first run, config repo isn't created, so use the default file
 - include_vars: "{{ item }}"
   with_first_found:
@@ -49,7 +60,7 @@
     - {name: change-merged,
        path: /var/lib/gerrit/hooks,
        mode: '0740'}
-    - {name: gerrit-ansible.config,
+    - {name: gerrit.config,
        path: /etc/gerrit,
        mode: '0644'}
     - {name: secure.config,
@@ -62,15 +73,6 @@
        path: /etc/gerrit,
        mode: '0444'}
   notify: [restart gerrit]
-
-- name: Ensure provided config is installed
-  copy:
-    remote_src: true
-    src: /etc/gerrit/gerrit-ansible.config
-    dest: /etc/gerrit/gerrit.config
-    mode: '0600'
-    owner: gerrit
-    group: gerrit
 
 - name: Install static configuration files for gerrit
   copy:
@@ -157,24 +159,6 @@
   failed_when: _gerrit.rc != 3 and _gerrit.rc != 0
   changed_when: false
 
-- name: Create .init directory
-  file:
-    path: /var/lib/gerrit/.init
-    owner: gerrit
-    mode: 0500
-    state: directory
-
-- name: Setup .init files
-  copy:
-    content: "{{ hostvars[inventory_hostname][item.key] }}"
-    dest: "/var/lib/gerrit/.init/{{ item.dest }}"
-    owner: gerrit
-    mode: 0400
-  loop:
-    - {key: gerrit_admin_password, dest: "admin_http_password"}
-    - {key: gerrit_admin_rsa_pub, dest: "admin_ssh_key.pub"}
-    - {key: local_admin_mail, dest: "admin_email"}
-
 - name: Restart service if fqdn is updated
   systemd:
     name: gerrit
@@ -192,22 +176,31 @@
     - update_fqdn
 
 - name: Initialize/Upgrade gerrit when service is not running
-  command: /usr/bin/java -jar /usr/lib64/gerrit/release.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins
+  command: /usr/bin/java -jar /var/lib/gerrit/bin/gerrit.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins
   become: true
   become_user: gerrit
   when: _gerrit.rc == 3
 
 - name: Reindex gerrit when service is not running
-  command: /usr/bin/java -jar /usr/lib64/gerrit/release.war reindex -d /var/lib/gerrit
+  command: /usr/bin/java -jar /var/lib/gerrit/bin/gerrit.war reindex -d /var/lib/gerrit
   become: true
   become_user: gerrit
   when: _gerrit.rc == 3
+
+- name: Initialize admin user
+  command: pynotedb create-admin-user --email "admin@{{ fqdn }}" --pubkey "{{ gerrit_admin_rsa_pub }}" --all-users /var/lib/gerrit/git/All-Users.git
+  become: true
+  become_user: gerrit
 
 - name: Start service
   service:
     name: gerrit
     state: started
     enabled: "yes"
+
+- name: Create admin user password
+  command: ssh gerrit gerrit set-account admin --http-password "{{ gerrit_admin_password }}"
+  no_log: true
 
 - name: Add zuul user
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
