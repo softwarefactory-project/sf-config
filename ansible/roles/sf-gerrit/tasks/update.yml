@@ -22,15 +22,11 @@
 - name: Update configuration file
   when: localconfig.stdout != upstreamconfig.stdout
   template:
-    src: gerrit-ansible.config.j2
-    dest: "/etc/gerrit/{{ item }}"
+    src: gerrit.config.j2
+    dest: "/etc/gerrit/gerrit.config"
     owner: gerrit
     group: gerrit
     mode: 0644
-  loop:
-    # We need to update the write-only file to prevent reload on next setup run
-    - gerrit-ansible.config
-    - gerrit.config
 
 - block:
     - stat:
