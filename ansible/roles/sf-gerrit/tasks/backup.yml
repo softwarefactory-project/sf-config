@@ -9,3 +9,4 @@
   loop:
     - /var/lib/gerrit/git
     - /var/lib/gerrit/.ssh
+    - /var/lib/gerrit/.init
