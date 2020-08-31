@@ -21,12 +21,12 @@
       Host {{ fqdn }}
         User admin
         Port 29418
-        IdentityFile /var/lib/managesf/.ssh/gerrit_admin_rsa
+        IdentityFile /var/lib/managesf/.ssh/id_rsa
       Host gerrit
         User admin
         Hostname {{ gerrit_host }}
         Port 29418
-        IdentityFile /var/lib/managesf/.ssh/gerrit_admin_rsa
+        IdentityFile /var/lib/managesf/.ssh/id_rsa
       {% endif %}
 
 - name: Setup base nodepool.yaml
