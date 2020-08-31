@@ -2,18 +2,6 @@
     basePath = git
     canonicalWebUrl = {{ gerrit_pub_url }}
     gitHttpUrl =
-[database]
-    type = MYSQL
-    hostname = {{ gerrit_mysql_host }}
-    database = {{ gerrit_mysql_db }}
-    username = {{ gerrit_mysql_user }}
-    port = {{ gerrit_mysql_port }}
-    url = jdbc:mysql://{{ gerrit_mysql_host }}/{{ gerrit_mysql_db }}?useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true
-{% if gerrit_connection_pool %}
-    connectionPool = true
-    poolLimit = {{ gerrit_connection_pool }}
-{% endif %}
-
 
 [auth]
 {% if 'keycloak' in roles %}
@@ -37,7 +25,7 @@
     user = gerrit
     javaHome = /usr/lib/jvm/java-1.8.0-openjdk/jre/
     heapLimit = {{ gerrit_heap_limit }}
-    war = /usr/lib64/gerrit/release.war
+    war = /var/lib/gerrit/release.war
 [sshd]
     listenAddress = *:29418
     idleTimeout = 2d
