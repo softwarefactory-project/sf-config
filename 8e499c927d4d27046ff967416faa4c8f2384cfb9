@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d7337b07_303d9efe",
+        "filename": "ansible/roles/sf-logstash/templates/indexer.conf.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-08-31T09:53:29Z",
+      "side": 1,
+      "message": "I feel this as not so solid as it relies on some expected pattern. A job that does not uses the upload-logs role will not have that end_time field.",
+      "revId": "8e499c927d4d27046ff967416faa4c8f2384cfb9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
