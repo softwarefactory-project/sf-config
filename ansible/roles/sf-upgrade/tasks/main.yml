@@ -14,6 +14,10 @@
     content: "centos"
     dest: /etc/yum/vars/contentdir
 
+- name: Fix gerrit package conflict with symlinks
+  shell: if test -L /var/lib/gerrit/bin; then rm /var/lib/gerrit/bin; fi
+  when: sf_previous_version == "3.5"
+
 # TODO: keep in sync with sf-base/tasks/install.yaml when change openstack release
 - name: Update openstack release before the upgrade
   yum:
