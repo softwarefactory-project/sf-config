@@ -25,6 +25,7 @@
   shell: "git config -f project.config --replace-all {{ item }}"
   loop:
     - 'capability.accessDatabase "group Administrators"'
+    - 'access.refs/*.push "group Administrators" ".*group Administrators"'
     - 'access.refs/for/*.addPatchSet "group Administrators" "group Administrator"'
     - 'access.refs/for/*.addPatchSet "group Project Owners" "group Project Owners"'
     - 'access.refs/heads/*.push "+force group Administrators" ".*group Administrators"'
