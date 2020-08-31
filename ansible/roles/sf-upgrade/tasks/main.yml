@@ -14,6 +14,13 @@
     content: "centos"
     dest: /etc/yum/vars/contentdir
 
+# Note: with sf-3.6, the bin and plugins directories are no longer symlink
+- name: Fix gerrit package conflict with symlinks
+  shell: if test -L {{ item }}; then rm {{ item }}; fi
+  loop:
+    - /var/lib/gerrit/bin
+    - /var/lib/gerrit/plugins
+
 # TODO: keep in sync with sf-base/tasks/install.yaml when change openstack release
 - name: Update openstack release before the upgrade
   yum:
