@@ -5,26 +5,37 @@
     state: stopped
 
 - block:
-    - name: Reset gerrit passwords
-      command: >
-        mysql -e "DROP TRIGGER IF EXISTS default_password;"
-              -e "UPDATE account_external_ids SET password=NULL WHERE password='password';"
-              gerrit
-      delegate_to: "{{ mysql_host }}"
+    - name: Install migration package
+      package:
+        name: gerrit-migration
 
-    - name: Install gerrit admin password update
-      template:
-        src: "gerrit-admin-password-update.sql.j2"
-        dest: "/var/lib/software-factory/sql/gerrit-admin-password-update.sql"
-      delegate_to: "{{ mysql_host }}"
+    - name: Create lib dir
+      file:
+        path: /var/lib/gerrit/lib/
+        state: directory
 
-    - name: Run gerrit admin password update
-      shell: "mysql gerrit < /var/lib/software-factory/sql/gerrit-admin-password-update.sql"
-      delegate_to: "{{ mysql_host }}"
+    - name: Setup connector
+      file:
+        src: /usr/share/java/mysql-connector-java.jar
+        dest: /var/lib/gerrit/lib/mysql-connector-java-5.1.48.jar
+        state: link
 
-    # From a 3.0 (gerrit-2.11), the admin account may have an incorrect mute_common_path_prefixes option set to ''
-    # the schema migration failed with java.lang.IllegalStateException thrown by Schema_119.toBoolean
-    - name: Fix incorrect admin account entry
-      command: mysql -e "UPDATE accounts SET mute_common_path_prefixes = 'N' WHERE mute_common_path_prefixes = '';" gerrit
-      delegate_to: "{{ mysql_host }}"
-  when: _previous_version.stdout.startswith('gerrit-2.11')
+    - name: Re-install gerrit to ensure plugin are setup correctly
+      command: yum reinstall -y gerrit
+
+    - name: Upgrade db
+      command: /usr/bin/java -jar /var/lib/gerrit/migration.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins
+      become: true
+      become_user: gerrit
+
+    - name: Run notedb migration
+      command: /usr/bin/java -jar /var/lib/gerrit/migration.war migrate-to-note-db -d /var/lib/gerrit
+      become: true
+      become_user: gerrit
+
+    - name: Run pynotedb migration
+      command: pynotedb migrate --all-users /var/lib/gerrit/git/All-Users.git --all-projects /var/lib/gerrit/git/All-Projects.git
+      become: true
+      become_user: gerrit
+
+  when: _previous_version.stdout.startswith('gerrit-2.')
