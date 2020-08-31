@@ -20,29 +20,16 @@ if [ -z "${USERNAME}" ]; then
     exit 1;
 fi
 
-ACCOUNT_ID=$(mysql gerrit --skip-column-names -e "select accounts.account_id"\
-" from accounts, account_external_ids where"\
-" account_external_ids.external_id = 'username:${USERNAME}'"\
-" and accounts.account_id = account_external_ids.account_id")
-if [ -z "${ACCOUNT_ID}" ]; then
-    echo "User ${USERNAME} not found"
-    exit 1
-fi
 if [ "$2" != "--batch" ]; then
     echo "Are you sure? (Gerrit restart is needed)."
-    echo "Going to remove ${USERNAME} (id: ${ACCOUNT_ID}), press C-c to cancel"
+    echo "Going to remove ${USERNAME}, press C-c to cancel"
     read
 else
-    echo "Going to remove ${USERNAME} (id: ${ACCOUNT_ID})"
+    echo "Going to remove ${USERNAME}"
 fi
 
 systemctl stop gerrit
-echo "User account id = ${ACCOUNT_ID}"
-mysql gerrit \
-    -e "DELETE FROM account_group_members WHERE account_id=${ACCOUNT_ID};" \
-    -e "DELETE FROM accounts WHERE account_id=${ACCOUNT_ID};"              \
-    -e "DELETE FROM account_external_ids WHERE account_id=${ACCOUNT_ID};"
-sudo -u gerrit /usr/bin/java -jar /usr/lib64/gerrit/release.war reindex \
-     -d /var/lib/gerrit
+pynotedb delete-user --all-users /var/lib/gerrit/git/All-Users.git --name ${USERNAME}
+sudo -u gerrit /usr/bin/java -jar /var/lib/gerrit/git/release.war reindex -d /var/lib/gerrit
 systemctl start gerrit
 echo "Done"
