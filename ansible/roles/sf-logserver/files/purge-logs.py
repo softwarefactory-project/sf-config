@@ -86,7 +86,11 @@ def find_old_files(calculated_time, log_path):
     queue = set((log_path, ))
     while queue:
         root = queue.pop()
-        current_dirs, current_files = ls(root)
+        try:
+            current_dirs, current_files = ls(root)
+        except FileNotFoundError:
+            log.exception("Directory not found")
+            continue
         if get_jobdir(current_dirs, current_files):
             log.debug("%s : is a job dir", root)
             dir_date = datetime.fromtimestamp(os.path.getctime(root))
