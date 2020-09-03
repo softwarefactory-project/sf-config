@@ -159,8 +159,10 @@
 {% endif %}{% endfor %}
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
-        score: 1
+        tags: gateit
+        score: 0
         merged: False
+        open: True
         status: success
 {% endfor %}
     trigger:
@@ -200,8 +202,9 @@
         - event: pg_pull_request
           action: status
           status: success
-        - event: pg_pull_request_review
-          action: thumbsup
+        - event: pg_pull_request
+          action: tagged
+          tag: gateit
 {% endfor %}
     start:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
