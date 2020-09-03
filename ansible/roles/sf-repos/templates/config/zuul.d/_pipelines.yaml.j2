@@ -43,13 +43,13 @@
             - reopened
         - event: pull_request
           action: comment
-          comment: (?i)^\s*recheck\s*$
+          comment: (?i)^\s*recheck
 {% endfor %}
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         - event: pg_pull_request
           action: comment
-          comment: (?i)^\s*recheck\s*$
+          comment: (?i)^\s*recheck
         - event: pg_pull_request
           action:
             - opened
