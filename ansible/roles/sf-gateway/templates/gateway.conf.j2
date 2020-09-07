@@ -7,11 +7,20 @@ ServerTokens Prod
     RewriteEngine On
 
 {% if gateway_force_ssl_redirection %}
+    {% if tls_letsencrypt_gateway_cert.stat.exists %}
+    Alias /.well-known/acme-challenge /etc/letsencrypt/challenges/{{ fqdn }}
+    <Directory /etc/letsencrypt/challenges/{{ fqdn }}>
+        Require all granted
+    </Directory>
+    {% endif %}
+
     # Enforce HTTPS for non-internal requests. HostnameLookups is required,
     # otherwise REMOTE_HOST contains only the IP address
     RewriteCond %{HTTPS} off
     RewriteCond %{REMOTE_HOST} !{{ fqdn }}$
+    {% if tls_letsencrypt_gateway_cert.stat.exists %}
     RewriteCond %{REQUEST_URI} !\.well-known/acme-challenge
+    {% endif %}
     RewriteRule (.*) https://{{ fqdn }}%{REQUEST_URI} [R=301,L]
 {% endif %}
 
