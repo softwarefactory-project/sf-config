@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "358a6c95_a0961a3b",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.conf.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-08T15:25:49Z",
+      "side": 1,
+      "message": "IIRC this was set globally in /etc/httpd/conf.d/acme.conf and it should still be set.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "ac9820d73ded93db9bdfc2319c6dd4aab90b7841",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72d5c883_ff8f5936",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.conf.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-08T15:25:49Z",
+      "side": 1,
+      "message": "shouldn\u0027t that always be the case?",
+      "revId": "ac9820d73ded93db9bdfc2319c6dd4aab90b7841",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
