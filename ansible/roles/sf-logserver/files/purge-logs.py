@@ -15,11 +15,15 @@
 # under the License.
 
 
+#!/usr/bin/env python3
+
+
 import argparse
 import os
 from pathlib import Path
 import shutil
 import sys
+import typing
 import logging
 from datetime import datetime, timedelta
 
@@ -36,7 +40,7 @@ logging.basicConfig(
 log = logging.getLogger()
 
 
-def check_dir_path(log_path):
+def check_dir_path(log_path) -> Path:
     p = Path(log_path)
     if not p.exists():
         print("Can not find provided dir path %s" % log_path)
@@ -44,33 +48,36 @@ def check_dir_path(log_path):
     return p.resolve()
 
 
-def delete_dir(dir_path):
-    shutil.rmtree(dir_path)
+def delete_dir(dir_path: Path) -> None:
+    if os.path.islink(dir_path):
+        os.unlink(dir_path)
+    else:
+        shutil.rmtree(dir_path)
 
 
-def get_jobdir(dirs, files):
+def get_jobdir(dirs: typing.Set[Path], files: typing.Set[str]) -> bool:
     dirs_name = set(map(lambda s: s.name, dirs))
 
-    def is_zuul():
+    def is_zuul() -> bool:
         return 'zuul-info' in dirs_name
 
-    def is_jenkins():
+    def is_jenkins() -> bool:
         return 'ara-database' in dirs_name
 
-    def is_jenkins_console():
+    def is_jenkins_console() -> bool:
         return 'consoleText.txt' in files
 
-    def is_empty_dir():
+    def is_empty_dir() -> bool:
         return not files and not dirs
 
     return is_zuul() or is_jenkins() or is_jenkins_console() or is_empty_dir()
 
 
 # (dirs, files)
-# DirContent = typing.Tuple[typing.Set[Path], typing.Set[str]]
+DirContent = typing.Tuple[typing.Set[Path], typing.Set[str]]
 
 
-def ls(dir_path):
+def ls(dir_path: Path) -> DirContent:
     dirs = set()
     files = set()
     for entry in os.listdir(dir_path):
@@ -82,8 +89,10 @@ def ls(dir_path):
     return (dirs, files)
 
 
-def find_old_files(calculated_time, log_path):
-    queue = set((log_path, ))
+def find_old_files(
+        calculated_time: datetime,
+        log_path: Path) -> typing.Generator[Path, None, None]:
+    queue: typing.Set[Path] = set((log_path, ))
     while queue:
         root = queue.pop()
         current_dirs, current_files = ls(root)
@@ -97,9 +106,10 @@ def find_old_files(calculated_time, log_path):
             queue = queue.union(current_dirs)
 
 
-def search_and_destroy(calculated_time, dry_run, log_path):
+def search_and_destroy(calculated_time: datetime,
+                       dry_run: bool, log_path: Path) -> None:
     for job_dir in find_old_files(calculated_time, log_path):
-        log.debug("%s : removing old logs", job_dir)
+        log.info("%s : removing old logs", job_dir)
         if not dry_run and log_path != job_dir:
             delete_dir(job_dir)
 
