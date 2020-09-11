@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "060338ec_0d3eb32a",
+        "filename": "ansible/roles/sf-logserver/files/purge-logs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-11T12:18:59Z",
+      "side": 1,
+      "message": "How about adding a test here to call unlink when dir_path is a symlink?",
+      "revId": "3d125de7a4d060d5f2e65e9e9338c90603ddbc29",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2065bc20_21c8fd41",
+        "filename": "ansible/roles/sf-logserver/files/purge-logs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-11T12:18:59Z",
+      "side": 1,
+      "message": "Isn\u0027t this going to left-over symlink?",
+      "revId": "3d125de7a4d060d5f2e65e9e9338c90603ddbc29",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
