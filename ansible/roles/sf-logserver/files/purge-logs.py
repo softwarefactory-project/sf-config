@@ -99,6 +99,9 @@ def find_old_files(calculated_time, log_path):
 
 def search_and_destroy(calculated_time, dry_run, log_path):
     for job_dir in find_old_files(calculated_time, log_path):
+        if os.path.islink(job_dir):
+            log.debug("%s : skipping symlink", job_dir)
+            continue
         log.debug("%s : removing old logs", job_dir)
         if not dry_run and log_path != job_dir:
             delete_dir(job_dir)
