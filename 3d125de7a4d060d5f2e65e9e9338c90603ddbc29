@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "8600fe3b_1d74d940",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-11T12:30:53Z",
+      "side": 1,
+      "message": "This is odd too, the current implementation is using debug level for that message.",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "3d125de7a4d060d5f2e65e9e9338c90603ddbc29",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "060338ec_0d3eb32a",
         "filename": "ansible/roles/sf-logserver/files/purge-logs.py",
         "patchSetId": 1
