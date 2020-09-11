@@ -1,13 +1,13 @@
 # This file is managed by ansible, do not edit directly
 ---
-{% if zuul_gerrit_connections_pipelines or zuul_github_connections_pipelines or zuul_pagure_connections_pipelines %}
+{% if zuul_gerrit_connections_pipelines or zuul_github_connections_pipelines or zuul_pagure_connections_pipelines or zuul_gitlab_connections_pipelines %}
 - pipeline:
     name: check
     description: |
       Newly uploaded patchsets enter this pipeline to receive an
       initial +/-1 Verified vote.
     manager: independent
-{% if zuul_gerrit_connections_pipelines or zuul_pagure_connections_pipelines %}
+{% if zuul_gerrit_connections_pipelines or zuul_pagure_connections_pipelines or zuul_gitlab_connections_pipelines %}
     require:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
@@ -17,6 +17,10 @@
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         merged: False
+        open: True
+{% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
         open: True
 {% endfor %}
 {% endif %}
@@ -55,6 +59,16 @@
             - opened
             - changed
 {% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        - event: gl_merge_request
+          action: comment
+          comment: (?i)^\s*recheck\s*$
+        - event: gl_merge_request
+          action:
+            - opened
+            - changed
+{% endfor %}
     start:
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:
@@ -71,6 +85,11 @@
         status: 'pending'
         status-url: "{{ build_status_page_url }}"
         comment: false
+{% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        comment: true
+        approval: false
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -91,6 +110,11 @@
         status: 'success'
         status-url: "{{ build_result_page_url }}"
 {% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        comment: true
+        approval: true
+{% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
       mqtt:
@@ -110,6 +134,11 @@
       {{ pagure_connection.name }}:
         status: 'failure'
         status-url: "{{ build_result_page_url }}"
+{% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        comment: true
+        approval: false
 {% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
@@ -163,6 +192,13 @@
         merged: False
         status: success
 {% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        approved: true
+        open: true
+        labels:
+          - gateit
+{% endfor %}
     trigger:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
@@ -203,6 +239,17 @@
         - event: pg_pull_request_review
           action: thumbsup
 {% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        - event: gl_merge_request
+          action:
+            - approved
+        - event: gl_merge_request
+          action:
+            - labeled
+          labels:
+            - gateit
+{% endfor %}
     start:
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}:
@@ -219,6 +266,11 @@
         status: 'pending'
         status-url: "{{ build_status_page_url }}"
         comment: false
+{% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        comment: true
+        approval: false
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -244,6 +296,12 @@
         merge: true
         comment: true
 {% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        comment: true
+        approval: true
+        merge: true
+{% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
       mqtt:
@@ -265,6 +323,11 @@
         status: 'failure'
         status-url: "{{ build_result_page_url }}"
         comment: true
+{% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        comment: true
+        approval: false
 {% endfor %}
       sqlreporter:
 {% if 'firehose' in roles %}
@@ -295,6 +358,11 @@
 {% for pagure_connection in zuul_pagure_connections_pipelines %}
       {{ pagure_connection.name }}:
         - event: pg_push
+          ref: ^refs/heads/.*$
+{% endfor %}
+{% for gitlab_connection in zuul_gitlab_connections_pipelines %}
+      {{ gitlab_connection.name }}:
+        - event: gl_push
           ref: ^refs/heads/.*$
 {% endfor %}
 {% if 'firehose' in roles %}
