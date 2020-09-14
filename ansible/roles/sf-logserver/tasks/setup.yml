@@ -67,16 +67,10 @@
         dest: /srv/static/logs/logs
         state: link
 
-- name: Install purge-logs script
-  copy:
-    src: purge-logs.py
-    dest: /usr/local/bin/purge-logs.py
-    mode: 0755
-
-- name: Install purge-logs expiry
+- name: Install purgelogs cron
   cron:
     name: purge-logs
-    job: /usr/local/bin/purge-logs.py --retention-days "{{ logs_expiry }}"
+    job: /usr/bin/purgelogs --retention-days "{{ logs_expiry }}"
     hour: '5'
     minute: '0'
 
