@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c3ba154_7b0efc90",
+        "filename": "ansible/roles/sf-logserver/files/purge-logs.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-14T10:14:40Z",
+      "side": 1,
+      "message": "better looks on the top of file",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 22
+      },
+      "revId": "72e156ad80bf5e090125a555d2e26a56bc855771",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f87bccc9_95ee3e7a",
+        "filename": "ansible/roles/sf-logserver/files/purge-logs.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-14T10:14:40Z",
+      "side": 1,
+      "message": "log_path: Path",
+      "range": {
+        "startLine": 43,
+        "startChar": 19,
+        "endLine": 43,
+        "endChar": 27
+      },
+      "revId": "72e156ad80bf5e090125a555d2e26a56bc855771",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
