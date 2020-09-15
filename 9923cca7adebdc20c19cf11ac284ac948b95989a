@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f781712c_ff69665f",
+        "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
+        "patchSetId": 35
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-15T08:01:05Z",
+      "side": 1,
+      "message": "index pattern are done in elasticsearch not in kibana",
+      "range": {
+        "startLine": 73,
+        "startChar": 13,
+        "endLine": 73,
+        "endChar": 32
+      },
+      "revId": "9923cca7adebdc20c19cf11ac284ac948b95989a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "475f2e5b_14fc03bd",
+        "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
+        "patchSetId": 35
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-15T08:01:05Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 85,
+        "startChar": 13,
+        "endLine": 85,
+        "endChar": 32
+      },
+      "revId": "9923cca7adebdc20c19cf11ac284ac948b95989a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
