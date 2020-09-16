@@ -224,6 +224,7 @@ class InstallServer(Component):
         args.glue.setdefault("zuul_gerrit_connections_pipelines", [])
         args.glue.setdefault("zuul_github_connections_pipelines", [])
         args.glue.setdefault("zuul_pagure_connections_pipelines", [])
+        args.glue.setdefault("zuul_gitlab_connections_pipelines", [])
         args.glue["zuul_gate_pipeline"] = False
 
         for gerrit_connection in args.glue["zuul_gerrit_connections"]:
@@ -245,6 +246,12 @@ class InstallServer(Component):
                 continue
             args.glue["zuul_pagure_connections_pipelines"].append(
                 pagure_connection)
+            args.glue["zuul_gate_pipeline"] = True
+        for gitlab_connection in args.glue["zuul_gitlab_connections"]:
+            if not gitlab_connection.get("default_pipelines", True):
+                continue
+            args.glue["zuul_gitlab_connections_pipelines"].append(
+                gitlab_connection)
             args.glue["zuul_gate_pipeline"] = True
 
     def resolve_config_key(self, args, url):
