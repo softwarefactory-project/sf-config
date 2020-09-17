@@ -1,0 +1,434 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca3d2fb7_b33cfefa",
+        "filename": "ansible/roles/sf-elasticsearch/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Have you tried using \"CHANGE_ME\" for default passwords?",
+      "range": {
+        "startLine": 39,
+        "startChar": 25,
+        "endLine": 39,
+        "endChar": 37
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47cb3242_b770da89",
+        "filename": "ansible/roles/sf-elasticsearch/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Shouldn\u0027t the variable be flat instead of nested inside the elasticsearch dictionary so that a single element can be overridden?\n\nFor example, instead of:\n\n  elasticsearch:\n    curator_user: ...\n\nDo:\n\n  elasticsearch_curator_user: ...",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c8b5daf_017aa5b6",
+        "filename": "ansible/roles/sf-elasticsearch/meta/sfconfig.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Perhaps the user shouldn\u0027t have to provide those.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 52
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f3a35fd5_a2e34fc8",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Could we validate certificates by default?",
+      "range": {
+        "startLine": 23,
+        "startChar": 20,
+        "endLine": 23,
+        "endChar": 22
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e0c89e6e_c5239742",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup_certs.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "There is a function to generate certificates which will be signed by the localCA (so that all the hosts can verify it), see: https://softwarefactory-project.io/cgit/software-factory/sf-config/tree/ansible/roles/sf-influxdb/meta/sfconfig.py#n18\n\nThen that generates these variables: https://softwarefactory-project.io/cgit/software-factory/sf-config/tree/sfconfig/components.py#n122\n\nIt seems like we could use that instead of these local tasks.",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7f6d5b16_48cc0318",
+        "filename": "ansible/roles/sf-hydrant/templates/hydrant.yaml.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Could TLS be secure by default?",
+      "range": {
+        "startLine": 10,
+        "startChar": 16,
+        "endLine": 10,
+        "endChar": 21
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f3e03a17_adc1d4cd",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Perhaps drop that dictionary.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 13
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0044ddb3_ec425712",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be defined in the elasticsearch role?",
+      "range": {
+        "startLine": 41,
+        "startChar": 26,
+        "endLine": 41,
+        "endChar": 31
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dbb2b131_9628283b",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "You can use \"CHANGE_ME\" and sfconfig should generate a random password on first invocation. But I think you would need to drop the toplevel `elasticsearch` dictionary and use flat variables.",
+      "range": {
+        "startLine": 42,
+        "startChar": 25,
+        "endLine": 42,
+        "endChar": 37
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8de1ea42_18535ab1",
+        "filename": "ansible/roles/sf-kibana/files/kibana-backup.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Usually tool verifies TLS by default, and they uses a `insecure` toggle instead. It seems like you are not using sfconfig to generate certificates, and maybe this is why it is not signed by default.\n\nTLS verification should be enabled by default.",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 65
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5d0a33e8_ed4c1a62",
+        "filename": "ansible/roles/sf-kibana/tasks/setup.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Could TLS be secure by default?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 54
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2328c51c_647f4648",
+        "filename": "ansible/roles/sf-logstash/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Could you drop the elasticsearch dictionary, and use:\n\n  logstash_password: \"CHANGE_ME\"",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c796f3b3_f2badcec",
+        "filename": "ansible/roles/sf-logstash/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "ditto, use the \"CHANGE_ME\" cookie.",
+      "range": {
+        "startLine": 28,
+        "startChar": 20,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca5f3b30_432659d5",
+        "filename": "ansible/roles/sf-logstash/templates/curator.yml.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "TLS verification should be enabled by default.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e208586_7dd304d9",
+        "filename": "ansible/roles/sf-logstash/templates/indexer.conf.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Could TLS be secure by default?",
+      "range": {
+        "startLine": 32,
+        "startChar": 36,
+        "endLine": 32,
+        "endChar": 41
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f82b494c_6ee02835",
+        "filename": "ansible/roles/sf-repoxplorer/tasks/upgrade.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Could TLS be secure by default?",
+      "range": {
+        "startLine": 11,
+        "startChar": 17,
+        "endLine": 11,
+        "endChar": 20
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f9d607f3_a253acec",
+        "filename": "ansible/roles/sf-repoxplorer/templates/config.py.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "Passwords shouldn\u0027t be hardcoded.",
+      "range": {
+        "startLine": 73,
+        "startChar": 26,
+        "endLine": 73,
+        "endChar": 37
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d44cedb9_5b8a78c5",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 45
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "The sfconfig user shouldn\u0027t have to define those passwords.",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "002ed6d1_916f8709",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 45
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "The sfconfig user shouldn\u0027t have to define this user.",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "619e138c_c2e242dd",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-17T15:41:24Z",
+      "side": 1,
+      "message": "We should avoid using hardcoded passwords when possible.",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 20
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
