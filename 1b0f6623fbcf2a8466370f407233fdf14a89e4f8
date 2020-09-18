@@ -195,6 +195,24 @@
     },
     {
       "key": {
+        "uuid": "ad60cc49_2bc5908b",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup_certs.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T14:17:46Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "e0c89e6e_c5239742",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7f6d5b16_48cc0318",
         "filename": "ansible/roles/sf-hydrant/templates/hydrant.yaml.j2",
         "patchSetId": 45
@@ -229,6 +247,30 @@
       "writtenOn": "2020-09-18T07:58:08Z",
       "side": 1,
       "message": "We can move that to letsencrypt, but I prefer to do that in next step.",
+      "parentUuid": "7f6d5b16_48cc0318",
+      "range": {
+        "startLine": 10,
+        "startChar": 16,
+        "endLine": 10,
+        "endChar": 21
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b85dd9af_2caf037e",
+        "filename": "ansible/roles/sf-hydrant/templates/hydrant.yaml.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T14:17:46Z",
+      "side": 1,
+      "message": "done",
       "parentUuid": "7f6d5b16_48cc0318",
       "range": {
         "startLine": 10,
@@ -406,6 +448,30 @@
     },
     {
       "key": {
+        "uuid": "b5a8507b_294178c5",
+        "filename": "ansible/roles/sf-kibana/files/kibana-backup.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T14:17:46Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "8de1ea42_18535ab1",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 65
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d0a33e8_ed4c1a62",
         "filename": "ansible/roles/sf-kibana/tasks/setup.yml",
         "patchSetId": 45
@@ -417,6 +483,30 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "Could TLS be secure by default?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 54
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6382520e_3ff42995",
+        "filename": "ansible/roles/sf-kibana/tasks/setup.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T14:17:46Z",
+      "side": 1,
+      "message": "Default value is set to none, because they add the tls key in the demo script. We should change that value to \"full\" or \"certificate\"",
+      "parentUuid": "5d0a33e8_ed4c1a62",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -534,6 +624,30 @@
     },
     {
       "key": {
+        "uuid": "8e896b4d_0a4a9c32",
+        "filename": "ansible/roles/sf-logstash/templates/curator.yml.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T14:17:46Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "ca5f3b30_432659d5",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7e208586_7dd304d9",
         "filename": "ansible/roles/sf-logstash/templates/indexer.conf.j2",
         "patchSetId": 45
@@ -557,6 +671,30 @@
     },
     {
       "key": {
+        "uuid": "8979bf77_9b2f5f50",
+        "filename": "ansible/roles/sf-logstash/templates/indexer.conf.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T14:17:46Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "7e208586_7dd304d9",
+      "range": {
+        "startLine": 32,
+        "startChar": 36,
+        "endLine": 32,
+        "endChar": 41
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f82b494c_6ee02835",
         "filename": "ansible/roles/sf-repoxplorer/tasks/upgrade.yml",
         "patchSetId": 45
@@ -568,6 +706,30 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "Could TLS be secure by default?",
+      "range": {
+        "startLine": 11,
+        "startChar": 17,
+        "endLine": 11,
+        "endChar": 20
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e50e9243_128fb25c",
+        "filename": "ansible/roles/sf-repoxplorer/tasks/upgrade.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T14:17:46Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "f82b494c_6ee02835",
       "range": {
         "startLine": 11,
         "startChar": 17,
