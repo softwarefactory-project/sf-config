@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "643301e1_cfe5d842",
+        "filename": "ansible/roles/sf-elasticsearch/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "ca3d2fb7_b33cfefa",
+      "range": {
+        "startLine": 39,
+        "startChar": 25,
+        "endLine": 39,
+        "endChar": 37
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "47cb3242_b770da89",
         "filename": "ansible/roles/sf-elasticsearch/defaults/main.yml",
         "patchSetId": 45
@@ -36,6 +60,24 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "Shouldn\u0027t the variable be flat instead of nested inside the elasticsearch dictionary so that a single element can be overridden?\n\nFor example, instead of:\n\n  elasticsearch:\n    curator_user: ...\n\nDo:\n\n  elasticsearch_curator_user: ...",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9c1e0576_0ae007aa",
+        "filename": "ansible/roles/sf-elasticsearch/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "47cb3242_b770da89",
       "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "0a9c1c29_fa5250a4",
+        "filename": "ansible/roles/sf-elasticsearch/meta/sfconfig.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "let me check",
+      "parentUuid": "3c8b5daf_017aa5b6",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 52
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3a35fd5_a2e34fc8",
         "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
         "patchSetId": 45
@@ -76,6 +142,30 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "Could we validate certificates by default?",
+      "range": {
+        "startLine": 23,
+        "startChar": 20,
+        "endLine": 23,
+        "endChar": 22
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "83f8f499_043b29cc",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "In next step ansible is generating all keys required for Opendistro. They are mostly for internal communication, but one of them can be replaced by letsencrypt (but I prefer to do that in next step).",
+      "parentUuid": "f3a35fd5_a2e34fc8",
       "range": {
         "startLine": 23,
         "startChar": 20,
@@ -128,6 +218,30 @@
     },
     {
       "key": {
+        "uuid": "200e8f32_3d4cbf2e",
+        "filename": "ansible/roles/sf-hydrant/templates/hydrant.yaml.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "We can move that to letsencrypt, but I prefer to do that in next step.",
+      "parentUuid": "7f6d5b16_48cc0318",
+      "range": {
+        "startLine": 10,
+        "startChar": 16,
+        "endLine": 10,
+        "endChar": 21
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3e03a17_adc1d4cd",
         "filename": "ansible/roles/sf-kibana/defaults/main.yml",
         "patchSetId": 45
@@ -139,6 +253,30 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "Perhaps drop that dictionary.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 13
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd775de2_7a84da7d",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "f3e03a17_adc1d4cd",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -174,6 +312,30 @@
     },
     {
       "key": {
+        "uuid": "ef7f4691_d499f37c",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "It is, but it is also required in Kibana.\nI can set the elasticsearch important variables as a fact",
+      "parentUuid": "0044ddb3_ec425712",
+      "range": {
+        "startLine": 41,
+        "startChar": 26,
+        "endLine": 41,
+        "endChar": 31
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dbb2b131_9628283b",
         "filename": "ansible/roles/sf-kibana/defaults/main.yml",
         "patchSetId": 45
@@ -185,6 +347,30 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "You can use \"CHANGE_ME\" and sfconfig should generate a random password on first invocation. But I think you would need to drop the toplevel `elasticsearch` dictionary and use flat variables.",
+      "range": {
+        "startLine": 42,
+        "startChar": 25,
+        "endLine": 42,
+        "endChar": 37
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e4e745b3_4ab5beba",
+        "filename": "ansible/roles/sf-kibana/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "Moved the values to a fact in Elasticsearch.\nIn that case, Elasticsearch role should be ordered before kibana and logstash in arch.yaml file.",
+      "parentUuid": "dbb2b131_9628283b",
       "range": {
         "startLine": 42,
         "startChar": 25,
@@ -260,6 +446,24 @@
     },
     {
       "key": {
+        "uuid": "a97aae29_79ea8bb0",
+        "filename": "ansible/roles/sf-logstash/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "2328c51c_647f4648",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c796f3b3_f2badcec",
         "filename": "ansible/roles/sf-logstash/defaults/main.yml",
         "patchSetId": 45
@@ -271,6 +475,30 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "ditto, use the \"CHANGE_ME\" cookie.",
+      "range": {
+        "startLine": 28,
+        "startChar": 20,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dee27838_e4ebe919",
+        "filename": "ansible/roles/sf-logstash/defaults/main.yml",
+        "patchSetId": 45
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "moved default variables to a fact in sf-elasticsearch.\nIn that case elasticsearch needs to be in the order ealier than logstash in arch.yaml file",
+      "parentUuid": "c796f3b3_f2badcec",
       "range": {
         "startLine": 28,
         "startChar": 20,
@@ -375,6 +603,30 @@
     },
     {
       "key": {
+        "uuid": "8250cee2_cba3ea9c",
+        "filename": "ansible/roles/sf-repoxplorer/templates/config.py.j2",
+        "patchSetId": 45
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "f9d607f3_a253acec",
+      "range": {
+        "startLine": 73,
+        "startChar": 26,
+        "endLine": 73,
+        "endChar": 37
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d44cedb9_5b8a78c5",
         "filename": "defaults/sfconfig.yaml",
         "patchSetId": 45
@@ -386,6 +638,24 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "The sfconfig user shouldn\u0027t have to define those passwords.",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cf797365_b87d2402",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 45
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "d44cedb9_5b8a78c5",
       "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -409,6 +679,24 @@
     },
     {
       "key": {
+        "uuid": "5252fa13_9b49d28c",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 45
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "002ed6d1_916f8709",
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "619e138c_c2e242dd",
         "filename": "sfconfig/upgrade.py",
         "patchSetId": 45
@@ -420,6 +708,30 @@
       "writtenOn": "2020-09-17T15:41:24Z",
       "side": 1,
       "message": "We should avoid using hardcoded passwords when possible.",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 20
+      },
+      "revId": "1b0f6623fbcf2a8466370f407233fdf14a89e4f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "20c940e3_72ca1ff6",
+        "filename": "sfconfig/upgrade.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-18T07:58:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "619e138c_c2e242dd",
       "range": {
         "startLine": 234,
         "startChar": 0,
