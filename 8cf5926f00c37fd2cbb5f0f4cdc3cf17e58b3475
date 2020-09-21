@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6b8842ce_a0b7d9c6",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/create_users.yml",
+        "patchSetId": 52
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "Of course",
+      "parentUuid": "99c25d7a_12ebe86b",
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "242b1b68_0aad2df0",
         "filename": "ansible/roles/sf-elasticsearch/tasks/install.yml",
         "patchSetId": 52
@@ -30,6 +48,30 @@
       "writtenOn": "2020-09-21T13:17:33Z",
       "side": 1,
       "message": "elasticsearch",
+      "range": {
+        "startLine": 15,
+        "startChar": 11,
+        "endLine": 15,
+        "endChar": 19
+      },
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c38a80c2_3856115b",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/install.yml",
+        "patchSetId": 52
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "242b1b68_0aad2df0",
       "range": {
         "startLine": 15,
         "startChar": 11,
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "ec740b98_b83f2859",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/install.yml",
+        "patchSetId": 52
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "It was not working with 7.8.1, but maybe it works with 7.8.0.\nCurrently we have 7.8.1 so we need to remove it ;/",
+      "parentUuid": "39295d51_53ddf7b7",
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "06ed0e6c_93dc55ed",
         "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
         "patchSetId": 52
@@ -70,6 +130,30 @@
       "writtenOn": "2020-09-21T13:17:33Z",
       "side": 1,
       "message": "Why do we need an authentication here but not for other \u0027uri\u0027 calls in that file ?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 50
+      },
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba8d4673_f287bdcc",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/postconf.yml",
+        "patchSetId": 52
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "right, we can use the admin cert instead of admin user and pass",
+      "parentUuid": "06ed0e6c_93dc55ed",
       "range": {
         "startLine": 30,
         "startChar": 0,
@@ -105,6 +189,30 @@
     },
     {
       "key": {
+        "uuid": "df1353d5_ba089abe",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
+        "patchSetId": 52
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "Oh, right. It can be done later.",
+      "parentUuid": "8713c242_eab63b30",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 82
+      },
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3550067a_34da3766",
         "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
         "patchSetId": 52
@@ -128,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "5f0961c9_b21d2474",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/setup.yml",
+        "patchSetId": 52
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": ":D",
+      "parentUuid": "3550067a_34da3766",
+      "range": {
+        "startLine": 72,
+        "startChar": 82,
+        "endLine": 72,
+        "endChar": 107
+      },
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a85fef67_e3eea858",
         "filename": "ansible/roles/sf-elasticsearch/templates/config.yml.j2",
         "patchSetId": 52
@@ -139,6 +271,24 @@
       "writtenOn": "2020-09-21T13:17:33Z",
       "side": 1,
       "message": "I guess we don\u0027t use that yet. Could we comment that block instead.",
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "308eff21_94fec519",
+        "filename": "ansible/roles/sf-elasticsearch/templates/config.yml.j2",
+        "patchSetId": 52
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "sure",
+      "parentUuid": "a85fef67_e3eea858",
       "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -179,6 +329,24 @@
     },
     {
       "key": {
+        "uuid": "d5736a3c_bdf6b7d6",
+        "filename": "ansible/roles/sf-gateway/templates/gateway-kibana.conf.j2",
+        "patchSetId": 52
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "So each user will not have an account, but just... need to login into sf.io before go to the Kibana.\nIn the Kibana it requires to auth using the user and password which is showed on the login screen",
+      "parentUuid": "f90e2ca3_05bc7dfc",
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44700ebd_11083641",
         "filename": "ansible/roles/sf-hydrant/templates/hydrant.yaml.j2",
         "patchSetId": 52
@@ -196,6 +364,24 @@
     },
     {
       "key": {
+        "uuid": "11e60097_0977729c",
+        "filename": "ansible/roles/sf-hydrant/templates/hydrant.yaml.j2",
+        "patchSetId": 52
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "Last time when I was asking mhu he told me that yes :D",
+      "parentUuid": "44700ebd_11083641",
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f5f1fca0_52ef3ecc",
         "filename": "ansible/roles/sf-kibana/tasks/install.yml",
         "patchSetId": 52
@@ -207,6 +393,24 @@
       "writtenOn": "2020-09-21T13:17:33Z",
       "side": 1,
       "message": "kibana",
+      "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "251edba4_f30e536d",
+        "filename": "ansible/roles/sf-kibana/tasks/install.yml",
+        "patchSetId": 52
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-21T17:44:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5f1fca0_52ef3ecc",
       "revId": "8cf5926f00c37fd2cbb5f0f4cdc3cf17e58b3475",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
