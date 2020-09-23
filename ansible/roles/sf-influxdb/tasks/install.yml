@@ -6,6 +6,7 @@
     baseurl: "{{ influxdb_repo_url }}"
     gpgkey: "{{ influxdb_repo_gpgkey }}"
     gpgcheck: "{{ influxdb_repo_gpgcheck }}"
+    enabled: 0
 
 - name: Install influxdb packages
   yum:
