@@ -210,6 +210,10 @@
 
 - include_tasks: setup_acl.yml
 
+- name: Ensure plugin-manager plugin is disabled
+  command: ssh gerrit gerrit plugin remove plugin-manager
+  become: true
+
 - name: Setup socat service
   block:
     - name: Install service file for socat_gerrit
