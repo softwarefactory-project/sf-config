@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1a8c979_5d3a1de3",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 54
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-24T15:03:06Z",
+      "side": 1,
+      "message": "Why does elasticsearch use a special configuration file? I don\u0027t think the user should have to worry with such configuration in sfconfig.yaml, it should be managed by the role automatically.\n\nWhy would the user provides a password for elasticsearch or kibana?",
+      "revId": "70785b3387bbae8e9247cb9240748ecddab5a21f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
