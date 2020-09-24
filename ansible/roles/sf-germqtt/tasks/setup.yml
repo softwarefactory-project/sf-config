@@ -40,10 +40,12 @@
   service:
     name: germqtt
     state: restarted
+    enabled: "yes"
   when: germqtt_conf is changed
 
 - name: Start service
   service:
     name: germqtt
     state: started
+    enabled: "yes"
   when: not germqtt_conf is changed
