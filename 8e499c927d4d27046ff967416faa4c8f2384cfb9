@@ -34,6 +34,24 @@
       "revId": "8e499c927d4d27046ff967416faa4c8f2384cfb9",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a9647717_720dbca3",
+        "filename": "ansible/roles/sf-logstash/templates/indexer.conf.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-24T09:26:25Z",
+      "side": 1,
+      "message": "I like your change on opendev, so those filters are not necessary.",
+      "parentUuid": "d7337b07_303d9efe",
+      "revId": "8e499c927d4d27046ff967416faa4c8f2384cfb9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
