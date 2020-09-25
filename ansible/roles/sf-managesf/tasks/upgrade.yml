@@ -2,3 +2,10 @@
 - name: Force service restart
   command: /bin/true
   notify: restart managesf
+
+- name: Try to update cache resources
+  shell: |
+    curl {{ managesf_internal_url }}/v2/resources > /var/www/api/resources.json.new
+    mv /var/www/api/resources.json.new /var/www/api/resources.json
+  delegate_to: "{{ gateway_host }}"
+  failed_when: false

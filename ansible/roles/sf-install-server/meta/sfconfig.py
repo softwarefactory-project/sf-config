@@ -40,6 +40,49 @@ def get_previous_version():
     return ver
 
 
+def create_context_info(fqdn, roles, auth, sf_version, theme):
+    def service(name, path):
+        return [dict(name=name, path=path)] if name in roles else []
+
+    def auth_other(name):
+        return [dict(name=name, text=auth[name].get(
+            "login_button_text", ""))] if not auth.get(name, {}).get(
+                "disabled", True) else []
+
+    def auth_oauth(name):
+        return [name] if not auth.get("oauth2", {}).get(name, {}).get(
+            "disabled", True) else []
+
+    return dict(
+        version=sf_version,
+        theme=theme,
+        services=(
+            []
+            + service("gerrit", "/r/")
+            + service("zuul", "/zuul")
+            + service("kibana", "/analytics")
+            + service("etherpad", "/etherpad")
+            + service("lodgeit", "/past")
+            + service("repoxplorer", "/repoxplorer")
+            + service("hound", "/codesearch")
+            + service("cgit", "/cgit")
+            + service("murmur", "mumble://" + fqdn + "/?version=1.2.0")
+        ),
+        auths=dict(
+            oauth=(
+                []
+                + auth_oauth("github")
+                + auth_oauth("google")
+                + auth_oauth("bitbucket")
+            ),
+            other=(
+                []
+                + auth_other("openid")
+                + auth_other("openid_connect")
+                + auth_other("SAML2")
+            )))
+
+
 class InstallServer(Component):
     def validate(self, args, host):
         if bool(args.sfconfig['config-locations']['config-repo']) != \
@@ -65,6 +108,12 @@ class InstallServer(Component):
 
         args.glue["sf_version"] = get_sf_version()
         args.glue["sf_previous_version"] = get_previous_version()
+        args.glue["sf_context_info"] = create_context_info(
+            args.sfconfig["fqdn"],
+            args.glue["roles"],
+            args.sfconfig["authentication"],
+            args.glue["sf_version"],
+            args.sfconfig["theme"])
         if args.upgrade:
             print("Going to upgrade from %s to %s" % (
                 args.glue["sf_previous_version"], args.glue["sf_version"]))
