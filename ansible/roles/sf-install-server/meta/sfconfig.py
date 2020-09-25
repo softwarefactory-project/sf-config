@@ -161,7 +161,8 @@ class InstallServer(Component):
                     'hostname': args.glue["gerrit_host"],
                     'canonical_hostname': args.sfconfig["fqdn"],
                     'puburl': puburl,
-                    'username': 'zuul'
+                    'username': 'zuul',
+                    'password': args.glue['gerrit_zuul_password']
                 })
 
         if not args.sfconfig["network"]["disable_external_resources"]:

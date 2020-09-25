@@ -94,6 +94,15 @@ server={{ conn['hostname'] }}
 baseurl={{ conn['puburl'] }}
 user={{ conn['username'] }}
 sshkey={{ zuul_lib_dir }}/.ssh/id_rsa
+{% if 'password' in conn %}
+password={{ conn['password'] }}
+{% if 'auth_type' in conn %}
+auth_type={{ conn['auth_type'] }}
+{% endif %}
+{% if 'verify_ssl' in conn %}
+verify_ssl={{ conn['verify_ssl'] }}
+{% endif %}
+{% endif %}
 {% if conn['canonical_hostname']|default(False) %}
 canonical_hostname={{ conn['canonical_hostname'] }}
 {% endif %}
