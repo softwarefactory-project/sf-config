@@ -50,6 +50,18 @@
         state: absent
   when: sf_previous_version < 3.4
 
+- block:
+    # sf-3.6
+    - name: Force packages reinstall (topmenu patches leftover removal)
+      shell: rpm -q {{ item }} && yum reinstall -y {{ item }} || true
+      loop:
+        - etherpad
+        - grafana
+        - kibana
+        - repoxplorer
+
+  when: sf_previous_version < 3.6
+
 - name: Remove conflicting packages
   yum:
     name: '{{ item }}'

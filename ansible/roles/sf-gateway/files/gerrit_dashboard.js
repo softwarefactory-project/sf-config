@@ -103,7 +103,7 @@ angular.module('sfGerritDashboard', [], function($locationProvider) {
         })
         .catch(function(result) {
             if (result.status == 400) {
-                $window.location.href='/auth/login?back=/dashboard/'+name;
+                $window.location.href='/login?back=/dashboard/'+name;
             } else if (result.status == 404) {
                 $scope.Title = "Dashboard not found";
             } else if (result.status == 0) {

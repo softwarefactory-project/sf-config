@@ -14,7 +14,7 @@ Alias "/repoxplorer/javascript/" "/var/www/static/js/"
 <Location "/repoxplorer/home.html">
     RequestHeader unset X-Remote-User
     AuthType mod_auth_pubtkt
-    TKTAuthLoginURL /auth/login
+    TKTAuthLoginURL /login
     TKTAuthFakeBasicAuth on
     TKTAuthDebug 1
     require valid-user
@@ -25,7 +25,7 @@ Alias "/repoxplorer/javascript/" "/var/www/static/js/"
     RequestHeader unset X-Remote-User
     <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
         AuthType mod_auth_pubtkt
-        TKTAuthLoginURL /auth/login
+        TKTAuthLoginURL /login
         TKTAuthFakeBasicAuth on
         TKTAuthDebug 1
         require valid-user

@@ -11,7 +11,7 @@
     <Location "/analytics/login">
         RequestHeader unset X-Remote-User
         AuthType mod_auth_pubtkt
-        TKTAuthLoginURL /auth/login
+        TKTAuthLoginURL /login
         TKTAuthFakeBasicAuth on
         TKTAuthDebug 1
         require valid-user
@@ -20,7 +20,7 @@
     <Location "/analytics/app/login">
         RequestHeader unset X-Remote-User
         AuthType mod_auth_pubtkt
-        TKTAuthLoginURL /auth/login
+        TKTAuthLoginURL /login
         TKTAuthFakeBasicAuth on
         TKTAuthDebug 1
         require valid-user
