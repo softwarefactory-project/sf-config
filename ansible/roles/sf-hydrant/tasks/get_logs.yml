@@ -1,7 +1,0 @@
----
-- name: "Fetch hydrant config"
-  synchronize:
-    mode: pull
-    src: "/etc/hydrant/"
-    dest: "{{ log_dest }}/etc"
-  ignore_errors: true
