@@ -6,6 +6,12 @@
         state: absent
   when: sf_previous_version < 3.1
 
+- block:
+    - name: Remove legacy /var/www/index.html
+      shell: |
+        grep -q '<script src="/src' /var/www/index.html || rm -f /var/www/index.html
+  when: sf_previous_version < 3.6
+
 - name: Remove old script
   file:
     path: /usr/local/bin/sf-update-dashboard

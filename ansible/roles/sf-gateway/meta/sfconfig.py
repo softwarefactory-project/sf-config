@@ -66,6 +66,7 @@ class Gateway(Component):
                 args.sfconfig["network"]["tls_key_file"]).read()
         else:
             self.get_or_generate_cert(args, "gateway", args.sfconfig["fqdn"])
+        # TODO: add new welcome page support for that
         args.glue["gateway_topmenu_logo_data"] = encode_image(
             "/etc/software-factory/logo-topmenu.png")
         args.glue["gateway_favicon_data"] = encode_image(
