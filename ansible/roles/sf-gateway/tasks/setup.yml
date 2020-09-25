@@ -29,12 +29,18 @@
   loop:
     - /var/www/jobs
     - /var/www/sf
+    - /var/www/api
     - /var/www/dashboard
     - /var/www/dashboards_data
     - /var/www/keys
     - /var/www/.config
     - /etc/letsencrypt
     - /etc/httpd/saml2
+
+- name: Dump deployment context info list
+  copy:
+    content: "{{ sf_context_info | default({}) | to_nice_json }}"
+    dest: /var/www/api/info.json
 
 - name: Create extra working directories
   file:
@@ -94,17 +100,9 @@
   loop:
     - {name: base64helper, path: /usr/local/sbin, mode: '0755'}
     - {name: ssl.conf, path: /etc/httpd/conf.d}
-    - {name: user_settings.html, path: /var/www/sf}
-    - {name: user_settings.js, path: /var/www/sf}
-    - {name: welcome.html, path: /var/www/sf}
     - {name: gerrit_dashboard.js, path: /var/www/static/js}
     - {name: jobs.js, path: /var/www/jobs}
     - {name: jobs.html, path: /var/www/jobs, real_name: index.html}
-
-- name: Install index header
-  copy:
-    content: '<script type="text/javascript" src="/static/js/topmenu.js"></script>'
-    dest: /var/www/static/index-header.html
 
 - name: Install gerrit dashboard
   copy:
@@ -133,11 +131,6 @@
   register: _nodepool_version
   changed_when: false
 
-- name: Render topmenu links list
-  set_fact:
-    topmenu_links: "{{ lookup('template', './templates/topmenu_links.j2') }}"
-  no_log: show_hidden_logs == False
-
 - name: Install templates
   template:
     src: "{{ item.name }}.j2"
@@ -148,10 +141,6 @@
     - {name: gateway.conf, dest: /etc/httpd/conf.d}
     - {name: headers.conf, dest: /etc/httpd/conf.d}
     - {name: hideci.js, dest: /var/www/static/js}
-    - {name: menu.js, dest: /var/www/static/js}
-    - {name: topmenu.html, dest: /var/www}
-    - {name: topmenu.js, dest: /var/www/static/js}
-    - {name: welcome.js, dest: /var/www/static/js}
   notify: apache reload
 
 - name: Install Kibana SF gateway rules
