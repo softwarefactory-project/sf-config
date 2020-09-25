@@ -21,6 +21,24 @@ def encode_image(path):
     return base64.b64encode(open(path, "rb").read()).decode()
 
 
+def create_service_list(fqdn, roles):
+    def service(name, path):
+        return [dict(name=name, path=path)] if name in roles else []
+    return dict(
+        services=
+        []
+        + service("gerrit", "/r")
+        + service("zuul", "/zuul")
+        + service("kibana", "/analytics")
+        + service("etherpad", "/etherpad")
+        + service("lodgeit", "/past")
+        + service("repoxplorer", "/repoxplorer")
+        + service("hound", "/codesearch")
+        + service("cgit", "/cgit")
+        + service("murmur", "mumble://" + fqdn + "/?version=1.2.0")
+    )
+
+
 class Gateway(Component):
     def usage(self, parser):
         parser.add_argument("--disable-ssl-redirection", action="store_true",
@@ -79,3 +97,5 @@ class Gateway(Component):
         if "koji_host" in args.sfconfig["network"] and \
            args.sfconfig["network"]["koji_host"]:
             args.glue["koji_host"] = args.sfconfig["network"]["koji_host"]
+        args.glue["gateway_services"] = create_service_list(
+            args.sfconfig["fqdn"], args.glue["roles"])
