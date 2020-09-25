@@ -30,7 +30,6 @@ inventory:
       - mirror
       - repoxplorer
       - firehose
-      - hydrant
       - influxdb
       - grafana
       - hound

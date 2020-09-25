@@ -610,13 +610,6 @@ def generate(args):
             # Add telegraf for statsd gateway
             host["roles"].append("telegraf")
 
-    if 'hydrant' in args.glue["roles"] and \
-       "firehose" not in args.glue["roles"]:
-        raise RuntimeError("'hydrant' role needs 'firehose'")
-    if 'hydrant' in args.glue["roles"] and \
-       'elasticsearch' not in args.glue["roles"]:
-        raise RuntimeError("'hydrant' role needs 'elasticsearch'")
-
     templates = "%s/templates" % args.share
 
     # Generate inventory

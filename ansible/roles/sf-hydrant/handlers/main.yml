@@ -1,5 +1,0 @@
----
-- name: restart hydrant
-  service:
-    name: hydrant
-    state: restarted
