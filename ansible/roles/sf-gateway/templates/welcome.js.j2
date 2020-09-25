@@ -99,3 +99,84 @@ angular.module('sfWelcome', []).controller('mainController', function($scope, $h
             $scope.Repos = data['resources']['repos'];
         })
 });
+
+function isCookiesEnabled() {
+    var isEnabled = (navigator.cookieEnabled) ? true : false;
+    if ( typeof navigator.cookieEnabled == "undefined" && !cookieEnabled ) {
+        document.cookie='test';
+        isEnabled = (document.cookie.indexOf('test')!=1) ? true : false;
+    }
+    return isEnabled;
+}
+
+function getValueOfKey(target, key) {
+    var tokens = target.split(/%3B/); // semi-colon
+    for ( var i = 0; i < tokens.length; i++ ) {
+        var keyvalue = tokens[i].split(/%3D/);
+        if ( key.indexOf(keyvalue[0]) == 0 ) {
+            return keyvalue[1];
+        }
+    }
+    return false;
+}
+
+function displayLoggedIn(username) {
+    try {
+        document.getElementById("login-msg").innerHTML = "Welcome " + username;
+        document.getElementById("login-msg").style.display = "block";
+        document.getElementById("login-btn").style.display = "none";
+        document.getElementById("login-setting").style.display = "block";
+        document.getElementById("logout-btn").style.display = "block";
+    } catch (err) {
+    }
+}
+
+function displaySignIn() {
+    try {
+        localStorage.removeItem("ls.access_token");
+        localStorage.removeItem("ls.token_type");
+        localStorage.removeItem("ls.id_token");
+        document.getElementById("login-msg").innerText = "";
+        document.getElementById("login-msg").style.display = "none";
+        document.getElementById("login-btn").style.display = "block";
+        document.getElementById("login-setting").style.display = "none";
+        document.getElementById("logout-btn").style.display = "none";
+    } catch (err) {
+    }
+}
+
+function initAuth() {
+        var favicon = document.createElement("link");
+        favicon.setAttribute("type", "image/x-icon");
+        favicon.setAttribute("href", "data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKLSURBVDiNhZJfSFNxFMfP7/5rM3ed16lIrLQQ+weVLbFEGUQhPUog2p+3IPciJD1ERBbRSz7IxB5kxPRBQmWR0CJi4boR+KAWFdaCotDLrbXa3a7b3e7uPT3YZGq4D3xfzuH7PT9+5xBENKGAWCwGgiAgIQQ2gBsLq1XEBCImRkdH0w6HwwQAtNvt5vDwcBoRFURU/H5/6l/AOoVCIRUQUZIkSaZpGj0ejyrLstzX15dsaWnRksmkhIjLPp/vNwBgMBiMRiIROa9UKrXMAIBKr4LRaNSwWCzqwMCAUvhKwzAoAACn05msr6/PFvYoAFCrqqqUsbGxL6IoWpxOZ213d7ewsLCQAwAVAFTDMDQAgPn5eVMUxTXF4/E0IOLLvHRdFycmJt65XK4/DMOYQ0NDi4gY9nq9i//7g+np6TcEEYMAANlslnAcl29Ce7vncCi8o2Z/42VFW5HoyNt+2+zs9XBTU6NauAOiadpUQ0PDKbfbLY2M+N/PzGTKxFe6cG9QOVJ93kqVn9gOetyEJV8UuBibDoxXhFtbOWUtABEfdHZ2HgsEZveVVDzPEd5Gs5WE7O4X6NID7LqV/3ikwdLthPb9s+Mhz1NGPsBrGAap27t4ju3YZa/ttW26oEI+nI1lbl6wPu3pKfkGAEgBgDo5qdvk5Ureeal0SzMAALeToQbvp45OTWk2AFBpq/XqxSs31K49d3iGP8QWDeBdHL3CEd5/LXFwG0W+kuq6n3LN3bJqoY0r5l1H7EUGoreSEmUYQBi+6OBNsOUUZLLIUG3N7JNPvXFNmdMBc8WNmANQ5nT42BvX3M3MY4KIZzo64qdDr7NdyV+mAw2gtgogNJi2Sip68jg3HgjYn/0Ffq5TJDoDT8IAAAAASUVORK5CYII=");
+        favicon.setAttribute("rel", "icon");
+        document.getElementsByTagName("head")[0].appendChild(favicon);
+        if ( isCookiesEnabled() ) {
+        var tokens = document.cookie.split(';');
+        for ( var i = 0; i < tokens.length; i++ ) {
+            tokens[i] = tokens[i].trim();
+            if ( tokens[i].indexOf('auth_pubtkt') == 0 ) {
+                var username = getValueOfKey(tokens[i].substring(12), 'uid');
+                console.log(username)
+                if ( username ) {
+                    // cid is the cauth_id that is equal to the storyboard user id
+                    var storyboard_user_id = getValueOfKey(tokens[i].substring(12), 'cid')
+                    localStorage.setItem("ls.id_token", storyboard_user_id);
+                    // storyboard_api is already protected by cauth, the token is the username
+                    localStorage.setItem("ls.access_token", username);
+                    localStorage.setItem("ls.token_type", "Bearer");
+                    // store sf user info
+                    localStorage.setItem("sf.username", username);
+                    displayLoggedIn(username);
+                    return;
+                }
+            }
+        }
+    }
+    displaySignIn();
+    document.getElementById("login-btn").onclick = function () {
+        window.location.href = "/auth/login?back=" + encodeURIComponent(window.location.href)
+    };
+};
+
+window.onload = function() {initAuth();};
