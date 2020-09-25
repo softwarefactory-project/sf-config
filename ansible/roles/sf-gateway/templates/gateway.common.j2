@@ -22,7 +22,6 @@
     </Directory>
 
     RewriteEngine On
-    RewriteRule ^/$ /{{ welcome_page_path }} [R]
 
     # Disable caching of static files
     <LocationMatch "/static">
@@ -172,6 +171,9 @@
         RewriteCond /usr/share/%{REQUEST_FILENAME} !-f
         RewriteCond /usr/share/%{REQUEST_FILENAME} !-d
         RewriteRule ^/zuul/.*$ /usr/share/zuul/index.html [L]
+
+        # Rewrite HTML5 url to the index.html
+        RewriteRule ^/(project|tenant|status|dashboard)/.*$ /var/www/index.html [L]
 
 {% if 'managesf' in roles %}
         ProxyPass /manage/ http://managesf:20001/ retry=0 timeout=2400

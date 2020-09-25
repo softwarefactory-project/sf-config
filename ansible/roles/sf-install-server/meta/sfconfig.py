@@ -40,6 +40,26 @@ def get_previous_version():
     return ver
 
 
+def create_context_info(fqdn, roles, sf_version, theme):
+    def service(name, path):
+        return [dict(name=name, path=path)] if name in roles else []
+    return dict(
+        version=sf_version,
+        theme=theme,
+        services=(
+            []
+            + service("gerrit", "/r/")
+            + service("zuul", "/zuul")
+            + service("kibana", "/analytics")
+            + service("etherpad", "/etherpad")
+            + service("lodgeit", "/past")
+            + service("repoxplorer", "/repoxplorer")
+            + service("hound", "/codesearch")
+            + service("cgit", "/cgit")
+            + service("murmur", "mumble://" + fqdn + "/?version=1.2.0")
+        ))
+
+
 class InstallServer(Component):
     def validate(self, args, host):
         if bool(args.sfconfig['config-locations']['config-repo']) != \
@@ -65,6 +85,11 @@ class InstallServer(Component):
 
         args.glue["sf_version"] = get_sf_version()
         args.glue["sf_previous_version"] = get_previous_version()
+        args.glue["sf_context_info"] = create_context_info(
+            args.sfconfig["fqdn"],
+            args.glue["roles"],
+            args.glue["sf_version"],
+            args.sfconfig["theme"])
         if args.upgrade:
             print("Going to upgrade from %s to %s" % (
                 args.glue["sf_previous_version"], args.glue["sf_version"]))

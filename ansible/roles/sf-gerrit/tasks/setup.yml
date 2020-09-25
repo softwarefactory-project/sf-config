@@ -40,11 +40,6 @@
     - /root/config/gerrit/commentlinks.yaml
     - /usr/share/sf-config/ansible/roles/sf-repos/files/config/gerrit/commentlinks.yaml
 
-- name: Render topmenu links list
-  set_fact:
-    topmenu_links: "{{ lookup('template', '../sf-gateway/templates/topmenu_links.j2') }}"
-  no_log: show_hidden_logs == False
-
 - name: Install configuration files
   template:
     src: "{{ item.name }}.j2"
@@ -69,20 +64,7 @@
     - {name: gerrit,
        path: /etc/sysconfig,
        mode: '0444'}
-    - {name: GerritSiteHeader.html,
-       path: /etc/gerrit,
-       mode: '0444'}
   notify: [restart gerrit]
-
-- name: Install static configuration files for gerrit
-  copy:
-    src: "{{ item.name }}"
-    dest: /etc/gerrit/
-    mode: 0644
-    owner: gerrit
-    group: gerrit
-  loop:
-    - {name: GerritSite.css}
 
 - name: Check for replication.config
   stat:
