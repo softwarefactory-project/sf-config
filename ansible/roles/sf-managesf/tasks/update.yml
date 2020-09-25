@@ -18,6 +18,12 @@
   register: upstreamconfig
 
 - block:
+    - name: Update cached resources
+      shell: |
+        curl {{ managesf_internal_url }}/v2/resources > /var/www/api/resources.json.new
+        mv /var/www/api/resources.json.new /var/www/api/resources.json
+      delegate_to: "{{ gateway_host }}"
+
     - name: Exec resources apply
       command: >
         /usr/bin/managesf-resources apply

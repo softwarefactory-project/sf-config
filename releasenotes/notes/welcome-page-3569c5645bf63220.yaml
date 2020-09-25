@@ -1,0 +1,6 @@
+---
+prelude: >
+    The welcome page and top-menu have been replaced by a single page application
+    based on patternfly.
+fixes:
+  - Issues related to top-menu css and incorect redirection are now fixed.
