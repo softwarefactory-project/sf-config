@@ -16,6 +16,7 @@
     baseurl: "{{ grafana_repo_url }}"
     gpgkey: "{{ grafana_repo_gpgkey }}"
     gpgcheck: "{{ grafana_repo_gpgcheck }}"
+    enabled: 0
 
 - name: Install package
   yum:
