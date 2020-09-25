@@ -8,9 +8,6 @@ default-tenant-name: "local"
 # Enable services debug mode
 debug: false
 
-# Default landing web page
-welcome_page_path: "sf/welcome.html"
-
 network:
   smtp_relay:
   # NTP main reference server
