@@ -22,21 +22,6 @@
     path: /usr/local/bin/resources2repoxplorer.py
     state: absent
 
-- name: "Install top menu for repoxplorer"
-  lineinfile:
-    dest: /usr/share/repoxplorer/public/{{ item }}
-    insertafter: '        <script src="javascript/moment.min.js"></script>'
-    line: '    <script src="/static/js/topmenu.js"></script>'
-  loop:
-    - project.html
-    - projects.html
-    - group.html
-    - home.html
-    - groups.html
-    - contributor.html
-    - contributors.html
-    - index.html
-
 - name: Create override directories
   file:
     path: "{{ item }}"

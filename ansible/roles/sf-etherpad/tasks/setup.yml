@@ -25,27 +25,6 @@
     path: /usr/libexec/etherpad/src/static/custom
   register: _etherpad_v16
 
-- name: "Adds top-menu (v1.6)"
-  when: _etherpad_v16.stat.exists
-  block:
-    - name: "Adds top-menu"
-      patch:
-        src: etherpad-top-menu.patch
-        basedir: /usr/libexec/etherpad
-        strip: 1
-
-    - name: "Copy custom pad.css"
-      copy:
-        src: pad.css
-        dest: /usr/libexec/etherpad/src/static/custom/pad.css
-
-- name: "Adds top-menu (v1.7)"
-  when: not _etherpad_v16.stat.exists
-  patch:
-    src: etherpad-1.7-top-menu.patch
-    basedir: /usr/libexec/etherpad/src/templates
-    strip: 1
-
 - name: "Setup settings.json"
   template:
     src: settings.json.j2

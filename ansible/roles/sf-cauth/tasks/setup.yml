@@ -9,55 +9,54 @@
 
 - name: Setup perms
   file:
-      path: "{{ item.path }}"
-      mode: "{{ item.mode|default('0770') }}"
-      owner: "{{ item.owner }}"
-      group: "{{ item.group }}"
-      state: "{{ item.state|default('directory') }}"
+    path: "{{ item.path }}"
+    mode: "{{ item.mode|default('0770') }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    state: "{{ item.state|default('directory') }}"
   loop:
-      - path: /var/log/cauth
-        owner: cauth
-        group: cauth
-        mode: '0750'
-      - path: /var/log/cauth/cauth.log
-        owner: cauth
-        group: cauth
-        mode: '0660'
-        state: touch
-      - path: /etc/cauth
-        owner: root
-        group: cauth
-      - path: /etc/cauth/templates
-        owner: root
-        group: cauth
+    - path: /var/log/cauth
+      owner: cauth
+      group: cauth
+      mode: "0750"
+    - path: /var/log/cauth/cauth.log
+      owner: cauth
+      group: cauth
+      mode: "0660"
+      state: touch
+    - path: /etc/cauth
+      owner: root
+      group: cauth
+    - path: /etc/cauth/templates
+      owner: root
+      group: cauth
 
 - name: Install cauth config files
   template:
-      src: "{{ item.name }}.j2"
-      dest: "{{ item.dest }}/{{ item.name }}"
-      mode: 0444
-      owner: cauth
-      group: cauth
+    src: "{{ item.name }}.j2"
+    dest: "{{ item.dest }}/{{ item.name }}"
+    mode: 0444
+    owner: cauth
+    group: cauth
   notify: cauth restart
   loop:
-      - {name: config.py, dest: /etc/cauth}
-      - {name: login.html, dest: /etc/cauth/templates}
+    - { name: config.py, dest: /etc/cauth }
 
 - name: Install cauth files
   copy:
-      src: "{{ item.name }}"
-      dest: "{{ item.dest }}/{{ item.real_name | default(item.name) }}"
+    src: "{{ item.name }}"
+    dest: "{{ item.dest }}/{{ item.real_name | default(item.name) }}"
   notify: apache reload
   loop:
-      - {name: cauth.site, real_name: cauth.conf, dest: /etc/httpd/conf.d/}
+    - { name: cauth.site, real_name: cauth.conf, dest: /etc/httpd/conf.d/ }
 
 - name: Install cauth private key
   copy:
-      content: "{{ cauth_privkey }}"
-      dest: /var/lib/cauth/keys/privkey.pem
-      owner: cauth
-      group: cauth
-      mode: 0440
+    content: "{{ cauth_privkey }}"
+    dest: /var/lib/cauth/keys/privkey.pem
+    owner: cauth
+    group: cauth
+    mode: 0440
 
 - include_tasks: saml2.yaml
   when: not authentication.SAML2.disabled

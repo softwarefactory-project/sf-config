@@ -66,12 +66,17 @@ class Gateway(Component):
                 args.sfconfig["network"]["tls_key_file"]).read()
         else:
             self.get_or_generate_cert(args, "gateway", args.sfconfig["fqdn"])
+        # TODO: add new welcome page support for that
         args.glue["gateway_topmenu_logo_data"] = encode_image(
             "/etc/software-factory/logo-topmenu.png")
         args.glue["gateway_favicon_data"] = encode_image(
             "/etc/software-factory/logo-favicon.ico")
         args.glue["gateway_splash_image_data"] = encode_image(
             "/etc/software-factory/logo-splash.png")
+        args.glue["sf_context_info"]["header_logo_b64data"] = args.glue[
+            "gateway_topmenu_logo_data"]
+        args.glue["sf_context_info"]["splash_image_b64data"] = args.glue[
+            "gateway_splash_image_data"]
         self.get_or_generate_ssh_key(args, "zuul_gatewayserver_rsa")
         args.glue["pagesuser_authorized_keys"] = []
         args.glue["pagesuser_authorized_keys"].append(

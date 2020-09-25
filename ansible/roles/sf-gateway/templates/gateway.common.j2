@@ -22,10 +22,12 @@
     </Directory>
 
     RewriteEngine On
-    RewriteRule ^/$ /{{ welcome_page_path }} [R]
 
-    # Disable caching of static files
+    # Disable caching of static or api files
     <LocationMatch "/static">
+        CacheDisable on
+    </LocationMatch>
+    <LocationMatch "/api">
         CacheDisable on
     </LocationMatch>
     {% if _zuul_job_version is defined %}
@@ -90,7 +92,7 @@
 
         AuthType mod_auth_pubtkt
         TKTAuthFakeBasicAuth on
-        TKTAuthLoginURL /auth/login
+        TKTAuthLoginURL /login
         TKTAuthDebug 1
         require valid-user
     </LocationMatch>
@@ -113,7 +115,7 @@
 {% if 'cauth' in roles %}
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
             AuthType mod_auth_pubtkt
-            TKTAuthLoginURL /auth/login
+            TKTAuthLoginURL /login
             TKTAuthFakeBasicAuth on
             TKTAuthDebug 1
             AuthName "Grafana"
@@ -172,6 +174,10 @@
         RewriteCond /usr/share/%{REQUEST_FILENAME} !-f
         RewriteCond /usr/share/%{REQUEST_FILENAME} !-d
         RewriteRule ^/zuul/.*$ /usr/share/zuul/index.html [L]
+
+        # Rewrite HTML5 url to the index.html
+        RewriteRule ^/(project|tenant|status|dashboard|login).*$ /var/www/index.html [L]
+        RewriteRule ^/auth/settings$ /var/www/index.html [L]
 
 {% if 'managesf' in roles %}
         ProxyPass /manage/ http://managesf:20001/ retry=0 timeout=2400
@@ -301,7 +307,7 @@
 {% else %}
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
             AuthType mod_auth_pubtkt
-            TKTAuthLoginURL /auth/login
+            TKTAuthLoginURL /login
             TKTAuthFakeBasicAuth on
             TKTAuthDebug 1
             require valid-user
@@ -348,7 +354,7 @@
 {% else %}
         AuthType mod_auth_pubtkt
         require valid-user
-        TKTAuthLoginURL /auth/login
+        TKTAuthLoginURL /login
         TKTAuthFakeBasicAuth on
         TKTAuthDebug 1
 {% endif %}
