@@ -32,6 +32,7 @@ gerrit_admin_rsa_pub: ""
 gerrit_email_pk: "CHANGE_ME"
 gerrit_token_pk: "CHANGE_ME"
 gerrit_admin_password: "CHANGE_ME"
+gerrit_zuul_password: "CHANGE_ME"
 gerrit_server_id: "CHANGE_ME"
 
 gitweb_cgi: "/var/www/git/gitweb.cgi"

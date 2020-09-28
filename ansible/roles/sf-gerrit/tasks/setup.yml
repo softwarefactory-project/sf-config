@@ -208,6 +208,10 @@
   changed_when: _gerrit_set_ci_user.rc == 3
   failed_when: _gerrit_set_ci_user.rc != 3 and _gerrit_set_ci_user.rc != 0
 
+- name: Create zuul user password
+  command: ssh gerrit gerrit set-account zuul --http-password "{{ gerrit_zuul_password }}"
+  no_log: true
+
 - include_tasks: setup_acl.yml
 
 - name: Setup socat service
