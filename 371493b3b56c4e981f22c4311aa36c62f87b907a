@@ -34,6 +34,24 @@
       "revId": "371493b3b56c4e981f22c4311aa36c62f87b907a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb37d800_01397a1b",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 63
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-09-29T20:20:26Z",
+      "side": 1,
+      "message": "What is the issue with multi-host deployment?\n\nWe usually don\u0027t expose such options so that the user do not have to worry about this. For example gerrit or mumble password are not defined in sfconfig. If the user needs direct access to the api, then we can document how to get the password from the bootstrap-data, e.g.: \n\n  sudo awk \u0027/gerrit_admin_password/ { print $1 }\u0027 /var/lib/software-factory/bootstrap-data/secrets.yaml",
+      "parentUuid": "c938d559_f9ac83a4",
+      "revId": "371493b3b56c4e981f22c4311aa36c62f87b907a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
