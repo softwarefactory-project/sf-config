@@ -16,6 +16,24 @@
       "revId": "371493b3b56c4e981f22c4311aa36c62f87b907a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c938d559_f9ac83a4",
+        "filename": "defaults/sfconfig.yaml",
+        "patchSetId": 63
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-09-29T18:45:39Z",
+      "side": 1,
+      "message": "it depends.\nI really want to have read only user and password to put here and also an admin instead of putting everything into the /var/lib/software-factory/ansible/group_vars/all.yaml , but it raise a problem on multi host deployment so I can remove that from here and base only on all.yaml file.",
+      "parentUuid": "b5975f39_e0592210",
+      "revId": "371493b3b56c4e981f22c4311aa36c62f87b907a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
