@@ -21,6 +21,9 @@ from jinja2.environment import Environment
 import sfconfig.utils
 
 
+removed_roles = ['hydrant']
+
+
 def write_playbook(playbook_path, playbook):
     if os.path.exists(playbook_path):
         current = open(playbook_path).read()
@@ -50,7 +53,8 @@ def host_play(host, roles=[], params={}, tasks=[]):
     if roles:
         host_play['roles'] = []
         for role in roles:
-            host_play['roles'].append('sf-%s' % role)
+            if role not in removed_roles:
+                host_play['roles'].append('sf-%s' % role)
     if tasks:
         host_play['tasks'] = tasks
     if host.get('params', None):
@@ -520,8 +524,9 @@ def get_logs(args, pb):
         play = host_play(host, params={'role_action': 'get_logs'})
         play['roles'] = []
         for role in ["base"] + host["roles"]:
-            play['roles'].append({'role': "sf-%s" % role,
-                                  'log_dest': '/root/sf-logs/%s' % role})
+            if role not in removed_roles:
+                play['roles'].append({'role': "sf-%s" % role,
+                                      'log_dest': '/root/sf-logs/%s' % role})
         pb.append(play)
 
 
@@ -609,13 +614,6 @@ def generate(args):
         if "influxdb" in host["roles"]:
             # Add telegraf for statsd gateway
             host["roles"].append("telegraf")
-
-    if 'hydrant' in args.glue["roles"] and \
-       "firehose" not in args.glue["roles"]:
-        raise RuntimeError("'hydrant' role needs 'firehose'")
-    if 'hydrant' in args.glue["roles"] and \
-       'elasticsearch' not in args.glue["roles"]:
-        raise RuntimeError("'hydrant' role needs 'elasticsearch'")
 
     templates = "%s/templates" % args.share
 
