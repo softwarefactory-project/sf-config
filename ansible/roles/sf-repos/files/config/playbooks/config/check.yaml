@@ -111,7 +111,6 @@
           echo ${dhall_conf}
           dhall-to-yaml --file ${dhall_conf} --output build/$(basename ${dhall_conf} .dhall).yaml || exit 1
         done
-      register: _nodepool_conf
       args:
         chdir: "{{ config_root }}"
 
@@ -167,7 +166,6 @@
             chdir: "{{ config_root }}"
       when:
         - '"nodepool-launcher" in arch.roles'
-        - not _nodepool_conf.stdout
 
     - name: Validate zuul configuration
       block:
