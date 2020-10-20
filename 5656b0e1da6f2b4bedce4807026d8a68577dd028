@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "923a5553_8589fea9",
+        "filename": "ansible/roles/sf-etherpad/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-20T08:13:15Z",
+      "side": 0,
+      "message": "We need to un-apply the patch",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b68a4814_f0a64b34",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-20T08:13:15Z",
+      "side": 0,
+      "message": "file should be removed",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5316f0d3_46559a1b",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-20T08:13:15Z",
+      "side": 0,
+      "message": "File should be removed",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c10f78b7_6ba62dec",
+        "filename": "ansible/roles/sf-grafana/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-20T08:13:15Z",
+      "side": 0,
+      "message": "state\u003dabsent ?",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3062798c_80f27136",
+        "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-20T08:13:15Z",
+      "side": 0,
+      "message": "Add a task to remove the addition to the file. Maybe state\u003dabsent will be fine ?",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bf353bc9_1a7e5efe",
+        "filename": "ansible/roles/sf-kibana/tasks/postconf.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-20T08:13:15Z",
+      "side": 0,
+      "message": "ditto",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "34cb6f7a_3f02610f",
+        "filename": "ansible/roles/sf-repoxplorer/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-20T08:13:15Z",
+      "side": 0,
+      "message": "We should probably have a task to to clean the \u0027\u003cscript src\u003d\"/static/js/topmenu.js\"\u003e\u003c/script\u003e\u0027 line",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}

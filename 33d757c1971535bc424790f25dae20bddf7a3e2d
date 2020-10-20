@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65a19925_a3e9da3e",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-20T08:13:15Z",
+      "side": 1,
+      "message": "I guess this should be removed to allow user to set \"api key\" as we removed the user_settings page.",
+      "range": {
+        "startLine": 328,
+        "startChar": 0,
+        "endLine": 339,
+        "endChar": 11
+      },
+      "revId": "33d757c1971535bc424790f25dae20bddf7a3e2d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
