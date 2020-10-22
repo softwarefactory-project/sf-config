@@ -71,9 +71,23 @@
 # failing during the node state. This directory should be removed.
 # If you don't want to upgrade step by step with manual:
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html
-- name: Remove old node directory on installing new main release
-  file:
-    path: /var/lib/elasticsearch/nodes
-    state: absent
-  when:
-    - sf_previous_version < 3.5
+- name: Remove old Elasticsearch version on upgrade Software Factory
+  block:
+    - name: Gather the rpm package facts
+      package_facts:
+        manager: auto
+
+    - name: Remove old Elasticsearch version
+      yum:
+        name: elasticsearch
+        state: absent
+      when:
+        - "'elasticsearch' in packages"
+        - "{{ packages['elasticsearch'][0].version is version('7.8.0', '<') }}"
+
+    - name: Remove old node directory on installing new main release
+      file:
+        path: /var/lib/elasticsearch/nodes
+        state: absent
+
+  when: sf_previous_version < 3.5
