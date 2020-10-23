@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "995219ee_e2efd6f4",
+        "filename": "ansible/roles/sf-elasticsearch/tasks/install.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-10-23T07:44:16Z",
+      "side": 1,
+      "message": "Should this be put in upgrade.yaml instead ?",
+      "revId": "851352facdd1c590e5919288232c2253a68d24bc",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
