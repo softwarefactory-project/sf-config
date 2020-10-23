@@ -16,6 +16,24 @@
       "revId": "f0275c7e9a704efd63a7f42b8328e1927470d9b6",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1db22291_c1924a0d",
+        "filename": "ansible/roles/sf-elasticsearch/templates/roles.yml.j2",
+        "patchSetId": 72
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-10-23T08:13:03Z",
+      "side": 1,
+      "message": "Thats the main problem of the \"automation\" here.\nNormally, those indices are not required, when some user with privileges that are set here is logged first and open e.g. discover, but according to the sample instruction https://opendistro.github.io/for-elasticsearch-docs/docs/security/access-control/users-roles/#sample-roles those roles are required. I have done it base on the errors that are raised in elasticsearch.\nIn the future, I can redefine it like it is in the sample.",
+      "parentUuid": "26df7b55_8f33bf27",
+      "revId": "f0275c7e9a704efd63a7f42b8328e1927470d9b6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
