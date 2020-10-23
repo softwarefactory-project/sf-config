@@ -1,0 +1,66 @@
+---
+# DEFAULT FILE
+
+_meta:
+  type: "roles"
+  config_version: 2
+
+# Restrict users so they can only view visualization and dashboard on kibana
+kibana_read_only:
+  reserved: true
+
+# The security REST API access role is used to assign specific users access to change the security settings through the REST API.
+security_rest_api_access:
+  reserved: true
+
+# Allows users to view alerts
+alerting_view_alerts:
+  reserved: true
+  index_permissions:
+    - index_patterns:
+      - ".opendistro-alerting-alert*"
+      allowed_actions:
+        - read
+
+# Allows users to view and acknowledge alerts
+alerting_crud_alerts:
+  reserved: true
+  index_permissions:
+    - index_patterns:
+      - ".opendistro-alerting-alert*"
+      allowed_actions:
+       - crud
+
+# Allows users to use all alerting functionality
+alerting_full_access:
+  reserved: true
+  index_permissions:
+    - index_patterns:
+      - ".opendistro-alerting-config"
+      - ".opendistro-alerting-alert*"
+      allowed_actions:
+        - crud
+
+# NOTE: this is a dedicated role for the Kibana user that allows to read,
+# search and get data.
+# NOTE: Those indices are required to open e.g. discover function in Kibana
+# when non privileged user was logged into the Kibana before!
+# On fresh installed Kibana with configured roles, internal users and role
+# mappings it will stuck on empty screen.
+kibana_viewer:
+  reserved: true
+  cluster_permissions:
+  - "cluster_composite_ops_ro"
+  index_permissions:
+  - index_patterns:
+    - "?kibana*"
+    - "?kibana"
+    - "logstash-*"
+    allowed_actions:
+    - "read"
+    - "get"
+    - "search"
+    - "indices:data/write/update"
+    - "indices:data/write/index"
+    - "indices:data/write/bulk*"
+  tenant_permissions: []
