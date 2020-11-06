@@ -8,7 +8,7 @@ role_actions:
 
 role_package: elasticsearch
 
-opendistro_version: 1.10.1
+opendistro_version: 1.11.0
 opendistro_repos_name: elasticsearch-7.x,opendistroforelasticsearch-artifacts
 opendistro_plugin_dir: /usr/share/elasticsearch/plugins/opendistro_security
 opendistro_repos:
