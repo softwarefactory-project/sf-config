@@ -310,6 +310,11 @@
 {% endif %}
     </Location>
 
+    <Location "/manage/v2/configurations">
+        Allow from All
+        Satisfy Any
+    </Location>
+
     <Location "/manage/about">
         Allow from All
         Satisfy Any
