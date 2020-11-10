@@ -188,9 +188,16 @@
   when: _gerrit.rc == 3
 
 - name: Initialize admin user
-  command: pynotedb create-admin-user --email "admin@{{ fqdn }}" --pubkey "{{ gerrit_admin_rsa_pub }}" --all-users /var/lib/gerrit/git/All-Users.git
+  command: pynotedb create-admin-user --email "admin@{{ fqdn }}" --pubkey "{{ gerrit_admin_rsa_pub }}" --all-users /var/lib/gerrit/git/All-Users.git --scheme keycloak-oauth
   become: true
   become_user: gerrit
+  when: "'keycloak' in roles"
+
+- name: Initialize admin user
+  command: pynotedb create-admin-user --email "admin@{{ fqdn }}" --pubkey "{{ gerrit_admin_rsa_pub }}" --all-users /var/lib/gerrit/git/All-Users.git --scheme gerrit
+  become: true
+  become_user: gerrit
+  when: "'cauth' in roles"
 
 - name: Start service
   service:
