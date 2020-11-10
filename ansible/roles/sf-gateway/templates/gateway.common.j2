@@ -340,6 +340,13 @@
 {% endif %}
     </Location>
 
+{% if 'keycloak' in roles %}
+    <Location "/manage/v2/configurations">
+        Allow from All
+        Satisfy Any
+    </Location>
+{% endif %}
+
     <Location "/manage/about">
         Allow from All
         Satisfy Any
