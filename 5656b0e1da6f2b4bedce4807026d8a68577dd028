@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "6c020fa4_728fae24",
+        "filename": "ansible/roles/sf-etherpad/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-11-16T15:51:32Z",
+      "side": 0,
+      "message": "Thanks ok, We should update that patch by managing the reinstall.",
+      "parentUuid": "50f5315b_4d76ec4c",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b68a4814_f0a64b34",
         "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
         "patchSetId": 3
