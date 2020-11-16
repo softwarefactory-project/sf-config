@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "50f5315b_4d76ec4c",
+        "filename": "ansible/roles/sf-etherpad/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-11-16T15:33:06Z",
+      "side": 0,
+      "message": "Or we could force re-install when previous_version \u003c 3.6",
+      "parentUuid": "923a5553_8589fea9",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b68a4814_f0a64b34",
         "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2020-10-20T08:13:15Z",
       "side": 0,
       "message": "file should be removed",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7bdb2f8b_a97aace0",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-11-16T15:33:06Z",
+      "side": 0,
+      "message": "good point, not a blocker though.",
+      "parentUuid": "b68a4814_f0a64b34",
       "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "2080e522_2d8773ac",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-11-16T15:33:06Z",
+      "side": 0,
+      "message": "ditto",
+      "parentUuid": "5316f0d3_46559a1b",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c10f78b7_6ba62dec",
         "filename": "ansible/roles/sf-grafana/tasks/setup.yml",
         "patchSetId": 3
@@ -64,6 +118,24 @@
       "writtenOn": "2020-10-20T08:13:15Z",
       "side": 0,
       "message": "state\u003dabsent ?",
+      "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be01bf44_41610eca",
+        "filename": "ansible/roles/sf-grafana/tasks/setup.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-11-16T15:33:06Z",
+      "side": 0,
+      "message": "i think it would be easier to force re-install",
+      "parentUuid": "c10f78b7_6ba62dec",
       "revId": "5656b0e1da6f2b4bedce4807026d8a68577dd028",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false

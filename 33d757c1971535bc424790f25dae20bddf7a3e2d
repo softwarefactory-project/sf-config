@@ -22,6 +22,30 @@
       "revId": "33d757c1971535bc424790f25dae20bddf7a3e2d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3800d28d_3ed54dab",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-11-16T15:33:06Z",
+      "side": 1,
+      "message": "I was hoping we would keep the user settings page to minimize disruption.",
+      "parentUuid": "65a19925_a3e9da3e",
+      "range": {
+        "startLine": 328,
+        "startChar": 0,
+        "endLine": 339,
+        "endChar": 11
+      },
+      "revId": "33d757c1971535bc424790f25dae20bddf7a3e2d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
