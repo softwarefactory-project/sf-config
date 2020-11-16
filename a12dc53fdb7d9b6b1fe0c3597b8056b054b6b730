@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea951d40_befda4bc",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-11-16T15:25:10Z",
+      "side": 1,
+      "message": "theme is record with loginpage_custom_footer: str topmenu_custom_entry: str\n\nBoth are html ...",
+      "revId": "a12dc53fdb7d9b6b1fe0c3597b8056b054b6b730",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
