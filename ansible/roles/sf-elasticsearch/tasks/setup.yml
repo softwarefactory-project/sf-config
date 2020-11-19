@@ -124,6 +124,8 @@
       -h {{ elasticsearch_host }}
   when: elasticsearch_certs_generated is defined and elasticsearch_certs_generated
 
+- include_tasks: performance_analyzer.yml
+
 - name: Start service
   systemd:
     name: elasticsearch

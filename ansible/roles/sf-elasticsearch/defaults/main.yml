@@ -41,3 +41,5 @@ elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_h
 elasticsearch_maximum_heap_size: 256m
 elasticsearch_minimum_heap_size: 256m
 elasticsearch_replicas: 0
+
+enable_performance_analyzer: false
