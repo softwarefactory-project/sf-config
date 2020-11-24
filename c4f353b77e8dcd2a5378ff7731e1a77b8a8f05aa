@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78025e50_f4221bd5",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-11-24T23:20:39Z",
+      "side": 1,
+      "message": "That\u0027s unfortunate, it seems like managesf cli expect JSON from this endpoint, perhaps we can use a different path for the login page in sf-ui? Or update managesf cli",
+      "range": {
+        "startLine": 177,
+        "startChar": 7,
+        "endLine": 177,
+        "endChar": 68
+      },
+      "revId": "c4f353b77e8dcd2a5378ff7731e1a77b8a8f05aa",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
