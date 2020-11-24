@@ -145,7 +145,7 @@
     setype: http_port_t
     state: present
   when:
-    - ansible_virtualization_type != "podman"
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
     - ansible_selinux.status == "enabled"
 
 - name: Test if gerrit All-Projects exists

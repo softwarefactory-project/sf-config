@@ -12,7 +12,7 @@
     setype: http_port_t
     state: present
   when:
-    - ansible_virtualization_type != "podman"
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
     - ansible_selinux.status == "enabled"
 
 - name: Setup sysconfig for mariadb wait lock

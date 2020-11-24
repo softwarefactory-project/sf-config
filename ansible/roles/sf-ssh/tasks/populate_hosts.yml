@@ -51,7 +51,7 @@
   hostname:
     name: "{{ item }}"
   delegate_to: "{{ item }}"
-  when: ansible_virtualization_type != "podman"
+  when: ansible_virtualization_type not in ["podman", "systemd-nspawn"]
   loop: "{{ servers.stdout_lines }}"
 
 - name: Gather hostnames

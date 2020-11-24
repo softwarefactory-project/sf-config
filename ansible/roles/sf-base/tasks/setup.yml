@@ -23,7 +23,7 @@
     name: haveged
     state: started
     enabled: "yes"
-  when: ansible_virtualization_type != "podman"
+  when: ansible_virtualization_type not in ["podman", "systemd-nspawn"]
 
 - name: Start rsyslogd
   service:
@@ -55,21 +55,21 @@
   selinux:
     policy: targeted
     state: permissive
-  when: ansible_virtualization_type != "podman"
+  when: ansible_virtualization_type not in ["podman", "systemd-nspawn"]
 
 - name: Set sysctl values
   sysctl:
     name: "{{ item.key }}"
     value: "{{ item.value }}"
   loop: "{{ base_sysctl | dict2items }}"
-  when: ansible_virtualization_type != "podman"
+  when: ansible_virtualization_type not in ["podman", "systemd-nspawn"]
 
 - name: Start auditd
   systemd:
     name: auditd
     enabled: "yes"
     state: started
-  when: ansible_virtualization_type != "podman"
+  when: ansible_virtualization_type not in ["podman", "systemd-nspawn"]
 
 - name: Manage /etc/hosts
   template:
@@ -100,7 +100,7 @@
     - logging_syslogd_can_sendmail
   when:
     - ansible_selinux.status == "enabled"
-    - ansible_virtualization_type != "podman"
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
 
 - name: Configure ntp server
   template:
@@ -114,7 +114,7 @@
     enabled: true
     state: restarted
   when:
-    - ansible_virtualization_type != "podman"
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
     - ntp_config is changed
 
 - name: Add localCA to pki trust

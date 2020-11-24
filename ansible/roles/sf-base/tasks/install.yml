@@ -99,7 +99,7 @@
     line: 'SELINUX=permissive'
   when:
     - _selinux_config.stat.exists
-    - ansible_virtualization_type != "podman"
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
 
 - name: Remove selinux autorelabel
   file:
