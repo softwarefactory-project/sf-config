@@ -1,0 +1,7 @@
+---
+- name: Disable Opendistro performance analyzer
+  systemd:
+    name: opendistro-performance-analyzer
+    state: stopped
+    enabled: no
+  when: not enable_performance_analyzer
