@@ -232,6 +232,9 @@
         ProxyPass /auth/ http://{{ keycloak_host }}:{{ keycloak_http_port }}/auth/
         ProxyPassReverse /auth/ http://{{ keycloak_host }}:{{ keycloak_http_port }}/auth/
 
+        # Ensure old cauth callback URL is still valid
+        Redirect "/auth/login/oauth2/callback" "/auth/realms/SF/broker/github/endpoint"
+
 {% endif %}
         ProxyPreserveHost On
         AllowEncodedSlashes NoDecode
