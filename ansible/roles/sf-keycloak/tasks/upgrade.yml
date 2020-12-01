@@ -1,2 +1,27 @@
 ---
-# TODO
+- block:
+    - name: Migrate Gerrit users to keycloak auth
+      command: pynotedb cauth-to-keycloak --all-users /var/lib/gerrit/git/All-Users.git
+      become: true
+      become_user: gerrit
+    - name: fetch local users
+      command: mysql managesf -N -B -e "select username, fullname, email, sshkey from users;"
+      delegate_to: "{{ mysql_host }}"
+      register: managesf_users
+    - name: register local users in keycloak
+      command: >
+        /opt/jboss/keycloak/bin/kcadm.sh create users
+            -r {{ keycloak_default_realm }}
+            -s 'username={{ item.split("\t")[0] }}'
+            -s 'email={{ item.split("\t")[2] }}'
+            -s 'firstName={{ item.split("\t")[1] }}'
+            -s 'attributes.publicKey'=["{{ item.split("\t")[3] }}"]'
+            -s 'enabled=true'
+            -s 'requiredActions=["UPDATE_PASSWORD"]' \
+            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      register: _user_create
+      failed_when: _user_create.rc != 0 and _user_create.stderr.find("User exists") == -1
+      no_log: show_hidden_logs == False
+      with_items: "{{ managesf_users.stdout_lines | default([]) }}"
+
+  when: sf_previous_version < 3.6

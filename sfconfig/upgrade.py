@@ -271,6 +271,11 @@ def update_arch(args):
             exit(1)
 
         # Remove legacy roles
+        if 'cauth' in host['roles'] and sf_version > '3.6':
+            print("cauth is replaced by keycloak as the SSO service. "
+                  "Please disable cauth and enable keycloak in the "
+                  "architecture file before running this command again.")
+            sys.exit(-1)
         if 'pages' in host['roles']:
             host['roles'].remove('pages')
         for removed in (
