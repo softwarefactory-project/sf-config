@@ -7,6 +7,7 @@
         -s 'email={{ item.email }}'
         -s 'firstName={{ item.firstName }}'
         -s 'lastName={{ item.lastName }}'
+        -s 'attributes.publicKey'=["{{ item.public_key}}"]'
         -s 'enabled=true'
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   register: _user_create

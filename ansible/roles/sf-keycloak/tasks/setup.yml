@@ -58,6 +58,25 @@
   ignore_errors: true
   no_log: show_hidden_logs == False
 
+- name: set master admin email
+  block:
+    - command: >
+        /opt/jboss/keycloak/bin/kcadm.sh get users
+            -r master
+            -q username=admin
+            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      register: _admin_uid
+    - set_fact:
+        admin_uid: "{{ _admin_uid.stdout | from_json }}"
+    - name: set admin email in master realm
+      command: >
+        /opt/jboss/keycloak/bin/kcadm.sh update users/{{ admin_uid[0]['id'] }}
+            -r master
+            -s 'email=admin@{{ fqdn }}'
+            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+      register: _user_email_update
+      no_log: show_hidden_logs == False
+
 - name: Create default realm
   command: |
     /opt/jboss/keycloak/bin/kcadm.sh create realms
@@ -77,11 +96,13 @@
        firstName: "Admin",
        lastName: "Software Factory",
        email: "admin@{{ fqdn }}"}
+       public_key: "{{ gerrit_admin_rsa_pub }}"
     - {username: "SF_SERVICE_USER",
        password: "{{ sf_service_user_password }}",
        firstName: "Service User",
        lastName: "Software Factory",
        email: "sf_service_user@{{ fqdn }}"}
+       public_key: ""
 
 - name: Create test users
   include_tasks: create_or_update_user.yml
@@ -93,21 +114,25 @@
        firstName: "Demo",
        lastName: "User2",
        email: "user2@{{ fqdn }}"}
+       public_key: ""
     - {username: "user3",
        password: "{{ authentication.admin_password }}",
        firstName: "Demo",
        lastName: "User3",
        email: "user3@{{ fqdn }}"}
+       public_key: ""
     - {username: "user4",
        password: "{{ authentication.admin_password }}",
        firstName: "Demo",
        lastName: "User4",
        email: "user4@{{ fqdn }}"}
+       public_key: ""
     - {username: "user5",
        password: "{{ authentication.admin_password }}",
        firstName: "Demo",
        lastName: "User5",
        email: "user5@{{ fqdn }}"}
+       public_key: ""
   when: "'sftests.com' in fqdn"
 
 
