@@ -24,7 +24,7 @@
   register: _dhall_conf
   failed_when: false
 
-- name: Update nodepool configuration
+- name: Generate nodepool configuration
   command: "{{ item }}"
   args:
     chdir: /root/config
@@ -41,6 +41,21 @@
       {% endif %}
     - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
     - rsync -avi --delete nodepool/virt_images/ "{{ nodepool_conf_dir }}/virt_images/"
+
+- name: Check if static config exists
+  stat:
+    path: "/root/config/nodepool/static_config/{{ ansible_hostname }}.yaml"
+  register: _static_config
+  changed_when: false
+
+- name: Install static config
+  copy:
+    src: "/root/config/nodepool/static_config/{{ ansible_hostname }}.yaml"
+    dest: "/etc/nodepool/nodepool.yaml"
+    remote_src: yes
+  when:
+    - _static_config.stat.exists
+    - _static_config.stat.isreg
 
 - name: Check if providers are enabled
   command: python3 -c "import yaml; print(len(yaml.load(open('/etc/nodepool/nodepool.yaml')).get('providers', [])))"
