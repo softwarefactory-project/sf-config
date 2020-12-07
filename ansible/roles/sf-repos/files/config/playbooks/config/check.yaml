@@ -164,6 +164,12 @@
                 config-validate
           args:
             chdir: "{{ config_root }}"
+
+        - name: Run nodepool config-validate for static configuration
+          command: >
+            env - find nodepool/static_config/ -name '*.yaml' -exec /bin/nodepool -c {} config-validate \;
+          args:
+            chdir: "{{ config_root }}"
       when:
         - '"nodepool-launcher" in arch.roles'
 
