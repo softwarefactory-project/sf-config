@@ -16,6 +16,24 @@
       "revId": "3062defb4d5c13770e66908a07f23d03e3292ef0",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a6e17fb_f476003a",
+        "filename": "ansible/roles/sf-nodepool/tasks/update.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2020-12-09T14:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a7b2f01_64c13923",
+      "revId": "3062defb4d5c13770e66908a07f23d03e3292ef0",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
