@@ -176,7 +176,7 @@
         RewriteRule ^/zuul/.*$ /usr/share/zuul/index.html [L]
 
         # Rewrite HTML5 url to the index.html
-        RewriteRule ^/(project|login).*$ /var/www/index.html [L]
+        RewriteRule ^/(project|login|logout).*$ /var/www/index.html [L]
         RewriteRule ^/auth/settings$ /var/www/index.html [L]
 
 {% if 'managesf' in roles %}
