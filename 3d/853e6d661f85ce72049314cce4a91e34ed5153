@@ -1,0 +1,13 @@
+Code-Review+1: Daniel Pawlik <dpawlik@redhat.com>
+Code-Review+1: Javier Peña <jpena@redhat.com>
+Code-Review+1: User marios <marios@redhat.com>
+Code-Review+1: Chandan Kumar <chkumar246@gmail.com>
+Code-Review+2: Fabien Boucher <fboucher@redhat.com>
+Code-Review+2: Tristan de Cacqueray <tdecacqu@redhat.com>
+Workflow+1: Tristan de Cacqueray <tdecacqu@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Thu, 10 Dec 2020 15:12:21 +0000
+Reviewed-on: https://softwarefactory-project.io/r/20299
+Project: software-factory/sf-config
+Branch: refs/heads/master
