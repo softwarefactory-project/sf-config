@@ -48,7 +48,7 @@ DocumentRoot /var/www/
     ForceType application/json
     AddEncoding x-gzip gz
 </FilesMatch>
-<FilesMatch \.(log|sh|yml|yaml)\.gz$>
+<FilesMatch \.(log|sh|yml|yaml|conf)\.gz$>
     ForceType text/plain
     AddDefaultCharset UTF-8
     AddEncoding x-gzip gz
