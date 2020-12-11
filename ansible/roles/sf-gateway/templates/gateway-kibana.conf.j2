@@ -6,26 +6,6 @@
     SSLProxyCheckPeerName off
     SSLProxyCheckPeerExpire off
 
-{% if 'cauth' in roles %}
-    # For Opendistro 1.9
-    <Location "/analytics/login">
-        RequestHeader unset X-Remote-User
-        AuthType mod_auth_pubtkt
-        TKTAuthLoginURL /login
-        TKTAuthFakeBasicAuth on
-        TKTAuthDebug 1
-        require valid-user
-    </Location>
-    # For Opendistro 1.10
-    <Location "/analytics/app/login">
-        RequestHeader unset X-Remote-User
-        AuthType mod_auth_pubtkt
-        TKTAuthLoginURL /login
-        TKTAuthFakeBasicAuth on
-        TKTAuthDebug 1
-        require valid-user
-    </Location>
-{% endif %}
     <Location "/analytics">
         ProxyPass {{ kibana_internal_url }}
         ProxyPassReverse {{ kibana_internal_url }}
