@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e0099252_1f5e72b2",
+        "filename": "ansible/roles/sf-base/tasks/upgrade.yml",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-12-14T13:33:56Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be repoxplorer-webui ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 10,
+        "endLine": 61,
+        "endChar": 21
+      },
+      "revId": "67c4e29ed7db744842333bba5e6e8ae7c0d4c559",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
