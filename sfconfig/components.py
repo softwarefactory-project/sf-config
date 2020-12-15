@@ -140,6 +140,11 @@ DNS.1 = %s
             'user': user,
             'password': password,
         }
+        # Database name always match service name
+        # Record in the all group vars the name so that client services
+        # can be configured on different host. (Otherwise the variable is not
+        # defined because it is only available through the role default.)
+        args.glue["%s_mysql_db" % name] = name
         args.glue["%s_mysql_host" % name] = args.glue["mysql_host"]
         args.glue["%s_mysql_user" % name] = user
 
