@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "467fd237_2d93feef",
+        "filename": "ansible/roles/sf-repos/files/config/playbooks/config/check.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2020-12-17T11:07:41Z",
+      "side": 1,
+      "message": "surprised that ansible lint is not rising an error here.\nBecause of that, I change it to +  -\u003e https://review.rdoproject.org/r/#/c/31340/2/roles/rdo-infra/cico-agent/tasks/main.yml",
+      "range": {
+        "startLine": 171,
+        "startChar": 104,
+        "endLine": 171,
+        "endChar": 106
+      },
+      "revId": "eda9dd1a9f56c745f7cd615993c53a4a117c4567",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
