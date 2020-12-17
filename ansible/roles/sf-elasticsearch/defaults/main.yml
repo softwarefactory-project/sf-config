@@ -17,6 +17,7 @@ opendistro_repos:
     url: https://artifacts.elastic.co/packages/oss-7.x/yum
     gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     gpgcheck: 1
+    enabled: 0
   - name: opendistroforelasticsearch-artifacts
     desc: Release RPM artifacts of OpenDistroForElasticsearch
     url: https://d3g5vo6xdbdb9a.cloudfront.net/yum/noarch/
