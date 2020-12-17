@@ -22,6 +22,30 @@
       "revId": "4d1c27129751d95c250cb53013b78e62faf92746",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d93738ae_bdd273ce",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-12-17T15:55:06Z",
+      "side": 1,
+      "message": "Sure. I\u0027ll propose a new change.",
+      "parentUuid": "bbf89643_1cb4ff3a",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 43
+      },
+      "revId": "4d1c27129751d95c250cb53013b78e62faf92746",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
