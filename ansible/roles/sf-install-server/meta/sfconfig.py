@@ -40,7 +40,7 @@ def get_previous_version():
     return ver
 
 
-def create_context_info(fqdn, roles, auth, sf_version, theme):
+def create_context_info(fqdn, roles, auth, sf_version, custom_links):
     def service(name, path):
         return [dict(name=name, path=path)] if name in roles else []
 
@@ -53,9 +53,29 @@ def create_context_info(fqdn, roles, auth, sf_version, theme):
         return [name] if not auth.get("oauth2", {}).get(name, {}).get(
             "disabled", True) else []
 
+    def get_links(_type):
+        if _type == "documentation":
+            documentation_default_links = [
+                {"name": "Software Factory", "link": "/docs"},
+                {"name": "Zuul", "link": "/docs/zuul"},
+                {"name": "Nodepool", "link": "/docs/nodepool"}
+            ]
+            return (
+                documentation_default_links +
+                custom_links.get("documentation_links", [])
+            )
+        elif _type == "status":
+            return custom_links.get("status_links", [])
+        elif _type == "contact":
+            return custom_links.get("contact_links", [])
+        else:
+            raise
+
     return dict(
         version=sf_version,
-        theme=theme,
+        documentation_links=get_links("documentation"),
+        status_links=get_links("status"),
+        contact_links=get_links("contact"),
         services=(
             []
             + service("gerrit", "/r/")
@@ -113,7 +133,7 @@ class InstallServer(Component):
             args.glue["roles"],
             args.sfconfig["authentication"],
             args.glue["sf_version"],
-            args.sfconfig["theme"])
+            args.sfconfig.get("custom_links", {}))
         if args.upgrade:
             print("Going to upgrade from %s to %s" % (
                 args.glue["sf_previous_version"], args.glue["sf_version"]))
