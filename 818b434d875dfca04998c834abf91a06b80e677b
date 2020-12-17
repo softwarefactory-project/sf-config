@@ -16,6 +16,24 @@
       "revId": "818b434d875dfca04998c834abf91a06b80e677b",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b3182a48_aa101ccc",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-12-17T12:57:56Z",
+      "side": 1,
+      "message": "good catch.",
+      "parentUuid": "39829bb9_feb85f2d",
+      "revId": "818b434d875dfca04998c834abf91a06b80e677b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
