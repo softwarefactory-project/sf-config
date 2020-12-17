@@ -91,19 +91,22 @@
         src: status-page-update.py
         dest: /usr/libexec/software-factory/status-page-update.py
         mode: 0555
+      delegate_to: "{{ gateway_host }}"
 
     - name: Create status directory
       file:
         path: /var/www/status
         state: directory
+      delegate_to: "{{ gateway_host }}"
 
-    - name: Set read access to the zuul DB for zuul user
+    - name: Set read access to the zuul DB for zuul user from the gateway
       mysql_user:
         name: "{{ zuul_mysql_user }}"
-        host: "{{ zuul_mysql_host }}"
+        host: "{{ gateway_host }}"
         password: "{{ zuul_mysql_password }}"
         priv: 'zuul.*:ALL'
         state: present
+      delegate_to: "{{ mysql_host }}"
       no_log: true
 
     - name: Setup status page update cron
@@ -113,4 +116,5 @@
         hour: '0'
         day: '*'
         job: "/usr/libexec/software-factory/status-page-update.py --lib /var/lib/software-factory/backup/status_history.yaml --output /var/www/status/index.html"
+      delegate_to: "{{ gateway_host }}"
   when: "'zuul' in roles"
