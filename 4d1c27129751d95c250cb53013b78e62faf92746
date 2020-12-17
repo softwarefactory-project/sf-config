@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bbf89643_1cb4ff3a",
+        "filename": "ansible/roles/sf-install-server/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-12-17T14:48:24Z",
+      "side": 1,
+      "message": "could we group those inside a single `links` attribute? e.g.:\n\n  links\u003ddict(\n    documentation\u003d...\n    status\u003d...\n    contact\u003d...\n  )",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 43
+      },
+      "revId": "4d1c27129751d95c250cb53013b78e62faf92746",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
