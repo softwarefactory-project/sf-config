@@ -18,6 +18,7 @@ elasticsearch_oss_repos:
     url: https://artifacts.elastic.co/packages/oss-7.x/yum
     gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     gpgcheck: 1
+    enabled: 0
 
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
