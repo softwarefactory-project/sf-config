@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "39829bb9_feb85f2d",
+        "filename": "ansible/roles/sf-install-server/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-12-17T08:58:50Z",
+      "side": 1,
+      "message": "Then is the delegate_to needed for all those task in this block ?",
+      "revId": "818b434d875dfca04998c834abf91a06b80e677b",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
