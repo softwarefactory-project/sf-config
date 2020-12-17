@@ -186,12 +186,14 @@
 
 - name: Add zuul user
   command: /usr/share/sf-config/scripts/gerrit-set-ci-user.sh "zuul" "ssh-rsa {{ zuul_rsa_pub.split()[1] }}" "zuul@{{ fqdn }}"
+  delegate_to: "{{ install_server_host }}"
   register: _gerrit_set_ci_user
   changed_when: _gerrit_set_ci_user.rc == 3
   failed_when: _gerrit_set_ci_user.rc != 3 and _gerrit_set_ci_user.rc != 0
 
 - name: Create zuul user password
   command: ssh gerrit gerrit set-account zuul --http-password "{{ gerrit_zuul_password }}"
+  delegate_to: "{{ install_server_host }}"
   no_log: true
 
 - include_tasks: setup_acl.yml
@@ -237,4 +239,5 @@
        email: "user5@{{ fqdn }}"}
   register: test_user_create
   failed_when: test_user_create.rc != 0 and test_user_create.stderr.find("already exists") == -1
+  delegate_to: "{{ install_server_host }}"
   when: "'sftests.com' in fqdn"
