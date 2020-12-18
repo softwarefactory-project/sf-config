@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ad2dccff_da760c65",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-12-18T20:22:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "086b5780_10a51220",
+      "revId": "d7ff176b96f2a2ea2a729ec3c29bcfa19fb2fe41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9ccf8d12_11f8e740",
         "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2020-12-18T08:28:26Z",
       "side": 1,
       "message": "Does it mean that from the gerrit node a local connection to gerrit does not work as expected ?",
+      "revId": "d7ff176b96f2a2ea2a729ec3c29bcfa19fb2fe41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2ecf82e_ca53740e",
+        "filename": "ansible/roles/sf-gerrit/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2020-12-18T20:22:13Z",
+      "side": 1,
+      "message": "Yes, the .ssh/config is only installed on the install-server",
+      "parentUuid": "9ccf8d12_11f8e740",
       "revId": "d7ff176b96f2a2ea2a729ec3c29bcfa19fb2fe41",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
