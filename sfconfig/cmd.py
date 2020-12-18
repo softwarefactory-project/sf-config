@@ -261,17 +261,17 @@ def main():
     if args.save_sfconfig:
         save_file(args.sfconfig, args.config)
 
+    # Add legacy content
+    args.glue.update(yaml_load(args.config))
+    if os.path.isfile(args.extra):
+        args.glue.update(yaml_load(args.extra))
+    args.glue.update(args.sfarch)
+    # 3.4 backward compatible extra vars
+    legacy_name = 'enable_insecure_slaves'
+    if legacy_name in args.glue:
+        args.glue['enable_insecure_workers'] = args.glue[legacy_name]
     # Generate group vars
     with open(allyaml, "w") as allvars_file:
-        # Add legacy content
-        args.glue.update(yaml_load(args.config))
-        if os.path.isfile(args.extra):
-            args.glue.update(yaml_load(args.extra))
-        args.glue.update(args.sfarch)
-        # 3.4 backward compatible extra vars
-        legacy_name = 'enable_insecure_slaves'
-        if legacy_name in args.glue:
-            args.glue['enable_insecure_workers'] = args.glue[legacy_name]
         yaml_dump(args.glue, allvars_file)
 
     if 'show_hidden_logs' not in args.glue:
