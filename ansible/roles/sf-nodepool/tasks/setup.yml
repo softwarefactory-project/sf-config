@@ -134,21 +134,16 @@
   loop:
     - secure.conf
 
-- name: Configure statsd
-  when: "'influxdb' in roles"
-  block:
-    - name: Set statsd environment variable
-      copy:
-        content: |
-          STATSD_HOST={{ statsd_host | default(influxdb_host | default ('')) }}
-          STATSD_PORT={{ statsd_port | default(8125) }}
-        dest: /etc/sysconfig/nodepool
-      register: _nodepool_env
+- name: Setup /etc/sysconfig/nodepool
+  template:
+    src: sysconfig_nodepool.j2
+    dest: /etc/sysconfig/nodepool
+  register: _nodepool_env
 
-    - name: Set nodepool_need_restart fact if environment change
-      set_fact:
-        nodepool_need_restart: true
-      when: _nodepool_env is changed
+- name: Set nodepool_need_restart fact when sysconfig is updated
+  set_fact:
+    nodepool_need_restart: true
+  when: _nodepool_env is changed
 
 - name: Create nodepool working directories
   file:
