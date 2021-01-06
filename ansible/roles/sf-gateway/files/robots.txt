@@ -6,13 +6,20 @@ Disallow: /nodepool-launcher
 Disallow: /paste
 Disallow: /etherpad
 Disallow: /analytics
+Disallow: /cgit/*
+Disallow: /kojifiles/*
+Disallow: /r/gitweb/*
 
 User-agent: HTTrack
 User-agent: puf
 User-agent: MSIECrawler
 User-agent: Nutch
 User-agent: SemrushBot
+User-agent: MJ12bot
+User-agent: mj12bot
+User-agent: dotbot
+User-agent: PetalBot
 Disallow: /
 
-User-agent: msnbot
-Crawl-delay: 1
+User-agent: *
+Crawl-delay: 2
