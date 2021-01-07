@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f914d31b_c3c57f99",
+        "filename": "ansible/roles/sf-postfix/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2021-01-07T19:44:43Z",
+      "side": 1,
+      "message": "could this conflict with the actual zuul user?",
+      "revId": "37bb946475f47f01048b8f6e47301af78373bdee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
