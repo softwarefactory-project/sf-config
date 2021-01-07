@@ -13,6 +13,11 @@
     home: /var/spool/postfix
     shell: /sbin/nologin
 
+- name: Ensure zuul user is present
+  user:
+    name: zuul
+    state: present
+
 - name: Set mailname
   copy:
     dest: /etc/mailname
@@ -53,6 +58,14 @@
   when: postfix_virtual is changed
   notify:
     - restart postfix
+
+- name: clean zuul user's mail spool daily
+  cron:
+    name: "Delete mails sent to zuul"
+    minute: 0
+    hour: 0
+    day: '*'
+    job: "truncate -s 0 /var/spool/mail/zuul"
 
 - name: Start service
   service:
