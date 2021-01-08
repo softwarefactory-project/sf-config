@@ -16,6 +16,24 @@
       "revId": "37bb946475f47f01048b8f6e47301af78373bdee",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd859f70_4be3f18c",
+        "filename": "ansible/roles/sf-postfix/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 68
+      },
+      "writtenOn": "2021-01-08T09:22:58Z",
+      "side": 1,
+      "message": "On a multinode arch with zuul and postfix on different nodes, not a problem. Otherwise, if the postfix role is run before the zuul role, the zuul user will be updated with group, home dir etc. when the zuul role is run first, this task will just skip.",
+      "parentUuid": "f914d31b_c3c57f99",
+      "revId": "37bb946475f47f01048b8f6e47301af78373bdee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
