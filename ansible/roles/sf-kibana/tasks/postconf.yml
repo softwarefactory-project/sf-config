@@ -8,7 +8,7 @@
 
 - name: Patch kibana bundle js file
   replace:
-    path: "/usr/share/kibana/plugins/opendistro_security/server/index.js"
+    path: "/usr/share/kibana/plugins/opendistroSecurityKibana/server/index.js"
     regexp: "If you have forgotten your username or password, please ask your system administrator"
     replace: "{{ kibana_bundle_js_patch }}"
   register: kibana_login_page
