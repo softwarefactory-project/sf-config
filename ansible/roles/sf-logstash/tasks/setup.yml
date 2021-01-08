@@ -4,6 +4,21 @@
   vars:
     user_name: logstash
 
+- name: Create cert dir
+  file:
+    path: "{{ logstash_stack_certs }}"
+    owner: logstash
+    group: root
+    state: directory
+
+- name: Copy CA cert to logstash dir
+  copy:
+    src: "/var/lib/software-factory/bootstrap-data/certs/localCA.pem"
+    dest: "{{ logstash_stack_certs }}/localCA.pem"
+    mode: 0600
+    owner: logstash
+    group: root
+
 - stat:
     path: /var/log/logstash/logstash.log
   register: logfile

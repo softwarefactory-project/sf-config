@@ -9,7 +9,7 @@ role_actions:
 role_package: logstash
 
 elk_stack_version: 7
-elk_sub_version: 9.1
+elk_sub_version: 10.0
 
 elasticsearch_oss_repos_name: elasticsearch-7.x
 elasticsearch_oss_repos:
@@ -24,6 +24,7 @@ elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
 elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
 
+logstash_stack_certs: /etc/logstash/certs
 logstash_host: logstash.example.com
 logstash_input_port: 9999
 
