@@ -1,21 +1,4 @@
----
-- name: Remove outdated repositories (and clean up left-over metadata)
-  yum_repository:
-    name: kibana
-    state: absent
-  register: kibana_old_repo
-
-- name: Clean yum metadata
-  command: yum clean metadata
-  args:
-    warn: no
-  when: kibana_old_repo is changed
-
-- name: Configure Opendistro repos
-  yum_repository:
-    name: "{{ item.name }}"
-    description: "{{ item.desc }}"
-    baseurl: "{{ item.url }}"
-    gpgkey: "{{ item.gpgkey }}"
-    gpgcheck: "{{ item.gpgcheck }}"
-  loop: "{{ opendistro_repos }}"
+- include_tasks: "{{ sf_tasks_dir }}/configure_mirror.yml"
+  vars:
+    old_repo_name: kibana
+    repos: "{{ opendistro_repos }}"
