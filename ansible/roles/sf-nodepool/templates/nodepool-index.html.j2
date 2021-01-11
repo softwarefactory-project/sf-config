@@ -11,8 +11,17 @@
     </head>
 
     <body>
+{% if groups['nodepool-launcher'] %}
+      <h1> Nodepool Launcher </h1>
 {% for nl in groups['nodepool-launcher'] %}
-      <a href="http://{{ hostvars[nl]['ansible_default_ipv4']['address'] }}/nodepool-launcher/{{ nl }}">{{ nl }}</a>
+      <a href="{{ gateway_url }}/nodepool-launcher/{{ nl }}/">{{ nl }}<br></a>
 {% endfor %}
+{% endif %}
+{% if groups['nodepool-builder'] %}
+      <h1> Nodepool Builder </h1>
+{% for nl in groups['nodepool-builder'] %}
+      <a href="{{ gateway_url }}/nodepool-builder/{{ nl }}/">{{ nl }}<br></a>
+{% endfor %}
+{% endif %}
     </body>
 </html>

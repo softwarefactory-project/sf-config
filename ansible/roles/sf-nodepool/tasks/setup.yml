@@ -241,14 +241,13 @@
       vars:
         _logfile: launcher
 
-    - name: Create nodepool-launcher index.html file
+    - name: Create nodepool index.html file
       template:
-        src: nodepool-launcher-index.html.j2
+        src: nodepool-index.html.j2
         dest: /var/www/html/nodepool-launcher/index.html
         owner: nodepool
         group: nodepool
         mode: 0644
-
   when: "'nodepool-launcher' in nodepool_services"
 
 - name: Ensure httpd is started node
