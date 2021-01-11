@@ -2,7 +2,7 @@
 - name: restart nodepool
   command: >
     /usr/libexec/software-factory/smart-restart.py nodepool
-        --url {{ nodepool_internal_url }}
+        --url "http://{{ ansible_hostname }}:{{ nodepool_webapp_port }}"
         --sender root@{{ fqdn }}
         --mail {{ network.admin_mail_forward }}
         {{ nodepool_services|join(" ") }}

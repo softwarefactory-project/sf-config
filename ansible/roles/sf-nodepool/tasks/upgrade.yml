@@ -11,3 +11,60 @@
   stat:
     path: /var/opt/rh/rh-python35/lib/nodepool/
   register: _nodepool_scl
+
+- name: Update httpd logs directories
+  block:
+    - name: Update /var/www/ directories for builder
+      block:
+        - name: Check if old directory exists
+          stat:
+            path: "/var/www/html/nodepool-log"
+          register: old_dir
+
+        - name: Stop nodepool-builder service
+          systemd:
+            name: nodepool-builder
+            state: stopped
+
+        - name: Delete old directory
+          file:
+            path: "/var/www/html/nodepool-log"
+            state: absent
+          when: old_dir.stat.exists
+
+        - name: Move images logs
+          command: "mv /var/www/nodepool-log /var/www/html/nodepool-builder"
+      when: "'nodepool-builder' in roles"
+
+    - name: Update /var/www/ directories for launcher
+      block:
+        - name: Check if old symlink exists
+          stat:
+            path: "/var/www/html/nodepool-launcher"
+          register: old_dir
+
+        - name: Stop nodepool-launcher service
+          systemd:
+            name: nodepool-launcher
+            state: stopped
+
+        - name: Delete old directory
+          file:
+            path: "/var/www/html/nodepool-launcher"
+            state: absent
+          when: old_dir.stat.exists
+
+        - name: Sync directory
+          command: "mv /var/www/nodepool-launcher /var/www/html/nodepool-launcher"
+      when: "'nodepool-launcher' in roles"
+
+    - name: Remove httpd config file for nodepool
+      file:
+        path: /etc/httpd/conf.d/nodepool_log.conf
+        state: absent
+
+    - name: Stop httpd service
+      systemd:
+        name: httpd
+        state: stopped
+  when: sf_previous_version < 3.6
