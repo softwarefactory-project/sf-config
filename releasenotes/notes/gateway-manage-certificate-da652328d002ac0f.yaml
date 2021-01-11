@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The operator can specify the public certificate to use for gateway.conf, it's also possible to specify aliases if needed
+upgrade:
+  - |
+    Add in /etc/software-factory/custom-vars.yaml 
+     gateway_ssl_certificate:
+       cert_file: /etc/httpd/crt/sftests.crt
+       chain_file: /etc/httpd/crt/sftests-chain.crt
+       key_file: /etc/httpd/crt/sftests.key
+     gateway_aliases:
+       - '/.well-known/acme-challenge /var/www/challenges/sftests'
