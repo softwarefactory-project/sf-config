@@ -6,6 +6,9 @@ ServerTokens Prod
     HostnameLookups On
     RewriteEngine On
 
+{% for alias in gateway_aliases |default([]) %}
+    Alias {{ alias }}
+{% endfor %}
 {% if gateway_force_ssl_redirection %}
     # Enforce HTTPS for non-internal requests. HostnameLookups is required,
     # otherwise REMOTE_HOST contains only the IP address
@@ -24,10 +27,10 @@ ServerTokens Prod
     RewriteEngine On
 
     SSLEngine on
-{% if tls_letsencrypt_gateway_cert.stat.exists %}
-    SSLCertificateFile /etc/letsencrypt/pem/{{ fqdn }}.pem
-    SSLCertificateChainFile /etc/letsencrypt/pem/lets-encrypt-x3-cross-signed.pem
-    SSLCertificateKeyFile /etc/letsencrypt/private/{{ fqdn }}.key
+{% if gateway_ssl_certificate %}
+    SSLCertificateFile {{ gateway_ssl_certificate.cert_file }}
+    SSLCertificateChainFile {{ gateway_ssl_certificate.chain_file }}
+    SSLCertificateKeyFile {{ gateway_ssl_certificate.key_file }}
 {% else %}
     SSLCertificateFile /etc/pki/tls/certs/{{ fqdn }}.crt
     SSLCertificateChainFile /etc/pki/tls/certs/{{ fqdn }}-chain.crt
