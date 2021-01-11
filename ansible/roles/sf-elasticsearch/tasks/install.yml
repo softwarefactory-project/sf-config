@@ -10,7 +10,10 @@
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
 
-- include_tasks: configure_mirror.yml
+- include_tasks: "{{ sf_tasks_dir }}/configure_mirror.yml"
+  vars:
+    old_repo_name: elasticsearch
+    repos: "{{ opendistro_repos }}"
 
 # NOTE: If Elasticsearch was configured before Opendistro Elasticsearch,
 # the official package will be in conflict with Opendistro.
