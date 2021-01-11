@@ -1,0 +1,25 @@
+---
+- block:
+  - name: Remove outdated repositories (and clean up left-over metadata)
+    yum_repository:
+      name: old_repo_name
+      state: absent
+    register: old_repo
+
+  - name: Clean yum metadata
+    command: yum clean metadata
+    args:
+      warn: no
+    when: old_repo is changed
+
+  when: old_repo_name is defined
+
+- name: Configure repos
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.desc }}"
+    baseurl: "{{ item.url }}"
+    gpgkey: "{{ item.gpgkey }}"
+    gpgcheck: "{{ item.gpgcheck }}"
+    enabled: "{{ item.enabled | default('1') }}"
+  loop: "{{ repos }}"

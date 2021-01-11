@@ -23,6 +23,7 @@ opendistro_repos:
     url: https://d3g5vo6xdbdb9a.cloudfront.net/yum/noarch/
     gpgkey: https://d3g5vo6xdbdb9a.cloudfront.net/GPG-KEY-opendistroforelasticsearch
     gpgcheck: 1
+    enabled: 0
 
 java_home: /usr/lib/jvm/jre
 elk_stack_certs: /etc/elasticsearch/certs
