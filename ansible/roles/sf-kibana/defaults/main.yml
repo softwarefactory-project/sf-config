@@ -24,6 +24,7 @@ opendistro_repos:
     url: https://d3g5vo6xdbdb9a.cloudfront.net/yum/noarch/
     gpgkey: https://d3g5vo6xdbdb9a.cloudfront.net/GPG-KEY-opendistroforelasticsearch
     gpgcheck: 1
+    enabled: 0
 
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com

@@ -1,5 +1,8 @@
 ---
-- include_tasks: configure_mirror.yml
+- include_tasks: "{{ sf_tasks_dir }}/configure_mirror.yml"
+  vars:
+    old_repo_name: logstash
+    repos: "{{ elasticsearch_oss_repos }}"
 
 - name: Install requirements
   yum:

@@ -1,5 +1,8 @@
 ---
-- include_tasks: configure_mirror.yml
+- include_tasks: "{{ sf_tasks_dir }}/configure_mirror.yml"
+  vars:
+    old_repo_name: kibana
+    repos: "{{ opendistro_repos }}"
 
 # NOTE: If Kibana was configured before Opendistro Kibana,
 # the official package will be in conflict with Opendistro.
