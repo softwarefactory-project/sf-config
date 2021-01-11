@@ -29,7 +29,6 @@ class NodepoolLauncher(Component):
     require_roles = ["zookeeper"]
 
     def configure(self, args, host):
-        args.glue["nodepool_hosts"].append(host["hostname"])
         args.glue["nodepool_providers"] = args.sfconfig.get(
             "nodepool", {}).get("providers", [])
         args.glue["nodepool_dib_reg_passwords"] = args.sfconfig.get(
@@ -52,9 +51,6 @@ class NodepoolLauncher(Component):
 
         self.get_or_generate_ssh_key(args, "nodepool_rsa")
         self.get_or_generate_ssh_key(args, "zuul_rsa")
-        args.glue["nodepool_internal_url"] = "http://%s:%s" % (
-            args.glue["nodepool_launcher_host"],
-            args.defaults["nodepool_webapp_port"])
 
         # nodepool_openshift_providers is only used to hold managed clusters
         args.glue["nodepool_openshift_providers"] = []
