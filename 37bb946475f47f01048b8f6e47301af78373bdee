@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "bf54f9fc_9bfd9ca4",
+        "filename": "ansible/roles/sf-postfix/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2021-01-13T09:40:03Z",
+      "side": 1,
+      "message": "It should not happen, even when postfix and zuul are on same server. Zuul is installed on install.yml task, so this one is just ensurung that on external host where postfix is installed it has user zuul.",
+      "parentUuid": "48212603_0faba86e",
+      "revId": "37bb946475f47f01048b8f6e47301af78373bdee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "282accac_d89b8976",
         "filename": "ansible/roles/sf-postfix/tasks/setup.yml",
         "patchSetId": 1
@@ -66,6 +84,24 @@
       "writtenOn": "2021-01-11T13:37:50Z",
       "side": 1,
       "message": "[WARNING]: The value 0 (type int) in a string field was converted to u\u00270\u0027 (type\nstring). If this does not look like what you expect, quote the entire value to\nensure it does not change.",
+      "revId": "37bb946475f47f01048b8f6e47301af78373bdee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2fd834bb_8ca194df",
+        "filename": "ansible/roles/sf-postfix/tasks/setup.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2021-01-13T09:40:03Z",
+      "side": 1,
+      "message": "+1\nwe have such warning in multiple places... one will be less to change",
+      "parentUuid": "282accac_d89b8976",
       "revId": "37bb946475f47f01048b8f6e47301af78373bdee",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
