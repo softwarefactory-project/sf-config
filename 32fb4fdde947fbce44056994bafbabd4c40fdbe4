@@ -22,6 +22,30 @@
       "revId": "32fb4fdde947fbce44056994bafbabd4c40fdbe4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a012fa2_4d02e366",
+        "filename": "ansible/roles/sf-nodepool/tasks/setup.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2021-01-15T14:17:40Z",
+      "side": 1,
+      "message": "It\u0027s define on sf-nodepool/defaults/main.yaml \u0027nodepool_launcher_dir: \"/var/www/html/nodepool-launcher\"\u0027, it\u0027s created on line 219 of setup.yaml.",
+      "parentUuid": "9b44f297_fb4fabaa",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 24
+      },
+      "revId": "32fb4fdde947fbce44056994bafbabd4c40fdbe4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
