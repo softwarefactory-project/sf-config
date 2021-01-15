@@ -46,6 +46,30 @@
       "revId": "32fb4fdde947fbce44056994bafbabd4c40fdbe4",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4391d7db_d4f9f4bf",
+        "filename": "ansible/roles/sf-nodepool/tasks/setup.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 200
+      },
+      "writtenOn": "2021-01-15T14:22:23Z",
+      "side": 1,
+      "message": "Ahh, I see. Thanks!",
+      "parentUuid": "7a012fa2_4d02e366",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 24
+      },
+      "revId": "32fb4fdde947fbce44056994bafbabd4c40fdbe4",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
