@@ -30,6 +30,7 @@ output {
     password => "{{ elasticsearch_logstash_password | default('logstash') }}"
     ssl => true
     ssl_certificate_verification => true
+    cacert => '{{ logstash_stack_certs }}/localCA.pem'
     ilm_enabled => false
   }
 }
