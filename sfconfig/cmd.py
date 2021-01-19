@@ -159,6 +159,8 @@ def fix_rhel_centos_name(glue):
 
 
 def main():
+    print("Oops this change will fail!")
+    exit(1)
     components = sfconfig.utils.load_components()
     args = usage(components)
 
