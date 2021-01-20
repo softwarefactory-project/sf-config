@@ -29,5 +29,5 @@ logstash_host: logstash.example.com
 logstash_input_port: 9999
 
 logstash_retention_days: 60
-logstash_maximum_heap_size: 128m
-logstash_minimum_heap_size: 128m
+logstash_maximum_heap_size: 256m
+logstash_minimum_heap_size: 256m
