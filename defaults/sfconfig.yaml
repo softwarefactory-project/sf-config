@@ -187,11 +187,11 @@ nodepool:
 
 elasticsearch:
   maximum_heap_size: 512m
-  minimum_heap_size: 512m
+  minimum_heap_size: 128m
   replicas: 0
 
 logstash:
-  maximum_heap_size: 128m
+  maximum_heap_size: 512m
   minimum_heap_size: 128m
   retention_days: 60
 
