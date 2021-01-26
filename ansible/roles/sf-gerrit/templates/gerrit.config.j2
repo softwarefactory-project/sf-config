@@ -23,6 +23,7 @@
 {% endif %}
 [container]
     user = gerrit
+	startupTimeout = 300
     javaHome = /usr/lib/jvm/java-1.8.0-openjdk/jre/
     heapLimit = {{ gerrit_heap_limit }}
     war = /var/lib/gerrit/bin/gerrit.war
@@ -92,5 +93,6 @@
     safe = true
 [index]
     type = LUCENE
+	threads = 4
 [receive]
     enableSignedPush = false
