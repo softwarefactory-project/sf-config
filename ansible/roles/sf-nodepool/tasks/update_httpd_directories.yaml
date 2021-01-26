@@ -1,0 +1,81 @@
+- name: Update httpd logs directories for builder
+  block:
+    - name: Check if old directory exists
+      stat:
+        path: "/var/www/nodepool-log"
+      register: _builder_legacy_directory
+
+    - name: Update /var/www/ directories for builder
+      block:
+        - name: Stop nodepool-builder service
+          systemd:
+            name: nodepool-builder
+            state: stopped
+
+        - name: Delete old directory
+          file:
+            path: "/var/www/html/nodepool-log"
+            state: absent
+
+        - name: Sync directory
+          command: "rsync -a /var/www/nodepool-log/ /var/www/html/nodepool-builder/"
+
+        - name: Delete old directory
+          file:
+            path: "/var/www/nodepool-log"
+            state: absent
+      when:
+        - "'nodepool-builder' in roles"
+        - _builder_legacy_directory.stat.exists
+
+- name: Update httpd logs directories for launcher
+  block:
+    - name: Check if old httpd directory exists
+      stat:
+        path: "/var/www/html/nodepool-launcher/logs"
+      register: _launcher_legacy_directory
+
+    - name: Update /var/www/ directories for launcher
+      block:
+        - name: Stop nodepool-launcher service
+          systemd:
+            name: nodepool-launcher
+            state: stopped
+
+        - name: Delete old directory
+          file:
+            path: "/var/www/html/nodepool-launcher"
+            state: absent
+
+        - name: Sync directory
+          command: "rsync -av /var/www/nodepool-launcher/ /var/www/html/nodepool-launcher/"
+
+        - name: Delete old directory
+          file:
+            path: "/var/www/nodepool-launcher"
+            state: absent
+      when:
+        - "'nodepool-launcher' in roles"
+        - _launcher_legacy_directory.stat.exists
+
+- name: Remove httpd legacy config file
+  block:
+    - name: Check if httpd legacy config file exists
+      stat:
+        path: /etc/httpd/conf.d/nodepool_log.conf
+      register: _nodepool_httpd_legacy_config_file
+
+    - name: Update /var/www/ directories for launcher
+      block:
+        - name: Remove httpd config file for nodepool
+          file:
+            path: /etc/httpd/conf.d/nodepool_log.conf
+            state: absent
+
+        - name: Stop httpd service
+          systemd:
+            name: httpd
+            state: stopped
+      when:
+        - "'nodepool-builder' in roles"
+        - _nodepool_httpd_legacy_config_file.stat.exists

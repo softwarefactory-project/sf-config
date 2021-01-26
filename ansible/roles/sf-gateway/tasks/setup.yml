@@ -166,6 +166,20 @@
       when: '"keycloak" in roles'
   when: '"repoxplorer" in roles'
 
+- name: Configure httpd for nodepool services
+  block:
+    - name: Create working directory
+      file:
+        path: /var/www/nodepool
+        state: directory
+
+    - name: Install nodepool index.html template
+      template:
+        src: nodepool-index.html.j2
+        dest: /var/www/nodepool/index.html
+        mode: 0644
+  when: "'nodepool' in roles"
+
 - name: Load ssl module in apache configuration
   lineinfile:
     dest: /etc/httpd/conf.modules.d/00-ssl.conf

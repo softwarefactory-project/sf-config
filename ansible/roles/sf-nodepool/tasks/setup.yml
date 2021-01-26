@@ -154,37 +154,16 @@
     state: directory
   loop:
     - {path: "/var/lib/nodepool/images", owner: "nodepool", group: "nodepool"}
-    - {path: "/var/www/html", mode: "0755"}
     - {path: "/var/cache/nodepool", mode: "0755", owner: "nodepool", group: "nodepool"}
 
 - block:
     - name: Create nodepool-log directory served by apache
       file:
-        path: "/var/www/nodepool-log"
+        path: "/var/www/html/nodepool-builder"
         owner: "nodepool"
         group: "apache"
         mode: "0755"
         state: directory
-
-    - name: Install httpd conf.d nodepool log
-      copy:
-        src: nodepool_log.conf
-        dest: /etc/httpd/conf.d/nodepool_log.conf
-      register: nodepool_log_http_conf
-
-    - name: Reload http on the nodepool-builder node
-      service:
-        name: httpd
-        state: reloaded
-        enabled: "yes"
-      when:
-        - 'nodepool_log_http_conf is changed'
-
-    - name: Ensure /var/www/html/nodepool-log link to /var/www/nodepool-log
-      file:
-        path: /var/www/html/nodepool-log
-        src: /var/www/nodepool-log
-        state: link
 
     - name: Install dib-virt-customize script
       copy:
@@ -219,32 +198,13 @@
         mode: "0755"
         state: directory
 
-    - name: Create www nodepool dir
-      file:
-        path: /var/www/html/nodepool-launcher
-        state: directory
-        owner: "nodepool"
-        group: "apache"
-
-    - name: "Ensure nodepool-launcher link to {{ nodepool_launcher_dir }}"
-      file:
-        path: "/var/www/html/nodepool-launcher/logs"
-        src: "{{ nodepool_launcher_dir }}"
-        state: link
-
     - include_tasks: create_logging.yml
       vars:
         _logfile: launcher
-
-    - name: Create nodepool-launcher index.html file
-      template:
-        src: nodepool-launcher-index.html.j2
-        dest: /var/www/html/nodepool-launcher/index.html
-        owner: nodepool
-        group: nodepool
-        mode: 0644
-
   when: "'nodepool-launcher' in nodepool_services"
+
+- name: Update httpd directories for logs
+  include_tasks: update_httpd_directories.yaml
 
 - name: Ensure httpd is started node
   service:

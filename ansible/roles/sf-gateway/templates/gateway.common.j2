@@ -210,15 +210,23 @@
         ProxyPassReverse /cgit/ http://{{ cgit_host }}/cgit/
 
 {% endif %}
-{% if 'nodepool-builder' in roles and gateway_host != nodepool_builder_host %}
-        ProxyPass /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
-        ProxyPassReverse /nodepool-log/ http://{{ nodepool_builder_host }}/nodepool-log/
+
+{% if 'nodepool-builder' in roles %}
+    {%+ for builder in groups['nodepool-builder'] -%}
+        {%+ if builder != gateway_host  -%}
+        ProxyPass /nodepool-builder/{{ builder }}/ http://{{ builder }}/nodepool-builder/
+        ProxyPassReverse /nodepool-builder/{{ builder }}/ http://{{ builder }}/nodepool-builder/
+        {% endif -%}
+    {% endfor -%}
 {% endif %}
-{% if 'nodepool-launcher' in roles and gateway_host != nodepool_builder_host %}
-    {% for nl in groups['nodepool-launcher'] %}
-    ProxyPass /nodepool-launcher/{{ nl }} http://{{ hostvars[nl]['ansible_default_ipv4']['address'] }}/nodepool-launcher/logs
-    ProxyPassReverse /nodepool-launcher/{{ nl }} http://{{ hostvars[nl]['ansible_default_ipv4']['address'] }}/nodepool-launcher/logs
-    {% endfor %}
+
+{% if 'nodepool-launcher' in roles %}
+    {%+ for launcher in groups['nodepool-launcher'] -%}
+        {%+ if launcher != gateway_host  -%}
+        ProxyPass /nodepool-launcher/{{ launcher }}/ http://{{ launcher }}/nodepool-launcher/
+        ProxyPassReverse /nodepool-launcher/{{ launcher }}/ http://{{ launcher }}/nodepool-launcher/
+        {% endif -%}
+    {% endfor -%}
 {% endif %}
 
 {% if 'logserver' in roles and gateway_host != logserver_host %}
@@ -259,24 +267,30 @@
 {% endif %}
     </IfModule>
 
-
-{% if 'nodepool-launcher' in roles and gateway_host != nodepool_builder_host %}
-    {# if request goes to /nodepool-launcher/<hostname>/logs show the directory #}
-    <Directory /var/www/nodepool-launcher/logs>
+{% if 'nodepool' in roles %}
+    <Directory /var/www/nodepool>
         IndexOptions FancyIndexing FoldersFirst
         Options MultiViews Indexes
         AllowOverride None
         Order allow,deny
         Allow from all
     </Directory>
+{% endif %}
 
-    {# it should redirect /nodepool-launcher/test1 host to http://<hostip>/nodepool-launcher>/ #}
-    Alias /nodepool-launcher /var/www/html/nodepool-launcher
-    {% for nl in groups['nodepool-launcher'] %}
-      {% if nl == inventory_hostname %}
-    Alias /nodepool-launcher/{{ nl }} /var/www/html/nodepool-launcher/logs
-      {% endif %}
+{% if 'nodepool-builder' in roles %}
+    {% for builder in groups['nodepool-builder'] -%}
+        {% if builder == gateway_host  -%}
+    Alias /nodepool-builder/{{ builder }}/ /var/www/html/nodepool-builder/
+        {% endif %}
     {% endfor %}
+{% endif %}
+
+{% if 'nodepool-launcher' in roles %}
+    {% for launcher in groups['nodepool-launcher'] -%}
+        {% if launcher == gateway_host  -%}
+    Alias /nodepool-launcher/{{ launcher }}/ /var/www/html/nodepool-launcher/
+        {% endif -%}
+    {% endfor -%}
 {% endif %}
 
 
