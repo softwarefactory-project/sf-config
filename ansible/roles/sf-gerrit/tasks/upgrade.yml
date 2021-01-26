@@ -24,17 +24,17 @@
       command: yum reinstall -y gerrit
 
     - name: Upgrade db
-      command: /usr/bin/java -jar /var/lib/gerrit/bin/migration.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins
+      shell: /usr/bin/java -Xmx2g -jar /var/lib/gerrit/bin/migration.war init -d /var/lib/gerrit --batch --no-auto-start --skip-plugins &> /var/log/gerrit/migration-to-reviewdb-2.16.log
       become: true
       become_user: gerrit
 
     - name: Run notedb migration
-      command: /usr/bin/java -jar /var/lib/gerrit/bin/migration.war migrate-to-note-db -d /var/lib/gerrit
+      shell: /usr/bin/java -Xmx2g -jar /var/lib/gerrit/bin/migration.war migrate-to-note-db -d /var/lib/gerrit --verbose &> /var/log/gerrit/migration-to-notedb.log
       become: true
       become_user: gerrit
 
     - name: Run pynotedb migration
-      command: pynotedb migrate --all-users /var/lib/gerrit/git/All-Users.git --all-projects /var/lib/gerrit/git/All-Projects.git
+      command: pynotedb migrate --all-users /var/lib/gerrit/git/All-Users.git --all-projects /var/lib/gerrit/git/All-Projects.git &> /var/log/gerrit/migration-pynotedb.log
       become: true
       become_user: gerrit
 
