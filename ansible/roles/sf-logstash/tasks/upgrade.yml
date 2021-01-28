@@ -3,3 +3,14 @@
   systemd:
     name: logstash
     state: stopped
+
+- name: Remove old node directory on installing new main release
+  file:
+    path: /var/lib/logstash
+    state: absent
+  loop:
+    - /var/lib/logstash
+    - /usr/share/logstash
+    - /etc/logstash
+  when:
+    - sf_previous_version < 3.6
