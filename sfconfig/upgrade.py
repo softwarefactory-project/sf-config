@@ -45,6 +45,7 @@ def update_sfconfig(args):
 
     # 2.6.0: expose logstash config
     # 3.3.0: update logstash config
+    # 3.6.0: update logstash config
     if 'logstash' not in data:
         data['logstash'] = {}
         dirty = True
@@ -52,7 +53,7 @@ def update_sfconfig(args):
         data['logstash']['retention_days'] = 60
         dirty = True
     if 'maximum_heap_size' not in data['logstash']:
-        data['logstash']['maximum_heap_size'] = '128m'
+        data['logstash']['maximum_heap_size'] = '512m'
         dirty = True
     if 'minimum_heap_size' not in data['logstash']:
         data['logstash']['minimum_heap_size'] = '128m'
