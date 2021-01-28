@@ -8,6 +8,7 @@ mydomain = {{ fqdn }}
 mydestination = $myhostname, localhost
 
 alias_maps = hash:/etc/aliases
+transport_maps = hash:/etc/postfix/transport
 
 virtual_alias_maps = hash:/etc/postfix/virtual
 myorigin = {{ fqdn }}
