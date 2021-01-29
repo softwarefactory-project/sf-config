@@ -51,6 +51,30 @@
     - regexp: '-Xmx'
       line: '-Xmx{{ logstash_maximum_heap_size }}'
   register: logstash_jvm_config
+  when: sf_previous_version < 3.6
+
+# NOTE(dpawik) The logstash key exists in sfconfig.yaml and new package
+# is not replacing the file and the configuration on upgrade, so the
+# CI tests are taking previous values, which are not enough for current
+# deployment.
+- name: Get values from new yaml sfconfig
+  block:
+    - set_fact:
+      sfconfig_yaml_new: "{{ lookup('file','/etc/software-factory/sfconfig.yaml.rpmnew') | from_yaml }}"
+
+    - name: Configure jvm
+      lineinfile:
+        dest: /etc/logstash/jvm.options
+        regexp: '^#?{{ item.regexp }}.*'
+        line: '{{ item.line }}'
+      loop:
+        - regexp: '-Xms'
+          line: "-Xms{{ sfconfig_yaml_new['logstash']['minimum_heap_size'] | default(logstash_minimum_heap_size) }}"
+        - regexp: '-Xmx'
+          line: "-Xms{{ sfconfig_yaml_new['logstash']['maximum_heap_size'] | default(logstash_maximum_heap_size) }}"
+      register: logstash_jvm_config
+  when:
+    - sf_previous_version >= 3.6
 
 - name: Restart logstash if needed
   service:
