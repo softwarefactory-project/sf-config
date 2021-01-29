@@ -54,6 +54,21 @@
   notify:
     - restart postfix
 
+- name: Manage transport file
+  template:
+    src: transport.j2
+    dest: /etc/postfix/transport
+    owner: root
+    group: root
+    mode: 0644
+  register: postfix_transport
+
+- name: Generate virtual database
+  shell: /usr/sbin/postmap /etc/postfix/transport
+  when: postfix_transport is changed
+  notify:
+    - restart postfix
+
 - name: Start service
   service:
     name: postfix
