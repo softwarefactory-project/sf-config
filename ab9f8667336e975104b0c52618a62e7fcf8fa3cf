@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "661d75f9_87c328d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2021-01-29T08:46:04Z",
+      "side": 1,
+      "message": "[1] https://softwarefactory-project.io/r/#/c/20778/",
+      "revId": "ab9f8667336e975104b0c52618a62e7fcf8fa3cf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
