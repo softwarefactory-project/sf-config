@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da3335c0_0cfe358e",
+        "filename": "ansible/roles/sf-logstash/tasks/setup.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-01-29T09:02:04Z",
+      "side": 1,
+      "message": "I think the issue with 20793 is that if an operator did a custom setting in sfconfig.yaml or custom-vars.yaml it will be overwritten by sfconfig new package default settings",
+      "revId": "0d61805cb17682d5ded35769ac635737b6056107",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
