@@ -40,8 +40,8 @@ elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
 elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
 
-elasticsearch_maximum_heap_size: 256m
-elasticsearch_minimum_heap_size: 256m
+elasticsearch_maximum_heap_size: 512m
+elasticsearch_minimum_heap_size: 128m
 elasticsearch_replicas: 0
 
 enable_performance_analyzer: false
