@@ -24,23 +24,21 @@ def update_sfconfig(args):
 
     # 2.6.0: expose elasticsearch config
     # 3.3.0: update elasticsearch config
+    # 3.6.0: update elasticsearch config
     if 'elasticsearch' not in data:
         data['elasticsearch'] = {}
         dirty = True
     if 'replicas' not in data['elasticsearch']:
         data['elasticsearch']['replicas'] = 0
         dirty = True
-    # Get heap_size value to apply to new parameters, then delete unused key
-    elastic_heap_size = '512m'
     if 'heap_size' in data['elasticsearch']:
-        elastic_heap_size = data['elasticsearch']['heap_size']
         del data['elasticsearch']['heap_size']
         dirty = True
     if 'maximum_heap_size' not in data['elasticsearch']:
-        data['elasticsearch']['maximum_heap_size'] = elastic_heap_size
+        data['elasticsearch']['maximum_heap_size'] = '512m'
         dirty = True
     if 'minimum_heap_size' not in data['elasticsearch']:
-        data['elasticsearch']['minimum_heap_size'] = elastic_heap_size
+        data['elasticsearch']['minimum_heap_size'] = '128m'
         dirty = True
 
     # 2.6.0: expose logstash config
