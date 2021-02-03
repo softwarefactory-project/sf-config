@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "032545c8_4f8a427d",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.common.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-02-03T14:10:54Z",
+      "side": 1,
+      "message": "I can access w/o this patch already http://sftests.com/manage/v2/configurations/zuul",
+      "revId": "0ef236b578c716ebbf3ffa7417bbabf261d46c12",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
