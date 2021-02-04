@@ -58,6 +58,11 @@ DocumentRoot /var/www/
     ForceType text/css
 </FilesMatch>
 
+<FilesMatch \.gz$>
+    ForceType text/plain
+    AddEncoding x-gzip gz
+</FilesMatch>
+
 <LocationMatch "/{{ logs_directory_prefix }}.*/{{ logs_wsgi_ara_directory }}(?!/ansible.sqlite)/>
     # This ARA sqlite middleware automatically loads the ARA web application
     # with the database located inside the {{ logs_wsgi_ara_directory }}
