@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47c8a001_69834a66",
+        "filename": "ansible/tasks/origin-311.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 385
+      },
+      "writtenOn": "2021-02-12T12:40:45Z",
+      "side": 1,
+      "message": "file missing.\nMaybe we can take it from https://www.centos.org/keys/#paas-sig :\nhttps://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-PaaS",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 64
+      },
+      "revId": "aebb1852661ff8993ca160a0c86749c95f79b81d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
