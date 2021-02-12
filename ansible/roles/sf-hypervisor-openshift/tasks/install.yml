@@ -1,8 +1,5 @@
 ---
-- name: Install repository
-  yum:
-    name: "{{ openshift_repo }}"
-    state: present
+- include_tasks: "{{ sf_tasks_dir }}/origin-311.yml"
   when: ansible_distribution == 'CentOS'
 
 - name: Install packages
