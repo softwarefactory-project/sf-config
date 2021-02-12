@@ -68,4 +68,5 @@
     state: absent
   loop:
     - python-nose
+    - centos-release-openshift-origin311
   when: ansible_distribution == "CentOS"
