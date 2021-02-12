@@ -153,7 +153,6 @@ def fix_rhel_centos_name(glue):
         glue["openshift_server"] = "atomic-openshift"
 
     else:
-        glue["openshift_repo"] = "centos-release-openshift-origin311"
         glue["openshift_client"] = "origin-clients"
         glue["openshift_server"] = "origin"
 
