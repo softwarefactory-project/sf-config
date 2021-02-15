@@ -17,12 +17,11 @@
   changed_when: False
   register: upstreamconfig
 
-- name: Check for dhall configuration
-  command: ls nodepool/{{ ansible_hostname }}.dhall {% if ansible_hostname == first_launcher or "nodepool-builder" in nodepool_services %}nodepool/nodepool.dhall{% endif %}
-  args:
-    chdir: /root/config
-  register: _dhall_conf
-  failed_when: false
+- name: Check if static config exists
+  stat:
+    path: "/root/config/nodepool/static_config/{{ ansible_hostname }}.yaml"
+  register: _static_config
+  changed_when: false
 
 - name: Generate nodepool configuration
   command: "{{ item }}"
@@ -31,22 +30,12 @@
   loop:
     - cp /var/lib/software-factory/conf/nodepool.yaml nodepool/_nodepool.yaml
     - |
-      {% if _dhall_conf.stdout_lines %}
-        dhall-to-yaml --file {{ _dhall_conf.stdout_lines[0] }} --output {{ nodepool_conf_dir }}/nodepool.yaml
-      {% else %}
-        env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml"
-          {% if ansible_hostname != first_launcher %}--extra-launcher{% endif %}
-          --hostname {{ ansible_hostname }}
-          {% if "nodepool-builder" in nodepool_services %}--builder{% endif %}
-      {% endif %}
-    - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
-    - rsync -avi --delete nodepool/virt_images/ "{{ nodepool_conf_dir }}/virt_images/"
-
-- name: Check if static config exists
-  stat:
-    path: "/root/config/nodepool/static_config/{{ ansible_hostname }}.yaml"
-  register: _static_config
-  changed_when: false
+      env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml"
+        {% if ansible_hostname != first_launcher %}--extra-launcher{% endif %}
+        --hostname {{ ansible_hostname }}
+        {% if "nodepool-builder" in nodepool_services %}--builder{% endif %}
+  when:
+    - not _static_config.stat.exists
 
 - name: Install static config
   copy:
@@ -55,7 +44,14 @@
     remote_src: yes
   when:
     - _static_config.stat.exists
-    - _static_config.stat.isreg
+
+- name: Install nodepool elements and virt_images
+  command: "{{ item }}"
+  args:
+    chdir: /root/config
+  loop:
+    - rsync -avi --delete nodepool/elements/ "{{ nodepool_conf_dir }}/elements/"
+    - rsync -avi --delete nodepool/virt_images/ "{{ nodepool_conf_dir }}/virt_images/"
 
 - name: Check if providers are enabled
   command: python3 -c "import yaml; print(len(yaml.load(open('/etc/nodepool/nodepool.yaml')).get('providers', [])))"
