@@ -84,3 +84,7 @@ class Gateway(Component):
         if "koji_host" in args.sfconfig["network"] and \
            args.sfconfig["network"]["koji_host"]:
             args.glue["koji_host"] = args.sfconfig["network"]["koji_host"]
+        if "tls_challenge_alias" in args.sfconfig["network"] and \
+           args.sfconfig["network"]["tls_challenge_alias"]:
+            args.glue["tls_challenge_alias"] = args.sfconfig["network"][
+                "tls_challenge_alias"]
