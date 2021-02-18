@@ -7,6 +7,12 @@ ServerTokens Prod
     RewriteEngine On
 
 {% if gateway_force_ssl_redirection %}
+{% if tls_challenge_alias %}
+    Alias {{ tls_challenge_alias }}
+{% endif %}
+    SSLCertificateFile /etc/letsencrypt/pem/{{ fqdn }}.pem
+    SSLCertificateChainFile /etc/letsencrypt/pem/lets-encrypt-x3-cross-signed.pem
+    SSLCertificateKeyFile /etc/letsencrypt/private/{{ fqdn }}.key
     # Enforce HTTPS for non-internal requests. HostnameLookups is required,
     # otherwise REMOTE_HOST contains only the IP address
     RewriteCond %{HTTPS} off
