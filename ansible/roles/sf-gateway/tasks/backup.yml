@@ -7,7 +7,6 @@
     delete: "yes"
     rsync_opts: --relative
   loop:
-    - /etc/letsencrypt/
     - /etc/httpd/pages.d/
     - /var/www/pages/
     - /var/www/.config
