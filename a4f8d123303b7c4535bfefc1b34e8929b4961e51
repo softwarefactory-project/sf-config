@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2656114f_1c9b805c",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.conf.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-03-01T10:10:16Z",
+      "side": 1,
+      "message": "Should it be instead:\nAlias .well-known/acme-challenge {{ tls_challenge_alias }} ?\n\nLine 17 we have the path hardcoded but looking at the doc it seems the op can override the path.",
+      "range": {
+        "startLine": 11,
+        "startChar": 4,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "a4f8d123303b7c4535bfefc1b34e8929b4961e51",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
