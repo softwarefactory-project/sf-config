@@ -22,6 +22,30 @@
       "revId": "a4f8d123303b7c4535bfefc1b34e8929b4961e51",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3e893305_86e0f525",
+        "filename": "ansible/roles/sf-gateway/templates/gateway.conf.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 22
+      },
+      "writtenOn": "2021-03-01T13:36:11Z",
+      "side": 1,
+      "message": "Yes, you right, I will propose a new patchset, thanks for the review",
+      "parentUuid": "2656114f_1c9b805c",
+      "range": {
+        "startLine": 11,
+        "startChar": 4,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "a4f8d123303b7c4535bfefc1b34e8929b4961e51",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
