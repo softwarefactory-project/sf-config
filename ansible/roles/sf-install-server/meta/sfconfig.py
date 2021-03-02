@@ -82,6 +82,7 @@ def create_context_info(fqdn, roles, auth, sf_version, custom_links):
             []
             + service("gerrit", "/r/")
             + service("zuul", "/zuul")
+            + service("nodepool", "/nodepool")
             + service("kibana", "/analytics")
             + service("etherpad", "/etherpad")
             + service("lodgeit", "/paste")
