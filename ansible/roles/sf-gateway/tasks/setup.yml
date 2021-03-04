@@ -84,6 +84,7 @@
     - {content: "{{gateway_chain}}", path: "certs/{{ fqdn }}-chain.crt"}
     - {content: "{{gateway_key}}", path: "private/{{ fqdn }}.key", mode: '0400'}
   no_log: show_hidden_logs == False
+  when: tls_unmanaged != True
 
 - name: Install config files
   copy:
