@@ -174,9 +174,20 @@
         RewriteCond /usr/share/%{REQUEST_FILENAME} !-d
         RewriteRule ^/zuul/.*$ /usr/share/zuul/index.html [L]
 
-        # Rewrite HTML5 url to the index.html
-        RewriteRule ^/(project|login|logout).*$ /var/www/index.html [L]
-        RewriteRule ^/auth/settings$ /var/www/index.html [L]
+        # SF-UI: Rewrite HTML5 url to the index.html
+        <Directory /usr/share/sf-ui>
+            DirectoryIndex index.html
+            Require all granted
+            Order allow,deny
+            Allow from all
+        </Directory>
+        # If the request match an sf-ui SPA route
+        RewriteRule ^/(project|login|logout).*$ /usr/share/sf-ui/index.html [L]
+        RewriteRule ^/auth/settings$ /usr/share/sf-ui/index.html [L]
+        RewriteRule ^/$ /usr/share/sf-ui/index.html [L]
+        # If the request match an sf-ui filename, then redirect to it
+        RewriteCond /usr/share/sf-ui/%{REQUEST_FILENAME} -f
+        RewriteRule .* /usr/share/sf-ui/%{REQUEST_FILENAME} [L]
 
 {% if 'managesf' in roles %}
         ProxyPass /manage/ http://managesf:20001/ retry=0 timeout=2400
