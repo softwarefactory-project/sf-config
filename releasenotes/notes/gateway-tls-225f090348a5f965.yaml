@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The network tls file paths configuration in the sfconfig.yaml needs to
+    be present on the gateway host, they are no longer copied from the
+    install-server. This enables a better integration with a letsencrypt bot.
