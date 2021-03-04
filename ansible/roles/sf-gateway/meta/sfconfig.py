@@ -57,13 +57,9 @@ class Gateway(Component):
                     "network"]["tls_key_file"])).st_mode & 0o7077:
                 fail("%s: insecure dir mode, set to 0700" %
                      os.path.dirname(args.sfconfig["network"]["tls_key_file"]))
-            # Use user-provided certificate for the gateway
-            args.glue["gateway_crt"] = open(
-                args.sfconfig["network"]["tls_cert_file"]).read()
-            args.glue["gateway_chain"] = open(
-                args.sfconfig["network"]["tls_chain_file"]).read()
-            args.glue["gateway_key"] = open(
-                args.sfconfig["network"]["tls_key_file"]).read()
+            # Use user-provided certificate file path for the gateway
+            for k in ("tls_cert_file", "tls_chain_file", "tls_key_file"):
+                args.glue["gateway_" + k] = args.sfconfig["network"][k]
         else:
             self.get_or_generate_cert(args, "gateway", args.sfconfig["fqdn"])
         # TODO: add new welcome page support for that

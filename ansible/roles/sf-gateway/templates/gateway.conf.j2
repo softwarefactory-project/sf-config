@@ -29,9 +29,9 @@ ServerTokens Prod
     RewriteEngine On
 
     SSLEngine on
-    SSLCertificateFile /etc/pki/tls/certs/{{ fqdn }}.crt
-    SSLCertificateChainFile /etc/pki/tls/certs/{{ fqdn }}-chain.crt
-    SSLCertificateKeyFile  /etc/pki/tls/private/{{ fqdn }}.key
+    SSLCertificateFile {{ gateway_tls_cert_file | default("/etc/pki/tls/certs/" + fqdn + ".crt") }}
+    SSLCertificateChainFile {{ gateway_tls_chain_file | default ("/etc/pki/tls/certs/" + fqdn + "-chain.crt") }}
+    SSLCertificateKeyFile {{ gateway_tls_key_file | default("/etc/pki/tls/private/" + fqdn + ".key") }}
     Include conf.d/headers.conf
     Include conf.d/gateway.common
 
