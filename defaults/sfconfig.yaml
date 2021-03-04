@@ -28,9 +28,11 @@ network:
   disable_external_resources: false
 
   # Path of user provided certicate files, e.g. in /etc/software-factory/ssl
+  # tls_challenge_alias is needed for tls renew challenges
   tls_cert_file: ""
   tls_chain_file: ""
   tls_key_file: ""
+  tls_challenge_alias_path: ""
 
 # Special deployment mode where zuul and nodepool is not running locally
 tenant-deployment:
