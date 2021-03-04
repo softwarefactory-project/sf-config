@@ -29,9 +29,21 @@ network:
 
   # Path of user provided certicate files, e.g. in /etc/software-factory/ssl
   # tls_challenge_alias is needed for tls renew challenges
+
+  # Set "tls_unmanaged" to true to ensure sf-config won't override:
+  # /etc/pki/tls/certs/{fqdn}.crt
+  # /etc/pki/tls/certs/{fqdn}-chain.crt
+  # /etc/pki/tls/private/{fqdn}.key
+  tls_unmanaged: false
+
+  # Path to the file to be copied into /etc/pki/tls/certs/{fqdn}.crt
   tls_cert_file: ""
+  # Path to the file to be copied into /etc/pki/tls/certs/{fqdn}-chain.crt
   tls_chain_file: ""
+  # Path to the file to be copied into /etc/pki/tls/private/{fqdn}.key
   tls_key_file: ""
+
+  # ACME Protocol challenge path ".well-known/acme-challenge"
   tls_challenge_alias_path: ""
 
 # Special deployment mode where zuul and nodepool is not running locally
