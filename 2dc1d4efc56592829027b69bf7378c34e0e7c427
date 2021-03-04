@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2cdfb5f_d0a0d53d",
+        "filename": "ansible/roles/sf-gateway/meta/sfconfig.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-03-04T17:34:52Z",
+      "side": 1,
+      "message": "You should remove \"Add embedded TLS certificate for apache\" task sf-gateway/tasks/setup.yml",
+      "revId": "2dc1d4efc56592829027b69bf7378c34e0e7c427",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
