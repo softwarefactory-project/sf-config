@@ -12,8 +12,6 @@
         state: absent
       loop:
         - /var/www/sf
-        - /var/www/dashboard
-        - /var/www/dashboards_data
         - /var/www/localCA.pem
         - /var/www/keys
         - /etc/pki/tls/certs/{{ fqdn }}.crt

@@ -27,7 +27,6 @@ inventory:
       - job-logs-gearman-worker
       - logstash
       - kibana
-      - mirror
       - repoxplorer
       - firehose
       - influxdb
