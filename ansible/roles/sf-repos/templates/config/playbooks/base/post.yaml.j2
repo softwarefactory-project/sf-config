@@ -24,7 +24,7 @@
       # This depends-on https://review.openstack.org/577675
       ara_report_run: {{ zuul.ara_report }}
       ara_report_type: database
-      ara_report_path: ara-report
+      ara_report_path: {{'{{'}} zuul.executor.log_root {{'}}'}}/ara-report
 {% if 'log-classify' in roles %}
     - role: log-classify
       logclassify_model_store_url: https://{{ fqdn }}/logs/classifiers
