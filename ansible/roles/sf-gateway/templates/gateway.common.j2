@@ -303,17 +303,6 @@
     {% endfor -%}
 {% endif %}
 
-
-    <Location "/dashboard">
-        RewriteEngine on
-        RewriteCond %{REQUEST_FILENAME} -s [OR]
-        RewriteCond %{REQUEST_FILENAME} -l [OR]
-        RewriteCond %{REQUEST_FILENAME} -d
-        RewriteRule ^.*$ - [NC,L]
-
-        RewriteRule ^(.*) /dashboard/index.html [NC,L]
-    </location>
-
 {% if 'keycloak' in roles %}
     <Location "/auth">
         RequestHeader add "X-forwarded-proto" "https"

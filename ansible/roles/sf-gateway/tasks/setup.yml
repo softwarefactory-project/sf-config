@@ -30,8 +30,6 @@
     - /var/www/jobs
     - /var/www/sf
     - /var/www/api
-    - /var/www/dashboard
-    - /var/www/dashboards_data
     - /var/www/keys
     - /var/www/.config
     - /etc/httpd/saml2
@@ -50,14 +48,6 @@
     recurse: "yes"
   loop: "{{ gateway_directories }}"
   when: gateway_directories
-
-- name: Install sf-update-dashboard command
-  copy:
-    src: sf-update-dashboard.py
-    dest: /usr/libexec/software-factory/sf-update-dashboard
-    mode: 0555
-  delegate_to: "{{ item }}"
-  loop: "{{ executor_hosts | union( groups['gateway'] ) }}"
 
 - name: Set robots.txt
   copy:
@@ -94,15 +84,6 @@
   loop:
     - {name: base64helper, path: /usr/local/sbin, mode: '0755'}
     - {name: ssl.conf, path: /etc/httpd/conf.d}
-    - {name: gerrit_dashboard.js, path: /var/www/static/js}
-    - {name: jobs.js, path: /var/www/jobs}
-    - {name: jobs.html, path: /var/www/jobs, real_name: index.html}
-
-- name: Install gerrit dashboard
-  copy:
-    src: dashboard.index.html
-    dest: /var/www/dashboard/index.html
-    mode: 0444
 
 - name: Read zuul-job version
   command: rpm -q zuul-jobs-doc
