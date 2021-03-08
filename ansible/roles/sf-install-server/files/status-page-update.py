@@ -21,6 +21,7 @@
 
 import argparse
 import datetime
+import json
 import yaml
 
 import pymysql
@@ -40,13 +41,6 @@ HTML_DOM = """<!DOCTYPE html>
     </style>
   </head>
   <body>
-    <nav class="navbar navbar-default navbar-pf" role="navigation">
-      <ul class="nav navbar-nav navbar-primary">
-        <li class="active"><a href="./">Status</a></li>
-        <li><a href="/grafana">Grafana</a></li>
-        <li><a href="/prometheus">Prometheus</a></li>
-      </ul>
-    </nav>
     <div class="container" style='width: 100%'>
       <div class="list-group list-view-pf list-view-pf-view">
         BODY
@@ -272,6 +266,7 @@ def main():
     parser.add_argument("--dry", action="store_true",
                         help="Do not update history")
     parser.add_argument("--lib", help="a yaml file to store history")
+    parser.add_argument("--json", help="a json file to write status content")
     parser.add_argument("--output", help="a html file to write status page")
     args = parser.parse_args()
     history = []
@@ -296,6 +291,9 @@ def main():
         with open(args.lib, "w") as fileobj:
             yaml.safe_dump(
                 history[:60], fileobj, default_flow_style=False)
+    if args.json:
+        with open(args.json, "w") as fileobj:
+            json.dump(history[:60], fileobj)
 
 
 if __name__ == "__main__":
