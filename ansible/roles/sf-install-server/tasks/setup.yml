@@ -115,6 +115,6 @@
         minute: '0'
         hour: '0'
         day: '*'
-        job: "/usr/libexec/software-factory/status-page-update.py --lib /var/lib/software-factory/backup/status_history.yaml --output /var/www/status/index.html"
+        job: "/usr/libexec/software-factory/status-page-update.py --lib /var/lib/software-factory/backup/status_history.yaml --json /var/www/api/status.json --output /var/www/status/index.html"
       delegate_to: "{{ gateway_host }}"
   when: "'zuul' in roles"
