@@ -24,5 +24,7 @@ filter {
 output {
   elasticsearch {
     hosts => ['{{ elasticsearch_host }}']
+    index => "logstash-%{+YYYY.MM.dd}"
+    ilm_enabled => false
   }
 }
