@@ -85,12 +85,6 @@
         chdir: "{{ config_root }}"
       when: '"gerrit" in arch.roles'
 
-    - name: Check dashboards
-      command: python3 /usr/libexec/software-factory/sf-update-dashboard --check --input dashboards/
-      args:
-        chdir: "{{ config_root }}"
-      when: '"gerrit" in arch.roles'
-
     - name: Check policy file
       command: python3 -c "import yaml; yaml.safe_load(open('policies/policy.yaml'))"
       args:

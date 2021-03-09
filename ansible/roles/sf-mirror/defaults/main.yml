@@ -1,9 +1,0 @@
----
-role_actions:
-  - fullupdate
-  - install
-  - postconf
-  - setup
-  - update
-
-role_package: any

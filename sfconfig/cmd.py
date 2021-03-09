@@ -157,6 +157,21 @@ def fix_rhel_centos_name(glue):
         glue["openshift_server"] = "origin"
 
 
+def remove_unused_role(arch):
+    """Remove unsupported roles"""
+    def remove_unused(role):
+        if role not in ["mirror"]:
+            return True
+        print("The role '" + role +
+              "' is no longer supported, please remove from arch")
+
+    def fix_host(host):
+        host["roles"] = list(filter(remove_unused, host["roles"]))
+        return host
+    arch["inventory"] = list(map(fix_host, arch["inventory"]))
+    return arch
+
+
 def main():
     components = sfconfig.utils.load_components()
     args = usage(components)
@@ -192,7 +207,7 @@ def main():
         bootstrap_backup()
 
     args.sfconfig = yaml_load(args.config)
-    args.sfarch = yaml_load(args.arch)
+    args.sfarch = remove_unused_role(yaml_load(args.arch))
     args.secrets = yaml_load("%s/secrets.yaml" % args.lib)
     args.glue = {'sf_tasks_dir': "%s/ansible/tasks" % args.share,
                  'sf_templates_dir': "%s/templates" % args.share,

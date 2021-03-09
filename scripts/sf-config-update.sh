@@ -35,9 +35,6 @@ case $ACTION in
         set -o pipefail
         exec flock $LOCK_PATH ansible-playbook -v /var/lib/software-factory/ansible/sf_tenant_update.yml 2>&1 | tee /var/log/software-factory/tenant_update.log
         ;;
-    sf_mirror_update)
-        exec ansible-playbook -v /usr/share/sf-config/ansible/roles/sf-mirror/files/update_playbook.yml &> /var/log/software-factory/mirror_update.log
-        ;;
     *)
         echo "NotImplemented"
         exit -1

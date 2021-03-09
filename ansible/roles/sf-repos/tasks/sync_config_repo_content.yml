@@ -9,7 +9,7 @@
 
 - include_tasks: config_create_dir.yml
   vars:
-    repo_dir_names: [dashboards, gerrit]
+    repo_dir_names: [gerrit]
   when: "'gerrit' in roles"
 
 - include_tasks: config_create_dir.yml
@@ -21,11 +21,6 @@
   vars:
     repo_dir_names: [nodepool]
   when: "'nodepool' in roles"
-
-- include_tasks: config_create_dir.yml
-  vars:
-    repo_dir_names: [mirrors]
-  when: "'mirror' in roles"
 
 - include_tasks: config_create_dir.yml
   vars:

@@ -234,7 +234,7 @@ def sync_config(args, pb):
 def config_update(args, pb, skip_sync=False):
     # The list of role to run update task
     roles_order = ["managesf", "gerrit", "pages", "gerritbot",
-                   "gateway", "managesf", "mirror", "repoxplorer",
+                   "repoxplorer",
                    "zuul", "nodepool", "grafana", "hound", "dlrn",
                    "cgit", "cauth", "hypervisor-k1s"]
     # The extra list of host group to run fetch-config-repo
