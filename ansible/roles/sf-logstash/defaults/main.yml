@@ -9,7 +9,7 @@ role_actions:
 role_package: logstash
 
 elk_stack_version: 7
-elk_sub_version: 10.0
+elk_sub_version: 13.1
 
 elasticsearch_oss_repos_name: elasticsearch-7.x
 elasticsearch_oss_repos:
