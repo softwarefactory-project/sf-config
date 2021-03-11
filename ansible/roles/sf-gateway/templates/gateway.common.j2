@@ -222,21 +222,21 @@
 {% endif %}
 
 {% if 'nodepool-builder' in roles %}
-    {%+ for builder in groups['nodepool-builder'] -%}
-        {%+ if builder != gateway_host  -%}
+{% for builder in groups['nodepool-builder'] %}
+{% if builder != gateway_host %}
         ProxyPass /nodepool-builder/{{ builder }}/ http://{{ builder }}/nodepool-builder/
         ProxyPassReverse /nodepool-builder/{{ builder }}/ http://{{ builder }}/nodepool-builder/
-        {% endif -%}
-    {% endfor -%}
+{% endif %}
+{% endfor %}
 {% endif %}
 
 {% if 'nodepool-launcher' in roles %}
-    {%+ for launcher in groups['nodepool-launcher'] -%}
-        {%+ if launcher != gateway_host  -%}
+{% for launcher in groups['nodepool-launcher'] %}
+{% if launcher != gateway_host %}
         ProxyPass /nodepool-launcher/{{ launcher }}/ http://{{ launcher }}/nodepool-launcher/
         ProxyPassReverse /nodepool-launcher/{{ launcher }}/ http://{{ launcher }}/nodepool-launcher/
-        {% endif -%}
-    {% endfor -%}
+{% endif %}
+{% endfor %}
 {% endif %}
 
 {% if 'logserver' in roles and gateway_host != logserver_host %}
