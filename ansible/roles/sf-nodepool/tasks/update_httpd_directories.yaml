@@ -25,7 +25,7 @@
             path: "/var/www/nodepool-log"
             state: absent
       when:
-        - "'nodepool-builder' in roles"
+        - "'nodepool-builder' in nodepool_services"
         - _builder_legacy_directory.stat.exists
 
 - name: Update httpd logs directories for launcher
@@ -55,7 +55,7 @@
             path: "/var/www/nodepool-launcher"
             state: absent
       when:
-        - "'nodepool-launcher' in roles"
+        - "'nodepool-launcher' in nodepool_services"
         - _launcher_legacy_directory.stat.exists
 
 - name: Remove httpd legacy config file
@@ -77,5 +77,5 @@
             name: httpd
             state: stopped
       when:
-        - "'nodepool-builder' in roles"
+        - "'nodepool-builder' in nodepool_services"
         - _nodepool_httpd_legacy_config_file.stat.exists
