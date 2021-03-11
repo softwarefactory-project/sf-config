@@ -195,11 +195,13 @@
 
 {% endif %}
 {% if 'etherpad' in roles %}
+        RewriteRule ^/etherpad$ etherpad/ [R]
         ProxyPass /etherpad/ http://127.0.0.1:9001/ retry=0
         ProxyPassReverse /etherpad/ http://127.0.0.1:9001/
 
 {% endif %}
 {% if 'lodgeit' in roles %}
+        RewriteRule ^/paste$ paste/ [R]
         ProxyPass /paste/ http://127.0.0.1:5000/paste/ retry=0
         ProxyPassReverse /paste/ http://127.0.0.1:5000/paste/
 {% endif %}
@@ -248,6 +250,7 @@
 
 {% endif %}
 {% if 'hound' in roles %}
+        RewriteRule ^/codesearch$ codesearch/ [R]
         ProxyPass /codesearch/ {{ hound_internal_url }}/
         ProxyPassReverse /codesearch/ {{ hound_internal_url }}/
 
@@ -267,6 +270,7 @@
         </Proxy>
 
 {% if 'repoxplorer' in roles %}
+        RewriteRule ^/repoxplorer$ repoxplorer/ [R]
         RewriteRule ^/repoxplorer/$ /repoxplorer/index.html [R]
 {% endif %}
 
