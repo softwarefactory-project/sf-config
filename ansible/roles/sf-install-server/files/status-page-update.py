@@ -181,7 +181,7 @@ class StatusPage:
             for failure in failures:
                 row = []
                 for column in columns:
-                    value = failure[column]
+                    value = failure.get(column, "")
                     if column == "log_url" and value is not None:
                         value = "<a href='%s'>logs</a>" % (value)
                     elif column == "uuid":
@@ -293,7 +293,7 @@ def main():
                 history[:60], fileobj, default_flow_style=False)
     if args.json:
         with open(args.json, "w") as fileobj:
-            json.dump(history[:60], fileobj)
+            json.dump(history[:60], fileobj, default=str)
 
 
 if __name__ == "__main__":
