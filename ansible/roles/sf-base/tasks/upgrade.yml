@@ -59,6 +59,7 @@
         - grafana
         - kibana
         - repoxplorer-webui
+        - hound
 
   when: sf_previous_version < 3.6
 
