@@ -25,11 +25,15 @@
     dest: /etc/kibana/kibana.yml
     regexp: '^#?{{ item.regexp }}.*'
     line: '{{ item.line }}'
+    create: '{{ item.create | default(no) }}'
   loop:
     - regexp: 'server.host'
       line: 'server.host: {{ kibana_host }}'
     - regexp: 'server.basePath'
       line: 'server.basePath: "/analytics"'
+    - regexp: 'server.defaultRoute'
+      line: 'server.defaultRoute: "/app/discover/?security_tenant=global"'
+      create: yes
     - regexp: 'elasticsearch.hosts'
       line: 'elasticsearch.hosts: ["{{ elasticsearch_internal_url }}"]'
     - regexp: 'elasticsearch.ssl.verificationMode'
@@ -45,7 +49,7 @@
     - regexp: 'elasticsearch.requestHeadersWhitelist'
       line: 'elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]'
     - regexp: 'opendistro_security.multitenancy.enabled'
-      line: 'opendistro_security.multitenancy.enabled: false'
+      line: 'opendistro_security.multitenancy.enabled: true'
     - regexp: 'opendistro_security.multitenancy.tenants.preferred'
       line: 'opendistro_security.multitenancy.tenants.preferred: ["Global"]'
   register: kibanaconf
