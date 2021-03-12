@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c5902813_13afd2d5",
+        "filename": "ansible/roles/sf-kibana/tasks/setup.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7
+      },
+      "writtenOn": "2021-03-12T12:22:13Z",
+      "side": 1,
+      "message": "ha, in jinja, only `false` seems to work.",
+      "range": {
+        "startLine": 28,
+        "startChar": 38,
+        "endLine": 28,
+        "endChar": 40
+      },
+      "revId": "44f8153d205772ad0b221ed851a1ab982e70d533",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
