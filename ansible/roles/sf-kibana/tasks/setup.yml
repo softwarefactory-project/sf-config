@@ -45,7 +45,7 @@
     - regexp: 'elasticsearch.requestHeadersWhitelist'
       line: 'elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]'
     - regexp: 'opendistro_security.multitenancy.enabled'
-      line: 'opendistro_security.multitenancy.enabled: false'
+      line: 'opendistro_security.multitenancy.enabled: true'
     - regexp: 'opendistro_security.multitenancy.tenants.preferred'
       line: 'opendistro_security.multitenancy.tenants.preferred: ["Global"]'
   register: kibanaconf
