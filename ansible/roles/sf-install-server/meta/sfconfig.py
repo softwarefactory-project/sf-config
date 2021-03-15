@@ -40,7 +40,7 @@ def get_previous_version():
     return ver
 
 
-def create_context_info(fqdn, roles, auth, sf_version, custom_links):
+def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links):
     def service(name, path):
         return [dict(name=name, path=path)] if name in roles else []
 
@@ -71,6 +71,8 @@ def create_context_info(fqdn, roles, auth, sf_version, custom_links):
         else:
             raise
 
+    status_link = [] if tenant else [dict(name="status", path="/status")]
+
     return dict(
         version=sf_version,
         links={
@@ -81,8 +83,8 @@ def create_context_info(fqdn, roles, auth, sf_version, custom_links):
         services=(
             []
             + service("gerrit", "/r/")
-            + service("zuul", "/zuul")
-            + [dict(name="status", path="/status")]
+            + [dict(name="zuul", path="/zuul")]
+            + status_link
             + service("nodepool", "/nodepool")
             + service("kibana", "/analytics")
             + service("grafana", "/grafana")
@@ -135,6 +137,7 @@ class InstallServer(Component):
         args.glue["sf_previous_version"] = get_previous_version()
         args.glue["sf_context_info"] = create_context_info(
             args.sfconfig["fqdn"],
+            args.glue["tenant_deployment"],
             args.glue["roles"],
             args.sfconfig["authentication"],
             args.glue["sf_version"],
