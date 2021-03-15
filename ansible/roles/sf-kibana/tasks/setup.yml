@@ -25,11 +25,15 @@
     dest: /etc/kibana/kibana.yml
     regexp: '^#?{{ item.regexp }}.*'
     line: '{{ item.line }}'
+    create: '{{ item.create | default(false) }}'
   loop:
     - regexp: 'server.host'
       line: 'server.host: {{ kibana_host }}'
     - regexp: 'server.basePath'
       line: 'server.basePath: "/analytics"'
+    - regexp: 'server.defaultRoute'
+      line: 'server.defaultRoute: "/app/discover/?security_tenant=global"'
+      create: yes
     - regexp: 'elasticsearch.hosts'
       line: 'elasticsearch.hosts: ["{{ elasticsearch_internal_url }}"]'
     - regexp: 'elasticsearch.ssl.verificationMode'
