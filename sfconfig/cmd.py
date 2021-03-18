@@ -160,7 +160,7 @@ def fix_rhel_centos_name(glue):
 def remove_unused_role(arch):
     """Remove unsupported roles"""
     def remove_unused(role):
-        if role not in ["mirror"]:
+        if role not in ["mirror", "germqtt"]:
             return True
         print("The role '" + role +
               "' is no longer supported, please remove from arch")
