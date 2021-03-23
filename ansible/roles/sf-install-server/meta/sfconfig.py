@@ -285,16 +285,16 @@ class InstallServer(Component):
                             'hostname', 'pagure.io'))
                 args.glue["zuul_pagure_connections"].append(pagure_connection)
             for gitlab_connection in zuul_config.get("gitlab_connections", []):
-                host_packed = gitlab_connection.get("server", "gitlab.com")
+                host_packed = gitlab_connection.get("hostname", "gitlab.com")
                 args.glue["zuul_ssh_known_hosts"].append({
                     "host_packed": host_packed,
-                    "host": gitlab_connection.get("server", "gitlab.com"),
+                    "host": gitlab_connection.get("hostname", "gitlab.com"),
                     "port": 22
                 })
                 if not gitlab_connection.get("baseurl"):
                     gitlab_connection["baseurl"] = (
                         'https://%s' % gitlab_connection.get(
-                            'server', 'gitlab.com'))
+                            'hostname', 'gitlab.com'))
                 args.glue["zuul_gitlab_connections"].append(gitlab_connection)
             for git_connection in zuul_config.get("git_connections", []):
                 args.glue["zuul_git_connections"].append(git_connection)
@@ -435,7 +435,7 @@ class InstallServer(Component):
                     url = location
                 found = False
                 # First we look for a matching github connections
-                for conn in zuul_config['github_connections']:
+                for conn in zuul_config.get('github_connections', []):
                     host = conn.get('hostname', 'github.com')
                     if host not in location:
                         continue
@@ -462,7 +462,7 @@ class InstallServer(Component):
                 if not found:
                     # If location is not matching github connections, look for
                     # available gerrit connections.
-                    for conn in zuul_config['gerrit_connections']:
+                    for conn in zuul_config.get('gerrit_connections', []):
                         puburl = conn.get('puburl')
                         if puburl not in location:
                             continue
@@ -489,11 +489,41 @@ class InstallServer(Component):
                 if not found:
                     # If location is not matching gerrit connections, look for
                     # available pagure connections.
-                    for conn in zuul_config['pagure_connections']:
+                    for conn in zuul_config.get('pagure_connections', []):
                         baseurl = conn.get('baseurl')
                         if not baseurl:
                             baseurl = 'https://%s' % conn.get(
                                 'hostname', 'pagure.io')
+                        if baseurl not in location:
+                            continue
+                        # Project name is the remaining part after the puburl
+                        project_name = location[len(baseurl):].lstrip('/')
+                        if args.glue["sync_strategy"] != 'push':
+                            _loc = location
+                        else:
+                            _loc = "ssh://%s@%s/%s" % (
+                                sync_user, conn["hostname"], project_name)
+                        if repo == "config-repo":
+                            conn_name = conn["name"]
+                            conf_name = project_name
+                            conf_loc = _loc
+                        elif conn_name != conn["name"]:
+                            fail("Config and jobs needs to share "
+                                 "the same connection")
+                        else:
+                            jobs_name = project_name
+                            jobs_loc = _loc
+                        found = True
+                        break
+
+                if not found:
+                    # If location is not matching github connections, look for
+                    # available gitlab connections.
+                    for conn in zuul_config.get('gitlab_connections', []):
+                        baseurl = conn.get('baseurl')
+                        if not baseurl:
+                            baseurl = 'https://%s' % conn.get(
+                                'hostname', 'gitlab.com')
                         if baseurl not in location:
                             continue
                         # Project name is the remaining part after the puburl

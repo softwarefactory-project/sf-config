@@ -165,7 +165,7 @@ source_whitelist={{ conn['source_whitelist'] }}
 {% for conn in zuul_gitlab_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=gitlab
-server={{ conn['server']|default('gitlab.com') }}
+server={{ conn['hostname']|default('gitlab.com') }}
 api_token={{ conn.get('api_token') }}
 webhook_token={{ conn.get('webhook_token') }}
 {% if conn['baseurl']|default(false) %}
