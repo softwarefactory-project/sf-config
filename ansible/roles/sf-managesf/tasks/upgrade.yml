@@ -1,7 +1,8 @@
 ---
-- name: Force service restart
-  command: /bin/true
-  notify: restart managesf
+- name: Restart the service
+  service:
+    name: managesf
+    state: restarted
 
 - name: Try to update cache resources
   shell: |
