@@ -60,3 +60,11 @@
       become_user: gerrit
 
   when: _previous_version.stdout.startswith('gerrit-2.')
+
+- name: Ensure logs are written to the right place
+  shell: |
+    if ! test -h /var/lib/gerrit/logs; then
+      mv /var/lib/gerrit/logs/* /var/log/gerrit/
+      rm -Rf /var/lib/gerrit/logs
+      ln -s /var/log/gerrit/ /var/lib/gerrit/logs
+    fi
