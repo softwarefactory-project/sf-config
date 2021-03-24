@@ -606,11 +606,6 @@ def generate(args):
         ensure_role_services("zuul", ["scheduler", "merger", "executor",
                                       "web"])
 
-        # if firehose role is in the arch, install publishers where needed
-        if "firehose" in args.glue["roles"]:
-            if "gerrit" in host["roles"]:
-                host["roles"].append("germqtt")
-
         if "influxdb" in host["roles"]:
             # Add telegraf for statsd gateway
             host["roles"].append("telegraf")

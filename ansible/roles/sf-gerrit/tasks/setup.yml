@@ -10,6 +10,13 @@
     shell: /bin/bash
     home_dir_mode: "0755"
 
+- name: Ensure the germqtt is disabled
+  service:
+    name: germqtt
+    state: stopped
+    enabled: "no"
+  failed_when: false
+
 - name: Expose public keys
   copy:
     content: "{{ gerrit_service_rsa_pub }}"
