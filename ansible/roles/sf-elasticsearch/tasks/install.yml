@@ -2,13 +2,18 @@
 - name: Install requirements
   yum:
     name:
-      - java-1.8.0-openjdk
+      - java-11-openjdk
       - wget
       - unzip
       - elasticsearch-curator
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: Remove outdated package
+  yum:
+    name: java-1.8.0-openjdk
+    state: absent
 
 - include_tasks: configure_mirror.yml
 
