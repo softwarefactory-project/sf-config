@@ -115,9 +115,9 @@
         comment: true
         approval: true
 {% endfor %}
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -142,9 +142,9 @@
         comment: true
         approval: false
 {% endfor %}
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -309,9 +309,9 @@
         approval: true
         merge: true
 {% endfor %}
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -338,9 +338,9 @@
         comment: true
         approval: false
 {% endfor %}
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -383,9 +383,9 @@
 {% endif %}
 {% if 'elasticsearch' in roles or 'firehose' in roles %}
     success:
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -395,9 +395,9 @@
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in post pipeline: {change.project}'
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -420,19 +420,19 @@
         - event: push
           ref: ^refs/tags/{{ zuul.prerelease_regexp }}$
 {% endfor %}
-{% if 'elasticsearch' in roles or 'firehose' in roles %}
+{% if elasticsearch_connections|default([]) or 'firehose' in roles %}
     success:
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
 {% endif %}{% endif %}
     failure:
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -464,11 +464,11 @@
       mqtt:
         topic: "{{ zuul_mqtt_start_topic }}"
 {% endif %}
-{% if 'elasticsearch' in roles or 'firehose' in roles %}
+{% if elasticsearch_connections|default([]) or 'firehose' in roles %}
     success:
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -478,9 +478,9 @@
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in release pipeline: {change.project}'
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -501,11 +501,11 @@
       mqtt:
         topic: "{{ zuul_mqtt_start_topic }}"
 {% endif %}
-{% if 'elasticsearch' in roles or 'firehose' in roles %}
+{% if elasticsearch_connections|default([]) or 'firehose' in roles %}
     success:
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -515,9 +515,9 @@
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in periodic pipeline: {change.project}'
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_failure_topic }}"
@@ -554,9 +554,9 @@
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}: {}
 {% endfor %}
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"
@@ -568,9 +568,9 @@
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}: {}
 {% endfor %}
-{% if 'elasticsearch' in roles %}
-      elasticsearch:
-{% endif %}
+{% for conn in elasticsearch_connections|default([]) %}
+      {{ conn['name'] }}:
+{% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
         topic: "{{ zuul_mqtt_success_topic }}"

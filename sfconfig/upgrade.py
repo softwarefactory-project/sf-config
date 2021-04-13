@@ -160,6 +160,12 @@ def update_sfconfig(args):
         data["zuul"]["git_connections"] = []
         dirty = True
 
+    for elk in data['zuul'].get("elasticsearch_connections", []):
+        if elk["name"] == "elasticsearch":
+            print("Warning: Elasticsearch connection named 'elasticsearch' "
+                  "is reserved for the internal elasticsearch service")
+            exit(1)
+
     # 3.3: add SAML2 groups values
     if 'SAML2' in data['authentication']:
         if 'groups' not in data['authentication']['SAML2']['mapping']:
