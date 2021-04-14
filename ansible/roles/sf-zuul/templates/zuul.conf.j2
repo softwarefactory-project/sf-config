@@ -17,6 +17,9 @@ tls_cert={{ zuul_conf_dir }}/ssl/zookeeper.crt
 tls_key={{ zuul_conf_dir }}/ssl/zookeeper.key
 tls_ca={{ zuul_conf_dir }}/ssl/zk-ca.pem
 
+[keystore]
+password={{ zuul_keystore_secret }}
+
 [gearman_server]
 start=true
 log_config={{ zuul_conf_dir }}/gearman-server-logging.yaml
