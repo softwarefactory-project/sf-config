@@ -27,3 +27,18 @@ class ElasticSearch(Component):
 
         self.get_or_generate_cert(args, "elasticsearch-admin",
                                   host["hostname"])
+
+        args.glue['elasticsearch_connections'] = \
+            args.sfconfig["zuul"].get('elasticsearch_connections', [])
+
+        # The internal Elasticsearch connection should not be included in
+        # sfconfig. Add other connections that will be used by zuul.
+        args.glue["elasticsearch_connections"].append({
+                    'name': "elasticsearch",
+                    'username': 'zuul',
+                    'password': args.glue['elasticsearch_zuul_password'],
+                    'host': args.glue["elasticsearch_host"],
+                    'port': args.defaults['elasticsearch_http_port'],
+                    'use_ssl': 'true',
+                    'ca_certs': '/etc/pki/ca-trust/source/anchors/localCA.pem'
+                })

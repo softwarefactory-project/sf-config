@@ -259,6 +259,16 @@ zuul:
 
   # To use openstack-infra/zuul-jobs, review.openstack.org needs to be added to gerrit_connections list too
   upstream_zuul_jobs: false
+  elasticsearch_connections: []
+##  Add other Elasticsearch services that Zuul service will send
+##  report to it. For example:
+#   - name: elastic_rdo
+#     username: zuul
+#     password: zuul1234
+#     host: 169.254.169.254
+#     port: 9200
+#     use_ssl: true
+#     ca_certs: /etc/pki/ca-trust/source/anchors/elastic_rdo.pem
 
 gerritbot:
   disabled: true
