@@ -21,22 +21,55 @@
     regexp: '^LODGEIT_SQL_SERVER='
     line: 'LODGEIT_SQL_SERVER="{{ lodgeit_mysql_host }} {{ lodgeit_mysql_port }}"'
 
-- name: Set configuration
-  ini_file:
-    dest: /etc/lodgeit/lodgeit.conf
-    section: root
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-  loop:
-    - {option: "dburi", value: "mysql://{{ lodgeit_mysql_user }}:{{ lodgeit_mysql_password }}@{{ lodgeit_mysql_host }}:{{ lodgeit_mysql_port }}/{{ lodgeit_mysql_db }}"}
-    - {option: "secret_key", value: "{{lodgeit_session_key}}"}
-  notify: restart lodgeit
+- name: Check if lodgeit configure with Python 2.7
+  stat:
+    path: /usr/lib/python2.7/site-packages/lodgeit
+  register: _lodgeit_old_path
 
-- name: Install static link
-  file:
-    dest: /var/www/static/lodgeit
-    src: /usr/lib/python2.7/site-packages/lodgeit/static
-    state: link
+- name: Configure lodgeit with Python 2
+  block:
+    - name: Set configuration
+      ini_file:
+        dest: /etc/lodgeit/lodgeit.conf
+        section: root
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      loop:
+        - {option: "dburi", value: "mysql://{{ lodgeit_mysql_user }}:{{ lodgeit_mysql_password }}@{{ lodgeit_mysql_host }}:{{ lodgeit_mysql_port }}/{{ lodgeit_mysql_db }}"}
+        - {option: "secret_key", value: "{{lodgeit_session_key}}"}
+      notify: restart lodgeit
+
+    - name: Install static link
+      file:
+        dest: /var/www/static/lodgeit
+        src: /usr/lib/python2.7/site-packages/lodgeit/static
+        state: link
+  when: _lodgeit_old_path.stat.exists
+
+- name: Configure lodgeit with Python 3
+  block:
+    - name: Set configuration
+      ini_file:
+        dest: /etc/lodgeit/lodgeit.conf
+        section: root
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      loop:
+        - {option: "dburi", value: "mysql+pymysql://{{ lodgeit_mysql_user }}:{{ lodgeit_mysql_password }}@{{ lodgeit_mysql_host }}:{{ lodgeit_mysql_port }}/{{ lodgeit_mysql_db }}"}
+        - {option: "secret_key", value: "{{lodgeit_session_key}}"}
+      notify: restart lodgeit
+
+    - name: Remove old static link
+      file:
+        path: /var/www/static/lodgeit
+        state: absent
+
+    - name: Install static link
+      file:
+        dest: /var/www/static/lodgeit
+        src: /usr/lib/python3.6/site-packages/lodgeit/static
+        state: link
+  when: not _lodgeit_old_path.stat.exists
 
 - name: Start service
   systemd:
