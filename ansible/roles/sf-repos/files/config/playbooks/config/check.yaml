@@ -101,7 +101,7 @@
 
     - name: Check nodepool dhall configuration
       shell: |
-        for dhall_conf in $(ls nodepool/*.dhall 2> /dev/null); do
+        for dhall_conf in $(ls nodepool/static_config/*.dhall 2> /dev/null); do
           echo ${dhall_conf}
           dhall-to-yaml --file ${dhall_conf} --output build/$(basename ${dhall_conf} .dhall).yaml || exit 1
         done
