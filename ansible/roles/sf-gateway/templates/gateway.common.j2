@@ -29,6 +29,12 @@
     <LocationMatch "/api">
         CacheDisable on
     </LocationMatch>
+
+    # Enable cross request for cgit content
+    <Location "/cgit">
+        Header set Access-Control-Allow-Origin '*'
+    </Location>
+
     {% if _zuul_job_version is defined %}
     Alias "/docs/zuul-jobs" "/usr/share/doc/zuul-jobs-doc-{{ _zuul_job_version.stdout.split('-')[3] }}/html"
     {% endif %}
