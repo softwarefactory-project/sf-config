@@ -2,3 +2,8 @@
 - service:
     name: k1s
     state: stopped
+
+- name: Remove job to prune podman images
+  cron:
+    name: "podman-image-prune"
+    state: absent
