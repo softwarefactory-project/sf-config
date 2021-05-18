@@ -19,7 +19,7 @@
     owner: kibana
     group: root
 
-- name: Configure kibana
+- name: Configure Kibana
   lineinfile:
     dest: /etc/kibana/kibana.yml
     regexp: '^#?{{ item.regexp }}.*'
@@ -53,12 +53,34 @@
       line: 'opendistro_security.multitenancy.tenants.preferred: ["Global"]'
   register: kibanaconf
 
+- name: Configure Kibana for Keycloak
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: '^#?{{ item.regexp }}.*'
+    line: '{{ item.line }}'
+    create: "{{ item.create | default(true) }}"
+  loop:
+    - regexp: 'opendistro_security.auth.type'
+      line: 'opendistro_security.auth.type: "openid"'
+    - regexp: 'opendistro_security.openid.client_id'
+      line: 'opendistro_security.openid.client_id: kibana'
+    - regexp: 'opendistro_security.openid.client_secret'
+      line: 'opendistro_security.openid.client_secret: {{ keycloak_kibana_client_secret }}'
+    - regexp: 'opendistro_security.openid.connect_url'
+      line: 'opendistro_security.openid.connect_url: https://{{ fqdn }}/auth/realms/{{ keycloak_default_realm }}/.well-known/openid-configuration'
+    - regexp: 'opendistro_security.openid.base_redirect_url'
+      line: 'opendistro_security.openid.base_redirect_url: https://{{ fqdn }}/analytics/'
+    - regexp: 'opendistro_security.openid.root_ca'
+      line: 'opendistro_security.openid.root_ca: /etc/kibana/certs/localCA.pem'
+  register: kibanaconf_keycloak
+  when: '"keycloak" in roles'
+
 - name: Restart kibana after the configuration changed
   systemd:
     name: kibana
     state: restarted
     daemon_reload: yes
-  when: kibanaconf is changed or update_fqdn
+  when: kibanaconf is changed or update_fqdn or kibanaconf_keycloak is changed
 
 - name: Kibana service started and enabled
   systemd:

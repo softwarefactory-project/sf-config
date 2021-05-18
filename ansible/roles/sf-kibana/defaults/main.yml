@@ -37,3 +37,5 @@ kibana_host: kibana.example.com
 kibana_internal_url: "http://{{ kibana_host }}:{{ kibana_http_port }}"
 
 kibana_bundle_js_patch: "Readonly user: {{ elasticsearch_readonly_user }} password: {{ elasticsearch_readonly_password }}"
+
+keycloak_default_realm: SF
