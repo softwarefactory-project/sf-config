@@ -22,3 +22,6 @@ serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
 secureClientPort=2281
 ssl.keyStore.location=/etc/zookeeper/server.pem
 ssl.trustStore.location=/etc/zookeeper/zk-ca.pem
+
+# Whitelist commands needed by zookeeper-explorer
+4lw.commands.whitelist=mntr,ruok
