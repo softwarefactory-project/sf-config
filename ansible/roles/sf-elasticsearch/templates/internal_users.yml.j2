@@ -30,13 +30,6 @@ zuul:
     - admin
   description: Zuul user
   hidden: true
-repoxplorer:
-  hash: {{ _elk_repoxplorer_hash.stdout }}
-  reserved: false
-  backend_roles:
-    - admin
-  description: RepoXplorer user
-  hidden: true
 curator:
   hash: {{ _elk_curator_hash.stdout }}
   reserved: true

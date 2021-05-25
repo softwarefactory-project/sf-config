@@ -55,14 +55,9 @@ resources:
       source-repositories:
         - {{ config_project_name }}:
             zuul/config-project: True
-{% if 'repoxplorer' in roles or 'hound' in roles %}
-        - {{ sf_jobs_project_name }}:
-{% if 'repoxplorer' in roles %}
-            repoxplorer/skip: True
-{% endif %}
 {% if 'hound' in roles %}
+        - {{ sf_jobs_project_name }}:
             hound/skip: True
-{% endif %}
 {% else %}
         - {{ sf_jobs_project_name }}
 {% endif %}
@@ -70,9 +65,6 @@ resources:
             connection: {{ zuul_jobs_connection_name }}
             zuul/include: [job]
             zuul/shadow: {{ sf_jobs_project_name }}
-{% if 'repoxplorer' in roles %}
-            repoxplorer/skip: True
-{% endif %}
 {% if 'hound' in roles %}
             hound/skip: True
 {% endif %}

@@ -30,7 +30,6 @@ elk_stack_certs: /etc/elasticsearch/certs
 
 elasticsearch_password: "CHANGE_ME"
 elasticsearch_kibanaserver_password: "CHANGE_ME"
-elasticsearch_repoxplorer_password: "CHANGE_ME"
 elasticsearch_logstash_password: "CHANGE_ME"
 elasticsearch_zuul_password: "CHANGE_ME"
 elasticsearch_curator_password: "CHANGE_ME"

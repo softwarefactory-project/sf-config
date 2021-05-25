@@ -58,9 +58,15 @@
         - etherpad
         - grafana
         - kibana
-        - repoxplorer-webui
-
   when: sf_previous_version < 3.6
+
+- block:
+    # sf-4.0
+    - name: Remove outdated packages
+      yum:
+        name: repoxplorer
+        state: absent
+  when: sf_previous_version < 4.0
 
 - name: Remove conflicting packages
   yum:

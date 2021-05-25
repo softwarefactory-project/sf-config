@@ -19,13 +19,6 @@
   changed_when: False
   when: "'zuul-scheduler' in roles"
 
-- name: Setup repoxplorer config.py
-  copy:
-    content: "db_path = 'repoxplorer/'"
-    dest: "{{ defconf.path }}/defconf-repoxplorer.py"
-  changed_when: False
-  when: "'repoxplorer' in roles"
-
 - name: Setup nodepool.yaml for config-check test
   template:
     src: /usr/share/sf-config/ansible/roles/sf-nodepool/templates/nodepool.yaml.j2

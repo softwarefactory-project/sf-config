@@ -14,7 +14,6 @@ inventory:
   - murmur
   - kibana
   - cauth
-  - repoxplorer
   - firehose
   - grafana
   - zookeeper

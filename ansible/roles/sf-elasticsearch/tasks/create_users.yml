@@ -39,14 +39,6 @@
   environment:
     JAVA_HOME: "{{ java_home }}"
 
-- name: Generate hash for repoXplorer user
-  command: |
-    {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch_repoxplorer_password }}
-  register: _elk_repoxplorer_hash
-  no_log: show_hidden_logs == False
-  environment:
-    JAVA_HOME: "{{ java_home }}"
-
 - name: Generate hash for curator user
   command: |
     {{ opendistro_plugin_dir }}/tools/hash.sh -p{{ elasticsearch_curator_password }}

@@ -187,7 +187,6 @@
     - {component: "gerrit", use_secret: True}
     - {component: "zuul", use_secret: True}
     - {component: "grafana", use_secret: True}
-    - {component: "repoxplorer", use_secret: False}
     - {component: "elasticsearch", use_secret: True}
     - {component: "kibana", use_secret: True}
   when: item.component in roles

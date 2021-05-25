@@ -186,9 +186,6 @@ services = [
 {% if 'gerrit' in roles %}
     'gerrit',
 {% endif %}
-{% if 'repoxplorer' in roles %}
-    'repoxplorer',
-{% endif %}
 ]
 
 sqlalchemy = {
@@ -207,13 +204,6 @@ gerrit = {
     'password'      : '{{ gerrit_admin_password }}',
     # Managesf is in charge of creating gerrit users
     'register_user' : False,
-}
-{% endif %}
-
-{% if 'repoxplorer' in roles %}
-repoxplorer = {
-    'url'           : 'http://{{ repoxplorer_host }}:20002',
-    'admin_token'   : '{{ repoxplorer_admin_token }}',
 }
 {% endif %}
 

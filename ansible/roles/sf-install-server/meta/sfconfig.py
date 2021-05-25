@@ -90,7 +90,6 @@ def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links):
             + service("grafana", "/grafana")
             + service("etherpad", "/etherpad")
             + service("lodgeit", "/paste")
-            + service("repoxplorer", "/repoxplorer")
             + service("hound", "/codesearch")
             + service("cgit", "/cgit")
             + service("murmur", "mumble://" + fqdn + "/?version=1.2.0")

@@ -58,6 +58,12 @@
     path: /root/config/nodepool/_local_hypervisor_oci.yaml
     state: absent
 
+- name: Remove legacy repoxplorer files
+  file:
+    path: /root/config/repoxplorer
+    recurse: yes
+    state: absent
+
 - include_tasks: submit_repo_update.yml
   vars:
     clone_dir: "{{ config_clone_dir }}"

@@ -1,6 +1,0 @@
----
-- include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml"
-  vars:
-    service_name: repoxplorer
-    service_config_dir: /etc/repoxplorer
-    service_config_name: default.yaml
