@@ -46,3 +46,5 @@ elasticsearch_minimum_heap_size: 128m
 elasticsearch_replicas: 0
 
 enable_performance_analyzer: false
+
+keycloak_default_realm: SF
