@@ -1,0 +1,13 @@
+---
+- name: Create group
+  group:
+    name: "{{ group }}"
+    gid: "{{ gid }}"
+
+- name: Create user
+  user:
+    name: "{{ owner }}"
+    create_home: "no"
+    group: "{{ group }}"
+    shell: "/sbin/nologin"
+    uid: "{{ uid }}"

@@ -45,8 +45,8 @@ git_user_name=zuul
 log_config={{ zuul_conf_dir }}/merger-logging.yaml
 
 [executor]
-ansible_root=/usr/lib/zuul/ansible
-manage_ansible=false
+ansible_root=/usr/local/lib/zuul/ansible
+manage_ansible=true
 state_dir={{ zuul_lib_dir }}
 command_socket={{ zuul_lib_dir }}/executor.socket
 git_dir={{ zuul_lib_dir }}/executor/
@@ -56,8 +56,8 @@ finger_port=7979
 {% if 'log-classify' in roles %}
 trusted_rw_paths=/var/lib/log-classify
 {% endif %}
-trusted_ro_paths=/opt/:/etc/pki
-untrusted_ro_paths=/opt/:/etc/pki
+trusted_ro_paths=/opt/:/etc/ssl
+untrusted_ro_paths=/opt/:/etc/ssl
 log_config={{ zuul_conf_dir }}/executor-logging.yaml
 log_stream_file=/var/tmp/zuul-console/console-{log_uuid}.log
 load_multiplier={{ zuul_executor_load_multiplier|default(2.5) }}
@@ -89,6 +89,7 @@ token_expiry=3600
 driver=sql
 dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}
 
+# TODO use fqdn postfix, not localhost
 [connection smtp]
 driver=smtp
 server=localhost
@@ -193,11 +194,10 @@ poll_delay={{ conn['poll_delay']|default('7200') }}
 driver=elasticsearch
 uri={{conn['username']|default('zuul') }}:{{ conn['password']|default('zuul') }}@{{ conn['host']|default('localhost') }}:{{ conn['port']|default(9200) }}
 use_ssl={{ conn['use_ssl']|default('true') }}
-ca_certs={{ conn['ca_certs']|default('/etc/pki/ca-trust/source/anchors/localCA.pem') }}
+ca_certs={{ conn['ca_certs']|default('/usr/local/share/ca-certificates/localCA.crt') }}
 {% if 'index' in conn and conn['index'] %}
 index={{ conn['index'] }}
 {% endif %}
-
 {% endfor %}
 
 {% if 'firehose' in roles %}

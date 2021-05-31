@@ -10,7 +10,91 @@ role_actions:
   - disable
   - postconf
 
-role_package: zuul
+role_package: "zuul"
+
+old_owner: zuul
+old_group: zuul
+
+owner: opendev
+group: opendev
+uid: 10001
+gid: 10001
+
+patch_container_command: ""
+
+zuul_components:
+  - service: "zuul-executor"
+    image: "docker.io/zuul/zuul-executor:4.6.0"
+    digest: "sha256:3153e26cbff66516d3ed623799e33f397bcd8a4ffeb9481f4c16ce925ec1240b"
+    mirror: ""
+    skip-auto-update: True
+    params: >-
+      --network host
+      --volume /etc/zuul/:/etc/zuul/:Z
+      --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
+      --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
+      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
+      --volume /var/log/zuul/:/var/log/zuul/:Z
+      --volume /var/lib/software-factory/ansible/ara/:/var/lib/software-factory/ansible/ara/:Z
+      --privileged
+    command: |
+      apt update
+      apt install python-dev gcc -y
+      pushd /var/tmp/
+      for pkg in managesf python-sfmanager; do
+          git clone https://softwarefactory-project.io/r/software-factory/$pkg
+          pushd $pkg
+          pip3 install -r requirements.txt
+          python3 setup.py install
+          popd
+      done
+      # dhall
+      curl -L -O https://github.com/dhall-lang/dhall-haskell/releases/download/1.32.0/dhall-json-1.6.4-x86_64-linux.tar.bz2
+      tar xf dhall-json-1.6.4-x86_64-linux.tar.bz2
+      mv bin/* /usr/local/bin/
+      # pypi
+      python -m pip install ara==0.16.6
+      python -m pip install grafyaml==0.0.8
+      python -m pip install nodepool==4.1.0
+      python -m pip install pynotedb==0.2.1
+      # cleanup
+      apt remove python-dev gcc -y
+      apt clean
+      rm -rf /var/tmp/{managesf,python-sfmanager}
+  - service: "zuul-merger"
+    image: "docker.io/zuul/zuul-merger:4.6.0"
+    digest: "sha256:4898ae866f3f845f5659c32c31d55cab9550bf37400c7c38e199c0be557edfa7"
+    mirror: ""
+    skip-auto-update: True
+    params: >-
+      --network host
+      --volume /etc/zuul/:/etc/zuul/:Z
+      --volume /var/log/zuul/:/var/log/zuul/:Z
+      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
+      --privileged
+  - service: "zuul-scheduler"
+    image: "docker.io/zuul/zuul-scheduler:4.6.0"
+    digest: "sha256:2915c16e57a71e64fb41c8ac81f4be1c656bec1fc825840a78d7ae2188bbcd00"
+    mirror: ""
+    skip-auto-update: True
+    params: >-
+      --network host
+      --volume /etc/zuul/:/etc/zuul/:Z
+      --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
+      --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
+      --volume /var/lib/zuul/scripts/:/var/lib/zuul/scripts/:Z
+      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
+      --volume /var/log/zuul/:/var/log/zuul/:Z
+  - service: "zuul-web"
+    image: "docker.io/zuul/zuul-web:4.6.0"
+    digest: "sha256:8864b6784b69f9059e5490ea187aec38f773b293c1f8e5aa342b90549bc07d33"
+    mirror: ""
+    skip-auto-update: True
+    params: >-
+      --network host
+      --volume /etc/zuul/:/etc/zuul/:Z
+      --volume /var/log/zuul/:/var/log/zuul/:Z
+      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
 
 zuul_services:
   - zuul-scheduler
@@ -18,35 +102,14 @@ zuul_services:
   - zuul-executor
   - zuul-web
 
-zuul_scheduler_packages:
+zuul_scheduler_depends:
   - wait4service
-  - managesf
   - zuul
-  - zuul-scheduler
-
-zuul_merger_packages:
-  - zuul
-  - zuul-merger
-  - httpd
-
-zuul_executor_packages:
-  - zuul
-  - zuul-executor
-  - ara
-  # for config-check
-  - dhall
-  # sfauth (part of sfmanager) is required for tenant config-check
-  - python3-sfmanager
-
-zuul_web_packages:
-  - zuul
-  - zuul-web
 
 zuul_conf_dir: "/etc/zuul"
 zuul_lib_dir: "/var/lib/zuul"
 zuul_log_dir: "/var/log/zuul"
 zuul_share_dir: "/usr/share/javascript/zuul"
-zuul_sysconfig: "/etc/sysconfig/zuul"
 
 zuul_web_port: 9000
 zuul_gearman_port: 4730

@@ -1,0 +1,11 @@
+---
+- name: "Check if {{ item.service }} image exists in local storage"
+  command: "podman image exists {{ item.image }}"
+  ignore_errors: yes
+  register: _image_exists
+  changed_when: false
+  failed_when: _image_exists.rc not in [0, 1]
+
+- name: "Pull {{ item.service }} image"
+  command: "podman pull {{ item.image }}"
+  when: _image_exists.rc != 0

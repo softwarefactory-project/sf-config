@@ -1,47 +1,47 @@
 ---
-- name: Install scheduler package
+- name: Check if /usr/libexec/software-factory/zuul-changes.py exists
+  stat:
+    path: /usr/libexec/software-factory/zuul-changes.py
+  register: _dump_queues
+
+- name: Dump zuul queues and remove zuul packages
+  block:
+    - name: Dump zuul queues
+      command: >-
+        /usr/libexec/software-factory/zuul-changes.py
+        dump --dump_file /var/lib/software-factory/state/zuul-change-dump.sh
+
+    - name: Remove zuul packages
+      package:
+        name:
+          - ara
+          - dhall
+          - zuul-executor
+          - zuul-merger
+          - zuul-scheduler
+          - zuul-web
+        state: absent
+
+    - name: Remove outdated scripts
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /usr/libexec/software-factory/zuul-changes.py
+        - /usr/libexec/software-factory/gearman-client
+  when: _dump_queues.stat.exists
+
+- name: Install scheduler depends
   yum:
-    name: "{{ zuul_scheduler_packages }}"
+    name: "{{ zuul_scheduler_depends }}"
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   when: '"zuul-scheduler" in zuul_services'
 
-- name: Install merger package
-  yum:
-    name: "{{ zuul_merger_packages }}"
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  when: '"zuul-merger" in zuul_services'
-
-- name: Install executor package
-  yum:
-    name: "{{ zuul_executor_packages }}"
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  when: '"zuul-executor" in zuul_services'
-
-- name: Install web package
-  yum:
-    name: "{{ zuul_web_packages }}"
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  when: '"zuul-web" in zuul_services'
-
-- name: Install openshift client
-  block:
-    - include_tasks: "{{ sf_tasks_dir }}/origin-311.yml"
-      when: ansible_distribution == 'CentOS'
-
-    - name: Install packages
-      yum:
-        name:
-          - "{{ openshift_client }}"
-          - socat
-        state: present
-  when:
-    - "nodepool_openshift_providers or nodepool_kube_file or 'hypervisor-k1s' in roles"
-    - '"zuul-executor" in zuul_services'
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ zuul_components }}"
+  when: item.service in zuul_services

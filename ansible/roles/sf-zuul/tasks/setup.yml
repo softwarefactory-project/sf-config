@@ -1,23 +1,44 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ zuul_components }}"
+  when: item.service in zuul_services
+
 - name: Set zuul_need_restart fact
   set_fact:
     zuul_need_restart: "{{ _version is changed }}"
 
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: zuul
-    ssh_key: zuul_rsa
-    home_dir: "{{ zuul_lib_dir }}"
-    home_dir_mode: "0700"
+- name: Create container user
+  include_role:
+    name: sf-container
+    tasks_from: create_user.yaml
 
-- name: Install service env for rh-git218
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - {path: "{{ zuul_conf_dir }}", owner: "root", group: "root"}
+    - {path: "{{ zuul_lib_dir }}"}
+    - {path: "{{ zuul_lib_dir }}/.ssh", mode: '0700'}
+    - {path: "{{ zuul_lib_dir }}/keys", mode: '0700', recurse: "yes"}
+    - {path: "{{ zuul_lib_dir }}/patches"}
+    - {path: "{{ zuul_lib_dir }}/scripts", recurse: "yes"}
+    - {path: "{{ zuul_log_dir }}", recurse: "yes"}
+
+- name: Install ssh private and public keys
   copy:
-    content: |
-      PATH=/opt/rh/rh-git218/root/usr/bin:/bin
-      LD_LIBRARY_PATH=/opt/rh/rh-git218/root/usr/lib64:/opt/rh/httpd24/root/lib64/
-      REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt
-    dest: /etc/sysconfig/zuul
+    content: "{{ hostvars[inventory_hostname][item.key] }}"
+    dest: "/var/lib/zuul/.ssh/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+  loop:
+    - {key: "zuul_rsa", name: "id_rsa", mode: "0400"}
+    - {key: "zuul_rsa_pub", name: "id_rsa.pub", mode: "0444"}
+  no_log: show_hidden_logs == False
 
 - name: Expose public keys
   copy:
@@ -26,19 +47,26 @@
     mode: "0444"
   delegate_to: "{{ gateway_host }}"
 
-- name: Create /var/lib/log-classify directory
-  file:
-    path: /var/lib/log-classify
-    state: directory
-    owner: zuul
-    mode: 0700
+- name: Manage log-classify
+  block:
+    - name: Create /var/lib/log-classify directory
+      file:
+        path: /var/lib/log-classify
+        state: directory
+        owner: "{{ owner }}"
+        mode: 0700
+
+    - name: Add volume on containers
+      set_fact:
+        container_extra_volumes: >-
+          --volume /var/lib/log-classify:/var/lib/log-classify:Z
   when: "'log-classify' in roles"
 
 - block:
     - name: Install zuul-changes.py script
       template:
         src: zuul-changes.py.j2
-        dest: /usr/libexec/software-factory/zuul-changes.py
+        dest: "{{ zuul_lib_dir }}/scripts/zuul-changes.py"
         mode: 0755
       delegate_to: "{{ item }}"
       loop: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
@@ -46,14 +74,21 @@
     - name: Install gearman-client script
       template:
         src: gearman-client.sh.j2
-        dest: /usr/libexec/software-factory/gearman-client
+        dest: "{{ zuul_lib_dir }}/scripts/gearman-client"
         mode: 0755
+
+    - name: Sync patches directory
+      synchronize:
+        src: "/usr/share/sf-config/ansible/roles/sf-zuul/files/patches/"
+        dest: "{{ zuul_lib_dir }}/patches"
+        rsync_opts:
+          - "--delete"
 
     - name: Install zuul_worker_rsa key
       copy:
         src: /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_worker_rsa
         dest: "{{ zuul_lib_dir }}/.ssh/zuul_worker_rsa"
-        owner: zuul
+        owner: "{{ owner }}"
         mode: 0400
 
     - name: Create tenant-secrets directory
@@ -67,8 +102,8 @@
     - name: Ensure known_hosts file exists
       file:
         path: "{{ zuul_lib_dir }}/.ssh/known_hosts"
-        owner: zuul
-        group: zuul
+        owner: "{{ owner }}"
+        group: "{{ group }}"
         mode: 0600
         state: touch
       changed_when: false
@@ -88,7 +123,7 @@
       when: item.stdout == ""
 
     - name: Check zuul user can connect to gerrit connections
-      become_user: zuul
+      become_user: "{{ owner }}"
       command: >
         ssh -i {{ item.sshkey | default(zuul_lib_dir + "/.ssh/id_rsa") }}
             -o UserKnownHostsFile={{ zuul_lib_dir }}/.ssh/known_hosts
@@ -104,8 +139,8 @@
         content: "{{ item.app_key }}"
         dest: "{{ zuul_lib_dir }}/.ssh/github_{{ item.name }}_rsa"
         mode: 0400
-        owner: zuul
-        group: zuul
+        owner: "{{ owner }}"
+        group: "{{ group }}"
       loop: "{{ zuul_github_connections }}"
       when: item.app_key
       no_log: show_hidden_logs == False
@@ -145,7 +180,7 @@
   file:
     path: "{{ zuul_conf_dir }}/ssl"
     mode: 0550
-    group: zuul
+    group: "{{ group }}"
     state: directory
 
 - name: "Setup gearman and zookeeper certificates"
@@ -153,7 +188,7 @@
     content: "{{ item.content }}"
     dest: "{{ zuul_conf_dir }}/ssl/{{ item.dest }}"
     mode: 0440
-    group: zuul
+    group: "{{ group }}"
   loop:
     - {content: "{{ localCA_pem }}", dest: "localCA.pem"}
     - {content: "{{ gearman_crt }}", dest: "gearman.crt"}
@@ -168,7 +203,7 @@
     src: zuul.conf.j2
     dest: "{{ zuul_conf_dir }}/zuul.conf"
     mode: 0440
-    group: zuul
+    group: "{{ group }}"
     backup: yes
   notify: restart zuul
 
@@ -193,7 +228,14 @@
       notify: restart zuul
   when:
     - "'gerrit' in roles"
-    -  "'zuul-scheduler' in zuul_services"
+    - "'zuul-scheduler' in zuul_services"
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ zuul_components }}"
+  when: item.service in zuul_services
 
 - block:
     - name: "Check if scheduler is running"
@@ -202,6 +244,7 @@
       changed_when: False
       failed_when: zuul_scheduler_service_running.rc not in [0, 3]
 
+    # TODO: zuul package is needed for this part for now.
     - name: "Manually create database to avoid concurrency issue"
       command: |
         /bin/python3.6 -c 'import zuul.cmd

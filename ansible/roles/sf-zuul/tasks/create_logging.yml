@@ -4,3 +4,12 @@
     src: "logging.yaml.j2"
     dest: "{{ zuul_conf_dir }}/{{ _logfile }}-logging.yaml"
   notify: restart zuul
+
+- name: "Create log file"
+  file:
+    path: "{{ zuul_log_dir }}/{{ _logfile }}.log"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    state: touch
+  changed_when: false
+  notify: restart zuul
