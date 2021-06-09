@@ -25,6 +25,12 @@
     - openstack-stein
   when: ansible_distribution == "CentOS"
 
+# FIXME: remove grafana repo to force 7.5 (grafyaml doesn't work with 8.0)
+- name: "Remove grafana.repo"
+  file:
+    name: /etc/yum.repos.d/grafana.repo
+    state: absent
+
 - name: "Update packages"
   yum:
     name: "*"

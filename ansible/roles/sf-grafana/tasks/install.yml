@@ -9,20 +9,17 @@
     extra_repos: "rhel-7-server-rpms"
   when: ansible_distribution == "RedHat"
 
-- name: Add the grafana RPM repository
-  yum_repository:
-    name: "{{ grafana_repo_name }}"
-    description: "{{ grafana_repo_desc }}"
-    baseurl: "{{ grafana_repo_url }}"
-    gpgkey: "{{ grafana_repo_gpgkey }}"
-    gpgcheck: "{{ grafana_repo_gpgcheck }}"
-
 - name: Install package
   yum:
-    name: grafana
+    # FIXME: grafyaml doesn't work with grafana 8.0, force 7.5 version until we
+    # fix the project.
+    # name: grafana
+    name: https://dl.grafana.com/oss/release/grafana-7.5.7-1.x86_64.rpm
     state: present
-    disablerepo: "*"
-    enablerepo: "{{ grafana_repo_name }},{{ extra_repos }}"
+    allow_downgrade: yes
+    # disablerepo: "*"
+    # enablerepo: "{{ grafana_repo_name }},{{ extra_repos }}"
+    enablerepo: "{{ extra_repos }}"
 
 - name: Install grafyaml for config-update and config-check
   yum:
