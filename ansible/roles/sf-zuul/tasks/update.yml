@@ -63,11 +63,6 @@
     state: started
   when: "'zuul-scheduler' in zuul_services"
 
-- name: Wait for gearman server
-  wait_for:
-    port: "{{ zuul_gearman_port }}"
-    host: "{{ zuul_scheduler_host }}"
-
 - name: Ensure all services are started and enabled
   service:
     name: "{{ item }}"
