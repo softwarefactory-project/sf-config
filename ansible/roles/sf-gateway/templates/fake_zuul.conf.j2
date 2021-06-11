@@ -4,6 +4,15 @@ tenant_config=main.yaml
 [gearman]
 server=localhost
 
+[zookeeper]
+hosts=localhost:2281
+tls_cert=/etc/ssl/zookeeper.crt
+tls_key=/etc/ssl/zookeeper.key
+tls_ca=/etc/ssl/zk-ca.pem
+
+[keystore]
+password=secret
+
 [connection sqlreporter]
 driver=sql
 dburi=sqlite://
