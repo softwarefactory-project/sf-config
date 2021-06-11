@@ -33,17 +33,17 @@
     maxConnectionsPerUser = {{ gerrit_max_ssh_connection_per_user }}
 [httpd]
     listenUrl = proxy-https://0.0.0.0:{{ gerrit_port }}/r/
+{% for commentlink in commentlinks %}
+[commentlink "{{ commentlink.name }}"]
+    match = "{{ commentlink.match }}"
+    html = "{{ commentlink.html }}"
+{% endfor %}
 [commentlink "changeid"]
     match = (I[0-9a-f]{8,40})
     link = "#/q/$1"
 [commentlink "testresult"]
     match = <li>([^ ]+) <a href=\"[^\"]+\" target=\"_blank\" rel=\"nofollow\">([^<]+)</a> : ([^ ]+)([^<]*)</li>
     html = <li class=\"comment_test\"><span class=\"comment_test_name\"><a href=\"$2\" rel=\"nofollow\">$1</a></span> <span class=\"comment_test_result\"><span class=\"result_$3\">$3</span>$4</span></li>
-{% for commentlink in commentlinks %}
-[commentlink "{{ commentlink.name }}"]
-    match = "{{ commentlink.match }}"
-    html = "{{ commentlink.html }}"
-{% endfor %}
 {% if 'gitweb' in roles %}
 [gitweb]
     cgi = {{ gitweb_cgi }}
