@@ -30,7 +30,7 @@
   file:
     path: "{{ home_dir|default('/var/lib/' + user_name) }}/.ssh"
     state: directory
-    mode: 0700
+    mode: '0700'
     owner: "{{ user_name }}"
     group: "{{ group_name|default(user_name) }}"
 

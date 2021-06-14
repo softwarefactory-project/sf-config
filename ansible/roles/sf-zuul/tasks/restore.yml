@@ -20,4 +20,4 @@
     owner: zuul
     group: zuul
     state: directory
-    mode: 0751
+    mode: '0751'

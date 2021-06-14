@@ -15,7 +15,7 @@
 - name: Create directories
   file:
     path: "{{ item }}"
-    mode: 0700
+    mode: '0700'
     state: directory
   with_items:
     - "{{ _model_path|dirname }}"

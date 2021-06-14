@@ -26,7 +26,7 @@
       {{ item.command | default(omit) }}
       {{ patch_container_command | default(omit) }}
     dest: "/usr/local/bin/configure-{{ item.service }}.sh"
-    mode: 0755
+    mode: '0755'
     owner: root
   when: item.command is defined or patch_container_command is defined
 
@@ -34,7 +34,7 @@
   template:
     src: creation.j2
     dest: "/usr/local/bin/container-{{ item.service }}.sh"
-    mode: 0755
+    mode: '0755'
     owner: root
 
 - name: "Create container and install systemd file and enable service for {{ item.service }}"

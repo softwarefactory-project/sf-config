@@ -29,7 +29,7 @@
     - name: "Create dlrn data directory default tree"
       file:
         path: "{{ dlrn_base_dir }}/{{ item.project }}/data/repos/bootstrap"
-        mode: 0755
+        mode: '0755'
         owner: dlrn
         state: directory
       loop: "{{ projects }}"
@@ -39,7 +39,7 @@
     - name: "Create empty default delorean.repo"
       file:
         path: "{{ dlrn_base_dir }}/{{ item.project }}/data/repos/bootstrap/delorean.repo"
-        mode: 0755
+        mode: '0755'
         owner: dlrn
         state: touch
       loop: "{{ projects }}"

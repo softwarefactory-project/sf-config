@@ -9,7 +9,7 @@
   template:
     src: acl.conf.j2
     dest: /etc/mosquitto/acl.conf
-    mode: 0440
+    mode: '0440'
     owner: mosquitto
     group: mosquitto
 
@@ -23,7 +23,7 @@
     state: touch
     owner: mosquitto
     group: mosquitto
-    mode: 0440
+    mode: '0440'
   when: p.stat.exists is defined and not p.stat.exists
 
 - name: update password file

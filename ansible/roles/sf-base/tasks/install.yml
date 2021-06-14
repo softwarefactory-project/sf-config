@@ -130,7 +130,7 @@
     path: "{{ item }}"
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
     state: directory
   with_items:
     - /usr/libexec/software-factory
@@ -140,7 +140,7 @@
   copy:
     src: "{{ item }}"
     dest: "/usr/libexec/software-factory/{{ item }}"
-    mode: 0555
+    mode: '0555'
   loop:
     - wait4port
     - wait4mariadb

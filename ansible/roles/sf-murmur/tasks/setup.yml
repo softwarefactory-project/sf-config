@@ -12,7 +12,7 @@
     dest: /etc/umurmurd/umurmurd.conf
     owner: root
     group: umurmurd
-    mode: 0440
+    mode: '0440'
   notify: restart umurmurd
 
 - name: Start service

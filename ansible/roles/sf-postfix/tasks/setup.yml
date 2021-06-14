@@ -19,7 +19,7 @@
     content: "{{ ansible_hostname }}.{{ fqdn }}"
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
 - name: Ensure directories exist
   file:
@@ -27,7 +27,7 @@
     group: root
     path: /etc/postfix/
     state: directory
-    mode: 0755
+    mode: '0755'
 
 - name: Manage main.cf
   template:
@@ -35,7 +35,7 @@
     dest: /etc/postfix/main.cf
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
   notify:
     - restart postfix
 
@@ -45,7 +45,7 @@
     dest: /etc/postfix/virtual
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
   register: postfix_virtual
 
 - name: Generate virtual database
@@ -60,7 +60,7 @@
     dest: /etc/postfix/transport
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
   register: postfix_transport
 
 - name: Generate virtual database

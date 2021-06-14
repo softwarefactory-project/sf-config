@@ -15,7 +15,7 @@
         path: /usr/libexec/software-factory
         owner: root
         group: root
-        mode: 0755
+        mode: '0755'
         state: directory
   when: sf_previous_version < 3.1
 

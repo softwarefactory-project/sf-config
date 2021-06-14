@@ -3,7 +3,7 @@
   copy:
     content: "{{ item.content }}"
     dest: "/etc/influxdb/{{ item.dest }}"
-    mode: "{{ item.mode|default(0444) }}"
+    mode: "{{ item.mode|default('0444') }}"
     owner: influxdb
     setype: cert_t
     seuser: system_u

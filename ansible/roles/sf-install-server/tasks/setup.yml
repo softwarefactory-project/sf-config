@@ -17,7 +17,7 @@
   blockinfile:
     path: /root/.ssh/config
     create: yes
-    mode: 0644
+    mode: '0644'
     block: |
       {% if 'gerrit' in roles %}
       Host {{ fqdn }}
@@ -90,7 +90,7 @@
       copy:
         src: status-page-update.py
         dest: /usr/libexec/software-factory/status-page-update.py
-        mode: 0555
+        mode: '0555'
       delegate_to: "{{ gateway_host }}"
 
     - name: Create status directory

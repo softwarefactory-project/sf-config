@@ -4,7 +4,7 @@
     path: /root/.ssh
     owner: root
     group: root
-    mode: 0700
+    mode: '0700'
     state: directory
 
 - name: Check if ssh_known_hosts exist
@@ -16,7 +16,7 @@
     path: /root/.ssh/known_hosts
     owner: root
     group: root
-    mode: 0600
+    mode: '0600'
     state: touch
   when: ssh_known_hosts.stat.exists == False
 
