@@ -1,0 +1,16 @@
+---
+- name: Generate hash for user
+  command: "{{ opendistro_plugin_dir }}/tools/hash.sh -p{{ item.value.password }}"
+  register: _generated_hash
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+  no_log: show_hidden_logs == False
+
+# NOTE: for internal users, it would be: elasticsearch_admin and
+# elasticsearch_admin_hash, where for external users:
+# elasticsearch_admin_myinfra2 and elasticsearch_admin_myinfra2_hash
+- name: Set Elasticsearch users as a fact
+  set_fact:
+    "elasticsearch_{{ item.key }}": "{{ item.value.password }}"
+    "elasticsearch_{{ item.key }}_hash": "{{ _generated_hash.stdout }}"
+  no_log: show_hidden_logs == False

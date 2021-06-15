@@ -194,6 +194,9 @@ driver=elasticsearch
 uri={{conn['username']|default('zuul') }}:{{ conn['password']|default('zuul') }}@{{ conn['host']|default('localhost') }}:{{ conn['port']|default(9200) }}
 use_ssl={{ conn['use_ssl']|default('true') }}
 ca_certs={{ conn['ca_certs']|default('/etc/pki/ca-trust/source/anchors/localCA.pem') }}
+{% if 'index' in conn and conn['index'] %}
+index={{ conn['index'] }}
+{% endif %}
 
 {% endfor %}
 

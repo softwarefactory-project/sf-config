@@ -40,9 +40,14 @@ def get_previous_version():
     return ver
 
 
-def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links):
+def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links,
+                        args):
     def service(name, path):
-        return [dict(name=name, path=path)] if name in roles else []
+        if name in roles or (name == "kibana" and "kibana" in args.sfconfig and
+                             args.sfconfig['kibana'].get('host_url', "")):
+            return [dict(name=name, path=path)]
+        else:
+            return []
 
     def auth_other(name):
         return [dict(name=name, text=auth[name].get(
@@ -201,7 +206,8 @@ class InstallServer(Component):
             args.glue["roles"],
             args.sfconfig["authentication"],
             args.glue["sf_version"],
-            args.sfconfig.get("custom_links", {}))
+            args.sfconfig.get("custom_links", {}),
+            args)
 
         # Convert sfconfig.yaml connections into group vars
         zuul_config = args.sfconfig.get("zuul", {})

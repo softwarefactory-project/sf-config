@@ -26,7 +26,7 @@ elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_h
 
 logstash_stack_certs: /etc/logstash/certs
 logstash_host: logstash.example.com
-logstash_input_port: 9999
+logstash_input_port: '9999'
 
 logstash_retention_days: 60
 logstash_maximum_heap_size: 512m

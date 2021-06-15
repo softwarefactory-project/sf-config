@@ -50,20 +50,20 @@ alerting_full_access:
 kibana_viewer:
   reserved: true
   cluster_permissions:
-  - "cluster_composite_ops_ro"
+    - "cluster_composite_ops_ro"
   index_permissions:
   - index_patterns:
-    - "?kibana*"
-    - "?kibana"
-    - "logstash-*"
-    - "zuul.*"
+      - "?kibana*"
+      - "?kibana"
+      - "logstash-*"
+      - "zuul.*"
     allowed_actions:
-    - "read"
-    - "get"
-    - "search"
-    - "indices:data/write/update"
-    - "indices:data/write/index"
-    - "indices:data/write/bulk*"
-    - "indices:monitor/stats"
-    - "indices:monitor/recovery"
+      - "read"
+      - "get"
+      - "search"
+      - "indices:data/write/update"
+      - "indices:data/write/index"
+      - "indices:data/write/bulk*"
+      - "indices:monitor/stats"
+      - "indices:monitor/recovery"
   tenant_permissions: []

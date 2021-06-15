@@ -12,7 +12,11 @@ actions:
     filters:
     - filtertype: pattern
       kind: prefix
+{% if external_elasticsearch_suffix %}
+      value: logstash-{{ external_elasticsearch_suffix }}-
+{% else %}
       value: logstash-
+{% endif %}
     - filtertype: age
       source: name
       direction: older

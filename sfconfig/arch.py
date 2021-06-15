@@ -136,10 +136,34 @@ please remove them from /etc/software-factory/arch.yaml file:
 
     # TODO remove this at the end of the patch chain
     if 'keycloak' in args.glue["roles"]:
-        print(
-            "/!\\ keycloak is not completely supported at this point."
-            "Deploying Software Factory with this role will lead to "
-            "failures. Do it only for testing things out!")
+        print("/!\\ keycloak is not completely supported at this point."
+              "Deploying Software Factory with this role will lead to "
+              "failures. Do it only for testing things out!")
+
+    if ('logstash' in args.glue["roles"] and
+        'elasticsearch' not in args.glue["roles"] and
+            not args.sfconfig.get('external_elasticsearch')):
+        print('Can not continue. You need to provide elasticsearch role '
+              'or add external_elasticsearch configuration in sfconfig '
+              'file if you want to use logstash')
+        sys.exit(1)
+
+    if (args.sfconfig.get('external_elasticsearch', {}) and (
+            not args.sfconfig['external_elasticsearch'].get('users') or
+            not args.sfconfig['external_elasticsearch'].get('host') or
+            not args.sfconfig['external_elasticsearch'].get('cacert_path') or
+            not args.sfconfig['external_elasticsearch'].get('suffix'))):
+        print('Some of "external_elasticsearch" params are missing. Please '
+              'check Software Factory document and provide required '
+              'parameters')
+        sys.exit(1)
+
+    if ('logstash' in args.glue["roles"] and args.sfconfig.get(
+        'external_elasticsearch', {}) and not (
+            args.sfconfig.get('zuul').get('elasticsearch_connections'))):
+        print('You did not configure "elasticsearch_connections" param '
+              'in zuul configuration in sfconfig.yaml file. Is it ok?')
+        sys.exit(1)
 
     # Add install-server hostname for easy access
     args.glue["install_server"] = args.glue["roles"]["install-server"][0][

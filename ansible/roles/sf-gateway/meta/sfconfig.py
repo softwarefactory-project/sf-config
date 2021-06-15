@@ -84,3 +84,9 @@ class Gateway(Component):
            args.sfconfig["network"]["tls_challenge_alias_path"]:
             args.glue["tls_challenge_alias_path"] = args.sfconfig["network"][
                 "tls_challenge_alias_path"]
+
+        args.glue['external_elasticsearch_host'] = \
+            args.sfconfig.get('external_elasticsearch', {}).get('host')
+
+        args.glue['external_kibana_host'] = \
+            args.sfconfig.get('kibana', {}).get('host_url')

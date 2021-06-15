@@ -24,3 +24,13 @@ class LogStash(Component):
         if 'maximum_heap_size' in args.sfconfig['logstash']:
             args.glue['logstash_maximum_heap_size'] = args.sfconfig[
                 'logstash']['maximum_heap_size']
+
+        config_key = 'external_elasticsearch'
+        args.glue['external_elasticsearch_suffix'] = \
+            args.sfconfig.get(config_key, {}).get('suffix')
+        args.glue['external_elasticsearch_host'] = \
+            args.sfconfig.get(config_key, {}).get('host')
+        args.glue['external_elasticsearch_cacert'] = \
+            args.sfconfig.get(config_key, {}).get('cacert_path')
+        args.glue['external_elasticsearch_users'] = \
+            args.sfconfig.get(config_key, {}).get('users')

@@ -117,6 +117,9 @@
 {% endfor %}
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -144,6 +147,9 @@
 {% endfor %}
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -311,6 +317,9 @@
 {% endfor %}
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -340,6 +349,9 @@
 {% endfor %}
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -385,6 +397,9 @@
     success:
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -397,6 +412,9 @@
         subject: '[Zuul] Job failed in post pipeline: {change.project}'
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -424,6 +442,9 @@
     success:
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -432,6 +453,9 @@
     failure:
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -468,6 +492,9 @@
     success:
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -480,6 +507,9 @@
         subject: '[Zuul] Job failed in release pipeline: {change.project}'
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -505,6 +535,9 @@
     success:
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -517,6 +550,9 @@
         subject: '[Zuul] Job failed in periodic pipeline: {change.project}'
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -556,6 +592,9 @@
 {% endfor %}
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:
@@ -570,6 +609,9 @@
 {% endfor %}
 {% for conn in elasticsearch_connections|default([]) %}
       {{ conn['name'] }}:
+{% if 'index' in conn and conn['index'] %}
+        index: {{ conn['index'] }}
+{%endif%}
 {% endfor %}
 {% if 'firehose' in roles %}
       mqtt:

@@ -18,6 +18,21 @@
     mode: 0600
     owner: logstash
     group: root
+  when: not external_elasticsearch_cacert
+
+- name: Configure external Elasticsearch
+  block:
+    - name: Check if Elasticsearch CA cert file exist
+      stat:
+        path: "{{ external_elasticsearch_cacert }}"
+      register: _external_localca
+
+    - name: Set global permission for cert
+      file:
+        path: "{{ external_elasticsearch_cacert }}"
+        mode: '0644'
+      when: _external_localca.stat.exists
+  when: external_elasticsearch_cacert != "None"
 
 - stat:
     path: /var/log/logstash/logstash.log

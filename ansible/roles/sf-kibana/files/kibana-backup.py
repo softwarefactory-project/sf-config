@@ -59,6 +59,18 @@ def get_arguments():
     args_parser.add_argument('--extension',
                              default='ndjson',
                              help='Backup extension type')
+    args_parser.add_argument('--tenant',
+                             help='Specify tenant for getting data.'
+                             'NOTE: if none is set, it will take Global')
+    args_parser.add_argument('--all-tenants',
+                             action='store_true',
+                             help='Bakup all objects in all '
+                             'tenants. Works only with backup.'
+                             'NOTE: requires param: --elasticsearch-api-url')
+    args_parser.add_argument('--elasticsearch-api-url',
+                             default='https://localhost:9200',
+                             help='Require to get all tenants available in '
+                             'elasticsearch')
     return args_parser.parse_args()
 
 
@@ -115,12 +127,17 @@ def remove_reference(text):
     return new_text if new_text else text
 
 
-def make_request(url, user, password, text, insecure=False, retry=True):
+def make_request(url, user, password, text, tenant, insecure=False,
+                 retry=True):
     r = None
+    headers = {'kbn-xsrf': 'reporting'}
+    if tenant:
+        headers['securitytenant'] = tenant
+
     try:
         r = requests.post(url,
                           auth=(user, password),
-                          headers={'kbn-xsrf': 'reporting'},
+                          headers=headers,
                           files={'file': ('backup.ndjson', text)},
                           timeout=10,
                           verify=insecure)
@@ -128,7 +145,7 @@ def make_request(url, user, password, text, insecure=False, retry=True):
         if not retry:
             print("Importing failed. Retrying...")
             time.sleep(10)
-            make_request(url, user, password, text, insecure)
+            make_request(url, user, password, text, tenant, insecure)
 
     if r and "Please enter your credentials" in r.text:
         print("Please provide correct username and password")
@@ -148,7 +165,7 @@ def _get_file_content(backup_file):
 
 
 def backup(kibana_url, space_id, user, password, backup_dir, insecure,
-           extension='ndjson'):
+           tenant, extension='ndjson'):
     """Return string with newline-delimitered json containing
     Kibana saved objects"""
     saved_objects = {}
@@ -164,12 +181,14 @@ def backup(kibana_url, space_id, user, password, backup_dir, insecure,
         url = kibana_url + '/api/saved_objects/_export'
     for obj_type in saved_objects_types:
         print("Working on %s" % obj_type)
+
+        headers = {'Content-Type': 'application/json', 'kbn-xsrf': 'reporting'}
+        if tenant:
+            headers['securitytenant'] = tenant
+
         r = requests.post(url,
                           auth=(user, password),
-                          headers={
-                              'Content-Type': 'application/json',
-                              'kbn-xsrf': 'reporting'
-                          },
+                          headers=headers,
                           data='{ "type": "' + obj_type +
                           '","excludeExportDetails": true}',
                           verify=insecure)
@@ -184,7 +203,12 @@ def backup(kibana_url, space_id, user, password, backup_dir, insecure,
         if not r.text:
             continue
 
-        backup_file = "%s/%s.%s" % (backup_dir, obj_type, extension)
+        if tenant:
+            backup_file = "%s/%s-%s.%s" % (backup_dir, obj_type, tenant,
+                                           extension)
+        else:
+            backup_file = "%s/%s.%s" % (backup_dir, obj_type, extension)
+
         if os.path.exists(backup_file):
             backup_file = "%s-%s" % (backup_file, b_time)
 
@@ -192,7 +216,10 @@ def backup(kibana_url, space_id, user, password, backup_dir, insecure,
         saved_objects[obj_type] = text
         save_content_to_file(text, backup_file, extension)
 
-    backup_file = "%s/backup.%s" % (backup_dir, extension)
+    if tenant:
+        backup_file = "%s/backup-%s.%s" % (backup_dir, tenant, extension)
+    else:
+        backup_file = "%s/backup.%s" % (backup_dir, extension)
     if os.path.exists(backup_file):
         backup_file = "%s-%s" % (backup_file, b_time)
 
@@ -201,7 +228,7 @@ def backup(kibana_url, space_id, user, password, backup_dir, insecure,
 
 
 def restore(kibana_url, space_id, user, password, text, resolve_conflicts,
-            insecure):
+            insecure, tenant):
     """Restore given newline-delimitered json containing
     saved objects to Kibana"""
 
@@ -227,7 +254,7 @@ def restore(kibana_url, space_id, user, password, text, resolve_conflicts,
             print("Spotted empty object. Continue...")
             continue
 
-        r = make_request(url, user, password, kib_obj, insecure)
+        r = make_request(url, user, password, kib_obj, tenant, insecure)
 
         if r.status_code == 401:
             print("Unauthorized. Please provide user and password")
@@ -248,7 +275,7 @@ def restore(kibana_url, space_id, user, password, text, resolve_conflicts,
         response_text = json.loads(r.text)
         if not response_text['success'] and resolve_conflicts:
             text = remove_reference(kib_obj)
-            r = make_request(url, user, password, text, insecure)
+            r = make_request(url, user, password, text, tenant, insecure)
 
         print(r.status_code, r.reason, '\n', r.text)
         r.raise_for_status()  # Raises stored HTTPError, if one occurred.
@@ -257,6 +284,15 @@ def restore(kibana_url, space_id, user, password, text, resolve_conflicts,
 def convert(text, extension, convert_file):
     convert_file = "%s-converted.%s" % (convert_file, extension)
     save_content_to_file(text, convert_file, extension, False)
+
+
+def get_all_tenants(elasticsearch_api_url, user, password, insecure):
+    url = "%s/_opendistro/_security/api/tenants/" % elasticsearch_api_url
+    r = requests.get(url, auth=(user, password), verify=insecure)
+    if r.status_code != 200:
+        r.raise_for_status()
+        sys.exit(1)
+    return list(json.loads(r.text))
 
 
 if __name__ == '__main__':
@@ -272,8 +308,25 @@ if __name__ == '__main__':
         kibana_url = "http://%s" % args.kibana_url
 
     if args.action == 'backup':
-        backup(kibana_url, args.space_id, args.user, args.password,
-               args.backup_dir, args.insecure, args.extension)
+        if args.all_tenants and args.tenant:
+            print("Can not use --all-tenants with --tenant option")
+            sys.exit(1)
+
+        if args.all_tenants:
+            if not args.elasticsearch_api_url:
+                print('Please provide --elasticsearch-api-url to list all'
+                      ' tenants available in Elasticsearch.')
+                sys.exit(1)
+            all_tenants = get_all_tenants(args.elasticsearch_api_url,
+                                          args.user, args.password,
+                                          args.insecure)
+
+            for tenant in all_tenants:
+                backup(kibana_url, args.space_id, args.user, args.password,
+                       args.backup_dir, args.insecure, tenant, args.extension)
+        else:
+            backup(kibana_url, args.space_id, args.user, args.password,
+                   args.backup_dir, args.insecure, args.tenant, args.extension)
 
     elif args.action == 'restore':
         restore_file = args.file if args.file else args.restore_file
@@ -283,7 +336,7 @@ if __name__ == '__main__':
             text = ''.join(sys.stdin.readlines())
 
         restore(kibana_url, args.space_id, args.user, args.password, text,
-                args.resolve_conflicts, args.insecure)
+                args.resolve_conflicts, args.insecure, args.tenant)
     elif args.action == 'convert':
         if args.file:
             text = _get_file_content(args.file)

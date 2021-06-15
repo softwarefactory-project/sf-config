@@ -12,6 +12,15 @@
     regexp: "If you have forgotten your username or password, please ask your system administrator"
     replace: "{{ kibana_bundle_js_patch }}"
   register: kibana_login_page
+  when: not external_elasticsearch_readonly_username|length and not external_elasticsearch_readonly_password|length
+
+- name: Patch kibana bundle js file
+  replace:
+    path: "/usr/share/kibana/plugins/opendistroSecurityKibana/server/index.js"
+    regexp: "If you have forgotten your username or password, please ask your system administrator"
+    replace: "Readonly user: {{ external_elasticsearch_readonly_username }} password: {{ external_elasticsearch_readonly_password }}"
+  register: kibana_login_page
+  when: external_elasticsearch_readonly_username|length and external_elasticsearch_readonly_password|length
 
 - name: Restart Kibana after changing login page
   systemd:

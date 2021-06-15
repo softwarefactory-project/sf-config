@@ -4,8 +4,6 @@
   vars:
     user_name: elasticsearch
 
-- include_tasks: get_passwords.yml
-
 - name: Create cert dir
   file:
     path: "{{ elk_stack_certs }}"

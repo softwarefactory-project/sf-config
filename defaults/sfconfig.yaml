@@ -185,10 +185,30 @@ elasticsearch:
   minimum_heap_size: 128m
   replicas: 0
 
+## Uncomment below lines if you are using EXTERNAL Elasticsearch service.
+#external_elasticsearch:
+#  host: https://elasticsearch-host-2:9200
+#  cacert_path: /etc/elasticsearch/certs/localCA.pem
+#  suffix: sftests_com
+#  users:
+#    curator_sftests_com:
+#      password: curator
+#      role:     curator
+#    logstash_sftests_com:
+#      password: logstash
+#      role: logstash
+#    kibana_sftests_com:
+#      password: kibana
+#      role: readonly
+
 logstash:
   maximum_heap_size: 512m
   minimum_heap_size: 128m
   retention_days: 60
+
+## Uncomment below lines if you are using EXTERNAL Kibana service.
+#kibana:
+#  host_url: http://kibana-host-2:5601
 
 logs:
   # 2 months log expiry
@@ -261,6 +281,10 @@ zuul:
   upstream_zuul_jobs: false
   elasticsearch_connections: []
 ##  Add other Elasticsearch services that Zuul service will send
+##  NOTE: by adding index name: zuul, zuul will push the data to the
+##  Elasticsearch with convention:
+##  <index-name>.<tenant-name>-<YYYY>.<MM>.<DD>. More info:
+##  https://zuul-ci.org/docs/zuul/reference/drivers/elasticsearch.html
 ##  report to it. For example:
 #   - name: elastic_rdo
 #     username: zuul
@@ -269,6 +293,7 @@ zuul:
 #     port: 9200
 #     use_ssl: true
 #     ca_certs: /etc/pki/ca-trust/source/anchors/elastic_rdo.pem
+#     index: zuul
 
 gerritbot:
   disabled: true
