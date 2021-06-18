@@ -33,6 +33,7 @@
 - name: Set elasticsearch readonly user name
   set_fact:
     elasticsearch_readonly_user: "{{ elasticsearch['readonly_user'] | default(elasticsearch_readonly_user) }}"
+    elasticsearch_readonly_password: "{{ elasticsearch['readonly_password'] | default(elasticsearch_readonly_password) }}"
 
 - name: Set the security plugin configuration
   template:

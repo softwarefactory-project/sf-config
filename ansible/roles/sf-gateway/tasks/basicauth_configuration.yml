@@ -1,0 +1,59 @@
+---
+- name: Copy kibana user token in secrets.yaml
+  command: grep -q 'elasticsearch_kibanauser_basicauth'
+  delegate_to: "{{ install_server_host }}"
+  register: _kibana_basicauth_old
+  no_log: show_hidden_logs == False
+  ignore_errors: true
+
+- name: Setup autologin for Basic auth
+  block:
+    - name: Gen Kibana basicauth when external
+      block:
+        - name: "Get user:password string for external kibana user"
+          set_fact:
+            _kibana_basicauth_external_plain: "{{ external_elasticsearch_readonly_user }}:{{ external_elasticsearch_readonly_password }}"
+        - name: Set encoded password string for external kibana user
+          set_fact:
+            _kibana_basicauth_external: "{{ _kibana_basicauth_external_plain | b64encode }}"
+      when: external_elasticsearch_readonly_user is defined and external_elasticsearch_readonly_password is defined
+
+    - name: Gen Kibana basicauth when internal
+      block:
+        - name: "Get user:password string for local kibana user"
+          set_fact:
+            _kibana_basicauth_local_plain: "{{ elasticsearch_readonly_user }}:{{ elasticsearch_readonly_password }}"
+        - name: Set encoded password string for local kibana user
+          set_fact:
+            _kibana_basicauth_local: "{{ _kibana_basicauth_local_plain | b64encode }}"
+      when: _kibana_basicauth_external is not defined
+
+    - name: Set basicauth info
+      set_fact:
+        elasticsearch_kibanauser_basicauth: "{{ _kibana_basicauth_external | default(_kibana_basicauth_local) }}"
+
+    - name: Copy basicauth in secrets.yaml
+      lineinfile:
+        path: /var/lib/software-factory/bootstrap-data/secrets.yaml
+        regexp: "^elasticsearch_kibanauser_basicauth"
+        line: "elasticsearch_kibanauser_basicauth: {{ elasticsearch_kibanauser_basicauth }}"
+      delegate_to: "{{ install_server_host }}"
+
+    - name: Add autologin include file
+      template:
+        src: kibana_autologin.conf.j2
+        dest: /etc/httpd/conf.d/kibana_autologin.conf
+        mode: "0444"
+        owner: apache
+        group: apache
+      register: _kibana_autologin_httpd
+
+    # NOTE: Handler is not restarting apache2 service before
+    # other postjobs are done.
+    - name: Restart httpd service without handler
+      service:
+        name: httpd
+        state: restarted
+      when: _kibana_autologin_httpd.changed
+
+  when: readonly_user_autologin is defined and readonly_user_autologin | lower == 'basic' or _kibana_basicauth_old.rc == 1

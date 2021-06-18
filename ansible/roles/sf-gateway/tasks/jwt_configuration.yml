@@ -1,0 +1,61 @@
+---
+- name: Copy kibana user token in secrets.yaml
+  command: grep -q 'elasticsearch_kibanauser_token'
+  delegate_to: '{{ install_server_host }}'
+  register: _kibana_jwt_old_token
+  no_log: show_hidden_logs == False
+  ignore_errors: true
+
+- name: Setup autologin
+  block:
+    - name: Generate secret for jwt
+      command: |
+        uuidgen
+      register: _kibana_jwt_secret
+      no_log: show_hidden_logs == False
+
+    - name: Set jwt secret
+      set_fact:
+        _kibana_jwt_secret_b64: "{{ _kibana_jwt_secret.stdout | b64encode }}"
+
+    - name: Copy jwt generator script
+      template:
+        src: jwt_generator.j2
+        dest: /usr/local/bin/jwt_generator
+        mode: '0755'
+      become: true
+
+    - name: Generate jwt token
+      command: python3 /usr/local/bin/jwt_generator
+      register: _kibana_jwt_token
+      no_log: show_hidden_logs == False
+
+    - name: Set jwt facts
+      set_fact:
+        elasticsearch_kibanauser_token: "{{ _kibana_jwt_token.stdout }}"
+
+    - name: Copy jwt token in secrets.yaml
+      lineinfile:
+        path: /var/lib/software-factory/bootstrap-data/secrets.yaml
+        regexp: '^elasticsearch_kibanauser_token'
+        line: 'elasticsearch_kibanauser_token: {{ _kibana_jwt_token.stdout }}'
+      delegate_to: '{{ install_server_host }}'
+
+    - name: Add autologin include file
+      template:
+        src: kibana_autologin.conf.j2
+        dest: /etc/httpd/conf.d/kibana_autologin.conf
+        mode: '0444'
+        owner: apache
+        group: apache
+      register: _kibana_autologin_httpd
+
+    # NOTE: Handler is not restarting apache2 service before
+    # other postjobs are done.
+    - name: Restart httpd service without handler
+      service:
+        name: httpd
+        state: restarted
+      when: _kibana_autologin_httpd.changed
+
+  when: readonly_user_autologin is defined and readonly_user_autologin | lower == "jwt" or _kibana_jwt_old_token.rc == 1

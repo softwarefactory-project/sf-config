@@ -2,6 +2,7 @@
 role_actions:
   - install
   - setup
+  - postconf
   - get_logs
   - disable
   - backup

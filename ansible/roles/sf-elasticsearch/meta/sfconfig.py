@@ -42,3 +42,7 @@ class ElasticSearch(Component):
                     'use_ssl': 'true',
                     'ca_certs': '/usr/local/share/ca-certificates/localCA.crt'
                 })
+
+        args.glue['readonly_user_autologin'] = \
+            args.sfconfig.get("kibana", {}).get('readonly_user_autologin',
+                                                None)

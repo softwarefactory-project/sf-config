@@ -90,3 +90,15 @@ class Gateway(Component):
 
         args.glue['external_kibana_host'] = \
             args.sfconfig.get('kibana', {}).get('host_url')
+
+        args.glue['readonly_user_autologin'] = \
+            args.sfconfig.get('kibana', {}).get('readonly_user_autologin',
+                                                None)
+
+        if args.sfconfig.get('external_elasticsearch', {}).get('users', {}):
+            for user, creds in args.sfconfig.get('external_elasticsearch'
+                                                 ).get('users').items():
+                if creds.get('role') == 'readonly':
+                    args.glue['external_elasticsearch_readonly_user'] = user
+                    args.glue['external_elasticsearch_readonly_password'] = \
+                        creds.get('password')

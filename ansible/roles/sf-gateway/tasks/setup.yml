@@ -126,6 +126,13 @@
   when: '"kibana" in roles or external_kibana_host'
   notify: apache reload
 
+- name: Create autologin empty file
+  file:
+    path: /etc/httpd/conf.d/kibana_autologin.conf
+    state: touch
+    mode: '0444'
+  when: readonly_user_autologin is defined and readonly_user_autologin
+
 - name: Configure httpd for nodepool services
   block:
     - name: Create working directory

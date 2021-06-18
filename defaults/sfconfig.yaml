@@ -207,7 +207,9 @@ logstash:
   retention_days: 60
 
 ## Uncomment below lines if you are using EXTERNAL Kibana service.
-#kibana:
+kibana:
+  # You can choose None, Basic or JWT
+  readonly_user_autologin: Basic
 #  host_url: http://kibana-host-2:5601
 
 logs:

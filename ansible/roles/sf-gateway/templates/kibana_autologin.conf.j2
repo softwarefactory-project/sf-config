@@ -1,0 +1,36 @@
+# NOTE: Can not enable authorization via HTTP form and with injecting
+# http header to the location: /analytics even when added condition
+# to remove headers when page is e.g. /analytics/app/login.
+# In that case, if someone will go to /analytics_autologin,
+# authorization header will be injected, then Kibana will automatically
+# redirect to the /analytics location.
+<Location "/analytics_autologin">
+    # Common settings for Basic/JWT auth
+    RequestHeader set "Host" "{{ fqdn }}"
+
+    # ip address of kibana_host
+    RequestHeader set "X-Forwarded-For" "{{ fqdn }}"
+    RequestHeader set "X-Forwarded-Host" "{{ fqdn }}"
+
+    {% if readonly_user_autologin | lower == 'basic' and elasticsearch_kibanauser_basicauth is defined %}
+    # Basic auth
+    RequestHeader set "Authorization" "Basic {{ elasticsearch_kibanauser_basicauth }}"
+    {% endif %}
+
+    {% if readonly_user_autologin | lower == 'jwt' and elasticsearch_kibanauser_token is defined %}
+    RequestHeader set "Authorization" "Bearer {{ elasticsearch_kibanauser_token }}"
+    {% endif %}
+
+{% if external_kibana_host %}
+    ProxyPass {{ external_kibana_host }}
+    ProxyPassReverse {{ external_kibana_host }}
+{% else %}
+    ProxyPass {{ kibana_internal_url }}
+    ProxyPassReverse {{ kibana_internal_url }}
+{% endif %}
+
+    RewriteEngine on
+    RewriteCond %{QUERY_STRING} ^$
+    RewriteRule /analytics_autologin/ /analytics/ [L]
+
+</Location>
