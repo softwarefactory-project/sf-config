@@ -1,28 +1,30 @@
 ---
-- name: Install launcher package
-  yum:
-    name: "{{ nodepool_launcher_packages }}"
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  when: '"nodepool-launcher" in nodepool_services'
+- name: Remove nodepool packages
+  package:
+    name:
+      - dhall
+      - nodepool
+      - nodepool-builder
+      - nodepool-launcher
+    state: absent
 
-- name: Install builder package
-  yum:
-    name: "{{ nodepool_builder_packages }}"
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+- name: Install httpd to serve nodepools logs
+  package:
+    name: httpd
+
+- name: Install packages for builder
+  package:
+    name:
+      - libvirt-daemon
+      - sf-elements
   when: '"nodepool-builder" in nodepool_services'
 
-- name: Install package for config-check
-  yum:
-    name: nodepool
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  delegate_to: "{{ item }}"
-  loop: "{{ executor_hosts }}"
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ nodepool_components }}"
+  when: item.service in nodepool_services
 
 - name: Install openshift client
   block:

@@ -1,6 +1,6 @@
 #!/bin/sh
 # re-run this if the container is removed
-podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} {{ item.image }}
+podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} {{ item.image }} {{ item.run | default(None) }}
 {% if _local_ca_exists.stat.isreg or service.command is defined %}
 podman start {{ item.service }}
 {% if _local_ca_exists.stat.isreg %}

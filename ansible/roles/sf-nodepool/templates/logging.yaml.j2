@@ -20,7 +20,7 @@ handlers:
     class: logging.handlers.WatchedFileHandler
     formatter: normal
     level: ERROR
-    filename: '{{ nodepool_launcher_dir }}/{{ _logfile }}.log'
+    filename: '{{ nodepool_html_launcher_dir }}/{{ _logfile }}.log'
 {% endif %}
 loggers:
   nodepool:

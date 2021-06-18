@@ -1,48 +1,67 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ nodepool_components }}"
+  when: item.service in nodepool_services
+
 - name: Set nodepool_need_restart fact
   set_fact:
     nodepool_need_restart: "{{ _version is changed }}"
 
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: nodepool
-    ssh_key: nodepool_rsa
-    home_dir: "{{ nodepool_lib_dir }}"
+- name: Create container user
+  include_role:
+    name: sf-container
+    tasks_from: create_user.yaml
 
-- name: Create .ssh and .config directories
-  file:
-    dest: "{{ item.path }}"
-    state: directory
-    mode: "{{ item.mode | default(0700) }}"
-    owner: nodepool
-    group: nodepool
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
   loop:
-    - {path: "/var/lib/nodepool/.ssh"}
     - {path: "/root/.config/openstack"}
-    - {path: "/var/cache/nodepool/dib_tmp"}
-    - {path: "/var/cache/nodepool/dib_cache"}
-    - {path: "/var/lib/nodepool/.config/openstack", mode: "0750"}
-    - {path: "/var/lib/nodepool/.kube", mode: "0750"}
+    - {path: "{{ nodepool_cache_dir }}", mode: "0755", recurse: "yes"}
+    - {path: "{{ nodepool_conf_dir }}"}
+    - {path: "{{ nodepool_conf_dir }}/scripts"}
+    - {path: "{{ nodepool_conf_dir }}/ssl", mode: "0550", owner: "root"}
+    - {path: "{{ nodepool_lib_dir }}"}
+    - {path: "{{ nodepool_lib_dir }}/.config/openstack", mode: "0750"}
+    - {path: "{{ nodepool_lib_dir }}/.kube", mode: "0750", recurse: "yes"}
+    - {path: "{{ nodepool_lib_dir }}/.ssh"}
+    - {path: "{{ nodepool_lib_dir }}/patches"}
+    - {path: "{{ nodepool_log_dir }}", recurse: "yes"}
 
-- name: Copy the key
+- name: Sync patches directory
+  synchronize:
+    src: "/usr/share/sf-config/ansible/roles/sf-nodepool/files/patches/"
+    dest: "{{ nodepool_lib_dir }}/patches"
+    rsync_opts:
+      - "--delete"
+
+- name: Install ssh private and public keys
   copy:
     content: "{{ hostvars[inventory_hostname][item.key] }}"
     dest: "/var/lib/nodepool/.ssh/{{ item.name }}"
     mode: "{{ item.mode }}"
-    owner: "nodepool"
-    group: "nodepool"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   loop:
     - {key: "nodepool_rsa", name: "id_rsa", mode: "0400"}
     - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
+    - {key: "zuul_rsa_pub", name: "zuul_rsa.pub", mode: "0444"}
   no_log: show_hidden_logs == False
+
+- name: Define .kube/config location
+  set_fact:
+    nodepool_kube_config: "{{ nodepool_lib_dir }}/.kube/config"
 
 - name: Copy provided kube_file config
   copy:
     src: "{{ nodepool_kube_file }}"
-    dest: "/var/lib/nodepool/.kube/config"
-    owner: nodepool
-    group: nodepool
+    dest: "{{ nodepool_kube_config }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: 0640
   when: nodepool_kube_file[0]|default(None) == "/"
 
@@ -53,125 +72,164 @@
       --insecure-skip-tls-verify={{ item.insecure_skip_tls_verify|default(False) }} \
       --token ${TOKEN}
     # rename context to match the file generated in the config repo
-    oc config rename-context "$(oc config current-context)" {{ item.context }}
+    oc config --config={{ nodepool_kube_config }} rename-context "$(oc config current-context)" {{ item.context }}
   become: yes
-  become_user: nodepool
+  become_user: "{{ owner }}"
   loop: "{{ nodepool_openshift_providers|default([]) }}"
 
 - name: Add local k1s cluster provided by sf-hypervisor-k1s
   shell: |
-    oc config set-credentials k1s-managed --token={{ k1s_token }}
+    oc config --config={{ nodepool_kube_config }} set-credentials k1s-managed --token={{ k1s_token }}
     {% for host in inventory %}{% if 'hypervisor-k1s' in host['roles'] %}
-    oc config set-cluster k1s-managed-{{ host['name']|replace('.', '-') }} --server=https://{{ host['hostname'] }}:9023 --insecure-skip-tls-verify=true
-    oc config set-context /k1s-{{ host['name']|replace('.', '-') }}/managed --cluster=k1s-managed-{{ host['name']|replace('.', '-') }} --user=k1s-managed
+    oc config --config={{ nodepool_kube_config }} set-cluster k1s-managed-{{ host['name']|replace('.', '-') }} --server=https://{{ host['hostname'] }}:9023 --insecure-skip-tls-verify=true
+    oc config --config={{ nodepool_kube_config }} set-context /k1s-{{ host['name']|replace('.', '-') }}/managed --cluster=k1s-managed-{{ host['name']|replace('.', '-') }} --user=k1s-managed
     {# ensure current-context is set #}
-    oc config current-context &> /dev/null || oc config use-context /k1s-{{ host['name'] }}/managed
+    oc config --config={{ nodepool_kube_config }} current-context &> /dev/null || oc config --config={{ nodepool_kube_config }} use-context /k1s-{{ host['name'] }}/managed
     {% endif %}{% endfor %}
   become: yes
-  become_user: nodepool
+  become_user: "{{ owner }}"
   when: "'hypervisor-k1s' in roles"
 
-- name: Install os-client-config
+- name: Genereate os-client-config
   template:
     src: clouds.yaml.j2
     dest: "{{ item }}/openstack/clouds.yaml"
-    owner: nodepool
-    group: nodepool
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: 0640
   loop:
     - /root/.config
-    - /var/lib/nodepool/.config
+    - "{{ nodepool_lib_dir }}/.config"
   when: nodepool_clouds_file[0]|default(None) != "/"
 
-- name: Copy os-client-config
+- name: Copy os-client-config if exists
   copy:
     src: "{{ nodepool_clouds_file }}"
     dest: "{{ item }}/openstack/clouds.yaml"
-    owner: nodepool
-    group: nodepool
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: 0640
   loop:
     - /root/.config
-    - /var/lib/nodepool/.config
+    - "{{ nodepool_lib_dir }}/.config"
   when: nodepool_clouds_file[0]|default(None) == "/"
 
-- name: Install zuul public ssh key
-  copy:
-    content: "{{ hostvars[inventory_hostname][item+'_pub'] }}"
-    dest: "{{ nodepool_lib_dir }}/.ssh/{{ item }}.pub"
-    mode: 0444
-    owner: nodepool
-    group: nodepool
-  loop:
-    - zuul_rsa
-
-- name: "Create ssl directory"
-  file:
-    path: "{{ nodepool_conf_dir }}/ssl"
-    mode: 0550
-    group: nodepool
-    state: directory
-
-- name: "Setup zookeeper certificates"
+- name: Setup zookeeper certificates
   copy:
     content: "{{ item.content }}"
     dest: "{{ nodepool_conf_dir }}/ssl/{{ item.dest }}"
     mode: 0440
-    group: nodepool
+    group: "{{ group }}"
   loop:
     - {content: "{{ zk_ca_pem }}", dest: "zk-ca.pem"}
     - {content: "{{ zk_client_crt }}", dest: "zookeeper.crt"}
     - {content: "{{ zk_client_key }}", dest: "zookeeper.key"}
   no_log: show_hidden_logs == False
 
-- name: Install config
+- name: Install nodepool secure.conf
   template:
-    src: "{{ item }}.j2"
-    dest: "{{ nodepool_conf_dir }}/{{ item }}"
+    src: "secure.conf.j2"
+    dest: "{{ nodepool_conf_dir }}/secure.conf"
     owner: "root"
-    group: "nodepool"
+    group: "{{ group }}"
     mode: "0440"
-  loop:
-    - secure.conf
 
-- name: Setup /etc/sysconfig/nodepool
+- name: Setup nodepool-env
   template:
-    src: sysconfig_nodepool.j2
-    dest: /etc/sysconfig/nodepool
+    src: nodepool-env.j2
+    dest: "{{ nodepool_lib_dir }}/nodepool-env"
   register: _nodepool_env
 
-- name: Set nodepool_need_restart fact when sysconfig is updated
+- name: Set nodepool_need_restart fact when nodepool-env is updated
   set_fact:
     nodepool_need_restart: true
   when: _nodepool_env is changed
 
-- name: Create nodepool working directories
-  file:
-    path: "{{ item.path }}"
-    owner: "{{ item.owner | default('root') }}"
-    group: "{{ item.group | default('root') }}"
-    mode: "{{ item.mode | default(0750) }}"
-    state: directory
-  loop:
-    - {path: "/var/lib/nodepool/images", owner: "nodepool", group: "nodepool"}
-    - {path: "/var/cache/nodepool", mode: "0755", owner: "nodepool", group: "nodepool"}
+- name: Check if /etc/nodepool/nodepool.yaml exists
+  stat:
+    path: /etc/nodepool/nodepool.yaml
+  register: _nodepool_config
 
-- block:
-    - name: Create nodepool-log directory served by apache
+- name: Setup minimal nodepool config (needed to build the container)
+  template:
+    src: "nodepool.yaml.j2"
+    dest: "{{ nodepool_conf_dir }}/nodepool.yaml"
+  when: _nodepool_config.stat.isreg is not defined
+
+- name: Setup nodepool builder
+  block:
+    - name: Create container directory
+      include_role:
+        name: sf-container
+        tasks_from: create_directory.yaml
+      loop:
+        - {path: "{{ nodepool_cache_dir }}/dib_cache", recurse: "yes"}
+        - {path: "{{ nodepool_cache_dir }}/dib_tmp", recurse: "yes"}
+        - {path: "{{ nodepool_lib_dir }}/dib", recurse: "yes"}
+        - {path: "{{ nodepool_lib_dir }}/images", recurse: "yes"}
+
+    - name: Create www nodepool builder log directory
       file:
-        path: "/var/www/html/nodepool-builder"
-        owner: "nodepool"
+        path: "{{ nodepool_html_builder_dir }}"
+        owner: "{{ owner }}"
         group: "apache"
         mode: "0755"
+        recurse: "yes"
         state: directory
+
+    - include_tasks: create_logging.yml
+      vars:
+        _logfile: builder
+
+    - name: Ensure libvirt is started
+      service:
+        name: libvirtd
+        state: started
+        enabled: yes
 
     - name: Install dib-virt-customize script
       copy:
         src: dib-virt-customize.py
         dest: /usr/bin/dib-virt-customize
         mode: "0755"
+
+    - name: Setup upstream dib elements
+      block:
+        - name: Clone or update upstream project-config
+          git:
+            repo: https://opendev.org/openstack-infra/project-config
+            dest: /usr/share/project-config
+            force: yes
+
+        - name: Install script
+          copy:
+            src: manage_upstream_config_repo.yaml
+            dest: /opt/manage_upstream_config_repo.yaml
+
+        - name: Install crontab to update project-config repo
+          cron:
+            name: Update project-config repo
+            hour: "1"
+            job: "systemd-cat ansible-playbook -i 'localhost,' /opt/manage_upstream_config_repo.yaml"
+      when: dib_upstream_elements
   when:
     - '"nodepool-builder" in nodepool_services'
+
+- name: Setup nodepool launcher
+  block:
+    - name: Create www nodepool launcher log directory
+      file:
+        path: "{{ nodepool_html_launcher_dir }}"
+        owner: "{{ owner }}"
+        group: "apache"
+        mode: "0755"
+        recurse: "yes"
+        state: directory
+
+    - include_tasks: create_logging.yml
+      vars:
+        _logfile: launcher
+  when: "'nodepool-launcher' in nodepool_services"
 
 - name: Setup authorized keys
   copy:
@@ -183,25 +241,10 @@
     content: "{{ localCA_pem }}"
     dest: "{{ nodepool_conf_dir }}/scripts/localCA.pem"
 
-- block:
-    - include_tasks: create_logging.yml
-      vars:
-        _logfile: builder
-  when: "'nodepool-builder' in nodepool_services"
-
-- block:
-    - name: Create nodepool launcher log dir
-      file:
-        path: "{{ nodepool_launcher_dir }}"
-        owner: "nodepool"
-        group: "apache"
-        mode: "0755"
-        state: directory
-
-    - include_tasks: create_logging.yml
-      vars:
-        _logfile: launcher
-  when: "'nodepool-launcher' in nodepool_services"
+- name: Synchronize /etc/software-factory/certs
+  synchronize:
+    src: /etc/software-factory/certs/
+    dest: "{{ nodepool_lib_dir }}/certs/"
 
 - name: Update httpd directories for logs
   include_tasks: update_httpd_directories.yaml
@@ -221,3 +264,10 @@
   copy:
     src: nodepool_www.logrotate.conf
     dest: /etc/logrotate.d/nodepool_www
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ nodepool_components }}"
+  when: item.service in nodepool_services

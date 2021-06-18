@@ -7,7 +7,15 @@
   loop: "{{ nodepool_services }}"
   ignore_errors: "yes"
 
-- block:
+- name: Delete containers and files
+  block:
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ nodepool_components }}"
+      when: item.service in nodepool_services
+
     - name: Remove files
       file:
         path: "{{ item }}"
@@ -15,14 +23,8 @@
       loop:
         - /etc/httpd/conf.d/nodepool_log.conf
         - /var/www/nodepool-log
-        - "{{ nodepool_launcher_dir }}"
+        - "{{ nodepool_html_launcher_dir }}"
         - "{{ nodepool_lib_dir }}"
         - "{{ nodepool_conf_dir }}"
         - /root/.kube/config
-
-    - name: Remove packages
-      yum:
-        name: "{{ item }}"
-        state: absent
-      loop: "{{ nodepool_launcher_packages }} + {{ nodepool_builder_packages }}"
   when: erase == True
