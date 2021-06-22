@@ -38,6 +38,19 @@
     name: /etc/yum.repos.d/grafana.repo
     state: absent
 
+# gerrit-3.2.6-3 missed a symlinks for log,
+# thus we need to move the directory created previously
+- name: "Fix gerrit logs directory"
+  shell: |
+    if test -d /var/lib/gerrit && ! test -L /var/lib/gerrit/logs; then
+      mkdir -p /var/log/gerrit && \
+        chown gerrit:gerrit /var/log/gerrit && \
+        chmod 0750 /var/log/gerrit && \
+        mv /var/lib/gerrit/logs/* /var/log/gerrit/ && \
+        rm -Rf /var/lib/gerrit/logs && \
+        ln -s /var/log/gerrit /var/lib/gerrit/logs;
+    fi
+
 - name: "Update packages"
   yum:
     name: "*"
