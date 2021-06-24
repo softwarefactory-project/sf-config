@@ -12,9 +12,6 @@
   synchronize:
     src: "/usr/share/sf-config/ansible/roles/sf-repos/files/sf-jobs/{{ item }}"
     dest: "{{ sf_jobs_clone_dir }}/{{ item }}"
-    rsync_opts:
-      # Ignore existing because users may update those files
-      - "--ignore-existing"
   loop:
     - README
     - playbooks/ansible/

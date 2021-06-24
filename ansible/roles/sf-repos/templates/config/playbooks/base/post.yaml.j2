@@ -33,7 +33,7 @@
       logclassify_local_dir: "{{'{{'}} zuul.executor.log_root {{'}}'}}"
 {% endif %}
 
-- hosts: "{{'{{'}} site_sflogs.fqdn {{'}}'}}"
+- hosts: "{{ logserver_hostname }}"
   gather_facts: false
   tasks:
     # Use a block because play vars doesn't take precedence on roles vars
