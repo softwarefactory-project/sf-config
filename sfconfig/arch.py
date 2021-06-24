@@ -98,7 +98,7 @@ def process(args):
 
         if sorted(correct_order_indexes) != correct_order_indexes:
             print("There is wrong order set in roles. Please change it to:")
-            for role_index in sorted(correct_order_indexes):
+            for role_index in correct_order_indexes:
                 print("- %s" % host["roles"][role_index])
             sys.exit(1)
 
