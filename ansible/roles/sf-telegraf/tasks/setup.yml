@@ -1,6 +1,11 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
+- name: Ensure telegraf owner for /etc/telegraf
+  file:
+    path: /etc/telegraf
+    owner: telegraf
+
 - name: Install configuration templates
   template:
     src: '{{ item.name }}.j2'
