@@ -205,6 +205,9 @@ logstash:
   maximum_heap_size: 512m
   minimum_heap_size: 128m
   retention_days: 60
+  # NOTE: Uncomment lines below, if you want to use external Logstash service.
+  # host: logstash-host
+  # port: 9999
 
 ## Uncomment below lines if you are using EXTERNAL Kibana service.
 #kibana:
