@@ -24,8 +24,8 @@ patch_container_command: ""
 
 zuul_components:
   - service: "zuul-executor"
-    image: "docker.io/zuul/zuul-executor:4.6.0"
-    digest: "sha256:3153e26cbff66516d3ed623799e33f397bcd8a4ffeb9481f4c16ce925ec1240b"
+    image: "quay.io/software-factory/zuul-executor:4.6.0"
+    digest: "sha256:154f6216e1e41d3db0d9434e386309b3c1a494eb5182041c74f826882dff2a96"
     mirror: ""
     skip-auto-update: True
     params: >-
@@ -62,8 +62,8 @@ zuul_components:
       apt clean
       rm -rf /var/tmp/{managesf,python-sfmanager}
   - service: "zuul-merger"
-    image: "docker.io/zuul/zuul-merger:4.6.0"
-    digest: "sha256:4898ae866f3f845f5659c32c31d55cab9550bf37400c7c38e199c0be557edfa7"
+    image: "quay.io/software-factory/zuul-merger:4.6.0"
+    digest: "sha256:fdcf741ef1dc65e7fc35c194966168d0a9a2c41f6d180969077c327243eaa85d"
     mirror: ""
     skip-auto-update: True
     params: >-
@@ -73,8 +73,8 @@ zuul_components:
       --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --privileged
   - service: "zuul-scheduler"
-    image: "docker.io/zuul/zuul-scheduler:4.6.0"
-    digest: "sha256:2915c16e57a71e64fb41c8ac81f4be1c656bec1fc825840a78d7ae2188bbcd00"
+    image: "quay.io/software-factory/zuul-scheduler:4.6.0"
+    digest: "sha256:a3cc5dc2435efa0cdadb7854f66ac259a7b309cef009e03ceff53ac5b57219aa"
     mirror: ""
     skip-auto-update: True
     params: >-
@@ -86,8 +86,8 @@ zuul_components:
       --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
   - service: "zuul-web"
-    image: "docker.io/zuul/zuul-web:4.6.0"
-    digest: "sha256:8864b6784b69f9059e5490ea187aec38f773b293c1f8e5aa342b90549bc07d33"
+    image: "quay.io/software-factory/zuul-web:4.6.0"
+    digest: "sha256:f5dd164b0f7e43d1ec94a55f685d82ef29f6dfaef4693a96a83b4863b459b2f3"
     mirror: ""
     skip-auto-update: True
     params: >-
