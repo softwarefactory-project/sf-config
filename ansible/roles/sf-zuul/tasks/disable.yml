@@ -7,7 +7,15 @@
   loop: "{{ zuul_services }}"
   ignore_errors: "yes"
 
-- block:
+- name: Delete containers and files
+  block:
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ zuul_components }}"
+      when: item.service in zuul_services
+
     - name: Remove files
       file:
         path: "{{ item }}"
@@ -16,10 +24,4 @@
         - /etc/httpd/conf.d/zuul.conf
         - "{{ zuul_conf_dir }}"
         - "{{ zuul_lib_dir }}"
-
-    - name: Remove packages
-      yum:
-        name: "{{ item }}"
-        state: absent
-      loop: "{{ zuul_scheduler_packages }} + {{ zuul_merger_packages }} + {{ zuul_executor_packages }} + {{ zuul_web_packages }}"
   when: erase == True

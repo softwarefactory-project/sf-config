@@ -1,0 +1,19 @@
+[Unit]
+Description={{ item.service }} service
+After=syslog.target network.target
+StartLimitInterval=20
+StartLimitBurst=5
+
+[Service]
+Type=simple
+SyslogIdentifier={{ item.service }}
+ExecStart=/usr/bin/podman start -a {{ item.service }}
+ExecStop=/usr/bin/podman stop -t 10 {{ item.service }}
+{% if item.service == "zuul-scheduler" %}
+ExecReload=/usr/bin/podman exec -ti zuul-scheduler {{ item.service }} smart-reconfigure
+{% endif %}
+Restart=always
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target

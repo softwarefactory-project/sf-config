@@ -1,0 +1,9 @@
+---
+- name: "Stop {{ item.service }} service"
+  systemd:
+    name: "{{ item.service }}"
+    state: stopped
+    enabled: yes
+
+- name: "Delete {{ item.service }} container"
+  command: "podman rm {{ item.service }}"

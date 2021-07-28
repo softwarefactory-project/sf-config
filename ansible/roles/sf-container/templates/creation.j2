@@ -1,0 +1,14 @@
+#!/bin/sh
+# re-run this if the container is removed
+podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} {{ item.image }}
+{% if _local_ca_exists.stat.isreg or service.command is defined %}
+podman start {{ item.service }}
+{% if _local_ca_exists.stat.isreg %}
+podman exec -ti {{ item.service }} update-ca-certificates
+{% endif %}
+{% if item.command is defined %}
+podman cp /usr/local/bin/configure-{{ item.service }}.sh {{ item.service }}:/tmp/configure-{{ item.service }}.sh
+podman exec -ti {{ item.service }} /bin/bash /tmp/configure-{{ item.service }}.sh
+{% endif %}
+podman stop {{ item.service }}
+{% endif %}

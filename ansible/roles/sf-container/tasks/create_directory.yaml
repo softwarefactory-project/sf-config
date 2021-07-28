@@ -1,0 +1,8 @@
+- name: "Create {{ item.path }} directory"
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    mode: "{{ item.mode | default(0700) }}"
+    recurse: "{{ item.recurse | default('no') }}"
+    owner: "{{ item.owner | default(owner) }}"
+    group: "{{ item.group | default(group) }}"

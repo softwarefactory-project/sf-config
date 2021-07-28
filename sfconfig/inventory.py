@@ -279,16 +279,20 @@ def nodepool_restart(args, pb):
 
 
 def zuul_restart(args, pb):
-    dump_file = '/var/lib/software-factory/state/zuul-change-dump.sh'
+    dump_file = '/var/lib/zuul/scripts/zuul-change-dump.sh'
 
     pb.append(host_play('zuul-executor', tasks=[{
         'name': 'Stop executors',
-        'command': '/bin/zuul-executor stop'
+        'service': {'name': 'zuul-executor', 'state': 'stopped'}
     }]))
 
     pb.append(host_play('zuul-scheduler', tasks=[{
-        'name': 'Dump changes',
-        'command': ('/usr/libexec/software-factory/zuul-changes.py '
+        'name': 'Dump zuul changes',
+        'retries': '50',
+        'delay': '5',
+        'command': ('podman exec -ti zuul-scheduler '
+                    'python '
+                    '/var/lib/zuul/scripts/zuul-changes.py '
                     'dump --dump_file %s' % dump_file)
     }, {
         'name': 'Stop scheduler',

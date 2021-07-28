@@ -1,0 +1,36 @@
+---
+- name: "Check installed version for {{ item.service }}"
+  command: "podman inspect --format {{ '{{' }}.ImageName{{ '}}' }} {{ item.service }}"
+  args:
+    warn: no
+  register: _installed_version
+  changed_when: false
+  failed_when: false
+  when: role_package != "any"
+
+- name: Check previous version
+  command: "cat /var/lib/software-factory/versions/{{ item.service }}"
+  changed_when: false
+  failed_when: false
+  register: _previous_version
+  when: role_package != "any"
+
+- name: Define upgraded variable
+  shell: |
+    if [ ! -z "{{ _previous_version.stdout }}" ] && \
+       [ "{{ _previous_version.stdout }}" != "{{ _installed_version.stdout }}" ]; then
+       echo "changed"
+    fi
+  register: _version
+  changed_when: _version.stdout == "changed"
+  when: role_package != "any"
+
+- name: Execute upgrade tasks
+  include: /usr/share/sf-config/ansible/roles/sf-{{ role_package }}/tasks/upgrade.yml
+  when: role_package == "any" or _version is changed or force_update_tasks
+
+- name: Write new version
+  copy:
+    content: "{{ _installed_version.stdout }}"
+    dest: "/var/lib/software-factory/versions/{{ item.service }}"
+  when: role_package != "any"

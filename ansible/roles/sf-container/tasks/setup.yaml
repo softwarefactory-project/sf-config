@@ -1,0 +1,57 @@
+---
+- name: "Check if {{ item.service }} container exists"
+  command: "podman container exists {{ item.service }}"
+  ignore_errors: yes
+  register: _container_exists
+  changed_when: false
+  failed_when: _container_exists.rc not in [0, 1]
+
+- name: "Check if local CA exists"
+  stat:
+    path: /var/lib/software-factory/bootstrap-data/certs/localCA.pem
+  register: _local_ca_exists
+
+- name: "Add local CA for {{ item.service }}"
+  set_fact:
+    _self_signed_certs: >-
+      --volume /var/lib/software-factory/bootstrap-data/certs/localCA.pem:/usr/local/share/ca-certificates/localCA.crt:Z
+      --env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+  when: _local_ca_exists.stat.isreg
+
+- name: "Create configuration script for {{ item.service }}"
+  copy:
+    content: |
+      #!/bin/sh
+      set -x
+      {{ item.command | default(omit) }}
+      {{ patch_container_command | default(omit) }}
+    dest: "/usr/local/bin/configure-{{ item.service }}.sh"
+    mode: 0755
+    owner: root
+  when: item.command is defined or patch_container_command is defined
+
+- name: "Create container creation script for {{ item.service }}"
+  template:
+    src: creation.j2
+    dest: "/usr/local/bin/container-{{ item.service }}.sh"
+    mode: 0755
+    owner: root
+
+- name: Create container and install systemd file
+  block:
+    - name: "Create {{ item.service }} container"
+      shell: "/usr/local/bin/container-{{ item.service }}.sh > /var/log/software-factory/container-{{ item.service }}.log"
+
+    - name: "Install {{ item.service }} service file"
+      template:
+        src: service.j2
+        dest: "/etc/systemd/system/{{ item.service }}.service"
+      register: _container_service
+
+    - name: "Enable {{ item.service }} service"
+      systemd:
+        name: "{{ item.service }}"
+        daemon-reload: "{% if _container_service is changed %}yes{% else %}no{% endif %}"
+        state: stopped
+        enabled: yes
+  when: _container_exists.rc != 0

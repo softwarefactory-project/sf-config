@@ -40,5 +40,5 @@ class ElasticSearch(Component):
                     'host': args.glue["elasticsearch_host"],
                     'port': args.defaults['elasticsearch_http_port'],
                     'use_ssl': 'true',
-                    'ca_certs': '/etc/pki/ca-trust/source/anchors/localCA.pem'
+                    'ca_certs': '/usr/local/share/ca-certificates/localCA.crt'
                 })

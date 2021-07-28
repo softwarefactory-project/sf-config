@@ -71,6 +71,7 @@
       - tmux
       - vim-enhanced
       - sf-config
+      - podman
       # Needed by ansible selinux module
       - libsemanage-python
       - policycoreutils-python
