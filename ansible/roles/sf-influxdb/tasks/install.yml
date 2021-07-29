@@ -10,7 +10,7 @@
 
 - name: Install influxdb packages
   yum:
-    name: influxdb
+    name: "influxdb-{{ influxdb_version }}"
     state: present
     disablerepo: "*"
     enablerepo: "{{ influxdb_repo_name }}"

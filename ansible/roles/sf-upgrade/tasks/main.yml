@@ -32,11 +32,13 @@
     - openstack-stein
   when: ansible_distribution == "CentOS"
 
-# FIXME: remove grafana repo to force 7.5 (grafyaml doesn't work with 8.0)
-- name: "Remove grafana.repo"
+- name: "Remove upstream repos to ensure smooth upgrade"
   file:
-    name: /etc/yum.repos.d/grafana.repo
+    name: "{{ item }}"
     state: absent
+  loop:
+    - /etc/yum.repos.d/influxdb.repo
+    - /etc/yum.repos.d/grafana.repo
 
 # gerrit-3.2.6-3 missed a symlinks for log,
 # thus we need to move the directory created previously
