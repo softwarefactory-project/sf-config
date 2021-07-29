@@ -5,6 +5,9 @@ role_actions:
   - setup
 
 role_package: influxdb
+# Temporary pin the version to 1.8.6 due multiple bugs
+# related to new version, e.g.: https://github.com/influxdata/influxdb/issues/21960
+influxdb_version: 1.8.6
 
 influxdb_host: influxdb.example.com
 influxdb_port: 25826
