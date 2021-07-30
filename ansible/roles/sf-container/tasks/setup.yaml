@@ -21,8 +21,8 @@
 - name: "Create configuration script for {{ item.service }}"
   copy:
     content: |
-      #!/bin/sh
-      set -x
+      #!/bin/bash
+      set -ex
       {{ item.command | default(omit) }}
       {{ patch_container_command | default(omit) }}
     dest: "/usr/local/bin/configure-{{ item.service }}.sh"
@@ -37,7 +37,7 @@
     mode: 0755
     owner: root
 
-- name: Create container and install systemd file
+- name: "Create container and install systemd file and enable service for {{ item.service }}"
   block:
     - name: "Create {{ item.service }} container"
       shell: "/usr/local/bin/container-{{ item.service }}.sh > /var/log/software-factory/container-{{ item.service }}.log"

@@ -4,3 +4,4 @@
 
 - name: Run virt-customize
   command: "{{ ' '.join(virt_customize_cmd) }}"
+  environment: "{{ virt_customize_env|default({}) }}"

@@ -592,6 +592,10 @@ def generate(args):
         # Host params are generic roles parameters
         host["params"] = {'host_public_url': host['public_url']}
 
+        if "influxdb" in host["roles"]:
+            # Add telegraf for statsd gateway
+            host["roles"].append("telegraf")
+
         # This method handles roles such as zuul-merger that are in fact the
         # zuul role with the zuul_services argument set to "merger"
         def ensure_role_services(role_name, meta_names):
@@ -615,10 +619,6 @@ def generate(args):
         ensure_role_services("nodepool", ["launcher", "builder"])
         ensure_role_services("zuul", ["scheduler", "merger", "executor",
                                       "web"])
-
-        if "influxdb" in host["roles"]:
-            # Add telegraf for statsd gateway
-            host["roles"].append("telegraf")
 
     templates = "%s/templates" % args.share
 

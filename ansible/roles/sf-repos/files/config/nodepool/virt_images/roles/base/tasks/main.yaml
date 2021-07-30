@@ -13,11 +13,6 @@
     image_cache_file: "{{ image_cache_dir }}/{{ image }}"
     image_tmp_dir: "/var/tmp/{{ image_output | basename }}"
 
-- name: Ensure libvirt is started
-  service:
-    name: libvirtd
-    state: started
-
 - name: Make sure cache directory exist
   file:
     path: "{{ image_cache_dir }}"
@@ -49,6 +44,7 @@
 
 - name: Update the cache
   command: "virt-customize -m {{ memsize }} -a {{ image_cache_file }} --update"
+  environment: "{{ virt_customize_env|default({}) }}"
 
 - name: Create tmp directory
   file:

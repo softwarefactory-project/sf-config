@@ -6,8 +6,3 @@
   loop:
     - builder
     - launcher
-
-- name: Check for legacy state
-  stat:
-    path: /var/opt/rh/rh-python35/lib/nodepool/
-  register: _nodepool_scl

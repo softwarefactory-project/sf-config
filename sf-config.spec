@@ -49,6 +49,7 @@ install -p -D -m 0644 defaults/sfconfig.yaml %{buildroot}%{_sysconfdir}/software
 install -p -D -m 0644 defaults/logo-favicon.ico %{buildroot}%{_sysconfdir}/software-factory/logo-favicon.ico
 install -p -D -m 0644 defaults/logo-splash.png %{buildroot}%{_sysconfdir}/software-factory/logo-splash.png
 install -p -D -m 0644 defaults/logo-topmenu.png %{buildroot}%{_sysconfdir}/software-factory/logo-topmenu.png
+install -p -d -m 0755 %{buildroot}%{_sysconfdir}/software-factory/certs
 # /usr/share/sf-config
 install -p -d %{buildroot}%{_datarootdir}/sf-config
 mv ansible defaults refarch scripts templates testinfra %{buildroot}%{_datarootdir}/sf-config/

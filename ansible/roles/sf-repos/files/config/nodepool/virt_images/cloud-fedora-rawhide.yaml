@@ -18,6 +18,8 @@
       - import_role:
           name: discover-rawhide
       - import_role:
+          name: base-appliance
+      - import_role:
           name: base
       - import_role:
           name: sshd-config
