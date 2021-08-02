@@ -16,7 +16,7 @@
     state: directory
     owner: loguser
     group: apache
-    mode: 0755
+    mode: '0755'
 
 - name: Create ara gunicorn service
   copy:

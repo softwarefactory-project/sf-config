@@ -12,7 +12,7 @@
     dest: '{{ item.path }}/{{ item.name }}'
     owner: telegraf
     group: root
-    mode: 0440
+    mode: '0440'
   loop:
     - {name: 'output_influxdb.conf', path: '/etc/telegraf/telegraf.d'}
     - {name: 'telegraf.conf', path: '/etc/telegraf'}
@@ -23,7 +23,7 @@
     src: '{{ item }}'
     dest: '/etc/telegraf/telegraf.d/{{ item }}'
     owner: telegraf
-    mode: 0440
+    mode: '0440'
   loop:
     - statsd.conf
   notify: Restart telegraf

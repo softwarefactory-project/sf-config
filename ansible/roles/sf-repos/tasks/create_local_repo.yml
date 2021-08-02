@@ -31,5 +31,5 @@
   copy:
     src: local-post-update-hook.sh
     dest: /var/lib/software-factory/git/config.git/hooks/post-update
-    mode: 0755
+    mode: '0755'
   when: "repo_name == 'config'"

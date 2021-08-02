@@ -9,13 +9,13 @@
   copy:
     content: "{{ zk_ca_pem }}"
     dest: /etc/zookeeper/zk-ca.pem
-    mode: 0444
+    mode: '0444'
 
 - name: Setup TLS file
   copy:
     content: "{{ zk_keys[ansible_fqdn] }}"
     dest: /etc/zookeeper/server.pem
-    mode: 0400
+    mode: '0400'
     owner: zookeeper
   notify: restart zookeeper
 
@@ -23,7 +23,7 @@
   template:
     src: zoo.cfg.j2
     dest: /etc/zookeeper/zoo.cfg
-    mode: 0644
+    mode: '0644'
   notify: restart zookeeper
 
 - name: "make /var/lib/zookeeper/version-2 writable by zookeeper"

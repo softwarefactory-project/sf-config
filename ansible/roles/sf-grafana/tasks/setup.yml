@@ -68,7 +68,7 @@
     path: /var/run/grafana
     owner: grafana
     group: grafana
-    mode: 0755
+    mode: '0755'
     state: directory
 
 - name: Check if grafana is running
@@ -98,7 +98,7 @@
   file:
     path: '{{ grafyaml_metrics }}'
     state: directory
-    mode: 0755
+    mode: '0755'
   delegate_to: '{{ install_server_host }}'
 
 - name: Install update-grafana-graphs script
@@ -107,7 +107,7 @@
     dest: /usr/bin/update-grafana-graphs.sh
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
   delegate_to: '{{ install_server_host }}'
 
 # Retry start to mitigate initial service start bug with grafana-5.1.3-1

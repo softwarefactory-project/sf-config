@@ -4,14 +4,14 @@
     - copy:
         src: "{{ idp_md_file }}"
         dest: /etc/httpd/saml2/idp_metadata.xml
-        mode: 0444
+        mode: '0444'
         owner: apache
         group: apache
       when: idp_md_file is defined
     - get_url:
         url: "{{ idp_md_url }}"
         dest: /etc/httpd/saml2/idp_metadata.xml
-        mode: 0444
+        mode: '0444'
         owner: apache
         group: apache
       when: idp_md_url is defined
@@ -26,7 +26,7 @@
   template:
       src: "{{ item.name }}.j2"
       dest: "{{ item.dest }}/{{ item.name }}"
-      mode: 0444
+      mode: '0444'
       owner: apache
       group: apache
   loop:
@@ -42,6 +42,6 @@
   template:
       src: mellon_metadata.xml.j2
       dest: /etc/httpd/saml2/mellon_metadata.xml
-      mode: 0644
+      mode: '0644'
       owner: apache
       group: apache

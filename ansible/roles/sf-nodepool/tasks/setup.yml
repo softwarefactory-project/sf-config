@@ -62,7 +62,7 @@
     dest: "{{ nodepool_kube_config }}"
     owner: "{{ owner }}"
     group: "{{ group }}"
-    mode: 0640
+    mode: '0640'
   when: nodepool_kube_file[0]|default(None) == "/"
 
 - name: Add local openshift cluster provided by sf-hypervisor-openshift
@@ -96,7 +96,7 @@
     dest: "{{ item }}/openstack/clouds.yaml"
     owner: "{{ owner }}"
     group: "{{ group }}"
-    mode: 0640
+    mode: '0640'
   loop:
     - /root/.config
     - "{{ nodepool_lib_dir }}/.config"
@@ -108,7 +108,7 @@
     dest: "{{ item }}/openstack/clouds.yaml"
     owner: "{{ owner }}"
     group: "{{ group }}"
-    mode: 0640
+    mode: '0640'
   loop:
     - /root/.config
     - "{{ nodepool_lib_dir }}/.config"
@@ -118,7 +118,7 @@
   copy:
     content: "{{ item.content }}"
     dest: "{{ nodepool_conf_dir }}/ssl/{{ item.dest }}"
-    mode: 0440
+    mode: '0440'
     group: "{{ group }}"
   loop:
     - {content: "{{ zk_ca_pem }}", dest: "zk-ca.pem"}

@@ -30,7 +30,7 @@
   copy:
     src: "/var/lib/software-factory/bootstrap-data/certs/{{ item }}"
     dest: "{{ elk_stack_certs }}/{{ item }}"
-    mode: 0600
+    mode: '0600'
     owner: elasticsearch
     group: root
   loop:

@@ -16,7 +16,7 @@
 - name: "Create dlrn directories"
   file:
     path: "{{ item.path }}"
-    mode: 0755
+    mode: '0755'
     owner: "{{ item.owner }}"
     state: directory
   loop:

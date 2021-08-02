@@ -10,7 +10,7 @@
   blockinfile:
     dest: /var/lib/managesf/.ssh/config
     create: yes
-    mode: 0644
+    mode: '0644'
     block: |
       {% for conn in zuul_gerrit_connections|default([]) %}
       Host {{ conn.hostname }}
@@ -41,7 +41,7 @@
   file:
     path: /etc/managesf
     state: directory
-    mode: 0750
+    mode: '0750'
     group: managesf
 
 - name: "Setup config.py"
@@ -49,7 +49,7 @@
     src: config.py.j2
     dest: /etc/managesf/config.py
     group: managesf
-    mode: 0440
+    mode: '0440'
   notify: restart managesf
 
 - block:

@@ -75,7 +75,7 @@
   template:
     src: "{{ sf_templates_dir }}/etc-hosts.j2"
     dest: /etc/hosts
-    mode: 0644
+    mode: '0644'
   when: manage_etc_hosts|default(true)
 
 - name: Disable root password login
@@ -121,7 +121,7 @@
   copy:
     content: "{{ localCA_pem }}"
     dest: "/etc/pki/ca-trust/source/anchors/localCA.pem"
-    mode: 0644
+    mode: '0644'
     owner: root
     group: root
   register: new_crt

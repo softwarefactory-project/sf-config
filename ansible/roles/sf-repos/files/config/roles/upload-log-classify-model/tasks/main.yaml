@@ -25,7 +25,7 @@
       file:
         path: "{{ _model_dest_path|dirname }}"
         state: directory
-        mode: 0775
+        mode: '0775'
 
     - name: Upload classifier
       copy:

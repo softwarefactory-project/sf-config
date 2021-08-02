@@ -50,7 +50,7 @@
   file:
     path: "{{ image_tmp_dir }}"
     state: directory
-    mode: 0755
+    mode: '0755'
 
 - name: Set filename copy fact
   set_fact:
@@ -61,7 +61,7 @@
     src: "{{ image_cache_file }}"
     dest: "{{ image_file }}"
     remote_src: true
-    mode: 0644
+    mode: '0644'
 
 - set_fact:
     virt_customize_cmd:

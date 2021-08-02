@@ -54,7 +54,7 @@
         path: /var/lib/log-classify
         state: directory
         owner: "{{ owner }}"
-        mode: 0700
+        mode: '0700'
 
     - name: Add volume on containers
       set_fact:
@@ -67,7 +67,7 @@
       template:
         src: zuul-changes.py.j2
         dest: "{{ zuul_lib_dir }}/scripts/zuul-changes.py"
-        mode: 0755
+        mode: '0755'
       delegate_to: "{{ item }}"
       loop: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
 
@@ -75,7 +75,7 @@
       template:
         src: gearman-client.sh.j2
         dest: "{{ zuul_lib_dir }}/scripts/gearman-client"
-        mode: 0755
+        mode: '0755'
 
     - name: Sync patches directory
       synchronize:
@@ -89,13 +89,13 @@
         src: /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_worker_rsa
         dest: "{{ zuul_lib_dir }}/.ssh/zuul_worker_rsa"
         owner: "{{ owner }}"
-        mode: 0400
+        mode: '0400'
 
     - name: Create tenant-secrets directory
       file:
         path: "{{ zuul_lib_dir }}/tenant-secrets"
         state: directory
-        mode: 0700
+        mode: '0700'
   when: "'zuul-scheduler' in zuul_services"
 
 - block:
@@ -104,7 +104,7 @@
         path: "{{ zuul_lib_dir }}/.ssh/known_hosts"
         owner: "{{ owner }}"
         group: "{{ group }}"
-        mode: 0600
+        mode: '0600'
         state: touch
       changed_when: false
 
@@ -138,7 +138,7 @@
       copy:
         content: "{{ item.app_key }}"
         dest: "{{ zuul_lib_dir }}/.ssh/github_{{ item.name }}_rsa"
-        mode: 0400
+        mode: '0400'
         owner: "{{ owner }}"
         group: "{{ group }}"
       loop: "{{ zuul_github_connections }}"
@@ -179,7 +179,7 @@
 - name: "Create ssl directory"
   file:
     path: "{{ zuul_conf_dir }}/ssl"
-    mode: 0550
+    mode: '0550'
     group: "{{ group }}"
     state: directory
 
@@ -187,7 +187,7 @@
   copy:
     content: "{{ item.content }}"
     dest: "{{ zuul_conf_dir }}/ssl/{{ item.dest }}"
-    mode: 0440
+    mode: '0440'
     group: "{{ group }}"
   loop:
     - {content: "{{ localCA_pem }}", dest: "localCA.pem"}
@@ -202,7 +202,7 @@
   template:
     src: zuul.conf.j2
     dest: "{{ zuul_conf_dir }}/zuul.conf"
-    mode: 0440
+    mode: '0440'
     group: "{{ group }}"
     backup: yes
   notify: restart zuul

@@ -3,7 +3,7 @@
     path: "{{ zuul_pagesserver_root }}/{{ zuul.project.name }}"
     state: directory
     recurse: yes
-    mode: 0775
+    mode: '0775'
 
 - name: Check fqdn and vhost_name variables
   fail:
@@ -25,7 +25,7 @@
   template:
     src: templates/vhost.conf.j2
     dest: "{{ zuul_pagesvhosts_root }}/pages-{{ zuul.project.name | regex_replace('/', '_') | regex_replace('\\.\\.', '') }}.conf"
-    mode: 0644
+    mode: '0644'
   register: apache_conf
 
 - name: Upload website to publication server

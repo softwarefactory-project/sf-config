@@ -35,7 +35,7 @@
   template:
     src: "{{ item.name }}.j2"
     dest: "{{ item.dest }}/{{ item.name }}"
-    mode: 0444
+    mode: '0444'
     owner: cauth
     group: cauth
   notify: cauth restart
@@ -56,7 +56,7 @@
     dest: /var/lib/cauth/keys/privkey.pem
     owner: cauth
     group: cauth
-    mode: 0440
+    mode: '0440'
 
 - include_tasks: saml2.yaml
   when: not authentication.SAML2.disabled

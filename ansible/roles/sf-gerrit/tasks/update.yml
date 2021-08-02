@@ -26,7 +26,7 @@
     dest: "/etc/gerrit/gerrit.config"
     owner: gerrit
     group: gerrit
-    mode: 0644
+    mode: '0644'
 
 - block:
     - stat:
@@ -64,7 +64,7 @@
       copy:
         src: replication.config
         dest: /etc/gerrit
-        mode: 0644
+        mode: '0644'
   when: not gerrit_replication and localconfig.stdout != upstreamconfig.stdout
 
 - name: Reload gerrit service
