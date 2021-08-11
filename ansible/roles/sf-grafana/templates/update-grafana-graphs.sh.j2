@@ -2,7 +2,7 @@
 
 {% if zuul_web_url|default(False) %}
 sf-graph-render --zuul-url {{ zuul_web_url }} \
-                --enable-logstash "{{ 'logstash' in roles }}" \
+                --enable-logstash "{{ 'logstash' in roles or external_logstash_host is not none }}" \
                 --config-dir "/root/config" \
                 --output-dir "{{ grafyaml_metrics }}" \
                 update-grafyaml

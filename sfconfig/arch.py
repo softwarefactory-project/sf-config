@@ -165,6 +165,13 @@ please remove them from /etc/software-factory/arch.yaml file:
               'in zuul configuration in sfconfig.yaml file. Is it ok?')
         sys.exit(1)
 
+    if ('logstash' in args.glue["roles"] and
+            args.sfconfig.get('logstash').get('host', None)):
+        print('Multiple Logstash configuration found. Please remove '
+              '"logstash" role from arch file or remove "host" from logstash '
+              'section in sfconfig.yaml file!')
+        sys.exit(1)
+
     # Add install-server hostname for easy access
     args.glue["install_server"] = args.glue["roles"]["install-server"][0][
         "hostname"]

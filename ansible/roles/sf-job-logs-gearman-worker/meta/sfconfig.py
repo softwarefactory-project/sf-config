@@ -13,11 +13,10 @@
 from sfconfig.components import Component
 
 
-class Grafana(Component):
+class JobLogsGearmanWorker(Component):
     def configure(self, args, host):
-        args.glue["grafana_internal_url"] = "http://%s:%s" % (
-            args.glue["grafana_host"], args.defaults["grafana_http_port"])
-        self.add_mysql_database(args, "grafana")
-
         args.glue['external_logstash_host'] = \
             args.sfconfig.get('logstash').get('host', None)
+
+        args.glue['external_logstash_port'] = \
+            args.sfconfig.get('logstash').get('port', None)
