@@ -93,7 +93,7 @@ class Gateway(Component):
 
         args.glue['readonly_user_autologin'] = \
             args.sfconfig.get('kibana', {}).get('readonly_user_autologin',
-                                                None)
+                                                'Basic')
 
         if args.sfconfig.get('external_elasticsearch', {}).get('users', {}):
             for user, creds in args.sfconfig.get('external_elasticsearch'
