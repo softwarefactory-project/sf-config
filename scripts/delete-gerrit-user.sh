@@ -30,6 +30,5 @@ fi
 
 systemctl stop gerrit
 sudo -u gerrit pynotedb delete-user --all-users /var/lib/gerrit/git/All-Users.git --name ${USERNAME} --email ${EMAIL}
-sudo -u gerrit /usr/bin/java -jar /var/lib/gerrit/bin/gerrit.war reindex -d /var/lib/gerrit
 systemctl start gerrit
 echo "Done"

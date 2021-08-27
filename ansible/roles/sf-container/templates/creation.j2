@@ -4,7 +4,9 @@ podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs 
 {% if _local_ca_exists.stat.isreg or service.command is defined %}
 podman start {{ item.service }}
 {% if _local_ca_exists.stat.isreg %}
-podman exec -ti {{ item.service }} update-ca-certificates
+{% if item.service != "gerrit" %}
+until podman exec -ti {{ item.service }} update-ca-certificates; do echo; done
+{% endif %}
 {% endif %}
 {% if item.command is defined %}
 podman cp /usr/local/bin/configure-{{ item.service }}.sh {{ item.service }}:/tmp/configure-{{ item.service }}.sh

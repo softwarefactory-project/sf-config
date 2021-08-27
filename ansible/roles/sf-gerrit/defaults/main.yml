@@ -9,6 +9,47 @@ role_actions:
   - stop
   - disable
 
+owner: gerrit
+group: gerrit
+uid: 10002
+gid: 10002
+
+gerrit_conf_dir: "/etc/gerrit"
+gerrit_lib_dir: "/var/lib/gerrit"
+gerrit_log_dir: "/var/log/gerrit"
+
+gerrit_plugins:
+    - name: avatars-gravatar.jar
+      url: https://gerrit-ci.gerritforge.com/job/plugin-avatars-gravatar-bazel-master-stable-3.2/lastStableBuild/artifact/bazel-bin/plugins/avatars-gravatar/avatars-gravatar.jar
+    - name: reviewers-by-blame.jar
+      url: https://gerrit-ci.gerritforge.com/job/plugin-reviewers-by-blame-bazel-master-stable-3.2/lastStableBuild/artifact/bazel-bin/plugins/reviewers-by-blame/reviewers-by-blame.jar
+    - name: oauth.jar
+      url: https://gerrit-ci.gerritforge.com/job/plugin-oauth-bazel-stable-3.2/lastSuccessfulBuild/artifact/bazel-bin/plugins/oauth/oauth.jar
+
+gerrit_components:
+  - service: "gerrit"
+    post_start: "/usr/libexec/software-factory/wait4gerrit"
+    os: "centos"
+    image: "quay.io/software-factory/gerrit:3.2.6"
+    digest: "sha256:83d9ffc7a97ca4684c9e8b621156f0137bb1d429935d1655b7be0ea96b411f1c"
+    mirror: ""
+    skip-auto-update: True
+    params: >-
+      --network host
+      --volume /etc/sysconfig/gerrit:/etc/sysconfig/gerrit:Z
+      --volume /etc/gerrit/:/var/gerrit/etc/:Z
+      --volume /var/lib/gerrit/.gitconfig:/var/gerrit/.gitconfig:Z
+      --volume /var/lib/gerrit/data/:/var/gerrit/data/:Z
+      --volume /var/lib/gerrit/cache/:/var/gerrit/cache/:Z
+      --volume /var/lib/gerrit/db/:/var/gerrit/db/:Z
+      --volume /var/lib/gerrit/entrypoint.sh:/entrypoint.sh:Z
+      --volume /var/lib/gerrit/git/:/var/gerrit/git/:Z
+      --volume /var/lib/gerrit/hooks/:/var/gerrit/hooks/:Z
+      --volume /var/lib/gerrit/index/:/var/gerrit/index/:Z
+      --volume /var/lib/gerrit/plugins/:/var/gerrit/plugins/:Z
+      --volume /var/lib/gerrit/.ssh/:/var/gerrit/.ssh/:Z
+      --volume /var/log/gerrit/:/var/gerrit/logs/:Z
+
 role_package: gerrit
 
 gerrit_port: 8000
