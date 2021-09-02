@@ -55,7 +55,7 @@
   loop: "{{ servers.stdout_lines }}"
 
 - name: Gather hostnames
-  command: hostname -f
+  command: hostnamectl --static
   loop: "{{ servers.stdout_lines }}"
   delegate_to: "{{ item }}"
   register: _hostnames
