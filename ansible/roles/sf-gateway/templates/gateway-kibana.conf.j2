@@ -6,10 +6,6 @@
     SSLProxyCheckPeerName off
     SSLProxyCheckPeerExpire off
 
-{% if readonly_user_autologin | lower == 'basic' or readonly_user_autologin | lower == 'jwt' %}
-    Include /etc/httpd/conf.d/kibana_autologin.conf
-{% endif %}
-
 {% if external_kibana_host %}
     <Location "/analytics">
         ProxyPass {{ external_kibana_host }}
