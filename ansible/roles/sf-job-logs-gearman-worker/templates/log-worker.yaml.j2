@@ -5,3 +5,9 @@ output-port: {{ logstash_input_port }}
 output-mode: tcp
 #crm114-script: /usr/local/bin/classify-log.crm
 #crm114-data: /var/lib/crm114
+#log-ca-certs: /path/to/http_log_ca_cert
+{% if 'sftests.com' in fqdn %}
+log-cert-verify: False
+{% else %}
+log-cert-verify: True
+{% endif %}
