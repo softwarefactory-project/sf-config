@@ -7,7 +7,7 @@ ServerTokens Prod
     RewriteEngine On
 
 {% if gateway_force_ssl_redirection %}
-{% if tls_challenge_alias is defined %}
+{% if tls_challenge_alias_path is defined %}
     Alias .well-known/acme-challenge {{ tls_challenge_alias_path }}
 {% endif %}
     # Enforce HTTPS for non-internal requests. HostnameLookups is required,
