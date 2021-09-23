@@ -2,9 +2,27 @@
 - name: Install packages
   yum:
     name:
-      - gerrit
       - pynotedb
       - zuul-results-gerrit-plugin
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: Remove gerrit package
+  yum:
+    name:
+      - gerrit
+      - gitweb
+      - gitweb-theme-kogakure
+      - highlight
+      - perl-Digest-MD5
+
+    state: absent
+    disablerepo: "{{ yum_disable_repo|default(omit) }}"
+    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ gerrit_components }}"

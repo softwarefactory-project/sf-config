@@ -1,10 +1,10 @@
 ---
-- name: Create group
+- name: "Create group {{ group }}"
   group:
     name: "{{ group }}"
     gid: "{{ gid }}"
 
-- name: Create user
+- name: "Create user {{ owner }}"
   user:
     name: "{{ owner }}"
     create_home: "no"

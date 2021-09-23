@@ -1,7 +1,0 @@
----
-role_actions:
-  - install
-
-role_package: gitweb
-
-gitweb_theme: kogakure

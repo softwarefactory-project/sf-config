@@ -8,7 +8,6 @@ inventory:
       - zookeeper
       - gateway
       - cauth
-      - gitweb
       - gerrit
       - managesf
       - etherpad

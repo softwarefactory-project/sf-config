@@ -1,5 +1,5 @@
 ---
 - name: restart gerrit
-  service:
+  systemd:
     name: gerrit
     state: restarted
