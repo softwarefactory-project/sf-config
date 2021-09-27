@@ -42,25 +42,35 @@
     - localconfig.stdout != upstreamconfig.stdout or force_update|default(False)
     - "'zuul-scheduler' in zuul_services"
 
+- name: Start the scheduler first
+  service:
+    name: zuul-scheduler
+    state: started
+  when: "'zuul-scheduler' in zuul_services"
+
+- name: Wait for gearman server port
+  wait_for:
+    host: "{{ zuul_scheduler_host }}"
+    port: 4730
+
 - block:
     - name: Generate tenant-update secrets
-      command: /usr/share/sf-config/ansible/roles/sf-zuul/files/generate-tenant-update-secrets.py "{{ managesf_internal_url }}" "{{ tenant_name }}"
+      command: |
+        podman exec -ti zuul-scheduler python
+        /var/lib/zuul/scripts/generate-tenant-update-secrets.py
+        {{ managesf_internal_url }} {{ tenant_name }}
       register: updated_keys
       changed_when: False
+      retries: 60
+      delay: 1
 
     - name: Copy secrets to the gateway
       copy:
         src: "{{ item }}"
         dest: "/var/www/.config/{{ item | basename }}"
       delegate_to: "{{ gateway_host }}"
-      loop: "{{ updated_keys.stdout_lines }}"
+      loop: "{{ updated_keys.stdout_lines[3:] }}"
       when: updated_keys.stdout
-  when: "'zuul-scheduler' in zuul_services"
-
-- name: Start the scheduler first
-  service:
-    name: zuul-scheduler
-    state: started
   when: "'zuul-scheduler' in zuul_services"
 
 - name: Ensure all services are started and enabled

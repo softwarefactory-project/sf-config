@@ -58,7 +58,7 @@ def zuul_encrypt(private_key_file):
         pub.write(
             zuul.lib.encryption.serialize_rsa_public_key(pub_key))
     p = subprocess.Popen(
-        ["/usr/share/sf-config/scripts/zuul-encrypt-secret.py",
+        ["/var/lib/zuul/scripts/zuul-encrypt-secret.py",
          pub_file, "ssh_private_key", "--infile", ssh_key],
         stdout=subprocess.PIPE)
     p.wait()

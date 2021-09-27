@@ -16,6 +16,7 @@
         name:
           - ara
           - dhall
+          - zuul
           - zuul-executor
           - zuul-merger
           - zuul-scheduler

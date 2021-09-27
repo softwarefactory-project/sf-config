@@ -70,8 +70,9 @@ def main():
         if p.returncode != 0:
             raise Exception("Return code %s from openssl" % p.returncode)
         output = stdout.decode('utf-8')
-        m = re.match(r'^Public-Key: \((\d+) bit\)$', output, re.MULTILINE)
-        nbits = int(m.group(1))
+        m = re.match(r'^(RSA |)Public-Key: \((?P<key_length>\d+) bit\)$',
+                     output, re.MULTILINE)
+        nbits = int(m.group('key_length'))
         nbytes = int(nbits / 8)
         max_bytes = nbytes - 42  # PKCS1-OAEP overhead
         chunks = int(math.ceil(float(len(plaintext)) / max_bytes))

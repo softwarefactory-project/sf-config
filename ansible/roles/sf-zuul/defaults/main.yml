@@ -23,10 +23,28 @@ gid: 10001
 patch_container_command: ""
 
 zuul_components:
+  - service: "zuul-scheduler"
+    image: "quay.io/software-factory/zuul-scheduler:4.6.0"
+    digest: "sha256:a3cc5dc2435efa0cdadb7854f66ac259a7b309cef009e03ceff53ac5b57219aa"
+    mirror: ""
+    stopped: True
+    needs_self_signed_ca: True
+    skip-auto-update: True
+    params: >-
+      --network host
+      --volume /etc/zuul/:/etc/zuul/:Z
+      --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
+      --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
+      --volume /var/lib/zuul/scripts/:/var/lib/zuul/scripts/:Z
+      --volume /var/lib/zuul/tenant-secrets/:/var/lib/zuul/tenant-secrets/:Z
+      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
+      --volume /var/log/zuul/:/var/log/zuul/:Z
   - service: "zuul-executor"
     image: "quay.io/software-factory/zuul-executor:4.6.0"
     digest: "sha256:154f6216e1e41d3db0d9434e386309b3c1a494eb5182041c74f826882dff2a96"
     mirror: ""
+    stopped: True
+    needs_self_signed_ca: True
     skip-auto-update: True
     params: >-
       --network host
@@ -65,6 +83,8 @@ zuul_components:
     image: "quay.io/software-factory/zuul-merger:4.6.0"
     digest: "sha256:fdcf741ef1dc65e7fc35c194966168d0a9a2c41f6d180969077c327243eaa85d"
     mirror: ""
+    stopped: True
+    needs_self_signed_ca: True
     skip-auto-update: True
     params: >-
       --network host
@@ -72,23 +92,12 @@ zuul_components:
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --privileged
-  - service: "zuul-scheduler"
-    image: "quay.io/software-factory/zuul-scheduler:4.6.0"
-    digest: "sha256:a3cc5dc2435efa0cdadb7854f66ac259a7b309cef009e03ceff53ac5b57219aa"
-    mirror: ""
-    skip-auto-update: True
-    params: >-
-      --network host
-      --volume /etc/zuul/:/etc/zuul/:Z
-      --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
-      --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
-      --volume /var/lib/zuul/scripts/:/var/lib/zuul/scripts/:Z
-      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
-      --volume /var/log/zuul/:/var/log/zuul/:Z
   - service: "zuul-web"
     image: "quay.io/software-factory/zuul-web:4.6.0"
     digest: "sha256:f5dd164b0f7e43d1ec94a55f685d82ef29f6dfaef4693a96a83b4863b459b2f3"
     mirror: ""
+    stopped: True
+    needs_self_signed_ca: True
     skip-auto-update: True
     params: >-
       --network host
@@ -104,7 +113,6 @@ zuul_services:
 
 zuul_scheduler_depends:
   - wait4service
-  - zuul
 
 zuul_conf_dir: "/etc/zuul"
 zuul_lib_dir: "/var/lib/zuul"

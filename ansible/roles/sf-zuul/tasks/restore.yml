@@ -7,17 +7,17 @@
 - name: "Restore files ownership"
   file:
     path: "{{ item }}"
-    owner: "zuul"
-    group: "zuul"
+    owner: "{{ owner }}"
+    group: "{{ owner }}"
     recurse: "yes"
     state: "directory"
   loop:
     - "{{ zuul_lib_dir }}/keys/"
 
-- name: "Ensure zuul home is owned by zuul"
+- name: "Ensure /var/lib/zuul ownership"
   file:
     path: "{{ zuul_lib_dir }}"
-    owner: zuul
-    group: zuul
+    owner: "{{ owner }}"
+    group: "{{ owner }}"
     state: directory
     mode: '0751'

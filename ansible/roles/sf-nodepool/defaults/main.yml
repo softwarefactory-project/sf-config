@@ -48,6 +48,8 @@ nodepool_components:
     image: "quay.io/software-factory/nodepool-launcher:4.2.1"
     digest: "sha256:9547a1a095c5ff2995cb3b0de86b6c0e7044ae1ce0bd07582a5b72fe5d966281"
     mirror: ""
+    stopped: True
+    needs_self_signed_ca: True
     skip-auto-update: True
     run: >-
       su --login nodepool
@@ -87,6 +89,8 @@ nodepool_components:
     image: "quay.io/software-factory/nodepool-builder:4.2.1"
     digest: "sha256:28fe4d7dea0d7d874a76b341f161bbc0de7309cbf3d1736f6a8b7a19f9cfc92b"
     mirror: ""
+    stopped: True
+    needs_self_signed_ca: True
     skip-auto-update: True
     run: >-
       su --login nodepool

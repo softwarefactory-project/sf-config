@@ -3,16 +3,14 @@
 podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} {{ item.image }} {{ item.run | default(None) }}
 {% if _local_ca_exists.stat.isreg or service.command is defined %}
 podman start {{ item.service }}
-{% if _local_ca_exists.stat.isreg %}
-{% if item.service != "gerrit" %}
+{% if item.needs_self_signed_ca | default(False) %}
 until podman exec -ti {{ item.service }} update-ca-certificates; do echo; done
-{% endif %}
 {% endif %}
 {% if item.command is defined %}
 podman cp /usr/local/bin/configure-{{ item.service }}.sh {{ item.service }}:/tmp/configure-{{ item.service }}.sh
 podman exec -ti {{ item.service }} /bin/bash /tmp/configure-{{ item.service }}.sh
 {% endif %}
-{% if item.service != "gerrit" %}
+{% if item.stopped is defined%}
 podman stop {{ item.service }}
 {% endif %}
 {% endif %}

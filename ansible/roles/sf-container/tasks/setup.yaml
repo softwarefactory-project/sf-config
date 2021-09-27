@@ -16,7 +16,9 @@
     _self_signed_certs: >-
       --volume /var/lib/software-factory/bootstrap-data/certs/localCA.pem:/usr/local/share/ca-certificates/localCA.crt:Z
       --env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-  when: _local_ca_exists.stat.isreg
+  when:
+    - _local_ca_exists.stat.isreg
+    - item.needs_self_signed_ca | default(False)
 
 - name: "Create configuration script for {{ item.service }}"
   copy:

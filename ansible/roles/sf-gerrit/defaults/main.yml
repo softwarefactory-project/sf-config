@@ -29,7 +29,6 @@ gerrit_plugins:
 gerrit_components:
   - service: "gerrit"
     post_start: "/usr/libexec/software-factory/wait4gerrit"
-    os: "centos"
     image: "quay.io/software-factory/gerrit:3.2.6"
     digest: "sha256:83d9ffc7a97ca4684c9e8b621156f0137bb1d429935d1655b7be0ea96b411f1c"
     mirror: ""

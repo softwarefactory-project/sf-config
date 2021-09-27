@@ -77,6 +77,19 @@
         dest: "{{ zuul_lib_dir }}/scripts/gearman-client"
         mode: '0755'
 
+    - name: Install generate-tenant-update-secrets.py script
+      copy:
+        src: generate-tenant-update-secrets.py
+        dest: "{{ zuul_lib_dir }}/scripts/generate-tenant-update-secrets.py"
+        mode: '0755'
+
+    - name: Install zuul-encrypt-secret.py script
+      copy:
+        src: /usr/share/sf-config/scripts/zuul-encrypt-secret.py
+        dest: "{{ zuul_lib_dir }}/scripts/zuul-encrypt-secret.py"
+        mode: '0755'
+        remote_src: yes
+
     - name: Sync patches directory
       synchronize:
         src: "/usr/share/sf-config/ansible/roles/sf-zuul/files/patches/"
@@ -236,25 +249,6 @@
     tasks_from: setup.yaml
   loop: "{{ zuul_components }}"
   when: item.service in zuul_services
-
-- block:
-    - name: "Check if scheduler is running"
-      command: systemctl is-active "zuul-scheduler"
-      register: zuul_scheduler_service_running
-      changed_when: False
-      failed_when: zuul_scheduler_service_running.rc not in [0, 3]
-
-    # TODO: zuul package is needed for this part for now.
-    - name: "Manually create database to avoid concurrency issue"
-      command: |
-        /bin/python3.6 -c 'import zuul.cmd
-        import configparser
-        app = zuul.cmd.ZuulApp()
-        app.config = configparser.ConfigParser()
-        app.config.read("{{ zuul_conf_dir }}/zuul.conf")
-        app.configure_connections()'
-      when: zuul_scheduler_service_running.rc == 3
-  when: "'zuul-scheduler' in zuul_services"
 
 - name: Update gerrit email address when fqdn is updated
   block:
