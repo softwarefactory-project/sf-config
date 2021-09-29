@@ -12,5 +12,7 @@ until podman exec -ti {{ item.service }} update-ca-certificates; do echo; done
 podman cp /usr/local/bin/configure-{{ item.service }}.sh {{ item.service }}:/tmp/configure-{{ item.service }}.sh
 podman exec -ti {{ item.service }} /bin/bash /tmp/configure-{{ item.service }}.sh
 {% endif %}
+{% if item.service != "gerrit" %}
 podman stop {{ item.service }}
+{% endif %}
 {% endif %}

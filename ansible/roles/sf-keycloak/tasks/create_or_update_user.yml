@@ -29,13 +29,13 @@
         var: _uid
         verbosity: 3
     - set_fact:
-        uid: "{{ _uid.stdout | from_json }}"
+        kuid: "{{ _uid.stdout | from_json }}"
 
 - name: update {{ item.username }}'s password
   command: >
     /opt/jboss/keycloak/bin/kcadm.sh set-password
         -r {{ keycloak_default_realm }}
-        --userid {{ uid[0]['id'] }}
+        --userid {{ kuid[0]['id'] }}
         --new-password {{ item.password }}
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   register: _user_update
@@ -47,7 +47,7 @@
 
 - name: update {{ item.username }}'s email if fqdn has changed
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh update users/{{ uid[0]['id'] }}
+    /opt/jboss/keycloak/bin/kcadm.sh update users/{{ kuid[0]['id'] }}
         -r {{ keycloak_default_realm }}
         -s 'email={{ item.email }}'
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
