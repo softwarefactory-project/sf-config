@@ -50,13 +50,22 @@
   when: item.use_secret == True
   no_log: show_hidden_logs == False
 
+- name: "Update redirect URIs, allowed web origins if FQDN changed"
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
+        -r {{ keycloak_default_realm }}
+        -s 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
+        -s 'webOrigins=["https://{{ fqdn }}","https://{{ item.component }}.{{ fqdn }}"]'
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  when: update_fqdn
+  no_log: show_hidden_logs == False
+
 - name: "Allow direct access grants for {{ item.component }}"
   command: >
     /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
         -r {{ keycloak_default_realm }}
         -s "directAccessGrantsEnabled=true"
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-  when: item.use_secret == False
   no_log: show_hidden_logs == False
 
 # Any components deployed before keycloak will have to be reloaded "manually".
