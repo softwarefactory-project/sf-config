@@ -13,7 +13,7 @@
 
 - name: Copy certs
   copy:
-    src: "/var/lib/software-factory/bootstrap-data/certs/localCA.pem"
+    src: "/etc/pki/ca-trust/source/anchors/localCA.pem"
     dest: "/etc/kibana/certs/localCA.pem"
     mode: '0600'
     owner: kibana

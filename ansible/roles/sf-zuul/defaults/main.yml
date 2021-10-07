@@ -53,7 +53,6 @@ zuul_components:
       --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
       --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
-      --volume /var/lib/software-factory/ansible/ara/:/var/lib/software-factory/ansible/ara/:Z
       --privileged
     command: |
       apt update
@@ -89,8 +88,9 @@ zuul_components:
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
-      --volume /var/log/zuul/:/var/log/zuul/:Z
+      --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
       --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
+      --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
   - service: "zuul-web"
     image: "quay.io/software-factory/zuul-web:4.6.0"

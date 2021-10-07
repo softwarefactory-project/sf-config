@@ -42,4 +42,3 @@
     minute: "0"
     hour: "2"
     job: 'podman image prune'
-
