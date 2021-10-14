@@ -1,0 +1,4 @@
+---
+- name: "Configure {{ config_item.component }} roles"
+  include_tasks: configure_role.yml
+  loop: "{{ config_item.roles }}"

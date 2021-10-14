@@ -83,6 +83,25 @@
        lastName: "Software Factory",
        email: "sf_service_user@{{ fqdn }}"}
 
+- name: Create or update component-specific role
+  include_tasks: configure_roles.yml
+  loop:
+    - {component: "elasticsearch",
+       roles: [
+            {name: "kibana_viewer",
+             description: "Default kibana viewer role",
+             default: True,
+             assign_to: []},
+            {name: "admin",
+             default: False,
+             description: "Admin access",
+             assign_to: ["admin", ]},
+          ]
+      }
+  loop_control:
+    loop_var: config_item
+  when: config_item.component in roles
+
 - name: Create test users
   include_tasks: create_or_update_user.yml
   vars:
@@ -109,7 +128,6 @@
        lastName: "User5",
        email: "user5@{{ fqdn }}"}
   when: "'sftests.com' in fqdn"
-
 
 # TODO: these could be sfconfig options
 - name: Allow user registration, password reset
@@ -183,12 +201,30 @@
 - name: Create or update OIDC clients
   include_tasks: configure_clients.yml
   loop:
-    - {component: "managesf", use_secret: False}
-    - {component: "gerrit", use_secret: True}
-    - {component: "zuul", use_secret: True}
-    - {component: "grafana", use_secret: True}
-    - {component: "elasticsearch", use_secret: True}
-    - {component: "kibana", use_secret: True}
+    - {component: "managesf",
+       use_secret: False,
+       realm_role_mapper: False,
+      }
+    - {component: "gerrit",
+       use_secret: True,
+       realm_role_mapper: False,
+      }
+    - {component: "zuul",
+       use_secret: True,
+       realm_role_mapper: False,
+      }
+    - {component: "grafana",
+       use_secret: True,
+       realm_role_mapper: False,
+      }
+    - {component: "elasticsearch",
+       use_secret: True,
+       realm_role_mapper: True,
+      }
+    - {component: "kibana",
+       use_secret: True,
+       realm_role_mapper: False,
+      }
   when: item.component in roles
 
 - name: Set up the firehose
@@ -215,3 +251,15 @@
     - file:
         path: /tmp/keycloak.min.js
         state: absent
+
+# TODO useless; the file is valid for as long as the auth token is.
+# - name: Initialize keycloak root config file
+#   command: |
+#     /opt/jboss/keycloak/bin/kcadm.sh
+#     config credentials
+#     --server http://127.0.0.1:{{ keycloak_http_port }}/auth
+#     --realm master
+#     --user admin
+#     --password {{ authentication.admin_password }}
+#   become: true
+#   no_log: show_hidden_logs == False
