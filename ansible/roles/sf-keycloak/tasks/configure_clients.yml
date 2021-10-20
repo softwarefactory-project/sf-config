@@ -68,5 +68,34 @@
         --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
   no_log: show_hidden_logs == False
 
+- name: "Update {{ item.component }} client password"
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
+        -r {{ keycloak_default_realm }}
+        -s secret={{ vars['keycloak_' + item.component + '_client_secret'] }}
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  when: item.realm_role_mapper == True
+  no_log: show_hidden_logs == False
+
+- name: "Create realm roles mapper if needed"
+  command: >
+    /opt/jboss/keycloak/bin/kcadm.sh create clients/{{ cid[0]['id'] }}/protocol-mappers/models
+        -r {{ keycloak_default_realm }}
+        -s name=role_mapper
+        -s protocol=openid-connect
+        -s protocolMapper=oidc-usermodel-realm-role-mapper
+        -s consentRequired=false
+        -s 'config."multivalued"=true'
+        -s 'config."userinfo.token.claim"=true'
+        -s 'config."id.token.claim"=true'
+        -s 'config."access.token.claim"=true'
+        -s 'config."claim.name"=roles'
+        -s 'config."jsonType.label"=String'
+        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  register: _rolemapper_create
+  failed_when: _rolemapper_create.rc != 0 and _rolemapper_create.stderr.find("Protocol mapper exists with same name") == -1
+  when: item.realm_role_mapper == True
+  no_log: show_hidden_logs == False
+
 # Any components deployed before keycloak will have to be reloaded "manually".
 # At this point it only concerns httpd.
