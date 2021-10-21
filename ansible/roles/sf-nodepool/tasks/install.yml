@@ -8,9 +8,13 @@
       - nodepool-launcher
     state: absent
 
-- name: Install httpd to serve nodepools logs
+# httpd to serve nodepool logs
+# managesf for config update
+- name: Install depends
   package:
-    name: httpd
+    name:
+      - httpd
+      - managesf
 
 - name: Install packages for builder
   package:

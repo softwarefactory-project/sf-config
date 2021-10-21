@@ -31,6 +31,7 @@
     - {path: "{{ nodepool_lib_dir }}/.ssh"}
     - {path: "{{ nodepool_lib_dir }}/patches"}
     - {path: "{{ nodepool_log_dir }}", recurse: "yes"}
+    - {path: "/var/lib/software-factory/conf", owner: "root", group: "root"}
 
 - name: Sync patches directory
   synchronize:
@@ -152,9 +153,15 @@
 
 - name: Setup minimal nodepool config (needed to build the container)
   template:
-    src: "nodepool.yaml.j2"
+    src: nodepool.yaml.j2
     dest: "{{ nodepool_conf_dir }}/nodepool.yaml"
   when: _nodepool_config.stat.isreg is not defined
+
+- name: Setup base nodepool.yaml for managesf
+  template:
+    src: nodepool.yaml.j2
+    dest: /var/lib/software-factory/conf/nodepool.yaml
+  when: "'nodepool-launcher' in roles"
 
 - name: Setup nodepool builder
   block:

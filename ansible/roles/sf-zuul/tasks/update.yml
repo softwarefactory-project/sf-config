@@ -53,7 +53,8 @@
     host: "{{ zuul_scheduler_host }}"
     port: 4730
 
-- block:
+- name: Manage tenant secrets
+  block:
     - name: Generate tenant-update secrets
       command: |
         podman exec -ti zuul-scheduler python
@@ -61,17 +62,17 @@
         {{ managesf_internal_url }} {{ tenant_name }}
       register: updated_keys
       changed_when: False
-      retries: 60
-      delay: 1
 
     - name: Copy secrets to the gateway
-      copy:
+      synchronize:
         src: "{{ item }}"
         dest: "/var/www/.config/{{ item | basename }}"
+        mode: pull
       delegate_to: "{{ gateway_host }}"
       loop: "{{ updated_keys.stdout_lines[3:] }}"
-      when: updated_keys.stdout
+      when: updated_keys.stdout_lines[3:]
   when: "'zuul-scheduler' in zuul_services"
+
 
 - name: Ensure all services are started and enabled
   service:

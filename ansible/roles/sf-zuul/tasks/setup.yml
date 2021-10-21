@@ -68,8 +68,6 @@
         src: zuul-changes.py.j2
         dest: "{{ zuul_lib_dir }}/scripts/zuul-changes.py"
         mode: '0755'
-      delegate_to: "{{ item }}"
-      loop: "{{ groups['install-server'] | union( groups['zuul-scheduler'] ) }}"
 
     - name: Install gearman-client script
       template:
@@ -157,14 +155,16 @@
       loop: "{{ zuul_github_connections }}"
       when: item.app_key
       no_log: show_hidden_logs == False
+  when: "'zuul-scheduler' in zuul_services or 'zuul-merger' in zuul_services or 'zuul-executor' in zuul_services"
 
+- block:
     - include_tasks: create_logging.yml
       vars:
         _logfile: "scheduler"
     - include_tasks: create_logging.yml
       vars:
         _logfile: "gearman-server"
-  when: "'zuul-scheduler' in zuul_services or 'zuul-merger' in zuul_services or 'zuul-executor' in zuul_services"
+  when: "'zuul-scheduler' in zuul_services"
 
 - block:
     - include_tasks: create_logging.yml

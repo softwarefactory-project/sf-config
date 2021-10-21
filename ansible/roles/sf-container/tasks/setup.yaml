@@ -8,15 +8,16 @@
 
 - name: "Check if local CA exists"
   stat:
-    path: /var/lib/software-factory/bootstrap-data/certs/localCA.pem
+    path: /etc/pki/ca-trust/source/anchors/localCA.pem
   register: _local_ca_exists
 
 - name: "Add local CA for {{ item.service }}"
   set_fact:
     _self_signed_certs: >-
-      --volume /var/lib/software-factory/bootstrap-data/certs/localCA.pem:/usr/local/share/ca-certificates/localCA.crt:Z
+      --volume /etc/pki/ca-trust/source/anchors/localCA.pem:/usr/local/share/ca-certificates/localCA.crt:Z
       --env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
   when:
+    - _local_ca_exists is defined
     - _local_ca_exists.stat.isreg
     - item.needs_self_signed_ca | default(False)
 

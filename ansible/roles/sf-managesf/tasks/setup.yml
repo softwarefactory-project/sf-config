@@ -29,14 +29,6 @@
         IdentityFile /var/lib/managesf/.ssh/id_rsa
       {% endif %}
 
-- name: Setup base nodepool.yaml
-  template:
-    src: /usr/share/sf-config/ansible/roles/sf-nodepool/templates/nodepool.yaml.j2
-    dest: "/var/lib/software-factory/conf/nodepool.yaml"
-  when: "'nodepool-launcher' in roles"
-  delegate_to: "{{ item }}"
-  loop: "{{ nodepool_hosts | union( groups['managesf'] ) }}"
-
 - name: "Create config directory"
   file:
     path: /etc/managesf
