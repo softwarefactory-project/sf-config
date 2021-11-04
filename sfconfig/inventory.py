@@ -291,7 +291,7 @@ def zuul_restart(args, pb):
         'retries': '50',
         'delay': '5',
         'command': ('podman exec -ti zuul-scheduler '
-                    'python '
+                    'python3 '
                     '/var/lib/zuul/scripts/zuul-changes.py '
                     'dump --dump_file %s' % dump_file)
     }, {

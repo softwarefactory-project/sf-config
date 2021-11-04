@@ -11,16 +11,19 @@
         /usr/libexec/software-factory/zuul-changes.py
         dump --dump_file /var/lib/software-factory/state/zuul-change-dump.sh
 
+    - name: Stop zuul services
+      systemd:
+        name: "{{ item }}"
+        state: stopped
+      loop: "{{ zuul_services }}"
+
     - name: Remove zuul packages
       package:
         name:
           - ara
           - dhall
           - zuul
-          - zuul-executor
-          - zuul-merger
-          - zuul-scheduler
-          - zuul-web
+          - "{{ zuul_services }}"
         state: absent
 
     - name: Remove outdated scripts

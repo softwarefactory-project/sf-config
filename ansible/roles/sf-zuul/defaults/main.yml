@@ -24,12 +24,13 @@ patch_container_command: ""
 
 zuul_components:
   - service: "zuul-scheduler"
-    image: "quay.io/software-factory/zuul-scheduler:4.6.0"
-    digest: "sha256:a3cc5dc2435efa0cdadb7854f66ac259a7b309cef009e03ceff53ac5b57219aa"
+    image: "quay.io/software-factory/sf-zuul-scheduler:4.6.0"
+    digest: "sha256:ee464f43eee9aff19d24f404352dda0abecd27e78b89dc9b2399da0656c7fd51"
     mirror: ""
     stopped: True
     needs_self_signed_ca: True
     skip-auto-update: True
+    os: "redhat"
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
@@ -40,12 +41,13 @@ zuul_components:
       --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
   - service: "zuul-executor"
-    image: "quay.io/software-factory/zuul-executor:4.6.0"
-    digest: "sha256:154f6216e1e41d3db0d9434e386309b3c1a494eb5182041c74f826882dff2a96"
+    image: "quay.io/software-factory/sf-zuul-executor:4.6.0"
+    digest: "sha256:0e322532df14eea358e732490996990f8cddf7efbd2692ed366453d14428e9d3"
     mirror: ""
     stopped: True
     needs_self_signed_ca: True
     skip-auto-update: True
+    os: "redhat"
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
@@ -54,37 +56,14 @@ zuul_components:
       --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
-    command: |
-      apt update
-      apt install python-dev gcc -y
-      pushd /var/tmp/
-      for pkg in managesf python-sfmanager; do
-          git clone https://softwarefactory-project.io/r/software-factory/$pkg
-          pushd $pkg
-          pip3 install -r requirements.txt
-          python3 setup.py install
-          popd
-      done
-      # dhall
-      curl -L -O https://github.com/dhall-lang/dhall-haskell/releases/download/1.32.0/dhall-json-1.6.4-x86_64-linux.tar.bz2
-      tar xf dhall-json-1.6.4-x86_64-linux.tar.bz2
-      mv bin/* /usr/local/bin/
-      # pypi
-      python -m pip install ara==0.16.6
-      python -m pip install grafyaml==0.0.8
-      python -m pip install nodepool==4.1.0
-      python -m pip install pynotedb==0.2.1
-      # cleanup
-      apt remove python-dev gcc -y
-      apt clean
-      rm -rf /var/tmp/{managesf,python-sfmanager}
   - service: "zuul-merger"
-    image: "quay.io/software-factory/zuul-merger:4.6.0"
-    digest: "sha256:fdcf741ef1dc65e7fc35c194966168d0a9a2c41f6d180969077c327243eaa85d"
+    image: "quay.io/software-factory/sf-zuul-merger:4.6.0"
+    digest: "sha256:c04f9cd3934d1f9b5a8a229cf1a198e70f6311d41ab1bacf23aa5b46151ac829"
     mirror: ""
     stopped: True
     needs_self_signed_ca: True
     skip-auto-update: True
+    os: "redhat"
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
@@ -93,12 +72,13 @@ zuul_components:
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
   - service: "zuul-web"
-    image: "quay.io/software-factory/zuul-web:4.6.0"
-    digest: "sha256:f5dd164b0f7e43d1ec94a55f685d82ef29f6dfaef4693a96a83b4863b459b2f3"
+    image: "quay.io/software-factory/sf-zuul-web:4.6.0"
+    digest: "sha256:0d9032d9f60ee158045716e3e6048cc094fee396ccde2d321631245c43b4fe54"
     mirror: ""
     stopped: True
     needs_self_signed_ca: True
     skip-auto-update: True
+    os: "redhat"
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z

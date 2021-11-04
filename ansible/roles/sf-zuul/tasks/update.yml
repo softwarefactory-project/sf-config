@@ -57,7 +57,7 @@
   block:
     - name: Generate tenant-update secrets
       command: |
-        podman exec -ti zuul-scheduler python
+        podman exec -ti zuul-scheduler python3
         /var/lib/zuul/scripts/generate-tenant-update-secrets.py
         {{ managesf_internal_url }} {{ tenant_name }}
       register: updated_keys

@@ -51,6 +51,7 @@ nodepool_components:
     stopped: True
     needs_self_signed_ca: True
     skip-auto-update: True
+    os: "debian"
     run: >-
       su --login nodepool
       -c ". /var/lib/nodepool/nodepool-env && /usr/local/bin/nodepool-launcher -d
@@ -92,6 +93,7 @@ nodepool_components:
     stopped: True
     needs_self_signed_ca: True
     skip-auto-update: True
+    os: "debian"
     run: >-
       su --login nodepool
       -c ". /var/lib/nodepool/nodepool-env && /usr/local/bin/nodepool-builder -d

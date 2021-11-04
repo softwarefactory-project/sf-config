@@ -1,0 +1,7 @@
+---
+- name: "Fetch zookeeper logs"
+  synchronize:
+    mode: pull
+    src: "/var/log/zookeeper"
+    dest: "{{ log_dest }}/log"
+  ignore_errors: true

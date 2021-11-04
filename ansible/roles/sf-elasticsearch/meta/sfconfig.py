@@ -40,7 +40,7 @@ class ElasticSearch(Component):
                     'host': args.glue["elasticsearch_host"],
                     'port': args.defaults['elasticsearch_http_port'],
                     'use_ssl': 'true',
-                    'ca_certs': '/usr/local/share/ca-certificates/localCA.crt'
+                    'ca_certs': '/etc/pki/ca-trust/source/anchors/localCA.pem'
                 })
 
         args.glue['readonly_user_autologin'] = \

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Modified from openstack-infra/zuul/tools/encrypt_secret.py
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may

@@ -10,5 +10,5 @@ role_package: zookeeper
 
 zookeeper_tickTime: 5000
 # Large min/max session timeout to mitigate network outage between zuul and zk
-zookeeper_minSessionTimeout: 600000
-zookeeper_maxSessionTimeout: 1800000
+zookeeper_minSessionTimeout: 60000
+zookeeper_maxSessionTimeout: 180000

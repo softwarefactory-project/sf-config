@@ -57,8 +57,8 @@ finger_port=7979
 {% if 'log-classify' in roles %}
 trusted_rw_paths=/var/lib/log-classify
 {% endif %}
-trusted_ro_paths=/opt/:/etc/ssl
-untrusted_ro_paths=/opt/:/etc/ssl
+trusted_ro_paths=/opt/:/etc/pki
+untrusted_ro_paths=/opt/:/etc/pki
 log_config={{ zuul_conf_dir }}/executor-logging.yaml
 log_stream_file=/var/tmp/zuul-console/console-{log_uuid}.log
 load_multiplier={{ zuul_executor_load_multiplier|default(2.5) }}
@@ -195,7 +195,7 @@ poll_delay={{ conn['poll_delay']|default('7200') }}
 driver=elasticsearch
 uri={{conn['username']|default('zuul') }}:{{ conn['password']|default('zuul') }}@{{ conn['host']|default('localhost') }}:{{ conn['port']|default(9200) }}
 use_ssl={{ conn['use_ssl']|default('true') }}
-ca_certs={{ conn['ca_certs']|default('/usr/local/share/ca-certificates/localCA.crt') }}
+ca_certs={{ conn['ca_certs']|default('/etc/pki/ca-trust/source/anchors/localCA.pem') }}
 {% if 'index' in conn and conn['index'] %}
 index={{ conn['index'] }}
 {% endif %}

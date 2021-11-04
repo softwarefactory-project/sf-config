@@ -11,7 +11,7 @@ ExecStart=/usr/bin/podman start -a {{ item.service }}
 {% if item.post_start is defined %}
 ExecStartPost={{ item.post_start }}
 {% endif %}
-ExecStop=/usr/bin/podman stop -t 10 {{ item.service }}
+ExecStop=/usr/bin/podman stop -t 60 {{ item.service }}
 {% if item.service == "zuul-scheduler" %}
 ExecReload=/usr/bin/podman exec -ti zuul-scheduler {{ item.service }} smart-reconfigure
 {% endif %}
