@@ -24,7 +24,7 @@ patch_container_command: ""
 
 zuul_components:
   - service: "zuul-scheduler"
-    image: "quay.io/software-factory/sf-zuul-scheduler:4.6.0"
+    image: "quay.io/software-factory/zuul-scheduler-ubi:4.6.0"
     digest: "sha256:ee464f43eee9aff19d24f404352dda0abecd27e78b89dc9b2399da0656c7fd51"
     mirror: ""
     stopped: True
@@ -41,7 +41,7 @@ zuul_components:
       --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
   - service: "zuul-executor"
-    image: "quay.io/software-factory/sf-zuul-executor:4.6.0"
+    image: "quay.io/software-factory/zuul-executor-ubi:4.6.0"
     digest: "sha256:0e322532df14eea358e732490996990f8cddf7efbd2692ed366453d14428e9d3"
     mirror: ""
     stopped: True
@@ -57,7 +57,7 @@ zuul_components:
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
   - service: "zuul-merger"
-    image: "quay.io/software-factory/sf-zuul-merger:4.6.0"
+    image: "quay.io/software-factory/zuul-merger-ubi:4.6.0"
     digest: "sha256:c04f9cd3934d1f9b5a8a229cf1a198e70f6311d41ab1bacf23aa5b46151ac829"
     mirror: ""
     stopped: True
@@ -72,7 +72,7 @@ zuul_components:
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
   - service: "zuul-web"
-    image: "quay.io/software-factory/sf-zuul-web:4.6.0"
+    image: "quay.io/software-factory/zuul-web-ubi:4.6.0"
     digest: "sha256:0d9032d9f60ee158045716e3e6048cc094fee396ccde2d321631245c43b4fe54"
     mirror: ""
     stopped: True
