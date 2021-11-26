@@ -75,9 +75,20 @@ def get_arguments():
 
 
 def convert_to_yaml(text, remove_references):
+    # reparse text
+    text_lines = []
+    try:
+        for line in text:
+            if isinstance(line, dict):
+                text_lines.append(line)
+            else:
+                text_lines.append(json.loads(line))
+    except Exception as e:
+        print(e)
+
     if remove_references:
-        text = remove_reference(text)
-    return yaml.dump(text)
+        text_lines = remove_reference(text_lines)
+    return yaml.dump(text_lines)
 
 
 def save_content_to_file(text, backup_file, extension, remove_references=True):
@@ -130,7 +141,7 @@ def remove_reference(text):
 def make_request(url, user, password, text, tenant, insecure=False,
                  retry=True):
     r = None
-    headers = {'kbn-xsrf': 'reporting'}
+    headers = {'kbn-xsrf': 'reporting', 'osd-xsrf': 'true'}
     if tenant:
         headers['securitytenant'] = tenant
 
@@ -182,7 +193,11 @@ def backup(kibana_url, space_id, user, password, backup_dir, insecure,
     for obj_type in saved_objects_types:
         print("Working on %s" % obj_type)
 
-        headers = {'Content-Type': 'application/json', 'kbn-xsrf': 'reporting'}
+        # osd-xsrf header is required by opensearch
+        # https://opensearch.org/docs/latest/troubleshoot/index/
+        headers = {'Content-Type': 'application/json',
+                   'kbn-xsrf': 'reporting',
+                   'osd-xsrf': 'true'}
         if tenant:
             headers['securitytenant'] = tenant
 
@@ -337,10 +352,14 @@ if __name__ == '__main__':
 
         restore(kibana_url, args.space_id, args.user, args.password, text,
                 args.resolve_conflicts, args.insecure, args.tenant)
+
     elif args.action == 'convert':
         if args.file:
             text = _get_file_content(args.file)
         else:
             text = ''.join(sys.stdin.readlines())
+        if not text:
+            print("Can not continue. Did not provide --file param or stdin")
+            sys.exit(1)
 
         convert(text, args.extension, args.file)

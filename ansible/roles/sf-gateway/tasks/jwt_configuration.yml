@@ -8,6 +8,11 @@
 
 - name: Setup autologin
   block:
+    - name: Install required package
+      yum:
+        name: python3-jwt
+        state: present
+
     - name: Generate secret for jwt
       command: |
         uuidgen

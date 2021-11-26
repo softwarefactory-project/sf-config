@@ -66,4 +66,19 @@
         daemon-reload: "{% if _container_service is changed %}yes{% else %}no{% endif %}"
         state: stopped
         enabled: yes
+  rescue:
+    - name: "Dump {{ item.service }} service state for debug"
+      vars:
+        debug_log: "/var/log/software-factory/container-{{ item.service }}-debug.log"
+      shell: |
+        echo "<<< podman container status >>>" >> {{ debug_log }}
+        podman ps -a >> {{ debug_log }}
+        echo "<<< service status >>>" >> {{ debug_log }}
+        systemctl status {{ item.service }} >> {{ debug_log }}
+        echo "<<< service listening >>>" >> {{ debug_log }}
+        netstat -nltpu >> {{ debug_log }}
+        echo "<<< trying to get container logs >>>" >> {{ debug_log }}
+        podman logs {{ item.service }} >> {{ debug_log }}
+        echo "<<< end debug logs >>>" >> {{ debug_log }}
+      ignore_errors: true
   when: _container_exists.rc != 0

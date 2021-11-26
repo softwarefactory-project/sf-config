@@ -2,7 +2,9 @@
 # re-run this if the container is removed
 podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} {{ item.image }} {{ item.run | default(None) }}
 {% if _local_ca_exists.stat.isreg or service.command is defined %}
+{% if item['trigger_start'] | default(true) %}
 podman start {{ item.service }}
+{% endif %}
 {% if item.os is defined and item.os == 'debian'  %}
 until podman exec -ti {{ item.service }} update-ca-certificates; do echo; done
 {% endif %}

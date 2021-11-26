@@ -2,31 +2,47 @@
 role_actions:
   - install
   - setup
+  - get_logs
   - postconf
-  - configure_mirror
   - disable
 
 role_package: elasticsearch
 
-opendistro_version: 1.13.2
-opendistro_repos_name: elasticsearch-7.x,opendistroforelasticsearch-artifacts
-opendistro_plugin_dir: /usr/share/elasticsearch/plugins/opendistro_security
-opendistro_repos:
-  - name: elasticsearch-7.x
-    desc: Elasticsearch repository for 7.x packages
-    url: https://artifacts.elastic.co/packages/oss-7.x/yum
-    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    gpgcheck: 1
-    enabled: 0
-  - name: opendistroforelasticsearch-artifacts
-    desc: Release RPM artifacts of OpenDistroForElasticsearch
-    url: https://d3g5vo6xdbdb9a.cloudfront.net/yum/noarch/
-    gpgkey: https://d3g5vo6xdbdb9a.cloudfront.net/GPG-KEY-opendistroforelasticsearch
-    gpgcheck: 1
-    enabled: 0
+owner: opensearch
+group: opensearch
+# NOTE: UID and GID was changed with commit:
+# https://softwarefactory-project.io/r/c/containers/+/23475
+# NOTE: uid 10003 is used by ara user and uid 10004 by loguser.
+uid: 10005
+gid: 10005
+opensearch_components:
+  - service: "opensearch"
+    os: "centos"
+    image: "quay.rdoproject.org/software-factory/opensearch:1.2.2-patched"
+    digest: "sha256:ef109b42532aacf51150795d18c735756bc2f55ccdbc95c27b5527aaade20c43"
+    mirror: ""
+    skip-auto-update: true
+    trigger_start: false
+    params: >-
+      --net host
+      -e DISABLE_INSTALL_DEMO_CONFIG=true
+      -e "OPENSEARCH_JAVA_OPTS=-Xms{{ elasticsearch_minimum_heap_size }} -Xmx{{ elasticsearch_maximum_heap_size }}"
+      -v {{ elk_data_dir }}:/usr/share/opensearch/data:z
+      -v {{ elk_log_dir }}:/var/log/opensearch:z
+      -v {{ elk_config_dir }}/certs:/usr/share/opensearch/config/certs:Z
+      -v {{ elk_config_dir }}/opensearch.yml:/usr/share/opensearch/config/opensearch.yml:z
+      -v {{ elk_config_dir }}/internal_users.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/internal_users.yml:z
+      -v {{ elk_config_dir }}/roles_mapping.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/roles_mapping.yml:z
+      -v {{ elk_config_dir }}/tenants.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/tenants.yml:z
+      -v {{ elk_config_dir }}/roles.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/roles.yml:z
+      -v {{ elk_config_dir }}/action_groups.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/action_groups.yml:z
 
-java_home: /usr/lib/jvm/jre
-elk_stack_certs: /etc/elasticsearch/certs
+elk_config_dir: /etc/opensearch
+elk_data_dir: /var/lib/elasticsearch
+elk_log_dir: /var/log/opensearch
+elk_stack_certs: "{{ elk_config_dir }}/certs"
+old_elk_config_dir: /etc/elasticsearch
+old_elk_stack_certs: "{{ old_elk_config_dir }}/certs"
 
 elasticsearch_password: "CHANGE_ME"
 elasticsearch_kibanaserver_password: "CHANGE_ME"

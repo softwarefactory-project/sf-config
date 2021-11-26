@@ -1,26 +1,13 @@
 ---
 - name: Disable services
   service:
-    name: elasticsearch
+    name: opensearch
     state: stopped
-    enabled: "no"
-  ignore_errors: "yes"
+    enabled: false
+  ignore_errors: true
 
-- block:
-    - name: Remove files
-      file:
-        path: "{{ item }}"
-        state: absent
-      loop:
-        - /var/lib/elasticsearch
-        - /etc/yum.repos.d/elasticsearch-7.x.repo
-        - /etc/yum.repos.d/opendistroforelasticsearch-artifacts.repo
-
-    - name: Remove packages
-      yum:
-        name: "{{ item }}"
-        state: absent
-      loop:
-        - elasticsearch-oss
-        - opendistroforelasticsearch
-  when: erase == True
+- name: Delete containers
+  include_role:
+    name: sf-container
+    tasks_from: delete.yaml
+  loop: "{{ opensearch_components }}"

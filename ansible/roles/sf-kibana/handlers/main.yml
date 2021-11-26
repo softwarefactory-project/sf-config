@@ -1,0 +1,25 @@
+---
+- name: restart opensearch dashboards
+  systemd:
+    name: opensearch-dashboards
+    state: restarted
+    daemon_reload: true
+
+- name: ensure started opensearch dashboards
+  systemd:
+    name: opensearch-dashboards
+    state: started
+    enabled: "yes"
+    daemon_reload: true
+
+- name: wait for Opensearch dashboards service
+  uri:
+    url: "https://{{ fqdn }}/analytics/dashboards"
+    method: GET
+    validate_certs: false
+    status_code: "401"
+    return_content: true
+  register: _opensearch_dashboards_status
+  until: "'Unauthorized' in _opensearch_dashboards_status.content"
+  retries: 30
+  delay: 10

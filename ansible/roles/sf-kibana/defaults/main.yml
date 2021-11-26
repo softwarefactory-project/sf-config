@@ -4,27 +4,34 @@ role_actions:
   - setup
   - backup
   - restore
-  - configure_mirror
+  - get_logs
   - postconf
   - disable
 
 role_package: kibana
 
-opendistro_version: 1.13.2
-opendistro_repos_name: elasticsearch-7.x,opendistroforelasticsearch-artifacts
-opendistro_repos:
-  - name: elasticsearch-7.x
-    desc: Elasticsearch repository for 7.x packages
-    url: https://artifacts.elastic.co/packages/oss-7.x/yum
-    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    gpgcheck: 1
-    enabled: 0
-  - name: opendistroforelasticsearch-artifacts
-    desc: Release RPM artifacts of OpenDistroForElasticsearch
-    url: https://d3g5vo6xdbdb9a.cloudfront.net/yum/noarch/
-    gpgkey: https://d3g5vo6xdbdb9a.cloudfront.net/GPG-KEY-opendistroforelasticsearch
-    gpgcheck: 1
-    enabled: 0
+owner: opensearch-dashboards
+group: opensearch-dashboards
+# NOTE: UID and GID was changed with commit:
+# https://softwarefactory-project.io/r/c/containers/+/23475
+uid: 10006
+gid: 10006
+opensearch_dashboards_components:
+  - service: "opensearch-dashboards"
+    os: "centos"
+    image: "quay.rdoproject.org/software-factory/opensearch-dashboards:1.2.0-patched"
+    digest: "sha256:0510c4dc0b2173a4f4d07466a6e7346d74a56fffd252ed41d469dccb1cbc62c5"
+    mirror: ""
+    skip-auto-update: true
+    trigger_start: false
+    params: >-
+      --net host
+      -v {{ elk_config_dir }}/certs/:/usr/share/opensearch/config/certs:Z
+      -v {{ elk_config_dir }}/opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml:z
+
+elk_config_dir: /etc/opensearch
+elk_log_dir: /var/log/opensearch
+old_kibana_config_dir: /etc/kibana
 
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com

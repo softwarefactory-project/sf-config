@@ -1,4 +1,0 @@
-- include_tasks: "{{ sf_tasks_dir }}/configure_mirror.yml"
-  vars:
-    old_repo_name: elasticsearch
-    repos: "{{ opendistro_repos }}"

@@ -20,7 +20,7 @@
               }
           }'
     status_code: 200
-    validate_certs: yes
+    validate_certs: true
 
 - name: Check if indexes replicas number should be updated
   uri:
@@ -29,7 +29,7 @@
     status_code: 200
     client_cert: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
     client_key: "{{ elk_stack_certs }}/elasticsearch-admin.key"
-    validate_certs: yes
+    validate_certs: true
   register: json_response
 
 # FROM: https://github.com/opendistro-for-elasticsearch/security/issues/100
@@ -45,5 +45,5 @@
              }
            }'
     status_code: 200
-    validate_certs: yes
+    validate_certs: true
   when: json_response.json != {}

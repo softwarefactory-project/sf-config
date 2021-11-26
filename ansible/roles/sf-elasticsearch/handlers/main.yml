@@ -1,0 +1,34 @@
+---
+- name: restart opensearch
+  systemd:
+    name: opensearch
+    state: restarted
+    daemon_reload: true
+
+- name: ensure started opensearch
+  systemd:
+    name: opensearch
+    state: started
+    enabled: "yes"
+
+- name: wait for opensearch service
+  uri:
+    url: "{{ elasticsearch_internal_url }}"
+    method: GET
+    validate_certs: false
+    status_code: "401"
+  register: _opensearch_service_status
+  until: "(_opensearch_service_status is successful) and (_opensearch_service_status.status == 401)"
+  retries: 30
+  delay: 10
+
+- name: reconfigure security plugin in containers
+  shell: >-
+    podman exec opensearch
+    bash -c 'JAVA_HOME=/usr/share/opensearch/jdk
+    /usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh
+    -cd /usr/share/opensearch/plugins/opensearch-security/securityconfig/
+    -icl -nhnv -cacert /usr/share/opensearch/config/certs/localCA.pem
+    -cert /usr/share/opensearch/config/certs/elasticsearch-admin.crt
+    -key /usr/share/opensearch/config/certs/elasticsearch-admin.key
+    -h {{ ansible_default_ipv4.address }}'

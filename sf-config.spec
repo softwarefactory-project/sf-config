@@ -2,7 +2,7 @@
 
 Name:           sf-config
 Version:        3.1.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        %{sum}
 
 License:        ASL 2.0
@@ -20,6 +20,7 @@ Requires:       python3-jinja2
 Requires:       python3-requests
 Requires:       python3-selinux
 Requires:       python3-six
+Requires:       python3-passlib
 Requires:       python3-pyyaml
 Requires:       iproute
 Requires:       openssh
@@ -101,6 +102,9 @@ if [ $1 -gt 1 ]; then
 fi
 
 %changelog
+* Mon Nov 29 2021  <dpawlik@redhat.com> - 3.1.0-4
+- Add dependency to python3-passlib
+
 * Tue Nov  5 2019  <user@tmacs> - 3.1.0-3
 - Switch to python3
 

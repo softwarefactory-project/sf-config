@@ -1,14 +1,8 @@
 ---
-- include_tasks: configure_mirror.yml
-
-# NOTE: If Kibana was configured before Opendistro Kibana,
-# the official package will be in conflict with Opendistro.
-# Let's remove it before Opendistro.
-- name: Remove official Elasticsearch if it was earlier installed
+- name: Remove Opendistro Kibana package
   yum:
-    name: kibana
+    name: "opendistroforelasticsearch-kibana"
     state: absent
-  register: _official_kibana_package
 
 - name: Remove official Kibana artifacts after package remove
   file:
@@ -18,12 +12,9 @@
     - /var/lib/kibana
     - /usr/share/kibana
     - /etc/kibana
-    - /etc/systemd/system/multi-user.target.wants/kibana.service
-  when: _official_kibana_package.changed
 
-- name: Install Opendistro Kibana package
-  yum:
-    name: "opendistroforelasticsearch-kibana-{{ opendistro_version }}"
-    state: present
-    disablerepo: "*"
-    enablerepo: "{{ opendistro_repos_name }}"
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ opensearch_dashboards_components }}"

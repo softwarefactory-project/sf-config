@@ -1,93 +1,55 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: kibana
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ opensearch_dashboards_components }}"
+
+- name: Create container user
+  include_role:
+    name: sf-container
+    tasks_from: create_user.yaml
 
 - name: Create cert dir
   file:
-    path: "/etc/kibana/certs"
-    owner: kibana
-    group: root
+    path: "{{ elk_config_dir }}/certs"
+    owner: "{{ uid }}"
+    group: "{{ gid }}"
     state: directory
 
 - name: Copy certs
   copy:
     src: "/etc/pki/ca-trust/source/anchors/localCA.pem"
-    dest: "/etc/kibana/certs/localCA.pem"
-    mode: '0600'
-    owner: kibana
-    group: root
+    dest: "{{ elk_config_dir }}/certs/localCA.pem"
+    mode: "0644"
+    owner: "{{ uid }}"
+    group: "{{ gid }}"
+
+- name: Generate Opensearch dashboards welcome page text - internal host
+  set_fact:
+    kibana_loginscreen_text: "Readonly user: {{ elasticsearch_readonly_user }} password: {{ elasticsearch_readonly_password }}"
+
+- name: Generate Opensearch dashboards welcome page text - external host
+  set_fact:
+    kibana_loginscreen_text: "Readonly user: {{ external_elasticsearch_readonly_username }} password: {{ external_elasticsearch_readonly_password }}"
+  when: external_elasticsearch_readonly_username != '' and external_elasticsearch_readonly_password != ''
 
 - name: Configure Kibana
-  lineinfile:
-    dest: /etc/kibana/kibana.yml
-    regexp: '^#?{{ item.regexp }}.*'
-    line: '{{ item.line }}'
-    create: '{{ item.create | default(false) }}'
-  loop:
-    - regexp: 'server.host'
-      line: 'server.host: {{ kibana_host }}'
-    - regexp: 'server.basePath'
-      line: 'server.basePath: "/analytics"'
-    - regexp: 'server.defaultRoute'
-      line: 'server.defaultRoute: "/app/discover/?security_tenant=global"'
-      create: yes
-    - regexp: 'elasticsearch.hosts'
-      line: 'elasticsearch.hosts: ["{{ elasticsearch_internal_url }}"]'
-    - regexp: 'elasticsearch.ssl.verificationMode'
-      line: 'elasticsearch.ssl.verificationMode: full'
-    - regexp: 'elasticsearch.ssl.certificateAuthorities'
-      line: 'elasticsearch.ssl.certificateAuthorities: ["/etc/kibana/certs/localCA.pem"]'
-    - regexp: 'telemetry.enabled'
-      line: 'telemetry.enabled: false'
-    - regexp: 'elasticsearch.username'
-      line: "elasticsearch.username: kibanaserver"
-    - regexp: 'elasticsearch.password'
-      line: "elasticsearch.password: {{ elasticsearch_kibanaserver_password }}"
-    - regexp: 'elasticsearch.requestHeadersWhitelist'
-      line: 'elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]'
-    - regexp: 'opendistro_security.multitenancy.enabled'
-      line: 'opendistro_security.multitenancy.enabled: false'
-    - regexp: 'opendistro_security.multitenancy.tenants.preferred'
-      line: 'opendistro_security.multitenancy.tenants.preferred: ["Global"]'
-  register: kibanaconf
+  template:
+    src: opensearch-dashboards.yml.j2
+    dest: /etc/opensearch/opensearch_dashboards.yml
+    owner: "{{ uid }}"
+    group: "{{ gid }}"
+  notify:
+    - restart opensearch dashboards
+    - ensure started opensearch dashboards
+    - wait for Opensearch dashboards service
 
-- name: Configure Kibana for Keycloak
-  lineinfile:
-    dest: /etc/kibana/kibana.yml
-    regexp: '^#?{{ item.regexp }}.*'
-    line: '{{ item.line }}'
-    create: "{{ item.create | default(true) }}"
-  loop:
-    - regexp: 'opendistro_security.auth.type'
-      line: 'opendistro_security.auth.type: "openid"'
-    - regexp: 'opendistro_security.openid.client_id'
-      line: 'opendistro_security.openid.client_id: kibana'
-    - regexp: 'opendistro_security.openid.client_secret'
-      line: 'opendistro_security.openid.client_secret: {{ keycloak_kibana_client_secret }}'
-    - regexp: 'opendistro_security.openid.connect_url'
-      line: 'opendistro_security.openid.connect_url: https://{{ fqdn }}/auth/realms/{{ keycloak_default_realm }}/.well-known/openid-configuration'
-    - regexp: 'opendistro_security.openid.base_redirect_url'
-      line: 'opendistro_security.openid.base_redirect_url: https://{{ fqdn }}/analytics/'
-    - regexp: 'opendistro_security.openid.root_ca'
-      line: 'opendistro_security.openid.root_ca: /etc/kibana/certs/localCA.pem'
-  register: kibanaconf_keycloak
-  when: '"keycloak" in roles'
-
-- name: Restart kibana after the configuration changed
-  systemd:
-    name: kibana
-    state: restarted
-    daemon_reload: yes
-  when: kibanaconf is changed or update_fqdn or kibanaconf_keycloak is changed
-
-- name: Kibana service started and enabled
-  systemd:
-    name: kibana
-    state: started
-    enabled: "yes"
-    daemon_reload: yes
+- name: Create container - Opensearch dashboards
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ opensearch_dashboards_components }}"
 
 - name: Send backup and restore script
   copy:

@@ -4,6 +4,7 @@
 #   name:
 #     role:
 #     password:
+
 - name: Generate hash for main SF host
   vars:
     internal_users:
@@ -34,31 +35,3 @@
   set_fact:
     elasticsearch_readonly_user: "{{ elasticsearch['readonly_user'] | default(elasticsearch_readonly_user) }}"
     elasticsearch_readonly_password: "{{ elasticsearch['readonly_password'] | default(elasticsearch_readonly_password) }}"
-
-- name: Set the security plugin configuration
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ opendistro_plugin_dir }}/securityconfig/{{ item }}"
-  loop:
-    - internal_users.yml
-    - tenants.yml
-    - config.yml
-    - roles.yml
-    - roles_mapping.yml
-
-- name: Ensure that Elasticsearch service is running before reconfiguration
-  systemd:
-    name: elasticsearch
-    state: started
-
-# https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/generate-certificates/#run-securityadminsh
-- name: Reconfigure Elasticsearch security plugin
-  shell: >
-    {{ opendistro_plugin_dir }}/tools/securityadmin.sh \
-      -cd {{ opendistro_plugin_dir }}/securityconfig/ \
-      -icl -nhnv -cacert {{ elk_stack_certs }}/localCA.pem \
-      -cert {{ elk_stack_certs }}/elasticsearch-admin.crt \
-      -key {{ elk_stack_certs }}/elasticsearch-admin.key \
-      -h {{ elasticsearch_host }}
-  environment:
-    JAVA_HOME: "{{ java_home }}"

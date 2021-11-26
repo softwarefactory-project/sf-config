@@ -20,7 +20,7 @@ client:
   use_ssl: True
   ssl_no_validate: False
   http_auth: curator:{{ elasticsearch_curator_password }}
-  certificate: '/etc/elasticsearch/certs/localCA.pem'
+  certificate: '/etc/opensearch/certs/localCA.pem'
 {% endif %}
 
 logging:

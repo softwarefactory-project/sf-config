@@ -1,10 +1,20 @@
 ---
-- name: Stop the service
+- name: Get available service facts
+  service_facts:
+
+- name: Stop Kibana service
   service:
     name: kibana
     state: stopped
+  when: "'kibana' in services"
 
-- name: Cleanup config file
-  copy:
-    content: '# THIS FILE WAS CLEANED ON UPGRADE SF.IO TO VERSION 3.5'
-    dest: /etc/kibana/kibana.yml
+- name: Stop Opensearch dashboards service
+  systemd:
+    name: opensearch-dashboards
+    state: stopped
+  when: "'opensearch-dashboards' in services"
+
+- name: Remove old Kibana config dir
+  file:
+    path: "{{ old_kibana_config_dir }}"
+    state: absent

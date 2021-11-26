@@ -1,0 +1,39 @@
+---
+opensearch.hosts: ["{{ elasticsearch_internal_url }}"]
+
+server.basePath: "/analytics"
+server.host: 0.0.0.0
+server.defaultRoute: "/app/discover/?security_tenant=global"
+
+elasticsearch.ssl.verificationMode: full
+elasticsearch.username: kibanaserver
+elasticsearch.password: {{ elasticsearch_kibanaserver_password }}
+elasticsearch.ssl.certificateAuthorities: ["/usr/share/opensearch/config/certs/localCA.pem"]
+
+opensearch_security.multitenancy.tenants.enable_private: false
+opensearch_security.multitenancy.enabled: false
+opensearch_security.multitenancy.tenants.preferred: [ "Global" ]
+opensearch_security.multitenancy.enable_filter: false
+opensearch_security.multitenancy.tenants.enable_global: true
+opensearch_security.basicauth.login.title: "The Software Factory Elasticsearch"
+{% if kibana_loginscreen_text is defined and kibana_loginscreen_text != '' %}
+opensearch_security.basicauth.login.subtitle: "{{ kibana_loginscreen_text }}"
+{% else %}
+opensearch_security.basicauth.login.subtitle: "Username: kibana Password: kibana"
+{% endif %}
+
+# additional settings that were not listened in configure-kibana,
+# but are required.
+elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]
+opensearch_security.readonly_mode.roles: ["kibana_read_only"]
+opensearch_security.cookie.secure: false
+map.includeElasticMapsService: false
+
+{% if 'keycloak' in roles %}
+opensearch_security.auth.type: "openid"
+opensearch_security.openid.client_id: kibana
+opensearch_security.openid.client_secret: {{ keycloak_kibana_client_secret }}
+opensearch_security.openid.connect_url: https://{{ fqdn }}/auth/realms/{{ keycloak_default_realm }}/.well-known/openid-configuration
+opensearch_security.openid.base_redirect_url: https://{{ fqdn }}/analytics/
+opensearch_security.openid.root_ca: /usr/share/opensearch/config/certs/localCA.pem
+{% endif %}
