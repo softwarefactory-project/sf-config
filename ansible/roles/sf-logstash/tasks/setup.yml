@@ -1,23 +1,36 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: logstash
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ logstash_components + curator_components }}"
+
+# FIXME: uncomment when container GID and UID is not 1000.
+#- name: Create container user
+#  include_role:
+#    name: sf-container
+#    tasks_from: create_user.yaml
 
 - name: Create cert dir
   file:
-    path: "{{ logstash_stack_certs }}"
-    owner: logstash
-    group: root
+    path: "{{ item }}"
+    owner: "{{ uid }}"
+    group: "{{ gid }}"
+    recurse: true
     state: directory
+  loop:
+    - "{{ logstash_stack_certs }}"
+    - "{{ logstash_index_dir }}"
+    - "{{ logstash_log_dir }}"
+    - "{{ curator_config_dir }}"
 
 - name: Copy CA cert to logstash dir
   copy:
     src: "/etc/pki/ca-trust/source/anchors/localCA.pem"
     dest: "{{ logstash_stack_certs }}/localCA.pem"
-    mode: '0600'
-    owner: logstash
-    group: root
+    mode: '0640'
+    owner: "{{ uid }}"
+    group: "{{ gid }}"
   when: not external_elasticsearch_cacert
 
 - name: Configure external Elasticsearch
@@ -34,55 +47,83 @@
       when: _external_localca.stat.exists
   when: external_elasticsearch_cacert != "None"
 
-- stat:
-    path: /var/log/logstash/logstash.log
-  register: logfile
-
-- name: Create logstash.log
-  file:
-    path: /var/log/logstash/logstash.log
-    owner: logstash
-    group: logstash
-  when: logfile.stat.exists
-
-- name: Install configuration files
+- name: Install configuration files - logstash
   template:
-    src: "{{ item.name }}.j2"
-    dest: "{{ item.path | default('/etc/logstash') }}/{{ item.name }}"
+    src: "{{ item }}.j2"
+    dest: "{{ logstash_index_dir }}/{{ item }}"
+    mode: "0644"
+    owner: "{{ uid }}"
+    group: "{{ uid }}"
   register: logstash_templates
   loop:
-    - {name: 'curator.yml'}
-    - {name: 'delete_old_indices.yml'}
-    - {name: 'indexer.conf', path: '/etc/logstash/conf.d'}
+    - indexer.conf
 
-- name: Configure jvm
-  lineinfile:
-    dest: /etc/logstash/jvm.options
-    regexp: '^#?{{ item.regexp }}.*'
-    line: '{{ item.line }}'
+- name: Install configuration files - curator
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ curator_config_dir }}/{{ item }}"
+    mode: "0644"
+    owner: "{{ uid }}"
+    group: "{{ uid }}"
+  register: logstash_templates
   loop:
-    - regexp: '-Xms'
-      line: '-Xms{{ logstash_minimum_heap_size }}'
-    - regexp: '-Xmx'
-      line: '-Xmx{{ logstash_maximum_heap_size }}'
-  register: logstash_jvm_config
+    - curator.yml
+    - delete_old_indices.yml
 
-- name: Restart logstash if needed
-  service:
-    name: logstash
-    state: restarted
-  when: logstash_jvm_config.changed or logstash_templates.changed
+- name: Change logstash jvm options file
+  copy:
+    content: |
+      # FROM jvm.options - default config file
+      -Xms{{ logstash_minimum_heap_size }}
+      -Xmx{{ logstash_maximum_heap_size }}
+      -XX:+UseConcMarkSweepGC
+      -XX:CMSInitiatingOccupancyFraction=75
+      -XX:+UseCMSInitiatingOccupancyOnly
+      -Djava.awt.headless=true
+      -Dfile.encoding=UTF-8
+      -Djruby.compile.invokedynamic=true
+      -Djruby.jit.threshold=0
+      -Djruby.regexp.interruptible=true
+      -XX:+HeapDumpOnOutOfMemoryError
+      -Djava.security.egd=file:/dev/urandom
+      -Dlog4j2.isThreadContextMapInheritable=true
+    dest: "{{ logstash_config_dir }}/jvm.options"
+  notify:
+    - restart logstash
+    - ensure started logstash
+    - wait for logstash service
 
-- name: Enable logstash
-  service:
-    name: logstash
-    enabled: "yes"
-    state: started
+# so the opensearch container can not start when logstash is running.
+# https://opensearch.org/docs/opensearch/install/important-settings/
+- name: Create logastash configuration file
+  copy:
+    content: |
+      http.port: {{ logstash_http_port }}
+      http.host: {{ logstash_host }}
+      log.level: info
+      path.logs: /var/log/logstash
+    dest: "{{ logstash_config_dir }}/logstash.yml"
+  notify:
+    - restart logstash
+    - ensure started logstash
+    - wait for logstash service
 
-- name: Setup delete old logstash indexes CRON
+- name: Create container - Logstash
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ logstash_components }}"
+
+- name: Make sure that curator package is removed
+  yum:
+    name: elasticsearch-curator
+    state: absent
+
+- name: Add crontab entry for pruning old indices
   cron:
     name: "Delete old logstash indexes"
-    minute: 0
-    hour: 0
-    day: '*'
-    job: "/bin/curator --config /etc/logstash/curator.yml /etc/logstash/delete_old_indices.yml"
+    minute: "0"
+    hour: "0"
+    day: "*"
+    job: "podman run {{ item.params }}"
+  loop: "{{ curator_components }}"

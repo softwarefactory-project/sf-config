@@ -2,7 +2,6 @@
 role_actions:
   - install
   - setup
-  - configure_mirror
   - disable
   - get_logs
 
@@ -11,23 +10,58 @@ role_package: logstash
 elk_stack_version: 7
 elk_sub_version: 10.2
 
-elasticsearch_oss_repos_name: elasticsearch-7.x
-elasticsearch_oss_repos:
-  - name: elasticsearch-7.x
-    desc: Elasticsearch repository for 7.x packages
-    url: https://artifacts.elastic.co/packages/oss-7.x/yum
-    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    gpgcheck: 1
-    enabled: 0
+owner: opensearch
+group: opensearch
+# FIXME: Change uid and gid when container image is not using GID and UID 1000.
+uid: 1000
+gid: 1000
+logstash_components:
+  - service: "logstash"
+    os: "centos"
+    image: "quay.rdoproject.org/software-factory/logstash:7.10.1"
+    digest: "sha256:d961735b41e0ada5f42e3c0c54397cc68fd9ba56159f855cd1c656dcb9ee7c45"
+    mirror: ""
+    skip-auto-update: true
+    trigger_start: false
+    params: >-
+      --net host
+      -v {{ logstash_config_dir }}/logstash.yml:/usr/share/logstash/config/logstash.yml:z
+      -v {{ logstash_config_dir }}/jvm.options:/usr/share/logstash/config/jvm.options:z
+      -v {{ logstash_config_dir }}/conf.d:/usr/share/logstash/pipeline:z
+      -v {{ logstash_stack_certs }}/localCA.pem:{{ logstash_stack_certs }}/localCA.pem:Z
+      -v {{ logstash_log_dir }}:/var/log/logstash:z
+
+curator_components:
+  - service: "curator"
+    os: "centos"
+    image: "quay.rdoproject.org/software-factory/curator:5.7"
+    digest: "sha256:3b4e0529c0fe5653ce978ad4ef288cc7d0d2f4d30fe3d0f604e4c34c2b4defae"
+    mirror: ""
+    skip-auto-update: true
+    trigger_start: false
+    params: >-
+        --net host
+        -rm
+        --user 1000:1000
+        -v {{ curator_config_dir }}/curator.yml:/.curator/curator.yml:z
+        -v {{ curator_config_dir }}/delete_old_indices.yml:/curator/delete_old_indices.yml:z
+        -v {{ logstash_stack_certs }}/localCA.pem:/etc/opensearch/certs/localCA.pem:z
+        curator /curator/delete_old_indices.yml
 
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
 elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
 
-logstash_stack_certs: /etc/logstash/certs
+logstash_config_dir: /etc/logstash
+logstash_stack_certs: "{{ logstash_config_dir }}/certs"
+logstash_index_dir: "{{ logstash_config_dir }}/conf.d"
+logstash_log_dir: /var/log/logstash
 logstash_host: logstash.example.com
 logstash_input_port: '9999'
+logstash_http_port: '9601'
 
 logstash_retention_days: 60
 logstash_maximum_heap_size: 512m
 logstash_minimum_heap_size: 128m
+
+curator_config_dir: "{{ logstash_config_dir }}/curator.d"

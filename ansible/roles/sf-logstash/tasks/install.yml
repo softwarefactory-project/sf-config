@@ -1,21 +1,4 @@
 ---
-- include_tasks: configure_mirror.yml
-
-- name: Install requirements
-  yum:
-    name: java-11-openjdk
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-
-- name: Remove outdated package
-  yum:
-    name: java-1.8.0-openjdk
-    state: absent
-
-# NOTE: It is suggested to install oss version of Logstash
-# when the Elasticsearch is also installed as oss version
-# (like Opendistro is).
 - name: Remove official Logstash if it was earlier installed
   yum:
     name: logstash
@@ -32,9 +15,14 @@
     - /etc/logstash
   when: _official_logstash_package.changed
 
-- name: Install logstash package
-  yum:
-    name: "logstash-oss-{{ elk_stack_version }}.{{ elk_sub_version }}"
-    state: present
-    disablerepo: "*"
-    enablerepo: "{{ elasticsearch_oss_repos_name }}"
+- name: Pull image - logstash
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ logstash_components }}"
+
+- name: Pull image - curator
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ curator_components }}"

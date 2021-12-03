@@ -6,8 +6,13 @@
     enabled: "no"
   ignore_errors: "yes"
 
-- name: Remove packages
+- name: Remove curator package
   yum:
-    name: logstash-oss
+    name: elasticsearch-curator
     state: absent
-  when: erase == True
+
+- name: Delete containers - logstash
+  include_role:
+    name: sf-container
+    tasks_from: delete.yaml
+  loop: "{{ logstash_components }}"

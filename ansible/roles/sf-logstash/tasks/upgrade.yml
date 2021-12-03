@@ -3,3 +3,8 @@
   systemd:
     name: logstash
     state: stopped
+
+- name: Remove curator package
+  yum:
+    name: elasticsearch-curator
+    state: absent

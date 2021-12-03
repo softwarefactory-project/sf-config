@@ -1,0 +1,19 @@
+---
+- name: restart logstash
+  systemd:
+    name: logstash
+    state: restarted
+    daemon_reload: true
+
+- name: ensure started logstash
+  systemd:
+    name: logstash
+    state: started
+    enabled: true
+
+- name: wait for logstash service
+  wait_for:
+    host: "{{ logstash_host }}"
+    port: "{{ logstash_input_port }}"
+  retries: 30
+  delay: 10
