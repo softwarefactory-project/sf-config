@@ -4,7 +4,7 @@
 # - name: Create keycloak user
 #   include_tasks: "{{ sf_tasks_dir }}/create_user.yml user_name=keycloak ssh_key=keycloak_service_rsa shell=/bin/bash home_dir_mode=0755"
 
-- name: Install configuration files
+- name: Install templated files
   template:
     src: "{{ item.name }}.j2"
     dest: "{{ item.path }}/{{ item.name }}"
@@ -13,14 +13,22 @@
     mode: "{{ item.mode }}"
     backup: yes
   loop:
-    -  name: standalone.xml
-       path: /opt/jboss/keycloak/standalone/configuration/
-       mode: '0440'
-       user: keycloak
-       group: keycloak
+    - name: standalone.xml
+      path: /opt/jboss/keycloak/standalone/configuration/
+      mode: "0440"
+      user: keycloak
+      group: keycloak
   notify:
     - restart keycloak
     - apache reload
+
+- name: Install scripts and custom tooling
+  copy:
+    src: files/update_keycloak_resources.py
+    dest: /usr/local/bin/
+    owner: keycloak
+    group: keycloak
+    mode: '0700'
 
 - name: Install custom themes
   copy:

@@ -273,7 +273,7 @@ def config_update(args, pb):
     # The list of role to run update task
     roles_order = ["managesf", "gerrit", "pages", "gerritbot",
                    "zuul", "nodepool", "grafana", "hound",
-                   "cgit", "cauth", "hypervisor-k1s"]
+                   "cgit", "cauth", "keycloak", "hypervisor-k1s"]
     # The extra list of host group to run fetch-config-repo
     roles_group = [
         "zuul-scheduler", "nodepool-launcher", "nodepool-builder",
