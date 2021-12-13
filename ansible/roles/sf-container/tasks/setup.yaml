@@ -29,7 +29,6 @@
   when:
     - _local_ca_exists is defined
     - _local_ca_exists.stat.isreg
-    - item.needs_self_signed_ca | default(False)
 
 - name: "Create configuration script for {{ item.service }}"
   copy:
