@@ -18,13 +18,15 @@ gerrit_conf_dir: "/etc/gerrit"
 gerrit_lib_dir: "/var/lib/gerrit"
 gerrit_log_dir: "/var/log/gerrit"
 
+# Plugins are available: https://gerrit-ci.gerritforge.com/
+# Legacy plugins are available: https://archive-ci.gerritforge.com/view/
 gerrit_plugins:
     - name: avatars-gravatar.jar
-      url: https://gerrit-ci.gerritforge.com/job/plugin-avatars-gravatar-bazel-master-stable-3.2/lastStableBuild/artifact/bazel-bin/plugins/avatars-gravatar/avatars-gravatar.jar
+      url: https://archive-ci.gerritforge.com/view/Plugins-stable-3.2/job/plugin-avatars-gravatar-bazel-master-stable-3.2/lastSuccessfulBuild/artifact/bazel-bin/plugins/avatars-gravatar/avatars-gravatar.jar
     - name: reviewers-by-blame.jar
-      url: https://gerrit-ci.gerritforge.com/job/plugin-reviewers-by-blame-bazel-master-stable-3.2/lastStableBuild/artifact/bazel-bin/plugins/reviewers-by-blame/reviewers-by-blame.jar
+      url: https://archive-ci.gerritforge.com/view/Plugins-stable-3.2/job/plugin-reviewers-by-blame-bazel-master-stable-3.2/lastSuccessfulBuild/artifact/bazel-bin/plugins/reviewers-by-blame/reviewers-by-blame.jar
     - name: oauth.jar
-      url: https://gerrit-ci.gerritforge.com/job/plugin-oauth-bazel-stable-3.2/lastSuccessfulBuild/artifact/bazel-bin/plugins/oauth/oauth.jar
+      url: https://archive-ci.gerritforge.com/view/Plugins-stable-3.2/job/plugin-oauth-bazel-stable-3.2/lastSuccessfulBuild/artifact/bazel-bin/plugins/oauth/oauth.jar
 
 gerrit_components:
   - service: "gerrit"
