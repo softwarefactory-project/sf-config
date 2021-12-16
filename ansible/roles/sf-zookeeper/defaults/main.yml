@@ -12,3 +12,4 @@ zookeeper_tickTime: 5000
 # Large min/max session timeout to mitigate network outage between zuul and zk
 zookeeper_minSessionTimeout: 60000
 zookeeper_maxSessionTimeout: 180000
+zookeeper_purgeInterval: 24
