@@ -247,6 +247,13 @@ zuul:
   prerelease_regexp: '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9alpha|beta|rc.-]+))?(?:\+([0-9a-zA-Z.-]+))?'
   release_regexp: '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9a-zA-Z.-]+))?(?:\+([0-9a-zA-Z.-]+))?'
 
+  # Define here any third party OpenID Connect Identity Providers to make available to zuul.
+  external_authenticators: []
+  #  - name: "redhat_sso"
+  #    realm: redhat
+  #    issuer_id: https://keycloak/auth/realms/redhat
+  #    client_id: zuul
+
   # Set external gerrit connections to act as third party CI
   gerrit_connections: []
   #  - name: "external_gerrit"

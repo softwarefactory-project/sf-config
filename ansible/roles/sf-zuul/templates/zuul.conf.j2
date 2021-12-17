@@ -72,6 +72,14 @@ issuer_id=admin@{{ fqdn }}
 secret={{ zuul_hs256_secret }}
 token_expiry=3600
 
+{% for auth in zuul_external_authenticators|default([]) %}
+[auth {{ auth['name'] }}]
+driver=OpenIDConnect
+realm={{ auth['realm'] }}
+issuer_id={{ auth['issuer_id'] }}
+client_id={{ auth['client_id'] }}
+
+{% endfor %}
 [database]
 dburi=mysql+pymysql://{{ zuul_mysql_user }}:{{ zuul_mysql_password}}@{{ zuul_mysql_host }}/{{ zuul_mysql_db }}
 

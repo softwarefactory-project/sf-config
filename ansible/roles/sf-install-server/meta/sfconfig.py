@@ -218,6 +218,11 @@ class InstallServer(Component):
         args.glue.setdefault("zuul_gitlab_connections", [])
         args.glue.setdefault("zuul_git_connections", [])
 
+        args.glue.setdefault(
+            "zuul_external_authenticators",
+            args.sfconfig.get("zuul", {}).get("external_authenticators", []),
+        )
+
         # Manage default pods
         args.glue.setdefault("nodepool_default_pods", args.sfconfig.get(
             "nodepool", {}).get("k1s_default_pods", True))
