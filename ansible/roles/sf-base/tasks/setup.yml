@@ -18,6 +18,13 @@
     - cloud-final
   failed_when: "False"
 
+- name: Disable subscription-manager on CentOS
+  lineinfile:
+    path: /etc/yum/pluginconf.d/subscription-manager.conf
+    regexp: '^enabled='
+    line: 'enabled=0'
+  when: ansible_distribution == "CentOS"
+
 - name: Start haveged
   service:
     name: haveged
