@@ -16,7 +16,7 @@
     - name: "Add local CA {{ item.service }} on redhat"
       set_fact:
         _self_signed_certs: >-
-          --volume /etc/pki/ca-trust/source/anchors/localCA.pem:/etc/pki/ca-trust/source/anchors/localCA.pem:Z
+          --volume /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem:/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
           --env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt
       when: item.os == "redhat"
 
@@ -36,8 +36,8 @@
     content: |
       #!/bin/bash
       set -ex
-      {{ item.command | default(omit) }}
-      {{ patch_container_command | default(omit) }}
+      {{ item.command | default(None) }}
+      {{ patch_container_command | default(None) }}
     dest: "/usr/local/bin/configure-{{ item.service }}.sh"
     mode: '0755'
     owner: root

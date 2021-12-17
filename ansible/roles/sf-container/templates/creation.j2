@@ -4,9 +4,7 @@ podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs 
 {% if _local_ca_exists.stat.isreg or service.command is defined %}
 podman start {{ item.service }}
 {% if item.needs_self_signed_ca | default(False) %}
-{% if item.os is defined and item.os == 'redhat' %}
-until podman exec -ti {{ item.service }} update-ca-trust; do echo; done
-{% elif item.os is defined and item.os == 'debian'  %}
+{% if item.os is defined and item.os == 'debian'  %}
 until podman exec -ti {{ item.service }} update-ca-certificates; do echo; done
 {% endif %}
 {% endif %}

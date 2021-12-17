@@ -39,8 +39,6 @@ class ElasticSearch(Component):
                     'password': args.glue['elasticsearch_zuul_password'],
                     'host': args.glue["elasticsearch_host"],
                     'port': args.defaults['elasticsearch_http_port'],
-                    'use_ssl': 'true',
-                    'ca_certs': '/etc/pki/ca-trust/source/anchors/localCA.pem'
                 })
 
         args.glue['readonly_user_autologin'] = \
