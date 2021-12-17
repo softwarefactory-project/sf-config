@@ -13,12 +13,14 @@ elk_sub_version: 10.2
 owner: opensearch
 group: opensearch
 # FIXME: Change uid and gid when container image is not using GID and UID 1000.
+# NOTE: logstash:7.10.1-patched is modified version of logstash:7.10.1 that
+# remove vulnerable class https://softwarefactory-project.io/r/c/containers/+/23467
 uid: 1000
 gid: 1000
 logstash_components:
   - service: "logstash"
     os: "centos"
-    image: "quay.rdoproject.org/software-factory/logstash:7.10.1"
+    image: "quay.rdoproject.org/software-factory/logstash:7.10.1-patched"
     digest: "sha256:d961735b41e0ada5f42e3c0c54397cc68fd9ba56159f855cd1c656dcb9ee7c45"
     mirror: ""
     skip-auto-update: true
