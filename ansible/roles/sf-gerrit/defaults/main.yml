@@ -35,6 +35,7 @@ gerrit_components:
     digest: "sha256:83d9ffc7a97ca4684c9e8b621156f0137bb1d429935d1655b7be0ea96b411f1c"
     mirror: ""
     skip-auto-update: True
+    os: "redhat"
     params: >-
       --network host
       --volume /etc/sysconfig/gerrit:/etc/sysconfig/gerrit:Z
