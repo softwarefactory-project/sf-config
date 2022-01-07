@@ -180,7 +180,8 @@ def main():
     os.environ["LC_ALL"] = "en_US.UTF-8"
 
     if not args.skip_apply:
-        execute(["logger", "sfconfig: started %s" % sys.argv[1:]])
+        execute(["logger", "--tag", "event-sfconfig",
+                 "sfconfig: started %s" % sys.argv[1:]])
         print("[%s] Running sfconfig" % time.ctime())
 
     # Create required directories
@@ -301,7 +302,7 @@ def main():
     sfconfig.inventory.run(args)
 
     if not args.skip_apply:
-        execute(["logger", "sfconfig.py: ended"])
+        execute(["logger", "--tag", "event-sfconfig", "sfconfig.py: ended"])
         if not args.disable or not args.erase:
             print("""%s: SUCCESS
 

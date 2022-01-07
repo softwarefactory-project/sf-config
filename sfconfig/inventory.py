@@ -278,8 +278,20 @@ def nodepool_restart(args, pb):
                         'state': 'restarted'}}]))
 
 
+def syslogger(msg):
+    return host_play('install-server', tasks=[{
+        'name': 'Log system message',
+        'command': 'logger --tag event-sfconfig "' + msg + '"'
+    }])
+
+
 def zuul_restart(args, pb):
     dump_file = '/var/lib/zuul/scripts/zuul-change-dump.sh'
+
+    def syslog(msg):
+        pb.append(syslogger("zuul restart process: %s" % msg))
+
+    syslog("begin")
 
     pb.append(host_play('zuul-executor', tasks=[{
         'name': 'Stop executors',
@@ -326,6 +338,8 @@ def zuul_restart(args, pb):
         'service': {'name': 'zuul-scheduler',
                     'state': 'restarted'}}]))
 
+    syslog("waiting")
+
     pb.append(host_play('zuul-web', tasks=[{
         'name': 'Restart web',
         'service': {'name': 'zuul-web', 'state': 'restarted'}
@@ -350,6 +364,8 @@ def zuul_restart(args, pb):
         'name': 'Reload zuul queues',
         'command': 'bash %s' % dump_file
     }]))
+
+    syslog("zuul restart process: done")
 
 
 def notify_operator(args, pb):

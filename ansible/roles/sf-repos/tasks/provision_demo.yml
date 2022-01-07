@@ -95,6 +95,7 @@
         - git add resources/demo.yaml zuul/demo.yaml
         - git commit -m 'Provision demo resources'
         - git push git+ssh://gerrit/config master
+        - logger --tag event-sfconfig "demo-project created"
   when: demo_resource.stdout == 'False'
 
 - stat:
