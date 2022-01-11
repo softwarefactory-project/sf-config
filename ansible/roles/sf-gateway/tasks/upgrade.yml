@@ -12,6 +12,20 @@
         grep -q '<script src="/src' /var/www/index.html || rm -f /var/www/index.html
   when: sf_previous_version < 3.6
 
+- block:
+    - name: Remove zuul-webui package
+      yum:
+        name:
+          - zuul-webui
+        state: absent
+    - name: ensure /usr/share/zuul is still present
+      file:
+        path: /usr/share/zuul
+        state: directory
+        owner: root
+        mode: '0644'
+  when: sf_previous_version < 3.7
+
 - name: Remove deprecated repoxplorer files
   file:
     path: "{{ item }}"

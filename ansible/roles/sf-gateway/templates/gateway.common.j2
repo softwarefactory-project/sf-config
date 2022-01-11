@@ -157,6 +157,7 @@
         RewriteRule ^/zuul/*$ /zuul/t/{{ tenant_name }}/status [R,L]
 
         # Rewrite api to zuul-web
+
         RewriteRule ^/zuul/api/tenant/(.*)/console-stream$ {{ zuul_ws_url }}/api/tenant/$1/console-stream [P,L]
         RewriteRule ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 [P,L]
 {% endif %}
