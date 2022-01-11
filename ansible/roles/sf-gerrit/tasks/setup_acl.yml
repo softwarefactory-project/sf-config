@@ -1,3 +1,14 @@
+- name: Run pynotedb migration to rename Non-Interactive group in Service Users
+  shell: |
+    if [ ! -f /var/lib/gerrit/gerrit-service-users ]; then
+      for repo in $(find /var/lib/gerrit/git -name "*.git" -type d); do
+        pynotedb migrate-group-su --repo $repo
+      done 2>&1 | tee /var/log/gerrit/migration-pynotedb-su.log
+      touch /var/lib/gerrit/gerrit-service-users
+    fi
+  become: true
+  become_user: gerrit
+
 - file:
     path: /var/lib/software-factory/git/All-projects
     state: directory
@@ -30,15 +41,15 @@
     - 'access.refs/for/*.addPatchSet "group Project Owners" "group Project Owners"'
     - 'access.refs/heads/*.push "+force group Administrators" ".*group Administrators"'
     - 'access.refs/heads/*.push "+force group Project Owners" ".*group Project Owners"'
-    - 'access.refs/heads/*.label-Verified "-2..+2 group Non-Interactive Users" ".*group Non-Interactive Users"'
+    - 'access.refs/heads/*.label-Verified "-2..+2 group Service Users" ".*group Service Users"'
     - 'access.refs/heads/*.label-Verified "-2..+2 group Administrators" ".*group Administrators"'
     - 'access.refs/heads/*.label-Verified "-2..+2 group Project Owners" ".*group Project Owners"'
     - 'access.refs/heads/*.label-Workflow "-1..+1 group Administrators" ".*group Administrators"'
     - 'access.refs/heads/*.label-Workflow "-1..+1 group Project Owners" ".*group Project Owners"'
-    - 'access.refs/heads/*.submit "group Non-Interactive Users" "group Non-Interactive Users"'
+    - 'access.refs/heads/*.submit "group Service Users" "group Service Users"'
     - 'access.refs/heads/*.rebase "group Administrators" "group Administrators"'
     - 'access.refs/heads/*.rebase "group Project Owners" "group Project Owners"'
-    - 'access.refs/heads/*.rebase "group Non-Interactive Users" "group Non-Interactive Users"'
+    - 'access.refs/heads/*.rebase "group Service Users" "group Service Users"'
     - 'access.refs/heads/*.abandon "group Administrators" "group Administrators"'
     - 'access.refs/heads/*.abandon "group Project Owners" "group Project Owners"'
     - 'access.refs/meta/config.read "group Registered Users" "group Registered Users"'

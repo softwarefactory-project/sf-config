@@ -183,6 +183,13 @@
   failed_when: _gerrit.rc != 3 and _gerrit.rc != 0
   changed_when: false
 
+- name: Reindex gerrit data when service is not running
+  file:
+    path: /var/log/gerrit/.run_init
+    state: touch
+    owner: gerrit
+  when: _gerrit.rc == 3
+
 - name: Restart service if fqdn is updated
   systemd:
     name: gerrit
@@ -216,14 +223,6 @@
     group: "{{ group }}"
     mode: '0755'
 
-- name: Download gerrit plugins
-  get_url:
-    url: "{{ item.url }}"
-    dest: "{{ gerrit_lib_dir}}/plugins/{{ item.name }}"
-    owner: "{{ owner }}"
-    group: "{{ group }}"
-  loop: "{{ gerrit_plugins }}"
-
 - name: Create container
   include_role:
     name: sf-container
@@ -232,6 +231,12 @@
 
 - name: Ensure gerrit home for pynotedb
   command: usermod --home /var/lib/gerrit gerrit
+
+- name: Start service
+  service:
+    name: gerrit
+    state: started
+    enabled: "yes"
 
 - name: Initialize admin user
   command: pynotedb create-admin-user --email "admin@{{ fqdn }}" --pubkey "{{ gerrit_admin_rsa_pub }}" --all-users "{{ gerrit_lib_dir }}/git/All-Users.git" --scheme keycloak-oauth
@@ -252,12 +257,6 @@
   retries: 60
   delay: 1
   when: "'cauth' in roles"
-
-- name: Start service
-  service:
-    name: gerrit
-    state: started
-    enabled: "yes"
 
 - name: Create admin user password
   command: ssh gerrit gerrit set-account admin --http-password "{{ gerrit_admin_password }}"
