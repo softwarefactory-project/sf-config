@@ -15,6 +15,7 @@ group: opensearch
 # NOTE: uid 10003 is used by ara user and uid 10004 by loguser.
 uid: 10005
 gid: 10005
+
 opensearch_components:
   - service: "opensearch"
     os: "centos"

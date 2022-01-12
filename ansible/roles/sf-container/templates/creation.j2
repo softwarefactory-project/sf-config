@@ -1,6 +1,17 @@
 #!/bin/sh
 # re-run this if the container is removed
-podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} {{ item.image }} {{ item.run | default(None) }}
+if [ "$1" ]; then
+  {% if 'zuul' in item.service %}
+    {% set module = 'zuul' %}
+  {% elif 'nodepool' in item.service %}
+    {% set module = 'nodepool' %}
+  {% else %}
+    {% set module = 'unknown' %}
+  {% endif %}
+  container_exec_path=$(podman run --rm {{ item.image }} python3 -c "import {{ module }}, os.path; print(os.path.dirname({{ module }}.__file__) + '/')")
+  patched_volume=" --volume $1:$container_exec_path:z "
+fi
+podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} $patched_volume {{ item.image }} {{ item.run | default(None) }}
 {% if _local_ca_exists.stat.isreg or service.command is defined %}
 {% if item['trigger_start'] | default(true) %}
 podman start {{ item.service }}

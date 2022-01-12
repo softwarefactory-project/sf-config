@@ -16,6 +16,7 @@ group: opensearch-dashboards
 # https://softwarefactory-project.io/r/c/containers/+/23475
 uid: 10006
 gid: 10006
+
 opensearch_dashboards_components:
   - service: "opensearch-dashboards"
     os: "centos"
