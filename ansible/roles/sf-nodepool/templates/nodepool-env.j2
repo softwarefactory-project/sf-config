@@ -3,3 +3,6 @@ export REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 export STATSD_HOST={{ statsd_host | default(influxdb_host | default ('')) }}
 export STATSD_PORT={{ statsd_port | default(8125) }}
 {% endif %}
+{% if nodepool_ibm_credentials %}
+export IBM_CREDENTIALS_FILE=/var/lib/nodepool/.ibm.env
+{% endif %}

@@ -66,6 +66,14 @@
     mode: '0640'
   when: nodepool_kube_file[0]|default(None) == "/"
 
+- name: Copy IBM Cloud credentials
+  copy:
+    src: "{{ nodepool_ibm_credentials }}"
+    dest: "{{ nodepool_lib_dir }}/.ibm.env"
+    owner: "nodepool"
+    mode: "0400"
+  when: nodepool_ibm_credentials[0]|default(None) == "/"
+
 - name: Add local openshift cluster provided by sf-hypervisor-openshift
   shell: |
     TOKEN="{{ hostvars[install_server_host]['openshift_token_' + item.hostname.replace('.', '_')] }}"
