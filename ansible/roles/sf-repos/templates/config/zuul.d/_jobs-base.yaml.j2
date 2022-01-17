@@ -95,10 +95,14 @@
     name: {{ sf_jobs_project_name }}
     check:
       jobs:
-        - linters
+        - linters:
+            vars:
+              linters: [flake8, yamllint]
     gate:
       jobs:
-        - linters
+        - linters:
+            vars:
+              linters: [flake8, yamllint]
 
 {% endif %}
 {% else %}
