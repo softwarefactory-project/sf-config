@@ -9,8 +9,6 @@
       - mod_ssl
       - mod_wsgi
       - zuul-jobs-doc
-      - zuul-doc
-      - nodepool-doc
       - sf-ui
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"

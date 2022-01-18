@@ -20,8 +20,10 @@ export ZUUL_COMMIT="$COMMIT"
 
 if [ -n "$ZUUL_COMMIT" ]; then
     echo "Triggered by commit: $ZUUL_COMMIT"
+    logger --tag config-update "Triggered by commit: $ZUUL_COMMIT"
 else
     echo "Triggered outside of Zuul (No ZUUL_COMMIT provided)"
+    logger --tag config-update "Triggered outside of Zuul (No ZUUL_COMMIT provided)"
 fi
 
 LOCK_PATH=/var/lib/software-factory/state/ansible.lock

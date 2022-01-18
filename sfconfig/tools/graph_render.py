@@ -12,9 +12,11 @@
 
 import argparse
 import urllib.request
+from urllib.error import URLError
 import json
 import os
 import yaml
+import time
 
 import sfconfig.utils
 
@@ -405,15 +407,24 @@ def update_grafyaml_action(args):
 ############################
 # Deployment configuration #
 ############################
+def get(url):
+    for _ in range(6):
+        try:
+            return urllib.request.urlopen(url)
+        except URLError as err:
+            print("Unable to fetch %s due to: %s (will retry in 10s)" % (
+                url, err))
+            time.sleep(10)
+    raise RuntimeError("Unable to fetch %s due to: %s (after 6 retries)")
+
+
 def get_tenants(zuul_url):
     result = []
-    tenants_url = urllib.request.urlopen("%s/api/tenants" % zuul_url)
-    tenants = json.loads(tenants_url.read())
+    tenants = json.loads(get("%s/api/tenants" % zuul_url).read())
     for tenant in tenants:
         tenant_data = {"name": tenant["name"], "pipelines": []}
-        tenant_url = urllib.request.urlopen(
-            "%s/api/tenant/%s/pipelines" % (zuul_url, tenant["name"]))
-        pipelines = json.loads(tenant_url.read())
+        pipelines = json.loads(get(
+            "%s/api/tenant/%s/pipelines" % (zuul_url, tenant["name"])).read())
         for pipeline in pipelines:
             tenant_data["pipelines"].append(pipeline["name"])
         result.append(tenant_data)

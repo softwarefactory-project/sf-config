@@ -318,8 +318,9 @@ def zuul_restart(args, pb):
     pb.append(host_play('zookeeper', tasks=[{
         'name': 'Remove zuul locks',
         'shell': "; ".join([
-            "zkCli.sh deleteall /zuul/events || true",
             "zkCli.sh deleteall /zuul/components || true"
+            "zkCli.sh deleteall /zuul/events || true",
+            "zkCli.sh deleteall /zuul/tenant || true"
         ])}]))
 
     if 'zuul-merger' in args.glue["roles"]:
