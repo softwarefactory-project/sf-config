@@ -18,26 +18,17 @@ gerrit_conf_dir: "/etc/gerrit"
 gerrit_lib_dir: "/var/lib/gerrit"
 gerrit_log_dir: "/var/log/gerrit"
 
-# Plugins are available: https://gerrit-ci.gerritforge.com/
-# Legacy plugins are available: https://archive-ci.gerritforge.com/view/
-gerrit_plugins:
-    - name: avatars-gravatar.jar
-      url: https://archive-ci.gerritforge.com/view/Plugins-stable-3.2/job/plugin-avatars-gravatar-bazel-master-stable-3.2/lastSuccessfulBuild/artifact/bazel-bin/plugins/avatars-gravatar/avatars-gravatar.jar
-    - name: reviewers-by-blame.jar
-      url: https://archive-ci.gerritforge.com/view/Plugins-stable-3.2/job/plugin-reviewers-by-blame-bazel-master-stable-3.2/lastSuccessfulBuild/artifact/bazel-bin/plugins/reviewers-by-blame/reviewers-by-blame.jar
-    - name: oauth.jar
-      url: https://archive-ci.gerritforge.com/view/Plugins-stable-3.2/job/plugin-oauth-bazel-stable-3.2/lastSuccessfulBuild/artifact/bazel-bin/plugins/oauth/oauth.jar
-
 gerrit_components:
   - service: "gerrit"
     post_start: "/usr/libexec/software-factory/wait4gerrit"
-    image: "quay.io/software-factory/gerrit:3.2.6"
-    digest: "sha256:83d9ffc7a97ca4684c9e8b621156f0137bb1d429935d1655b7be0ea96b411f1c"
+    image: "quay.io/software-factory/gerrit:3.4.3"
+    digest: "sha256:ee20fde38e55a743ad479daac6fa31982fdfe1928664e0899135c9692c9eaeb6"
     mirror: ""
     skip-auto-update: True
     os: "redhat"
     params: >-
       --network host
+      --entrypoint /entrypoint.sh
       --volume /etc/sysconfig/gerrit:/etc/sysconfig/gerrit:Z
       --volume /etc/gerrit/:/var/gerrit/etc/:Z
       --volume /var/lib/gerrit/.gitconfig:/var/gerrit/.gitconfig:Z
