@@ -37,7 +37,6 @@ zuul_components:
       --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
       --volume /var/lib/zuul/scripts/:/var/lib/zuul/scripts/:Z
       --volume /var/lib/zuul/tenant-secrets/:/var/lib/zuul/tenant-secrets/:Z
-      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
   - service: "zuul-executor"
     image: "quay.io/software-factory/zuul-executor-ubi:4.6.0"
@@ -51,7 +50,6 @@ zuul_components:
       --volume /etc/zuul/:/etc/zuul/:Z
       --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
       --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
-      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
   - service: "zuul-merger"
@@ -65,7 +63,6 @@ zuul_components:
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
       --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
-      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
   - service: "zuul-web"
@@ -79,7 +76,6 @@ zuul_components:
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
-      --volume /var/lib/zuul/patches/:/var/lib/zuul/patches/:Z
 
 zuul_services:
   - zuul-scheduler

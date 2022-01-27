@@ -18,6 +18,7 @@ group: opensearch
 # remove vulnerable class https://softwarefactory-project.io/r/c/containers/+/23467
 uid: 1000
 gid: 1000
+
 logstash_components:
   - service: "logstash"
     os: "centos"
