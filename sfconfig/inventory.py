@@ -315,12 +315,17 @@ def zuul_restart(args, pb):
         'name': 'Stop web',
         'service': {'name': 'zuul-web', 'state': 'stopped'}}]))
 
+    zk_cleanup_script = "/usr/share/sf-config/scripts/zk-cleanup-queue.py"
+
     pb.append(host_play('zookeeper', tasks=[{
-        'name': 'Remove zuul locks',
-        'shell': "; ".join([
-            "zkCli.sh deleteall /zuul/components || true"
-            "zkCli.sh deleteall /zuul/events || true",
-            "zkCli.sh deleteall /zuul/tenant || true"
+        'name': 'Installing Python Module Kazoo',
+        'shell': "pip3 install kazoo"
+        }, {
+        'name': 'Cleaning Zookeeper Queues',
+        'shell': " && ".join([
+            "%s --all --queue /zuul/events" % zk_cleanup_script,
+            "%s --all --queue /zuul/components" % zk_cleanup_script,
+            "%s --all --queue /zuul/tenant" % zk_cleanup_script
         ])}]))
 
     if 'zuul-merger' in args.glue["roles"]:
