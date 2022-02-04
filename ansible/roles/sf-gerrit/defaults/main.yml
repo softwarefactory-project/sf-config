@@ -25,7 +25,6 @@ gerrit_components:
     digest: "sha256:ee20fde38e55a743ad479daac6fa31982fdfe1928664e0899135c9692c9eaeb6"
     mirror: ""
     skip-auto-update: True
-    os: "redhat"
     params: >-
       --network host
       --entrypoint /entrypoint.sh

@@ -20,14 +20,7 @@ gid: 10001
 
 dib_upstream_elements: True
 
-patch_container_command: |
-  apt update
-  apt install patch -y
-  pushd /usr/local/lib/python3.7/site-packages
-  for patch in $(ls /var/lib/nodepool/patches/*patch); do
-      patch -p1 < $patch
-  done
-  popd
+nodepool_container_version: 4.3.0-2
 
 nodepool_version: "4.3.0"
 
@@ -47,11 +40,10 @@ nodepool_providers:
 
 nodepool_components:
   - service: "nodepool-launcher"
-    image: "quay.io/software-factory/nodepool-launcher:{{ nodepool_version }}"
+    image: "quay.io/software-factory/nodepool-launcher-ubi:{{ nodepool_container_version }}"
     mirror: ""
     stopped: True
     skip-auto-update: True
-    os: "debian"
     run: >-
       su --login nodepool
       -c ". /var/lib/nodepool/nodepool-env && /usr/local/bin/nodepool-launcher -d
@@ -64,34 +56,11 @@ nodepool_components:
       --volume /var/lib/nodepool/:/var/lib/nodepool/:Z
       --volume /var/log/nodepool/:/var/log/nodepool/:Z
       --volume /var/www/html/nodepool-launcher/:/var/www/html/nodepool-launcher/:Z
-    command: |
-      apt update
-      apt install git curl bzip2 python-dev gcc -y
-      pushd /var/tmp/
-      for pkg in managesf python-sfmanager; do
-          git clone https://softwarefactory-project.io/r/software-factory/$pkg
-          pushd $pkg
-          pip3 install -r requirements.txt
-          python3 setup.py install
-          popd
-      done
-      # dhall
-      curl -L -O https://github.com/dhall-lang/dhall-haskell/releases/download/1.32.0/dhall-json-1.6.4-x86_64-linux.tar.bz2
-      tar xf dhall-json-1.6.4-x86_64-linux.tar.bz2
-      mv bin/* /usr/local/bin/
-      # certs
-      find /var/lib/nodepool/certs/ -type f -exec cp {} /usr/local/share/ca-certificates/ \;
-      update-ca-certificates
-      # cleanup
-      apt remove git curl bzip2 python-dev gcc -y
-      apt clean
-      rm -rf /var/tmp/{managesf,python-sfmanager}
   - service: "nodepool-builder"
-    image: "quay.io/software-factory/nodepool-builder:{{ nodepool_version }}"
+    image: "quay.io/software-factory/nodepool-builder-ubi:{{ nodepool_container_version }}"
     mirror: ""
     stopped: True
     skip-auto-update: True
-    os: "debian"
     run: >-
       su --login nodepool
       -c ". /var/lib/nodepool/nodepool-env && /usr/local/bin/nodepool-builder -d
@@ -113,32 +82,6 @@ nodepool_components:
       --volume /usr/share/project-config/:/usr/share/project-config/
       {% endif %}
       --privileged
-    command: |
-      apt update
-      apt install git curl bzip2 python-dev gcc -y
-      pushd /var/tmp/
-      for pkg in managesf python-sfmanager; do
-          git clone https://softwarefactory-project.io/r/software-factory/$pkg
-          pushd $pkg
-          pip3 install -r requirements.txt
-          python3 setup.py install
-          popd
-      done
-      # dhall
-      curl -L -O https://github.com/dhall-lang/dhall-haskell/releases/download/1.32.0/dhall-json-1.6.4-x86_64-linux.tar.bz2
-      tar xf dhall-json-1.6.4-x86_64-linux.tar.bz2
-      mv bin/* /usr/local/bin/
-      # nodepool-builder depends
-      apt install -y ansible libguestfs-tools git
-      # Update diskimage-builder
-      pip install --upgrade diskimage-builder
-      # certs
-      find /var/lib/nodepool/certs/ -type f -exec cp {} /usr/local/share/ca-certificates/ \;
-      update-ca-certificates
-      # cleanup
-      apt remove python-dev gcc -y
-      apt clean
-      rm -rf /var/tmp/{managesf,python-sfmanager}
 
 nodepool_cache_dir: "/var/cache/nodepool"
 nodepool_conf_dir: "/etc/nodepool"
