@@ -56,6 +56,12 @@ class NodepoolLauncher(Component):
                 fail("%s: does not exists" %
                      args.glue["nodepool_ibm_credentials"])
 
+        args.glue["nodepool_aws_file"] = args.sfconfig.get(
+            "nodepool", {}).get("aws_file", None)
+        if args.glue["nodepool_aws_file"]:
+            if not os.path.isfile(args.glue["nodepool_aws_file"]):
+                fail("%s: does not exists" % args.glue["nodepool_aws_file"])
+
         self.get_or_generate_ssh_key(args, "nodepool_rsa")
         self.get_or_generate_ssh_key(args, "zuul_rsa")
 

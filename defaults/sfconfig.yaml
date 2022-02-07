@@ -164,6 +164,8 @@ nodepool:
   kube_file:
   # Copy a ibm credentials env file to /etc/software-factory and reference its path here
   ibm_credentials_file:
+  # Copy a .aws/config to /etc/software-factory and reference its path here
+  aws_file:
 
   # OR list the OpenStack provider here (deprecated, provides a clouds.yaml instead)
   providers: []

@@ -156,3 +156,4 @@ nodepool_build_log_retention: 7
 
 nodepool_openshift_providers: []
 nodepool_kube_file: ""
+nodepool_aws_file: ""
