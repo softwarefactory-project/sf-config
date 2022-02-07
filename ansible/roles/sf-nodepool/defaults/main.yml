@@ -20,7 +20,7 @@ gid: 10001
 
 dib_upstream_elements: True
 
-nodepool_container_version: 4.3.0-2
+nodepool_container_version: 4.3.0-3
 
 nodepool_version: "4.3.0"
 
