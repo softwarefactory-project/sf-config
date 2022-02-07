@@ -134,6 +134,7 @@
 
     - name: Save zuul jobs repo
       command: "mv {{ demo_tmp.stdout }} /root/demo-project"
+
   when: demo_project_done.stat.exists != True
 
 - stat:

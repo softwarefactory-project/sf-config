@@ -60,19 +60,22 @@
         podman exec -ti zuul-scheduler python3
         /var/lib/zuul/scripts/generate-tenant-update-secrets.py
         {{ managesf_internal_url }} {{ tenant_name }}
-      register: updated_keys
-      changed_when: False
+      changed_when: false
+
+    - name: Check if secrets yaml files exist
+      shell: find /var/lib/zuul/tenant-secrets/ -name '*yaml'
+      register: _secrets_files
+      changed_when: false
 
     - name: Copy secrets to the gateway
       synchronize:
-        src: "{{ item }}"
+        src: "/var/lib/zuul/tenant-secrets/{{ item | basename }}"
         dest: "/var/www/.config/{{ item | basename }}"
         mode: pull
       delegate_to: "{{ gateway_host }}"
-      loop: "{{ updated_keys.stdout_lines[3:] }}"
-      when: updated_keys.stdout_lines[3:]
+      loop: "{{ _secrets_files.stdout_lines }}"
+      when: _secrets_files.stdout_lines
   when: "'zuul-scheduler' in zuul_services"
-
 
 - name: Ensure all services are started and enabled
   service:

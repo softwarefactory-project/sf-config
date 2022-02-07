@@ -18,6 +18,8 @@ import json
 import os
 import sys
 import time
+import subprocess
+import configparser
 
 from six.moves import urllib
 
@@ -47,22 +49,67 @@ if local_url is None:
         default_tenant_name, str(tenants.items())))
 
 
+def run_cmd(cmd):
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    p.wait()
+    return p
+
+
 def zuul_encrypt(private_key_file):
     import zuul.lib.encryption
-    import subprocess
     pub_key = zuul.lib.encryption.deserialize_rsa_keypair(
-        open(private_key_file, "rb").read())[1]
+        open(private_key_file, "rb").read(),
+        password=get_keystore_password())[1]
     pub_file = "/var/lib/zuul/tenant-secrets/%s.pub" % (
         private_key_file.replace('/', ':'))
     with open(pub_file, "wb") as pub:
         pub.write(
             zuul.lib.encryption.serialize_rsa_public_key(pub_key))
-    p = subprocess.Popen(
+    p = run_cmd(
         ["/var/lib/zuul/scripts/zuul-encrypt-secret.py",
-         pub_file, "ssh_private_key", "--infile", ssh_key],
-        stdout=subprocess.PIPE)
-    p.wait()
+         pub_file, "ssh_private_key", "--infile", ssh_key])
     return p.stdout.read().decode('utf-8')
+
+
+def get_keystore_password():
+    config = configparser.ConfigParser()
+    config.read("/etc/zuul/zuul.conf")
+    return config.get("keystore", "password").encode()
+
+
+def wait_for_private_key(conn_name, repo_name):
+    dump_path = "/var/lib/zuul/keys-dump"
+    os.makedirs(os.path.dirname(dump_path), exist_ok=True)
+
+    def get_key_from_dump():
+        data = json.loads(open(dump_path).read())
+        zk_path = "/keystorage/%s/config/%s/secrets" % (conn_name, repo_name)
+        secret_path = "/var/lib/zuul/keys/secrets/project"
+        private_key_data_path = "%s/%s/%s/0.pem" % (
+            secret_path, conn_name, repo_name)
+        os.makedirs(os.path.dirname(private_key_data_path), exist_ok=True)
+        keys = data.get('keys', {}).get(zk_path, {}).get("keys", [])
+        if keys:
+            # The data struct is a list so it assumes multiple key may exists
+            # but no clue about when multiple keys may exists. So by default
+            # get the first one.
+            private_key_data = keys[0]["private_key"]
+            open(private_key_data_path, "w").write(private_key_data)
+            return private_key_data_path
+
+    def dump_keys():
+        run_cmd(["zuul", "export-keys", dump_path])
+
+    # Will wait for 20 minutes
+    for _ in range(40):
+        dump_keys()
+        private_key = get_key_from_dump()
+        if private_key:
+            return private_key
+        time.sleep(30)
+    raise RuntimeError(
+        "Maximum retries trying to get private key for %s/%s" % (
+            conn_name, repo_name))
 
 
 for tenant, inf in tenants.items():
@@ -74,18 +121,12 @@ for tenant, inf in tenants.items():
         "tenant-update_%s_secret.yaml" % tenant
     os.makedirs(os.path.dirname(tenant_secret_path), exist_ok=True)
 
-    # Check for sf<3.2 legacy paths
-    old_path = "/var/lib/software-factory/bootstrap-data/" \
-        "tenant-update_%s_secret.yaml" % tenant
-    if os.path.exists(old_path):
-        os.rename(old_path, tenant_secret_path)
-
     if (
             os.path.exists(tenant_secret_path) and
             "pkcs" in open(tenant_secret_path).read()):
         continue
 
-    print("Generating secret for tenant %s" % tenant, file=sys.stderr)
+    print("Generating secret for tenant %s" % tenant)
 
     req = urllib.request.urlopen(inf["url"] + "/v2/resources")
     data = json.loads(req.read().decode('utf-8'))
@@ -94,23 +135,12 @@ for tenant, inf in tenants.items():
     tenant_config_connection = inf["default-connection"]
 
     tenant_config_name = tenant_config["config-repo"][len(
-        connections[tenant_config_connection]["base-url"]):]
+        connections[tenant_config_connection]["base-url"]):].lstrip('/')
 
-    private_key_file = "/var/lib/zuul/keys/secrets/project/%s/%s/0.pem" % (
+    print("Looking for %s key on connection %s in Zookeeper" % (
+        tenant_config_name, tenant_config_connection))
+    private_key_file = wait_for_private_key(
         tenant_config_connection, tenant_config_name)
-
-    print("Looking for %s key on connection %s (%s)" % (
-        tenant_config_name, tenant_config_connection, private_key_file),
-        file=sys.stderr)
-
-    for retry in range(1800):
-        # Give zuul sometime to generate the key
-        if os.path.exists(private_key_file):
-            break
-        time.sleep(1)
-    if retry == 1799:
-        print("Couldn't find %s" % private_key_file)
-        exit(1)
 
     tenant_config_secret = zuul_encrypt(private_key_file)
     open(tenant_secret_path, "w").write(tenant_config_secret)

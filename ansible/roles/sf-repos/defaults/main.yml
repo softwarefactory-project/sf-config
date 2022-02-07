@@ -17,6 +17,8 @@ keycloak_http_port: 38080
 keycloak_host: keycloak.example.com
 keycloak_internal_url: "http://{{ keycloak_host }}:{{ keycloak_http_port }}"
 
+change_pushed: False
+
 config_repo_acl:
   file: |-
     [access "refs/*"]

@@ -10,6 +10,9 @@
   changed_when: False
   register: localconfig
 
+- name: Log systemd message
+  command: 'logger --tag config-update "managesf: localconfig content {{ localconfig }}"'
+
 - name: Check upstream config
   command: git log -n 3 --oneline resources/
   args:
@@ -17,11 +20,15 @@
   changed_when: False
   register: upstreamconfig
 
+- name: Log systemd message
+  command: 'logger --tag config-update "managesf: upstreamconfig content {{ upstreamconfig }}"'
+
 - block:
     - name: Exec resources apply
       command: >
         /usr/bin/managesf-resources apply
-          --zuul-prev-commit {{ localconfig.stdout_lines[0].split()[0] }}
+        --zuul-prev-commit {{ localconfig.stdout_lines[0].split()[0] }}
+        --log-output /var/log/managesf/resources_apply.log
       register: output
       changed_when: false
       ignore_errors: yes

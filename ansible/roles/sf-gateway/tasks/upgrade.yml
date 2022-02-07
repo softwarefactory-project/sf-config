@@ -1,29 +1,22 @@
 ---
-- block:
-    - name: Remove /etc/httpd/managesf_htpasswd
-      file:
-        path: /etc/httpd/managesf_htpasswd
-        state: absent
+- name: Remove /etc/httpd/managesf_htpasswd
+  file:
+    path: /etc/httpd/managesf_htpasswd
+    state: absent
   when: sf_previous_version < 3.1
 
-- block:
-    - name: Remove legacy /var/www/index.html
-      shell: |
-        grep -q '<script src="/src' /var/www/index.html || rm -f /var/www/index.html
+- name: Remove legacy /var/www/index.html
+  shell: |
+    grep -q '<script src="/src' /var/www/index.html || rm -f /var/www/index.html
   when: sf_previous_version < 3.6
 
-- block:
-    - name: Remove zuul-webui package
-      yum:
-        name:
-          - zuul-webui
-        state: absent
-    - name: ensure /usr/share/zuul is still present
-      file:
-        path: /usr/share/zuul
-        state: directory
-        owner: root
-        mode: '0644'
+- name: Remove outdated packages
+  yum:
+    name:
+      - nodepool-doc
+      - zuul-doc
+      - zuul-webui
+    state: absent
   when: sf_previous_version < 3.7
 
 - name: Remove deprecated repoxplorer files

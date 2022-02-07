@@ -16,10 +16,20 @@
         - "add -A"
         - "commit -m \"{{ update_message|default('Automatic update of defaults') }}\""
 
-    - name: Push change
-      command: "git push {{ clone_remote }} master"
-      args:
-        chdir: "{{ clone_dir }}"
+    # set_fact when change is pushed for this playbook is used for config, zuul-jobs
+    # and sf-jobs and _change_pushed return value could change between call to this play
+    - name: Push change and notify for push
+      block:
+        - name: Push change
+          command: "git push {{ clone_remote }} master"
+          args:
+            chdir: "{{ clone_dir }}"
+          register: _change_pushed
+
+        - name: Set change_pushed to True
+          set_fact:
+            change_pushed: True
+          when: _change_pushed is changed
       when: sync_strategy == 'push' or clone_remote | dirname == "/var/lib/software-factory/git"
 
     - name: Propose git review

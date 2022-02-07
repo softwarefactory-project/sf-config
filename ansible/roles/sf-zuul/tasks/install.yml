@@ -4,6 +4,12 @@
     path: /usr/libexec/software-factory/zuul-changes.py
   register: _dump_queues
 
+- name: Write version in file
+  copy:
+    content: "{{ zuul_version }}"
+    dest: "/var/lib/software-factory/versions/zuul"
+  delegate_to: "{{ install_server_host }}"
+
 - name: Dump zuul queues and remove zuul packages
   block:
     - name: Dump zuul queues

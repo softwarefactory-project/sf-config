@@ -64,6 +64,7 @@ log_stream_file=/var/tmp/zuul-console/console-{log_uuid}.log
 load_multiplier={{ zuul_executor_load_multiplier|default(2.5) }}
 min_avail_hdd={{ zuul_executor_min_avail_hdd|default(5.0) }}
 min_avail_mem={{ zuul_executor_min_avail_mem|default(5.0) }}
+sigterm_method=stop
 
 [fingergw]
 state_dir={{ zuul_lib_dir }}

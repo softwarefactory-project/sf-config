@@ -92,19 +92,24 @@
   register: _zuul_job_version
   changed_when: false
 
-- name: Read zuul version
-  command: rpm -q zuul-doc
-  args:
-    warn: false
-  register: _zuul_version
-  changed_when: false
+- name: Get zuul and nodepool versions
+  block:
+    - name: Read zuul version
+      command: cat /var/lib/software-factory/versions/zuul
+      args:
+        warn: false
+      register: _zuul_version
+      changed_when: false
+      delegate_to: "{{ install_server_host }}"
 
-- name: Read nodepool version
-  command: rpm -q nodepool-doc
-  args:
-    warn: false
-  register: _nodepool_version
-  changed_when: false
+    - name: Read nodepool version
+      command: cat /var/lib/software-factory/versions/nodepool
+      args:
+        warn: false
+      register: _nodepool_version
+      changed_when: false
+      delegate_to: "{{ install_server_host }}"
+  when: "'zuul' in roles"
 
 - name: Install templates
   template:

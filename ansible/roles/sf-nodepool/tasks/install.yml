@@ -16,6 +16,12 @@
       - httpd
       - managesf
 
+- name: Write version in file
+  copy:
+    content: "{{ nodepool_version }}"
+    dest: "/var/lib/software-factory/versions/nodepool"
+  delegate_to: "{{ install_server_host }}"
+
 - name: Install packages for builder
   package:
     name:

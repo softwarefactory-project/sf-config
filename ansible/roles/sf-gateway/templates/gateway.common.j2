@@ -38,16 +38,9 @@
     {% if _zuul_job_version is defined %}
     Alias "/docs/zuul-jobs" "/usr/share/doc/zuul-jobs-doc-{{ _zuul_job_version.stdout.split('-')[3] }}/html"
     {% endif %}
-    {% if _zuul_version is defined %}
-    Alias "/docs/zuul" "/usr/share/doc/zuul-doc-{{ _zuul_version.stdout.split('-')[2] }}/html"
-    {% endif %}
-    {% if _nodepool_version is defined %}
-    Alias "/docs/nodepool" "/usr/share/doc/nodepool-doc-{{ _nodepool_version.stdout.split('-')[2] }}/html"
-    {% endif %}
     Alias "/docs/managesf" "/usr/share/doc/managesf/"
     Alias "/docs/sfmanager" "/usr/share/doc/python-sfmanager/"
     Alias "/docs/" "/usr/share/doc/software-factory/"
-    Alias "/docs" "/usr/share/doc/software-factory/"
     <Directory "/usr/share/doc/">
         Require all granted
     </Directory>
@@ -145,23 +138,24 @@
 
 {% endif %}
 
-        <Directory /usr/share/zuul>
-            DirectoryIndex index.html
-            Require all granted
-            Order allow,deny
-            Allow from all
-        </Directory>
-        Alias /zuul /usr/share/zuul
-
 {% if 'zuul' in roles %}
+        ProxyPass /zuul {{ zuul_web_url }} nocanon retry=0
+        ProxyPassReverse /zuul {{ zuul_web_url }}
+
         RewriteRule ^/zuul/*$ /zuul/t/{{ tenant_name }}/status [R,L]
 
         # Rewrite api to zuul-web
 
         RewriteRule ^/zuul/api/tenant/(.*)/console-stream$ {{ zuul_ws_url }}/api/tenant/$1/console-stream [P,L]
         RewriteRule ^/zuul/api/(.*)$ {{ zuul_web_url }}/api/$1 [P,L]
+
+        Redirect "/docs/zuul" "https://zuul-ci.org/docs/zuul/{{ _zuul_version.stdout }}"
+        Redirect "/docs/nodepool" "https://zuul-ci.org/docs/nodepool/{{ _nodepool_version.stdout }}"
 {% endif %}
 {% if tenant_deployment %}
+        ProxyPass /zuul {{ master_sf_url }}/zuul nocanon retry=0
+        ProxyPassReverse /zuul {{ master_sf_url }}/zuul
+
         RewriteRule ^/zuul/*$ /zuul/status [R,L]
 
         SSLProxyEngine On
@@ -174,12 +168,9 @@
         RewriteRule ^/zuul/api/console-stream$ wss://{{ master_sf_fqdn }}/zuul/api/tenant/{{ tenant_name }}/console-stream [P,L]
         RewriteRule ^/zuul/api/(.*)$ {{ master_sf_url }}/zuul/api/tenant/{{ tenant_name }}/$1 [P,L]
 
+        Redirect "/docs/zuul" "{{ master_sf_url }}/docs/zuul"
+        Redirect "/docs/nodepool" "{{ master_sf_url }}/docs/nodepool"
 {% endif %}
-
-        # Rewrite HTML5 url to the index.html
-        RewriteCond /usr/share/%{REQUEST_FILENAME} !-f
-        RewriteCond /usr/share/%{REQUEST_FILENAME} !-d
-        RewriteRule ^/zuul/.*$ /usr/share/zuul/index.html [L]
 
         # SF-UI: Rewrite HTML5 url to the index.html
         <Directory /usr/share/sf-ui>
