@@ -408,7 +408,7 @@ def update_grafyaml_action(args):
 # Deployment configuration #
 ############################
 def get(url):
-    for _ in range(6):
+    for _ in range(12):
         try:
             return urllib.request.urlopen(url)
         except URLError as err:
