@@ -30,7 +30,6 @@ zuul_components:
     mirror: ""
     stopped: True
     skip-auto-update: True
-    os: "redhat"
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
@@ -45,7 +44,6 @@ zuul_components:
     mirror: ""
     stopped: True
     skip-auto-update: True
-    os: "redhat"
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
@@ -58,7 +56,6 @@ zuul_components:
     mirror: ""
     stopped: True
     skip-auto-update: True
-    os: "redhat"
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
@@ -70,7 +67,6 @@ zuul_components:
     mirror: ""
     stopped: True
     skip-auto-update: True
-    os: "redhat"
     params: >-
       --network host
       --volume /etc/zuul/:/etc/zuul/:Z
