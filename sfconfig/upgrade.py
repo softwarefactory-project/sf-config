@@ -207,6 +207,10 @@ def update_sfconfig(args):
         data["nodepool"]["kube_file"] = None
         dirty = True
 
+    if "aws_file" not in data["nodepool"]:
+        data["nodepool"]["aws_file"] = None
+        dirty = True
+
     if "default-tenant-name" not in data:
         data["default-tenant-name"] = "local"
         dirty = True
