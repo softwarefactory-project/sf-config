@@ -1,8 +1,0 @@
----
-- name: "Install DLRN packages"
-  yum:
-    name:
-      - httpd
-      - dlrn
-#      - dlrnclient
-    state: present

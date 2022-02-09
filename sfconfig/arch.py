@@ -22,7 +22,6 @@ required_roles = (
 )
 
 rhel_unsupported_roles = (
-    "dlrn",
     "firehose",
 )
 

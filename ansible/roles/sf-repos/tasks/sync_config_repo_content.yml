@@ -30,10 +30,6 @@
 #################################################################################
 # Then we synchronize the provided files, erasing user/previous state if needed #
 #################################################################################
-- include_tasks: config_create_dir.yml
-  vars:
-    repo_dir_names: [dlrn]
-  when: "'dlrn' in roles"
 
 - include_tasks: config_create_dir.yml
   vars:
