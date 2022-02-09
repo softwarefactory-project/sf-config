@@ -48,11 +48,6 @@
     state: started
   when: "'zuul-scheduler' in zuul_services"
 
-- name: Wait for gearman server port
-  wait_for:
-    host: "{{ zuul_scheduler_host }}"
-    port: 4730
-
 - name: Manage tenant secrets
   block:
     - name: Generate tenant-update secrets

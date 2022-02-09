@@ -70,12 +70,6 @@
         dest: "{{ zuul_lib_dir }}/scripts/zuul-changes.py"
         mode: '0755'
 
-    - name: Install gearman-client script
-      template:
-        src: gearman-client.sh.j2
-        dest: "{{ zuul_lib_dir }}/scripts/gearman-client"
-        mode: '0755'
-
     - name: Install generate-tenant-update-secrets.py script
       copy:
         src: generate-tenant-update-secrets.py
@@ -162,9 +156,6 @@
     - include_tasks: create_logging.yml
       vars:
         _logfile: "scheduler"
-    - include_tasks: create_logging.yml
-      vars:
-        _logfile: "gearman-server"
   when: "'zuul-scheduler' in zuul_services"
 
 - block:
@@ -197,7 +188,7 @@
     group: "{{ group }}"
     state: directory
 
-- name: "Setup gearman and zookeeper certificates"
+- name: "Setup zookeeper certificates"
   copy:
     content: "{{ item.content }}"
     dest: "{{ zuul_conf_dir }}/ssl/{{ item.dest }}"
@@ -205,8 +196,6 @@
     group: "{{ group }}"
   loop:
     - {content: "{{ localCA_pem }}", dest: "localCA.pem"}
-    - {content: "{{ gearman_crt }}", dest: "gearman.crt"}
-    - {content: "{{ gearman_key }}", dest: "gearman.key"}
     - {content: "{{ zk_client_crt }}", dest: "zookeeper.crt"}
     - {content: "{{ zk_client_key }}", dest: "zookeeper.key"}
     - {content: "{{ zk_ca_pem }}", dest: "zk-ca.pem"}

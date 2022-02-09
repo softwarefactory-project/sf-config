@@ -1,9 +1,6 @@
 [scheduler]
 tenant_config=main.yaml
 
-[gearman]
-server=localhost
-
 [zookeeper]
 hosts=localhost:2281
 tls_cert=/etc/ssl/zookeeper.crt
@@ -13,8 +10,7 @@ tls_ca=/etc/ssl/zk-ca.pem
 [keystore]
 password=secret
 
-[connection sqlreporter]
-driver=sql
+[database]
 dburi=sqlite://
 
 {% for conn in zuul_gerrit_connections|default([]) %}

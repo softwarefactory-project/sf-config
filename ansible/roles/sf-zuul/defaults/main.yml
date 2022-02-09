@@ -22,11 +22,12 @@ gid: 10001
 
 patch_container_command: ""
 
-zuul_version: "4.12.0"
+zuul_version: "5.0.0"
+zuul_container_version: "{{ zuul_version }}-0"
 
 zuul_components:
   - service: "zuul-scheduler"
-    image: "quay.io/software-factory/zuul-scheduler-ubi:{{ zuul_version }}"
+    image: "quay.io/software-factory/zuul-scheduler-ubi:{{ zuul_container_version }}"
     mirror: ""
     stopped: True
     skip-auto-update: True
@@ -40,7 +41,7 @@ zuul_components:
       --volume /var/lib/zuul/tenant-secrets/:/var/lib/zuul/tenant-secrets/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
   - service: "zuul-executor"
-    image: "quay.io/software-factory/zuul-executor-ubi:{{ zuul_version }}"
+    image: "quay.io/software-factory/zuul-executor-ubi:{{ zuul_container_version }}"
     mirror: ""
     stopped: True
     skip-auto-update: True
@@ -52,7 +53,7 @@ zuul_components:
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
   - service: "zuul-merger"
-    image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_version }}"
+    image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_container_version }}"
     mirror: ""
     stopped: True
     skip-auto-update: True
@@ -63,7 +64,7 @@ zuul_components:
       --volume /var/log/zuul/:/var/log/zuul/:Z
       --privileged
   - service: "zuul-web"
-    image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_version }}"
+    image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
     mirror: ""
     stopped: True
     skip-auto-update: True
@@ -87,7 +88,6 @@ zuul_log_dir: "/var/log/zuul"
 zuul_share_dir: "/usr/share/javascript/zuul"
 
 zuul_web_port: 9000
-zuul_gearman_port: 4730
 
 zuul_executor_ansible_setup_timeout: 60
 zuul_executor_disk_limit: 1024

@@ -3,12 +3,16 @@
   command: "find {{ zuul_lib_dir }}/keys/ -name \"*.pub\" -delete"
   when: _previous_version.stdout.startswith('rh-python35-zuul-3.2.0')
 
-- name: Remove legacy public key bis
+- name: Remove legacy public key and files
   file:
     path:
     state: absent
   with_items:
+    - /etc/zuul/gearman-server-logging.yaml
+    - /etc/zuul/ssl/gearman.crt
+    - /etc/zuul/ssl/gearman.key
     - /var/lib/software-factory/state/config_key_checksum
+    - /var/lib/zuul/scripts/gearman-client
     - "{{ zuul_lib_dir }}/config.pub"
 
 - name: Check for legacy state

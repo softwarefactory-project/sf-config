@@ -38,7 +38,6 @@ class ZuulScheduler(Component):
         ))))
         self.get_or_generate_ssh_key(args, "zuul_rsa")
         self.get_or_generate_ssh_key(args, "zuul_worker_rsa")
-        self.get_or_generate_cert(args, "gearman", host["hostname"])
         args.glue["zuul_pub_url"] = "%s/zuul/" % args.glue["gateway_url"]
         args.glue["zuul_mysql_host"] = args.glue["mysql_host"]
 
