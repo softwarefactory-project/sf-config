@@ -20,18 +20,6 @@
     - _local_ca_exists is defined
     - _local_ca_exists.stat.isreg
 
-- name: "Create configuration script for {{ item.service }}"
-  copy:
-    content: |
-      #!/bin/bash
-      set -ex
-      {{ item.command | default(None) }}
-      {{ patch_container_command | default(None) }}
-    dest: "/usr/local/bin/configure-{{ item.service }}.sh"
-    mode: '0755'
-    owner: root
-  when: item.command is defined or patch_container_command is defined
-
 - name: "Create container creation script for {{ item.service }}"
   template:
     src: creation.j2

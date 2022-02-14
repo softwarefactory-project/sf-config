@@ -16,10 +16,6 @@ podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs 
 {% if item['trigger_start'] | default(true) %}
 podman start {{ item.service }}
 {% endif %}
-{% if item.command is defined %}
-podman cp /usr/local/bin/configure-{{ item.service }}.sh {{ item.service }}:/tmp/configure-{{ item.service }}.sh
-podman exec -ti {{ item.service }} /bin/bash /tmp/configure-{{ item.service }}.sh
-{% endif %}
 {% if item.stopped is defined%}
 podman stop {{ item.service }}
 {% endif %}

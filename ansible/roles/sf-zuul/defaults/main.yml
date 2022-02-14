@@ -20,8 +20,6 @@ group: opendev
 uid: 10001
 gid: 10001
 
-patch_container_command: ""
-
 zuul_version: "5.0.0"
 zuul_container_version: "{{ zuul_version }}-0"
 
