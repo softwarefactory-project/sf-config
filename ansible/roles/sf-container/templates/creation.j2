@@ -20,15 +20,6 @@ podman start {{ item.service }}
 podman cp /usr/local/bin/configure-{{ item.service }}.sh {{ item.service }}:/tmp/configure-{{ item.service }}.sh
 podman exec -ti {{ item.service }} /bin/bash /tmp/configure-{{ item.service }}.sh
 {% endif %}
-{% if item.service == 'zuul-web' %}
-# Copy the js site to the host each time we recreate the container. We use an intermediate dir because podman cp does not seem to behave as intended.
-tmpdir=$(mktemp -d)
-podman cp {{ item.service }}:/usr/local/lib/python3.8/site-packages/zuul/web/static/. $tmpdir
-mv $tmpdir/static/* /usr/share/zuul/
-rm -rf $tmpdir
-chmod -R 755 /usr/share/zuul
-semanage fcontext -a -t httpd_sys_content_t "/usr/share/zuul/.*"
-{% endif %}
 {% if item.stopped is defined%}
 podman stop {{ item.service }}
 {% endif %}
