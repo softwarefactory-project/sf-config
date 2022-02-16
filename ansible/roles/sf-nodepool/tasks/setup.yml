@@ -29,16 +29,8 @@
     - {path: "{{ nodepool_lib_dir }}/.config/openstack", mode: "0750"}
     - {path: "{{ nodepool_lib_dir }}/.kube", mode: "0750", recurse: "yes"}
     - {path: "{{ nodepool_lib_dir }}/.ssh"}
-    - {path: "{{ nodepool_lib_dir }}/patches"}
     - {path: "{{ nodepool_log_dir }}", recurse: "yes"}
     - {path: "/var/lib/software-factory/conf", owner: "root", group: "root"}
-
-- name: Sync patches directory
-  synchronize:
-    src: "/usr/share/sf-config/ansible/roles/sf-nodepool/files/patches/"
-    dest: "{{ nodepool_lib_dir }}/patches"
-    rsync_opts:
-      - "--delete"
 
 - name: Install ssh private and public keys
   copy:

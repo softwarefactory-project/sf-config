@@ -12,11 +12,6 @@ if [ "$1" ]; then
   patched_volume=" --volume $1:$container_exec_path:z "
 fi
 podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} $patched_volume {{ item.image }} {{ item.run | default(None) }}
-{% if _local_ca_exists.stat.isreg or service.command is defined %}
 {% if item['trigger_start'] | default(true) %}
 podman start {{ item.service }}
-{% endif %}
-{% if item.stopped is defined%}
-podman stop {{ item.service }}
-{% endif %}
 {% endif %}

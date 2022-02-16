@@ -25,8 +25,6 @@ gerrit_components:
   - service: "gerrit"
     post_start: "/usr/libexec/software-factory/wait4gerrit"
     image: "quay.io/software-factory/gerrit:{{ gerrit_container_version }}"
-    digest: "sha256:ee20fde38e55a743ad479daac6fa31982fdfe1928664e0899135c9692c9eaeb6"
-    mirror: ""
     skip-auto-update: True
     params: >-
       --network host

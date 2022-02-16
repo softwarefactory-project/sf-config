@@ -24,10 +24,7 @@ logstash_container_version: "{{ logstash_version }}-1"
 
 logstash_components:
   - service: "logstash"
-    os: "centos"
     image: "quay.io/software-factory/sf-logstash:{{ logstash_container_version }}"
-    digest: "sha256:d961735b41e0ada5f42e3c0c54397cc68fd9ba56159f855cd1c656dcb9ee7c45"
-    mirror: ""
     skip-auto-update: true
     trigger_start: false
     params: >-
@@ -40,10 +37,7 @@ logstash_components:
 
 curator_components:
   - service: "curator"
-    os: "centos"
     image: "quay.rdoproject.org/software-factory/curator:5.7"
-    digest: "sha256:3b4e0529c0fe5653ce978ad4ef288cc7d0d2f4d30fe3d0f604e4c34c2b4defae"
-    mirror: ""
     skip-auto-update: true
     trigger_start: false
     params: >-

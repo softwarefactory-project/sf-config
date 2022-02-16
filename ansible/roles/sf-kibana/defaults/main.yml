@@ -19,10 +19,7 @@ gid: 10006
 
 opensearch_dashboards_components:
   - service: "opensearch-dashboards"
-    os: "centos"
     image: "quay.rdoproject.org/software-factory/opensearch-dashboards:1.2.0-patched"
-    digest: "sha256:0510c4dc0b2173a4f4d07466a6e7346d74a56fffd252ed41d469dccb1cbc62c5"
-    mirror: ""
     skip-auto-update: true
     trigger_start: false
     params: >-

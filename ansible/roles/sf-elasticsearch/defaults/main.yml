@@ -18,10 +18,7 @@ gid: 10005
 
 opensearch_components:
   - service: "opensearch"
-    os: "centos"
     image: "quay.rdoproject.org/software-factory/opensearch:1.2.2-patched"
-    digest: "sha256:ef109b42532aacf51150795d18c735756bc2f55ccdbc95c27b5527aaade20c43"
-    mirror: ""
     skip-auto-update: true
     trigger_start: false
     params: >-

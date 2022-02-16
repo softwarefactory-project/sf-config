@@ -26,8 +26,7 @@ zuul_container_version: "{{ zuul_version }}-0"
 zuul_components:
   - service: "zuul-scheduler"
     image: "quay.io/software-factory/zuul-scheduler-ubi:{{ zuul_container_version }}"
-    mirror: ""
-    stopped: True
+    trigger_start: false
     skip-auto-update: True
     params: >-
       --network host
@@ -40,8 +39,7 @@ zuul_components:
       --volume /var/log/zuul/:/var/log/zuul/:Z
   - service: "zuul-executor"
     image: "quay.io/software-factory/zuul-executor-ubi:{{ zuul_container_version }}"
-    mirror: ""
-    stopped: True
+    trigger_start: false
     skip-auto-update: True
     params: >-
       --network host
@@ -52,8 +50,7 @@ zuul_components:
       --privileged
   - service: "zuul-merger"
     image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_container_version }}"
-    mirror: ""
-    stopped: True
+    trigger_start: false
     skip-auto-update: True
     params: >-
       --network host
@@ -63,8 +60,7 @@ zuul_components:
       --privileged
   - service: "zuul-web"
     image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
-    mirror: ""
-    stopped: True
+    trigger_start: false
     skip-auto-update: True
     params: >-
       --network host
