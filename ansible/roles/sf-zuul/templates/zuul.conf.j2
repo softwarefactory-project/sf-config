@@ -63,6 +63,9 @@ port={{ zuul_web_port }}
 log_config={{ zuul_conf_dir }}/web-logging.yaml
 root={{ zuul_pub_url }}
 
+[webclient]
+url={{ zuul_pub_url }}
+
 [auth zuul_operator]
 driver=HS256
 allow_authz_override=true
