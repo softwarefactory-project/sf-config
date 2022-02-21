@@ -102,7 +102,24 @@
         path: "{{ zuul_lib_dir }}/tenant-secrets"
         state: directory
         mode: '0700'
+
+    - name: Create bash alias for zuul
+      lineinfile:
+        path: /root/.bashrc
+        regexp: "^alias zuul.*"
+        insertafter: "^alias mv.*"
+        line: "alias zuul='podman exec -ti zuul-scheduler zuul'"
   when: "'zuul-scheduler' in zuul_services"
+
+- name: Create bash alias for zuul
+  lineinfile:
+    path: /root/.bashrc
+    regexp: "^alias zuul.*"
+    insertafter: "^alias mv.*"
+    line: "alias zuul='podman exec -ti zuul-executor zuul'"
+  when:
+    - zuul_executor_host != zuul_scheduler_host
+    - "'zuul-executor' in zuul_services"
 
 - block:
     - name: Ensure known_hosts file exists
