@@ -22,6 +22,12 @@ def update_sfconfig(args):
     dirty = False
     data = args.sfconfig
 
+    # 3.7.0: add external_authenticators config field
+    if 'zuul' in data:
+        if 'external_authenticators' not in data['zuul']:
+            data['zuul']['external_authenticators'] = []
+            dirty = True
+
     # 2.6.0: expose elasticsearch config
     # 3.3.0: update elasticsearch config
     # 3.6.0: update elasticsearch config
@@ -143,7 +149,7 @@ def update_sfconfig(args):
 
     # Check for duplicate gerrit connection bug
     to_delete = None
-    for connection in data["zuul"].get("gerrit_connections", []):
+    for connection in data.get("zuul", {}).get("gerrit_connections", []):
         if connection["name"] == "gerrit":
             print("Warning: Gerrit connection named 'gerrit' is reserved for "
                   "the internal gerrit")
