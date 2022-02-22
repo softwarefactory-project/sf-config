@@ -19,10 +19,13 @@ group: opensearch
 uid: 1000
 gid: 1000
 
+logstash_version: 7.10.1
+logstash_container_version: "{{ logstash_version }}-1"
+
 logstash_components:
   - service: "logstash"
     os: "centos"
-    image: "quay.rdoproject.org/software-factory/logstash:7.10.1-patched"
+    image: "quay.io/software-factory/sf-logstash:{{ logstash_container_version }}"
     digest: "sha256:d961735b41e0ada5f42e3c0c54397cc68fd9ba56159f855cd1c656dcb9ee7c45"
     mirror: ""
     skip-auto-update: true
