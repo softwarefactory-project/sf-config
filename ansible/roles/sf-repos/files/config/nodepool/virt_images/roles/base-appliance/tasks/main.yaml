@@ -1,6 +1,6 @@
 - name: Download appliance
   unarchive:
-    src: http://download.libguestfs.org/binaries/appliance/appliance-1.40.1.tar.xz
+    src: http://download.libguestfs.org/binaries/appliance/appliance-1.46.0.tar.xz
     remote_src: yes
     dest: /tmp
   args:
@@ -9,3 +9,4 @@
 - set_fact:
     virt_customize_env:
       LIBGUESTFS_PATH: '/tmp/appliance'
+      LIBGUESTFS_BACKEND: 'direct'

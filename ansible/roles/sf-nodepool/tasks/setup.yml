@@ -156,17 +156,6 @@
     group: "{{ group }}"
     mode: "0440"
 
-- name: Setup nodepool-env
-  template:
-    src: nodepool-env.j2
-    dest: "{{ nodepool_lib_dir }}/nodepool-env"
-  register: _nodepool_env
-
-- name: Set nodepool_need_restart fact when nodepool-env is updated
-  set_fact:
-    nodepool_need_restart: true
-  when: _nodepool_env is changed
-
 - name: Check if /etc/nodepool/nodepool.yaml exists
   stat:
     path: /etc/nodepool/nodepool.yaml

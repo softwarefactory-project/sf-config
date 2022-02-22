@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
@@ -33,7 +33,7 @@ def main():
     parser.add_argument("-o", help="Image output")
     parser.add_argument("virt_images", nargs='+', help="noop")
     args = parser.parse_args()
-    cmd = ["sudo", "ansible-playbook", "-v"]
+    cmd = ["sudo", "/usr/local/bin/ansible-playbook", "-v"]
 
     # The first arguments is the playbook name
     if len(args.virt_images) != 1:
