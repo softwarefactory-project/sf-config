@@ -30,6 +30,7 @@ zuul_components:
     skip-auto-update: True
     params: >-
       --network host
+      --user {{ uid }}:{{ gid }}
       --volume /etc/zuul/:/etc/zuul/:Z
       --volume /var/lib/zuul/executor/:/var/lib/zuul/executor/:Z
       --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
@@ -43,6 +44,7 @@ zuul_components:
     skip-auto-update: True
     params: >-
       --network host
+      --user {{ uid }}:{{ gid }}
       --volume /etc/zuul/:/etc/zuul/:Z
       --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
       --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
@@ -54,16 +56,17 @@ zuul_components:
     skip-auto-update: True
     params: >-
       --network host
+      --user {{ uid }}:{{ gid }}
       --volume /etc/zuul/:/etc/zuul/:Z
       --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
-      --privileged
   - service: "zuul-web"
     image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
     trigger_start: false
     skip-auto-update: True
     params: >-
       --network host
+      --user {{ uid }}:{{ gid }}
       --volume /etc/zuul/:/etc/zuul/:Z
       --volume /var/log/zuul/:/var/log/zuul/:Z
 

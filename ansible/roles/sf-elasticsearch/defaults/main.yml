@@ -16,13 +16,19 @@ group: opensearch
 uid: 10005
 gid: 10005
 
+opensearch_version: 1.2.2
+opensearch_container_version: "{{ opensearch_version }}-1"
+
 opensearch_components:
   - service: "opensearch"
-    image: "quay.rdoproject.org/software-factory/opensearch:1.2.2-patched"
+    image: "quay.io/software-factory/sf-opensearch:{{ opensearch_container_version }}"
     skip-auto-update: true
     trigger_start: false
     params: >-
       --net host
+      --user 1000:1000
+      --uidmap 0:1:999
+      --uidmap 1000:{{ uid }}:1
       -e DISABLE_INSTALL_DEMO_CONFIG=true
       -e "OPENSEARCH_JAVA_OPTS=-Xms{{ elasticsearch_minimum_heap_size }} -Xmx{{ elasticsearch_maximum_heap_size }}"
       -v {{ elk_data_dir }}:/usr/share/opensearch/data:z

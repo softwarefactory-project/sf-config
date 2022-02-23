@@ -20,9 +20,10 @@
     name: sf-container
     tasks_from: create_directory.yaml
   loop:
-    - {path: "{{ zuul_conf_dir }}", owner: "root", group: "root"}
+    - {path: "{{ zuul_conf_dir }}"}
     - {path: "{{ zuul_lib_dir }}"}
-    - {path: "{{ zuul_lib_dir }}/executor", owner: "root", group: "root", mode: '0755'}
+    - {path: "{{ zuul_lib_dir }}/tenant-secrets", mode: '0700'}
+    - {path: "{{ zuul_lib_dir }}/executor", mode: '0755'}
     - {path: "{{ zuul_lib_dir }}/.ssh", mode: '0700'}
     - {path: "{{ zuul_lib_dir }}/keys", mode: '0700', recurse: "yes"}
     - {path: "{{ zuul_lib_dir }}/scripts", recurse: "yes"}
@@ -88,12 +89,6 @@
         dest: "{{ zuul_lib_dir }}/.ssh/zuul_worker_rsa"
         owner: "{{ owner }}"
         mode: '0400'
-
-    - name: Create tenant-secrets directory
-      file:
-        path: "{{ zuul_lib_dir }}/tenant-secrets"
-        state: directory
-        mode: '0700'
 
     - name: Create bash alias for zuul
       lineinfile:
