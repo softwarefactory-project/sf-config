@@ -190,6 +190,14 @@
       vars:
         _logfile: builder
 
+    - name: Create bash alias for nodepool
+      lineinfile:
+        path: /root/.bashrc
+        regexp: "^alias nodepool.*"
+        insertafter: "^alias mv.*"
+        line: "alias nodepool='podman exec -ti nodepool-builder nodepool'"
+      when: nodepool_builder_host != nodepool_launcher_host
+
     - name: Ensure libvirt is started
       service:
         name: libvirtd
@@ -234,6 +242,13 @@
         mode: "0755"
         recurse: "yes"
         state: directory
+
+    - name: Create bash alias for nodepool
+      lineinfile:
+        path: /root/.bashrc
+        regexp: "^alias nodepool.*"
+        insertafter: "^alias mv.*"
+        line: "alias nodepool='podman exec -ti nodepool-launcher nodepool'"
 
     - include_tasks: create_logging.yml
       vars:
