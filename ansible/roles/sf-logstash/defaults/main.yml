@@ -9,7 +9,6 @@ role_package: logstash
 
 elk_stack_version: 7
 elk_sub_version: 10.2
-curator_version: 5.7.6
 
 owner: opensearch
 group: opensearch
@@ -35,9 +34,12 @@ logstash_components:
       -v {{ logstash_stack_certs }}/localCA.pem:{{ logstash_stack_certs }}/localCA.pem:Z
       -v {{ logstash_log_dir }}:/var/log/logstash:z
 
+curator_version: 5.7
+curator_container_version: "{{ curator_version }}-1"
+
 curator_components:
   - service: "curator"
-    image: "quay.rdoproject.org/software-factory/curator:5.7"
+    image: "quay.io/software-factory/sf-curator:{{ curator_container_version }}"
     skip-auto-update: true
     trigger_start: false
     params: >-
