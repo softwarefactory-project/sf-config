@@ -100,6 +100,7 @@ driver=gerrit
 port={{ conn['port']|default('29418') }}
 server={{ conn['hostname'] }}
 baseurl={{ conn['puburl'] }}
+gitweb_url_template={baseurl}/plugins/gitiles/{project.name}/+/{sha}^!/
 user={{ conn['username'] }}
 sshkey={{ zuul_lib_dir }}/.ssh/id_rsa
 {% if 'password' in conn %}
