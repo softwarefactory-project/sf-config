@@ -1,14 +1,25 @@
 ---
+- name: Create gerrit user
+  include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: "{{ owner }}"
+    ssh_key: gerrit_service_rsa
+    shell: /bin/bash
+    home_dir_mode: "0755"
+
+- name: Get gerrit uid
+  command: id -u gerrit
+  register: _gerrit_id
+
+- name: Expose gerrit uid
+  set_fact:
+    gerrit_uid: "{{ _gerrit_id.stdout }}"
+
 - name: Check container image version
   include_role:
     name: sf-container
     tasks_from: check_version.yaml
   loop: "{{ gerrit_components }}"
-
-- name: Create container user
-  include_role:
-    name: sf-container
-    tasks_from: create_user.yaml
 
 - name: Create container directory
   include_role:
@@ -16,7 +27,6 @@
     tasks_from: create_directory.yaml
   loop:
     - {path: "{{ gerrit_conf_dir }}", recurse: "yes"}
-    - {path: "{{ gerrit_lib_dir }}", mode: "0755", recurse: "yes"}
     - {path: "{{ gerrit_lib_dir }}/cache"}
     - {path: "{{ gerrit_lib_dir }}/data"}
     - {path: "{{ gerrit_lib_dir }}/db"}

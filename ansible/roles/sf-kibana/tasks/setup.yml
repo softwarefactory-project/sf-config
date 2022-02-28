@@ -1,20 +1,27 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: opensearch-dashboards
+
+- name: Get opensearch-dashboards uid
+  command: id -u opensearch-dashboards
+  register: _opensearch_dashboards_id
+
+- name: Expose opensearch-dashboards uid
+  set_fact:
+    opensearch_dashboards_uid: "{{ _opensearch_dashboards_id.stdout }}"
+
 - name: Check container image version
   include_role:
     name: sf-container
     tasks_from: check_version.yaml
   loop: "{{ opensearch_dashboards_components }}"
 
-- name: Create container user
-  include_role:
-    name: sf-container
-    tasks_from: create_user.yaml
-
 - name: Create cert dir
   file:
     path: "{{ elk_config_dir }}/certs"
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     state: directory
 
 - name: Copy certs
@@ -22,8 +29,8 @@
     src: "/etc/pki/ca-trust/source/anchors/localCA.pem"
     dest: "{{ elk_config_dir }}/certs/localCA.pem"
     mode: "0644"
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
 
 - name: Generate Opensearch dashboards welcome page text - internal host
   set_fact:
@@ -38,8 +45,8 @@
   template:
     src: opensearch-dashboards.yml.j2
     dest: /etc/opensearch/opensearch_dashboards.yml
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   notify:
     - restart opensearch dashboards
     - ensure started opensearch dashboards

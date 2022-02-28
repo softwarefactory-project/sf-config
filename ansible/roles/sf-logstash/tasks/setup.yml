@@ -1,21 +1,27 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: opensearch
+
+- name: Get opensearch uid
+  command: id -u opensearch
+  register: _opensearch_uid
+
+- name: Expose opensearch uid
+  set_fact:
+    opensearch_uid: "{{ _opensearch_uid.stdout }}"
+
 - name: Check container image version
   include_role:
     name: sf-container
     tasks_from: check_version.yaml
   loop: "{{ logstash_components + curator_components }}"
 
-# FIXME: uncomment when container GID and UID is not 1000.
-#- name: Create container user
-#  include_role:
-#    name: sf-container
-#    tasks_from: create_user.yaml
-
 - name: Create cert dir
   file:
     path: "{{ item }}"
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     recurse: true
     state: directory
   loop:
@@ -29,8 +35,8 @@
     src: "/etc/pki/ca-trust/source/anchors/localCA.pem"
     dest: "{{ logstash_stack_certs }}/localCA.pem"
     mode: '0640'
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   when: not external_elasticsearch_cacert
 
 - name: Configure external Elasticsearch
@@ -52,8 +58,8 @@
     src: "{{ item }}.j2"
     dest: "{{ logstash_index_dir }}/{{ item }}"
     mode: "0644"
-    owner: "{{ uid }}"
-    group: "{{ uid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   register: logstash_templates
   loop:
     - indexer.conf
@@ -63,8 +69,8 @@
     src: "{{ item }}.j2"
     dest: "{{ curator_config_dir }}/{{ item }}"
     mode: "0644"
-    owner: "{{ uid }}"
-    group: "{{ uid }}"
+    owner: "{{ owner}}"
+    group: "{{ group }}"
   register: logstash_templates
   loop:
     - curator.yml

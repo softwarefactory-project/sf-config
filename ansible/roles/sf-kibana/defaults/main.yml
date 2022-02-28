@@ -12,10 +12,8 @@ role_package: kibana
 
 owner: opensearch-dashboards
 group: opensearch-dashboards
-# NOTE: UID and GID was changed with commit:
-# https://softwarefactory-project.io/r/c/containers/+/23475
-uid: 10006
-gid: 10006
+container_uid: 1000
+container_gid: 1000
 
 opensearch_dashboards_version: 1.2.0
 opensearch_dashboards_container_version: "{{ opensearch_dashboards_version }}-1"
@@ -24,13 +22,12 @@ opensearch_dashboards_components:
   - service: "opensearch-dashboards"
     image: "quay.io/software-factory/sf-opensearch-dashboards:{{ opensearch_dashboards_container_version }}"
     skip-auto-update: true
-    trigger_start: false
     params: >-
       --net host
-      --user 1000:1000
-      --uidmap 0:1:999
-      --uidmap 1000:{{ uid }}:1
-      -v {{ elk_config_dir }}/certs/:/usr/share/opensearch/config/certs:Z
+      --user {{ container_uid }}:{{ container_gid }}
+      --uidmap 0:4000:999
+      --uidmap {{ container_uid }}:{{ opensearch_dashboard_uid | default(1000) }}:1
+      -v {{ elk_config_dir }}/certs/:/usr/share/opensearch/config/certs:z
       -v {{ elk_config_dir }}/opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml:z
 
 elk_config_dir: /etc/opensearch

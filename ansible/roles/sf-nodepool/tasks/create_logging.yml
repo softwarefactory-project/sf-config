@@ -3,4 +3,6 @@
   template:
     src: "logging.yaml.j2"
     dest: "{{ nodepool_conf_dir }}/{{ _logfile }}-logging.yaml"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   notify: restart nodepool

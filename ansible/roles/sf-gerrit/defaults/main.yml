@@ -11,8 +11,8 @@ role_actions:
 
 owner: gerrit
 group: gerrit
-uid: 10002
-gid: 10002
+container_uid: 10002
+container_gid: 10002
 
 gerrit_conf_dir: "/etc/gerrit"
 gerrit_lib_dir: "/var/lib/gerrit"
@@ -28,20 +28,23 @@ gerrit_components:
     skip-auto-update: True
     params: >-
       --network host
+      --user {{ container_uid }}:{{ container_gid }}
+      --uidmap 0:4000:999
+      --uidmap {{ container_uid }}:{{ gerrit_uid | default(1000) }}:1
       --entrypoint /entrypoint.sh
-      --volume /etc/sysconfig/gerrit:/etc/sysconfig/gerrit:Z
-      --volume /etc/gerrit/:/var/gerrit/etc/:Z
-      --volume /var/lib/gerrit/.gitconfig:/var/gerrit/.gitconfig:Z
-      --volume /var/lib/gerrit/data/:/var/gerrit/data/:Z
-      --volume /var/lib/gerrit/cache/:/var/gerrit/cache/:Z
-      --volume /var/lib/gerrit/db/:/var/gerrit/db/:Z
-      --volume /var/lib/gerrit/entrypoint.sh:/entrypoint.sh:Z
-      --volume /var/lib/gerrit/git/:/var/gerrit/git/:Z
-      --volume /var/lib/gerrit/hooks/:/var/gerrit/hooks/:Z
-      --volume /var/lib/gerrit/index/:/var/gerrit/index/:Z
-      --volume /var/lib/gerrit/plugins/:/var/gerrit/plugins/:Z
-      --volume /var/lib/gerrit/.ssh/:/var/gerrit/.ssh/:Z
-      --volume /var/log/gerrit/:/var/gerrit/logs/:Z
+      --volume /etc/sysconfig/gerrit:/etc/sysconfig/gerrit:z
+      --volume /etc/gerrit/:/var/gerrit/etc/:z
+      --volume /var/lib/gerrit/.gitconfig:/var/gerrit/.gitconfig:z
+      --volume /var/lib/gerrit/data/:/var/gerrit/data/:z
+      --volume /var/lib/gerrit/cache/:/var/gerrit/cache/:z
+      --volume /var/lib/gerrit/db/:/var/gerrit/db/:z
+      --volume /var/lib/gerrit/entrypoint.sh:/entrypoint.sh:z
+      --volume /var/lib/gerrit/git/:/var/gerrit/git/:z
+      --volume /var/lib/gerrit/hooks/:/var/gerrit/hooks/:z
+      --volume /var/lib/gerrit/index/:/var/gerrit/index/:z
+      --volume /var/lib/gerrit/plugins/:/var/gerrit/plugins/:z
+      --volume /var/lib/gerrit/.ssh/:/var/gerrit/.ssh/:z
+      --volume /var/log/gerrit/:/var/gerrit/logs/:z
 
 role_package: gerrit
 

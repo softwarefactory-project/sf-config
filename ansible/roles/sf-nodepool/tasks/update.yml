@@ -41,6 +41,8 @@
   copy:
     src: "/root/config/nodepool/static_config/{{ ansible_hostname }}.yaml"
     dest: "{{ nodepool_conf_dir }}/nodepool.yaml"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     remote_src: yes
   when:
     - _static_config.stat.exists

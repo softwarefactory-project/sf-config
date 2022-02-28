@@ -1,14 +1,21 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: opensearch
+
+- name: Get opensearch uid
+  command: id -u opensearch
+  register: _opensearch_uid
+
+- name: Expose opensearch uid
+  set_fact:
+    opensearch_uid: "{{ _opensearch_uid.stdout }}"
+
 - name: Check container image version
   include_role:
     name: sf-container
     tasks_from: check_version.yaml
   loop: "{{ opensearch_components }}"
-
-- name: Create container user
-  include_role:
-    name: sf-container
-    tasks_from: create_user.yaml
 
 - name: Remove old node directory when moving to Opensearch
   file:
@@ -22,8 +29,8 @@
     path: "{{ item }}"
     state: directory
     recurse: true
-    group: "{{ gid }}"
-    owner: "{{ uid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   loop:
     - "{{ elk_stack_certs }}"
     - "{{ elk_data_dir }}"
@@ -49,8 +56,8 @@
     src: "/var/lib/software-factory/bootstrap-data/certs/{{ item }}"
     dest: "{{ elk_stack_certs }}/{{ item }}"
     mode: "0644"
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   loop:
     - elasticsearch-admin.crt
     - elasticsearch-admin.key
@@ -77,8 +84,8 @@
   template:
     src: "{{ item }}.j2"
     dest: "{{ elk_config_dir }}/{{ item }}"
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   loop:
     - internal_users.yml
     - tenants.yml
@@ -97,8 +104,8 @@
   template:
     src: opensearch-config.yml.j2
     dest: "{{ elk_config_dir }}/opensearch.yml"
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: "0644"
   notify:
     - restart opensearch

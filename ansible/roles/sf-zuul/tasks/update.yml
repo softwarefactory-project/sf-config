@@ -23,6 +23,8 @@
         service_name: zuul
         service_config_dir: "{{ zuul_conf_dir }}"
         service_config_name: main.yaml
+        service_owner: "{{ owner }}"
+        service_group: "{{ group }}"
 
     - name: Check if zuul-scheduler is running
       command: systemctl -q is-active zuul-scheduler

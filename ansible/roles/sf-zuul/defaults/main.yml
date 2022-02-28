@@ -12,63 +12,48 @@ role_actions:
 
 role_package: "zuul"
 
-old_owner: zuul
-old_group: zuul
-
-owner: opendev
-group: opendev
-uid: 10001
-gid: 10001
+owner: zuul
+group: zuul
+container_uid: 10001
+container_gid: 10001
 
 zuul_version: "5.0.0"
-zuul_container_version: "{{ zuul_version }}-0"
+zuul_container_version: "{{ zuul_version }}-3"
+
+zuul_components_default_params: >-
+  --network host
+  --user {{ container_uid }}:{{ container_gid }}
+  --uidmap 0:4000:999
+  --uidmap {{ container_uid }}:{{ zuul_uid | default(1000) }}:1
+  --volume /etc/zuul/:/etc/zuul/:z
+  --volume /var/log/zuul/:/var/log/zuul/:z
 
 zuul_components:
   - service: "zuul-scheduler"
     image: "quay.io/software-factory/zuul-scheduler-ubi:{{ zuul_container_version }}"
-    trigger_start: false
     skip-auto-update: True
     params: >-
-      --network host
-      --user {{ uid }}:{{ gid }}
-      --volume /etc/zuul/:/etc/zuul/:Z
-      --volume /var/lib/zuul/executor/:/var/lib/zuul/executor/:Z
-      --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
-      --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
-      --volume /var/lib/zuul/scripts/:/var/lib/zuul/scripts/:Z
-      --volume /var/lib/zuul/tenant-secrets/:/var/lib/zuul/tenant-secrets/:Z
-      --volume /var/log/zuul/:/var/log/zuul/:Z
+      {{ zuul_components_default_params }}
+      --volume /var/lib/zuul/:/var/lib/zuul/:z
   - service: "zuul-executor"
     image: "quay.io/software-factory/zuul-executor-ubi:{{ zuul_container_version }}"
-    trigger_start: false
     skip-auto-update: True
     params: >-
-      --network host
-      --user {{ uid }}:{{ gid }}
-      --volume /etc/zuul/:/etc/zuul/:Z
-      --volume /var/lib/zuul/keys/:/var/lib/zuul/keys/:Z
-      --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
-      --volume /var/log/zuul/:/var/log/zuul/:Z
+      {{ zuul_components_default_params }}
+      --volume /var/lib/zuul/:/var/lib/zuul/:z
+      --volume /dev:/dev
       --privileged
   - service: "zuul-merger"
     image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_container_version }}"
-    trigger_start: false
     skip-auto-update: True
     params: >-
-      --network host
-      --user {{ uid }}:{{ gid }}
-      --volume /etc/zuul/:/etc/zuul/:Z
-      --volume /var/lib/zuul/.ssh/:/var/lib/zuul/.ssh/:Z
-      --volume /var/log/zuul/:/var/log/zuul/:Z
+      {{ zuul_components_default_params }}
+      --volume /var/lib/zuul/:/var/lib/zuul/:z
   - service: "zuul-web"
     image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
-    trigger_start: false
     skip-auto-update: True
     params: >-
-      --network host
-      --user {{ uid }}:{{ gid }}
-      --volume /etc/zuul/:/etc/zuul/:Z
-      --volume /var/log/zuul/:/var/log/zuul/:Z
+      {{ zuul_components_default_params }}
 
 zuul_services:
   - zuul-scheduler

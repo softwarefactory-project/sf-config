@@ -3,6 +3,8 @@
   template:
     src: "logging.yaml.j2"
     dest: "{{ zuul_conf_dir }}/{{ _logfile }}-logging.yaml"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   notify: restart zuul
 
 - name: "Create log file"

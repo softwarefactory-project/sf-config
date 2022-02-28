@@ -1,4 +1,18 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: "{{ owner }}"
+    ssh_key: nodepool_rsa
+    home_dir: "{{ nodepool_lib_dir }}"
+
+- name: Get nodepool uid
+  command: id -u nodepool
+  register: _nodepool_id
+
+- name: Expose nodepool uid
+  set_fact:
+    nodepool_uid: "{{ _nodepool_id.stdout }}"
+
 - name: Check container image version
   include_role:
     name: sf-container
@@ -10,11 +24,6 @@
   set_fact:
     nodepool_need_restart: "{{ _version is changed }}"
 
-- name: Create container user
-  include_role:
-    name: sf-container
-    tasks_from: create_user.yaml
-
 - name: Create container directory
   include_role:
     name: sf-container
@@ -24,7 +33,7 @@
     - {path: "{{ nodepool_cache_dir }}", mode: "0755", recurse: "yes"}
     - {path: "{{ nodepool_conf_dir }}"}
     - {path: "{{ nodepool_conf_dir }}/scripts"}
-    - {path: "{{ nodepool_conf_dir }}/ssl", mode: "0550", owner: "root"}
+    - {path: "{{ nodepool_conf_dir }}/ssl", mode: "0550"}
     - {path: "{{ nodepool_lib_dir }}"}
     - {path: "{{ nodepool_lib_dir }}/.config/openstack", mode: "0750"}
     - {path: "{{ nodepool_lib_dir }}/.kube", mode: "0750", recurse: "yes"}
@@ -133,6 +142,7 @@
     content: "{{ item.content }}"
     dest: "{{ nodepool_conf_dir }}/ssl/{{ item.dest }}"
     mode: '0440'
+    owner: "{{ owner }}"
     group: "{{ group }}"
   loop:
     - {content: "{{ zk_ca_pem }}", dest: "zk-ca.pem"}
@@ -144,7 +154,7 @@
   template:
     src: "secure.conf.j2"
     dest: "{{ nodepool_conf_dir }}/secure.conf"
-    owner: "root"
+    owner: "{{ owner }}"
     group: "{{ group }}"
     mode: "0440"
 
@@ -157,12 +167,16 @@
   template:
     src: nodepool.yaml.j2
     dest: "{{ nodepool_conf_dir }}/nodepool.yaml"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   when: _nodepool_config.stat.isreg is not defined
 
 - name: Setup base nodepool.yaml for managesf
   template:
     src: nodepool.yaml.j2
     dest: /var/lib/software-factory/conf/nodepool.yaml
+    owner: "{{ owner }}"
+    group: "{{ group }}"
   when: "'nodepool-launcher' in roles"
 
 - name: Setup nodepool builder

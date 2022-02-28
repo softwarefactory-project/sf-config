@@ -10,18 +10,15 @@ role_actions:
 
 role_package: "nodepool"
 
-old_owner: nodepool
-old_group: nodepool
-
-owner: opendev
-group: opendev
-uid: 10001
-gid: 10001
+owner: nodepool
+group: nodepool
+container_uid: 10001
+container_gid: 10001
 
 dib_upstream_elements: True
 
 nodepool_version: 5.0.0
-nodepool_container_version: "{{ nodepool_version }}-2"
+nodepool_container_version: "{{ nodepool_version }}-5"
 
 nodepool_services:
   - nodepool-launcher
@@ -40,7 +37,6 @@ nodepool_providers:
 nodepool_components:
   - service: "nodepool-launcher"
     image: "quay.io/software-factory/nodepool-launcher-ubi:{{ nodepool_container_version }}"
-    trigger_start: false
     skip-auto-update: True
     run: >-
       /usr/local/bin/nodepool-launcher -d
@@ -49,11 +45,13 @@ nodepool_components:
       -l /etc/nodepool/launcher-logging.yaml
     params: >-
       --network host
-      --user {{ uid }}
-      --volume /etc/nodepool/:/etc/nodepool/:Z
-      --volume /var/lib/nodepool/:/var/lib/nodepool/:Z
-      --volume /var/log/nodepool/:/var/log/nodepool/:Z
-      --volume /var/www/html/nodepool-launcher/:/var/www/html/nodepool-launcher/:Z
+      --user {{ container_uid }}:{{ container_gid }}
+      --uidmap 0:4000:999
+      --uidmap {{ container_uid }}:{{ nodepool_uid | default(1000) }}:1
+      --volume /etc/nodepool/:/etc/nodepool/:z
+      --volume /var/lib/nodepool/:/var/lib/nodepool/:z
+      --volume /var/log/nodepool/:/var/log/nodepool/:z
+      --volume /var/www/html/nodepool-launcher/:/var/www/html/nodepool-launcher/:z
       {% if 'influxdb' in roles %}
       --env STATSD_HOST={{ statsd_host | default(influxdb_host | default ('')) }}
       --env STATSD_PORT={{ statsd_port | default(8125) }}
@@ -63,7 +61,6 @@ nodepool_components:
       {% endif %}
   - service: "nodepool-builder"
     image: "quay.io/software-factory/nodepool-builder-ubi:{{ nodepool_container_version }}"
-    trigger_start: false
     skip-auto-update: True
     run: >-
       /usr/local/bin/nodepool-builder -d
@@ -72,16 +69,18 @@ nodepool_components:
       -l /etc/nodepool/builder-logging.yaml
     params: >-
       --network host
-      --user {{ uid }}
+      --user {{ container_uid }}:{{ container_gid }}
+      --uidmap 0:4000:999
+      --uidmap {{ container_uid }}:{{ nodepool_uid | default(1000) }}:1
       --volume /dev:/dev
       --volume /run/libvirt:/run/libvirt
-      --volume /etc/nodepool/:/etc/nodepool/:Z
+      --volume /etc/nodepool/:/etc/nodepool/:z
       --volume /usr/bin/dib-virt-customize:/usr/bin/dib-virt-customize
       --volume /usr/share/sf-elements/:/usr/share/sf-elements/
-      --volume /var/cache/nodepool/:/var/cache/nodepool/:Z
-      --volume /var/lib/nodepool/:/var/lib/nodepool/:Z
-      --volume /var/log/nodepool/:/var/log/nodepool/:Z
-      --volume /var/www/html/nodepool-builder/:/var/www/html/nodepool-builder/:Z
+      --volume /var/cache/nodepool/:/var/cache/nodepool/:z
+      --volume /var/lib/nodepool/:/var/lib/nodepool/:z
+      --volume /var/log/nodepool/:/var/log/nodepool/:z
+      --volume /var/www/html/nodepool-builder/:/var/www/html/nodepool-builder/:z
       {% if dib_upstream_elements %}
       --volume /usr/share/project-config/:/usr/share/project-config/
       {% endif %}
