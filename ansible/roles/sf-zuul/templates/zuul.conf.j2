@@ -30,7 +30,6 @@ git_user_name=zuul
 log_config={{ zuul_conf_dir }}/merger-logging.yaml
 
 [executor]
-ansible_root=/usr/local/lib/zuul/ansible
 ansible_setup_timeout={{ zuul_executor_ansible_setup_timeout|default(60) }}
 manage_ansible=true
 state_dir={{ zuul_lib_dir }}

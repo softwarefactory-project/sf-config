@@ -21,5 +21,6 @@ base_sysctl:
   net.ipv4.conf.all.secure_redirects: 0
   net.ipv4.conf.default.secure_redirects: 0
   net.ipv4.icmp_echo_ignore_broadcasts: 1
+  user.max_user_namespaces: 31089
   kernel.sysrq: 0
   vm.swappiness: 10
