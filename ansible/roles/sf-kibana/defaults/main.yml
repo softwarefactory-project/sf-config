@@ -20,7 +20,7 @@ opensearch_dashboards_container_version: "{{ opensearch_dashboards_version }}-1"
 
 opensearch_dashboards_components:
   - service: "opensearch-dashboards"
-    image: "quay.io/software-factory/sf-opensearch-dashboards:{{ opensearch_dashboards_container_version }}"
+    image: "quay.io/software-factory/opensearch-dashboards:{{ opensearch_dashboards_container_version }}"
     skip-auto-update: true
     params: >-
       --net host

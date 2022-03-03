@@ -13,12 +13,12 @@ group: opensearch
 container_uid: 1000
 container_gid: 1000
 
-opensearch_version: 1.2.2
+opensearch_version: 1.2.4
 opensearch_container_version: "{{ opensearch_version }}-1"
 
 opensearch_components:
   - service: "opensearch"
-    image: "quay.io/software-factory/sf-opensearch:{{ opensearch_container_version }}"
+    image: "quay.io/software-factory/opensearch:{{ opensearch_container_version }}"
     skip-auto-update: true
     params: >-
       --net host
