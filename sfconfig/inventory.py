@@ -10,7 +10,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import configparser
 import copy
 import os
 import yaml
@@ -494,29 +493,20 @@ def enable_action(args):
 
 def configure_ansible():
     ansible_cfg = "/var/lib/software-factory/ansible/ansible.cfg"
-    ansiblecfg = configparser.ConfigParser()
-    ansiblecfg.read("/usr/share/sf-config/ansible/ansible.cfg")
-    ara_loc = "/usr/lib/python3.6/site-packages/ara/"
-    if os.path.isdir(ara_loc):
-        ansiblecfg.set("defaults", "callback_plugins",
-                       "%s/plugins/callbacks" % ara_loc)
-        ansiblecfg.set("defaults", "action_plugins",
-                       "%s/plugins/actions" % ara_loc)
-        ansiblecfg.set("defaults", "library",
-                       "%s/plugins/modules" % ara_loc)
-    ansiblecfg.write(open(ansible_cfg, "w"))
+    # Copy the config to keep backward compat
+    with open("/usr/share/sf-config/ansible/ansible.cfg", "r") as i:
+        with open(ansible_cfg, "w") as o:
+            o.write(i.read())
     os.environ["ANSIBLE_CONFIG"] = ansible_cfg
-    os.environ["ARA_LOG_FILE"] = ""
-    os.environ["ARA_DIR"] = "/var/lib/software-factory/ansible/ara/"
 
 
 def install_ansible(args):
     if args.update:
         # Update ansible early on if possible
-        sfconfig.utils.execute(["yum", "update", "-y", "ansible", "ara"])
+        sfconfig.utils.execute(["yum", "update", "-y", "ansible"])
     # TODO: figure out how to ensure we use the provided ansible and ara rpms
     if not os.path.isfile("/usr/bin/ansible-playbook"):
-        sfconfig.utils.execute(["yum", "install", "-y", "ansible", "ara"])
+        sfconfig.utils.execute(["yum", "install", "-y", "ansible"])
 
 
 def run(args):
