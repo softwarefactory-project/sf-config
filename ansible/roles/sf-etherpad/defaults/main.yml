@@ -4,7 +4,15 @@ role_actions:
   - setup
   - disable
 
+container_uid: 5001
+container_gid: 5001
+owner: etherpad
+group: etherpad
+
 role_package: etherpad
+
+etherpad_db_type: "mysql"
+etherpad_port: 9001
 
 etherpad_mysql_host: "mysql.example.com"
 etherpad_mysql_port: 3306
@@ -12,4 +20,19 @@ etherpad_mysql_db: "etherpad"
 etherpad_mysql_user: "etherpad"
 etherpad_mysql_password: "CHANGE_ME"
 
+etherpad_opt_dir: "/opt/etherpad-lite"
+etherpad_lib_dir: "/var/lib/etherpad"
+
 etherpad_admin_key: "CHANGE_ME"
+
+etherpad_version: 1.8.17
+etherpad_release: 1
+
+etherpad_components:
+  - service: "etherpad"
+    image: "quay.io/software-factory/sf-{{ role_package }}:{{ etherpad_version }}-{{ etherpad_release }}"
+    skip-auto-update: True
+    params: >-
+      --network host
+      --user {{ container_uid }}:{{ container_gid }}
+      --volume {{ etherpad_lib_dir }}/settings.json:{{ etherpad_opt_dir }}/settings.json:Z
