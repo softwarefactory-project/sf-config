@@ -2,6 +2,7 @@
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
 - name: Install certificates
+  no_log: true
   copy:
     content: "{{ item.content }}"
     dest: "/etc/k1s/{{ item.dest }}.pem"
@@ -15,6 +16,7 @@
       dest: "chain"
 
 - name: Setup configuration
+  no_log: true
   copy:
     content: |
       K1S_TOKEN={{ k1s_token }}
