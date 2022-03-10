@@ -20,7 +20,7 @@ logstash_container_version: "{{ logstash_version }}-1"
 
 logstash_components:
   - service: "logstash"
-    image: "quay.io/software-factory/sf-logstash:{{ logstash_container_version }}"
+    image: "quay.io/software-factory/logstash:{{ logstash_container_version }}"
     skip-auto-update: true
     params: >-
       --net host
@@ -38,7 +38,7 @@ curator_container_version: "{{ curator_version }}-1"
 
 curator_components:
   - service: "curator"
-    image: "quay.io/software-factory/sf-curator:{{ curator_container_version }}"
+    image: "quay.io/software-factory/curator:{{ curator_container_version }}"
     skip-auto-update: true
     params: >-
       --net host
