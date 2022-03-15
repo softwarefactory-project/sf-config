@@ -9,7 +9,7 @@
 - block:
     - name: Remove files
       file:
-        path: "/var/lib/etherpad"
+        path: "{{ etherpad_lib_dir }}"
         state: absent
 
     - name: Remove packages
