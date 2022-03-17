@@ -15,6 +15,7 @@ ExecReload=/usr/bin/podman exec -ti zuul-scheduler {{ item.service }} smart-reco
 {% endif %}
 Restart=always
 RestartSec=3s
+{{ extra_service_config | default('') }}
 
 [Install]
 WantedBy=multi-user.target
