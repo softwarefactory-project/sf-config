@@ -18,7 +18,7 @@ container_uid: 10001
 container_gid: 10001
 
 zuul_version: "5.0.0"
-zuul_container_version: "{{ zuul_version }}-3"
+zuul_container_version: "{{ zuul_version }}-4"
 
 zuul_components_default_params: >-
   --network host
