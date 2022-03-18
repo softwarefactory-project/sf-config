@@ -69,9 +69,7 @@ nodepool_components:
       -l /etc/nodepool/builder-logging.yaml
     params: >-
       --network host
-      --user {{ container_uid }}:{{ container_gid }}
-      --uidmap 0:4000:999
-      --uidmap {{ container_uid }}:{{ nodepool_uid | default(1000) }}:1
+      --user 0
       --volume /dev:/dev
       --volume /run/libvirt:/run/libvirt
       --volume /etc/nodepool/:/etc/nodepool/:z
