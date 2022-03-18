@@ -215,6 +215,7 @@ def main():
                  'logservers': [],
                  'executor_hosts': [],
                  'nodepool_hosts': [],
+                 'elasticsearch_connections': [],
                  }
     if args.recover:
         args.glue['force_update_tasks'] = True

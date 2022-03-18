@@ -68,8 +68,8 @@ class ZuulScheduler(Component):
                 "port": 22
             })
 
-        args.glue['elasticsearch_connections'] = \
-            args.sfconfig["zuul"].get('elasticsearch_connections', [])
+        args.glue['elasticsearch_connections'].extend(
+            args.sfconfig["zuul"].get('elasticsearch_connections', []))
 
 
 class ZuulExecutor(Component):
