@@ -1,9 +1,1 @@
 ---
-- name: Install package
-  yum:
-    name: logreduce
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  delegate_to: "{{ item }}"
-  loop: "{{ executor_hosts | union( groups['log-classify'] ) }}"
