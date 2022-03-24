@@ -50,7 +50,6 @@
   notify:
     - restart opensearch dashboards
     - ensure started opensearch dashboards
-    - wait for Opensearch dashboards service
 
 - name: Create container - Opensearch dashboards
   include_role:
