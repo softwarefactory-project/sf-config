@@ -1,7 +1,7 @@
 ---
 actions:
   1:
-    action: delete_logstash_indices
+    action: delete_indices
     description: >-
       Delete indices older than {{ logstash_retention_days }} days (based on index name), for logstash-
       prefixed indices. Ignore the error if the filter does not result in an
@@ -25,7 +25,7 @@ actions:
       unit_count: {{ logstash_retention_days }}
 {% if 'zuul' in roles %}
   2:
-    action: delete_zuul_indices
+    action: delete_indices
     description: >-
       Delete indices older than {{ zuul_retention_days|default(180) }} days (based on index name), for zuul.
       prefixed indices. Ignore the error if the filter does not result in an

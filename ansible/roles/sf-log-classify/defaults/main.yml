@@ -2,5 +2,3 @@
 role_actions:
   - install
   - setup
-
-role_package: logreduce

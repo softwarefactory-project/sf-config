@@ -125,11 +125,20 @@
     name: elasticsearch-curator
     state: absent
 
+- name: Create delete indices script
+  copy:
+    content: |
+      #!/bin/bash
+      INDICES_FILE=$1
+      podman run {{ item.params }} $INDICES_FILE
+    dest: /usr/local/bin/curator.sh
+    mode: '0755'
+  loop: "{{ curator_components }}"
+
 - name: Add crontab entry for pruning old indices
   cron:
     name: "Delete old logstash indexes"
     minute: "0"
     hour: "0"
     day: "*"
-    job: "podman run {{ item.params }}"
-  loop: "{{ curator_components }}"
+    job: /usr/local/bin/curator.sh /etc/curator/delete_old_indices.yml
