@@ -205,9 +205,21 @@ def setup(args, pb):
             pb.append(host_play(role, role, action))
 
     # Setup all components except infra roles
+    groupable_roles = ["zuul-executor", "zuul-merger"]
+    groups = dict()
     for host in args.inventory:
-        host_roles = [role for role in host["roles"] if role not in pre_roles]
-        pb.append(host_play(host, host_roles, action))
+        host_roles = [role for role in host["roles"]
+                      if role not in (list(pre_roles) + groupable_roles)]
+        for group in groupable_roles:
+            if any([role == group for role in host["roles"]]):
+                groups[group] = True
+        if host_roles:
+            pb.append(host_play(host, host_roles, action))
+
+    # Setup components using group
+    for group in groupable_roles:
+        if group in groups:
+            pb.append(host_play(group, [group], action))
 
     # Create config projects
     pb.append(host_play('install-server', 'repos', action))
