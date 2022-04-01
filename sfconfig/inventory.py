@@ -163,6 +163,16 @@ def recover(args, pb):
         {'service': {'name': 'mariadb', 'state': 'started'}}
     ]))
 
+    # Start zookeeper
+    pb.append(host_play('zookeeper', tasks=[
+        {'yum': {
+            'name': 'zookeeper',
+            'state': 'present',
+            'disablerepo': '{{ yum_disable_repo|default(omit) }}',
+            'enablerepo': '{{ yum_enable_repo|default(omit) }}',
+        }},
+        {'service': {'name': 'zookeeper', 'state': 'started'}}
+    ]))
     # Call restore task
     for host in args.inventory:
         play = host_play(host, params={'role_action': 'restore'})
