@@ -389,6 +389,43 @@ def tenant_update(args, pb):
             'force_update': True}))
 
 
+def zuul_update_fqdn(args, pb):
+    # stop zuul
+    for service in ("web", "merger", "executor", "scheduler"):
+        name = "zuul-" + service
+        if name not in args.glue["roles"]:
+            continue
+        pb.append(host_play(name, tasks=[dict(
+            name="Stop " + name,
+            service=dict(name=name, state="stopped")
+        )]))
+
+    # dump secrets
+    pb.append(host_play("zuul-scheduler", tasks=[dict(
+        name="Export the key",
+        command="zuul_wrapper export-keys /var/lib/zuul/export-key"
+    )]))
+
+    # delete zk state
+    zk_cleanup_script = "/usr/share/sf-config/scripts/zk-cleanup-queue.py"
+    pb.append(host_play("zookeeper", tasks=[dict(
+        name="Remove zookeeper data /zuul/",
+        command="%s --all --queue /zuul/" % zk_cleanup_script
+    )]))
+
+    # reload secret
+    pb.append(host_play("zuul-scheduler", tasks=[dict(
+        name="Import the keys",
+        command="zuul_wrapper import-keys /var/lib/zuul/export-key"
+    )]))
+
+    # disable automatic zuul restart, that will happen during config-update
+    pb.append(host_play("localhost", tasks=[dict(
+        name="Set zuul_need_restart fact",
+        set_fact=dict(zuul_need_restart=True)
+    )]))
+
+
 def postconf(args, pb):
     for host in args.inventory:
         pb.append(host_play(host, host["roles"], {'role_action': 'postconf'}))
@@ -414,6 +451,12 @@ def enable_action(args):
         recover(args, pb)
     if not args.skip_setup:
         setup(args, pb)
+        pb.append({
+            'import_playbook': '%s/zuul_update_fqdn.yml' % args.ansible_root,
+            'when': [
+                'update_fqdn'
+            ]
+        })
         config_update(args, pb, skip_sync=True)
         postconf(args, pb)
         pb.append({
@@ -649,6 +692,7 @@ def generate(args):
             ("sync_config", sync_config),
             ("sf_configrepo_update", config_update),
             ("sf_tenant_update", tenant_update),
+            ("zuul_update_fqdn", zuul_update_fqdn),
             ("get_logs", get_logs),
             ("sf_backup", backup),
             ("sf_erase", erase)):
