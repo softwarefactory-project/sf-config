@@ -24,9 +24,6 @@
       kibana:
         role: kibana
         password: "{{ elasticsearch['readonly_password'] | default(elasticsearch_readonly_password) }}"
-      curator:
-        role: curator
-        password: "{{ elasticsearch['curator_password'] | default(elasticsearch_curator_password) }}"
   with_dict: "{{ internal_users }}"
   include_tasks: gen_user_pass.yml
   no_log: show_hidden_logs == False

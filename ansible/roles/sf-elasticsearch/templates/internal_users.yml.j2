@@ -30,13 +30,6 @@ zuul:
     - admin
   description: Zuul user
   hidden: true
-curator:
-  hash: {{ elasticsearch_curator_hash }}
-  reserved: true
-  backend_roles:
-    - admin
-  description: Curator user
-  hidden: true
 # exception in Elasticsearch (https://opendistro.github.io/for-elasticsearch-docs/docs/security/access-control/users-roles/#predefined-roles)
 # FIXME: switch to the official roles when bug is fixed.
 {{ elasticsearch_readonly_user | default('kibana') }}:

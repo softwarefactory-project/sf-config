@@ -37,9 +37,3 @@
     name: sf-container
     tasks_from: install.yaml
   loop: "{{ logstash_components }}"
-
-- name: Pull image - curator
-  include_role:
-    name: sf-container
-    tasks_from: install.yaml
-  loop: "{{ curator_components }}"
