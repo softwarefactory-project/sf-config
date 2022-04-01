@@ -107,6 +107,19 @@
         line: "alias zuul='podman exec -ti zuul-scheduler zuul'"
   when: "'zuul-scheduler' in zuul_services"
 
+- name: Create wrapper for zuul
+  copy:
+    dest: /bin/zuul_wrapper
+    mode: 0755
+    owner: root
+    content: |
+      #!/bin/sh
+      # A zuul command that work even when the services are down.
+      exec podman run -it --rm --network host --user root \
+        --volume /etc/zuul/:/etc/zuul/:Z                  \
+        --volume /var/lib/zuul/:/var/lib/zuul/:Z          \
+        quay.io/software-factory/zuul-scheduler-ubi:{{ zuul_container_version }} zuul $*
+
 - name: Create bash alias for zuul
   lineinfile:
     path: /root/.bashrc

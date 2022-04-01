@@ -1,6 +1,1 @@
 ---
-- name: Force zuul restart when fqdn changed
-  set_fact:
-    zuul_need_restart: True
-  when:
-    - update_fqdn
