@@ -29,3 +29,8 @@
     group: "{{ owner }}"
     state: directory
     mode: '0700'
+
+- name: Import zuul keys
+  command: "zuul_wrapper import-keys {{ zuul_lib_dir }}/keys/backup-keys"
+  when:
+    - "'zuul-scheduler' in zuul_services"
