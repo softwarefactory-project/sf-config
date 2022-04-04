@@ -22,15 +22,11 @@
   register: _zuul_scheduler_exists
   failed_when: _zuul_scheduler_exists.rc not in [0, 3]
   delegate_to: "{{ zuul_scheduler_host }}"
-  when: (change_pushed and not tenant_deployment) or update_fqdn
+  when:
+    - change_pushed
+    - not tenant_deployment
 
 - include_tasks: provision_demo.yml
   when:
     - provision_demo
     - "'gerrit' in roles"
-
-- name: Force config update when fqdn is updated
-  shell: >-
-    ansible-playbook /var/lib/software-factory/ansible/sf_configrepo_update.yml
-  delegate_to: "{{ install_server_host }}"
-  when: update_fqdn
