@@ -8,4 +8,8 @@
 
 - name: "Pull {{ item.service }} image"
   command: "podman pull {{ item.image }}"
+  register: _image_result
+  until: _image_result.rc == 0
+  retries: 3
+  delay: 5
   when: _image_exists.rc != 0

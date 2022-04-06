@@ -13,5 +13,6 @@
   loop:
     - git add -A .
     - git commit -m "gitreview update host to {{ fqdn }}"
+    - git remote set-url origin "{{ update_fqdn_url }}"
     - git push
   when: fqdn_updated is changed

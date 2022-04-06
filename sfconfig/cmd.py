@@ -254,11 +254,16 @@ def main():
 
     # Check if fqdn should be updated
     args.glue["update_fqdn"] = False
+    prev_fqdn_path = "/var/lib/software-factory/.fqdn"
+    if not os.path.exists(prev_fqdn_path):
+        open(prev_fqdn_path, "w").write(args.sfconfig['fqdn'])
     if os.path.isfile("/var/lib/software-factory/.version") and \
        os.path.isfile(allyaml):
-        previous_args = yaml_load(allyaml)
-        if args.sfconfig['fqdn'] != previous_args['fqdn']:
+        prev_fqdn = open(prev_fqdn_path).read()
+        if args.sfconfig['fqdn'] != prev_fqdn:
             args.glue["update_fqdn"] = True
+            print("FQDN update from: %s, to: %s" % (
+                prev_fqdn, args.sfconfig['fqdn']))
 
     # Generate group vars
     sfconfig.groupvars.load(args)
@@ -311,6 +316,7 @@ Login with admin user, get the admin password by running:
   awk '/admin_password/ {print $2}' /etc/software-factory/sfconfig.yaml
 
 """ % (args.sfconfig['fqdn'], args.sfconfig['fqdn']))
+            open(prev_fqdn_path, "w").write(args.sfconfig['fqdn'])
 
     if (not args.sfconfig['authentication']['SAML2']['disabled'] and
        not os.path.isfile(saml_idp_file)):

@@ -26,9 +26,9 @@
             chdir: "{{ clone_dir }}"
           register: _change_pushed
 
-        - name: Set change_pushed to True
+        - name: Set zuul need restart when changes are pushed (to ensure full reconfigure)
           set_fact:
-            change_pushed: True
+            zuul_need_restart: True
           when: _change_pushed is changed
       when: sync_strategy == 'push' or clone_remote | dirname == "/var/lib/software-factory/git"
 

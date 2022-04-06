@@ -1,0 +1,7 @@
+- include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml"
+  vars:
+    service_name: zuul
+    service_config_dir: "{{ zuul_conf_dir }}"
+    service_config_name: main.yaml
+    service_owner: "{{ owner }}"
+    service_group: "{{ group }}"

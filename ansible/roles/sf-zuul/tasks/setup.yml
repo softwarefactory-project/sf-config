@@ -237,7 +237,7 @@
     owner: "{{ owner }}"
     group: "{{ group }}"
     backup: yes
-  notify: restart zuul
+  notify: Zuul need restart
 
 - block:
     - name: Create override directory
@@ -257,7 +257,6 @@
     - name: Daemon reload
       command: systemctl daemon-reload
       when: zuul_override is changed
-      notify: restart zuul
   when:
     - "'gerrit' in roles"
     - "'zuul-scheduler' in zuul_services"

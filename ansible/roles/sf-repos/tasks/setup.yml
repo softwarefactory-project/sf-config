@@ -14,18 +14,6 @@
   when:
     - not zuul_upstream_zuul_jobs
 
-- name: full reconfigure zuul
-  shell: >-
-    systemctl -q is-active zuul-scheduler
-    && logger --tag sfconfig zuul full reconfigure
-    && /usr/bin/podman exec -ti zuul-scheduler zuul-scheduler full-reconfigure
-  register: _zuul_scheduler_exists
-  failed_when: _zuul_scheduler_exists.rc not in [0, 3]
-  delegate_to: "{{ zuul_scheduler_host }}"
-  when:
-    - change_pushed
-    - not tenant_deployment
-
 - include_tasks: provision_demo.yml
   when:
     - provision_demo

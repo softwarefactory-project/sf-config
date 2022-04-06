@@ -1,0 +1,27 @@
+---
+- block:
+    - name: "Waiting for zuul-scheduler is running ..."
+      uri:
+        url: "{{ zuul_components_status_endpoint }}"
+        timeout: 15
+      retries: 600
+      delay: 1
+      register: components_status
+      until:
+        - "'json' in components_status"
+        - "'scheduler' in components_status.json"
+        - '(components_status.json.scheduler | selectattr("state", "equalto", "running") | list | length) >= 1'
+
+    - name: "Waiting for zuul-web is running ..."
+      uri:
+        url: "{{ zuul_components_status_endpoint }}"
+        timeout: 15
+      retries: 60
+      delay: 1
+      register: components_status
+      until:
+        - "'json' in components_status"
+        - "'web' in components_status.json"
+        - '(components_status.json.web | selectattr("state", "equalto", "running") | list | length) >= 1'
+  vars:
+    zuul_components_status_endpoint: "{{ zuul_web_url }}/api/components"

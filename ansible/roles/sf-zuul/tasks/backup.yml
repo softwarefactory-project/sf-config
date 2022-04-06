@@ -9,3 +9,4 @@
   loop:
     - "{{ zuul_lib_dir }}/keys/"
     - "{{ zuul_lib_dir }}/tenant-secrets/"
+    - "{{ zuul_conf_dir }}/"

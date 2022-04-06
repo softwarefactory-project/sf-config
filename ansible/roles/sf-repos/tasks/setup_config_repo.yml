@@ -91,4 +91,7 @@
 - include_tasks: gitreview_update_fqdn.yaml
   vars:
     update_fqdn_project: '{{ config_done.stat.path }}'
-  when: update_fqdn
+    update_fqdn_url: "{{ config_location }}"
+  when:
+    - update_fqdn
+    - sync_strategy == 'push'

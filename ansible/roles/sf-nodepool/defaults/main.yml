@@ -6,7 +6,6 @@ role_actions:
   - upgrade
   - get_logs
   - disable
-  - postconf
 
 role_package: "nodepool"
 

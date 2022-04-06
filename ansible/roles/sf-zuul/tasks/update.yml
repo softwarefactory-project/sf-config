@@ -18,13 +18,7 @@
   register: upstreamconfig
 
 - block:
-    - include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml"
-      vars:
-        service_name: zuul
-        service_config_dir: "{{ zuul_conf_dir }}"
-        service_config_name: main.yaml
-        service_owner: "{{ owner }}"
-        service_group: "{{ group }}"
+    - include_tasks: "update_config.yml"
 
     - name: Check if zuul-scheduler is running
       command: systemctl -q is-active zuul-scheduler
@@ -43,12 +37,6 @@
   when:
     - localconfig.stdout != upstreamconfig.stdout or force_update|default(False)
     - "'zuul-scheduler' in zuul_services"
-
-- name: Start the scheduler first
-  service:
-    name: zuul-scheduler
-    state: started
-  when: "'zuul-scheduler' in zuul_services"
 
 - name: Manage tenant secrets
   block:
@@ -73,13 +61,6 @@
       loop: "{{ _secrets_files.stdout_lines }}"
       when: _secrets_files.stdout_lines
   when: "'zuul-scheduler' in zuul_services"
-
-- name: Ensure all services are started and enabled
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: "yes"
-  loop: "{{ zuul_services }}"
 
 - name: Write config repo sha1 matching current configuration
   copy:
