@@ -145,4 +145,3 @@
     - wait4port
     - wait4mariadb
     - wait4gerrit
-    - smart-restart.py

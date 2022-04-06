@@ -135,6 +135,10 @@
     - name: Save zuul jobs repo
       command: "mv {{ demo_tmp.stdout }} /root/demo-project"
 
+    - name: Set zuul need restart when changes are pushed (to ensure full reconfigure)
+      set_fact:
+        zuul_need_restart: True
+
   when: demo_project_done.stat.exists != True
 
 - stat:
@@ -171,4 +175,8 @@
 
     - name: Save zuul jobs repo
       command: "mv {{ demo_distgit_tmp.stdout }} /root/demo-project-distgit"
+
+    - name: Set zuul need restart when changes are pushed (to ensure full reconfigure)
+      set_fact:
+        zuul_need_restart: True
   when: demo_project_distgit_done.stat.exists != True

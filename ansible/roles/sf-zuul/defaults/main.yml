@@ -8,7 +8,6 @@ role_actions:
   - update
   - get_logs
   - disable
-  - postconf
 
 role_package: "zuul"
 
@@ -16,6 +15,11 @@ owner: zuul
 group: zuul
 container_uid: 10001
 container_gid: 10001
+
+zuul_conf_dir: "/etc/zuul"
+zuul_lib_dir: "/var/lib/zuul"
+zuul_log_dir: "/var/log/zuul"
+zuul_share_dir: "/usr/share/javascript/zuul"
 
 zuul_version: "5.2.2"
 zuul_container_version: "{{ zuul_version }}-1"
@@ -26,8 +30,8 @@ zuul_components_default_params: >-
   --user {{ container_uid }}:{{ container_gid }}
   --uidmap 0:4000:999
   --uidmap {{ container_uid }}:{{ zuul_uid | default(1000) }}:1
-  --volume /etc/zuul/:/etc/zuul/:z
-  --volume /var/log/zuul/:/var/log/zuul/:z
+  --volume {{ zuul_conf_dir }}/:{{ zuul_conf_dir }}/:z
+  --volume {{ zuul_log_dir }}/:{{ zuul_log_dir }}/:z
 
 zuul_components:
   - service: "zuul-scheduler"
@@ -41,7 +45,7 @@ zuul_components:
     skip-auto-update: True
     params: >-
       {{ zuul_components_default_params }}
-      --volume /var/lib/zuul/:/var/lib/zuul/:z
+      --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
       --volume /dev:/dev
       --privileged
   - service: "zuul-merger"
@@ -49,7 +53,7 @@ zuul_components:
     skip-auto-update: True
     params: >-
       {{ zuul_components_default_params }}
-      --volume /var/lib/zuul/:/var/lib/zuul/:z
+      --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
   - service: "zuul-web"
     image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
     skip-auto-update: True
@@ -65,10 +69,6 @@ zuul_services:
 zuul_scheduler_depends:
   - wait4service
 
-zuul_conf_dir: "/etc/zuul"
-zuul_lib_dir: "/var/lib/zuul"
-zuul_log_dir: "/var/log/zuul"
-zuul_share_dir: "/usr/share/javascript/zuul"
 
 zuul_web_port: 9000
 

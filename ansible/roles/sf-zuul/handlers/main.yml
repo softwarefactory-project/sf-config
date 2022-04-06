@@ -1,14 +1,4 @@
 ---
-- name: restart zuul
-  command: >
-    /usr/libexec/software-factory/smart-restart.py zuul
-        --url {{ zuul_web_url }}
-        --sender root@{{ fqdn }}
-        --mail {{ network.admin_mail_forward }}
-        {{ zuul_services|join(" ") }}
-  register: _zuul_restart_script
-  failed_when: _zuul_restart_script.rc not in [0, 3]
-  changed_when: _zuul_restart_script.rc == 3
-  when:
-    - not zuul_need_restart
-    - not disable_zuul_autorestart | default(False) | bool
+- name: Zuul need restart
+  set_fact:
+    zuul_need_restart: True

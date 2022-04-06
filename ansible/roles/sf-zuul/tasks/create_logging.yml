@@ -5,7 +5,7 @@
     dest: "{{ zuul_conf_dir }}/{{ _logfile }}-logging.yaml"
     owner: "{{ owner }}"
     group: "{{ group }}"
-  notify: restart zuul
+  notify: Zuul need restart
 
 - name: "Create log file"
   file:
@@ -14,4 +14,4 @@
     group: "{{ group }}"
     state: touch
   changed_when: false
-  notify: restart zuul
+  notify: Zuul need restart

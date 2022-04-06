@@ -14,10 +14,18 @@
   loop:
     - "{{ zuul_lib_dir }}/keys/"
 
-- name: "Ensure /var/lib/zuul ownership"
+- name: "Ensure {{ zuul_lib_dir }} ownership"
   file:
     path: "{{ zuul_lib_dir }}"
     owner: "{{ owner }}"
     group: "{{ owner }}"
     state: directory
     mode: '0751'
+
+- name: "Ensure {{ zuul_conf_dir }} ownership"
+  file:
+    path: "{{ zuul_conf_dir }}"
+    owner: "{{ owner }}"
+    group: "{{ owner }}"
+    state: directory
+    mode: '0700'

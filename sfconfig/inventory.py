@@ -219,18 +219,34 @@ def setup(args, pb):
     pb.append(host_play('all', 'repos', {'role_action': 'copy_config_repo'}))
 
 
-def sync_config(args, pb):
+def config_initialize(args, pb):
     """Ensure config repo content is up-to-date."""
+    pb.append(host_play('zuul-scheduler', tasks=[
+        dict(debug=dict(msg="Run initial minimal Zuul tenant config")),
+        dict(include_role=dict(name="sf-zuul",
+                               tasks_from="update_config.yml")),
+    ]))
+    # We need to start zuul so that it generate the config public key
     pb.append(host_play('install-server', tasks=[
-        dict(debug=dict(msg="Syncing config repo content")),
+        dict(debug=dict(msg="Start Zuul with minimal tenant config"))
+    ]))
+    zuul_start(args, pb)
+    # Then we can add the necessary secrets to the config repo
+    pb.append(host_play('install-server', tasks=[
+        dict(debug=dict(msg="Run syncing config repo content")),
         dict(include_role=dict(name="sf-repos"),
              vars=dict(role_action="fetch_zuul_key")),
         dict(include_role=dict(name="sf-repos"),
              vars=dict(role_action="setup")),
+        # And we indicate that zuul needs to be restarted because of git push
+        dict(debug=dict(
+            msg="Set a Zuul and Nodepool need restart")),
+        dict(set_fact=dict(zuul_need_restart=True)),
+        dict(set_fact=dict(nodepool_need_restart=True)),
     ]))
 
 
-def config_update(args, pb, skip_sync=False):
+def config_update(args, pb):
     # The list of role to run update task
     roles_order = ["managesf", "gerrit", "pages", "gerritbot",
                    "zuul", "nodepool", "grafana", "hound",
@@ -240,24 +256,22 @@ def config_update(args, pb, skip_sync=False):
         "zuul-scheduler", "nodepool-launcher", "nodepool-builder",
     ]
 
-    if not skip_sync:
-        pb.append(host_play('install-server',
-                            'repos', {'role_action': 'reset_config_repo'}))
-        pb.append(host_play(
-            "%s:!install-server" % ':'.join(roles_order + roles_group),
-            'repos', {'role_action': 'copy_config_repo'}))
+    pb.append(host_play('install-server',
+                        'repos', {'role_action': 'reset_config_repo'}))
+    pb.append(host_play(
+        "%s:!install-server" % ':'.join(roles_order + roles_group),
+        'repos', {'role_action': 'copy_config_repo'}))
 
     # Update all components
     for host in args.inventory:
         host_roles = []
-        if not skip_sync:
-            # Skip host only running mergers or executors
-            if (
-                    host["roles"] == ["zuul"] and
-                    set(host.get("params", {}).get(
-                        "zuul_services", [])).issubset(
-                            set(("zuul-merger", "zuul-executor")))):
-                continue
+        # Skip host only running mergers or executors
+        if (
+                host["roles"] == ["zuul"] and
+                set(host.get("params", {}).get(
+                    "zuul_services", [])).issubset(
+                        set(("zuul-merger", "zuul-executor")))):
+            continue
         for role in roles_order:
             if role in host["roles"]:
                 host_roles.append(role)
@@ -284,6 +298,49 @@ def syslogger(msg):
     }])
 
 
+def service_status(name, state):
+    task = dict(name="Setting service %s to %s" % (name, state),
+                service=dict(name=name, state=state))
+    if state == "stopped":
+        task["failed_when"] = False
+    return task
+
+
+def service_status_play(name, state):
+    return host_play(name, tasks=[service_status(name, state)])
+
+
+def zuul_service_state(args, pb, state):
+    for service in ("merger", "web", "executor", "scheduler"):
+        name = "zuul-" + service
+        if name in args.glue["roles"]:
+            pb.append(service_status_play(name, state))
+
+
+def zuul_delete_state(pb):
+    pb.append(host_play('zuul-scheduler', tasks=[{
+        'name': 'Cleaning Zookeeper data',
+        'shell': 'echo yes | zuul_wrapper delete-state'
+    }]))
+
+
+def zuul_stop(args, pb):
+    zuul_service_state(args, pb, "stopped")
+    zuul_delete_state(pb)
+
+
+def zuul_wait(pb):
+    pb.append(host_play('install-server', tasks=[{
+        'name': 'Wait for Zuul running',
+        'include_tasks': "{{ sf_tasks_dir }}/ensure_zuul_running.yml"
+    }]))
+
+
+def zuul_start(args, pb):
+    zuul_service_state(args, pb, "started")
+    zuul_wait(pb)
+
+
 def zuul_restart(args, pb):
     dump_file = '/var/lib/zuul/scripts/zuul-change-dump.sh'
 
@@ -292,83 +349,30 @@ def zuul_restart(args, pb):
 
     syslog("begin")
 
-    pb.append(host_play('zuul-executor', tasks=[{
-        'name': 'Stop executors',
-        'service': {'name': 'zuul-executor', 'state': 'stopped'}
-    }]))
+    pb.append(host_play('zuul-scheduler', tasks=[dict(
+        name="Check if zuul is running",
+        command="systemctl -q is-active zuul-scheduler",
+        register="zuul_scheduler_status",
+        failed_when="zuul_scheduler_status.rc not in [0, 3]"
+    ), dict(
+        name='Dump zuul changes',
+        retries='50',
+        delay='5',
+        command=('podman exec -ti zuul-scheduler '
+                 'python3 '
+                 '/var/lib/zuul/scripts/zuul-changes.py '
+                 'dump --dump_file %s' % dump_file),
+        when='zuul_scheduler_status.rc == 0'
+    )]))
 
-    pb.append(host_play('zuul-scheduler', tasks=[{
-        'name': 'Dump zuul changes',
-        'retries': '50',
-        'delay': '5',
-        'command': ('podman exec -ti zuul-scheduler '
-                    'python3 '
-                    '/var/lib/zuul/scripts/zuul-changes.py '
-                    'dump --dump_file %s' % dump_file)
-    }, {
-        'name': 'Stop scheduler',
-        'service': {'name': 'zuul-scheduler', 'state': 'stopped'}
-    }]))
+    zuul_stop(args, pb)
+    zuul_start(args, pb)
 
-    pb.append(host_play('zuul-web', tasks=[{
-        'name': 'Stop web',
-        'service': {'name': 'zuul-web', 'state': 'stopped'}}]))
-
-    zk_cleanup_script = "/usr/share/sf-config/scripts/zk-cleanup-queue.py"
-
-    pb.append(host_play('zookeeper', tasks=[{
-        'name': 'Installing Python Module Kazoo',
-        'shell': "pip3 install kazoo"
-        }, {
-        'name': 'Cleaning Zookeeper Queues',
-        'shell': " && ".join([
-            "%s --all --queue /zuul/events" % zk_cleanup_script,
-            "%s --all --queue /zuul/components" % zk_cleanup_script,
-            "%s --all --queue /zuul/tenant" % zk_cleanup_script
-        ])}]))
-
-    if 'zuul-merger' in args.glue["roles"]:
-        pb.append(host_play('zuul-merger', tasks=[{
-            'name': 'Restart mergers',
-            'service': {'name': 'zuul-merger',
-                        'state': 'restarted'}}]))
-
-    pb.append(host_play('zuul-executor', tasks=[{
-        'name': 'Restart executors',
-        'service': {'name': 'zuul-executor',
-                    'state': 'restarted'}}]))
-
-    pb.append(host_play('zuul-scheduler', tasks=[{
-        'name': 'Restart scheduler',
-        'service': {'name': 'zuul-scheduler',
-                    'state': 'restarted'}}]))
-
-    syslog("waiting")
-
-    pb.append(host_play('zuul-web', tasks=[{
-        'name': 'Restart web',
-        'service': {'name': 'zuul-web', 'state': 'restarted'}
-    }, {
-        'name': 'Wait for scheduler reconfiguration',
-        'uri': {
-            'url': '{{ zuul_web_url }}/api/tenant/{{ tenant_name }}/pipelines',
-            'return_content': 'yes',
-            'status_code': '200'
-        },
-        'register': '_zuul_status',
-        'until': (
-            "'json' in _zuul_status and "
-            "_zuul_status.json and "
-            "'periodic' in _zuul_status.content"
-        ),
-        'retries': '900',
-        'delay': '2'
-    }]))
-
-    pb.append(host_play('zuul-scheduler', tasks=[{
-        'name': 'Reload zuul queues',
-        'command': 'bash %s' % dump_file
-    }]))
+    pb.append(host_play('zuul-scheduler', tasks=[dict(
+        name='Reload zuul queues',
+        command="podman exec -ti zuul-scheduler bash %s" % dump_file,
+        when='zuul_scheduler_status.rc == 0'
+    )]))
 
     syslog("zuul restart process: done")
 
@@ -387,43 +391,6 @@ def tenant_update(args, pb):
         pb.append(host_play(host, host_roles, {
             'role_action': 'update',
             'force_update': True}))
-
-
-def zuul_update_fqdn(args, pb):
-    # stop zuul
-    for service in ("web", "merger", "executor", "scheduler"):
-        name = "zuul-" + service
-        if name not in args.glue["roles"]:
-            continue
-        pb.append(host_play(name, tasks=[dict(
-            name="Stop " + name,
-            service=dict(name=name, state="stopped")
-        )]))
-
-    # dump secrets
-    pb.append(host_play("zuul-scheduler", tasks=[dict(
-        name="Export the key",
-        command="zuul_wrapper export-keys /var/lib/zuul/export-key"
-    )]))
-
-    # delete zk state
-    zk_cleanup_script = "/usr/share/sf-config/scripts/zk-cleanup-queue.py"
-    pb.append(host_play("zookeeper", tasks=[dict(
-        name="Remove zookeeper data /zuul/",
-        command="%s --all --queue /zuul/" % zk_cleanup_script
-    )]))
-
-    # reload secret
-    pb.append(host_play("zuul-scheduler", tasks=[dict(
-        name="Import the keys",
-        command="zuul_wrapper import-keys /var/lib/zuul/export-key"
-    )]))
-
-    # disable automatic zuul restart, that will happen during config-update
-    pb.append(host_play("localhost", tasks=[dict(
-        name="Set zuul_need_restart fact",
-        set_fact=dict(zuul_need_restart=True)
-    )]))
 
 
 def postconf(args, pb):
@@ -450,39 +417,36 @@ def enable_action(args):
         playbook_name += "_recover"
         recover(args, pb)
     if not args.skip_setup:
+        # Setup components
         setup(args, pb)
+
+        # Initialize the config when needed
         pb.append({
-            'import_playbook': '%s/zuul_update_fqdn.yml' % args.ansible_root,
-            'when': [
-                'update_fqdn'
-            ]
-        })
-        config_update(args, pb, skip_sync=True)
-        postconf(args, pb)
+            'import_playbook': '%s/config_initialize.yml' % args.ansible_root,
+            'when': ['not config_key_initialized | bool',
+                     'not tenant_deployment']})
+
+        # Perform zuul/nodepool service restart if needed
         pb.append({
             'import_playbook': '%s/zuul_restart.yml' % args.ansible_root,
             'when': [
-                'zuul_need_restart | default(False)',
-                'not disable_zuul_autorestart | default(False) | bool'
+                '(zuul_need_restart | default(False)) or update_fqdn',
+                'not disable_zuul_autorestart | default(False) | bool',
+                'not tenant_deployment'
             ]
         })
         pb.append({
             'import_playbook': '%s/nodepool_restart.yml' % args.ansible_root,
             'when': [
-                'nodepool_need_restart | default(False)',
-                'not disable_nodepool_autorestart | default(False) | bool'
+                '(nodepool_need_restart | default(False)) or update_fqdn',
+                'not disable_nodepool_autorestart | default(False) | bool',
+                'not tenant_deployment'
             ]
         })
-        pb.append({
-            'import_playbook': '%s/sync_config.yml' % args.ansible_root,
-            'when': ['not config_key_initialized | bool',
-                     'not tenant_deployment']})
-        # FIXME: zuul doesn't update on git push...
-        pb.append({
-            'import_playbook': '%s/zuul_restart.yml' % args.ansible_root,
-            'when': ['not config_key_initialized | bool',
-                     'not tenant_deployment',
-                     'not disable_zuul_autorestart | default(False) | bool']})
+
+        # Apply the last tasks
+        config_update(args, pb)
+        postconf(args, pb)
     else:
         playbook_name += "_nosetup"
 
@@ -687,12 +651,13 @@ def generate(args):
     # Generate playbooks
     args.inventory = arch["inventory"]
     for playbook_name, generator in (
+            ("zuul_start", zuul_start),
+            ("zuul_stop", zuul_stop),
             ("zuul_restart", zuul_restart),
+            ("config_initialize", config_initialize),
             ("nodepool_restart", nodepool_restart),
-            ("sync_config", sync_config),
             ("sf_configrepo_update", config_update),
             ("sf_tenant_update", tenant_update),
-            ("zuul_update_fqdn", zuul_update_fqdn),
             ("get_logs", get_logs),
             ("sf_backup", backup),
             ("sf_erase", erase)):
