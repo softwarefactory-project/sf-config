@@ -79,6 +79,7 @@ nodepool_components:
       --volume /var/lib/nodepool/:/var/lib/nodepool/:z
       --volume /var/log/nodepool/:/var/log/nodepool/:z
       --volume /var/www/html/nodepool-builder/:/var/www/html/nodepool-builder/:z
+      --env HOME=/var/lib/nodepool
       {% if dib_upstream_elements %}
       --volume /usr/share/project-config/:/usr/share/project-config/
       {% endif %}
