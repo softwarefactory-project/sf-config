@@ -30,15 +30,15 @@
     tasks_from: create_directory.yaml
   loop:
     - {path: "/root/.config/openstack"}
-    - {path: "{{ nodepool_cache_dir }}", mode: "0755", recurse: "yes"}
+    - {path: "{{ nodepool_cache_dir }}", mode: "0755"}
     - {path: "{{ nodepool_conf_dir }}"}
     - {path: "{{ nodepool_conf_dir }}/scripts"}
     - {path: "{{ nodepool_conf_dir }}/ssl", mode: "0550"}
     - {path: "{{ nodepool_lib_dir }}"}
     - {path: "{{ nodepool_lib_dir }}/.config/openstack", mode: "0750"}
-    - {path: "{{ nodepool_lib_dir }}/.kube", mode: "0750", recurse: "yes"}
+    - {path: "{{ nodepool_lib_dir }}/.kube", mode: "0750"}
     - {path: "{{ nodepool_lib_dir }}/.ssh"}
-    - {path: "{{ nodepool_log_dir }}", recurse: "yes"}
+    - {path: "{{ nodepool_log_dir }}"}
     - {path: "/var/lib/software-factory/conf", owner: "root", group: "root"}
 
 - name: Install ssh private and public keys
@@ -186,10 +186,10 @@
         name: sf-container
         tasks_from: create_directory.yaml
       loop:
-        - {path: "{{ nodepool_cache_dir }}/dib_cache", recurse: "yes"}
-        - {path: "{{ nodepool_cache_dir }}/dib_tmp", recurse: "yes"}
-        - {path: "{{ nodepool_lib_dir }}/dib", recurse: "yes"}
-        - {path: "{{ nodepool_lib_dir }}/images", recurse: "yes"}
+        - {path: "{{ nodepool_cache_dir }}/dib_cache"}
+        - {path: "{{ nodepool_cache_dir }}/dib_tmp"}
+        - {path: "{{ nodepool_lib_dir }}/dib"}
+        - {path: "{{ nodepool_lib_dir }}/images"}
 
     - name: Create www nodepool builder log directory
       file:
@@ -197,7 +197,6 @@
         owner: "{{ owner }}"
         group: "apache"
         mode: "0755"
-        recurse: "yes"
         state: directory
 
     - include_tasks: create_logging.yml
@@ -254,7 +253,6 @@
         owner: "{{ owner }}"
         group: "apache"
         mode: "0755"
-        recurse: "yes"
         state: directory
 
     - name: Create bash alias for nodepool
