@@ -57,7 +57,7 @@
     allowed-projects:
       - {{ config_project_name }}
     description: Deploy config repo update.
-    run: playbooks/config/update.yaml
+    run: playbooks/config/config-update.yaml
     secrets:
       - site_install_server
 {% if tenant_deployment %}

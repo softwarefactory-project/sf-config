@@ -18,7 +18,7 @@
   register: upstreamconfig
 
 - block:
-    - include_tasks: "update_config.yml"
+    - include_tasks: "fetch_update_configuration.yml"
 
     - name: Check if zuul-scheduler is running
       command: systemctl -q is-active zuul-scheduler

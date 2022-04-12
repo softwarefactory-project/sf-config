@@ -131,7 +131,8 @@ def update(args, pb):
     pb.append(host_play('all', 'upgrade'))
 
     # Update config repositories
-    pb.append(host_play('install-server', 'repos', {'role_action': 'update'}))
+    pb.append(host_play('install-server', 'repos',
+                        {'role_action': 'config_update'}))
 
 
 def install(args, pb):
@@ -246,7 +247,7 @@ def config_initialize(args, pb):
     pb.append(host_play('zuul-scheduler', tasks=[
         dict(debug=dict(msg="Run initial minimal Zuul tenant config")),
         dict(include_role=dict(name="sf-zuul",
-                               tasks_from="update_config.yml")),
+                               tasks_from="fetch_update_configuration.yml")),
     ]))
     # We need to start zuul so that it generate the config public key
     pb.append(host_play('install-server', tasks=[
@@ -297,7 +298,8 @@ def config_update(args, pb):
         for role in roles_order:
             if role in host["roles"]:
                 host_roles.append(role)
-        pb.append(host_play(host, host_roles, {'role_action': 'update'}))
+        pb.append(host_play(host, host_roles,
+                            {'role_action': 'config_update'}))
 
 
 def nodepool_restart(args, pb):
@@ -411,7 +413,7 @@ def tenant_update(args, pb):
             if role in host["roles"]:
                 host_roles.append(role)
         pb.append(host_play(host, host_roles, {
-            'role_action': 'update',
+            'role_action': 'config_update',
             'force_update': True}))
 
 
@@ -434,7 +436,7 @@ def enable_action(args):
     if not args.skip_install:
         install(args, pb)
     else:
-        playbook_name += "_noinstall"
+        playbook_name += "_skip_install"
     if args.recover:
         playbook_name += "_recover"
         recover(args, pb)
@@ -678,8 +680,8 @@ def generate(args):
             ("zuul_restart", zuul_restart),
             ("config_initialize", config_initialize),
             ("nodepool_restart", nodepool_restart),
-            ("sf_configrepo_update", config_update),
-            ("sf_tenant_update", tenant_update),
+            ("config_update", config_update),
+            ("tenant_update", tenant_update),
             ("get_logs", get_logs),
             ("sf_backup", backup),
             ("sf_erase", erase)):

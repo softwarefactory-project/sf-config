@@ -4,7 +4,7 @@ role_actions:
   - setup
   - get_logs
   - disable
-  - update
+  - config_update
 
 role_package: python3-cauth
 

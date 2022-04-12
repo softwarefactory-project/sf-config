@@ -1,9 +1,9 @@
 ---
-- name: Allow zuul to run sf-config-update
+- name: Allow zuul to run config-update
   authorized_key:
     user: root
     key: "{{ zuul_worker_rsa_pub }}"
-    key_options: 'command="/usr/share/sf-config/scripts/sf-config-update.sh",no-port-forwarding,no-x11-forwarding,no-agent-forwarding,no-pty'
+    key_options: 'command="/usr/share/sf-config/scripts/config-update.sh",no-port-forwarding,no-x11-forwarding,no-agent-forwarding,no-pty'
 
 - name: Install sshd_config template
   template:

@@ -17,7 +17,7 @@
   changed_when: False
   register: upstreamconfig
 
-- include_tasks: "update_config.yml"
+- include_tasks: "fetch_update_configuration.yml"
 
 - name: Restart service when fqdn is updated to refresh statsd client
   service:

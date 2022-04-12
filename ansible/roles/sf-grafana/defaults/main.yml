@@ -4,7 +4,7 @@ role_actions:
   - install
   - setup
   - postconf
-  - update
+  - config_update
 
 role_package: grafana
 

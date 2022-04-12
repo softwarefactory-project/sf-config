@@ -2,7 +2,7 @@
 role_actions:
   - install
   - setup
-  - update
+  - config_update
   - get_logs
   - backup
   - restore
