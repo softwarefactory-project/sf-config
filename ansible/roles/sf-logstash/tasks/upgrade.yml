@@ -8,3 +8,9 @@
   yum:
     name: elasticsearch-curator
     state: absent
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ logstash_components }}"

@@ -13,6 +13,18 @@
     - /usr/share/kibana
     - /etc/kibana
 
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: opensearch-dashboards
+
+- name: Get opensearch-dashboards uid
+  command: id -u opensearch-dashboards
+  register: _opensearch_dashboards_id
+
+- name: Expose opensearch-dashboards uid
+  set_fact:
+    opensearch_dashboards_uid: "{{ _opensearch_dashboards_id.stdout }}"
+
 - name: Pull image
   include_role:
     name: sf-container

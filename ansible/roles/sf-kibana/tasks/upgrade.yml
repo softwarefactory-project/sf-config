@@ -6,15 +6,21 @@
   service:
     name: kibana
     state: stopped
-  when: "'kibana' in services"
+  when: "'kibana.service' in services"
 
 - name: Stop Opensearch dashboards service
   systemd:
     name: opensearch-dashboards
     state: stopped
-  when: "'opensearch-dashboards' in services"
+  when: "'opensearch-dashboards.service' in services"
 
 - name: Remove old Kibana config dir
   file:
     path: "{{ old_kibana_config_dir }}"
     state: absent
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ opensearch_dashboards_components }}"

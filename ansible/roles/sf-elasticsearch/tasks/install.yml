@@ -1,10 +1,50 @@
 ---
-- name: Remove Opendistro package
-  yum:
-    name:
-      - opendistroforelasticsearch
-      - elasticsearch-oss
-    state: absent
+- name: Handle migration from elasticsearch
+  block:
+    - name: Stop Elasticsearch service
+      service:
+        name: elasticsearch
+        state: stopped
+      # We ignore failure because the service might not exist
+      failed_when: false
+
+    - name: Stop Opensearch service
+      systemd:
+        name: opensearch
+        state: stopped
+      # We ignore failure because the service might not exist
+      failed_when: false
+
+    - name: Remove Opendistro package
+      yum:
+        name:
+          - opendistroforelasticsearch
+          - elasticsearch-oss
+        state: absent
+
+    - name: Remove old node directory when moving to Opensearch
+      file:
+        path: "{{ elk_data_dir }}"
+        state: absent
+
+    - name: Remove old Elasticsearch config dir
+      file:
+        path: "{{ old_elk_config_dir }}"
+        state: absent
+  when:
+    - sf_previous_version < 3.7
+
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: opensearch
+
+- name: Get opensearch uid
+  command: id -u opensearch
+  register: _opensearch_uid
+
+- name: Expose opensearch uid
+  set_fact:
+    opensearch_uid: "{{ _opensearch_uid.stdout }}"
 
 - name: Pull image
   include_role:

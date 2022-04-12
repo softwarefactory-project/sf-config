@@ -1,20 +1,4 @@
 ---
-- name: Create gerrit user
-  include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: "{{ owner }}"
-    ssh_key: gerrit_service_rsa
-    shell: /bin/bash
-    home_dir_mode: "0755"
-
-- name: Get gerrit uid
-  command: id -u gerrit
-  register: _gerrit_id
-
-- name: Expose gerrit uid
-  set_fact:
-    gerrit_uid: "{{ _gerrit_id.stdout }}"
-
 - name: Check container image version
   include_role:
     name: sf-container

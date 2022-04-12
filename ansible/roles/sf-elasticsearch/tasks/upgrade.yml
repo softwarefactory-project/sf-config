@@ -6,13 +6,13 @@
   service:
     name: elasticsearch
     state: stopped
-  when: "'elasticsearch' in services"
+  when: "'elasticsearch.service' in services"
 
 - name: Stop Opensearch service
   systemd:
     name: opensearch
     state: stopped
-  when: "'opensearch' in services"
+  when: "'opensearch.service' in services"
 
 - name: Remove old node directory when moving to Opensearch
   file:
@@ -21,7 +21,8 @@
   when:
     - sf_previous_version < 3.7
 
-- name: Remove old Elasticsearch config dir
-  file:
-    path: "{{ old_elk_config_dir }}"
-    state: absent
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ opensearch_components }}"

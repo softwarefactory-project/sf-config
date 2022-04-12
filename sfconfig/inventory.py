@@ -303,16 +303,13 @@ def config_update(args, pb):
 
 
 def nodepool_restart(args, pb):
-    pb.append(host_play('nodepool-launcher', tasks=[{
-        'name': 'Restart launcher',
-        'service': {'name': 'nodepool-launcher',
-                    'state': 'restarted'}}]))
-
-    if 'nodepool-builder' in args.glue["roles"]:
-        pb.append(host_play('nodepool-builder', tasks=[{
-            'name': 'Restart builders',
-            'service': {'name': 'nodepool-builder',
-                        'state': 'restarted'}}]))
+    for service in ("launcher", "builder"):
+        name = "nodepool-" + service
+        if name in args.glue["roles"]:
+            pb.append(host_play(name, tasks=(
+                service_status(name, "stopped") +
+                service_status(name, "started")
+            )))
 
 
 def syslogger(msg):
@@ -327,11 +324,24 @@ def service_status(name, state):
                 service=dict(name=name, state=state))
     if state == "stopped":
         task["failed_when"] = False
-    return task
+        return [task]
+    return [update_container(name), task]
+
+
+def update_container(name):
+    return dict(
+        name="Update container if needed",
+        shell="; ".join(map(lambda s: s.format(name=name), [
+            "if [ -f /var/lib/software-factory/versions/{name}-updated ]",
+            "then podman rm {name}",
+            "/usr/local/bin/container-{name}.sh",
+            "rm /var/lib/software-factory/versions/{name}-updated",
+            "fi"
+            ])))
 
 
 def service_status_play(name, state):
-    return host_play(name, tasks=[service_status(name, state)])
+    return host_play(name, tasks=service_status(name, state))
 
 
 def zuul_service_state(args, pb, state):
