@@ -20,19 +20,11 @@
 - block:
     - include_tasks: "fetch_update_configuration.yml"
 
-    - name: Check if zuul-scheduler is running
-      command: systemctl -q is-active zuul-scheduler
-      register: _zuul_scheduler
-      failed_when: _zuul_scheduler.rc not in [0, 3]
-      when: "'zuul-scheduler' in zuul_services"
-
     - name: Reload zuul-scheduler service
       service:
         name: zuul-scheduler
         state: reloaded
       when:
-        - "'zuul-scheduler' in zuul_services"
-        - _zuul_scheduler.rc == 0
         - _conf_diff.stdout != "" or update_fqdn
   when:
     - localconfig.stdout != upstreamconfig.stdout or force_update|default(False)
