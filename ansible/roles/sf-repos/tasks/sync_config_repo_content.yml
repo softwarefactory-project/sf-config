@@ -71,11 +71,16 @@
     - playbooks/openshift/pre.yaml
     - playbooks/openshift/unprivileged-machine.yaml
     - playbooks/base/post.yaml
-    - playbooks/config/update.yaml
+    - playbooks/config/config-update.yaml
     - zuul.d/_jobs-base.yaml
     - zuul.d/_jobs-pages.yaml
     - zuul.d/_jobs-openshift.yaml
     - zuul.d/_pipelines.yaml
+
+- name: Remove unused file
+  file:
+    path: "{{ config_clone_dir }}/playbooks/config/update.yaml"
+    state: absent
 
 - name: Update nodepool config templates
   template:

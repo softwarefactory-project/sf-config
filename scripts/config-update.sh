@@ -29,13 +29,13 @@ fi
 LOCK_PATH=/var/lib/software-factory/state/ansible.lock
 
 case $ACTION in
-    sf_configrepo_update)
+    config_update)
         set -o pipefail
-        exec flock $LOCK_PATH ansible-playbook -v /var/lib/software-factory/ansible/sf_configrepo_update.yml 2>&1 | tee /var/log/software-factory/configrepo_update.log
+        exec flock $LOCK_PATH ansible-playbook -v /var/lib/software-factory/ansible/config_update.yml 2>&1 | tee /var/log/software-factory/config_update.log
         ;;
-    sf_tenant_update)
+    tenant_update)
         set -o pipefail
-        exec flock $LOCK_PATH ansible-playbook -v /var/lib/software-factory/ansible/sf_tenant_update.yml 2>&1 | tee /var/log/software-factory/tenant_update.log
+        exec flock $LOCK_PATH ansible-playbook -v /var/lib/software-factory/ansible/tenant_update.yml 2>&1 | tee /var/log/software-factory/tenant_update.log
         ;;
     *)
         echo "NotImplemented"

@@ -5,7 +5,7 @@ role_actions:
   - setup
   - backup
   - restore
-  - update
+  - config_update
   - get_logs
   - disable
 

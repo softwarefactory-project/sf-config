@@ -36,5 +36,5 @@
         key: "{{ site_tenant_update.ssh_known_hosts }}"
 
     - name: Run tenant_update
-      command: "ssh root@{{ site_tenant_update.fqdn }} sf_tenant_update"
+      command: "ssh root@{{ site_tenant_update.fqdn }} tenant_update"
   when: git_log_resources.stdout == git_log.stdout

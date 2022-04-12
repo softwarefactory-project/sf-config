@@ -23,4 +23,4 @@
     key: "{{ site_install_server.ssh_known_hosts }}"
 
 - name: run config update
-  command: "ssh root@{{ site_install_server.fqdn }} sf_configrepo_update {{ (zuul | zuul_legacy_vars)['ZUUL_NEWREV'] }}"
+  command: "ssh root@{{ site_install_server.fqdn }} config_update {{ (zuul | zuul_legacy_vars)['ZUUL_NEWREV'] }}"

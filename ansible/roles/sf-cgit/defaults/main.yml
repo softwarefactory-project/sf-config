@@ -2,6 +2,6 @@
 role_actions:
   - install
   - setup
-  - update
+  - config_update
 
 role_package: cgit
