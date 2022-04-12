@@ -44,7 +44,7 @@
 # thus we need to move the directory created previously
 - name: "Fix gerrit logs directory"
   shell: |
-    if test -d /var/lib/gerrit && ! test -L /var/lib/gerrit/logs; then
+    if test -d /var/lib/gerrit/logs && ! test -L /var/lib/gerrit/logs; then
       mkdir -p /var/log/gerrit && \
         chown gerrit:gerrit /var/log/gerrit && \
         chmod 0750 /var/log/gerrit && \

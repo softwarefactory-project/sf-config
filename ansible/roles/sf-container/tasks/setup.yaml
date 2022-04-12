@@ -6,44 +6,10 @@
   changed_when: false
   failed_when: _container_exists.rc not in [0, 1]
 
-- name: "Check if local CA exists"
-  stat:
-    path: /etc/pki/ca-trust/source/anchors/localCA.pem
-  register: _local_ca_exists
-
-- name: "Add local CA for {{ item.service }}"
-  set_fact:
-    _self_signed_certs: >-
-      --volume /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem:/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
-      --env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt
-  when:
-    - _local_ca_exists is defined
-    - _local_ca_exists.stat.isreg
-
-- name: "Create container creation script for {{ item.service }}"
-  template:
-    src: creation.j2
-    dest: "/usr/local/bin/container-{{ item.service }}.sh"
-    mode: '0755'
-    owner: root
-
-- name: "Create container and install systemd file and enable service for {{ item.service }}"
+- name: "Create container for {{ item.service }}"
   block:
     - name: "Create {{ item.service }} container"
       shell: "/usr/local/bin/container-{{ item.service }}.sh > /var/log/software-factory/container-{{ item.service }}.log"
-
-    - name: "Install {{ item.service }} service file"
-      template:
-        src: service.j2
-        dest: "/etc/systemd/system/{{ item.service }}.service"
-      register: _container_service
-
-    - name: "Enable {{ item.service }} service"
-      systemd:
-        name: "{{ item.service }}"
-        daemon-reload: "{% if _container_service is changed %}yes{% else %}no{% endif %}"
-        state: stopped
-        enabled: yes
   rescue:
     - name: "Dump {{ item.service }} service state for debug"
       vars:
@@ -60,3 +26,18 @@
         echo "<<< end debug logs >>>" >> {{ debug_log }}
       ignore_errors: true
   when: _container_exists.rc != 0
+
+- name: "Install {{ item.service }} service file"
+  template:
+    src: service.j2
+    dest: "/etc/systemd/system/{{ item.service }}.service"
+  register: _container_service
+
+- name: "Enable {{ item.service }} service"
+  command: "systemctl daemon-reload"
+  when: "_container_service is changed"
+
+- name: Write installed container version
+  copy:
+    content: "{{ item.image }}"
+    dest: "/var/lib/software-factory/versions/{{ item.service }}"

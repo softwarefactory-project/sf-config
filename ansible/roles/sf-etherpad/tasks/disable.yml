@@ -6,6 +6,12 @@
     enabled: "no"
   ignore_errors: "yes"
 
+- name: Delete container - etherpad
+  include_role:
+    name: sf-container
+    tasks_from: delete.yaml
+  loop: "{{ etherpad_components }}"
+
 - block:
     - name: Remove files
       file:

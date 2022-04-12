@@ -47,6 +47,9 @@ zuul_components:
       {{ zuul_components_default_params }}
       --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
       --volume /dev:/dev
+      {% if 'log-classify' in roles %}
+      --volume /var/lib/log-classify:/var/lib/log-classify:z
+      {% endif %}
       --privileged
   - service: "zuul-merger"
     image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_container_version }}"

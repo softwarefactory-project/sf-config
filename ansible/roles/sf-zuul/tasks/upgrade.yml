@@ -19,3 +19,7 @@
   stat:
     path: /var/opt/rh/rh-python35/lib/zuul/
   register: _zuul_scl
+
+- name: Indicate zuul needs to be restarted
+  set_fact:
+    zuul_need_restart: true

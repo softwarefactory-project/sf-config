@@ -1,36 +1,29 @@
 ---
-- name: "Check installed version for {{ item.service }}"
-  command: "podman inspect --format {{ '{{' }}.ImageName{{ '}}' }} {{ item.service }}"
-  args:
-    warn: no
-  register: _installed_version
-  changed_when: false
-  failed_when: false
-  when: role_package != "any"
+- name: Check if container exists
+  command: "podman container exists {{ item.service }}"
+  register: _container
+  failed_when: _container.rc not in [0, 1]
 
-- name: Check previous version
-  command: "cat /var/lib/software-factory/versions/{{ item.service }}"
-  changed_when: false
-  failed_when: false
-  register: _previous_version
-  when: role_package != "any"
+- name: "Manage container update for {{ item.service }}"
+  block:
+    - name: "Read installed container version for {{ item.service }}"
+      command: "cat /var/lib/software-factory/versions/{{ item.service }}"
+      changed_when: false
+      failed_when: false
+      register: _installed_container
 
-- name: Define upgraded variable
-  shell: |
-    if [ ! -z "{{ _previous_version.stdout }}" ] && \
-       [ "{{ _previous_version.stdout }}" != "{{ _installed_version.stdout }}" ]; then
-       echo "changed"
-    fi
-  register: _version
-  changed_when: _version.stdout == "changed"
-  when: role_package != "any"
+    - name: "Touch updated file for {{ item.service }}"
+      file:
+        path: "/var/lib/software-factory/versions/{{ item.service }}-updated"
+        state: touch
+      when:
+        - item.image != _installed_container.stdout
+        - item.service in (zuul_services + nodepool_services)
+      register: _version
 
-- name: Execute upgrade tasks
-  include: /usr/share/sf-config/ansible/roles/sf-{{ role_package }}/tasks/upgrade.yml
-  when: role_package == "any" or _version is changed or force_update_tasks
-
-- name: Write new version
-  copy:
-    content: "{{ _installed_version.stdout }}"
-    dest: "/var/lib/software-factory/versions/{{ item.service }}"
-  when: role_package != "any"
+    - name: "Execute upgrade tasks for {{ item.service }}"
+      include_role:
+        name: sf-{{ role_package }}
+        tasks_from: upgrade.yml
+      when: item.image != _installed_container.stdout
+  when: _container.rc == 0

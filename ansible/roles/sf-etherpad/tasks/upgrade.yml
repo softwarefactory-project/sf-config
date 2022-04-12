@@ -1,4 +1,11 @@
 ---
-- name: Force service restart
-  command: /bin/true
-  notify: restart etherpad
+- name: Stop etherpad service
+  service:
+    name: etherpad
+    state: stopped
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ etherpad_components }}"

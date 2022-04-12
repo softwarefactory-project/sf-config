@@ -11,4 +11,4 @@ if [ "$1" ]; then
   container_exec_path=$(podman run --rm {{ item.image }} python3 -c "import {{ module }}, os.path; print(os.path.dirname({{ module }}.__file__) + '/')")
   patched_volume=" --volume $1:$container_exec_path:z "
 fi
-podman create --name {{ item.service }} {{ item.params }} {{ _self_signed_certs | default(None) }} {{ container_extra_volumes | default(None) }} $patched_volume {{ item.image }} {{ item.run | default(None) }}
+podman create --name {{ item.service }} {{ item.params }} {{ self_signed_certs }} $patched_volume {{ item.image }} {{ item.run | default(None) }}

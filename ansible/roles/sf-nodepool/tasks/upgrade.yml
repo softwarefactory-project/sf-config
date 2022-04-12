@@ -6,3 +6,7 @@
   loop:
     - builder
     - launcher
+
+- name: Indicate nodepool needs to be restarted
+  set_fact:
+    nodepool_need_restart: true

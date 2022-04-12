@@ -1,0 +1,20 @@
+- name: "Check if container exists for {{ item.service }}"
+  command: "podman container exists {{ item.service }}"
+  register: _container
+  failed_when: _container.rc not in [0, 1]
+
+- name: "Get container image for {{ item.service }}"
+  command: "podman inspect --format {% raw %}{{.ImageName}}{% endraw %} {{ item.service }}"
+  register: _container_image
+  failed_when: _container.rc not in [0, 1]
+
+- name: "Delete old container for {{ item.service }}"
+  command: "podman rm {{ item.service }}"
+  when: _container.rc == 0
+
+- name: "Delete old container image for {{ item.service }}"
+  command: "podman rmi {{ _container_image.stdout }}"
+  when: _container_image.rc == 0
+
+- name: "Create container for {{ item.service }}"
+  shell: "/usr/local/bin/container-{{ item.service }}.sh > /var/log/software-factory/container-{{ item.service }}.log"

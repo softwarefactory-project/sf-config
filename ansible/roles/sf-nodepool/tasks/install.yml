@@ -29,13 +29,6 @@
       - sf-elements
   when: '"nodepool-builder" in nodepool_services'
 
-- name: Pull image
-  include_role:
-    name: sf-container
-    tasks_from: install.yaml
-  loop: "{{ nodepool_components }}"
-  when: item.service in nodepool_services
-
 - name: Install openshift client
   block:
     - include_tasks: "{{ sf_tasks_dir }}/origin-311.yml"
@@ -46,3 +39,24 @@
         name: '{{ openshift_client }}'
         state: present
   when: "nodepool_openshift_providers or nodepool_kube_file or 'hypervisor-k1s' in roles"
+
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: "{{ owner }}"
+    ssh_key: nodepool_rsa
+    home_dir: "{{ nodepool_lib_dir }}"
+
+- name: Get nodepool uid
+  command: id -u nodepool
+  register: _nodepool_id
+
+- name: Expose nodepool uid
+  set_fact:
+    nodepool_uid: "{{ _nodepool_id.stdout }}"
+
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ nodepool_components }}"
+  when: item.service in nodepool_services
