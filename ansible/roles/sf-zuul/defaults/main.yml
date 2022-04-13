@@ -22,7 +22,7 @@ zuul_log_dir: "/var/log/zuul"
 zuul_share_dir: "/usr/share/javascript/zuul"
 
 zuul_version: "5.2.2"
-zuul_container_version: "{{ zuul_version }}-2"
+zuul_container_version: "{{ zuul_version }}-3"
 
 zuul_components_default_params: >-
   --network host
@@ -68,7 +68,6 @@ zuul_services:
 
 zuul_scheduler_depends:
   - wait4service
-
 
 zuul_web_port: 9000
 
