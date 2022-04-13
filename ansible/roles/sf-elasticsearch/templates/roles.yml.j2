@@ -66,4 +66,8 @@ kibana_viewer:
       - "indices:data/write/bulk*"
       - "indices:monitor/stats"
       - "indices:monitor/recovery"
-  tenant_permissions: []
+  tenant_permissions:
+    - tenant_patterns:
+        - "global_tenant"
+      allowed_actions:
+        - "kibana_all_read"
