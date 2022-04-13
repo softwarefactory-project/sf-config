@@ -203,12 +203,13 @@
       vars:
         _logfile: builder
 
-    - name: Create bash alias for nodepool
-      lineinfile:
-        path: /root/.bashrc
-        regexp: "^alias nodepool.*"
-        insertafter: "^alias mv.*"
-        line: "alias nodepool='podman exec -ti nodepool-builder nodepool'"
+    - name: Create /bin/nodepool to interact with container
+      copy:
+        dest: /bin/nodepool
+        content: |
+          #!/bin/sh -e
+          exec podman exec -ti nodepool-builder nodepool $*
+        mode: "0550"
       when: nodepool_builder_host != nodepool_launcher_host
 
     - name: Ensure libvirt is started
@@ -255,12 +256,13 @@
         mode: "0755"
         state: directory
 
-    - name: Create bash alias for nodepool
-      lineinfile:
-        path: /root/.bashrc
-        regexp: "^alias nodepool.*"
-        insertafter: "^alias mv.*"
-        line: "alias nodepool='podman exec -ti nodepool-launcher nodepool'"
+    - name: Create /bin/nodepool to interact with container
+      copy:
+        dest: /bin/nodepool
+        content: |
+          #!/bin/sh -e
+          exec podman exec -ti nodepool-launcher nodepool $*
+        mode: "0550"
 
     - include_tasks: create_logging.yml
       vars:
