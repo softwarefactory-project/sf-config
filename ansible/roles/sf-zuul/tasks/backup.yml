@@ -1,4 +1,8 @@
 ---
+- name: export zuul keys
+  command: "podman exec -ti zuul-scheduler zuul export-keys {{ zuul_lib_dir }}/keys/backup-keys"
+  when: "'zuul-scheduler' in zuul_services"
+
 - name: Backup data
   synchronize:
     mode: pull
@@ -8,5 +12,4 @@
     rsync_opts: --relative
   loop:
     - "{{ zuul_lib_dir }}/keys/"
-    - "{{ zuul_lib_dir }}/tenant-secrets/"
     - "{{ zuul_conf_dir }}/"
