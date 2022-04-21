@@ -40,6 +40,9 @@
 
 - name: Manage tenant secrets
   block:
+    - name: Check if Zuul is running
+      include_tasks: "{{ sf_tasks_dir }}/ensure_zuul_running.yml"
+
     - name: Generate tenant-update secrets
       command: |
         podman exec -ti zuul-scheduler python3
