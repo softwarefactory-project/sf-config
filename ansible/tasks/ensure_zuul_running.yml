@@ -4,7 +4,7 @@
       uri:
         url: "{{ zuul_components_status_endpoint }}"
         timeout: 15
-      retries: 600
+      retries: 3600
       delay: 1
       register: components_status
       until:
