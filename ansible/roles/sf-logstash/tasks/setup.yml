@@ -3,7 +3,7 @@
   include_role:
     name: sf-container
     tasks_from: check_version.yaml
-  loop: "{{ logstash_components + curator_components }}"
+  loop: "{{ logstash_components }}"
 
 - name: Create cert dir
   file:
@@ -16,7 +16,6 @@
     - "{{ logstash_stack_certs }}"
     - "{{ logstash_index_dir }}"
     - "{{ logstash_log_dir }}"
-    - "{{ curator_config_dir }}"
 
 - name: Copy CA cert to logstash dir
   copy:
@@ -51,18 +50,6 @@
   register: logstash_templates
   loop:
     - indexer.conf
-
-- name: Install configuration files - curator
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ curator_config_dir }}/{{ item }}"
-    mode: "0644"
-    owner: "{{ owner}}"
-    group: "{{ group }}"
-  register: logstash_templates
-  loop:
-    - curator.yml
-    - delete_old_indices.yml
 
 - name: Change logstash jvm options file
   copy:
@@ -109,19 +96,11 @@
   loop: "{{ logstash_components }}"
 
 - name: Create delete indices script
-  copy:
-    content: |
-      #!/bin/bash
-      INDICES_FILE=$1
-      podman run {{ item.params }} $INDICES_FILE
-    dest: /usr/local/bin/curator.sh
-    mode: '0755'
-  loop: "{{ curator_components }}"
+  file:
+    path: /usr/local/bin/curator.sh
+    state: absent
 
 - name: Add crontab entry for pruning old indices
   cron:
     name: "Delete old logstash indexes"
-    minute: "0"
-    hour: "0"
-    day: "*"
-    job: /usr/local/bin/curator.sh /etc/curator/delete_old_indices.yml
+    state: absent

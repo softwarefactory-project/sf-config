@@ -1,0 +1,27 @@
+---
+# NOTE: The ISM policy is automatically attached to the index, that
+# matches the template pattern. For example:
+# ism_template: {"intex_patterns": ["logstash-*"]}
+# any index that will be created with name "logstash-" will be automatically
+# attached to the policy.
+- name: Create a ISM policy
+  uri:
+    url: "{{ elasticsearch_internal_url }}/_plugins/_ism/add/{{ item.index_name | default('universal') }}"
+    client_cert: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
+    client_key: "{{ elk_stack_certs }}/elasticsearch-admin.key"
+    method: POST
+    body_format: json
+    body: {"policy_id": "{{ item.policy_name }}"}
+    status_code: 200, 409
+    validate_certs: true
+
+- name: Add template to policy
+  uri:
+    url: "{{ elasticsearch_internal_url }}/_plugins/_ism/policies/{{ item.policy_name }}"
+    client_cert: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
+    client_key: "{{ elk_stack_certs }}/elasticsearch-admin.key"
+    method: PUT
+    body_format: json
+    body: "{{ lookup('template','./ism.json.j2') }}"
+    status_code: 201, 409
+    validate_certs: true

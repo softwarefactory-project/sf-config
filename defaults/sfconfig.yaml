@@ -196,9 +196,6 @@ elasticsearch:
 #  cacert_path: /etc/elasticsearch/certs/localCA.pem
 #  suffix: sftests_com
 #  users:
-#    curator_sftests_com:
-#      password: curator
-#      role:     curator
 #    logstash_sftests_com:
 #      password: logstash
 #      role: logstash

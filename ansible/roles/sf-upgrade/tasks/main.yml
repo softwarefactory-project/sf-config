@@ -53,16 +53,11 @@
         ln -s /var/log/gerrit /var/lib/gerrit/logs;
     fi
 
-# FIXME: Remove that fact when curator is contenerized
-- name: Set exclude_update_packages fact
-  set_fact:
-    exclude_update_packages: "elasticsearch-curator*"
-
 - name: "Update packages"
   yum:
     name: "*"
     update_cache: "yes"
     state: latest
-    exclude: '{{ exclude_update_packages }}'
+    exclude: '{{ exclude_update_packages|default(omit) }}'
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'

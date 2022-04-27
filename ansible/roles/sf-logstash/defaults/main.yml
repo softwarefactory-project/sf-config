@@ -33,25 +33,6 @@ logstash_components:
       -v {{ logstash_stack_certs }}/localCA.pem:{{ logstash_stack_certs }}/localCA.pem:z
       -v {{ logstash_log_dir }}:/var/log/logstash:z
 
-curator_version: 5.7
-curator_container_version: "{{ curator_version }}-2"
-curator_image: "quay.io/software-factory/curator:{{ curator_container_version }}"
-
-curator_components:
-  - service: "curator"
-    image: "{{ curator_image }}"
-    skip-auto-update: true
-    params: >-
-      --net host
-      --rm
-      --user {{ container_uid }}:{{ container_gid }}
-      --uidmap 0:4000:999
-      --uidmap {{ container_uid }}:{{ opensearch_uid | default(1000) }}:1
-      -v {{ curator_config_dir }}/curator.yml:/.curator/curator.yml:z
-      -v {{ curator_config_dir }}/:/etc/curator/:z
-      -v {{ logstash_stack_certs }}/localCA.pem:/etc/opensearch/certs/localCA.pem:z
-      {{ curator_image }}
-
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
 elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
@@ -69,4 +50,5 @@ zuul_retention_days: 180
 logstash_maximum_heap_size: 512m
 logstash_minimum_heap_size: 128m
 
+# NOTE: Remove it after SF 3.8
 curator_config_dir: "{{ logstash_config_dir }}/curator.d"

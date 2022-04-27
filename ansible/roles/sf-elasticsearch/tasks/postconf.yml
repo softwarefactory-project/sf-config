@@ -6,6 +6,21 @@
     delay: 10
     timeout: 600
 
+# Configure ISM - Index State Management
+# NOTE: the '*' will be added to the index name on creating the policy.
+- name: Configure Index State Management
+  include_tasks: create_ism.yml
+  loop:
+    - policy_name: "logstash-policy"
+      index_name: "logstash-"
+      retention_time: "{{ logstash_retention_days | default(14) }}d"
+    - policy_name: "zuul-policy"
+      index_name: "zuul."
+      retention_time: "{{ zuul_retention_days | default(180) }}d"
+    # Create universal ISM policy that does not provide index
+    - policy_name: "universal-policy"
+      retention_time: "14d"
+
 - name: Configure elasticsearch replicas
   uri:
     url: '{{ elasticsearch_internal_url }}/_template/default_settings'
