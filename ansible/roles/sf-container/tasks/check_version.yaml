@@ -18,7 +18,7 @@
         state: touch
       when:
         - item.image != _installed_container.stdout
-        - item.service in (zuul_services + nodepool_services)
+        - item.service in ((zuul_services | default([])) + (nodepool_services | default([])))
       register: _version
 
     - name: "Execute upgrade tasks for {{ item.service }}"
