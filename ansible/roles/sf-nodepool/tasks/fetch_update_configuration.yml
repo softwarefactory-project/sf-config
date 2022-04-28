@@ -37,5 +37,5 @@
     - rsync -avi --delete nodepool/virt_images/ "{{ nodepool_conf_dir }}/virt_images/"
 
 - name: Check if providers are enabled
-  command: python3 -c "import yaml; print(len(yaml.load(open('/etc/nodepool/nodepool.yaml')).get('providers', [])))"
+  command: python3 -c "import yaml; print(len(yaml.safe_load(open('/etc/nodepool/nodepool.yaml')).get('providers', [])))"
   register: _provider_count

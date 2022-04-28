@@ -17,5 +17,5 @@ GROUP_VAR_PATH = "/var/lib/software-factory/ansible/group_vars/all.yaml"
 
 class Base:
     def enabled_roles(self):
-        group_vars = yaml.load(open(GROUP_VAR_PATH))
+        group_vars = yaml.safe_load(open(GROUP_VAR_PATH))
         return group_vars["roles"]
