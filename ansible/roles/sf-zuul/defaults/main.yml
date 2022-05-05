@@ -23,6 +23,8 @@ zuul_share_dir: "/usr/share/javascript/zuul"
 
 zuul_version: "5.2.2"
 zuul_container_version: "{{ zuul_version }}-3"
+zuul_client_version: "a6ce77acffd852219fd43a6dc61cbe637aa85bf2"
+zuul_client_container_version: "{{ zuul_client_version }}-1"
 
 zuul_components_default_params: >-
   --network host

@@ -47,7 +47,7 @@ def dump(args):
                             continue
                         cid, cps = change['id'].split(',')
                         cmd = (
-                            "zuul enqueue --tenant %s --trigger gerrit "
+                            "zuul-client enqueue --tenant %s "
                             "--pipeline %s --project %s --change %s,%s" % (
                                 tenant["name"],
                                 pipeline['name'],
