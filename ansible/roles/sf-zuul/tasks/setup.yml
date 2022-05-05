@@ -84,6 +84,21 @@
           #!/bin/sh -e
           exec podman exec -ti zuul-scheduler zuul $*
         mode: "0550"
+
+    - name: Install generate-zuul-client-config.py script
+      copy:
+        src: generate-zuul-client-config.py
+        dest: "{{ zuul_lib_dir }}/scripts/generate-zuul-client-config.py"
+        mode: '0755'
+
+    - name: Create /bin/zuul-client
+      copy:
+        dest: /bin/zuul-client
+        content: |
+          #!/bin/sh -e
+          exec podman run --rm --name zc_container -v /etc/zuul/:/etc/zuul/:Z -v /etc/ssl/certs:/etc/ssl/certs:Z -v /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem:/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem --env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt quay.io/software-factory/zuul-client:{{ zuul_client_container_version }} --zuul-url {{ zuul_pub_url }} $*
+        mode: "0550"
+
   when: "'zuul-scheduler' in zuul_services"
 
 - name: Create wrapper for zuul

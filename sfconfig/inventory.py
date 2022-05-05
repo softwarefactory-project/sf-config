@@ -405,8 +405,7 @@ def zuul_restart(args, pb):
     pb.append(host_play('zuul-scheduler', tasks=[dict(
         name='Reload zuul queues',
         shell=("if [ -f %s ]; "
-               "then podman exec -ti zuul-scheduler "
-               "bash %s && rm %s; fi"
+               "then %s && rm %s; fi"
                % (dump_file, dump_file, dump_file))
     )]))
 
