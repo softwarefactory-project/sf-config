@@ -9,26 +9,10 @@
     extra_repos: "rhel-7-server-rpms"
   when: ansible_distribution == "RedHat"
 
-# - name: Add the grafana RPM repository
-#   yum_repository:
-#     name: "{{ grafana_repo_name }}"
-#     description: "{{ grafana_repo_desc }}"
-#     baseurl: "{{ grafana_repo_url }}"
-#     gpgkey: "{{ grafana_repo_gpgkey }}"
-#     gpgcheck: "{{ grafana_repo_gpgcheck }}"
-#     enabled: 0
-
-- name: Install package
+- name: Remove grafana package
   yum:
-    # FIXME: grafyaml doesn't work with grafana 8.0, force 7.5 version until we
-    # fix the project.
-    # name: grafana
-    name: https://dl.grafana.com/oss/release/grafana-7.5.7-1.x86_64.rpm
-    state: present
-    allow_downgrade: yes
-    # disablerepo: "*"
-    # enablerepo: "{{ grafana_repo_name }},{{ extra_repos }}"
-    enablerepo: "{{ extra_repos }}"
+    name: grafana
+    state: absent
 
 - name: Install grafyaml for config-update and config-check
   yum:
@@ -38,3 +22,22 @@
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
   loop: "{{ executor_hosts | union( groups['install-server'] ) }}"
+
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: "{{ owner }}"
+
+- name: Get {{ owner }} uid
+  command: id -u {{ owner }}
+  register: _grafana_id
+
+- name: Setting {{ owner }} uid var
+  set_fact:
+    grafana_uid: "{{ _grafana_id.stdout }}"
+
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ grafana_components }}"
+

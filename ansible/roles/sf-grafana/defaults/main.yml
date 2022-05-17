@@ -8,6 +8,36 @@ role_actions:
 
 role_package: grafana
 
+owner: grafana
+group: grafana
+container_uid: 472
+container_gid: 0
+
+grafana_config_dir: /etc/grafana
+grafana_lib_dir: /var/lib/grafana
+grafana_log_dir: /var/log/grafana
+
+grafana_container_tag: "7.5.7"
+
+# Configurable directories https://grafana.com/docs/grafana/latest/administration/configure-docker/#default-paths
+grafana_components:
+  - service: "grafana"
+    image: "quay.io/software-factory/{{ role_package }}:{{ grafana_container_tag }}"
+    skip-auto-update: True
+    params: >-
+      --network host
+      --user {{ container_uid }}:{{ container_gid }}
+      --uidmap 0:{{ grafana_uid | default(1000) }}:999
+      --gidmap 0:{{ grafana_uid | default(1000) }}:999
+      --env GF_INSTALL_PLUGINS={{ grafana_plugins }}
+      --volume {{ grafana_config_dir }}:{{ grafana_config_dir }}:z
+      --volume {{ grafana_lib_dir }}:{{ grafana_lib_dir }}:z
+      --volume {{ grafana_log_dir }}:{{ grafana_log_dir }}:z
+
+# Grafana Container Plugins Docs: https://grafana.com/docs/grafana/latest/installation/docker/#build-and-run-a-docker-image-with-pre-installed-plugins
+# Grafan Plugins page: https://grafana.com/grafana/plugins/
+grafana_plugins: "grafana-clock-panel"
+
 grafana_repo_name: grafana
 grafana_repo_desc: Grafana repository
 grafana_repo_url: https://packages.grafana.com/oss/rpm
