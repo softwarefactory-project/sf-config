@@ -22,6 +22,7 @@
     - {path: "{{ nodepool_conf_dir }}/ssl", mode: "0550"}
     - {path: "{{ nodepool_lib_dir }}"}
     - {path: "{{ nodepool_lib_dir }}/.config/openstack", mode: "0750"}
+    - {path: "{{ nodepool_lib_dir }}/.aws", mode: "0750"}
     - {path: "{{ nodepool_lib_dir }}/.kube", mode: "0750"}
     - {path: "{{ nodepool_lib_dir }}/.ssh"}
     - {path: "{{ nodepool_log_dir }}"}
