@@ -1,41 +1,72 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ zookeeper_components }}"
 
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: zookeeper
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - path: "{{ zookeeper_config_dir }}"
+    - path: "{{ zookeeper_lib_dir }}"
+      mode: "0750"
+      recurse: "yes"
+    - path: "{{ zookeeper_lib_dir }}/version-2"
+
+- name: Apply selinux port labelling
+  seport:
+    ports: "{{ item }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  loop:
+    - "{{ zookeeper_client_port }}"
+    - "{{ zookeeper_secure_client_port }}"
+    - "{{ zookeeper_follower_port }}"
+    - "{{ zookeeper_election_port }}"
+    - "{{ zookeeper_admin_server_port }}"
+  when:
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
+    - ansible_selinux.status == "enabled"
 
 - name: Setup CA file
   copy:
     content: "{{ zk_ca_pem }}"
-    dest: /etc/zookeeper/zk-ca.pem
+    dest: "{{ zookeeper_config_dir }}/zk-ca.pem"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: '0444'
 
 - name: Setup TLS file
   copy:
     content: "{{ zk_keys[ansible_fqdn] }}"
-    dest: /etc/zookeeper/server.pem
+    dest: "{{ zookeeper_config_dir }}/server.pem"
     mode: '0400'
-    owner: zookeeper
-  notify: restart zookeeper
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+  notify: restart {{ owner }}
 
 - name: Setup zoo.cfg
   template:
     src: zoo.cfg.j2
-    dest: /etc/zookeeper/zoo.cfg
+    dest: "{{ zookeeper_config_dir }}/zoo.cfg"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: '0644'
-  notify: restart zookeeper
+  notify: restart {{ owner }}
 
-- name: "make /var/lib/zookeeper/version-2 writable by zookeeper"
-  file:
-    path: "/var/lib/zookeeper/version-2"
-    owner: "zookeeper"
-    group: "zookeeper"
-    recurse: "yes"
-    state: "directory"
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ zookeeper_components }}"
 
-- name: Start and enable the service
-  service:
-    name: zookeeper
+- name: Start service
+  systemd:
+    name: "{{ role_package }}"
     state: started
+    daemon_reload: "yes"
     enabled: "yes"

@@ -8,8 +8,42 @@ role_actions:
 
 role_package: zookeeper
 
+owner: zookeeper
+group: zookeeper
+container_uid: 1000
+container_gid: 1000
+
+zookeeper_config_dir: /etc/zookeeper
+zookeeper_lib_dir: /var/lib/zookeeper
+zookeeper_container_lib_dir: /logs
+
 zookeeper_tickTime: 5000
 # Large min/max session timeout to mitigate network outage between zuul and zk
 zookeeper_minSessionTimeout: 60000
 zookeeper_maxSessionTimeout: 180000
 zookeeper_purgeInterval: 24
+
+zookeeper_version: 3.6.3
+zookeeper_release: 1
+
+zookeeper_components:
+  - service: "zookeeper"
+    image: "quay.io/software-factory/{{ role_package }}:{{ zookeeper_version }}-{{ zookeeper_release }}"
+    skip-auto-update: True
+    params: >-
+      --network host
+      --user {{ container_uid }}:{{ container_gid }}
+      --uidmap 0:4000:999
+      --gidmap 0:4000:999
+      --uidmap {{ container_uid }}:{{ zookeeper_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ zookeeper_gid | default(1000) }}:1
+      --volume {{ zookeeper_config_dir }}/zoo.cfg:/conf/zoo.cfg:Z
+      --volume {{ zookeeper_config_dir }}/zk-ca.pem:/conf/zk-ca.pem:Z
+      --volume {{ zookeeper_config_dir }}/server.pem:/conf/server.pem:Z
+      --volume {{ zookeeper_lib_dir }}:/logs:Z
+
+zookeeper_client_port: 2181
+zookeeper_secure_client_port: 2281
+zookeeper_follower_port: 2888
+zookeeper_election_port: 3888
+zookeeper_admin_server_port: 8080

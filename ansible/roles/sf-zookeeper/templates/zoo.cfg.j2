@@ -4,8 +4,8 @@ maxSessionTimeout={{ zookeeper_maxSessionTimeout }}
 
 initLimit=10
 syncLimit=5
-dataDir=/var/lib/zookeeper
-clientPort=2181
+dataDir={{ zookeeper_container_lib_dir }}
+clientPort={{ zookeeper_client_port }}
 
 autopurge.purgeInterval={{ zookeeper_purgeInterval }}
 autopurge.snapRetainCount=3
@@ -19,9 +19,9 @@ admin.enableServer=true
 
 server.1={{ ansible_fqdn }}:2888:3888
 serverCnxnFactory=org.apache.zookeeper.server.NettyServerCnxnFactory
-secureClientPort=2281
-ssl.keyStore.location=/etc/zookeeper/server.pem
-ssl.trustStore.location=/etc/zookeeper/zk-ca.pem
+secureClientPort={{ zookeeper_secure_client_port }}
+ssl.keyStore.location=/conf/server.pem
+ssl.trustStore.location=/conf/zk-ca.pem
 
 # Whitelist commands needed by zookeeper-explorer
 4lw.commands.whitelist=mntr,ruok

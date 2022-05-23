@@ -166,11 +166,13 @@ def recover(args, pb):
 
     # Start zookeeper
     pb.append(host_play('zookeeper', tasks=[
-        {'yum': {
-            'name': 'zookeeper',
-            'state': 'present',
-            'disablerepo': '{{ yum_disable_repo|default(omit) }}',
-            'enablerepo': '{{ yum_enable_repo|default(omit) }}',
+        {'include_role': {
+            'name': 'sf-zookeeper',
+            'tasks_from': 'install.yml',
+        }},
+        {'include_role': {
+            'name': 'sf-zookeeper',
+            'tasks_from': 'setup.yml',
         }},
         {'service': {'name': 'zookeeper', 'state': 'started'}}
     ]))

@@ -1,22 +1,36 @@
 ---
 - name: Disable services
   service:
-    name: zookeeper
+    name: "{{ role_package }}"
     enabled: "no"
     state: stopped
   ignore_errors: "yes"
 
+- name: Delete container - {{ role_package }}
+  include_role:
+    name: sf-container
+    tasks_from: delete.yaml
+  loop: "{{ zookeeper_components }}"
+
 - block:
     - name: Remove stat data
       file:
-        path: /var/lib/zookeeper
+        path: "{{ zookeeper_lib_dir }}"
         state: absent
 
-    - name: Ensure /var/lib/zookeeper exists though
+    - name: Ensure {{ zookeeper_lib_dir }} exists though
       file:
-        path: /var/lib/zookeeper
+        path: "{{ zookeeper_lib_dir }}"
         state: directory
-        owner: zookeeper
-        group: zookeeper
+        owner: "{{ owner }}"
+        group: "{{ group }}"
         mode: "0750"
+
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ role_package }}"
+
   when: erase == True
