@@ -49,6 +49,16 @@ load_multiplier={{ zuul_executor_load_multiplier|default(2.5) }}
 min_avail_hdd={{ zuul_executor_min_avail_hdd|default(5.0) }}
 min_avail_mem={{ zuul_executor_min_avail_mem|default(5.0) }}
 sigterm_method=stop
+{# An executor zone can be configured by adding in /etc/software-factory/custom-vars.yaml
+zuul_executor_zone:
+  - hostname: ze01
+    zone: private
+#}
+{% for executor in zuul_executor_zone|default([]) %}
+{% if ansible_hostname == executor.hostname  %}
+zone={{ executor.zone }}
+{% endif %}
+{% endfor %}
 
 [fingergw]
 state_dir={{ zuul_lib_dir }}
