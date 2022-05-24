@@ -1,13 +1,32 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ grafana_components }}"
 
-- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: grafana
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - {path: "{{ grafana_config_dir }}", mode: "0755", recurse: "yes"}
+    - {path: "{{ grafana_lib_dir }}", mode: "0775", recurse: "yes"}
+    - {path: "{{ grafana_log_dir }}", mode: "0755", recurse: "yes"}
+
+- name: Apply selinux port labelling
+  seport:
+    ports: "{{ grafana_http_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  when:
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
+    - ansible_selinux.status == "enabled"
 
 - name: Configure grafana.ini
   ini_file:
-    dest: /etc/grafana/grafana.ini
+    dest: "{{ grafana_config_dir }}/grafana.ini"
     section: '{{ item.section }}'
     option: '{{ item.option }}'
     value: '{{ item.value }}'
@@ -28,7 +47,7 @@
 
 - name: Configure authentication
   ini_file:
-    dest: /etc/grafana/grafana.ini
+    dest: "{{ grafana_config_dir }}/grafana.ini"
     section: '{{ item.section }}'
     option: '{{ item.option }}'
     value: '{{ item.value }}'
@@ -44,7 +63,7 @@
 
 - name: Configure authentication
   ini_file:
-    dest: /etc/grafana/grafana.ini
+    dest: "{{ grafana_config_dir }}/grafana.ini"
     section: '{{ item.section }}'
     option: '{{ item.option }}'
     value: '{{ item.value }}'
@@ -70,6 +89,19 @@
     group: grafana
     mode: '0755'
     state: directory
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ grafana_components }}"
+
+- name: Start service
+  systemd:
+    name: "{{ role_package }}"
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
 
 - name: Check if grafana is running
   command: systemctl is-active -q grafana-server
@@ -99,6 +131,9 @@
     path: '{{ grafyaml_metrics }}'
     state: directory
     mode: '0755'
+    owner: '{{ owner }}'
+    group: '{{ group }}'
+
   delegate_to: '{{ install_server_host }}'
 
 - name: Install update-grafana-graphs script
@@ -110,13 +145,11 @@
     mode: '0755'
   delegate_to: '{{ install_server_host }}'
 
-# Retry start to mitigate initial service start bug with grafana-5.1.3-1
-- name: Start grafana service
+- name: Restart service {{ role_package }} to apply plugins
   systemd:
-    name: grafana-server
-    state: started
+    name: "{{ role_package }}"
+    state: restarted
     daemon_reload: "yes"
     enabled: "yes"
-  failed_when: false
 
 - include_tasks: grafana_configuration.yml

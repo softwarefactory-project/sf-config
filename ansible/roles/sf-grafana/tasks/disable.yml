@@ -6,6 +6,12 @@
     enabled: "no"
   ignore_errors: "yes"
 
+- name: Delete container - grafana
+  include_role:
+    name: sf-container
+    tasks_from: delete.yaml
+  loop: "{{ grafana_components }}"
+
 - block:
     - name: Remove files
       file:
@@ -16,6 +22,10 @@
         - '/var/lib/{{ service_name }}'
         - '/var/log/{{ service_name }}'
         - "/etc/yum.repos.d/{{ grafana_repo_name }}.repo"
+        - '/etc/grafyaml'
+        - '/var/run/grafana'
+        - '{{ grafyaml_metrics }}'
+        - '/usr/bin/update-grafana-graphs.sh'
       ignore_errors: "yes"
 
     - name: Remove packages
@@ -24,4 +34,5 @@
         state: absent
       loop:
         - '{{ service_name }}'
+        - 'grafyaml'
   when: erase == True
