@@ -27,8 +27,10 @@ grafana_components:
     params: >-
       --network host
       --user {{ container_uid }}:{{ container_gid }}
-      --uidmap 0:{{ grafana_uid | default(1000) }}:999
-      --gidmap 0:{{ grafana_uid | default(1000) }}:999
+      --uidmap {{ container_uid }}:{{ grafana_uid | default(1000) }}:1
+      --gidmap 0:{{ grafana_gid | default(1000) }}:1
+      --uidmap 0:4000:471
+      --gidmap 1:4000:999
       --env GF_INSTALL_PLUGINS={{ grafana_plugins }}
       --volume {{ grafana_config_dir }}:{{ grafana_config_dir }}:z
       --volume {{ grafana_lib_dir }}:{{ grafana_lib_dir }}:z
