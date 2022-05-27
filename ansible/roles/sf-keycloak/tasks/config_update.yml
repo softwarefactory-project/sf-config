@@ -8,3 +8,7 @@
          --admin-password {{ authentication.admin_password }} \
          --realm {{ keycloak_default_realm }}
   no_log: show_hidden_logs == False
+  register: _update_groups_and_memberships
+  until: _update_groups_and_memberships.rc == 0
+  retries: 3
+  delay: 10

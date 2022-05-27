@@ -1,0 +1,30 @@
+---
+# Create client scopes
+#
+# Inputs:
+#
+#   Object with the following attributes:
+#    - name - client scope name
+#      realm - realm name to create client scope in
+#      protocol - protocol to be used by the client scope
+#      attributes:
+#         includeInTokenScope - If on, the name of this client scope will be added to the access token property 'scope' as well as to the Token Introspection Endpoint response. (default: true)
+#         displayOnConsentScreen - Text that will be shown on the consent screen when this client scope is added to some client with consent required. (default: true)
+#
+# This task executes following the steps below:
+
+# 1. Create client scope in realm
+- name: "Create Client Scope {{ item.name }}"
+  command: >
+    podman exec -it {{ service_name }}
+    {{ keycloak_dir }}/bin/kcadm.sh create client-scopes
+         --target-realm {{ item.realm }}
+         --set "name={{ item.name }}"
+         --set "protocol={{ item.protocol }}"
+         --set 'attributes."include.in.token.scope"={{ item.attributes.includeInTokenScope }}'
+         --set 'attributes."display.on.consent.screen"={{ item.attributes.displayOnConsentScreen }}'
+         -o --fields id
+         {{ kcadm_options }}
+  register: _client_scope_create
+  failed_when: _client_scope_create.rc != 0 and _client_scope_create.stdout.find("already exists") == -1
+  no_log: show_hidden_logs == False

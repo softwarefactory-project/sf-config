@@ -1,100 +1,145 @@
 ---
+# Configure clients
+#
+# Inputs:
+#
+#   Object with the following attributes:
+#     - component - client name
+#       use_secret - create client with password (true/false)
+#       realm_role_mapper - create realm role mapper (true/false)
+#       group_role_mapper - create group realm role mapper (true/false)
+#
+# This task configures or updates clients following the steps below:
+
+# 1. Creates a client with password, encoding it. Meaning that not even in web browser, we can see the password.
 - name: "Create confidential OIDC client for component {{ item.component }} if needed"
-  command: >
-    /opt/jboss/keycloak/bin/kcadm.sh create clients
-        -r {{ keycloak_default_realm }}
-        -s clientId={{ item.component }}
-        -s "enabled=true"
-        -s clientAuthenticatorType=client-secret
-        -s 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+  command: |
+    podman exec -ti keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh create clients
+        --target-realm {{ keycloak_default_realm }}
+        --set clientId={{ item.component }}
+        --set enabled=true
+        --set clientAuthenticatorType=client-secret
+        --set 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
+        {{ kcadm_options }}
   register: _client_create
-  failed_when: _client_create.rc != 0 and _client_create.stderr.find("already exists") == -1
+  failed_when: _client_create.rc != 0 and _client_create.stdout.find("already exists") == -1
   when: item.use_secret == True
   no_log: show_hidden_logs == False
+  # The Jinja if statement can be removed and set at a different stage.
+  # This keycloak container version only supports setting fields defaultClientScopes and optionalClientScopes.
+  # Later container versions allow updating these fields.
 
+# 2. Creates a client without password and sets user roles
 - name: "Create public OIDC client for component {{ item.component }} if needed"
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh create clients
-        -r {{ keycloak_default_realm }}
-        -s clientId={{ item.component }}
-        -s "enabled=true"
-        -s "publicClient=true"
-        -s "implicitFlowEnabled=true"
-        -s 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    podman exec -ti keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh create clients
+        --target-realm {{ keycloak_default_realm }}
+        --set "clientId={{ item.component }}"
+        --set "enabled=true"
+        --set "publicClient=true"
+        --set "implicitFlowEnabled=true"
+        --set 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
+        {% if 'keycloak' in roles %}--set 'defaultClientScopes=["web-origins", "profile", "roles", "email","zuul_keycloak_cs"]'
+        --set "publicClient=true"
+        {% endif %}
+        {{ kcadm_options }}
   register: _client_create
-  failed_when: _client_create.rc != 0 and _client_create.stderr.find("already exists") == -1
+  failed_when: _client_create.rc != 0 and _client_create.stdout.find("already exists") == -1
   when: item.use_secret == False
   no_log: show_hidden_logs == False
 
+# 3. Gets client id.
 - name: "Get {{ item.component }} client ID"
-  block:
-    - command: >
-        /opt/jboss/keycloak/bin/kcadm.sh get clients
-            -r {{ keycloak_default_realm }}
-            -q clientId={{ item.component }}
-            --fields id
-            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-      register: _cid
-    - set_fact:
-        cid: "{{ _cid.stdout | from_json }}"
+  command: >
+    podman exec -ti keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh get clients
+        --target-realm {{ keycloak_default_realm }}
+        --query clientId={{ item.component }}
+        --compressed
+        {{ kcadm_options }}
+  register: _cid
+
+- name: "Set {{ item.component }} client ID"
+  set_fact:
+    kcid: "{{ _cid.stdout_lines | last | from_json }}"
   no_log: show_hidden_logs == False
 
+# 4. Updates client password based on client id.
 - name: "Update {{ item.component }} client password"
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
-        -r {{ keycloak_default_realm }}
-        -s secret={{ vars['keycloak_' + item.component + '_client_secret'] }}
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-  when: item.use_secret == True
+    podman exec -ti keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh update clients/{{ kcid[0]['id'] }}
+        --target-realm {{ keycloak_default_realm }}
+        --set secret={{ vars['keycloak_' + item.component + '_client_secret'] }}
+        {{ kcadm_options }}
+  when: item.use_secret == True or item.realm_role_mapper == True
   no_log: show_hidden_logs == False
 
+# 5. Updates allowed urls for client application, redirection and origin urls.
 - name: "Update redirect URIs, allowed web origins if FQDN changed"
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
-        -r {{ keycloak_default_realm }}
-        -s 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
-        -s 'webOrigins=["https://{{ fqdn }}","https://{{ item.component }}.{{ fqdn }}"]'
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    podman exec -ti keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh update clients/{{ kcid[0]['id'] }}
+        --target-realm {{ keycloak_default_realm }}
+        --set 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
+        --set 'webOrigins=["https://{{ fqdn }}","https://{{ item.component }}.{{ fqdn }}"]'
+        {{ kcadm_options }}
   when: update_fqdn
   no_log: show_hidden_logs == False
 
+# 6. Direct access grants allow an application to pass credentials directly to keycloak's authentication endpoint instead of redirecting first the user to keycloak's login page.
 - name: "Allow direct access grants for {{ item.component }}"
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
-        -r {{ keycloak_default_realm }}
-        -s "directAccessGrantsEnabled=true"
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    podman exec -ti keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh update clients/{{ kcid[0]['id'] }}
+        --target-realm {{ keycloak_default_realm }}
+        --set "directAccessGrantsEnabled=true"
+        {{ kcadm_options }}
   no_log: show_hidden_logs == False
 
-- name: "Update {{ item.component }} client password"
+# 7. Creates a user mapper
+- name: "Create realm roles mapper if needed"
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh update clients/{{ cid[0]['id'] }}
-        -r {{ keycloak_default_realm }}
-        -s secret={{ vars['keycloak_' + item.component + '_client_secret'] }}
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    podman exec -ti keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh create clients/{{ kcid[0]['id'] }}/protocol-mappers/models
+        --target-realm {{ keycloak_default_realm }}
+        --set name=role_mapper
+        --set protocol=openid-connect
+        --set protocolMapper=oidc-usermodel-realm-role-mapper
+        --set consentRequired=false
+        --set 'config."multivalued"=true'
+        --set 'config."userinfo.token.claim"=true'
+        --set 'config."id.token.claim"=true'
+        --set 'config."access.token.claim"=true'
+        --set 'config."claim.name"=roles'
+        --set 'config."jsonType.label"=String'
+        {{ kcadm_options }}
+  register: _rolemapper_create
+  failed_when: _rolemapper_create.rc != 0 and _rolemapper_create.stdout.find("Protocol mapper exists with same name") == -1
   when: item.realm_role_mapper == True
   no_log: show_hidden_logs == False
 
-- name: "Create realm roles mapper if needed"
+# 8. Creates a user groups mapper
+- name: "Create realm groups mapper if needed"
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh create clients/{{ cid[0]['id'] }}/protocol-mappers/models
+    podman exec -ti keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh create clients/{{ kcid[0]['id'] }}/protocol-mappers/models
         -r {{ keycloak_default_realm }}
-        -s name=role_mapper
+        -s name=group_mapper
         -s protocol=openid-connect
-        -s protocolMapper=oidc-usermodel-realm-role-mapper
+        -s protocolMapper=oidc-group-membership-mapper
         -s consentRequired=false
-        -s 'config."multivalued"=true'
+        -s 'config."full.path"=false'
         -s 'config."userinfo.token.claim"=true'
         -s 'config."id.token.claim"=true'
         -s 'config."access.token.claim"=true'
-        -s 'config."claim.name"=roles'
-        -s 'config."jsonType.label"=String'
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-  register: _rolemapper_create
-  failed_when: _rolemapper_create.rc != 0 and _rolemapper_create.stderr.find("Protocol mapper exists with same name") == -1
-  when: item.realm_role_mapper == True
+        -s 'config."claim.name"=groups'
+        {{ kcadm_options }}
+  register: _groupmapper_create
+  failed_when: _groupmapper_create.rc != 0 and _groupmapper_create.stdout.find("Protocol mapper exists with same name") == -1
+  when: item.group_role_mapper == True
   no_log: show_hidden_logs == False
 
 # Any components deployed before keycloak will have to be reloaded "manually".

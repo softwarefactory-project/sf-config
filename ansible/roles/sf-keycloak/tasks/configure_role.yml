@@ -1,42 +1,57 @@
 ---
+# Create or update keycloak roles
+#
+# Inputs:
+#
+#   Object with the following attributes:
+#    - component: "elasticsearch",
+#       roles:
+#          - name - role name
+#            description - role description
+#            default - add role to default realm (true/false)
+#            assign_to - assing role to users
+#
+# This task executes following the steps below:
+
+
 - block:
+  # 1. Create role with name and description
   - name: "Create role {{ item.name }} if needed"
-    command: |
-      /opt/jboss/keycloak/bin/kcadm.sh create roles
-          -s 'name={{ item.name }}'
-          -s 'description={{ item.description }}'
-          -r {{ keycloak_default_realm }}
-          --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    command: >
+      podman exec -ti {{ service_name }}
+      {{ keycloak_dir }}/bin/kcadm.sh create roles
+          --target-realm  {{ keycloak_default_realm }}
+          --set 'name={{ item.name }}'
+          --set 'description={{ item.description }}'
+          {{ kcadm_options }}
     register: _role
-    failed_when: _role.rc != 0 and _role.stderr.find("already exists") == -1
+    failed_when: _role.rc != 0 and _role.stdout.find("already exists") == -1
     no_log: show_hidden_logs == False
 
+  # 2. Assign role to default realm roles
   - name: "Add role {{ item.name }} to default realm roles"
-    block:
-      - command: >
-          /opt/jboss/keycloak/bin/kcadm.sh get realms/{{ keycloak_default_realm }}
-              --fields defaultRoles
-              --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-        register: _defaultRoles
-      - set_fact:
-          defaultRoles: "{{ _defaultRoles.stdout | from_json }}"
-      - set_fact:
-          newDefaultRoles: "{{ defaultRoles['defaultRoles'] }} + [ '{{ item.name }}' ]"
-      - command: >
-          /opt/jboss/keycloak/bin/kcadm.sh update realms/{{ keycloak_default_realm }}
-              -s 'defaultRoles={{ newDefaultRoles | to_json }}'
-              --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    command: >
+      podman exec -ti {{ service_name }}
+      {{ keycloak_dir }}/bin/kcadm.sh add-roles
+          --target-realm  {{ keycloak_default_realm }}
+          --rname default-roles-sf
+          --rolename {{ item.name }}
+          {{ kcadm_options }}
     when: item.default == True
     no_log: show_hidden_logs == False
+    register: _role
+    failed_when: _role.rc != 0
 
+  # 3. Assign role to users
   - name: assign role {{ item.name }} to user {{ user_item }}
     # not a typo, parameters are weird
     command: >
-      /opt/jboss/keycloak/bin/kcadm.sh add-roles
-          -r {{ keycloak_default_realm }}
+      podman exec -ti {{ service_name }}
+      {{ keycloak_dir }}/bin/kcadm.sh add-roles
+          --target-realm  {{ keycloak_default_realm }}
           --uusername {{ user_item|lower }}
           --rolename {{ item.name }}
-          --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+          {{ kcadm_options }}
     no_log: show_hidden_logs == False
     loop: "{{ item.assign_to }}"
     loop_control:

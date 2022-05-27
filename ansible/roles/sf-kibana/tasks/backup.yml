@@ -17,6 +17,6 @@
     /usr/local/bin/kibana-backup.py \
       --user kibanaserver \
       --password "{{ elasticsearch['kibanaserver_password'] | default(elasticsearch_kibanaserver_password) }}" \
-      --kibana-url "{{ kibana_internal_url }}" \
+      --kibana-url "https://{{ kibana_host }}/analytics" \
       --backup-dir {{ backup_dest }} \
       backup

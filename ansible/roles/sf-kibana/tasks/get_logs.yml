@@ -6,6 +6,6 @@
 - name: Fetch service logs
   synchronize:
     mode: pull
-    src: "/var/log/opensearch/"
+    src: "{{ elk_log_dir }}/"
     dest: "{{ log_dest }}/log"
   ignore_errors: true

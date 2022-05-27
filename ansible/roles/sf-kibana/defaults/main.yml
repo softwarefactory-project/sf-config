@@ -27,12 +27,18 @@ opensearch_dashboards_components:
       --user {{ container_uid }}:{{ container_gid }}
       --uidmap 0:4000:999
       --uidmap {{ container_uid }}:{{ opensearch_dashboard_uid | default(1000) }}:1
-      -v {{ elk_config_dir }}/certs/:/usr/share/opensearch/config/certs:z
+      -v {{ opensearch_dashboards_certs_dir }}:{{ opensearch_dashboards_container_certs_dir }}:z
       -v {{ elk_config_dir }}/opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml:z
 
 elk_config_dir: /etc/opensearch
 elk_log_dir: /var/log/opensearch
 old_kibana_config_dir: /etc/kibana
+
+opensearch_dashboards_certs_dir: "{{ elk_config_dir }}/certs/opensearch-dashboards"
+
+opensearch_dashboards_container_dir: /usr/share/opensearch-dashboards
+opensearch_dashboards_container_config_dir: "{{ opensearch_dashboards_container_dir }}/config"
+opensearch_dashboards_container_certs_dir: "{{ opensearch_dashboards_container_config_dir }}/certificates"
 
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
@@ -51,3 +57,5 @@ keycloak_default_realm: SF
 # External Elasticsearch configuration
 external_elasticsearch_readonly_username: ''
 external_elasticsearch_readonly_password: ''
+
+sf_cert_path: /var/lib/software-factory/bootstrap-data/certs

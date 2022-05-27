@@ -1,11 +1,11 @@
 ---
 - name: Dump service logs
-  shell: journalctl -u opensearch > /var/log/opensearch/opensearch.log
+  shell: journalctl -u opensearch > {{ elk_log_dir }}/opensearch.log
   ignore_errors: true
 
 - name: Fetch service logs
   synchronize:
     mode: pull
-    src: "/var/log/opensearch/"
+    src: "{{ elk_log_dir }}/"
     dest: "{{ log_dest }}/log"
   ignore_errors: true

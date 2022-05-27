@@ -1,8 +1,14 @@
 ---
-- name: Install packages
+- name: Remove keycloak package
   yum:
     name:
       - keycloak
-    state: present
+    state: absent
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ keycloak_components }}"

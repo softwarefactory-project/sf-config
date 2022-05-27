@@ -27,20 +27,26 @@ opensearch_components:
       --uidmap {{ container_uid }}:{{ opensearch_uid | default(1000) }}:1
       -e DISABLE_INSTALL_DEMO_CONFIG=true
       -e "OPENSEARCH_JAVA_OPTS=-Xms{{ elasticsearch_minimum_heap_size }} -Xmx{{ elasticsearch_maximum_heap_size }}"
-      -v {{ elk_data_dir }}:/usr/share/opensearch/data:z
-      -v {{ elk_log_dir }}:/var/log/opensearch:z
-      -v {{ elk_config_dir }}/certs:/usr/share/opensearch/config/certs:z
-      -v {{ elk_config_dir }}/opensearch.yml:/usr/share/opensearch/config/opensearch.yml:z
-      -v {{ elk_config_dir }}/internal_users.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/internal_users.yml:z
-      -v {{ elk_config_dir }}/roles_mapping.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/roles_mapping.yml:z
-      -v {{ elk_config_dir }}/tenants.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/tenants.yml:z
-      -v {{ elk_config_dir }}/roles.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/roles.yml:z
-      -v {{ elk_config_dir }}/action_groups.yml:/usr/share/opensearch/plugins/opensearch-security/securityconfig/action_groups.yml:z
+      -v {{ elk_data_dir }}:{{ opensearch_container_dir }}/data:z
+      -v {{ elk_log_dir }}:{{ elk_log_dir }}:z
+      -v {{ elk_stack_certs }}:{{ opensearch_container_certs_dir }}:z
+      -v {{ elk_config_dir }}/config.yml:{{ opensearch_container_dir }}/plugins/opensearch-security/securityconfig/config.yml:z
+      -v {{ elk_config_dir }}/opensearch.yml:{{ opensearch_container_config_dir }}/opensearch.yml:z
+      -v {{ elk_config_dir }}/internal_users.yml:{{ opensearch_container_securityconfig_dir }}/internal_users.yml:z
+      -v {{ elk_config_dir }}/roles_mapping.yml:{{ opensearch_container_securityconfig_dir }}/roles_mapping.yml:z
+      -v {{ elk_config_dir }}/tenants.yml:{{ opensearch_container_securityconfig_dir }}/tenants.yml:z
+      -v {{ elk_config_dir }}/roles.yml:{{ opensearch_container_securityconfig_dir }}/roles.yml:z
+      -v {{ elk_config_dir }}/action_groups.yml:{{ opensearch_container_securityconfig_dir }}/action_groups.yml:z
+
+opensearch_container_dir: /usr/share/opensearch
+opensearch_container_config_dir: "{{ opensearch_container_dir }}/config"
+opensearch_container_certs_dir: "{{ opensearch_container_config_dir }}/certificates"
+opensearch_container_securityconfig_dir: "{{ opensearch_container_dir }}/plugins/opensearch-security/securityconfig"
 
 elk_config_dir: /etc/opensearch
 elk_data_dir: /var/lib/elasticsearch
 elk_log_dir: /var/log/opensearch
-elk_stack_certs: "{{ elk_config_dir }}/certs"
+elk_stack_certs: "{{ elk_config_dir }}/certs/opensearch"
 old_elk_config_dir: /etc/elasticsearch
 old_elk_stack_certs: "{{ old_elk_config_dir }}/certs"
 

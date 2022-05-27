@@ -1,8 +1,8 @@
 ---
 cluster.name: {{ fqdn | replace('.', '_') }}
 node.name: {{ inventory_hostname }}
-path.data: /usr/share/opensearch/data
-path.logs: /var/log/opensearch
+path.data: {{ opensearch_container_dir }}/data
+path.logs: {{ elk_log_dir }}
 network.host: 0.0.0.0
 http.port: 9200
 
@@ -18,16 +18,15 @@ plugins.security.ssl.http.enabled: true
 plugins.security.allow_default_init_securityindex: true
 plugins.security.allow_unsafe_democertificates: false
 
-plugins.security.ssl.transport.pemcert_filepath: /usr/share/opensearch/config/certs/elasticsearch-admin.crt
-plugins.security.ssl.transport.pemkey_filepath: /usr/share/opensearch/config/certs/elasticsearch-admin.key
-plugins.security.ssl.transport.pemtrustedcas_filepath: /usr/share/opensearch/config/certs/localCA.pem
-plugins.security.ssl.http.pemcert_filepath: /usr/share/opensearch/config/certs/elasticsearch-admin.crt
-plugins.security.ssl.http.pemkey_filepath: /usr/share/opensearch/config/certs/elasticsearch-admin.key
-plugins.security.ssl.http.pemtrustedcas_filepath: /usr/share/opensearch/config/certs/localCA.pem
+plugins.security.ssl.transport.pemcert_filepath: {{ opensearch_container_certs_dir }}/elasticsearch-admin.crt
+plugins.security.ssl.transport.pemkey_filepath: {{ opensearch_container_certs_dir }}/elasticsearch-admin.key
+plugins.security.ssl.transport.pemtrustedcas_filepath: {{ opensearch_container_certs_dir }}/localCA.pem
+plugins.security.ssl.http.pemcert_filepath: {{ opensearch_container_certs_dir }}/elasticsearch-admin.crt
+plugins.security.ssl.http.pemkey_filepath: {{ opensearch_container_certs_dir }}/elasticsearch-admin.key
+plugins.security.ssl.http.pemtrustedcas_filepath: {{ opensearch_container_certs_dir }}/localCA.pem
 plugins.security.authcz.admin_dn:
   - {{ elk_cert_subject.stdout | default('CN=elasticsearch.sftests.com,O=ElasticsearchSoftwareFactory,L=WROCLAW,ST=DOLNOSLASKIE,C=PL') }}
 
-plugins.security.audit.type: internal_elasticsearch
 plugins.security.enable_snapshot_restore_privilege: true
 plugins.security.check_snapshot_restore_write_privileges: true
 plugins.security.restapi.roles_enabled: ["all_access", "security_rest_api_access"]
