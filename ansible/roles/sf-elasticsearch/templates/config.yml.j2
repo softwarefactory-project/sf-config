@@ -45,8 +45,8 @@ config:
               - kibanaserver
         authentication_backend:
           type: noop
-{% endif %}
-{% if readonly_user_autologin is defined and readonly_user_autologin | lower == 'jwt' %}
+{% else %}
+  {% if readonly_user_autologin is defined and readonly_user_autologin | lower == 'jwt' %}
       # FIXME: add roles key into the jwt payload
       # NOTE: when sub is set, you don't need to make in query:
       # -H "Authorization: Bearer <user>:<token> but just
@@ -66,4 +66,5 @@ config:
             subject_key: "sub"
         authentication_backend:
           type: noop
+  {% endif %}
 {% endif %}

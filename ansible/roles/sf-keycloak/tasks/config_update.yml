@@ -1,2 +1,10 @@
 ---
-# TODO
+- name: Update groups and memberships
+  become: true
+  command: >
+       python3 /usr/local/bin/update_keycloak_resources.py \
+         --resources-url {{ managesf_internal_url }}/v2/resources \
+         --keycloak-url http://127.0.0.1:{{ keycloak_http_port }}/auth \
+         --admin-password {{ authentication.admin_password }} \
+         --realm {{ keycloak_default_realm }}
+  no_log: show_hidden_logs == False
