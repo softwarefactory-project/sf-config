@@ -22,8 +22,7 @@ inventory:
       - nodepool-builder
       - murmur
       - elasticsearch
-      - job-logs-gearman-client
-      - job-logs-gearman-worker
+      - log-processing
       - logstash
       - kibana
       - firehose

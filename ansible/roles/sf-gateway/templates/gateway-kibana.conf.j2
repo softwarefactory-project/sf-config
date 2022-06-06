@@ -19,8 +19,8 @@
 {% endif %}
 {% if external_elasticsearch_host %}
     <Location /elasticsearch>
-        ProxyPass {{ external_elasticsearch_host }}
-        ProxyPassReverse {{ external_elasticsearch_host }}
+        ProxyPass https://{{ external_elasticsearch_host }}:{{ external_elasticsearch_port }}
+        ProxyPassReverse https://{{ external_elasticsearch_host }}:{{ external_elasticsearch_port }}
     </Location>
 {% else %}
     <Location /elasticsearch>

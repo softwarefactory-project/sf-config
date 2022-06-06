@@ -1,0 +1,28 @@
+---
+- name: Disable services
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  ignore_errors: true
+  loop:
+    - "logscraper"
+    - "logsender"
+
+- name: Delete containers and files
+  block:
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ log_processing_components }}"
+
+    - name: Remove directories
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ logscraper_dir }}"
+        - "{{ download_dir }}"
+
+  when: erase == True

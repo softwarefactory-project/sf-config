@@ -16,3 +16,8 @@
     name: sf-container
     tasks_from: delete.yaml
   loop: "{{ logstash_components }}"
+
+- name: Remove logstash directory
+  file:
+    path: /etc/logstash
+    state: absent

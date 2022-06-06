@@ -1,0 +1,13 @@
+---
+zuul_api_url: {{ zuul_api_url.split(', ') }}
+follow: {{ follow | default(true) }}
+checkpoint_file: {{ checkpoint_file | default(logscraper_dir + '/checkpoint') }}
+workers: {{ logscraper_workers | default(1) }}
+max_skipped: {{ max_skipped | default(1000) }}
+debug: {{ debug | default(false) }}
+download: {{ download | default(true) }}
+file_list: {{ logscraper_dir }}/download-list.yaml
+directory: {{ download_dir | default('/tmp/logscraper') }}
+wait_time: {{ logscraper_wait_time | default(120) }}
+insecure: {{ insecure | default(false) }}
+ca_file: {{ custom_ca_crt | default('') }}

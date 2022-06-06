@@ -23,8 +23,7 @@ inventory:
   - elasticsearch
   - logstash
   - influxdb
-  - job-logs-gearman-client
-  - job-logs-gearman-worker
+  - log-processing
   - hound
 - name: nodepool-builder
   ip: 192.168.240.9

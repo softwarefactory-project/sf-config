@@ -1,3 +1,3 @@
 ---
 - include_tasks: "{{ role_action }}.yml"
-  when: role_action in role_actions
+  when: role_action in role_actions and keep_logstash

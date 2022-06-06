@@ -25,7 +25,7 @@ filter {
 output {
   elasticsearch {
 {% if external_elasticsearch_host %}
-    hosts => ['{{ external_elasticsearch_host }}']
+    hosts => ['{{ external_elasticsearch_host }}:{{ external_elasticsearch_port }}']
     index => "logstash{{ '-' + external_elasticsearch_suffix }}-%{+YYYY.MM.dd}"
 {% for user, user_creds in external_elasticsearch_users.items() %}
 {% if  external_elasticsearch_users[user]['role'] == 'logstash' %}

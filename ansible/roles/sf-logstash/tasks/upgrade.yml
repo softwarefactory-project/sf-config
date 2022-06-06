@@ -1,16 +1,21 @@
 ---
-- name: Stop service
-  systemd:
-    name: logstash
-    state: stopped
+- name: Upgrade Logstash when keep_logstash
+  block:
+    - name: Stop service
+      systemd:
+        name: logstash
+        state: stopped
 
-- name: Remove curator package
-  yum:
-    name: elasticsearch-curator
-    state: absent
+    - name: Remove curator package
+      yum:
+        name: elasticsearch-curator
+        state: absent
 
-- name: Upgrade container
-  include_role:
-    name: sf-container
-    tasks_from: upgrade.yaml
-  loop: "{{ logstash_components }}"
+    - name: Upgrade container
+      include_role:
+        name: sf-container
+        tasks_from: upgrade.yaml
+      loop: "{{ logstash_components }}"
+
+  when: not keep_logstash
+

@@ -1,0 +1,10 @@
+---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: logscraper
+
+- name: Pull images
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ log_processing_components }}"

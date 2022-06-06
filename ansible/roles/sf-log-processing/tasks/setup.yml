@@ -1,0 +1,90 @@
+---
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ log_processing_components }}"
+
+- name: Get logscraper uid
+  command: id -u logscraper
+  register: _logscraper_uid
+
+- name: Expose logscraper uid
+  set_fact:
+    logscraper_uid: "{{ _logscraper_uid.stdout }}"
+
+# FIXME: change mode when logscraper user ID is not 1000
+- name: Create dedicated directory
+  file:
+    path: "{{ logscraper_dir }}"
+    state: directory
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "0777"
+
+- name: Init checkopoint file
+  file:
+    path: "{{ checkpoint_file }}"
+    state: touch
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "0777"
+
+- name: Create logscraper download directory
+  file:
+    path: "{{ download_dir }}"
+    state: directory
+    recurse: true
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "0777"
+
+- name: Copy logscraper config file
+  template:
+    src: logscraper.yaml.j2
+    dest: "{{ logscraper_dir }}/logscraper.yaml"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "0644"
+  notify:
+    - Enable and restart logscraper service
+    - Ensure that logscraper service is running
+
+- name: Copy logsender config file
+  template:
+    src: logsender.yaml.j2
+    dest: "{{ logscraper_dir }}/logsender.yaml"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "0644"
+  notify:
+    - Enable and restart logsender service
+    - Ensure that logsender service is running
+
+- name: Copy download list
+  template:
+    src: download_list.yaml.j2
+    dest: "{{ logscraper_dir }}/download-list.yaml"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "0644"
+  notify:
+    - Enable and restart logscraper service
+    - Enable and restart logsender service
+    - Ensure that logscraper service is running
+    - Ensure that logsender service is running
+
+- name: Create container - log processing
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ log_processing_components }}"
+
+- name: Ensure the service is started
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: "yes"
+  loop:
+    - "logscraper"
+    - "logsender"

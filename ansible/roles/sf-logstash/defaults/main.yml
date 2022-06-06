@@ -7,6 +7,11 @@ role_actions:
 
 role_package: logstash
 
+# The logstash service is not required when new log processing
+# system is configured. More information about the system:
+# https://opendev.org/openstack/ci-log-processing
+keep_logstash: false
+
 elk_stack_version: 7
 elk_sub_version: 10.2
 

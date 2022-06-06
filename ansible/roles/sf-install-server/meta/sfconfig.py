@@ -15,6 +15,7 @@ import os
 import ssl
 
 import urllib.error
+import urllib.parse
 from six.moves.urllib import request
 from six.moves.urllib import parse
 
@@ -342,6 +343,25 @@ class InstallServer(Component):
             args.glue["zuul_gitlab_connections_pipelines"].append(
                 gitlab_connection)
             args.glue["zuul_gate_pipeline"] = True
+
+        # NOTE: Needed by ci-log-processing and elasticsearch/opensearch
+        config_key = 'external_elasticsearch'
+        args.glue['external_elasticsearch_suffix'] = \
+            args.sfconfig.get(config_key, {}).get('suffix')
+        external_elk = args.sfconfig.get(config_key, {}).get('host')
+        if external_elk:
+            args.glue['external_elasticsearch_host'] = \
+                urllib.parse.urlparse(external_elk).hostname
+            args.glue['external_elasticsearch_port'] = \
+                urllib.parse.urlparse(external_elk).port
+        else:
+            args.glue['external_elasticsearch_host'] = None
+            args.glue['external_elasticsearch_port'] = None
+
+        args.glue['external_elasticsearch_cacert'] = \
+            args.sfconfig.get(config_key, {}).get('cacert_path')
+        args.glue['external_elasticsearch_users'] = \
+            args.sfconfig.get(config_key, {}).get('users')
 
     def resolve_config_key(self, args, url):
         """The goal of this method is to check and ensure we have the correct

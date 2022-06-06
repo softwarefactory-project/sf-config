@@ -1,0 +1,28 @@
+---
+- name: Enable and restart logscraper service
+  service:
+    name: logscraper
+    state: restarted
+    daemon-reload: true
+    enabled: true
+
+- name: Ensure that logscraper service is running
+  service:
+    name: logscraper
+    state: started
+    daemon-reload: true
+    enabled: true
+
+- name: Enable and restart logsender service
+  service:
+    name: logsender
+    state: restarted
+    daemon-reload: true
+    enabled: true
+
+- name: Ensure that logsender service is running
+  service:
+    name: logsender
+    state: started
+    daemon-reload: true
+    enabled: true

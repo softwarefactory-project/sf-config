@@ -306,6 +306,17 @@ def update_arch(args):
                 host['roles'][idx] = host['roles'][idx].replace('nodepool3',
                                                                 'nodepool')
                 dirty = True
+            if host['roles'][idx].startswith('job-logs-gearman-client'):
+                host['roles'][idx] = host['roles'][idx].replace(
+                    'job-logs-gearman-client', 'log-processing')
+                dirty = True
+            if host['roles'][idx].startswith('job-logs-gearman-worker'):
+                host['roles'][idx] = host['roles'][idx].replace(
+                    'job-logs-gearman-worker', '')
+                dirty = True
+
+        # Filter for empty roles
+        host['roles'] = [r for r in host['roles'] if r]
 
         # Remove storyboard
         for sb in ("rabbitmq", "storyboard", "storyboard-webclient"):
