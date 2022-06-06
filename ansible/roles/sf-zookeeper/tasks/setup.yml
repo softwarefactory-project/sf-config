@@ -23,7 +23,6 @@
     setype: http_port_t
     state: present
   loop:
-    - "{{ zookeeper_client_port }}"
     - "{{ zookeeper_secure_client_port }}"
     - "{{ zookeeper_follower_port }}"
     - "{{ zookeeper_election_port }}"
