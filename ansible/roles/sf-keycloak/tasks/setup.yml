@@ -166,6 +166,17 @@
   retries: 10
   delay: 3
 
+- name: Check that user value serialization has the right type in mysql
+  command: podman exec mysql mysql -u keycloak -p{{ keycloak_mysql_password }} keycloak -BNe "select data_type from information_schema.columns where table_name = 'USER_ATTRIBUTE' and column_name = 'VALUE';"
+  register: _user_attribute_value_type
+  delegate_to: "{{ mysql_host }}"
+  no_log: true
+
+- name: Convert user field to mediumblob
+  command: podman exec mysql mysql -u keycloak -p{{ keycloak_mysql_password }} keycloak -e "alter table USER_ATTRIBUTE drop index IDX_USER_ATTRIBUTE_NAME; alter table USER_ATTRIBUTE modify VALUE TEXT(100000) CHARACTER SET utf8 COLLATE utf8_general_ci; alter table USER_ATTRIBUTE ADD KEY `IDX_USER_ATTRIBUTE_NAME` (`NAME`, VALUE(400));"
+  delegate_to: "{{ mysql_host }}"
+  when: _user_attribute_value_type.stdout != "mediumblob"
+
 - name: Create default realm users
   include_tasks: create_or_update_user.yml
   vars:
