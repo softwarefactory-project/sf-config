@@ -1,0 +1,91 @@
+---
+- name: Gather the rpm packages as facts
+  package_facts:
+    manager: auto
+  no_log : true
+
+- name: Check if mysqld is running
+  command: systemctl is-active -q mariadb
+  register: _mysqld_service
+  failed_when: _mysqld_service.rc not in [0, 3]
+  changed_when: false
+
+- name: If mariadb-server is running
+  block:
+
+    - name: Creating backup of old config files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.target }}"
+        owner: "{{ owner }}"
+        group: "{{ group }}"
+        mode: "0644"
+      loop:
+        - src: "/root/.my.cnf"
+          target: "{{ mysql_config_dir }}/.my.cnf.bck"
+        - src: "/root/.my.cnf"
+          target: "{{ mysql_config_dir }}/.my.cnf"
+        - src: "/etc/my.cnf"
+          target: "{{ mysql_config_dir }}/my.cnf.bck"
+        - src: "/etc/my.cnf"
+          target: "{{ mysql_config_dir }}/my.cnf"
+        - src: "/etc/my.cnf.d/mariadb-server.cnf"
+          target: "{{ mysql_config_drop_in_dir }}/mariadb-server.cnf.bck"
+
+    - name: Stop the service
+      service:
+        name: mariadb
+        state: stopped
+
+    - name: Remove mariadb rpm package
+      yum:
+        name: mariadb-server
+        state: absent
+        autoremove: true
+
+    - name: Deleting old config files
+      file:
+        path: "{{ item }}"
+        state: "absent"
+      loop:
+        - "/root/.my.cnf"
+        - "/etc/my.cnf"
+        - "/etc/my.cnf.d/mariadb-server.cnf"
+
+  when:
+  - "'mariadb-server' in ansible_facts.packages"
+  - _mysqld_service.rc == 0
+
+- name: "Get {{ owner }} uid"
+  command: "id -u {{ owner }}"
+  register: _user_id
+
+- name: "Get {{ owner }} gid"
+  command: "id -g {{ owner }}"
+  register: _usergroup_gid
+
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ mysql_components }}"
+
+- name: Disable services
+  service:
+    name: "{{ item.service }}"
+    enabled: "no"
+    state: stopped
+  ignore_errors: true
+  loop: "{{ mysql_components }}"
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ mysql_components }}"
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ mysql_components }}"

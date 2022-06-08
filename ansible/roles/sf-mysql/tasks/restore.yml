@@ -1,8 +1,11 @@
 ---
-- name: "Retrieve data"
-  synchronize:
-    src: "{{ backup_src }}/mysqldump.sql.gz"
-    dest: /root/mysqldump.sql.gz
+- name: "Copy data into {{ role_package }} container"
+  shell: >
+    podman cp {{ backup_src }}/mysqldump.sql.gz
+    {{ role_package }}:/tmp/mysqldump.sql.gz
 
-- name: "Restore data"
-  shell: cat /root/mysqldump.sql.gz | gunzip | mysql
+- name: "Restore {{ role_package }} data"
+  shell: >
+    podman exec {{ role_package }}
+    sh -c  'cat /tmp/mysqldump.sql.gz | gunzip | mysql
+    -uroot -p$MYSQL_ROOT_PASSWORD'

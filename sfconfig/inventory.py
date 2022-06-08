@@ -155,13 +155,15 @@ def recover(args, pb):
 
     # Start mysql
     pb.append(host_play('mysql', tasks=[
-        {'yum': {
-            'name': 'mariadb-server',
-            'state': 'present',
-            'disablerepo': '{{ yum_disable_repo|default(omit) }}',
-            'enablerepo': '{{ yum_enable_repo|default(omit) }}',
+        {'include_role': {
+            'name': 'sf-mysql',
+            'tasks_from': 'install.yml',
         }},
-        {'service': {'name': 'mariadb', 'state': 'started'}}
+        {'include_role': {
+            'name': 'sf-mysql',
+            'tasks_from': 'setup.yml',
+        }},
+        {'service': {'name': 'mysql', 'state': 'started'}}
     ]))
 
     # Start zookeeper

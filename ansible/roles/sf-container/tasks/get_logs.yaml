@@ -1,0 +1,7 @@
+---
+# Gets container logs from podman
+- name: "Get {{ item.container }} container logs"
+  shell: >
+    podman logs {{ item.options }} {{ item.container }}
+    > {{ item.target }}/{{ item.container }}.log
+  ignore_errors: true

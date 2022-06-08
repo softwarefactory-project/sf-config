@@ -10,3 +10,6 @@ role_actions:
 rdo_release_url: "https://rdoproject.org/repos/openstack-stein/rdo-release-stein.rpm"
 
 role_package: sf-config
+
+mysql_config_dir: /etc/mysql
+mysql_var_run_dir: /var/run/mysqld

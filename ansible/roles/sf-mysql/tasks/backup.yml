@@ -1,19 +1,25 @@
 ---
+- name: Set podman command facts
+  set_fact:
+    podman_command: "podman exec {{ role_package }}"
+
 - name: "Get database list"
-  shell: mysql -ANe "SELECT schema_name FROM information_schema.schemata WHERE schema_name NOT IN ('mysql','information_schema','performance_schema')" | tr '\n' ' '
+  shell: >
+    {{ podman_command }} sh -c ' mysql
+    -uroot -p$MYSQL_ROOT_PASSWORD
+    -ANe "SELECT schema_name FROM information_schema.schemata
+    WHERE schema_name NOT IN
+    (\"mysql\",\"information_schema\",\"performance_schema\")"' | tr '\n' ' '
   register: dblist
 
-- name: Ensure mariadb is started
+- name: "Ensure {{ role_package }} is started"
   service:
-    name: mariadb
+    name: "{{ role_package }}"
     enabled: "yes"
     state: started
 
 - name: "Dump database locally"
-  shell: mysqldump --databases {{dblist.stdout}} | gzip -9 > /root/mysqldump.sql.gz
-
-- name: "Fetch dump"
-  synchronize:
-    mode: pull
-    src: /root/mysqldump.sql.gz
-    dest: "{{ backup_dest }}/mysqldump.sql.gz"
+  shell: >
+    {{ podman_command }} sh -c ' mysqldump
+    -uroot -p$MYSQL_ROOT_PASSWORD
+    --databases {{dblist.stdout}}' | gzip -9 > {{ backup_dest }}/mysqldump.sql.gz

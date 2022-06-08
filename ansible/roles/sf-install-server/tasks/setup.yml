@@ -108,6 +108,8 @@
         password: "{{ zuul_mysql_password }}"
         priv: 'zuul.*:ALL'
         state: present
+        config_file: "{{ mysql_config_dir }}/.my.cnf"
+        login_unix_socket: "{{ mysql_var_run_dir }}/mysqld.sock"
       delegate_to: "{{ mysql_host }}"
       no_log: true
 
