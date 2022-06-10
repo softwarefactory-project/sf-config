@@ -451,6 +451,18 @@
                 <default>${env.KEYCLOAK_DEFAULT_THEME:keycloak}</default>
                 <dir>${jboss.home.dir}/themes</dir>
             </theme>
+{% if 'firehose' in roles %}
+            <spi name="eventsListener">
+                <provider name="mqtt" enabled="true">
+                    <properties>
+                        <property name="serverUri" value="tcp://{{ firehose_host }}:1883"/>
+                        <property name="username" value="SF_SERVICE_USER"/>
+                        <property name="password" value="{{ sf_service_user_password }}"/>
+                        <property name="topic" value="keycloak"/>
+                    </properties>
+                </provider>
+            </spi>
+{% endif %}
             <spi name="eventsStore">
                 <provider name="jpa" enabled="true">
                     <properties>
