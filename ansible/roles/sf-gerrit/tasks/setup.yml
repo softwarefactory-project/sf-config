@@ -184,6 +184,27 @@
     owner: gerrit
   when: _gerrit.rc == 3
 
+- name: Check for keystore
+  stat:
+    path: "{{ gerrit_conf_dir }}/keystore"
+  register: gerrit_keystore_file
+
+- name: create PKCS12 bundle for gerrit keystore if fqdn is updated or keystore does not exist
+  shell: |
+    cat /etc/pki/tls/certs/{{ fqdn }}.crt /etc/pki/tls/certs/ca-bundle.crt > /tmp/cert-chain.txt
+    openssl pkcs12 -export -inkey /etc/pki/tls/private/{{ fqdn }}.key -in /tmp/cert-chain.txt -out {{ gerrit_conf_dir }}/{{ fqdn }}.pkcs12 -passout pass:{{ gerrit_keystore_password }}
+    rm -f /tmp/cert-chain.txt
+  when:
+    - update_fqdn or not gerrit_keystore_file.stat.exists
+
+- name: set correct ownership of PKCS12 bundle
+  file:
+    path: "{{ gerrit_conf_dir }}/{{ fqdn }}.pkcs12"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+  when:
+    - update_fqdn or not gerrit_keystore_file.stat.exists
+
 - name: Restart service if fqdn is updated
   systemd:
     name: gerrit
@@ -210,8 +231,8 @@
     - update_fqdn
 
 - name: Install entrypoint.sh
-  copy:
-    src: entrypoint.sh
+  template:
+    src: entrypoint.sh.j2
     dest: "{{ gerrit_lib_dir }}/entrypoint.sh"
     owner: "{{ owner }}"
     group: "{{ group }}"
