@@ -7,18 +7,22 @@
 
 - name: Create cert dir
   file:
-    path: "{{ elk_config_dir }}/certs"
+    path: "{{ opensearch_dashboards_certs_dir }}"
     owner: "{{ owner }}"
     group: "{{ group }}"
     state: directory
 
 - name: Copy certs
   copy:
-    src: "/etc/pki/ca-trust/source/anchors/localCA.pem"
-    dest: "{{ elk_config_dir }}/certs/localCA.pem"
+    src: "{{ sf_cert_path }}/{{ item }}"
+    dest: "{{ opensearch_dashboards_certs_dir }}/{{ item }}"
     mode: "0644"
     owner: "{{ owner }}"
     group: "{{ group }}"
+  loop:
+    - opensearch-dashboards.crt
+    - opensearch-dashboards.key
+    - localCA.pem
 
 - name: Generate Opensearch dashboards welcome page text - internal host
   set_fact:

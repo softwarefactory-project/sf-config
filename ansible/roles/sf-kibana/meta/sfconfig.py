@@ -19,3 +19,6 @@ class Kibana(Component):
         args.glue['readonly_user_autologin'] = \
             args.sfconfig.get("kibana", {}).get('readonly_user_autologin',
                                                 'Basic')
+
+        self.get_or_generate_cert(args, "opensearch-dashboards",
+                                  host["hostname"])

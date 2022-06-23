@@ -10,43 +10,6 @@
   when:
     - "'cauth' in roles"
 
-- name: Create demo user (keycloak)
-  # TODO this exists already in sf-keycloak
-  block:
-    - name: create user demo if needed
-      command: >
-        /opt/jboss/keycloak/bin/kcadm.sh create users
-            -r SF
-            -s 'username=demo'
-            -s 'email=demo@{{ fqdn }}'
-            -s 'firstName=Demo'
-            -s 'lastName=User'
-            -s 'enabled=true'
-            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-      register: _user_create
-      failed_when: _user_create.rc != 0 and _user_create.stderr.find("User exists") == -1
-      no_log: true
-    - command: >
-        /opt/jboss/keycloak/bin/kcadm.sh get users
-            -r SF
-            -q username=demo
-            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-      register: _uid
-      no_log: true
-    - set_fact:
-        uid: "{{ _uid.stdout | from_json }}"
-    - name: set demo user's password
-      command: >
-        /opt/jboss/keycloak/bin/kcadm.sh set-password
-            -r SF
-            --userid {{ uid[0]['id'] }}
-            --new-password demo
-            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-      no_log: true
-  delegate_to: "{{ keycloak_host }}"
-  when:
-    - "'keycloak' in roles"
-
 - name: Log in to create user
   command: sfmanager --auth demo:demo sf_user list
   environment:

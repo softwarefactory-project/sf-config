@@ -74,12 +74,12 @@
       #!/bin/bash
 
       podman exec opensearch
-      bash -c 'JAVA_HOME=/usr/share/opensearch/jdk
-      /usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh
-      -cd /usr/share/opensearch/plugins/opensearch-security/securityconfig/
-      -icl -nhnv -cacert /usr/share/opensearch/config/certs/localCA.pem
-      -cert /usr/share/opensearch/config/certs/elasticsearch-admin.crt
-      -key /usr/share/opensearch/config/certs/elasticsearch-admin.key
+      bash -c 'JAVA_HOME={{ opensearch_container_dir }}/jdk
+      {{ opensearch_container_dir }}/plugins/opensearch-security/tools/securityadmin.sh
+      -cd {{ opensearch_container_securityconfig_dir }}/
+      -icl -nhnv -cacert {{ opensearch_container_config_dir }}/certificates/localCA.pem
+      -cert {{ opensearch_container_config_dir }}/certificates/elasticsearch-admin.crt
+      -key {{ opensearch_container_config_dir }}/certificates/elasticsearch-admin.key
       -h {{ ansible_default_ipv4.address }}'
     dest: /usr/local/bin/reconfigure-opensearch.sh
     mode: '0755'

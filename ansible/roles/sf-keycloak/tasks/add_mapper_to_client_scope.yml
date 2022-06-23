@@ -1,0 +1,64 @@
+---
+# Task to add a mapper to a client scope
+#
+# Inputs:
+#
+#   Object with the following attributes:
+#    - addToclientScope - name of the client scope to add the mapper to
+#      realm - name of the realm where the mapper will be added
+#      name - name of the mapper to be added
+#      protocol - protocol to be used by the mapper
+#      consentRequired - When turned on, users see a consent page that they can use to grant access to that application.
+#      protocolMapper - protocol to use between client-scope and mapper
+#      config:
+#          includedClientAudience - application client
+#          idTokenClaim - default value true
+#          accessTokenClaim - default value true
+#
+# This task adds a mapper to a client scope following the steps below:
+
+# 1. Gets the client scope id from realm based of name
+- name: Getting Client Scope {{ item.addToclientScope }} id
+  command: >
+    podman exec -it keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh get client-scopes
+       --target-realm {{ keycloak_default_realm }}
+       --fields name,id
+       -q name={{ item.name }}
+       {{ kcadm_options }}
+  register: _client_scopes_id_results
+  no_log: show_hidden_logs == False
+
+# 2. Gets the user id associated with the client scope
+- name: Getting user {{ item.addToclientScope }} id
+  command: |
+    python -c "
+    import sys, json, re
+    strconv = ' '.join( {{ _client_scopes_id_results.stdout_lines[1:] }})
+    pattern = re.compile('id +: ([^ ]+) *, *name *: *([^ ,]+)')
+    usersdict = {}
+    for ( id, name ) in re.findall( pattern, strconv ):
+       usersdict[name]=id
+    print ( usersdict.get(\"{{ item.addToclientScope }}\") )
+    "
+  register: _user_id
+  failed_when: _user_id.stdout == "None"
+  no_log: show_hidden_logs == False
+
+# 3. Adds the mapper to the client scope using the user id and realm name.
+- name: "Adding Mapper {{ item.name }} to Client Scope {{ item.addToclientScope }}"
+  command: >
+    podman exec -it keycloak
+    {{ keycloak_dir }}/bin/kcadm.sh create client-scopes/{{ _user_id.stdout }}/protocol-mappers/models \
+    --target-realm {{ keycloak_default_realm }}  \
+    --set name={{ item.name }} \
+    --set protocol={{ item.protocol }} \
+    --set protocolMapper={{ item.protocolMapper }} \
+    --set consentRequired={{ item.consentRequired }} \
+    --set 'config."included.client.audience"={{ item.config.includedClientAudience }}' \
+    --set 'config."id.token.claim"={{ item.config.idTokenClaim }}' \
+    --set 'config."access.token.claim"={{ item.config.accessTokenClaim }}' \
+    {{ kcadm_options }}
+  register: _mapper_created
+  failed_when: _mapper_created.rc != 0 and _mapper_created.stdout.find("mapper exists") == -1
+  no_log: show_hidden_logs == False

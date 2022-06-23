@@ -25,6 +25,10 @@ class Keycloak(Component):
     def configure(self, args, host):
         self.add_mysql_database(args, "keycloak")
 
+        self.get_or_generate_cert(args,
+                                  "keycloak",
+                                  host["hostname"])
+
         # TODO duplicate from sf-cauth.
         # Check if secret hash needs to be generated:
         update_secrets = False

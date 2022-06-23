@@ -9,6 +9,11 @@ role_actions:
   - stop
   - disable
 
+owner: keycloak
+group: keycloak
+container_uid: 10003
+container_gid: 10003
+
 role_package: keycloak
 
 keycloak_http_port: 38080
@@ -18,13 +23,51 @@ keycloak_internal_url: "http://{{ keycloak_host }}:{{ keycloak_http_port }}"
 keycloak_default_realm: SF
 
 keycloak_mysql_password: "CHANGE_ME"
+keycloak_container_version: 15.0.2
+
+keycloak_components:
+  - service: "keycloak"
+    image: "quay.io/software-factory/keycloak:{{ keycloak_container_version }}"
+    skip-auto-update: True
+    params: >-
+      --network host
+      --uidmap 0:4000:999
+      --uidmap {{ container_uid }}:{{ keycloak_uid | default(1000)}}:1
+      --volume {{ keycloak_dir }}/standalone/configuration/standalone.xml:{{ keycloak_dir }}/standalone/configuration/standalone-ha.xml:Z
+      --volume {{ keycloak_dir }}/themes/sf:{{ keycloak_dir }}/themes/sf:Z
+      --volume {{ keycloak_dir }}/admin_password:{{ keycloak_dir }}/admin_password:Z
+      --volume {{ keycloak_dir }}/mysql_password:{{ keycloak_dir }}/mysql_password:Z
+      --volume {{ keycloak_certs_dir }}:/etc/x509/https:Z
+      --env KEYCLOAK_FRONTEND_URL=https://{{ fqdn }}/auth
+      --env PROXY_ADDRESS_FORWARDING=true
+      --env KEYCLOAK_HOSTNAME={{ fqdn }}
+      --env KEYCLOAK_WELCOME_THEME=sf
+      --env KEYCLOAK_HTTP_PORT={{ keycloak_http_port }}
+      --env DB_VENDOR=mysql
+      --env DB_ADDR={{ mysql_host }}
+      --env DB_USER={{ owner }}
+      --env DB_PASSWORD_FILE={{ keycloak_dir }}/mysql_password
+      --env KEYCLOAK_USER=admin
+      --env KEYCLOAK_PASSWORD_FILE={{ keycloak_dir }}/admin_password
+
+kcadm_options: |
+    --no-config
+    --password {{ authentication.admin_password }}
+    --realm master
+    --server http://localhost:{{ keycloak_http_port }}/auth
+    --user admin
 
 # TODO is there a way to have this in the components themselves?
 keycloak_gerrit_client_secret: "CHANGE_ME"
 keycloak_zuul_client_secret: "CHANGE_ME"
 keycloak_grafana_client_secret: "CHANGE_ME"
-# keycloak_managesf_client_secret: "CHANGE_ME"
+keycloak_managesf_client_secret: "CHANGE_ME"
 keycloak_elasticsearch_client_secret: "CHANGE_ME"
 keycloak_kibana_client_secret: "CHANGE_ME"
 
 sf_service_user_password: "CHANGE_ME"
+
+sf_cert_path: /var/lib/software-factory/bootstrap-data/certs
+
+keycloak_dir: /opt/jboss/keycloak
+keycloak_certs_dir: "{{ keycloak_dir }}/certs"

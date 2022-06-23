@@ -1,71 +1,84 @@
 ---
-- name: create user {{ item.username }} if needed
-  command: >
-    /opt/jboss/keycloak/bin/kcadm.sh create users
-        -r {{ keycloak_default_realm }}
-        -s 'username={{ item.username }}'
-        -s 'email={{ item.email }}'
-        -s 'firstName={{ item.firstName }}'
-        -s 'lastName={{ item.lastName }}'
-        -s 'enabled=true'
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+# Create or updates keycloak users
+#
+# Inputs:
+#
+#   Object with the following attributes:
+#        username - user name
+#        password - user password
+#        firstName - user first name
+#        lastName - user last name
+#        email - user email
+#
+# This task executes following the steps below:
+
+# 1. Create user with username, password, firstName, lastName and email
+- name: "create user {{ item.username }} if needed"
+  command: |
+    podman exec -ti {{ service_name }}
+    {{ keycloak_dir }}/bin/kcadm.sh create users
+        --target-realm {{ keycloak_default_realm }}
+        --set "username={{ item.username }}"
+        --set "email={{ item.email }}"
+        --set "firstName={{ item.firstName }}"
+        --set "lastName={{ item.lastName }}"
+        --set "enabled=true"
+        {{ kcadm_options }}
   register: _user_create
-  failed_when: _user_create.rc != 0 and _user_create.stderr.find("User exists") == -1
+  failed_when: _user_create.rc != 0 and _user_create.stdout.find("User exists") == -1
   no_log: show_hidden_logs == False
 
-- debug:
-    var: _user_create
-    verbosity: 3
+# 2. Get user data
+- name: "Get {{ item.username }} data"
+  command: |
+    podman exec -ti {{ service_name }}
+    {{ keycloak_dir }}/bin/kcadm.sh get users
+        --compressed
+        --query username={{ item.username }}
+        --target-realm {{ keycloak_default_realm }}
+        {{ kcadm_options }}
+  register: _user_data
 
-- name: get user ID
-  block:
-    - command: >
-        /opt/jboss/keycloak/bin/kcadm.sh get users
-            -r {{ keycloak_default_realm }}
-            -q username={{ item.username }}
-            --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
-      register: _uid
-      no_log: show_hidden_logs == False
-    - debug:
-        var: _uid
-        verbosity: 3
-    - set_fact:
-        kuid: "{{ _uid.stdout | from_json }}"
+- name: "Set {{ item.username }} user ID"
+  set_fact:
+    kuid: "{{ _user_data.stdout_lines | last | from_json }}"
+  no_log: show_hidden_logs == False
 
-- name: update {{ item.username }}'s password
-  command: >
-    /opt/jboss/keycloak/bin/kcadm.sh set-password
-        -r {{ keycloak_default_realm }}
+# 3. Updates user password
+- name: "Update {{ item.username }}'s password"
+  command: |
+    podman exec -ti {{ service_name }}
+    {{ keycloak_dir }}/bin/kcadm.sh set-password
+        --target-realm {{ keycloak_default_realm }}
         --userid {{ kuid[0]['id'] }}
         --new-password {{ item.password }}
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+        {{ kcadm_options }}
   register: _user_update
   when: item.password is defined
   no_log: show_hidden_logs == False
 
-- debug:
-    var: _user_update
-    verbosity: 3
-
-- name: update {{ item.username }}'s email if fqdn has changed
+# 4. Updates user email only if fqdn name changed
+- name: "Update {{ item.username }}'s email if fqdn has changed"
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh update users/{{ kuid[0]['id'] }}
-        -r {{ keycloak_default_realm }}
-        -s 'email={{ item.email }}'
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+    podman exec -ti {{ service_name }}
+    {{ keycloak_dir }}/bin/kcadm.sh update users/{{ kuid[0]['id'] }}
+        --target-realm {{ keycloak_default_realm }}
+        --set 'email={{ item.email }}'
+        {{ kcadm_options }}
   register: _user_email_update
   no_log: show_hidden_logs == False
   when: update_fqdn
 
-- name: allow {{ item.username }} to manage the realm
-  # not a typo, parameters are weird
+# 5. Assings user as administrator of the target realm
+- name: "allow {{ item.username }} to manage the realm"
   command: >
-    /opt/jboss/keycloak/bin/kcadm.sh add-roles
-        -r {{ keycloak_default_realm }}
+    podman exec -ti {{ service_name }}
+    {{ keycloak_dir }}/bin/kcadm.sh add-roles
+        --target-realm {{ keycloak_default_realm }}
         --uusername {{ item.username|lower }}
         --cclientid realm-management
         --rolename manage-realm
         --rolename manage-users
-        --no-config --server http://127.0.0.1:{{ keycloak_http_port }}/auth --realm master --user admin --password {{ authentication.admin_password }}
+        {{ kcadm_options }}
   when: realm_admin
   no_log: show_hidden_logs == False

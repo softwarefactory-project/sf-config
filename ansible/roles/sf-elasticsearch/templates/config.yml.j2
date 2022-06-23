@@ -4,8 +4,6 @@ _meta:
   type: config
 config:
   dynamic:
-    kibana:
-      multitenancy_enabled: false
     http:
       anonymous_auth_enabled: false
       xff:
@@ -37,10 +35,9 @@ config:
             subject_key: preferred_username
             roles_key: roles
             openid_connect_url: https://{{ fqdn }}/auth/realms/{{ keycloak_default_realm }}/.well-known/openid-configuration
-            client_id: elasticsearch
-            client_secret: {{ keycloak_elasticsearch_client_secret }}
             openid_connect_idp.enable_ssl: true
-            openid_connect_idp.pemtrustedcas_filepath: "{{ elk_stack_certs }}/localCA.pem"
+            openid_connect_idp.pemtrustedcas_filepath: "{{ opensearch_container_certs_dir }}/localCA.pem"
+            openid_connect_idp.verify_hostname: false
             skip_users:
               - kibanaserver
         authentication_backend:
