@@ -5,3 +5,10 @@
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+# NOTE: The newest podman is not wroking correctly with k1s
+- name: Install specific podman version
+  yum:
+    name: podman-1.6.4-29.el7_9.x86_64
+    allow_downgrade: true
+    state: present

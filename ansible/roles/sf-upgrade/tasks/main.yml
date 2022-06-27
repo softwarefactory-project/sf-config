@@ -53,16 +53,20 @@
         ln -s /var/log/gerrit /var/lib/gerrit/logs;
     fi
 
-# FIXME: Remove that fact when curator is contenerized
+# FIXME: Remove that fact when curator is contenerized.
+# FIXME: Remove podman from the list, when podman package version will be
+# higher than 1.6.4-32.
 - name: Set exclude_update_packages fact
   set_fact:
-    exclude_update_packages: "elasticsearch-curator*"
+    exclude_update_packages:
+      - "elasticsearch-curator*"
+      - "podman"
 
 - name: "Update packages"
   yum:
     name: "*"
     update_cache: "yes"
     state: latest
-    exclude: '{{ exclude_update_packages }}'
+    exclude: '{{ exclude_update_packages |default(omit) }}'
     disablerepo: '{{ yum_disable_repo|default(omit) }}'
     enablerepo: '{{ yum_enable_repo|default(omit) }}'
