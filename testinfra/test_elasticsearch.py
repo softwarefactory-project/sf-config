@@ -11,8 +11,8 @@
 # under the License.
 
 
-class TestElasticsearch:
+class Testopensearch:
     def test_service_running_and_enabled(self, host):
-        elasticsearch = host.service("elasticsearch")
-        assert elasticsearch.is_running
-        assert elasticsearch.is_enabled
+        opensearch = host.service("opensearch")
+        assert opensearch.is_running
+        assert opensearch.is_enabled

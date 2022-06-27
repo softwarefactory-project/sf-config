@@ -102,6 +102,6 @@ nodepool_webapp_port: 8006
 
 zuul_periodic_pipeline_mail_rcpt: root@localhost
 
-elasticsearch_http_port: 9200
+opensearch_http_port: 9200
 keycloak_default_realm: SF
 keycloak_client_name: zuul

@@ -31,20 +31,20 @@ def update_sfconfig(args):
     # 2.6.0: expose elasticsearch config
     # 3.3.0: update elasticsearch config
     # 3.6.0: update elasticsearch config
-    if 'elasticsearch' not in data:
-        data['elasticsearch'] = {}
+    if 'opensearch' not in data:
+        data['opensearch'] = data.get('elasticsearch', {})
         dirty = True
-    if 'replicas' not in data['elasticsearch']:
-        data['elasticsearch']['replicas'] = 0
+    if 'replicas' not in data['opensearch']:
+        data['opensearch']['replicas'] = 0
         dirty = True
-    if 'heap_size' in data['elasticsearch']:
-        del data['elasticsearch']['heap_size']
+    if 'heap_size' in data['opensearch']:
+        del data['opensearch']['heap_size']
         dirty = True
-    if 'maximum_heap_size' not in data['elasticsearch']:
-        data['elasticsearch']['maximum_heap_size'] = '512m'
+    if 'maximum_heap_size' not in data['opensearch']:
+        data['opensearch']['maximum_heap_size'] = '512m'
         dirty = True
-    if 'minimum_heap_size' not in data['elasticsearch']:
-        data['elasticsearch']['minimum_heap_size'] = '128m'
+    if 'minimum_heap_size' not in data['opensearch']:
+        data['opensearch']['minimum_heap_size'] = '128m'
         dirty = True
 
     if 'logstash' in data:
@@ -153,11 +153,17 @@ def update_sfconfig(args):
         data["zuul"]["git_connections"] = []
         dirty = True
 
-    for elk in data['zuul'].get("elasticsearch_connections", []):
-        if elk["name"] == "elasticsearch":
-            print("Warning: Elasticsearch connection named 'elasticsearch' "
+    for elk in data['zuul'].get("opensearch_connections", []):
+        if elk["name"] == "opensearch":
+            print("Warning: Elasticsearch connection named 'opensearch' "
                   "is reserved for the internal elasticsearch service")
             exit(1)
+
+    # FIXME: change Change line after renaming elasticsearch to opensearch
+    if data['zuul'].get("elasticsearch_connections", []):
+        data['zuul']['opensearch_connections'] = \
+                data['zuul']['elasticsearch_connections']
+        dirty = True
 
     # 3.3: add SAML2 groups values
     if 'SAML2' in data['authentication']:
@@ -231,6 +237,10 @@ def update_sfconfig(args):
                 'value': "'(WIP|DNM)(.*)'"
             }]
         }
+        dirty = True
+
+    if 'elasticsearch' in data:
+        data.pop('elasticsearch')
         dirty = True
 
     args.save_sfconfig = dirty

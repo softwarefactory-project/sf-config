@@ -345,22 +345,22 @@ class InstallServer(Component):
             args.glue["zuul_gate_pipeline"] = True
 
         # NOTE: Needed by ci-log-processing and elasticsearch/opensearch
-        config_key = 'external_elasticsearch'
-        args.glue['external_elasticsearch_suffix'] = \
+        config_key = 'external_opensearch'
+        args.glue['external_opensearch_suffix'] = \
             args.sfconfig.get(config_key, {}).get('suffix')
         external_elk = args.sfconfig.get(config_key, {}).get('host')
         if external_elk:
-            args.glue['external_elasticsearch_host'] = \
+            args.glue['external_opensearch_host'] = \
                 urllib.parse.urlparse(external_elk).hostname
-            args.glue['external_elasticsearch_port'] = \
+            args.glue['external_opensearch_port'] = \
                 urllib.parse.urlparse(external_elk).port
         else:
-            args.glue['external_elasticsearch_host'] = None
-            args.glue['external_elasticsearch_port'] = None
+            args.glue['external_opensearch_host'] = None
+            args.glue['external_opensearch_port'] = None
 
-        args.glue['external_elasticsearch_cacert'] = \
+        args.glue['external_opensearch_cacert'] = \
             args.sfconfig.get(config_key, {}).get('cacert_path')
-        args.glue['external_elasticsearch_users'] = \
+        args.glue['external_opensearch_users'] = \
             args.sfconfig.get(config_key, {}).get('users')
 
     def resolve_config_key(self, args, url):

@@ -1,0 +1,34 @@
+---
+# note: user dict looks like:
+# internal_users:
+#   name:
+#     role:
+#     password:
+
+- name: Generate hash for main SF host
+  vars:
+    internal_users:
+      admin:
+        role: admin
+        password: "{{ opensearch['opensearch_password'] | default(opensearch_password) }}"
+      kibanaserver:
+        role: kibanaserver
+        password: "{{ opensearch['kibanaserver_password'] | default(opensearch_kibanaserver_password) }}"
+      logstash:
+        role: logstash
+        password: "{{ opensearch['logstash_password'] | default(opensearch_logstash_password) }}"
+      zuul:
+        role: zuul
+        password: "{{ opensearch['zuul_password'] | default(opensearch_zuul_password) }}"
+      # readonly user
+      kibana:
+        role: kibana
+        password: "{{ opensearch['readonly_password'] | default(opensearch_readonly_password) }}"
+  with_dict: "{{ internal_users }}"
+  include_tasks: gen_user_pass.yml
+  no_log: show_hidden_logs == False
+
+- name: Set opensearch readonly user name
+  set_fact:
+    opensearch_readonly_user: "{{ opensearch['readonly_user'] | default(opensearch_readonly_user) }}"
+    opensearch_readonly_password: "{{ opensearch['readonly_password'] | default(opensearch_readonly_password) }}"

@@ -185,15 +185,15 @@ nodepool:
   #  - image_name: rhel
   #    reg_password: rhsm_password
 
-elasticsearch:
+opensearch:
   maximum_heap_size: 512m
   minimum_heap_size: 128m
   replicas: 0
 
 ## Uncomment below lines if you are using EXTERNAL Elasticsearch service.
-#external_elasticsearch:
-#  host: https://elasticsearch-host-2:9200
-#  cacert_path: /etc/elasticsearch/certs/localCA.pem
+#external_opensearch:
+#  host: https://opensearch-host-2:9200
+#  cacert_path: /etc/opensearch/certs/localCA.pem
 #  suffix: sftests_com
 #  users:
 #    logstash_sftests_com:
@@ -285,7 +285,7 @@ zuul:
 
   # To use openstack-infra/zuul-jobs, review.openstack.org needs to be added to gerrit_connections list too
   upstream_zuul_jobs: false
-  elasticsearch_connections: []
+  opensearch_connections: []
 ##  Add other Elasticsearch services that Zuul service will send
 ##  NOTE: by adding index name: zuul, zuul will push the data to the
 ##  Elasticsearch with convention:

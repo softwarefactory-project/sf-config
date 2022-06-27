@@ -62,7 +62,7 @@ keycloak_gerrit_client_secret: "CHANGE_ME"
 keycloak_zuul_client_secret: "CHANGE_ME"
 keycloak_grafana_client_secret: "CHANGE_ME"
 keycloak_managesf_client_secret: "CHANGE_ME"
-keycloak_elasticsearch_client_secret: "CHANGE_ME"
+keycloak_opensearch_client_secret: "CHANGE_ME"
 keycloak_kibana_client_secret: "CHANGE_ME"
 
 sf_service_user_password: "CHANGE_ME"

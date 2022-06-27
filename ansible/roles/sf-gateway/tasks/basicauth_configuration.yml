@@ -1,6 +1,6 @@
 ---
 - name: Copy kibana user token in secrets.yaml
-  command: grep -q 'elasticsearch_kibanauser_basicauth'
+  command: grep -q 'opensearch_kibanauser_basicauth'
   delegate_to: "{{ install_server_host }}"
   register: _kibana_basicauth_old
   no_log: show_hidden_logs == False
@@ -12,17 +12,17 @@
       block:
         - name: "Get user:password string for external kibana user"
           set_fact:
-            _kibana_basicauth_external_plain: "{{ external_elasticsearch_readonly_user }}:{{ external_elasticsearch_readonly_password }}"
+            _kibana_basicauth_external_plain: "{{ external_opensearch_readonly_user }}:{{ external_opensearch_readonly_password }}"
         - name: Set encoded password string for external kibana user
           set_fact:
             _kibana_basicauth_external: "{{ _kibana_basicauth_external_plain | b64encode }}"
-      when: external_elasticsearch_readonly_user is defined and external_elasticsearch_readonly_password is defined
+      when: external_opensearch_readonly_user is defined and external_opensearch_readonly_password is defined
 
     - name: Gen Kibana basicauth when internal
       block:
         - name: "Get user:password string for local kibana user"
           set_fact:
-            _kibana_basicauth_local_plain: "{{ elasticsearch_readonly_user }}:{{ elasticsearch_readonly_password }}"
+            _kibana_basicauth_local_plain: "{{ opensearch_readonly_user }}:{{ opensearch_readonly_password }}"
         - name: Set encoded password string for local kibana user
           set_fact:
             _kibana_basicauth_local: "{{ _kibana_basicauth_local_plain | b64encode }}"
@@ -30,13 +30,13 @@
 
     - name: Set basicauth info
       set_fact:
-        elasticsearch_kibanauser_basicauth: "{{ _kibana_basicauth_external | default(_kibana_basicauth_local) }}"
+        opensearch_kibanauser_basicauth: "{{ _kibana_basicauth_external | default(_kibana_basicauth_local) }}"
 
     - name: Copy basicauth in secrets.yaml
       lineinfile:
         path: /var/lib/software-factory/bootstrap-data/secrets.yaml
-        regexp: "^elasticsearch_kibanauser_basicauth"
-        line: "elasticsearch_kibanauser_basicauth: {{ elasticsearch_kibanauser_basicauth }}"
+        regexp: "^opensearch_kibanauser_basicauth"
+        line: "opensearch_kibanauser_basicauth: {{ opensearch_kibanauser_basicauth }}"
       delegate_to: "{{ install_server_host }}"
 
     - name: Add autologin include file

@@ -3,28 +3,28 @@ _meta:
   type: internalusers
   config_version: 2
 admin:
-  hash: {{ elasticsearch_admin_hash }}
+  hash: {{ opensearch_admin_hash }}
   reserved: true
   backend_roles:
     - admin
   description: Admin user
   hidden: true
 kibanaserver:
-  hash: {{ elasticsearch_kibanaserver_hash }}
+  hash: {{ opensearch_kibanaserver_hash }}
   reserved: true
   backend_roles:
     - kibanauser
   description: Kibanaserver user
   hidden: true
 logstash:
-  hash: {{ elasticsearch_logstash_hash }}
+  hash: {{ opensearch_logstash_hash }}
   reserved: false
   backend_roles:
     - logstash
   description: Logstash user
   hidden: true
 zuul:
-  hash: {{ elasticsearch_zuul_hash }}
+  hash: {{ opensearch_zuul_hash }}
   reserved: false
   backend_roles:
     - admin
@@ -32,8 +32,8 @@ zuul:
   hidden: true
 # exception in Elasticsearch (https://opendistro.github.io/for-elasticsearch-docs/docs/security/access-control/users-roles/#predefined-roles)
 # FIXME: switch to the official roles when bug is fixed.
-{{ elasticsearch_readonly_user | default('kibana') }}:
-  hash: {{ elasticsearch_kibana_hash }}
+{{ opensearch_readonly_user | default('kibana') }}:
+  hash: {{ opensearch_kibana_hash }}
   reserved: true
   backend_roles:
     - kibana_viewer

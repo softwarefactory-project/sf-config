@@ -1,5 +1,5 @@
 ---
-opensearch.hosts: ["{{ elasticsearch_internal_url }}"]
+opensearch.hosts: ["{{ opensearch_internal_url }}"]
 
 server.basePath: "/analytics"
 server.host: 0.0.0.0
@@ -9,7 +9,7 @@ server.ssl.key: {{ opensearch_dashboards_container_certs_dir }}/opensearch-dashb
 
 opensearch.ssl.verificationMode: full
 opensearch.username: kibanaserver
-opensearch.password: {{ elasticsearch_kibanaserver_password }}
+opensearch.password: {{ opensearch_kibanaserver_password }}
 opensearch.ssl.certificateAuthorities: ["{{ opensearch_dashboards_container_certs_dir }}/localCA.pem"]
 
 opensearch_security.multitenancy.tenants.enable_private: false

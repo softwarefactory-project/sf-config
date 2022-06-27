@@ -1,8 +1,8 @@
 ---
-- name: Wait for service
+- name: Wait for Opensearch service
   wait_for:
-    host: '{{ elasticsearch_host }}'
-    port: '{{ elasticsearch_http_port }}'
+    host: '{{ opensearch_host }}'
+    port: '{{ opensearch_http_port }}'
     delay: 10
     timeout: 600
 
@@ -21,17 +21,17 @@
     - policy_name: "universal-policy"
       retention_time: "14d"
 
-- name: Configure elasticsearch replicas
+- name: Configure Opensearch replicas
   uri:
-    url: '{{ elasticsearch_internal_url }}/_template/default_settings'
+    url: '{{ opensearch_internal_url }}/_template/default_settings'
     method: PUT
     body_format: json
-    client_cert: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
-    client_key: "{{ elk_stack_certs }}/elasticsearch-admin.key"
+    client_cert: "{{ elk_stack_certs }}/opensearch-admin.crt"
+    client_key: "{{ elk_stack_certs }}/opensearch-admin.key"
     body: '{
               "template" : "*",
               "settings" : {
-                  "number_of_replicas" : {{ elasticsearch_replicas }}
+                  "number_of_replicas" : {{ opensearch_replicas }}
               }
           }'
     status_code: 200
@@ -39,24 +39,23 @@
 
 - name: Check if indexes replicas number should be updated
   uri:
-    url: '{{ elasticsearch_internal_url }}/_settings?pretty'
+    url: '{{ opensearch_internal_url }}/_settings?pretty'
     method: GET
     status_code: 200
-    client_cert: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
-    client_key: "{{ elk_stack_certs }}/elasticsearch-admin.key"
+    client_cert: "{{ elk_stack_certs }}/opensearch-admin.crt"
+    client_key: "{{ elk_stack_certs }}/opensearch-admin.key"
     validate_certs: true
   register: json_response
 
-# FROM: https://github.com/opendistro-for-elasticsearch/security/issues/100
 - name: Update number of replicas for all existing indexes
   uri:
-    url: "{{ elasticsearch_internal_url }}/*/_settings"
+    url: "{{ opensearch_internal_url }}/*/_settings"
     method: PUT
     body_format: json
-    client_cert: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
-    client_key: "{{ elk_stack_certs }}/elasticsearch-admin.key"
+    client_cert: "{{ elk_stack_certs }}/opensearch-admin.crt"
+    client_key: "{{ elk_stack_certs }}/opensearch-admin.key"
     body: '{ "index":
-             { "number_of_replicas": {{ elasticsearch_replicas }}
+             { "number_of_replicas": {{ opensearch_replicas }}
              }
            }'
     status_code: 200

@@ -13,9 +13,9 @@ role_package: any
 gateway_host: localhost
 logserver_host: ""
 
-elasticsearch_http_port: 9200
-elasticsearch_host: elasticsearch.example.com
-elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
+opensearch_http_port: 9200
+opensearch_host: opensearch.example.com
+opensearch_internal_url: "https://{{ opensearch_host }}:{{ opensearch_http_port }}"
 
 kibana_http_port: 5601
 kibana_host: kibana.example.com

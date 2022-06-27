@@ -1,18 +1,18 @@
 ---
-{% if external_elasticsearch_host %}
-host: {{ external_elasticsearch_host | default('managesf.' + fqdn) }}
-port: {{ external_elasticsearch_port | default(9200) }}
-ca_file: "{{ external_elasticsearch_cacert }}"
-{% for user, user_creds in external_elasticsearch_users.items() %}
-{% if  external_elasticsearch_users[user]['role'] == 'logstash' %}
+{% if external_opensearch_host %}
+host: {{ external_opensearch_host | default('managesf.' + fqdn) }}
+port: {{ external_opensearch_port | default(9200) }}
+ca_file: "{{ external_opensearch_cacert }}"
+{% for user, user_creds in external_opensearch_users.items() %}
+{% if  external_opensearch_users[user]['role'] == 'logstash' %}
 username: "{{ user }}"
-password: "{{ external_elasticsearch_users[user]['password'] }}"
-index_prefix: logstash-{{ external_elasticsearch_users[user]['tenant'] | default(fqdn) | replace('.', '_') | replace('-','_') }}-
+password: "{{ external_opensearch_users[user]['password'] }}"
+index_prefix: logstash-{{ external_opensearch_users[user]['tenant'] | default(fqdn) | replace('.', '_') | replace('-','_') }}-
 {% endif %}
 {% endfor %}
 {% elif es_logstash_password %}
-host: {{ elasticsearch_host | default('managesf.' + fqdn) }}
-port: {{ elasticsearch_http_port | default(9200) }}
+host: {{ opensearch_host | default('managesf.' + fqdn) }}
+port: {{ opensearch_http_port | default(9200) }}
 username: "logstash"
 password: "{{ es_logstash_password }}"
 index_prefix: {{ es_index_prefix | default('logstash-') }}

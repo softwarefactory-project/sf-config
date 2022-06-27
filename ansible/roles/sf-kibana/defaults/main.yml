@@ -39,22 +39,22 @@ opensearch_dashboards_container_dir: /usr/share/opensearch-dashboards
 opensearch_dashboards_container_config_dir: "{{ opensearch_dashboards_container_dir }}/config"
 opensearch_dashboards_container_certs_dir: "{{ opensearch_dashboards_container_config_dir }}/certificates"
 
-elasticsearch_http_port: 9200
-elasticsearch_host: elasticsearch.example.com
-elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
-elasticsearch_readonly_user: kibana
-elasticsearch_readonly_password: "CHANGE_ME"
+opensearch_http_port: 9200
+opensearch_host: opensearch.example.com
+opensearch_internal_url: "https://{{ opensearch_host }}:{{ opensearch_http_port }}"
+opensearch_readonly_user: kibana
+opensearch_readonly_password: "CHANGE_ME"
 
 kibana_http_port: 5601
 kibana_host: kibana.example.com
 kibana_internal_url: "https://{{ kibana_host }}:{{ kibana_http_port }}"
 
-kibana_bundle_js_patch: "Readonly user: {{ elasticsearch_readonly_user }} password: {{ elasticsearch_readonly_password }}"
+kibana_bundle_js_patch: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
 
 keycloak_default_realm: SF
 
-# External Elasticsearch configuration
-external_elasticsearch_readonly_username: ''
-external_elasticsearch_readonly_password: ''
+# External opensearch configuration
+external_opensearch_readonly_username: ''
+external_opensearch_readonly_password: ''
 
 sf_cert_path: /var/lib/software-factory/bootstrap-data/certs

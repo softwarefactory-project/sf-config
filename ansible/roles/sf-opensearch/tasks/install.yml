@@ -1,0 +1,39 @@
+---
+- name: Change Opensearch certificates new name
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: true
+  loop:
+    - src: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
+      dest: "{{ elk_stack_certs }}/opensearch-admin.crt"
+    - src: "{{ elk_stack_certs }}/elasticsearch-admin.key"
+      dest: "{{ elk_stack_certs }}/opensearch-admin.key"
+  ignore_errors: true
+
+- name: Remove old certs
+  file:
+    patch: "{{ item }}"
+    remote_src: true
+  loop:
+    - "{{ elk_stack_certs }}/elasticsearch-admin.crt"
+    - "{{ elk_stack_certs }}/elasticsearch-admin.key"
+  ignore_errors: true
+
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: opensearch
+
+- name: Get opensearch uid
+  command: id -u opensearch
+  register: _opensearch_uid
+
+- name: Expose opensearch uid
+  set_fact:
+    opensearch_uid: "{{ _opensearch_uid.stdout }}"
+
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ opensearch_components }}"

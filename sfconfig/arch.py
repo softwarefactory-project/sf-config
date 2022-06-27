@@ -25,7 +25,7 @@ rhel_unsupported_roles = (
     "firehose",
 )
 
-correct_order = ['gerrit', 'managesf', 'elasticsearch', 'kibana']
+correct_order = ['gerrit', 'managesf', 'opensearch', 'kibana']
 
 
 def process(args):
@@ -74,9 +74,9 @@ def process(args):
 
         # NOTE: Remove the condition when move name from elasticsearch to
         # opensearch is done
-        if 'opensearch' in host['roles']:
-            host['roles'] = [r.replace('opensearch',
-                                       'elasticsearch') for r in host['roles']]
+        if 'elasticsearch' in host['roles']:
+            host['roles'] = [r.replace('elasticsearch',
+                                       'opensearch') for r in host['roles']]
 
         for role in host["roles"]:
             # Add host to role list
@@ -94,10 +94,9 @@ def process(args):
             if role == "nodepool-launcher" and not args.glue["first_launcher"]:
                 args.glue["first_launcher"] = host['name']
 
-        # NOTE(dpawlik) Remove it after moving elasticsearch role to opensearch
-        if 'elasticsearch' in aliases:
-            aliases.add("%s.%s" % ('opensearch', args.sfconfig["fqdn"]))
-            aliases.add("opensearch")
+        if args.sfconfig.get('external_opensearch', {}):
+            aliases.remove('opensearch')
+            aliases.remove("opensearch.%s" % args.sfconfig["fqdn"])
 
         args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
             list(aliases)
@@ -152,19 +151,19 @@ please remove them from /etc/software-factory/arch.yaml file:
               "Deploying Software Factory with this role will lead to "
               "failures. Do it only for testing things out!")
 
-    if (args.sfconfig.get('external_elasticsearch', {}) and (
-            not args.sfconfig['external_elasticsearch'].get('users') or
-            not args.sfconfig['external_elasticsearch'].get('host') or
-            not args.sfconfig['external_elasticsearch'].get('cacert_path') or
-            not args.sfconfig['external_elasticsearch'].get('suffix'))):
-        print('Some of "external_elasticsearch" params are missing. Please '
+    if (args.sfconfig.get('external_opensearch', {}) and (
+            not args.sfconfig['external_opensearch'].get('users') or
+            not args.sfconfig['external_opensearch'].get('host') or
+            not args.sfconfig['external_opensearch'].get('cacert_path') or
+            not args.sfconfig['external_opensearch'].get('suffix'))):
+        print('Some of "external_opensearch" params are missing. Please '
               'check Software Factory document and provide required '
               'parameters')
         sys.exit(1)
 
-    if (args.sfconfig.get('external_elasticsearch', {}) and not (
-            args.sfconfig.get('zuul').get('elasticsearch_connections'))):
-        print('You did not configure "elasticsearch_connections" param '
+    if (args.sfconfig.get('external_opensearch', {}) and not (
+            args.sfconfig.get('zuul').get('opensearch_connections'))):
+        print('You did not configure "opensearch_connections" param '
               'in zuul configuration in sfconfig.yaml file. Is it ok?')
         sys.exit(1)
 

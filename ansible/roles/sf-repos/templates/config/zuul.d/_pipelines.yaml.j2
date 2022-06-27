@@ -115,7 +115,7 @@
         comment: true
         approval: true
 {% endfor %}
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -145,7 +145,7 @@
         comment: true
         approval: false
 {% endfor %}
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -315,7 +315,7 @@
         approval: true
         merge: true
 {% endfor %}
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -347,7 +347,7 @@
         comment: true
         approval: false
 {% endfor %}
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -393,9 +393,9 @@
       mqtt:
         topic: "{{ zuul_mqtt_start_topic }}"
 {% endif %}
-{% if 'elasticsearch' in roles or 'firehose' in roles %}
+{% if 'elasticsearch' in roles or 'firehose' in roles or 'opensearch' in roles %}
     success:
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -410,7 +410,7 @@
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in post pipeline: {change.project}'
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -438,9 +438,9 @@
         - event: push
           ref: ^refs/tags/{{ zuul.prerelease_regexp }}$
 {% endfor %}
-{% if elasticsearch_connections|default([]) or 'firehose' in roles %}
+{% if opensearch_connections|default([]) or 'firehose' in roles %}
     success:
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -451,7 +451,7 @@
         topic: "{{ zuul_mqtt_success_topic }}"
 {% endif %}{% endif %}
     failure:
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -488,9 +488,9 @@
       mqtt:
         topic: "{{ zuul_mqtt_start_topic }}"
 {% endif %}
-{% if elasticsearch_connections|default([]) or 'firehose' in roles %}
+{% if opensearch_connections|default([]) or 'firehose' in roles %}
     success:
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -505,7 +505,7 @@
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in release pipeline: {change.project}'
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -531,9 +531,9 @@
       mqtt:
         topic: "{{ zuul_mqtt_start_topic }}"
 {% endif %}
-{% if elasticsearch_connections|default([]) or 'firehose' in roles %}
+{% if opensearch_connections|default([]) or 'firehose' in roles %}
     success:
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -548,7 +548,7 @@
         from: "zuul@{{ fqdn }}"
         to: "{{ zuul_periodic_pipeline_mail_rcpt }}"
         subject: '[Zuul] Job failed in periodic pipeline: {change.project}'
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -590,7 +590,7 @@
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}: {}
 {% endfor %}
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}
@@ -607,7 +607,7 @@
 {% for gerrit_connection in zuul_gerrit_connections_pipelines %}
       {{ gerrit_connection.name }}: {}
 {% endfor %}
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
       {{ conn['name'] }}:
 {% if 'index' in conn and conn['index'] %}
         index: {{ conn['index'] }}

@@ -4,7 +4,7 @@
 # Inputs:
 #
 #   Object with the following attributes:
-#    - component: "elasticsearch",
+#    - component: "opensearch",
 #       roles:
 #          - name - role name
 #            description - role description

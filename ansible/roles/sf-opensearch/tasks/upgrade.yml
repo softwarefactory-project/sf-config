@@ -2,12 +2,6 @@
 - name: Get available service facts
   service_facts:
 
-- name: Stop Elasticsearch service
-  service:
-    name: elasticsearch
-    state: stopped
-  when: "'elasticsearch.service' in services"
-
 - name: Stop Opensearch service
   systemd:
     name: opensearch

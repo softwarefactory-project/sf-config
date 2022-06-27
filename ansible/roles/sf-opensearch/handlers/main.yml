@@ -13,7 +13,7 @@
 
 - name: wait for opensearch service
   uri:
-    url: "{{ elasticsearch_internal_url }}"
+    url: "{{ opensearch_internal_url }}"
     method: GET
     validate_certs: false
     status_code: "401"

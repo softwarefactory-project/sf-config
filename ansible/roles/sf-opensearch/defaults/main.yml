@@ -6,7 +6,7 @@ role_actions:
   - postconf
   - disable
 
-role_package: elasticsearch
+role_package: opensearch
 
 owner: opensearch
 group: opensearch
@@ -25,7 +25,7 @@ opensearch_components:
       --uidmap 0:4000:999
       --uidmap {{ container_uid }}:{{ opensearch_uid | default(1000) }}:1
       -e DISABLE_INSTALL_DEMO_CONFIG=true
-      -e "OPENSEARCH_JAVA_OPTS=-Xms{{ elasticsearch_minimum_heap_size }} -Xmx{{ elasticsearch_maximum_heap_size }}"
+      -e "OPENSEARCH_JAVA_OPTS=-Xms{{ opensearch_minimum_heap_size }} -Xmx{{ opensearch_maximum_heap_size }}"
       -v {{ elk_data_dir }}:{{ opensearch_container_dir }}/data:z
       -v {{ elk_log_dir }}:{{ elk_log_dir }}:z
       -v {{ elk_stack_certs }}:{{ opensearch_container_certs_dir }}:z
@@ -49,6 +49,7 @@ elk_stack_certs: "{{ elk_config_dir }}/certs/opensearch"
 old_elk_config_dir: /etc/elasticsearch
 old_elk_stack_certs: "{{ old_elk_config_dir }}/certs"
 
+# FIXME: Change it after renaming
 elasticsearch_password: "CHANGE_ME"
 elasticsearch_kibanaserver_password: "CHANGE_ME"
 elasticsearch_logstash_password: "CHANGE_ME"
@@ -56,13 +57,20 @@ elasticsearch_zuul_password: "CHANGE_ME"
 elasticsearch_readonly_user: kibana
 elasticsearch_readonly_password: "CHANGE_ME"
 
-elasticsearch_http_port: 9200
-elasticsearch_host: elasticsearch.example.com
-elasticsearch_internal_url: "https://{{ elasticsearch_host }}:{{ elasticsearch_http_port }}"
+opensearch_password: "{{ elasticsearch_password }}"
+opensearch_kibanaserver_password: "{{ elasticsearch_kibanaserver_password }}"
+opensearch_logstash_password: "{{ elasticsearch_logstash_password }}"
+opensearch_zuul_password: "{{ elasticsearch_zuul_password }}"
+opensearch_readonly_user: kibana
+opensearch_readonly_password: "{{ elasticsearch_readonly_password }}"
 
-elasticsearch_maximum_heap_size: 512m
-elasticsearch_minimum_heap_size: 128m
-elasticsearch_replicas: 0
+opensearch_http_port: 9200
+opensearch_host: opensearch.example.com
+opensearch_internal_url: "https://{{ opensearch_host }}:{{ opensearch_http_port }}"
+
+opensearch_maximum_heap_size: 512m
+opensearch_minimum_heap_size: 128m
+opensearch_replicas: 0
 
 enable_performance_analyzer: false
 

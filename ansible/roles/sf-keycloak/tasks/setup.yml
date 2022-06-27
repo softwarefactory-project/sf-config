@@ -203,7 +203,7 @@
   vars:
     service_name: "{{ keycloak_components[0].service }}"
   loop:
-    - {component: "elasticsearch",
+    - {component: "opensearch",
        roles: [
             {name: "kibana_viewer",
              description: "Default kibana viewer role",
@@ -372,7 +372,7 @@
       use_secret: True
       realm_role_mapper: False
       group_role_mapper: False
-    - component: "elasticsearch"
+    - component: "opensearch"
       use_secret: True
       realm_role_mapper: True
       group_role_mapper: False

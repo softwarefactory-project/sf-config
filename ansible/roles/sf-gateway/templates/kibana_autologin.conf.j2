@@ -12,13 +12,13 @@
     RequestHeader set "X-Forwarded-For" "{{ fqdn }}"
     RequestHeader set "X-Forwarded-Host" "{{ fqdn }}"
 
-    {% if readonly_user_autologin | lower == 'basic' and elasticsearch_kibanauser_basicauth is defined %}
+    {% if readonly_user_autologin | lower == 'basic' and opensearch_kibanauser_basicauth is defined %}
     # Basic auth
-    RequestHeader set "Authorization" "Basic {{ elasticsearch_kibanauser_basicauth }}"
+    RequestHeader set "Authorization" "Basic {{ opensearch_kibanauser_basicauth }}"
     {% endif %}
 
-    {% if readonly_user_autologin | lower == 'jwt' and elasticsearch_kibanauser_token is defined %}
-    RequestHeader set "Authorization" "Bearer {{ elasticsearch_kibanauser_token }}"
+    {% if readonly_user_autologin | lower == 'jwt' and opensearch_kibanauser_token is defined %}
+    RequestHeader set "Authorization" "Bearer {{ opensearch_kibanauser_token }}"
     {% endif %}
 
 {% if external_kibana_host %}

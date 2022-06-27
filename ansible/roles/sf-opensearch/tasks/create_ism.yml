@@ -6,9 +6,9 @@
 # attached to the policy.
 - name: Create a ISM policy
   uri:
-    url: "{{ elasticsearch_internal_url }}/_plugins/_ism/add/{{ item.index_name | default('universal') }}"
-    client_cert: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
-    client_key: "{{ elk_stack_certs }}/elasticsearch-admin.key"
+    url: "{{ opensearch_internal_url }}/_plugins/_ism/add/{{ item.index_name | default('universal') }}"
+    client_cert: "{{ elk_stack_certs }}/opensearch-admin.crt"
+    client_key: "{{ elk_stack_certs }}/opensearch-admin.key"
     method: POST
     body_format: json
     body: {"policy_id": "{{ item.policy_name }}"}
@@ -17,9 +17,9 @@
 
 - name: Add template to policy
   uri:
-    url: "{{ elasticsearch_internal_url }}/_plugins/_ism/policies/{{ item.policy_name }}"
-    client_cert: "{{ elk_stack_certs }}/elasticsearch-admin.crt"
-    client_key: "{{ elk_stack_certs }}/elasticsearch-admin.key"
+    url: "{{ opensearch_internal_url }}/_plugins/_ism/policies/{{ item.policy_name }}"
+    client_cert: "{{ elk_stack_certs }}/opensearch-admin.crt"
+    client_key: "{{ elk_stack_certs }}/opensearch-admin.key"
     method: PUT
     body_format: json
     body: "{{ lookup('template','./ism.json.j2') }}"

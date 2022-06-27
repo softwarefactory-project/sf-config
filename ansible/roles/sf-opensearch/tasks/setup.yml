@@ -24,17 +24,17 @@
     - "{{ elk_data_dir }}"
     - "{{ elk_log_dir }}"
 
-- name: Rename Elasticsearch admin key
+- name: Rename Opensearch admin key
   copy:
     src: "{{ elastic_admin_key }}"
     dest: "{{ elastic_admin_key }}-default"
   vars:
-    elastic_admin_key: /var/lib/software-factory/bootstrap-data/certs/elasticsearch-admin.key
+    elastic_admin_key: /var/lib/software-factory/bootstrap-data/certs/opensearch-admin.key
   delegate_to: "{{ install_server_host }}"
 
-- name: Convert elasticsearch admin private key to pkcs8
+- name: Convert opensearch admin private key to pkcs8
   shell: |
-    openssl pkcs8 -in {{ sf_cert_path }}/elasticsearch-admin.key-default -topk8 -out {{sf_cert_path }}/elasticsearch-admin.key -nocrypt
+    openssl pkcs8 -in {{ sf_cert_path }}/opensearch-admin.key-default -topk8 -out {{sf_cert_path }}/opensearch-admin.key -nocrypt
   vars:
     sf_cert_path: /var/lib/software-factory/bootstrap-data/certs
   delegate_to: "{{ install_server_host }}"
@@ -47,14 +47,14 @@
     owner: "{{ owner }}"
     group: "{{ group }}"
   loop:
-    - elasticsearch-admin.crt
-    - elasticsearch-admin.key
+    - opensearch-admin.crt
+    - opensearch-admin.key
     - localCA.pem
 
 # This is required to set opendistro_security.authcz.elasticsearch_dn
-- name: Take elasticsearch subject
+- name: Take opensearch subject
   shell: |
-    openssl x509 -subject -nameopt RFC2253 -noout -in {{ elk_stack_certs }}/elasticsearch-admin.crt | sed 's/subject= //g' | sed 's/subject=//g'
+    openssl x509 -subject -nameopt RFC2253 -noout -in {{ elk_stack_certs }}/opensearch-admin.crt | sed 's/subject= //g' | sed 's/subject=//g'
   register: elk_cert_subject
 
 # https://opensearch.org/docs/opensearch/install/important-settings/
@@ -78,8 +78,8 @@
       {{ opensearch_container_dir }}/plugins/opensearch-security/tools/securityadmin.sh
       -cd {{ opensearch_container_securityconfig_dir }}/
       -icl -nhnv -cacert {{ opensearch_container_config_dir }}/certificates/localCA.pem
-      -cert {{ opensearch_container_config_dir }}/certificates/elasticsearch-admin.crt
-      -key {{ opensearch_container_config_dir }}/certificates/elasticsearch-admin.key
+      -cert {{ opensearch_container_config_dir }}/certificates/opensearch-admin.crt
+      -key {{ opensearch_container_config_dir }}/certificates/opensearch-admin.key
       -h {{ ansible_default_ipv4.address }}'
     dest: /usr/local/bin/reconfigure-opensearch.sh
     mode: '0755'
@@ -104,7 +104,7 @@
     - wait for opensearch service
     - reconfigure security plugin in containers
 
-- name: Configure Elasticsearch
+- name: Configure Opensearch
   template:
     src: opensearch-config.yml.j2
     dest: "{{ elk_config_dir }}/opensearch.yml"

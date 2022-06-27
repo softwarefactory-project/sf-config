@@ -17,15 +17,25 @@
         ProxyPassReverse {{ kibana_internal_url }}
     </Location>
 {% endif %}
-{% if external_elasticsearch_host %}
+{% if external_opensearch_host %}
+    # FIXME: Remove elasticsearch in the future.
     <Location /elasticsearch>
-        ProxyPass https://{{ external_elasticsearch_host }}:{{ external_elasticsearch_port }}
-        ProxyPassReverse https://{{ external_elasticsearch_host }}:{{ external_elasticsearch_port }}
+        ProxyPass https://{{ external_opensearch_host }}:{{ external_opensearch_port }}
+        ProxyPassReverse https://{{ external_opensearch_host }}:{{ external_opensearch_port }}
+    </Location>
+    <Location /opensearch>
+        ProxyPass https://{{ external_opensearch_host }}:{{ external_opensearch_port }}
+        ProxyPassReverse https://{{ external_opensearch_host }}:{{ external_opensearch_port }}
     </Location>
 {% else %}
+    # FIXME: Remove elasticsearch in the future.
     <Location /elasticsearch>
-        ProxyPass {{ elasticsearch_internal_url }}
-        ProxyPassReverse {{ elasticsearch_internal_url }}
+        ProxyPass {{ opensearch_internal_url }}
+        ProxyPassReverse {{ opensearch_internal_url }}
+    </Location>
+    <Location /opensearch>
+        ProxyPass {{ opensearch_internal_url }}
+        ProxyPassReverse {{ opensearch_internal_url }}
     </Location>
 {% endif %}
 </IfModule>

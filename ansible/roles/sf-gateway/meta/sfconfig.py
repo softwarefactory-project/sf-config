@@ -12,6 +12,7 @@
 
 import base64
 import os
+import urllib.parse
 
 from sfconfig.components import Component
 from sfconfig.utils import fail
@@ -85,6 +86,17 @@ class Gateway(Component):
             args.glue["tls_challenge_alias_path"] = args.sfconfig["network"][
                 "tls_challenge_alias_path"]
 
+        config_key = 'external_opensearch'
+        external_elk = args.sfconfig.get(config_key, {}).get('host')
+        if external_elk:
+            args.glue['external_opensearch_host'] = \
+                urllib.parse.urlparse(external_elk).hostname
+            args.glue['external_opensearch_port'] = \
+                urllib.parse.urlparse(external_elk).port
+        else:
+            args.glue['external_opensearch_host'] = None
+            args.glue['external_opensearch_port'] = None
+
         args.glue['external_kibana_host'] = \
             args.sfconfig.get('kibana', {}).get('host_url')
 
@@ -92,10 +104,10 @@ class Gateway(Component):
             args.sfconfig.get('kibana', {}).get('readonly_user_autologin',
                                                 'Basic')
 
-        if args.sfconfig.get('external_elasticsearch', {}).get('users', {}):
-            for user, creds in args.sfconfig.get('external_elasticsearch'
+        if args.sfconfig.get('external_opensearch', {}).get('users', {}):
+            for user, creds in args.sfconfig.get('external_opensearch'
                                                  ).get('users').items():
                 if creds.get('role') == 'readonly':
-                    args.glue['external_elasticsearch_readonly_user'] = user
-                    args.glue['external_elasticsearch_readonly_password'] = \
+                    args.glue['external_opensearch_readonly_user'] = user
+                    args.glue['external_opensearch_readonly_password'] = \
                         creds.get('password')

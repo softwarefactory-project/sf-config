@@ -196,7 +196,7 @@ poll_delay={{ conn['poll_delay']|default('7200') }}
 
 {% endfor %}
 
-{% for conn in elasticsearch_connections|default([]) %}
+{% for conn in opensearch_connections|default([]) %}
 [connection {{ conn['name'] }}]
 driver=elasticsearch
 uri={{conn['username']|default('zuul') }}:{{ conn['password']|default('zuul') }}@{{ conn['host']|default('localhost') }}:{{ conn['port']|default(9200) }}

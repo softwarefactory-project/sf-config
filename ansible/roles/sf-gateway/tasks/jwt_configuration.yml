@@ -1,6 +1,6 @@
 ---
 - name: Copy kibana user token in secrets.yaml
-  command: grep -q 'elasticsearch_kibanauser_token'
+  command: grep -q 'opensearch_kibanauser_token'
   delegate_to: '{{ install_server_host }}'
   register: _kibana_jwt_old_token
   no_log: show_hidden_logs == False
@@ -37,13 +37,13 @@
 
     - name: Set jwt facts
       set_fact:
-        elasticsearch_kibanauser_token: "{{ _kibana_jwt_token.stdout }}"
+        opensearch_kibanauser_token: "{{ _kibana_jwt_token.stdout }}"
 
     - name: Copy jwt token in secrets.yaml
       lineinfile:
         path: /var/lib/software-factory/bootstrap-data/secrets.yaml
-        regexp: '^elasticsearch_kibanauser_token'
-        line: 'elasticsearch_kibanauser_token: {{ _kibana_jwt_token.stdout }}'
+        regexp: '^opensearch_kibanauser_token'
+        line: 'opensearch_kibanauser_token: {{ _kibana_jwt_token.stdout }}'
       delegate_to: '{{ install_server_host }}'
 
     - name: Add autologin include file

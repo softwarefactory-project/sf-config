@@ -215,7 +215,7 @@ def main():
                  'logservers': [],
                  'executor_hosts': [],
                  'nodepool_hosts': [],
-                 'elasticsearch_connections': [],
+                 'opensearch_connections': [],
                  }
     if args.recover:
         args.glue['force_update_tasks'] = True
@@ -240,6 +240,11 @@ def main():
         # TODO: do not force $fqdn as host domain name
         if "hostname" not in host:
             host["hostname"] = "%s.%s" % (host["name"], args.sfconfig["fqdn"])
+
+        # FIXME: remove condition when rename elasticsearch is done
+        if 'elasticsearch' in host['roles']:
+            host['roles'] = [r.replace(
+                'elasticsearch', 'opensearch') for r in host["roles"]]
 
         for role in host["roles"]:
             # Set component_host variable by default

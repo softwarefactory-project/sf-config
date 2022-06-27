@@ -13,19 +13,19 @@
 from sfconfig.components import Component
 
 
-class ElasticSearch(Component):
+class OpensSearch(Component):
     def configure(self, args, host):
-        if 'minimum_heap_size' in args.sfconfig['elasticsearch']:
-            args.glue['elasticsearch_minimum_heap_size'] = args.sfconfig[
-                'elasticsearch']['minimum_heap_size']
-        if 'maximum_heap_size' in args.sfconfig['elasticsearch']:
-            args.glue['elasticsearch_maximum_heap_size'] = args.sfconfig[
-                'elasticsearch']['maximum_heap_size']
-        if 'replicas' in args.sfconfig['elasticsearch']:
-            args.glue['elasticsearch_replicas'] = args.sfconfig[
-                'elasticsearch']['replicas']
+        if 'minimum_heap_size' in args.sfconfig['opensearch']:
+            args.glue['opensearch_minimum_heap_size'] = args.sfconfig[
+                'opensearch']['minimum_heap_size']
+        if 'maximum_heap_size' in args.sfconfig['opensearch']:
+            args.glue['opensearch_maximum_heap_size'] = args.sfconfig[
+                'opensearch']['maximum_heap_size']
+        if 'replicas' in args.sfconfig['opensearch']:
+            args.glue['opensearch_replicas'] = args.sfconfig[
+                'opensearch']['replicas']
 
-        self.get_or_generate_cert(args, "elasticsearch-admin",
+        self.get_or_generate_cert(args, "opensearch-admin",
                                   host["hostname"])
 
         # NOTE: Remove to previous state when change role name is done.
@@ -40,13 +40,18 @@ class ElasticSearch(Component):
 
         # The internal Elasticsearch connection should not be included in
         # sfconfig. Add other connections that will be used by zuul.
-        args.glue["elasticsearch_connections"].append({
-                    'name': "elasticsearch",
+        args.glue["opensearch_connections"].append({
+                    'name': "opensearch",
                     'username': 'zuul',
                     'password': elastic_zuul_pass,
                     'host': elastic_host,
                     'port': elastic_port,
                 })
+
+        # FIXME: remove code below after changing name from elasticsearch to
+        # opensearch
+        args.glue["opensearch_connections"] = [dict(t) for t in {
+            tuple(d.items()) for d in args.glue["opensearch_connections"]}]
 
         args.glue['readonly_user_autologin'] = \
             args.sfconfig.get("kibana", {}).get('readonly_user_autologin',

@@ -17,18 +17,18 @@ from sfconfig.components import Component
 
 class LogProcessing(Component):
     def configure(self, args, host):
-        external_elk = args.sfconfig.get('external_elasticsearch', {})
+        external_elk = args.sfconfig.get('external_opensearch', {})
 
         host = external_elk.get('host', None)
-        args.glue['external_elasticsearch_host'] = \
+        args.glue['external_opensearch_host'] = \
             urllib.parse.urlparse(host).hostname if host else None
-        args.glue['external_elasticsearch_port'] = \
+        args.glue['external_opensearch_port'] = \
             urllib.parse.urlparse(host).port if host else None
 
         if external_elk.get('cacert_path', None):
-            args.glue['external_elasticsearch_cacert'] = \
+            args.glue['external_opensearch_cacert'] = \
                 external_elk.get('cacert_path')
 
         if external_elk.get('users', None):
-            args.glue['external_elasticsearch_users'] = \
+            args.glue['external_opensearch_users'] = \
                 external_elk.get('users')

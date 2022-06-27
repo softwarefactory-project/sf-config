@@ -68,8 +68,13 @@ class ZuulScheduler(Component):
                 "port": 22
             })
 
-        args.glue['elasticsearch_connections'].extend(
-            args.sfconfig["zuul"].get('elasticsearch_connections', []))
+        args.glue['opensearch_connections'].extend(
+            args.sfconfig["zuul"].get('opensearch_connections', []))
+
+        # FIXME: remove code below after changing name from elasticsearch to
+        # opensearch
+        args.glue["opensearch_connections"] = [dict(t) for t in {
+            tuple(d.items()) for d in args.glue["opensearch_connections"]}]
 
 
 class ZuulExecutor(Component):

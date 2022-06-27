@@ -26,12 +26,12 @@
 
 - name: Generate Opensearch dashboards welcome page text - internal host
   set_fact:
-    kibana_loginscreen_text: "Readonly user: {{ elasticsearch_readonly_user }} password: {{ elasticsearch_readonly_password }}"
+    kibana_loginscreen_text: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
 
 - name: Generate Opensearch dashboards welcome page text - external host
   set_fact:
-    kibana_loginscreen_text: "Readonly user: {{ external_elasticsearch_readonly_username }} password: {{ external_elasticsearch_readonly_password }}"
-  when: external_elasticsearch_readonly_username != '' and external_elasticsearch_readonly_password != ''
+    kibana_loginscreen_text: "Readonly user: {{ external_opensearch_readonly_username }} password: {{ external_opensearch_readonly_password }}"
+  when: external_opensearch_readonly_username != '' and external_opensearch_readonly_password != ''
 
 - name: Configure Kibana
   template:

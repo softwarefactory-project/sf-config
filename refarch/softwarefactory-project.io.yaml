@@ -20,7 +20,7 @@ inventory:
   ip: 192.168.240.14
   roles:
   - logserver
-  - elasticsearch
+  - opensearch
   - influxdb
   - log-processing
   - hound

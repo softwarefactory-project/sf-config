@@ -10,10 +10,10 @@ group: logscraper
 container_gid: 1000
 container_uid: 1000
 
-elasticsearch_http_port: 9200
-elasticsearch_host: elasticsearch.example.com
+opensearch_http_port: 9200
+opensearch_host: opensearch.example.com
 
-elasticsearch_logstash_password: "CHANGE_ME"
+opensearch_logstash_password: "CHANGE_ME"
 
 zuul_api_url: https://{{ fqdn }}/zuul/api/tenant/local
 insecure: false
@@ -30,7 +30,7 @@ logscraper_workers: 2
 es_host: ""
 es_port: ""
 es_logstash_username: "logstash"
-es_logstash_password: "{{ elasticsearch_logstash_password }}"
+es_logstash_password: "{{ opensearch_logstash_password }}"
 es_index_prefix: "logstash-"
 es_insecure: false
 logsender_workers: 2
@@ -49,8 +49,8 @@ log_processing_components:
       --volume {{ logscraper_dir | default(logscraper_dir) }}:{{ logscraper_dir }}:z
       --volume {{ download_dir }}:{{ download_dir }}:z
       --volume {{ checkpoint_file }}:{{ checkpoint_file }}:z
-      {% if external_elasticsearch_cacert and external_elasticsearch_cacert != '' %}
-      --volume {{ external_elasticsearch_cacert }}:{{ external_elasticsearch_cacert }}:z
+      {% if external_opensearch_cacert and external_opensearch_cacert != '' %}
+      --volume {{ external_opensearch_cacert }}:{{ external_opensearch_cacert }}:z
       {% else %}
       --volume {{ custom_ca_crt }}:{{ custom_ca_crt }}:z
       {% endif %}
@@ -67,8 +67,8 @@ log_processing_components:
       --uidmap {{ container_uid }}:{{ logsender_uid | default(10210) }}:1
       --volume {{ download_dir }}:{{ download_dir }}:z
       --volume {{ logscraper_dir }}:{{ logscraper_dir }}:z
-      {% if external_elasticsearch_cacert and external_elasticsearch_cacert != '' %}
-      --volume {{ external_elasticsearch_cacert }}:{{ external_elasticsearch_cacert }}:z
+      {% if external_opensearch_cacert and external_opensearch_cacert != '' %}
+      --volume {{ external_opensearch_cacert }}:{{ external_opensearch_cacert }}:z
       {% else %}
       --volume {{ custom_ca_crt }}:{{ custom_ca_crt }}:z
       {% endif %}

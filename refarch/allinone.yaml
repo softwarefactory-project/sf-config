@@ -21,7 +21,7 @@ inventory:
       - nodepool-launcher
       - nodepool-builder
       - murmur
-      - elasticsearch
+      - opensearch
       - log-processing
       - kibana
       - firehose

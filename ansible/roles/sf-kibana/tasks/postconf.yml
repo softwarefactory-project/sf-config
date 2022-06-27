@@ -12,14 +12,14 @@
   block:
     - include_vars:
         file: /var/lib/software-factory/bootstrap-data/secrets.yaml
-        name: elasticsearch_kibanauser_token
+        name: opensearch_kibanauser_token
 
     - name: Making query with jwt header
       uri:
         url: "https://{{ fqdn }}/analytics_autologin/app/kibana_overview"
         method: GET
         headers:
-          Authorization: "Bearer {{ elasticsearch_kibanauser_token }}"
+          Authorization: "Bearer {{ opensearch_kibanauser_token }}"
         status_code: "200"
         validate_certs: true
   when: readonly_user_autologin | lower == 'jwt'
@@ -28,14 +28,14 @@
   block:
     - include_vars:
         file: /var/lib/software-factory/bootstrap-data/secrets.yaml
-        name: elasticsearch_kibanauser_basicauth
+        name: opensearch_kibanauser_basicauth
 
     - name: Making query with basicauth header
       uri:
         url: "https://{{ fqdn }}/analytics_autologin/app/kibana_overview"
         method: GET
         headers:
-          Authorization: "Basic {{ elasticsearch_kibanauser_basicauth }}"
+          Authorization: "Basic {{ opensearch_kibanauser_basicauth }}"
         status_code: "200"
         validate_certs: true
   when: readonly_user_autologin | lower == 'basic'
