@@ -47,21 +47,8 @@ def update_sfconfig(args):
         data['elasticsearch']['minimum_heap_size'] = '128m'
         dirty = True
 
-    # 2.6.0: expose logstash config
-    # 3.3.0: update logstash config
-    # 3.6.0: update logstash config
-    if 'logstash' not in data:
-        data['logstash'] = {}
-        dirty = True
-    if 'retention_days' not in data['logstash']:
-        data['logstash']['retention_days'] = 60
-        dirty = True
-    if 'maximum_heap_size' not in data['logstash']:
-        data['logstash']['maximum_heap_size'] = '512m'
-        dirty = True
-    if 'minimum_heap_size' not in data['logstash']:
-        data['logstash']['minimum_heap_size'] = '128m'
-        dirty = True
+    if 'logstash' in data:
+        data.pop('logstash')
 
     if 'disable_external_resources' not in data['network']:
         data['network']['disable_external_resources'] = False
@@ -313,6 +300,10 @@ def update_arch(args):
             if host['roles'][idx].startswith('job-logs-gearman-worker'):
                 host['roles'][idx] = host['roles'][idx].replace(
                     'job-logs-gearman-worker', '')
+                dirty = True
+            if host['roles'][idx].startswith('logstash'):
+                host['roles'][idx] = host['roles'][idx].replace(
+                    'logstash', '')
                 dirty = True
 
         # Filter for empty roles

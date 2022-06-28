@@ -25,7 +25,7 @@ rhel_unsupported_roles = (
     "firehose",
 )
 
-correct_order = ['gerrit', 'managesf', 'elasticsearch', 'logstash', 'kibana']
+correct_order = ['gerrit', 'managesf', 'elasticsearch', 'kibana']
 
 
 def process(args):
@@ -139,14 +139,6 @@ please remove them from /etc/software-factory/arch.yaml file:
               "Deploying Software Factory with this role will lead to "
               "failures. Do it only for testing things out!")
 
-    if ('logstash' in args.glue["roles"] and
-        'elasticsearch' not in args.glue["roles"] and
-            not args.sfconfig.get('external_elasticsearch')):
-        print('Can not continue. You need to provide elasticsearch role '
-              'or add external_elasticsearch configuration in sfconfig '
-              'file if you want to use logstash')
-        sys.exit(1)
-
     if (args.sfconfig.get('external_elasticsearch', {}) and (
             not args.sfconfig['external_elasticsearch'].get('users') or
             not args.sfconfig['external_elasticsearch'].get('host') or
@@ -157,18 +149,10 @@ please remove them from /etc/software-factory/arch.yaml file:
               'parameters')
         sys.exit(1)
 
-    if ('logstash' in args.glue["roles"] and args.sfconfig.get(
-        'external_elasticsearch', {}) and not (
+    if (args.sfconfig.get('external_elasticsearch', {}) and not (
             args.sfconfig.get('zuul').get('elasticsearch_connections'))):
         print('You did not configure "elasticsearch_connections" param '
               'in zuul configuration in sfconfig.yaml file. Is it ok?')
-        sys.exit(1)
-
-    if ('logstash' in args.glue["roles"] and
-            args.sfconfig.get('logstash').get('host', None)):
-        print('Multiple Logstash configuration found. Please remove '
-              '"logstash" role from arch file or remove "host" from logstash '
-              'section in sfconfig.yaml file!')
         sys.exit(1)
 
     # Add install-server hostname for easy access

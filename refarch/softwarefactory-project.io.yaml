@@ -21,7 +21,6 @@ inventory:
   roles:
   - logserver
   - elasticsearch
-  - logstash
   - influxdb
   - log-processing
   - hound

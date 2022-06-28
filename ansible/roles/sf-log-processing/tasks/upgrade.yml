@@ -1,0 +1,27 @@
+---
+# NOTE: Remove it in the future
+- name: Remove logstash
+  block:
+    - name: Disable services
+      service:
+        name: logstash
+        state: stopped
+        enabled: "no"
+      ignore_errors: true
+
+    - name: Remove curator package
+      yum:
+        name: elasticsearch-curator
+        state: absent
+
+    - name: Delete containers - logstash
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ logstash_components }}"
+
+    - name: Remove logstash directory
+      file:
+        path: /etc/logstash
+        state: absent
+  when: sf_previous_version < 3.8

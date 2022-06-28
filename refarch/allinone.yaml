@@ -23,7 +23,6 @@ inventory:
       - murmur
       - elasticsearch
       - log-processing
-      - logstash
       - kibana
       - firehose
       - influxdb

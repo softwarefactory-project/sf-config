@@ -197,12 +197,6 @@ def zuul_dashboard(args):
         'Jobs Launched (per Hour)',
         [{'m': '/zuul.tenant.*.pipeline.*.all_jobs/', 'alias': '$5',
           'type': 'counter'}], select_fct='distinct', interval='1h'))
-    if args.enable_logstash == 'True':
-        global_row["panels"].append(graph(
-            'Logstash Job Queue',
-            [{'m': 'logstash.geard.queue.running'},
-             {'m': 'logstash.geard.queue.waiting'},
-             {'m': 'logstash.geard.queue.total'}]))
     global_row["panels"].append(graph(
         'Node Requests',
         [{'m': 'zuul.nodepool.current_requests', 'alias': 'Requests'}],
@@ -453,7 +447,6 @@ def main():
     p.add_argument("--zuul-url")
     p.add_argument("--config-dir")
     p.add_argument("--output-dir")
-    p.add_argument("--enable-logstash", default='false')
     p.add_argument("action", choices=("update-cq", "update-grafyaml"))
     args = p.parse_args()
     if args.action == "update-cq":

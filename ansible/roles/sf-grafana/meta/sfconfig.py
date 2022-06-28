@@ -18,6 +18,3 @@ class Grafana(Component):
         args.glue["grafana_internal_url"] = "http://%s:%s" % (
             args.glue["grafana_host"], args.defaults["grafana_http_port"])
         self.add_mysql_database(args, "grafana")
-
-        args.glue['external_logstash_host'] = \
-            args.sfconfig.get('logstash').get('host', None)

@@ -27,7 +27,6 @@
     - roles/ensure-rake/
     - roles/fetch-buildset-artifacts/
     - roles/linters/
-    - roles/submit-logstash-jobs/
     - roles/upload-galaxy/
     - roles/upload-pages/
     - zuul.d/_included-jobs.yaml
