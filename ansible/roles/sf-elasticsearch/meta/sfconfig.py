@@ -28,14 +28,24 @@ class ElasticSearch(Component):
         self.get_or_generate_cert(args, "elasticsearch-admin",
                                   host["hostname"])
 
+        # NOTE: Remove to previous state when change role name is done.
+        elastic_host = (args.glue["elasticsearch_host"] if "elasticsearch_host"
+                        in args.glue else args.glue["opensearch_host"])
+        elastic_port = (args.defaults["elasticsearch_http_port"] if
+                        "elasticsearch_http_port" in args.defaults else
+                        args.defaults["opensearch_http_port"])
+        elastic_zuul_pass = (args.glue['elasticsearch_zuul_password'] if
+                             "elasticsearch_zuul_password" in args.glue else
+                             args.glue['opensearch_zuul_password'])
+
         # The internal Elasticsearch connection should not be included in
         # sfconfig. Add other connections that will be used by zuul.
         args.glue["elasticsearch_connections"].append({
                     'name': "elasticsearch",
                     'username': 'zuul',
-                    'password': args.glue['elasticsearch_zuul_password'],
-                    'host': args.glue["elasticsearch_host"],
-                    'port': args.defaults['elasticsearch_http_port'],
+                    'password': elastic_zuul_pass,
+                    'host': elastic_host,
+                    'port': elastic_port,
                 })
 
         args.glue['readonly_user_autologin'] = \

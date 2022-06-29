@@ -71,6 +71,13 @@ def process(args):
         aliases = set()
         if 'name' in host:
             aliases.add(host['name'])
+
+        # NOTE: Remove the condition when move name from elasticsearch to
+        # opensearch is done
+        if 'opensearch' in host['roles']:
+            host['roles'] = [r.replace('opensearch',
+                                       'elasticsearch') for r in host['roles']]
+
         for role in host["roles"]:
             # Add host to role list
             args.glue["roles"].setdefault(role, []).append(host)
@@ -86,6 +93,12 @@ def process(args):
             # Check if this is the first nodepool-launcher
             if role == "nodepool-launcher" and not args.glue["first_launcher"]:
                 args.glue["first_launcher"] = host['name']
+
+        # NOTE(dpawlik) Remove it after moving elasticsearch role to opensearch
+        if 'elasticsearch' in aliases:
+            aliases.add("%s.%s" % ('opensearch', args.sfconfig["fqdn"]))
+            aliases.add("opensearch")
+
         args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
             list(aliases)
 
