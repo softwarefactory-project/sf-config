@@ -1,15 +1,25 @@
 ---
 - name: Disable services
   service:
-    name: lodgeit
+    name: "{{ role_package }}"
     state: stopped
     enabled: "no"
   ignore_errors: "yes"
 
 - name: Remove packages
-  yum:
-    name: "{{ item }}"
-    state: absent
-  loop:
-    - lodgeit
+  block:
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ lodgeit_components }}"
+
+    - name: Remove {{ role_package }} data
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ lodgeit_config_dir }}"
+        - "{{ lodgeit_web_resources }}"
+
   when: erase == True

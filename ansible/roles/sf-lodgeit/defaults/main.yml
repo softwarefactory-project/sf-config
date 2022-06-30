@@ -3,9 +3,16 @@ role_actions:
   - install
   - setup
   - disable
+  - get_logs
 
 role_package: lodgeit
 
+container_uid: 999
+container_gid: 999
+owner: "{{ role_package }}"
+group: "{{ role_package }}"
+
+lodgeit_port: 5000
 lodgeit_mysql_host: "mysql.example.com"
 lodgeit_mysql_port: 3306
 lodgeit_mysql_db: "lodgeit"
@@ -13,3 +20,23 @@ lodgeit_mysql_user: "lodgeit"
 lodgeit_mysql_password: "CHANGE_ME"
 
 lodgeit_session_key: "CHANGE_ME"
+
+lodgeit_config_dir: "/etc/lodgeit"
+
+lodgeit_container_web_resources : "/usr/lib/python3.6/site-packages/lodgeit/static"
+lodgeit_web_resources : "/var/www/static/lodgeit"
+
+lodgeit_version: 0.3
+lodgeit_container_version: "{{ lodgeit_version }}-1"
+
+lodgeit_components:
+  - service: "{{ role_package }}"
+    image: "quay.io/software-factory/{{ role_package }}:{{ lodgeit_container_version }}"
+    skip-auto-update: True
+    params: >-
+      --network host
+      --user {{ container_uid }}:{{ container_gid }}
+      --uidmap 0:4000:999
+      --uidmap {{ container_uid }}:{{ lodgeit_uid | default(1000)}}:1
+      --volume {{ lodgeit_config_dir }}/lodgeit.conf:{{ lodgeit_config_dir }}/lodgeit.conf:Z
+      --volume {{ lodgeit_config_dir }}/lodgeit:/etc/sysconfig/lodgeit:Z

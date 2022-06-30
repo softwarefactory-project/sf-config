@@ -1,4 +1,25 @@
 ---
-- name: Force service restart
-  command: /bin/true
-  notify: restart lodgeit
+- name: Check if {{ role_package }} is running
+  command: systemctl is-active -q {{ role_package }}
+  register: _lodgeit_service
+  failed_when: _lodgeit_service.rc not in [0, 3]
+  changed_when: false
+
+- block:
+    - name: Stop the service
+      service:
+        name: "{{ role_package }}"
+        state: stopped
+
+    - name: Remove {{ role_package }} rpm package
+      yum:
+        name: "{{ role_package }}"
+        state: absent
+  when:
+    - _lodgeit_service.rc == 0
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ lodgeit_components }}"
