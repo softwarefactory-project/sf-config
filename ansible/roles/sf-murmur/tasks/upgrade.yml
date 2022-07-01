@@ -1,4 +1,25 @@
 ---
-- name: Force service restart
-  command: /bin/true
-  notify: restart umurmurd
+- name: Check if {{ role_package }} is running
+  command: systemctl is-active -q {{ role_package }}
+  register: _murmur_service
+  failed_when: _murmur_service.rc not in [0, 3]
+  changed_when: false
+
+- block:
+    - name: Stop the service
+      service:
+        name: "{{ role_package }}"
+        state: stopped
+
+    - name: Remove {{ role_package }} rpm package
+      yum:
+        name: "{{ role_package }}"
+        state: absent
+  when:
+    - _murmur_service.rc == 0
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ murmur_components }}"

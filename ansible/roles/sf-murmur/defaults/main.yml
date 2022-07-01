@@ -3,8 +3,14 @@ role_actions:
   - install
   - setup
   - disable
+  - get_logs
 
 role_package: umurmur
+
+container_uid: 1000
+container_gid: 1000
+owner: "{{ role_package }}"
+group: "{{ role_package }}"
 
 murmur_password: ""
 murmur_max_users: 42
@@ -17,3 +23,23 @@ murmur_channels:
     description: Meeting room
   - name: Meeting-Alt
     description: Second meeting room
+
+murmur_tcp_port: 64738
+murmur_udp_port: 64738
+
+murmur_version: "0.2.20"
+murmur_container_version: "{{ murmur_version }}-1"
+
+murmur_config_dir: "/etc/{{ role_package }}/"
+
+murmur_components:
+  - service: "{{ role_package }}"
+    image: "quay.io/software-factory/murmur:{{ murmur_container_version }}"
+    skip-auto-update: True
+    params: >-
+      --network host
+      --uidmap 0:4000:997
+      --gidmap 0:4000:997
+      --uidmap {{ container_uid}}:{{ murmur_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ murmur_gid | default(1000) }}:1
+      --volume {{ murmur_config_dir }}:/etc/umurmur:Z
