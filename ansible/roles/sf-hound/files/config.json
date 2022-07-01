@@ -1,0 +1,5 @@
+{
+    "max-concurrent-indexers": 2,
+    "dbpath": "/var/lib/hound/data",
+    "repos": {}
+}

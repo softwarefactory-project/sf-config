@@ -1,0 +1,14 @@
+---
+- include_tasks: "{{ sf_tasks_dir }}/fetch_update_configuration.yml"
+  vars:
+    service_name: "{{ role_package }}"
+    service_owner: "{{ owner }}"
+    service_group: "{{ group }}"
+    service_config_dir: "{{ hound_config_dir }}"
+    service_config_name: config.json
+
+- name: Ensure service is started and enabled
+  service:
+    name: "{{ role_package }}"
+    state: restarted
+    enabled: "yes"

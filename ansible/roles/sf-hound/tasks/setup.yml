@@ -1,8 +1,70 @@
 ---
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: "{{ owner }}"
+
+- name: "Get {{ owner }} uid"
+  command: "id -u {{ owner }}"
+  register: _hound_id
+
+- name: "Get {{ owner }} gid"
+  command: "id -g {{ owner }}"
+  register: _hound_gid
+
+- name: "Setting {{ owner }} uid var"
+  set_fact:
+    hound_uid: "{{ _hound_id.stdout }}"
+    hound_gid: "{{ _hound_gid.stdout }}"
+
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ hound_components }}"
+
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - path: "{{ hound_config_dir }}"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      mode: "0755"
+    - path: "{{ hound_repos_dir }}"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      mode: "0755"
+
+- name: Copying files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ hound_config_dir }}/{{ item }}"
+    mode: '0644'
+  loop:
+    - config.json
+
+- name: Apply selinux port labelling
+  seport:
+    ports: "{{ hound_port | default(6080) }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  when:
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
+    - ansible_selinux.status == "enabled"
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ hound_components }}"
+
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
-- name: Setup sysconfig
-  template:
-    src: houndd.sysconfig.j2
-    dest: /etc/sysconfig/houndd
-  notify: restart hound
+- name: Start service
+  systemd:
+    name: "{{ role_package }}"
+    state: started
+    daemon_reload: true
+    enabled: true
