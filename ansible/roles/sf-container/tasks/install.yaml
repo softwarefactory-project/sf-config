@@ -13,10 +13,3 @@
   retries: 3
   delay: 5
   when: _image_exists.rc != 0
-
-- name: "Create container creation script for {{ item.service }}"
-  template:
-    src: creation.j2
-    dest: "/usr/local/bin/container-{{ item.service }}.sh"
-    mode: '0755'
-    owner: root

@@ -56,14 +56,6 @@
   - "'mariadb-server' in ansible_facts.packages"
   - _mysqld_service.rc == 0
 
-- name: "Get {{ owner }} uid"
-  command: "id -u {{ owner }}"
-  register: _user_id
-
-- name: "Get {{ owner }} gid"
-  command: "id -g {{ owner }}"
-  register: _usergroup_gid
-
 - name: Pull image
   include_role:
     name: sf-container

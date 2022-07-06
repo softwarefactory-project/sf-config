@@ -290,6 +290,14 @@
     src: nodepool_www.logrotate.conf
     dest: /etc/logrotate.d/nodepool_www
 
+- name: Get nodepool uid
+  command: id -u nodepool
+  register: _nodepool_id
+
+- name: Expose nodepool uid
+  set_fact:
+    nodepool_uid: "{{ _nodepool_id.stdout }}"
+
 - name: Create container
   include_role:
     name: sf-container

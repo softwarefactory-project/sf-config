@@ -38,14 +38,6 @@
   vars:
     user_name: opensearch
 
-- name: Get opensearch uid
-  command: id -u opensearch
-  register: _opensearch_uid
-
-- name: Expose opensearch uid
-  set_fact:
-    opensearch_uid: "{{ _opensearch_uid.stdout }}"
-
 - name: Pull image
   include_role:
     name: sf-container

@@ -59,6 +59,19 @@
     option: wait_timeout
     value: '1209600'
 
+- name: "Get {{ owner }} uid"
+  command: "id -u {{ owner }}"
+  register: _user_id
+
+- name: "Get {{ owner }} gid"
+  command: "id -g {{ owner }}"
+  register: _usergroup_gid
+
+- name: "Setting {{ owner }} vars"
+  set_fact:
+    user_uid: "{{ _user_id.stdout }}"
+    usergroup_gid: "{{ _usergroup_gid.stdout }}"
+
 - name: Create container
   include_role:
     name: sf-container

@@ -245,6 +245,14 @@
     - "'gerrit' in roles"
     - "'zuul-scheduler' in zuul_services"
 
+- name: Get zuul uid
+  command: id -u zuul
+  register: _zuul_id
+
+- name: Expose zuul uid
+  set_fact:
+    zuul_uid: "{{ _zuul_id.stdout }}"
+
 - name: Create container
   include_role:
     name: sf-container

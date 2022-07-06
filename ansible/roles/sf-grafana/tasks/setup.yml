@@ -90,6 +90,19 @@
     mode: '0755'
     state: directory
 
+- name: Get {{ owner }} uid
+  command: id -u {{ owner }}
+  register: _grafana_id
+
+- name: Get {{ owner }} gid
+  command: id -g {{ owner }}
+  register: _grafana_gid
+
+- name: Setting {{ owner }} uid var
+  set_fact:
+    grafana_uid: "{{ _grafana_id.stdout }}"
+    grafana_gid: "{{ _grafana_gid.stdout }}"
+
 - name: Create container
   include_role:
     name: sf-container

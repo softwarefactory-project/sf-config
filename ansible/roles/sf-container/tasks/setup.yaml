@@ -1,5 +1,41 @@
 ---
+- name: "Create container creation script for {{ item.service }}"
+  template:
+    src: creation.j2
+    dest: "/usr/local/bin/container-{{ item.service }}.sh"
+    mode: '0755'
+    owner: root
+  register: _container_script_changed
+
 - name: "Check if {{ item.service }} container exists"
+  command: "podman container exists {{ item.service }}"
+  ignore_errors: yes
+  register: _container_exists
+  changed_when: false
+  failed_when: _container_exists.rc not in [0, 1]
+
+- name: Delete containers
+  include_role:
+    name: sf-container
+    tasks_from: delete.yaml
+  loop:
+    - service: "{{ item.service }}"
+  when:
+    - _container_script_changed.changed
+    - _container_exists.rc == 0
+    - item.service not in ((zuul_services | default([])) + (nodepool_services | default([])))
+
+# Zuul and Nodepool containers will be re-created / re-started with (zuul|nodepool)_restart.yml
+- name: "Touch updated file for {{ item.service }}"
+  file:
+    path: "/var/lib/software-factory/versions/{{ item.service }}-updated"
+    state: touch
+  when:
+    - _container_script_changed.changed
+    - _container_exists.rc == 0
+    - item.service in ((zuul_services | default([])) + (nodepool_services | default([])))
+
+- name: "Check again if {{ item.service }} container exists after ask for deletion"
   command: "podman container exists {{ item.service }}"
   ignore_errors: yes
   register: _container_exists

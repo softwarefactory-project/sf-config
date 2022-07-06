@@ -117,6 +117,14 @@
     - wait for opensearch service
     - reconfigure security plugin in containers
 
+- name: Get opensearch uid
+  command: id -u opensearch
+  register: _opensearch_uid
+
+- name: Expose opensearch uid
+  set_fact:
+    opensearch_uid: "{{ _opensearch_uid.stdout }}"
+
 - name: Create container - Opensearch
   include_role:
     name: sf-container

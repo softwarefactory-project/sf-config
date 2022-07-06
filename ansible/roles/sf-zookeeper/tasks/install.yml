@@ -10,19 +10,6 @@
   vars:
     user_name: zookeeper
 
-- name: Get {{ owner }} uid
-  command: id -u {{ owner }}
-  register: _zookeeper_id
-
-- name: Get {{ owner }} gid
-  command: id -g {{ owner }}
-  register: _zookeeper_gid
-
-- name: Setting {{ owner }} uid var
-  set_fact:
-    zookeeper_uid: "{{ _zookeeper_id.stdout }}"
-    zookeeper_gid: "{{ _zookeeper_gid.stdout }}"
-
 - name: Pull image
   include_role:
     name: sf-container

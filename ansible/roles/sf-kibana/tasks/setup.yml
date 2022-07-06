@@ -43,6 +43,14 @@
     - restart opensearch dashboards
     - ensure started opensearch dashboards
 
+- name: Get opensearch-dashboards uid
+  command: id -u opensearch-dashboards
+  register: _opensearch_dashboards_id
+
+- name: Expose opensearch-dashboards uid
+  set_fact:
+    opensearch_dashboards_uid: "{{ _opensearch_dashboards_id.stdout }}"
+
 - name: Create container - Opensearch dashboards
   include_role:
     name: sf-container

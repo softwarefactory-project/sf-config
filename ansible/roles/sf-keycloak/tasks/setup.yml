@@ -10,14 +10,6 @@
   vars:
     user_name: "{{ owner }}"
 
-- name: "Get {{ owner }} uid"
-  command: id -u {{ owner }}
-  register: _keycloak_uid
-
-- name: "Expose {{ owner }} uid"
-  set_fact:
-    keycloak_uid: "{{ _keycloak_uid.stdout }}"
-
 - name: Create container directory
   include_role:
     name: sf-container
@@ -96,6 +88,14 @@
     mode: "0755"
     dest: /opt/jboss/
     recurse: true
+
+- name: "Get {{ owner }} uid"
+  command: id -u {{ owner }}
+  register: _keycloak_uid
+
+- name: "Expose {{ owner }} uid"
+  set_fact:
+    keycloak_uid: "{{ _keycloak_uid.stdout }}"
 
 - name: Create container
   include_role:

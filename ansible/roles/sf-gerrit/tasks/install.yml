@@ -28,14 +28,6 @@
     shell: /bin/bash
     home_dir_mode: "0755"
 
-- name: Get gerrit uid
-  command: id -u gerrit
-  register: _gerrit_id
-
-- name: Expose gerrit uid
-  set_fact:
-    gerrit_uid: "{{ _gerrit_id.stdout }}"
-
 - name: Pull image
   include_role:
     name: sf-container
