@@ -29,7 +29,6 @@ zookeeper_release: 1
 zookeeper_components:
   - service: "zookeeper"
     image: "quay.io/software-factory/{{ role_package }}:{{ zookeeper_version }}-{{ zookeeper_release }}"
-    skip-auto-update: True
     params: >-
       --network host
       --user {{ container_uid }}:{{ container_gid }}

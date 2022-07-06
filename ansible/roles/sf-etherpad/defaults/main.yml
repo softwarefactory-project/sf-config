@@ -31,7 +31,6 @@ etherpad_release: 1
 etherpad_components:
   - service: "etherpad"
     image: "quay.io/software-factory/sf-{{ role_package }}:{{ etherpad_version }}-{{ etherpad_release }}"
-    skip-auto-update: True
     params: >-
       --network host
       --user {{ container_uid }}:{{ container_gid }}

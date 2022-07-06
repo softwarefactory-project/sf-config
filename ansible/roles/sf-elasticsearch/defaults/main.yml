@@ -19,7 +19,6 @@ opensearch_container_version: "{{ opensearch_version }}-1"
 opensearch_components:
   - service: "opensearch"
     image: "quay.io/software-factory/opensearch:{{ opensearch_container_version }}"
-    skip-auto-update: true
     params: >-
       --net host
       --user {{ container_uid }}:{{ container_gid }}

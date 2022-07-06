@@ -38,13 +38,11 @@ zuul_components_default_params: >-
 zuul_components:
   - service: "zuul-scheduler"
     image: "quay.io/software-factory/zuul-scheduler-ubi:{{ zuul_container_version }}"
-    skip-auto-update: True
     params: >-
       {{ zuul_components_default_params }}
       --volume /var/lib/zuul/:/var/lib/zuul/:z
   - service: "zuul-executor"
     image: "quay.io/software-factory/zuul-executor-ubi:{{ zuul_container_version }}"
-    skip-auto-update: True
     params: >-
       {{ zuul_components_default_params }}
       --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
@@ -55,13 +53,11 @@ zuul_components:
       --privileged
   - service: "zuul-merger"
     image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_container_version }}"
-    skip-auto-update: True
     params: >-
       {{ zuul_components_default_params }}
       --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
   - service: "zuul-web"
     image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
-    skip-auto-update: True
     params: >-
       {{ zuul_components_default_params }}
 

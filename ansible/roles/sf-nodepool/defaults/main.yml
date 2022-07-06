@@ -36,7 +36,6 @@ nodepool_providers:
 nodepool_components:
   - service: "nodepool-launcher"
     image: "quay.io/software-factory/nodepool-launcher-ubi:{{ nodepool_container_version }}"
-    skip-auto-update: True
     run: >-
       /usr/local/bin/nodepool-launcher -d
       -c /etc/nodepool/nodepool.yaml
@@ -60,7 +59,6 @@ nodepool_components:
       {% endif %}
   - service: "nodepool-builder"
     image: "quay.io/software-factory/nodepool-builder-ubi:{{ nodepool_container_version }}"
-    skip-auto-update: True
     run: >-
       /usr/local/bin/nodepool-builder -d
       -c /etc/nodepool/nodepool.yaml
