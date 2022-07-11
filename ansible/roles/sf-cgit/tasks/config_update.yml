@@ -17,17 +17,24 @@
   register: upstreamconfig
   changed_when: false
 
-- name: Update cgit configuration
-  command: >
-    /usr/local/bin/cgit-config-generator.py
-      /etc/cgitrepos
-  register: _cgit_config
-  changed_when: _cgit_config.rc == 4
-  failed_when: _cgit_config.rc not in [0, 4]
-  when: localconfig.stdout != upstreamconfig.stdout
+- block:
+  - name: Update cgit configuration
+    command: >
+      /usr/local/bin/cgit-config-generator.py
+        {{ cgit_config_dir }}/{{ cgit_config_repos_file }}
+    register: _cgit_config
+    changed_when: _cgit_config.rc == 4
+    failed_when: _cgit_config.rc not in [0, 4]
 
-- name: Write config repo sha1 matching current configuration
-  copy:
-    content: "{{ upstreamconfig.stdout }}"
-    dest: /var/lib/software-factory/state/cgit_config
+  - name: Ensure service is started and enabled
+    service:
+      name: "{{ role_package }}"
+      state: restarted
+      enabled: "yes"
+
+  - name: Write config repo sha1 matching current configuration
+    copy:
+      content: "{{ upstreamconfig.stdout }}"
+      dest: /var/lib/software-factory/state/cgit_config
+
   when: localconfig.stdout != upstreamconfig.stdout

@@ -1,4 +1,25 @@
 ---
-- name: Force service reload
-  command: /bin/true
-  notify: apache reload
+- name: "Remove {{ role_package }} rpm package"
+  yum:
+    name: "{{ role_package }}"
+    state: absent
+  register: _remove_rpm_package
+
+- name: "Check if {{ role_package }} is running"
+  command: "systemctl is-active -q {{ role_package }}"
+  register: _cgit_service
+  failed_when: _cgit_service.rc not in [0, 3]
+  changed_when: false
+
+- name: Stop the service
+  service:
+    name: "{{ role_package }}"
+    state: stopped
+  when:
+    - _cgit_service.rc == 0
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ cgit_components }}"

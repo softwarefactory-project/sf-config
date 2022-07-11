@@ -3,5 +3,43 @@ role_actions:
   - install
   - setup
   - config_update
+  - get_logs
+  - disable
+  - postconf
 
 role_package: cgit
+
+container_uid: 1000
+container_gid: 1000
+owner: "{{ role_package }}"
+group: "{{ role_package }}"
+
+cgit_version: 1.2.3
+cgit_container_version: "{{ cgit_version }}-1"
+
+cgit_port: 37920
+
+cgit_config_dir: "/etc/cgit"
+cgit_config_file: "cgitrc"
+cgit_config_repos_file: "cgitrepos"
+cgit_executable_dir: "/var/www/cgi-bin"
+cgit_gerrit_repos_dir: "/var/lib/gerrit/git/"
+cgit_http_config_file: "/etc/httpd/conf.d/cgit.conf"
+cgit_web_data_dir: "/var/cache/cgit/"
+cgit_web_resources_dir: "/usr/share/cgit/"
+
+cgit_components:
+  - service: "{{ role_package }}"
+    image: "quay.io/software-factory/{{ role_package }}:{{ cgit_container_version }}"
+    params: >-
+      --network host
+      --tty
+      --uidmap 0:4000:999
+      --gidmap 0:4000:999
+      --uidmap {{ container_uid}}:{{ cgit_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ cgit_gid | default(1000) }}:1
+      --volume {{ cgit_config_dir }}/{{ cgit_config_file }}:/etc/{{ cgit_config_file }}:Z
+      --volume {{ cgit_config_dir }}/{{ cgit_config_repos_file }}:/etc/{{ cgit_config_repos_file }}:Z
+      --volume {{ cgit_config_dir }}/httpd.conf:/etc/httpd/conf/httpd.conf:Z
+      --volume {{ cgit_gerrit_repos_dir }}:{{ cgit_gerrit_repos_dir }}:Z
+      --volume {{ cgit_config_dir }}/cgit.conf:{{ cgit_http_config_file }}:Z

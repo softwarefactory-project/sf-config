@@ -1,14 +1,74 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: "{{ owner }}"
 
-- name: Configure cgitrc
-  lineinfile:
-    dest: /etc/cgitrc
-    regexp: "^{{ item.key }}=.*"
-    line: "{{ item.key }}={{ item.value }}"
+- name: "Get {{ owner }} uid"
+  command: "id -u {{ owner }}"
+  register: _cgit_id
+
+- name: "Get {{ owner }} gid"
+  command: "id -g {{ owner }}"
+  register: _cgit_gid
+
+- name: "Setting {{ owner }} uid var"
+  set_fact:
+    cgit_uid: "{{ _cgit_id.stdout }}"
+    cgit_gid: "{{ _cgit_gid.stdout }}"
+
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
   loop:
-    - {key: "include", value: "/etc/cgitrepos"}
-    - {key: "logo", value: ""}
+    - path: "{{ cgit_config_dir }}"
+      mode: "0750"
+      recurse: "yes"
+
+- name: Setting Cgit configuration
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "0640"
+  loop:
+    - src: "templates/cgit_container_httpd.conf.j2"
+      dest: "{{ cgit_config_dir }}/httpd.conf"
+    - src: "templates/cgit_container_httpd_cgit.conf.j2"
+      dest: "{{ cgit_config_dir }}/cgit.conf"
+    - src: "templates/cgit_container_cgitrc.j2"
+      dest: "{{ cgit_config_dir }}/{{ cgit_config_file }}"
+  notify: apache reload
+
+- name: Setting Cgit configuration on Gateway Host
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  loop:
+    - src: "templates/cgit_host_httpd_cgit.conf.j2"
+      dest: "{{ cgit_http_config_file }}"
+  delegate_to: "{{ gateway_host }}"
+  notify: apache reload
+
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ cgit_components }}"
+
+- name: Apply selinux port labelling
+  seport:
+    ports: "{{ cgit_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  when:
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
+    - ansible_selinux.status == "enabled"
 
 - name: Setup cgit config generator
   template:
@@ -18,7 +78,7 @@
 
 - name: Check if repo are already configured
   stat:
-    path: /etc/cgitrepos
+    path: "{{ cgit_config_dir }}/{{ cgit_config_repos_file }}"
   register: _cgit_config
 
 - name: Install a default configuration for internal repos
@@ -30,5 +90,18 @@
       repo.path=/var/lib/software-factory/git/sf-jobs.git
       repo.url=zuul-jobs
       repo.path=/var/lib/software-factory/git/zuul-jobs.git
-    dest: /etc/cgitrepos
+    dest: "{{ cgit_config_dir }}/{{ cgit_config_repos_file }}"
   when: not _cgit_config.stat.exists
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ cgit_components }}"
+
+- name: Start service
+  systemd:
+    name: "{{ role_package }}"
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
