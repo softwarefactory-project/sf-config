@@ -1,6 +1,6 @@
 ---
-- name: restart umurmurd
+- name: "restart {{ role_package }}"
   service:
-    name: umurmurd
+    name: "{{ role_package }}"
     state: restarted
     enabled: "yes"

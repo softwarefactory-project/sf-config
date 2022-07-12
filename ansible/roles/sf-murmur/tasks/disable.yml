@@ -1,7 +1,7 @@
 ---
 - name: Disable services
   service:
-    name: umurmurd
+    name: "{{ role_package }}"
     state: stopped
     enabled: "no"
   ignore_errors: "yes"
@@ -11,5 +11,22 @@
     name: "{{ item }}"
     state: absent
   loop:
-    - umurmur
+    - "{{ role_package }}"
+  when: erase == True
+
+- block:
+
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ murmur_components }}"
+
+    - name: Remove {{ role_package }} data
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ murmur_config_dir }}"
+
   when: erase == True
