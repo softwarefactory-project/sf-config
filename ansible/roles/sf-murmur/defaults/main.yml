@@ -35,7 +35,6 @@ murmur_config_dir: "/etc/{{ role_package }}/"
 murmur_components:
   - service: "{{ role_package }}"
     image: "quay.io/software-factory/murmur:{{ murmur_container_version }}"
-    skip-auto-update: True
     params: >-
       --network host
       --uidmap 0:4000:997
