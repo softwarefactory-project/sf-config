@@ -1,20 +1,78 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-
-# TODO(tristan): create a gerritbot dedicated key and user on gerrit
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
   vars:
-    user_name: gerritbot
+    user_name: "{{ owner }}"
     ssh_key: zuul_rsa
+
+- name: Get {{ owner }} uid
+  command: id -u {{ owner }}
+  register: _gerritbot_id
+
+- name: Get {{ owner }} gid
+  command: id -g {{ owner }}
+  register: _gerritbot_gid
+
+- name: Setting {{ owner }} uid var
+  set_fact:
+    gerritbot_uid: "{{ _gerritbot_id.stdout }}"
+    gerritbot_gid: "{{ _gerritbot_gid.stdout }}"
+
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ gerritbot_components }}"
+
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - path: "{{ gerritbot_config_dir }}"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0755"
+    - path: "{{ gerritbot_var_lib }}"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0750"
+    - path: "{{ gerritbot_var_lib }}/.ssh"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0750"
 
 - name: Ensure known_hosts file exists
   file:
     path: "/var/lib/gerritbot/.ssh/known_hosts"
-    owner: gerritbot
-    group: gerritbot
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: '0600'
     state: touch
   changed_when: false
+
+- name: Setting config files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ gerritbot_config_dir }}/{{ item }}"
+    mode: '0644'
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+  loop:
+    - gerritbot.conf
+    - logging.conf
+
+- name: Apply selinux port labelling
+  seport:
+    ports: "{{ gerritbot_port }}"
+    proto: "tcp"
+    setype: "http_port_t"
+    state: present
+  when:
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
+    - ansible_selinux.status == "enabled"
 
 - name: Check if the sources are already defined
   command: |
@@ -28,14 +86,14 @@
     ssh-keyscan -T 10 -p {{ gerritbot_gerrit_port }} {{ gerritbot_gerrit_host }} | sort | tac >> /var/lib/gerritbot/.ssh/known_hosts
   when: _known_hosts_results.stdout == ""
 
-- name: "Setup gerritbot.conf"
-  template:
-    src: gerritbot.conf.j2
-    dest: /etc/gerritbot/gerritbot.conf
-  notify: restart gerritbot
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ gerritbot_components }}"
 
 - name: Start service
   service:
-    name: gerritbot
+    name: "{{ role_package }}"
     state: started
     enabled: "yes"
