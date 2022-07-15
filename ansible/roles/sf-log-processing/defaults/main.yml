@@ -13,6 +13,8 @@ container_uid: 1000
 elasticsearch_http_port: 9200
 elasticsearch_host: elasticsearch.example.com
 
+elasticsearch_logstash_password: "CHANGE_ME"
+
 zuul_api_url: https://{{ fqdn }}/zuul/api/tenant/local
 insecure: false
 download: true
@@ -25,8 +27,8 @@ debug: false
 logscraper_wait_time: 120
 logscraper_workers: 2
 # logsender
-es_host: "{{ external_elasticsearch_host | default(elasticsearch_host) }}"
-es_port: "{{ external_elasticsearch_port | default(elasticsearch_http_port) }}"
+es_host: ""
+es_port: ""
 es_logstash_username: "logstash"
 es_logstash_password: ""
 es_index_prefix: "logstash-"
