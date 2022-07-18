@@ -29,7 +29,6 @@ keycloak_container_release: 1
 keycloak_components:
   - service: "keycloak"
     image: "quay.io/software-factory/keycloak:{{ keycloak_container_version }}-{{ keycloak_container_release }}"
-    skip-auto-update: True
     params: >-
       --network host
       --uidmap 0:4000:999
