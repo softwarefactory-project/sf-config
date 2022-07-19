@@ -1,21 +1,24 @@
 ---
 {% if external_elasticsearch_host %}
+host: {{ external_elasticsearch_host | default('managesf.' + fqdn) }}
+port: {{ external_elasticsearch_port | default(9200) }}
+ca_file: "{{ external_elasticsearch_cacert }}"
 {% for user, user_creds in external_elasticsearch_users.items() %}
 {% if  external_elasticsearch_users[user]['role'] == 'logstash' %}
 username: "{{ user }}"
 password: "{{ external_elasticsearch_users[user]['password'] }}"
+index_prefix: logstash-{{ external_elasticsearch_users[user]['tenant'] | default(fqdn) | replace('.', '_') | replace('-','_') }}-
 {% endif %}
-host: {{ external_elasticsearch_host | default('managesf.' + fqdn) }}
-port: {{ external_elasticsearch_port | default(9200) }}
 {% endfor %}
-{% elif elasticsearch_logstash_password %}
-username: "logstash"
-password: "{{ elasticsearch_logstash_password }}"
+{% elif es_logstash_password %}
 host: {{ elasticsearch_host | default('managesf.' + fqdn) }}
 port: {{ elasticsearch_http_port | default(9200) }}
+username: "logstash"
+password: "{{ es_logstash_password }}"
+index_prefix: {{ es_index_prefix | default('logstash-') }}
+ca_file: {{ custom_ca_crt }}
 {% endif %}
 index: {{ es_index | default('') }}
-index_prefix: {{ es_index_prefix | default('logstash-') }}
 doc_type: {{ doc_type | default('_doc') }}
 chunk_size: {{ chunk_size | default(1500) }}
 skip_debug: {{ skip_debug | default(true) }}
@@ -23,7 +26,6 @@ keep: {{ keep | default(false) }}
 debug: {{ debug | default(false) }}
 wait_time: {{ logsender_wait_time | default(120) }}
 insecure: {{ es_insecure | default(false) }}
-ca_file: {{ custom_ca_crt | default('') }}
 follow: {{ follow | default(true) }}
 workers: {{ logsender_workers | default(1) }}
 ignore_es_status: {{ ignore_es_status | default(false) }}

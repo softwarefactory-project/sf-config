@@ -30,12 +30,12 @@ logscraper_workers: 2
 es_host: ""
 es_port: ""
 es_logstash_username: "logstash"
-es_logstash_password: ""
+es_logstash_password: "{{ elasticsearch_logstash_password }}"
 es_index_prefix: "logstash-"
 es_insecure: false
 logsender_workers: 2
 logsender_wait_time: 60
-custom_ca_crt: "/etc/pki/ca-trust/source/anchors/localCA.pem"
+custom_ca_crt: "/etc/opensearch/certs/opensearch/localCA.pem"
 
 log_processing_components:
   - service: "logscraper"
@@ -49,6 +49,11 @@ log_processing_components:
       --volume {{ logscraper_dir | default(logscraper_dir) }}:{{ logscraper_dir }}:z
       --volume {{ download_dir }}:{{ download_dir }}:z
       --volume {{ checkpoint_file }}:{{ checkpoint_file }}:z
+      {% if external_elasticsearch_cacert and external_elasticsearch_cacert != '' %}
+      --volume {{ external_elasticsearch_cacert }}:{{ external_elasticsearch_cacert }}:z
+      {% else %}
+      --volume {{ custom_ca_crt }}:{{ custom_ca_crt }}:z
+      {% endif %}
     run: >-
       /usr/local/bin/logscraper
       --config {{ logscraper_dir }}/logscraper.yaml
@@ -62,7 +67,11 @@ log_processing_components:
       --uidmap {{ container_uid }}:{{ logsender_uid | default(10210) }}:1
       --volume {{ download_dir }}:{{ download_dir }}:z
       --volume {{ logscraper_dir }}:{{ logscraper_dir }}:z
+      {% if external_elasticsearch_cacert and external_elasticsearch_cacert != '' %}
+      --volume {{ external_elasticsearch_cacert }}:{{ external_elasticsearch_cacert }}:z
+      {% else %}
       --volume {{ custom_ca_crt }}:{{ custom_ca_crt }}:z
+      {% endif %}
     run: >-
       /usr/local/bin/logsender
       --config {{ logscraper_dir }}/logsender.yaml
