@@ -2,16 +2,18 @@
 {% if external_elasticsearch_host %}
 {% for user, user_creds in external_elasticsearch_users.items() %}
 {% if  external_elasticsearch_users[user]['role'] == 'logstash' %}
-username: '{{ user }}'
+username: "{{ user }}"
 password: "{{ external_elasticsearch_users[user]['password'] }}"
 {% endif %}
+host: {{ external_elasticsearch_host | default('managesf.' + fqdn) }}
+port: {{ external_elasticsearch_port | default(9200) }}
 {% endfor %}
 {% elif elasticsearch_logstash_password %}
-host: {{ es_host | default('managesf.' + fqdn) }}
-username: 'logstash'
+username: "logstash"
 password: "{{ elasticsearch_logstash_password }}"
+host: {{ elasticsearch_host | default('managesf.' + fqdn) }}
+port: {{ elasticsearch_http_port | default(9200) }}
 {% endif %}
-port: {{ es_port | default(9200) }}
 index: {{ es_index | default('') }}
 index_prefix: {{ es_index_prefix | default('logstash-') }}
 doc_type: {{ doc_type | default('_doc') }}
