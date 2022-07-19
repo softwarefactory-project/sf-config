@@ -43,6 +43,9 @@ def update_cq_action(args):
     influx_cmd = ['influx', '-ssl', '-host', args.influxdb_host,
                   '-port', '8086', '-username', 'admin', '-password',
                   args.influxdb_password, '-database', 'telegraf', '-execute']
+    if sfconfig.utils.pread(["podman", "container", "list", "-a", "--format",
+                            "'{{ .Names}}'", "--filter", "name=^influxdb$"]):
+        influx_cmd = ["podman", "exec", "-t", "influxdb"] + influx_cmd
     queries = sfconfig.utils.pread(
         influx_cmd + ["SHOW CONTINUOUS QUERIES"]).split('\n')
     changed = False
