@@ -1,5 +1,5 @@
 ---
-- name: restart gerritbot
+- name: restart {{ role_package }}
   service:
-    name: gerritbot
+    name: "{{ role_package }}"
     state: restarted

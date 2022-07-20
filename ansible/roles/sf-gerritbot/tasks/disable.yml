@@ -1,0 +1,26 @@
+---
+- name: Disable services
+  service:
+    name: "{{ item.service }}"
+    enabled: "no"
+    state: stopped
+  ignore_errors: true
+  loop: "{{ gerritbot_components }}"
+
+- name: Delete containers and files
+  block:
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ gerritbot_components }}"
+
+    - name: Remove gerritbot data
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ gerritbot_config_dir }}"
+        - "{{ gerritbot_var_lib }}"
+
+  when: erase == True

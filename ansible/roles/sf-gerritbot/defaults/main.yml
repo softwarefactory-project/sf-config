@@ -4,5 +4,31 @@ role_actions:
   - setup
   - config_update
   - get_logs
+  - disable
 
 role_package: gerritbot
+
+container_uid: 1000
+container_gid: 1000
+owner: "{{ role_package }}"
+group: "{{ role_package }}"
+
+gerritbot_port: 6667
+
+gerritbot_version: "0.4.0"
+gerritbot_container_version: "{{ gerritbot_version }}-1"
+
+gerritbot_config_dir: /etc/{{ role_package }}
+gerritbot_var_lib: /var/lib/{{ role_package }}
+
+gerritbot_components:
+  - service: "{{ role_package }}"
+    image: "quay.io/software-factory/{{ role_package }}:{{ gerritbot_container_version }}"
+    params: >-
+      --network host
+      --uidmap 0:4000:1000
+      --gidmap 0:4000:1000
+      --uidmap {{ container_uid}}:{{ gerritbot_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ gerritbot_gid | default(1000) }}:1
+      --volume {{ gerritbot_config_dir }}:{{ gerritbot_config_dir }}:Z
+      --volume {{ gerritbot_var_lib }}:{{ gerritbot_var_lib }}:Z
