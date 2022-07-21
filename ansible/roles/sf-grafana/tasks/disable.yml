@@ -6,13 +6,13 @@
     enabled: "no"
   ignore_errors: "yes"
 
-- name: Delete container - grafana
-  include_role:
-    name: sf-container
-    tasks_from: delete.yaml
-  loop: "{{ grafana_components }}"
-
 - block:
+    - name: Delete container - grafana
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ grafana_components }}"
+
     - name: Remove files
       file:
         path: "{{ item }}"

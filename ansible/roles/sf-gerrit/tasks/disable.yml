@@ -6,13 +6,13 @@
     enabled: "no"
   ignore_errors: "yes"
 
-- name: Delete container - gerrit
-  include_role:
-    name: sf-container
-    tasks_from: delete.yaml
-  loop: "{{ gerrit_components }}"
-
 - block:
+    - name: Delete container - gerrit
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ gerrit_components }}"
+
     - name: Remove files
       file:
         path: "{{ item }}"
