@@ -18,4 +18,4 @@ class Hound(Component):
 
     def configure(self, args, host):
         args.glue["hound_internal_url"] = "http://%s:%s" % (
-            args.glue["hound_host"], args.defaults["hound_port"])
+            args.glue["hound_host"], args.defaults.get("hound_port", 6080))

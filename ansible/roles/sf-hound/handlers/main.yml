@@ -1,5 +1,5 @@
 ---
 - name: restart hound
   service:
-    name: houndd
+    name: "{{ role_package }}"
     state: restarted

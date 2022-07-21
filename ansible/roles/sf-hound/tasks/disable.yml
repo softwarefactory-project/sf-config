@@ -4,7 +4,12 @@
     name: "houndd"
     state: stopped
     enabled: "no"
-  ignore_errors: "yes"
+  ignore_errors: true
+
+- name: Remove packages
+  yum:
+    name: "{{ role_package }}"
+    state: absent
 
 - block:
     - name: Remove files
@@ -12,11 +17,21 @@
         path: "{{ item }}"
         state: absent
       loop:
-        - /etc/hound
-        - /var/lib/hound
+        - "{{ hound_repos_dir }}"
+      when: sf_previous_version < 3.7
 
-    - name: Remove packages
-      yum:
-        name: hound
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ hound_components }}"
+
+    - name: Remove {{ role_package }} data
+      file:
+        path: "{{ item }}"
         state: absent
+      loop:
+        - "{{ hound_config_dir }}"
+        - "{{ hound_repos_dir }}"
+
   when: erase == True

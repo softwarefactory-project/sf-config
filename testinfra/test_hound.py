@@ -13,6 +13,6 @@
 
 class TestHound:
     def test_houndd_service_running_and_enabled(self, host):
-        service = host.service('houndd')
+        service = host.service('hound')
         assert service.is_running
         assert service.is_enabled

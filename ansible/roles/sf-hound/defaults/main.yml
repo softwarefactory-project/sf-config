@@ -4,9 +4,39 @@ role_actions:
   - setup
   - config_update
   - disable
+  - get_logs
+  - postconf
 
 role_package: hound
 
-hound_port: 6080
+container_uid: 1000
+container_gid: 1000
+owner: "{{ role_package }}"
+group: "{{ role_package }}"
+
+# To change the defaul port hound_port (default value 6080) like:
+# hound_port: 6080
+
 # Poll frequency in seconds, default to 12 hours
 hound_poll_frequency: 43200
+
+hound_version: 0.5.1
+hound_container_version: "{{ hound_version }}-1"
+
+hound_config_dir: "/etc/hound/"
+hound_repos_dir: "/var/lib/hound"
+
+hound_components:
+  - service: "{{ role_package }}"
+    image: "quay.io/software-factory/{{ role_package }}:{{ hound_container_version }}"
+    params: >-
+      --network host
+      --uidmap {{ container_uid }}:{{ hound_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ hound_gid | default(1000) }}:1
+      --uidmap 0:4000:999
+      --gidmap 0:4000:999
+      {% if hound_port is defined %}
+      -p {{ hound_port }}:6080
+      {% endif %}
+      --volume {{ hound_config_dir }}:/data:Z
+      --volume {{ hound_repos_dir }}:{{ hound_repos_dir }}:Z

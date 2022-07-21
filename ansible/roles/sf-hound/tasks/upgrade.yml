@@ -1,10 +1,46 @@
 ---
-- name: Force service restart
-  command: /bin/true
-  notify: restart hound
+- name: "Check if {{ role_package }} is running"
+  command: systemctl is-active -q houndd
+  register: _hound_service
+  failed_when: _hound_service.rc not in [0, 3]
+  changed_when: false
 
-- name: Remove previous conf update script location
-  file:
-    path: /usr/local/bin/hound-config-generator.py
-    state: absent
-  when: sf_previous_version < 3.2
+- block:
+    - name: "Stop {{ role_package }} service"
+      service:
+        name: "{{ role_package }}"
+        state: stopped
+
+    - name: "Remove {{ role_package }} rpm package"
+      yum:
+        name: "{{ role_package }}"
+        state: absent
+  when:
+    - _hound_service.rc == 0
+
+- name: "Check if {{ role_package }} container exists"
+  command: "podman container exists {{ role_package }}"
+  ignore_errors: yes
+  register: _hound_container_exists
+  changed_when: no
+  failed_when: _hound_container_exists.rc not in [0, 1]
+  become: true
+
+- block:
+    - name: "Stop {{ role_package }} container service"
+      service:
+        name: "{{ role_package }}"
+        state: stopped
+
+    - name: "Remove {{ role_package }} rpm package"
+      yum:
+        name: "{{ role_package }}"
+        state: absent
+  when:
+    - _hound_container_exists.rc == 0
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ hound_components }}"
