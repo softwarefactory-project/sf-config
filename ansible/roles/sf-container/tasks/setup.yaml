@@ -70,7 +70,11 @@
   register: _container_service
 
 - name: "Enable {{ item.service }} service"
-  command: "systemctl daemon-reload"
+  systemd:
+    name: "{{ item.service }}"
+    state: reloaded
+    enabled: true
+    daemon_reload: true
   when: "_container_service is changed"
 
 - name: Write installed container version
