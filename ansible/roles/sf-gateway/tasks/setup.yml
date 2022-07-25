@@ -123,17 +123,24 @@
     - {name: hideci.js, dest: /var/www/static/js}
   notify: apache reload
 
-- name: Install Kibana SF gateway rules
+- name: Install Opensearch Dashboards SF gateway rules
   template:
-    src: gateway-kibana.conf.j2
-    dest: /etc/httpd/conf.d/gateway-kibana.conf
+    src: gateway-opensearch-dashboards.conf.j2
+    dest: /etc/httpd/conf.d/gateway-opensearch-dashboards.conf
     mode: '0444'
-  when: '"kibana" in roles or external_kibana_host'
+  when: '"opensearch-dashboards" in roles or external_opensearch_dashboards_host'
+  notify: apache reload
+
+- name: Delete old Kibana configuration
+  file:
+    path: /etc/httpd/conf.d/gateway-kibana.conf
+    state: absent
+  when: '"kibana" in roles or external_opensearch_dashboards_host is defined'
   notify: apache reload
 
 - name: Create autologin empty file
   file:
-    path: /etc/httpd/conf.d/kibana_autologin.conf
+    path: /etc/httpd/conf.d/opensearch_dashboards_autologin.conf
     state: touch
     mode: '0444'
   when: readonly_user_autologin is defined and readonly_user_autologin

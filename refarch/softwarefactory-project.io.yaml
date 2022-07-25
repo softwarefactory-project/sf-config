@@ -11,7 +11,7 @@ inventory:
   - gerrit
   - gerritbot
   - murmur
-  - kibana
+  - opensearch-dashboards
   - cauth
   - firehose
   - grafana

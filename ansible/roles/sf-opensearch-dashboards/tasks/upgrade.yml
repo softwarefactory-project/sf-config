@@ -2,22 +2,11 @@
 - name: Get available service facts
   service_facts:
 
-- name: Stop Kibana service
-  service:
-    name: kibana
-    state: stopped
-  when: "'kibana.service' in services"
-
 - name: Stop Opensearch dashboards service
   systemd:
     name: opensearch-dashboards
     state: stopped
   when: "'opensearch-dashboards.service' in services"
-
-- name: Remove old Kibana config dir
-  file:
-    path: "{{ old_kibana_config_dir }}"
-    state: absent
 
 - name: Upgrade container
   include_role:

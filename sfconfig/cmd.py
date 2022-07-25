@@ -246,6 +246,10 @@ def main():
             host['roles'] = [r.replace(
                 'elasticsearch', 'opensearch') for r in host["roles"]]
 
+        if 'kibana' in host['roles']:
+            host['roles'] = [r.replace(
+                'kibana', 'opensearch-dashboards') for r in host["roles"]]
+
         for role in host["roles"]:
             # Set component_host variable by default
             args.glue["%s_host" % role.replace('-', '_')] = host["hostname"]

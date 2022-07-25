@@ -97,12 +97,12 @@ class Gateway(Component):
             args.glue['external_opensearch_host'] = None
             args.glue['external_opensearch_port'] = None
 
-        args.glue['external_kibana_host'] = \
-            args.sfconfig.get('kibana', {}).get('host_url')
+        args.glue['external_opensearch_dashboards_host'] = \
+            args.sfconfig.get('opensearch_dashboards', {}).get('host_url')
 
         args.glue['readonly_user_autologin'] = \
-            args.sfconfig.get('kibana', {}).get('readonly_user_autologin',
-                                                'Basic')
+            args.sfconfig.get('opensearch_dashboards', {}).get(
+                'readonly_user_autologin', 'Basic')
 
         if args.sfconfig.get('external_opensearch', {}).get('users', {}):
             for user, creds in args.sfconfig.get('external_opensearch'

@@ -1,7 +1,7 @@
 ---
 - name: Check if Kibana service is alive
   wait_for:
-    host: "{{ kibana_host }}"
+    host: "{{ opensearch_dashboards_host }}"
     port: 5601
     timeout: 1
   register: kibana_status
@@ -17,6 +17,6 @@
     /usr/local/bin/kibana-backup.py \
       --user kibanaserver \
       --password "{{ opensearch['kibanaserver_password'] | default(opensearch_kibanaserver_password) }}" \
-      --kibana-url "https://{{ kibana_host }}/analytics" \
+      --kibana-url "https://{{ opensearch_dashboards_host }}/analytics" \
       --backup-dir {{ backup_dest }} \
       backup

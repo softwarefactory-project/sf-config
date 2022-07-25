@@ -21,12 +21,12 @@
     RequestHeader set "Authorization" "Bearer {{ opensearch_kibanauser_token }}"
     {% endif %}
 
-{% if external_kibana_host %}
-    ProxyPass {{ external_kibana_host }}
-    ProxyPassReverse {{ external_kibana_host }}
+{% if external_opensearch_dashboards_host %}
+    ProxyPass {{ external_opensearch_dashboards_host }}
+    ProxyPassReverse {{ external_opensearch_dashboards_host }}
 {% else %}
-    ProxyPass {{ kibana_internal_url }}
-    ProxyPassReverse {{ kibana_internal_url }}
+    ProxyPass {{ opensearch_dashboards_internal_url }}
+    ProxyPassReverse {{ opensearch_dashboards_internal_url }}
 {% endif %}
 
     RewriteEngine on

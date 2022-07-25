@@ -11,8 +11,8 @@
 # under the License.
 
 
-class TestKibana:
+class TestOpensearchDashboards:
     def test_service_running_and_enabled(self, host):
-        service = host.service("kibana")
+        service = host.service("opensearch_dashboards")
         assert service.is_running
         assert service.is_enabled

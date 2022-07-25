@@ -3,7 +3,7 @@
 import base64
 import jwt
 
-secret = "{{ _kibana_jwt_secret.stdout }}"
+secret = "{{ _opensearch_dashboards_jwt_secret.stdout }}"
 secret_encoded = base64.b64encode(bytes(str(secret), "utf-8")).decode("utf-8")
 payload = {
     "iss": "https://{{ fqdn }}",

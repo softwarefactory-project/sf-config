@@ -64,6 +64,7 @@ keycloak_grafana_client_secret: "CHANGE_ME"
 keycloak_managesf_client_secret: "CHANGE_ME"
 keycloak_opensearch_client_secret: "CHANGE_ME"
 keycloak_kibana_client_secret: "CHANGE_ME"
+keycloak_opensearch_dashboards_client_secret: "{{ keycloak_kibana_client_secret }}"
 
 sf_service_user_password: "CHANGE_ME"
 
