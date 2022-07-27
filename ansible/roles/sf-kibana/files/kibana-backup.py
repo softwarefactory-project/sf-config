@@ -320,7 +320,7 @@ if __name__ == '__main__':
 
     if (not args.kibana_url.startswith('http')
             and not args.kibana_url.startswith('https')):
-        kibana_url = "http://%s" % args.kibana_url
+        kibana_url = "https://%s" % args.kibana_url
 
     if args.action == 'backup':
         if args.all_tenants and args.tenant:
