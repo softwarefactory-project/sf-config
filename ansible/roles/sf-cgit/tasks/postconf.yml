@@ -1,0 +1,14 @@
+---
+- name: Update cgit configuration
+  command: >
+    /usr/local/bin/cgit-config-generator.py
+      {{ cgit_config_dir }}/{{ cgit_config_repos_file }}
+  register: _cgit_config
+  changed_when: _cgit_config.rc == 4
+  failed_when: _cgit_config.rc not in [0, 4]
+
+- name: Ensure service is started and enabled
+  service:
+    name: "{{ role_package }}"
+    state: restarted
+    enabled: "yes"

@@ -1,0 +1,25 @@
+---
+- name: Disable services
+  service:
+    name: "{{ item.service }}"
+    enabled: "no"
+    state: stopped
+  ignore_errors: true
+  loop: "{{ cgit_components }}"
+
+- name: Delete containers and files
+  block:
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ cgit_components }}"
+
+    - name: Remove {{ role_package }} data
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ cgit_config_dir }}"
+
+  when: erase == True

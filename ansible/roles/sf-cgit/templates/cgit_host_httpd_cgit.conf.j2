@@ -1,0 +1,4 @@
+<IfModule mod_proxy.c>
+    ProxyPass /cgit http://{{ cgit_host }}:{{ cgit_port }}/cgit
+    ProxyPassReverse /cgit http://{{ cgit_host }}:{{ cgit_port }}/cgit
+</IfModule>
