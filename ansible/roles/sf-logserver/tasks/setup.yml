@@ -1,96 +1,74 @@
 ---
-- name: Create ara user
-  include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
-  vars:
-    user_name: ara
-
 - name: Create user
   include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
   vars:
-    user_name: loguser
+    user_name: "{{ owner }}"
     shell: /bin/sh
+
+- name: "Get {{ owner }} uid"
+  command: "id -u {{ owner }}"
+  register: _logserver_id
+
+- name: "Get {{ owner }} gid"
+  command: "id -g {{ owner }}"
+  register: _logserver_gid
+
+- name: "Setting {{ owner }} uid var"
+  set_fact:
+    logserver_uid: "{{ _logserver_id.stdout }}"
+    logserver_gid: "{{ _logserver_gid.stdout }}"
+
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - path: "{{ logserver_config_dir }}"
+      mode: "0750"
+      recurse: "yes"
 
 - name: Create logs directory
   file:
     path: /var/www/logs
     state: directory
-    owner: loguser
+    owner: "{{ owner }}"
     group: apache
     mode: '0755'
 
-- name: Create ara gunicorn service
-  copy:
-    content: |
-      [Unit]
-      Description=ARA Rendering Service
-      After=syslog.target network.target mariadb.service
-
-      [Service]
-      Type=simple
-      User=ara
-      Group=ara
-      SyslogIdentifier=ara
-      ExecStart=/bin/gunicorn-3 --workers 4 -t 1800 --access-logfile - --access-logformat '%(h)s %(l)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"' --chdir / -b 0.0.0.0:20003 -e 'ARA_WSGI_TMPDIR_MAX_AGE={{ logs_wsgi_ara_tmpdir_max_age }}' -e 'ARA_WSGI_LOG_ROOT={{ logs_wsgi_ara_logdir }}' -e 'ARA_WSGI_DATABASE_DIRECTORY=ara-report' --name ara ara.wsgi_sqlite
-
-      [Install]
-      WantedBy=multi-user.target
-    dest: /etc/systemd/system/ara.service
-  register: _ara_service
-
-- name: Start ara service
-  systemd:
-    name: "ara"
-    daemon-reload: "{% if _ara_service is changed %}yes{% else %}no{% endif %}"
-    state: started
-    enabled: yes
-
-- name: Authorize loguser sshkey
+- name: Authorize logserver sshkey
   authorized_key:
-    user: loguser
+    user: "{{ owner }}"
     key: "{{ item }}"
-  loop: "{{ loguser_authorized_keys }}"
+  loop: "{{ logserver_authorized_keys }}"
 
-- name: Install httpd conf.d logserver
+- name: Install httpd conf.d logserver configurations
   template:
-    src: logserver.conf.j2
-    dest: /etc/httpd/conf.d/logserver.conf
-  register: httpd_conf
-
-- name: Fix ara log root environment not being taken into account
-  block:
-    - file:
-        path: /srv/static/logs
-        state: directory
-
-    - file:
-        src: /var/www/logs
-        dest: /srv/static/logs/logs
-        state: link
-
-- name: Install purgelogs cron
-  cron:
-    name: purge-logs
-    job: /usr/bin/purgelogs --retention-days "{{ logs_expiry }}"
-    hour: '5'
-    minute: '0'
-
-- name: Ensure /var/www/static exist
-  file:
-    path: /var/www/static
-    state: directory
-
-- name: Reload httpd
-  service:
-    name: httpd
-    state: reloaded
-    enabled: "yes"
-  when: httpd_conf is changed
-
-- name: Start services
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: "yes"
+    src: "{{ item.src }}.j2"
+    dest: "{{ item.dest }}"
   loop:
-    - sshd
-    - httpd
+    - src: "{{ logserver_httpd_cont_conf_file }}"
+      dest: "{{ logserver_config_dir }}/{{ logserver_httpd_cont_conf_file }}"
+    - src: "{{ logserver_httpd_proxy_file }}"
+      dest: "/etc/httpd/conf.d/{{ logserver_httpd_proxy_file }}"
+  register: httpd_conf
+  notify: apache reload
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ logserver_components }}"
+
+- name: Start service
+  systemd:
+    name: "{{ role_package }}"
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
+
+- name: Start service
+  systemd:
+    name: "purgelogs"
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"

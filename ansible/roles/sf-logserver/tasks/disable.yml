@@ -5,15 +5,23 @@
     state: stopped
     enabled: "no"
   loop:
-    - log-gearman-client
-    - log-gearman-worker
+    - "{{ role_package }}"
   ignore_errors: "yes"
 
-- name: Remove packages
-  yum:
-    name: "{{ item }}"
-    state: absent
-  loop:
-    - log-gearman-client
-    - log-gearman-worker
+- name: Delete containers and files
+  block:
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ logserver_components }}"
+
+    - name: Remove {{ role_package }} data
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ logserver_config_dir }}"
+        - "/etc/httpd/conf.d/{{ logserver_httpd_proxy_file }}"
+
   when: erase == True

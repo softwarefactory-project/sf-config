@@ -16,7 +16,7 @@ from sfconfig.components import Component
 class LogServer(Component):
     def prepare(self, args):
         super(LogServer, self).prepare(args)
-        args.glue["loguser_authorized_keys"] = []
+        args.glue["logserver_authorized_keys"] = []
 
     def configure(self, args, host):
         self.get_or_generate_ssh_key(args, "zuul_logserver_rsa")
@@ -33,7 +33,7 @@ class LogServer(Component):
                 "port": 22
             })
         args.glue["logs_expiry"] = args.sfconfig["logs"]["expiry"]
-        args.glue["loguser_authorized_keys"].append(
+        args.glue["logserver_authorized_keys"].append(
             args.glue["zuul_logserver_rsa_pub"])
         # When logserver is hosted on the gateway, we can use fqdn instead
         args.glue["logserver_hostname"] = args.glue["logserver_host"]

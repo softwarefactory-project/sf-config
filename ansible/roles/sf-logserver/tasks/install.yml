@@ -1,12 +1,87 @@
 ---
-- name: Install requirements
+- name: Check if container exists
+  command: "podman container exists {{ role_package }}"
+  register: _logserver_container
+  failed_when: _logserver_container.rc not in [0, 1]
+
+- name: "Remove packages if {{ role_package }} is a container"
+  block:
+
+    - name: Stop services
+      service:
+        name: "httpd"
+        state: stopped
+        enabled: false
+
+    - name: Removing Packages
+      yum:
+        name:
+          - httpd
+          - mod_wsgi
+        state: absent
+
+  when:
+    - _logserver_container.rc == 0
+    - "'gateway' not in roles"
+    - "'cauth' not in roles"
+
+- name: "Check if ara is running"
+  command: "systemctl is-active -q ara"
+  register: _ara_service
+  failed_when: _ara_service.rc not in [0, 3]
+  changed_when: false
+
+- name: "Removing ara resources"
+  block:
+    - name: Stopping ara service
+      service:
+        name: "ara"
+        state: stopped
+        enabled: false
+
+    - name: Deleting ara service file
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/systemd/system/ara.service
+        - /srv/static/logs
+
+    - name: Removing ara package
+      yum:
+        name:
+          - ara
+        state: absent
+
+    - name: Deleting ara user
+      user:
+        name: ara
+        state: absent
+        remove: true
+
+  when: _ara_service.rc == 0
+
+- name: Removing gunicorn package
   yum:
     name:
-      - httpd
-      - mod_wsgi
-      - python3-gunicorn # fixme: add this to ara require
-      - ara
+      - python3-gunicorn
+    state: absent
+  when: "'cauth' not in roles"
+  register: _gunicorn_removed
+
+- name: Reloading Systemd if python3-gunicorn package was removed
+  systemd:
+    daemon_reload: true
+  when: _gunicorn_removed.changed
+
+- name: Removing purgelogs package
+  yum:
+    name:
       - purgelogs
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+    state: absent
+
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ logserver_components }}"
