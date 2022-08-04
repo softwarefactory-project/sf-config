@@ -95,8 +95,9 @@ def process(args):
                 args.glue["first_launcher"] = host['name']
 
         if args.sfconfig.get('external_opensearch', {}):
-            aliases.remove('opensearch')
-            aliases.remove("opensearch.%s" % args.sfconfig["fqdn"])
+            if 'opensearch' in aliases:
+                aliases.remove('opensearch')
+                aliases.remove("opensearch.%s" % args.sfconfig["fqdn"])
 
         args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
             list(aliases)
