@@ -6,3 +6,27 @@ role_actions:
   - disable
 
 role_package: mosquitto
+
+container_uid: 1000
+container_gid: 1000
+owner: "{{ role_package }}"
+group: "{{ role_package }}"
+
+mosquitto_listener_port_1: 1883
+mosquitto_listener_port_2: 1884
+
+mosquitto_version: 2.0.14
+mosquitto_container_version: "{{ mosquitto_version }}-1"
+
+mosquitto_config_dir: "/etc/mosquitto"
+
+mosquitto_components:
+  - service: "{{ role_package }}"
+    image: "quay.io/software-factory/{{ role_package }}:{{ mosquitto_container_version }}"
+    params: >-
+      --network host
+      --uidmap {{ container_uid }}:{{ mosquitto_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ mosquitto_gid | default(1000) }}:1
+      --uidmap 0:4000:999
+      --gidmap 0:4000:999
+      --volume {{ mosquitto_config_dir }}:{{ mosquitto_config_dir }}:Z

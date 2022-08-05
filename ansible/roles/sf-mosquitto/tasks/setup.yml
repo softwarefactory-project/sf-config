@@ -1,56 +1,106 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
   vars:
-    user_name: mosquitto
+    user_name: "{{ owner }}"
+
+- name: "Get {{ owner }} uid"
+  command: "id -u {{ owner }}"
+  register: _mosquitto_id
+
+- name: "Get {{ owner }} gid"
+  command: "id -g {{ owner }}"
+  register: _mosquitto_gid
+
+- name: "Setting {{ owner }} uid var"
+  set_fact:
+    mosquitto_uid: "{{ _mosquitto_id.stdout }}"
+    mosquitto_gid: "{{ _mosquitto_gid.stdout }}"
+
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ mosquitto_components }}"
+
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - path: "{{ mosquitto_config_dir }}"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0750"
 
 - name: init ACL file
   template:
     src: acl.conf.j2
-    dest: /etc/mosquitto/acl.conf
+    dest: "{{ mosquitto_config_dir }}/acl.conf"
     mode: '0440'
-    owner: mosquitto
-    group: mosquitto
+    owner: "{{ owner }}"
+    group: "{{ group }}"
 
 - stat:
-    path: /etc/mosquitto/passwords
+    path: "{{ mosquitto_config_dir }}/passwords"
   register: p
 
 - name: init passwords file if necessary
   file:
-    path: /etc/mosquitto/passwords
+    path: "{{ mosquitto_config_dir }}/passwords"
     state: touch
-    owner: mosquitto
-    group: mosquitto
-    mode: '0440'
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: '0640'
   when: p.stat.exists is defined and not p.stat.exists
 
 - name: update password file
   shell: "{{ item }}"
   loop:
-    - /usr/bin/mosquitto_passwd -b /etc/mosquitto/passwords SF_SERVICE_USER {{sf_service_user_password}}
+    - podman run --rm {{ mosquitto_components[0].params }} {{ mosquitto_components[0].image }} mosquitto_passwd -b {{ mosquitto_config_dir }}/passwords SF_SERVICE_USER {{sf_service_user_password}}
   changed_when: false
 
 - name: finish mosquitto configuration
   blockinfile:
-    dest: /etc/mosquitto/mosquitto.conf
+    dest: "{{ mosquitto_config_dir }}/mosquitto.conf"
     block: |
-      listener 1883
-      listener 1884
+      listener {{ mosquitto_listener_port_1 }}
+      listener {{ mosquitto_listener_port_2 }}
       protocol websockets
-      acl_file /etc/mosquitto/acl.conf
-      password_file /etc/mosquitto/passwords
+      acl_file {{ mosquitto_config_dir }}/acl.conf
+      password_file {{ mosquitto_config_dir }}/passwords
+      # In version 1.6.x and earlier, this option defaulted to true
+      allow_anonymous true
   register: mosquittoconf
+
+- name: Apply selinux port labelling
+  seport:
+    ports: "{{ item }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  when:
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
+    - ansible_selinux.status == "enabled"
+  loop:
+    - "{{ mosquitto_listener_port_1 }}"
+    - "{{ mosquitto_listener_port_2 }}"
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ mosquitto_components }}"
 
 - name: MQTT service started and enabled
   service:
-    name: mosquitto
+    name: "{{ role_package }}"
     state: started
+    daemon_reload: true
     enabled: "yes"
 
 - name: Restart MQTT after the configuration changed
   service:
-    name: mosquitto
+    name: "{{ role_package }}"
     state: restarted
   when: mosquittoconf is changed

@@ -1,5 +1,11 @@
 ---
-- name: Stop the service
+- name: "Stop {{ role_package }} container service"
   service:
-    name: mosquitto
+    name: "{{ role_package }}"
     state: stopped
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ mosquitto_components }}"
