@@ -72,10 +72,12 @@
 - name: "Enable {{ item.service }} service"
   systemd:
     name: "{{ item.service }}"
-    state: reloaded
+    state: restarted
     enabled: true
     daemon_reload: true
-  when: "_container_service is changed"
+  when:
+    - _container_service is changed
+    - item.service not in ((zuul_services | default([])) + (nodepool_services | default([])))
 
 - name: Write installed container version
   copy:

@@ -15,6 +15,3 @@
 - name: "Delete old container image for {{ item.service }}"
   command: "podman rmi {{ _container_image.stdout }}"
   when: _container_image.rc == 0
-
-- name: "Create container for {{ item.service }}"
-  shell: "/usr/local/bin/container-{{ item.service }}.sh > /var/log/software-factory/container-{{ item.service }}.log"

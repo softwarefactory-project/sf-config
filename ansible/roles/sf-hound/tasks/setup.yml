@@ -60,8 +60,6 @@
     tasks_from: setup.yaml
   loop: "{{ hound_components }}"
 
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-
 - name: Start service
   systemd:
     name: "{{ role_package }}"
