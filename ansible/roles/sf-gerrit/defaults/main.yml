@@ -19,7 +19,7 @@ gerrit_lib_dir: "/var/lib/gerrit"
 gerrit_log_dir: "/var/log/gerrit"
 
 gerrit_version: 3.4.5
-gerrit_container_version: "{{ gerrit_version }}-1"
+gerrit_container_version: "{{ gerrit_version }}-3"
 
 gerrit_components:
   - service: "gerrit"
