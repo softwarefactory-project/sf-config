@@ -6,7 +6,7 @@
 
 - name: Set influxdb cli fact
   set_fact:
-    influxdb_cli: 'influx -ssl -host {{ influxdb_host }} -port 8086'
+    influxdb_cli: 'podman exec -it {{ role_package }} influx -ssl -host {{ influxdb_host }} -port 8086'
 
 - name: Check if admin password is set
   shell: '{{ influxdb_cli }} -execute "SHOW USERS"'
