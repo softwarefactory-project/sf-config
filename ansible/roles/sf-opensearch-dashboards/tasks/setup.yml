@@ -26,14 +26,14 @@
 
 - name: Generate Opensearch dashboards welcome page text - internal host
   set_fact:
-    kibana_loginscreen_text: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
+    opensearch_dashboards_login_screen: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
 
 - name: Generate Opensearch dashboards welcome page text - external host
   set_fact:
-    kibana_loginscreen_text: "Readonly user: {{ external_opensearch_readonly_username }} password: {{ external_opensearch_readonly_password }}"
+    opensearch_dashboards_login_screen: "Readonly user: {{ external_opensearch_readonly_username }} password: {{ external_opensearch_readonly_password }}"
   when: external_opensearch_readonly_username != '' and external_opensearch_readonly_password != ''
 
-- name: Configure Kibana
+- name: Configure Opensearch Dashboards
   template:
     src: opensearch-dashboards.yml.j2
     dest: /etc/opensearch/opensearch_dashboards.yml
@@ -65,15 +65,15 @@
 
 # NOTE(dpawlik) Remove that when sf-config will have a feature, that
 # restore backup will be done after starting the service.
-- name: Restore Kibana objects that was available before moving to Opendistro
+- name: Restore Opensearch Dashboards objects that was available before moving to Opendistro
   block:
     - name: Set backup src var
       set_fact:
-        backup_src: "/var/lib/software-factory/backup/kibana"
+        backup_src: "/var/lib/software-factory/backup/opensearch_dashboards"
 
-    - name: Check if Kibana service is alive
+    - name: Check if Opensearch Dashboards service is alive
       wait_for:
-        host: "{{ kibana_host }}"
+        host: "{{ opensearch_dashboards_host }}"
         port: 5601
         timeout: 300
         delay: 20
@@ -87,7 +87,7 @@
       block:
         - name: Restore objects from backup
           command: |
-            /usr/local/bin/kibana-backup.py --kibana-url "{{ kibana_internal_url }}" --restore-file {{ backup_src }}/backup.ndjson restore
+            /usr/local/bin/kibana-backup.py --kibana-url "{{ opensearch_dashboards_internal_url }}" --restore-file {{ backup_src }}/backup.ndjson restore
         - name: Rename backup.ndjson to other name
           command: |
             mv {{ backup_src }}/backup.ndjson {{ backup_src }}/backup.ndjson-restored

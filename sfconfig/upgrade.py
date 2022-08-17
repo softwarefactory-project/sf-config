@@ -31,6 +31,7 @@ def update_sfconfig(args):
     # 2.6.0: expose elasticsearch config
     # 3.3.0: update elasticsearch config
     # 3.6.0: update elasticsearch config
+    # 3.8.0  change role name from elasticsearch to opensearch
     if 'opensearch' not in data:
         data['opensearch'] = data.get('elasticsearch', {})
         dirty = True
@@ -45,6 +46,10 @@ def update_sfconfig(args):
         dirty = True
     if 'minimum_heap_size' not in data['opensearch']:
         data['opensearch']['minimum_heap_size'] = '128m'
+        dirty = True
+
+    if 'opensearch_dashboards' not in data:
+        data['opensearch_dashboards'] = data.get('kibana', {})
         dirty = True
 
     if 'logstash' in data:
@@ -241,6 +246,10 @@ def update_sfconfig(args):
 
     if 'elasticsearch' in data:
         data.pop('elasticsearch')
+        dirty = True
+
+    if 'kibana' in data:
+        data.pop('kibana')
         dirty = True
 
     args.save_sfconfig = dirty

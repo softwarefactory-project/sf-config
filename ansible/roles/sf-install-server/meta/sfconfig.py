@@ -44,8 +44,11 @@ def get_previous_version():
 def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links,
                         args):
     def service(name, path):
-        if name in roles or (name == "kibana" and "kibana" in args.sfconfig and
-                             args.sfconfig['kibana'].get('host_url', "")):
+        if name in roles or (
+                name == "opensearch-dashboards" and
+                "opensearch_dashboards" in args.sfconfig and
+                args.sfconfig['opensearch_dashboards'].get('host_url', "")
+                ):
             return [dict(name=name, path=path)]
         else:
             return []
@@ -92,7 +95,7 @@ def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links,
             + [dict(name="zuul", path="/zuul")]
             + status_link
             + service("nodepool", "/nodepool")
-            + service("kibana", "/analytics_autologin")
+            + service("opensearch-dashboards", "/analytics_autologin")
             + service("grafana", "/grafana")
             + service("etherpad", "/etherpad")
             + service("lodgeit", "/paste")

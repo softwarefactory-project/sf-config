@@ -8,7 +8,7 @@ role_actions:
   - postconf
   - disable
 
-role_package: kibana
+role_package: opensearch_dashboards
 
 owner: opensearch-dashboards
 group: opensearch-dashboards
@@ -31,7 +31,6 @@ opensearch_dashboards_components:
 
 elk_config_dir: /etc/opensearch
 elk_log_dir: /var/log/opensearch
-old_kibana_config_dir: /etc/kibana
 
 opensearch_dashboards_certs_dir: "{{ elk_config_dir }}/certs/opensearch-dashboards"
 
@@ -45,11 +44,10 @@ opensearch_internal_url: "https://{{ opensearch_host }}:{{ opensearch_http_port 
 opensearch_readonly_user: kibana
 opensearch_readonly_password: "CHANGE_ME"
 
-kibana_http_port: 5601
-kibana_host: kibana.example.com
-kibana_internal_url: "https://{{ kibana_host }}:{{ kibana_http_port }}"
-
-kibana_bundle_js_patch: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
+opensearch_dashboards_http_port: 5601
+opensearch_dashboards_host: opensearch_dashboards.example.com
+opensearch_dashboards_internal_url: "http://{{ opensearch_dashboards_host }}:{{ opensearch_dashboards_http_port }}"
+opensearch_dashboards_bundle_js_patch: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
 
 keycloak_default_realm: SF
 

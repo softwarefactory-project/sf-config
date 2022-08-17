@@ -25,7 +25,7 @@ rhel_unsupported_roles = (
     "firehose",
 )
 
-correct_order = ['gerrit', 'managesf', 'opensearch', 'kibana']
+correct_order = ['gerrit', 'managesf', 'opensearch', 'opensearch_dashboards']
 
 
 def process(args):
@@ -78,6 +78,10 @@ def process(args):
             host['roles'] = [r.replace('elasticsearch',
                                        'opensearch') for r in host['roles']]
 
+        if 'kibana' in host['roles']:
+            host['roles'] = [r.replace('kibana',
+                                       'opensearch') for r in host['roles']]
+
         for role in host["roles"]:
             # Add host to role list
             args.glue["roles"].setdefault(role, []).append(host)
@@ -101,6 +105,16 @@ def process(args):
 
         args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
             list(aliases)
+
+        # NOTE(dpawlik) Remove it after moving elasticsearch role to opensearch
+        if 'elasticsearch' in aliases:
+            aliases.add("%s.%s" % ('opensearch', args.sfconfig["fqdn"]))
+            aliases.add("opensearch")
+
+        if 'kibana' in aliases:
+            aliases.add("%s.%s" % ('opensearch-dashboards',
+                                   args.sfconfig["fqdn"]))
+            aliases.add("opensearch-dashboards")
 
         # Check if inventory role order is correct
         correct_order_indexes = []

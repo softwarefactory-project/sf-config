@@ -17,9 +17,9 @@ opensearch_http_port: 9200
 opensearch_host: opensearch.example.com
 opensearch_internal_url: "https://{{ opensearch_host }}:{{ opensearch_http_port }}"
 
-kibana_http_port: 5601
-kibana_host: kibana.example.com
-kibana_internal_url: "https://{{ kibana_host }}:{{ kibana_http_port }}"
+opensearch_dashboards_http_port: 5601
+opensearch_dashboards_host: opensearch_dashboards.example.com
+opensearch_dashboards_internal_url: "https://{{ opensearch_dashboards_host }}:{{ opensearch_dashboards_http_port }}"
 
 keycloak_http_port: 38080
 keycloak_host: keycloak.example.com

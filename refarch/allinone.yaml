@@ -23,7 +23,7 @@ inventory:
       - murmur
       - opensearch
       - log-processing
-      - kibana
+      - opensearch-dashboards
       - firehose
       - influxdb
       - grafana

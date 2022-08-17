@@ -6,15 +6,15 @@
     SSLProxyCheckPeerName off
     SSLProxyCheckPeerExpire off
 
-{% if external_kibana_host %}
+{% if external_opensearch_dashboards_host %}
     <Location "/analytics">
-        ProxyPass {{ external_kibana_host }}
-        ProxyPassReverse {{ external_kibana_host }}
+        ProxyPass {{ external_opensearch_dashboards_host }}
+        ProxyPassReverse {{ external_opensearch_dashboards_host }}
     </Location>
 {% else %}
     <Location "/analytics">
-        ProxyPass {{ kibana_internal_url }}
-        ProxyPassReverse {{ kibana_internal_url }}
+        ProxyPass {{ opensearch_dashboards_internal_url }}
+        ProxyPassReverse {{ opensearch_dashboards_internal_url }}
     </Location>
 {% endif %}
 {% if external_opensearch_host %}

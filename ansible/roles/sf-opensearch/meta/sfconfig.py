@@ -54,5 +54,5 @@ class OpensSearch(Component):
             tuple(d.items()) for d in args.glue["opensearch_connections"]}]
 
         args.glue['readonly_user_autologin'] = \
-            args.sfconfig.get("kibana", {}).get('readonly_user_autologin',
-                                                'Basic')
+            args.sfconfig.get("opensearch_dashboards", {}).get(
+                'readonly_user_autologin', 'Basic')
