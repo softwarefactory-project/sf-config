@@ -13,7 +13,7 @@ group: opensearch
 container_uid: 1000
 container_gid: 1000
 
-opensearch_version: 1.2.4
+opensearch_version: 2.2.0
 opensearch_container_version: "{{ opensearch_version }}-1"
 
 opensearch_components:
@@ -28,19 +28,23 @@ opensearch_components:
       -e "OPENSEARCH_JAVA_OPTS=-Xms{{ opensearch_minimum_heap_size }} -Xmx{{ opensearch_maximum_heap_size }}"
       -v {{ elk_data_dir }}:{{ opensearch_container_dir }}/data:z
       -v {{ elk_log_dir }}:{{ elk_log_dir }}:z
+      -v {{ elk_log_dir }}/others:/usr/share/opensearch/logs:z
       -v {{ elk_stack_certs }}:{{ opensearch_container_certs_dir }}:z
-      -v {{ elk_config_dir }}/config.yml:{{ opensearch_container_dir }}/plugins/opensearch-security/securityconfig/config.yml:z
       -v {{ elk_config_dir }}/opensearch.yml:{{ opensearch_container_config_dir }}/opensearch.yml:z
+      -v {{ elk_config_dir }}/log4j2.properties:{{ opensearch_container_config_dir }}/log4j2.properties:z
+      -v {{ elk_config_dir }}/config.yml:{{ opensearch_container_securityconfig_dir }}/config.yml:z
       -v {{ elk_config_dir }}/internal_users.yml:{{ opensearch_container_securityconfig_dir }}/internal_users.yml:z
       -v {{ elk_config_dir }}/roles_mapping.yml:{{ opensearch_container_securityconfig_dir }}/roles_mapping.yml:z
       -v {{ elk_config_dir }}/tenants.yml:{{ opensearch_container_securityconfig_dir }}/tenants.yml:z
       -v {{ elk_config_dir }}/roles.yml:{{ opensearch_container_securityconfig_dir }}/roles.yml:z
       -v {{ elk_config_dir }}/action_groups.yml:{{ opensearch_container_securityconfig_dir }}/action_groups.yml:z
+      -v {{ elk_config_dir }}/nodes_dn.yml:{{ opensearch_container_securityconfig_dir }}/nodes_dn.yml:z
+      -v {{ elk_config_dir }}/whitelist.yml:{{ opensearch_container_securityconfig_dir }}/whitelist.yml:z
 
 opensearch_container_dir: /usr/share/opensearch
 opensearch_container_config_dir: "{{ opensearch_container_dir }}/config"
 opensearch_container_certs_dir: "{{ opensearch_container_config_dir }}/certificates"
-opensearch_container_securityconfig_dir: "{{ opensearch_container_dir }}/plugins/opensearch-security/securityconfig"
+opensearch_container_securityconfig_dir: "{{ opensearch_container_config_dir }}/opensearch-security"
 
 elk_config_dir: /etc/opensearch
 elk_data_dir: /var/lib/elasticsearch

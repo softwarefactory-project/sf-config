@@ -25,7 +25,7 @@ rhel_unsupported_roles = (
     "firehose",
 )
 
-correct_order = ['gerrit', 'managesf', 'opensearch', 'opensearch_dashboards']
+correct_order = ['gerrit', 'managesf', 'opensearch', 'opensearch-dashboards']
 
 
 def process(args):

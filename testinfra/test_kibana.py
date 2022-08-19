@@ -13,6 +13,6 @@
 
 class TestOpensearchDashboards:
     def test_service_running_and_enabled(self, host):
-        service = host.service("opensearch_dashboards")
+        service = host.service("opensearch-dashboards")
         assert service.is_running
         assert service.is_enabled

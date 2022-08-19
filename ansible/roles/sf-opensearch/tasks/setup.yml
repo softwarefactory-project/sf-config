@@ -23,6 +23,7 @@
     - "{{ elk_stack_certs }}"
     - "{{ elk_data_dir }}"
     - "{{ elk_log_dir }}"
+    - "{{ elk_log_dir }}/others"
 
 - name: Rename Opensearch admin key
   copy:
@@ -90,6 +91,7 @@
     dest: "{{ elk_config_dir }}/{{ item }}"
     owner: "{{ owner }}"
     group: "{{ group }}"
+    mode: "0640"
   loop:
     - internal_users.yml
     - tenants.yml
@@ -103,6 +105,17 @@
     - ensure started opensearch
     - wait for opensearch service
     - reconfigure security plugin in containers
+
+- name: Create log4j2.properties file
+  copy:
+    src: log4j2.properties
+    dest: "/etc/opensearch/log4j2.properties"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: "0640"
+  notify:
+    - ensure started opensearch
+    - wait for opensearch service
 
 - name: Configure Opensearch
   template:
