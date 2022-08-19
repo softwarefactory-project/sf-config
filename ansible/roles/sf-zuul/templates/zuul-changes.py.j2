@@ -24,7 +24,7 @@ import time
 dump_file = "/var/lib/zuul/zuul-queues-dump.sh"
 
 
-def dump(args):
+def get_tenants(args):
     req = requests.get("%s/tenants" % args.url)
     tenants = req.json()
     status = {}
@@ -33,7 +33,25 @@ def dump(args):
         status[tenant["name"]] = req.json()
     if os.path.isfile(args.dump_file):
         os.rename(args.dump_file, "%s.orig" % args.dump_file)
+    return (tenants, status)
 
+
+def retry_get_tenants(args):
+    count, max_count = 0, 5
+    while True:
+        try:
+            return get_tenants(args)
+        except Exception as e:
+            if count > max_count:
+                raise e
+            count += 1
+            print("Request fails (%s), retrying %d/%d" %
+                  (str(e), count, max_count))
+            time.sleep(count * 2)
+
+
+def dump(args):
+    (tenants, status) = retry_get_tenants(args)
     of = open(args.dump_file, "w")
     of.write("#/bin/sh\nset -ex\n")
     for tenant in tenants:
