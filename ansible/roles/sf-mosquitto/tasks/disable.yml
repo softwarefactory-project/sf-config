@@ -1,15 +1,30 @@
 ---
 - name: Disable services
   service:
-    name: mosquitto
+    name: "{{ role_package }}"
     state: stopped
     enabled: "no"
-  ignore_errors: "yes"
+  ignore_errors: true
 
 - name: Remove packages
   yum:
     name: "{{ item }}"
     state: absent
   loop:
-    - mosquitto
+    - "{{ role_package }}"
+
+- block:
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ mosquitto_components }}"
+
+    - name: Remove {{ role_package }} data
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ mosquitto_config_dir }}"
+
   when: erase == True

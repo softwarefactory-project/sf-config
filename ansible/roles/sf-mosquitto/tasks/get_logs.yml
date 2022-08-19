@@ -12,3 +12,12 @@
     src: "/var/lib/software-factory/mosquitto_sub.log"
     dest: "{{ log_dest }}/log"
   ignore_errors: true
+
+- name: Getting container logs
+  include_role:
+    name: sf-container
+    tasks_from: get_logs.yaml
+  loop:
+    - container: "{{ role_package }}"
+      options: ""
+      target: "{{ log_dest }}"
