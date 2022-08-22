@@ -86,6 +86,9 @@ class Gateway(Component):
             args.glue["tls_challenge_alias_path"] = args.sfconfig["network"][
                 "tls_challenge_alias_path"]
 
+        args.glue['external_opensearch_host'] = None
+        args.glue['external_opensearch_port'] = None
+
         config_key = 'external_opensearch'
         external_elk = args.sfconfig.get(config_key, {}).get('host')
         if external_elk:
@@ -93,9 +96,6 @@ class Gateway(Component):
                 urllib.parse.urlparse(external_elk).hostname
             args.glue['external_opensearch_port'] = \
                 urllib.parse.urlparse(external_elk).port
-        else:
-            args.glue['external_opensearch_host'] = None
-            args.glue['external_opensearch_port'] = None
 
         args.glue['external_opensearch_dashboards_host'] = \
             args.sfconfig.get('opensearch_dashboards', {}).get('host_url')

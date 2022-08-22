@@ -49,7 +49,7 @@ elk_stack_certs: "{{ elk_config_dir }}/certs/opensearch"
 old_elk_config_dir: /etc/elasticsearch
 old_elk_stack_certs: "{{ old_elk_config_dir }}/certs"
 
-# FIXME: Change it after renaming
+# NOTE: Remove section after sf-config 3.8 is released.
 elasticsearch_password: "CHANGE_ME"
 elasticsearch_kibanaserver_password: "CHANGE_ME"
 elasticsearch_logstash_password: "CHANGE_ME"

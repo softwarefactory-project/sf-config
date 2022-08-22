@@ -59,7 +59,7 @@ def wait_for_merge(query, retry):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository", default=os.getcwd())
-    parser.add_argument("--delay", type=int, default=60)
+    parser.add_argument("--delay", type=int, default=120)
     parser.add_argument("--abandon", action="store_const", const=True)
     parser.add_argument("--approve", action="store_const", const=True)
     parser.add_argument("--failure", action="store_const", const=True)
