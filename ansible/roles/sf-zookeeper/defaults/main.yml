@@ -23,7 +23,7 @@ zookeeper_minSessionTimeout: 60000
 zookeeper_maxSessionTimeout: 180000
 zookeeper_purgeInterval: 24
 
-zookeeper_version: 3.6.3
+zookeeper_version: 3.8.0
 zookeeper_release: 1
 
 zookeeper_components:
