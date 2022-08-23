@@ -71,6 +71,10 @@
       password_file {{ mosquitto_config_dir }}/passwords
       # In version 1.6.x and earlier, this option defaulted to true
       allow_anonymous true
+    create: true
+    owner: "{{ owner }}"
+    group: "{{ group }}"
+    mode: '0640'
   register: mosquittoconf
 
 - name: Apply selinux port labelling
