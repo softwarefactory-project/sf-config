@@ -30,8 +30,8 @@
     - name: Create initial resources
       command: >
         /usr/bin/managesf-resources direct-apply
-            --prev-yaml /var/lib/software-factory/bootstrap-data/empty_resources.yaml
-            --new-yaml /var/lib/software-factory/bootstrap-data/resources.yaml
+        --prev-yaml /var/lib/software-factory/bootstrap-data/empty_resources.yaml
+        --new-yaml /var/lib/software-factory/bootstrap-data/resources.yaml
       ignore_errors: yes
       when:
         - not remote_config_repositories

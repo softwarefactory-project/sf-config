@@ -1,8 +1,14 @@
 ---
-- name: Restart the service
+- name: "Stop {{ role_package }} container service"
   service:
-    name: managesf
-    state: restarted
+    name: "{{ role_package }}"
+    state: stopped
+
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ managesf_components }}"
 
 - name: Try to update cache resources
   shell: |

@@ -1,4 +1,7 @@
 ---
+#TODO: This task should be set to absent when all
+# managesf services (managesf, managesf-resources, managesf-configuration)
+# are containerized
 - name: Install package
   yum:
     name: "{{ role_package }}"
@@ -7,3 +10,11 @@
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
   delegate_to: "{{ item }}"
   loop: "{{ executor_hosts | union( groups['managesf'] ) }}"
+
+- name: Pull image
+  include_tasks: "install_container_multi_host.yml"
+  vars:
+    host_to: "{{ item }}"
+  loop: "{{ executor_hosts | union( groups['managesf'] ) }}"
+  loop_control:
+    loop_var: outer_item

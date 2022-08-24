@@ -1,15 +1,59 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
-
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
   vars:
-    user_name: managesf
-    ssh_key: managesf_rsa
+    user_name: "{{ role_package }}"
+    ssh_key: "{{ role_package }}_rsa"
+
+- name: "Get {{ owner }} uid"
+  command: "id -u {{ owner }}"
+  register: _managesf_id
+
+- name: "Get {{ owner }} gid"
+  command: "id -g {{ owner }}"
+  register: _managesf_gid
+
+- name: "Setting {{ owner }} uid var"
+  set_fact:
+    managesf_uid: "{{ _managesf_id.stdout }}"
+    managesf_gid: "{{ _managesf_gid.stdout }}"
+
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ managesf_components }}"
+
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - path: "{{ managesf_config_dir }}"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0750"
+    - path: "{{ managesf_log_dir }}"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0750"
+    - path: "{{ managesf_lib_dir }}"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0750"
+    - path: "{{ managesf_lib_dir }}/managesf-resources"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0750"
+      recurse: "yes"
 
 - name: Setup git access to remote gerrit
   blockinfile:
-    dest: /var/lib/managesf/.ssh/config
+    dest: "{{ managesf_lib_dir }}/.ssh/config"
     create: yes
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: '0644'
     block: |
       {% for conn in zuul_gerrit_connections|default([]) %}
@@ -29,18 +73,12 @@
         IdentityFile /var/lib/managesf/.ssh/id_rsa
       {% endif %}
 
-- name: "Create config directory"
-  file:
-    path: /etc/managesf
-    state: directory
-    mode: '0750'
-    group: managesf
-
 - name: "Setup config.py"
   template:
     src: config.py.j2
-    dest: /etc/managesf/config.py
-    group: managesf
+    dest: "{{ managesf_config_dir }}/config.py"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
     mode: '0440'
   notify: restart managesf
 
@@ -48,17 +86,29 @@
     - name: Update local config repo remote url if fqdn is updated
       command: 'git remote set-url origin {{ config_public_location }}'
       args:
-        chdir: "/var/lib/managesf/git/local/{{ config_project_name }}"
+        chdir: "{{ managesf_lib_dir }}/git/local/{{ config_project_name }}"
 
     - name: Restart service when fqdn is updated
       systemd:
-        name: managesf
+        name: "{{ role_package }}"
         state: restarted
   when: update_fqdn
 
+- name: Create managesf policy file
+  file:
+    path: "{{ managesf_config_dir }}/policy.yaml"
+    state: touch
+  changed_when: false
+
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ managesf_components }}"
+
 - name: Start service
   systemd:
-    name: managesf
+    name: "{{ role_package }}"
     state: started
     daemon_reload: "yes"
     enabled: "yes"
