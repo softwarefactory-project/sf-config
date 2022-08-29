@@ -7,6 +7,12 @@
     - builder
     - launcher
 
+- name: Remove unused packages
+  package:
+    name:
+      - diskimage-builder
+    state: absent
+
 - name: Indicate nodepool needs to be restarted
   set_fact:
     nodepool_need_restart: true
