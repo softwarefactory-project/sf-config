@@ -8,7 +8,7 @@
     # Common settings for Basic/JWT auth
     RequestHeader set "Host" "{{ fqdn }}"
 
-    # ip address of kibana_host
+    # ip address of opensearch_dashboards_host
     RequestHeader set "X-Forwarded-For" "{{ fqdn }}"
     RequestHeader set "X-Forwarded-Host" "{{ fqdn }}"
 

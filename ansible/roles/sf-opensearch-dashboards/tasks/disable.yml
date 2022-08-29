@@ -6,11 +6,9 @@
     enabled: false
   ignore_errors: true
 
-- block:
-  - name: Delete containers
-    include_role:
-      name: sf-container
-      tasks_from: delete.yaml
-    loop: "{{ opensearch_dashboards_components }}"
-
+- name: Delete containers
+  include_role:
+    name: sf-container
+    tasks_from: delete.yaml
+  loop: "{{ opensearch_dashboards_components }}"
   when: erase == True

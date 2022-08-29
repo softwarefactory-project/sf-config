@@ -16,9 +16,14 @@ from sfconfig.components import Component
 class Kibana(Component):
     def configure(self, args, host):
 
-        args.glue['readonly_user_autologin'] = \
-            args.sfconfig.get("kibana", {}).get('readonly_user_autologin',
-                                                'Basic')
+        if 'kibana' in args.sfconfig:
+            args.glue['readonly_user_autologin'] = \
+                args.sfconfig.get("kibana", {}).get('readonly_user_autologin',
+                                                    'Basic')
+        elif 'opensearch_dashboards' in args.sfconfig:
+            args.glue['readonly_user_autologin'] = \
+                args.sfconfig.get("opensearch_dashboards", {}).get(
+                    'readonly_user_autologin', 'Basic')
 
         self.get_or_generate_cert(args, "opensearch-dashboards",
                                   host["hostname"])

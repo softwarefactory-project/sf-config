@@ -50,6 +50,8 @@ opensearch_dashboards_internal_url: "http://{{ opensearch_dashboards_host }}:{{ 
 opensearch_dashboards_bundle_js_patch: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
 
 keycloak_default_realm: SF
+keycloak_kibana_client_secret: "CHANGE_ME"
+keycloak_opensearch_dashboards_client_secret: "{{ keycloak_kibana_client_secret }}"
 
 # External opensearch configuration
 external_opensearch_readonly_username: ''

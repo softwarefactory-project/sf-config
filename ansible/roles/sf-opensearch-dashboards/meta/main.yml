@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  description: Kibana service
+  description: OpenSearch Dashboards service
   company: Red Hat
   license: Apache
   min_ansible_version: 2.2

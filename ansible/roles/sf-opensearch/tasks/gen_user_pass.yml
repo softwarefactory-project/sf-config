@@ -3,4 +3,4 @@
   set_fact:
     "opensearch_{{ item.key }}": "{{ item.value.password }}"
     "opensearch_{{ item.key }}_hash": "{{  item.value.password | password_hash('bcrypt', rounds=12) }}"
-  no_log: False
+  no_log: show_hidden_logs == False
