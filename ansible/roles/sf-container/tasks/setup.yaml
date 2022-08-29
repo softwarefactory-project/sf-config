@@ -79,6 +79,14 @@
     - _container_service is changed
     - item.service not in ((zuul_services | default([])) + (nodepool_services | default([])))
 
+- name: "Ensure {{ item.service }} service is enabled (but not started or restarted)"
+  systemd:
+    name: "{{ item.service }}"
+    enabled: true
+    daemon_reload: true
+  when:
+    - item.service in ((zuul_services | default([])) + (nodepool_services | default([])))
+
 - name: Write installed container version
   copy:
     content: "{{ item.image }}"
