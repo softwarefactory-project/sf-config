@@ -191,8 +191,8 @@
 {% endif %}
 {% if 'lodgeit' in roles %}
         RewriteRule ^/paste$ paste/ [R]
-        ProxyPass /paste/ http://127.0.0.1:5000/paste/ retry=0
-        ProxyPassReverse /paste/ http://127.0.0.1:5000/paste/
+        ProxyPass /paste http://127.0.0.1:5000/paste retry=0
+        ProxyPassReverse /paste http://127.0.0.1:5000/paste
 {% endif %}
 {% if koji_host|default(False) %}
 

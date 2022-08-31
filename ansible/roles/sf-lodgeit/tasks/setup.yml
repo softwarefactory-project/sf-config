@@ -27,10 +27,6 @@
     name: sf-container
     tasks_from: create_directory.yaml
   loop:
-    - path: "{{ lodgeit_config_dir }}"
-      recurse: "yes"
-      owner: "{{ owner }}"
-      mode: "0755"
     - path: "{{ lodgeit_web_resources }}"
       recurse: "yes"
       owner: "root"
@@ -45,22 +41,6 @@
   when:
     - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
     - ansible_selinux.status == "enabled"
-
-- name: Install {{ role_package }} template files
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ lodgeit_config_dir }}/{{ item }}"
-    mode: '0444'
-    owner: apache
-    group: apache
-  loop:
-    - lodgeit
-    - lodgeit.conf
-
-- name: Remove old static link
-  file:
-    path: /var/www/static/lodgeit
-    state: absent
 
 - name: Create container
   include_role:
@@ -77,13 +57,18 @@
 
 - name: Copying {{ role_package }} Web Page Resources
   block:
+
+    - name: Wait for {{ role_package }} http port
+      wait_for:
+        port: "{{ lodgeit_port }}"
+
     # SF Lodgeit installs its own web resources on SF Gateway
     # Instead of SF Gateway having unnecessary packages installed
     - name: "Installing {{ role_package }} Web Page Resources"
       shell: |
             podman cp {{ role_package }}:{{ lodgeit_container_web_resources }} {{ lodgeit_web_resources }}
-            podman cp {{ role_package }}:/usr/lib/python3.6/site-packages/xstatic/pkg/jquery/data/jquery.min.js \
-            {{ lodgeit_web_resources }}/jquery.js
+            mv {{ lodgeit_web_resources }}/static/* {{ lodgeit_web_resources }}
+            rm -r {{ lodgeit_web_resources }}/static
       notify: apache reload
 
   when: "'gateway' in roles"

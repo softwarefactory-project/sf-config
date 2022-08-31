@@ -7,8 +7,8 @@ role_actions:
 
 role_package: lodgeit
 
-container_uid: 999
-container_gid: 999
+container_uid: 1000
+container_gid: 1000
 owner: "{{ role_package }}"
 group: "{{ role_package }}"
 
@@ -21,9 +21,7 @@ lodgeit_mysql_password: "CHANGE_ME"
 
 lodgeit_session_key: "CHANGE_ME"
 
-lodgeit_config_dir: "/etc/lodgeit"
-
-lodgeit_container_web_resources : "/usr/lib/python3.6/site-packages/lodgeit/static"
+lodgeit_container_web_resources : "/usr/local/lib/python3.8/site-packages/lodgeit/static"
 lodgeit_web_resources : "/var/www/static/lodgeit"
 
 lodgeit_version: 0.3
@@ -34,8 +32,8 @@ lodgeit_components:
     image: "quay.io/software-factory/{{ role_package }}:{{ lodgeit_container_version }}"
     params: >-
       --network host
-      --user {{ container_uid }}:{{ container_gid }}
       --uidmap 0:4000:999
       --uidmap {{ container_uid }}:{{ lodgeit_uid | default(1000)}}:1
-      --volume {{ lodgeit_config_dir }}/lodgeit.conf:{{ lodgeit_config_dir }}/lodgeit.conf:Z
-      --volume {{ lodgeit_config_dir }}/lodgeit:/etc/sysconfig/lodgeit:Z
+      --env LODGEIT_SECRET_KEY={{ lodgeit_session_key }}
+      --env LODGEIT_DBURI=mysql+pymysql://{{ lodgeit_mysql_user }}:{{ lodgeit_mysql_password }}@{{ lodgeit_mysql_host }}:{{ lodgeit_mysql_port }}/{{ lodgeit_mysql_db }}
+      --env UWSGI_HTTP_SOCKET=:{{ lodgeit_port }}

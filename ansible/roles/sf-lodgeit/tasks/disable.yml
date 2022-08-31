@@ -4,7 +4,7 @@
     name: "{{ role_package }}"
     state: stopped
     enabled: "no"
-  ignore_errors: "yes"
+  ignore_errors: true
 
 - name: Remove packages
   block:
@@ -19,7 +19,6 @@
         path: "{{ item }}"
         state: absent
       loop:
-        - "{{ lodgeit_config_dir }}"
         - "{{ lodgeit_web_resources }}"
 
   when: erase == True
