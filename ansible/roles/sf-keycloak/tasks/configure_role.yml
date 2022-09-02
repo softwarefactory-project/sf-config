@@ -25,7 +25,7 @@
           --set 'description={{ item.description }}'
           {{ kcadm_options }}
     register: _role
-    failed_when: _role.rc != 0 and _role.stdout.find("already exists") == -1
+    failed_when: _role.rc != 0 and not ( _role.stdout is search("already exists", multiline=True, ignorecase=True) )
     no_log: show_hidden_logs == False
 
   # 2. Assign role to default realm roles

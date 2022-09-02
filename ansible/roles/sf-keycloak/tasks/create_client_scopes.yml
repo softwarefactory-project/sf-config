@@ -26,5 +26,5 @@
          -o --fields id
          {{ kcadm_options }}
   register: _client_scope_create
-  failed_when: _client_scope_create.rc != 0 and _client_scope_create.stdout.find("already exists") == -1
+  failed_when: _client_scope_create.rc != 0 and not ( _client_scope_create.stdout is search("already exists", multiline=True, ignorecase=True) )
   no_log: show_hidden_logs == False

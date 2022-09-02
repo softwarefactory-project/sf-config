@@ -60,5 +60,5 @@
     --set 'config."access.token.claim"={{ item.config.accessTokenClaim }}' \
     {{ kcadm_options }}
   register: _mapper_created
-  failed_when: _mapper_created.rc != 0 and _mapper_created.stdout.find("mapper exists") == -1
+  failed_when: _mapper_created.rc != 0 and not ( _mapper_created.stdout is search("mapper exists", multiline=True, ignorecase=True))
   no_log: show_hidden_logs == False

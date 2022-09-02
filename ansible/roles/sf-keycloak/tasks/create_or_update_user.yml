@@ -25,7 +25,7 @@
         --set "enabled=true"
         {{ kcadm_options }}
   register: _user_create
-  failed_when: _user_create.rc != 0 and _user_create.stdout.find("User exists") == -1
+  failed_when: _user_create.rc != 0 and not ( _user_create.stdout is search("User exists", multiline=True, ignorecase=True) )
   no_log: show_hidden_logs == False
 
 # 2. Get user data

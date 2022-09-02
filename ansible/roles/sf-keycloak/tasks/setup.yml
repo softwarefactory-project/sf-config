@@ -150,7 +150,7 @@
   # account for time needed to start the service
   retries: 60
   delay: 5
-  until: _default_realm.rc == 0 or _default_realm.stdout.find("Resource not found") == -1
+  until: _default_realm.rc == 0 or not ( _default_realm.stdout is search("Resource not found", multiline=True, ignorecase=True) )
   ignore_errors: true
   no_log: show_hidden_logs == False
 
@@ -324,7 +324,7 @@
             {{ kcadm_options }}
     # Fail if error not due to idp already existing
       register: _gh_idp
-      failed_when: _gh_idp.rc != 0 and _gh_idp.stdout.find("Identity Provider github already exists") == -1
+      failed_when: _gh_idp.rc != 0 and not ( _gh_idp.stdout is search("Identity Provider github already exists", multiline=True, ignorecase=True) )
       no_log: show_hidden_logs == False
 
     - name: check for an existing SSH key mapper

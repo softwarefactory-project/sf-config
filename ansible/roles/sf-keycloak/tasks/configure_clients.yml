@@ -23,7 +23,7 @@
         --set 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
         {{ kcadm_options }}
   register: _client_create
-  failed_when: _client_create.rc != 0 and _client_create.stdout.find("already exists") == -1
+  failed_when: _client_create.rc != 0 and not ( _client_create.stdout is search("already exists", multiline=True, ignorecase=True) )
   when: item.use_secret == True
   no_log: show_hidden_logs == False
   # The Jinja if statement can be removed and set at a different stage.
@@ -46,7 +46,7 @@
         {% endif %}
         {{ kcadm_options }}
   register: _client_create
-  failed_when: _client_create.rc != 0 and _client_create.stdout.find("already exists") == -1
+  failed_when: _client_create.rc != 0 and not ( _client_create.stdout is search("already exists", multiline=True, ignorecase=True) )
   when: item.use_secret == False
   no_log: show_hidden_logs == False
 
@@ -117,7 +117,7 @@
         --set 'config."jsonType.label"=String'
         {{ kcadm_options }}
   register: _rolemapper_create
-  failed_when: _rolemapper_create.rc != 0 and _rolemapper_create.stdout.find("Protocol mapper exists with same name") == -1
+  failed_when: _rolemapper_create.rc != 0 and not ( _rolemapper_create.stdout is search("Protocol mapper exists with same name", multiline=True, ignorecase=True) )
   when: item.realm_role_mapper == True
   no_log: show_hidden_logs == False
 
@@ -138,7 +138,7 @@
         -s 'config."claim.name"=groups'
         {{ kcadm_options }}
   register: _groupmapper_create
-  failed_when: _groupmapper_create.rc != 0 and _groupmapper_create.stdout.find("Protocol mapper exists with same name") == -1
+  failed_when: _groupmapper_create.rc != 0 and not ( _groupmapper_create.stdout is search("Protocol mapper exists with same name", multiline=True, ignorecase=True) )
   when: item.group_role_mapper == True
   no_log: show_hidden_logs == False
 
