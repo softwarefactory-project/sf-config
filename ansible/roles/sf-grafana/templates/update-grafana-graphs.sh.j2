@@ -13,6 +13,6 @@ if [ "${RET}" -ne "4" ] && [ "${RET}" -ne "0" ]; then
 elif [ "${RET}" -eq "4" ]; then
     set -e
     set -o pipefail
-    find {{ grafyaml_metrics }} -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I yaml grafana-dashboard update yaml
+    grafana-dashboard
 fi
 {% endif %}

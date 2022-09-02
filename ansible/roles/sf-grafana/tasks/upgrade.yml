@@ -1,22 +1,6 @@
 ---
-- name: Check if grafana-server is running
-  command: systemctl is-active -q grafana-server
-  register: _grafana_service
-  failed_when: _grafana_service.rc not in [0, 3]
-  changed_when: false
-
-- block:
-    - name: Stop the service
-      service:
-        name: grafana-server
-        state: stopped
-
-    - name: Remove grafana rpm package
-      yum:
-        name: grafana
-        state: absent
-  when:
-    - _grafana_service.rc == 0
+- service_facts:
+  run_once: true
 
 - name: Upgrade container
   include_role:
