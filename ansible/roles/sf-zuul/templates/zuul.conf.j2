@@ -13,6 +13,7 @@ tls_ca={{ zuul_conf_dir }}/ssl/zk-ca.pem
 [keystore]
 password={{ zuul_keystore_secret }}
 
+{% if 'zuul-scheduler' in roles %}
 [scheduler]
 state_dir={{ zuul_lib_dir }}
 command_socket={{ zuul_lib_dir }}/scheduler.socket
@@ -20,7 +21,9 @@ tenant_config={{ zuul_conf_dir }}/main.yaml
 log_config={{ zuul_conf_dir }}/scheduler-logging.yaml
 max_hold_expiration={{ zuul_max_hold_expiration|default(0) }}
 default_hold_expiration={{ zuul_default_hold_expiration|default(86400) }}
+{% endif %}
 
+{% if 'zuul-merger' in roles %}
 [merger]
 state_dir={{ zuul_lib_dir }}
 command_socket={{ zuul_lib_dir }}/merger.socket
@@ -28,7 +31,9 @@ git_dir={{ zuul_lib_dir }}/git/
 git_user_email=zuul@{{ fqdn }}
 git_user_name=zuul
 log_config={{ zuul_conf_dir }}/merger-logging.yaml
+{% endif %}
 
+{% if 'zuul-executor' in roles %}
 [executor]
 ansible_setup_timeout={{ zuul_executor_ansible_setup_timeout|default(60) }}
 manage_ansible=true
@@ -37,7 +42,7 @@ command_socket={{ zuul_lib_dir }}/executor.socket
 git_dir={{ zuul_lib_dir }}/executor/
 disk_limit_per_job={{ zuul_executor_disk_limit|default(250) }}
 private_key_file={{ zuul_lib_dir }}/.ssh/id_rsa
-finger_port=7979
+finger_port={{ zuul_executor_finger_port }}
 {% if 'log-classify' in roles %}
 trusted_rw_paths=/var/lib/log-classify
 {% endif %}
@@ -59,18 +64,38 @@ zuul_executor_zone:
 zone={{ executor.zone }}
 {% endif %}
 {% endfor %}
+{% endif %}
 
+{% if 'zuul-fingergw' in roles %}
 [fingergw]
 state_dir={{ zuul_lib_dir }}
 command_socket={{ zuul_lib_dir }}/fingergw.socket
 listen_address=0.0.0.0
+port={{ zuul_fingergw_port }}
+log_config={{ zuul_conf_dir }}/fingergw-logging.yaml
+{# An fingergw zone can be configured by adding in /etc/software-factory/custom-vars.yaml
+zuul_fingergw_zone:
+  - hostname: zfgw01
+    zone: private
+    gateway_hostname: 192.168.10.254
 
+#}
+{% for fingergw in zuul_fingergw_zone|default([]) %}
+{% if ansible_hostname == fingergw.hostname  %}
+zone={{ fingergw.zone }}
+hostname={{ fingergw.gateway_hostname }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if 'zuul-web' in roles %}
 [web]
 listen_address=0.0.0.0
 command_socket={{ zuul_lib_dir }}/web.socket
 port={{ zuul_web_port }}
 log_config={{ zuul_conf_dir }}/web-logging.yaml
 root={{ zuul_pub_url }}
+{% endif %}
 
 [webclient]
 url={{ zuul_pub_url }}

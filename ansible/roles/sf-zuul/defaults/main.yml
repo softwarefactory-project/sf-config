@@ -51,6 +51,10 @@ zuul_components:
       --volume /var/lib/log-classify:/var/lib/log-classify:z
       {% endif %}
       --privileged
+  - service: "zuul-fingergw"
+    image: "quay.io/software-factory/zuul-fingergw-ubi:{{ zuul_container_version }}"
+    params: >-
+      {{ zuul_components_default_params }}
   - service: "zuul-merger"
     image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_container_version }}"
     params: >-
@@ -72,6 +76,8 @@ zuul_scheduler_depends:
 
 zuul_web_port: 9000
 
+zuul_fingergw_port: 7979
+zuul_executor_finger_port: 7900
 zuul_executor_ansible_setup_timeout: 60
 zuul_executor_disk_limit: 1024
 zuul_executor_load_multiplier: 2.5
