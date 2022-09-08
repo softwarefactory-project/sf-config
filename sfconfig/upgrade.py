@@ -52,6 +52,18 @@ def update_sfconfig(args):
         data['opensearch_dashboards'] = data.get('kibana', {})
         dirty = True
 
+    if 'kibana' in data:
+        del data['kibana']
+        dirty = True
+
+    if 'external_opensearch' not in data:
+        data['external_opensearch'] = data.get('external_elasticsearch', {})
+        dirty = True
+
+    if 'external_elasticsearch' in data:
+        del data['external_elasticsearch']
+        dirty = True
+
     if 'logstash' in data:
         data.pop('logstash')
 
@@ -150,6 +162,17 @@ def update_sfconfig(args):
         data["zuul"]["gerrit_connections"].remove(to_delete)
         dirty = True
 
+    # Check for duplicate external_authenticators
+    ext_auth = []
+    for auth in data.get("zuul", {}).get("external_authenticators", []):
+        if auth['name'] in ext_auth:
+            print("Warning: There is duplication in Zuul "
+                  "external_authenticators.")
+            data['zuul']['external_authenticators'].remove(auth)
+            dirty = True
+        else:
+            ext_auth.append(auth['name'])
+
     if 'allowed_proxy_prefixes' in data['authentication']:
         del data['authentication']['allowed_proxy_prefixes']
         dirty = True
@@ -164,10 +187,9 @@ def update_sfconfig(args):
                   "is reserved for the internal elasticsearch service")
             exit(1)
 
-    # FIXME: change Change line after renaming elasticsearch to opensearch
-    if data['zuul'].get("elasticsearch_connections", []):
+    if 'opensearch_connections' not in data['zuul']:
         data['zuul']['opensearch_connections'] = \
-                data['zuul']['elasticsearch_connections']
+                data['zuul'].pop('elasticsearch_connections', {})
         dirty = True
 
     # 3.3: add SAML2 groups values
