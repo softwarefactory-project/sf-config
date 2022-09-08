@@ -1,0 +1,4 @@
+<ifModule mod_proxy.c>
+    ProxyPass /logs http://{{ fqdn }}:{{ logserver_port }}/logs
+    ProxyPassReverse /logs http://{{ fqdn }}:{{ logserver_port }}/logs
+</IfModule>
