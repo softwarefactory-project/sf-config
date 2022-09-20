@@ -51,6 +51,7 @@
   template:
     src: create_databases.sql.j2
     dest: "{{ mariadb_sql_dir }}/databases.sql"
+  register: databases_setup
 
 - name: Set wait_timeout to 2 weeks
   ini_file:
@@ -112,6 +113,12 @@
   loop:
     - localhost
     - "{{ ansible_hostname }}"
+
+- name: Ensure all databases are created
+  shell: >
+    podman exec {{ role_package }} sh -c ' mysql
+    -uroot -p$MYSQL_ROOT_PASSWORD < {{ container_dir_sql_file }}'
+  when: databases_setup.changed
 
 - name: remove useless databases if present
   mysql_db:

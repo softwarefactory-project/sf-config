@@ -43,7 +43,7 @@ mysql_components:
       --env MYSQL_ROOT_PASSWORD={{ mysql_root_password }}
       --volume {{ mysql_config_dir }}/my.cnf:{{ mysql_config_dir }}/my.cnf:z
       --volume {{ mysql_config_dir }}/.my.cnf:/root/.my.cnf:z
-      --volume {{ mariadb_host_sql_file }}:{{ container_dir_sql_file }}:z
+      --volume {{ mariadb_sql_dir }}:{{ container_dir }}:z
       --volume {{ mysql_config_drop_in_dir }}:{{ mysql_config_drop_in_dir }}:z
       --volume {{ mysql_var_run_dir }}:{{ mysql_var_run_dir }}:z
       --volume {{ mysql_var_lib }}:{{ mysql_var_lib }}:z
