@@ -100,12 +100,6 @@
     daemon_reload: "yes"
     enabled: "yes"
 
-- name: Check if grafana is running
-  command: systemctl is-active -q grafana-server
-  register: _grafana_service
-  failed_when: _grafana_service.rc not in [0, 3]
-  changed_when: false
-
 - name: Wait for grafana to be ready
   uri:
     url: "{{ grafana_internal_url }}/api/health"
@@ -118,16 +112,6 @@
   until:
     - _grafana_health.status == 200
     - _grafana_health.json.database == 'ok'
-
-- name: Restart service if required
-  service:
-    name: grafana-server
-    state: restarted
-  failed_when: false
-  when:
-    - _grafana_service.rc == 0
-    - _grafana_ini is changed
-    - _grafana_ini_auth is changed
 
 - name: Fix systemd file to wait for mysql
   ini_file:
@@ -177,11 +161,19 @@
         group: '{{ group }}'
   delegate_to: '{{ install_server_host }}'
 
-- name: Restart service {{ role_package }} to apply plugins
+- name: Ensure service {{ role_package }} is enabled
+  systemd:
+    name: "{{ role_package }}"
+    state: started
+    daemon_reload: "yes"
+    enabled: "yes"
+
+- name: Restart {{ role_package }} container if config files changed
   systemd:
     name: "{{ role_package }}"
     state: restarted
-    daemon_reload: "yes"
-    enabled: "yes"
+  when:
+    - _grafana_ini is changed
+    - _grafana_ini_auth is changed
 
 - include_tasks: grafana_configuration.yml

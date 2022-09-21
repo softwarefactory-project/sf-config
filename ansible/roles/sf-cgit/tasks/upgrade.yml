@@ -1,22 +1,17 @@
 ---
-- name: "Remove {{ role_package }} rpm package"
-  yum:
-    name: "{{ role_package }}"
-    state: absent
-  register: _remove_rpm_package
-
-- name: "Check if {{ role_package }} is running"
-  command: "systemctl is-active -q {{ role_package }}"
-  register: _cgit_service
-  failed_when: _cgit_service.rc not in [0, 3]
-  changed_when: false
+- service_facts:
+  run_once: true
 
 - name: Stop the service
   service:
     name: "{{ role_package }}"
     state: stopped
-  when:
-    - _cgit_service.rc == 0
+  when: "'{{ role_package }}.service' in {{ ansible_facts.services }}"
+
+- name: "Remove {{ role_package }} rpm package"
+  yum:
+    name: "{{ role_package }}"
+    state: absent
 
 - name: Upgrade container
   include_role:

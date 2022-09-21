@@ -4,11 +4,8 @@
     manager: auto
   no_log : true
 
-- name: Check if mysqld is running
-  command: systemctl is-active -q mariadb
-  register: _mysqld_service
-  failed_when: _mysqld_service.rc not in [0, 3]
-  changed_when: false
+- service_facts:
+  run_once: true
 
 - name: If mariadb-server is running
   block:
@@ -51,10 +48,9 @@
         - "/root/.my.cnf"
         - "/etc/my.cnf"
         - "/etc/my.cnf.d/mariadb-server.cnf"
-
   when:
   - "'mariadb-server' in ansible_facts.packages"
-  - _mysqld_service.rc == 0
+  - "'mariadb-server.service' in {{ ansible_facts.services }}"
 
 - name: Pull image
   include_role:

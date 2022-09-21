@@ -1,12 +1,9 @@
 ---
-- name: Check if container exists
-  command: "podman container exists {{ role_package }}"
-  register: _logserver_container
-  failed_when: _logserver_container.rc not in [0, 1]
+- service_facts:
+  run_once: true
 
 - name: "Remove packages if {{ role_package }} is a container"
   block:
-
     - name: Stop services
       service:
         name: "httpd"
@@ -19,17 +16,10 @@
           - httpd
           - mod_wsgi
         state: absent
-
   when:
-    - _logserver_container.rc == 0
+    - "'{{ role_package }}.service' in {{ ansible_facts.services }}"
     - "'gateway' not in roles"
     - "'cauth' not in roles"
-
-- name: "Check if ara is running"
-  command: "systemctl is-active -q ara"
-  register: _ara_service
-  failed_when: _ara_service.rc not in [0, 3]
-  changed_when: false
 
 - name: "Removing ara resources"
   block:
@@ -59,7 +49,7 @@
         state: absent
         remove: true
 
-  when: _ara_service.rc == 0
+  when: "'ara.service' in {{ ansible_facts.services }}"
 
 - name: Reloading Systemd
   systemd:

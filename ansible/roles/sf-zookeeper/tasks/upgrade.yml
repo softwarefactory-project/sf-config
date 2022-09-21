@@ -1,15 +1,12 @@
 ---
+- service_facts:
+  run_once: true
+
 # See https://issues.apache.org/jira/browse/ZOOKEEPER-3056
 - name: Ensure snapshot exists
   file:
     path: "{{ zookeeper_lib_dir }}/snapshot.0"
     state: touch
-
-- name: Check if {{ role_package }} is running
-  command: systemctl is-active -q {{ role_package }}
-  register: _zookeeper_service
-  failed_when: _zookeeper_service.rc not in [0, 3]
-  changed_when: false
 
 - block:
     - name: Stop the service
@@ -21,8 +18,7 @@
       yum:
         name: zookeeper
         state: absent
-  when:
-    - _zookeeper_service.rc == 0
+  when: "'{{ role_package }}.service' in {{ ansible_facts.services }}"
 
 - name: Upgrade container
   include_role:

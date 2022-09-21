@@ -93,12 +93,6 @@
     daemon_reload: "yes"
     enabled: "yes"
 
-- name: "Check if {{ role_package }} is running"
-  command: systemctl is-active -q {{ role_package }}
-  register: _mysql_service
-  failed_when: _mysql_service.rc not in [0, 3]
-  changed_when: false
-
 - name: "Wait for {{ role_package }} to be ready"
   wait_for:
     port: "{{ mysql_port }}"
