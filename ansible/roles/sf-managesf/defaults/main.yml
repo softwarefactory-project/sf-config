@@ -8,6 +8,11 @@ role_actions:
 
 role_package: managesf
 
+container_uid: 1000
+container_gid: 1000
+owner: "{{ role_package }}"
+group: "{{ role_package }}"
+
 managesf_loglevel: INFO
 managesf_root_loglevel: WARNING
 
@@ -22,3 +27,25 @@ managesf_mysql_password: "CHANGE_ME"
 nodepool_conf_dir: "/etc/nodepool"
 nodepool_lib_dir: "/var/lib/nodepool"
 nodepool_webapp_port: 8006
+
+managesf_version: 0.27.6
+managesf_container_version: "{{ managesf_version }}-1"
+
+managesf_config_dir: /etc/managesf
+managesf_log_dir: /var/log/managesf
+managesf_lib_dir: /var/lib/managesf
+
+managesf_components:
+  - service: "{{ role_package }}"
+    image: "quay.io/software-factory/{{ role_package }}:{{ managesf_container_version }}"
+    params: >-
+      --network host
+      --uidmap {{ container_uid }}:{{ managesf_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ managesf_gid | default(1000) }}:1
+      --uidmap 0:4000:1000
+      --gidmap 0:4000:1000
+      --volume {{ managesf_config_dir }}/config.py:{{ managesf_config_dir }}/config.py:Z
+      --volume {{ managesf_config_dir }}/policy.yaml:{{ managesf_config_dir }}/policy.yaml:Z
+      --volume {{ managesf_log_dir }}:{{ managesf_log_dir }}:Z
+      --volume {{ managesf_lib_dir }}:{{ managesf_lib_dir }}:Z
+      --volume {{ managesf_lib_dir }}/managesf-resources:/var/lib/software-factory/managesf-resources:Z

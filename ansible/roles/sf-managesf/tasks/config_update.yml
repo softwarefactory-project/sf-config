@@ -14,7 +14,7 @@
   command: 'logger --tag config-update "managesf: localconfig content {{ localconfig }}"'
 
 - name: Check upstream config
-  command: git log -n 3 --oneline resources/
+  command: git log --no-decorate -n 3 --oneline resources/
   args:
     chdir: /root/config
   changed_when: False
@@ -24,11 +24,12 @@
   command: 'logger --tag config-update "managesf: upstreamconfig content {{ upstreamconfig }}"'
 
 - block:
+
     - name: Exec resources apply
       command: >
         /usr/bin/managesf-resources apply
         --zuul-prev-commit {{ localconfig.stdout_lines[0].split()[0] }}
-        --log-output /var/log/managesf/resources_apply.log
+        --log-output {{ managesf_log_dir }}/resources_apply.log
       register: output
       changed_when: false
       ignore_errors: yes
@@ -64,4 +65,4 @@
 - name: Apply new policy.yaml
   copy:
     src: /root/config/policies/policy.yaml
-    dest: /etc/managesf/policy.yaml
+    dest: "{{ managesf_config_dir }}/policy.yaml"

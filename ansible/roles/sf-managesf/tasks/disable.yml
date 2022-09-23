@@ -1,25 +1,35 @@
 ---
 - name: Disable services
   service:
-    name: managesf
+    name: "{{ role_package }}"
     state: stopped
     enabled: "no"
-  ignore_errors: "yes"
+  ignore_errors: true
 
 - block:
+
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ managesf_components }}"
+
     - name: Remove files
       file:
         path: "{{ item }}"
         state: absent
       loop:
-        - /var/lib/managesf
-        - /etc/managesf
+        - "{{ managesf_config_dir }}"
+        - "{{ managesf_log_dir }}"
+        - "{{ managesf_lib_dir }}"
         - /etc/httpd/managesf_htpasswd
 
+    #TODO: This task should be removed when all
+    # managesf services (managesf, managesf-resources, managesf-configuration)
+    # are containerized
     - name: Remove packages
       yum:
-        name: "{{ item }}"
+        name: "{{ role_package }}"
         state: absent
-      loop:
-        - managesf
+
   when: erase == True
