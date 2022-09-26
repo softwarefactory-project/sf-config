@@ -36,6 +36,7 @@ def process(args):
         "zuul",
         "zuul-merger",
         "zuul-executor",
+        "zuul-fingergw",
         "nodepool-launcher",
         "hypervisor-k1s",
     ]

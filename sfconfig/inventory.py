@@ -220,7 +220,7 @@ def setup(args, pb):
             pb.append(host_play(role, role, action))
 
     # Setup all components except infra roles
-    groupable_roles = ["zuul-executor", "zuul-merger"]
+    groupable_roles = ["zuul-executor", "zuul-merger", "zuul-fingergw"]
     groups = dict()
     for host in args.inventory:
         host_roles = [role for role in host["roles"]
@@ -297,7 +297,8 @@ def config_update(args, pb):
                 host["roles"] == ["zuul"] and
                 set(host.get("params", {}).get(
                     "zuul_services", [])).issubset(
-                        set(("zuul-merger", "zuul-executor")))):
+                        set(("zuul-merger", "zuul-executor",
+                             "zuul_fingergw")))):
             continue
         for role in roles_order:
             if role in host["roles"]:
@@ -349,7 +350,7 @@ def service_status_play(name, state):
 
 
 def zuul_service_state(args, pb, state):
-    for service in ("merger", "web", "executor", "scheduler"):
+    for service in ("merger", "web", "executor", "scheduler", "fingergw"):
         name = "zuul-" + service
         if name in args.glue["roles"]:
             pb.append(service_status_play(name, state))
@@ -676,7 +677,7 @@ def generate(args):
 
         ensure_role_services("nodepool", ["launcher", "builder"])
         ensure_role_services("zuul", ["scheduler", "merger", "executor",
-                                      "web"])
+                                      "fingergw", "web"])
 
     templates = "%s/templates" % args.share
 

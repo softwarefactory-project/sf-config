@@ -183,6 +183,13 @@
 - block:
     - include_tasks: create_logging.yml
       vars:
+        _logfile: "fingergw"
+
+      when: "'zuul-fingergw' in zuul_services"
+
+- block:
+    - include_tasks: create_logging.yml
+      vars:
         _logfile: "web"
   when: "'zuul-web' in zuul_services"
 

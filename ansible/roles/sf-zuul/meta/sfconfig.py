@@ -85,6 +85,14 @@ class ZuulExecutor(Component):
         args.glue["executor_hosts"].append(host["hostname"])
 
 
+class ZuulFingergw(Component):
+    role = "zuul-fingergw"
+    require_role = ["zuul-scheduler"]
+
+    def configure(self, args, host):
+        args.glue["fingergw_hosts"].append(host["hostname"])
+
+
 class ZuulWeb(Component):
     role = "zuul-web"
     require_role = ["zuul-scheduler"]

@@ -214,6 +214,7 @@ def main():
                  'sf_playbooks_dir': "%s" % args.ansible_root,
                  'logservers': [],
                  'executor_hosts': [],
+                 'fingergw_hosts': [],
                  'nodepool_hosts': [],
                  'opensearch_connections': [],
                  }

@@ -15,6 +15,7 @@ inventory:
       - logserver
       - zuul-scheduler
       - zuul-executor
+      - zuul-fingergw
       - zuul-web
       - log-classify
       - gerritbot
