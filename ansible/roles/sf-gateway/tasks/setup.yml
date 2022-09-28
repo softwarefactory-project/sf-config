@@ -145,6 +145,14 @@
     mode: '0444'
   when: readonly_user_autologin is defined and readonly_user_autologin
 
+- name: Add server status configuration file
+  template:
+    src: server-status.conf.j2
+    dest: /etc/httpd/conf.d/server-status.conf
+    mode: '0444'
+  when: apache_server_status is defined and apache_server_status
+  notify: apache reload
+
 - name: Configure httpd for nodepool services
   block:
     - name: Create working directory

@@ -33,6 +33,7 @@ network:
   tls_chain_file: ""
   tls_key_file: ""
   tls_challenge_alias_path: ""
+  apache_server_status: false
 
 # Special deployment mode where zuul and nodepool is not running locally
 tenant-deployment:
