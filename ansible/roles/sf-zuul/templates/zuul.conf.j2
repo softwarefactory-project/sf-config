@@ -46,8 +46,8 @@ finger_port={{ zuul_executor_finger_port }}
 {% if 'log-classify' in roles %}
 trusted_rw_paths=/var/lib/log-classify
 {% endif %}
-trusted_ro_paths=/opt/:/etc/pki
-untrusted_ro_paths=/opt/:/etc/pki
+trusted_ro_paths=/opt/:/etc/pki:/var/lib/zuul/.ssh/config
+untrusted_ro_paths=/opt/:/etc/pki:/var/lib/zuul/.ssh/config
 log_config={{ zuul_conf_dir }}/executor-logging.yaml
 log_stream_file=/var/tmp/zuul-console/console-{log_uuid}.log
 load_multiplier={{ zuul_executor_load_multiplier|default(2.5) }}
