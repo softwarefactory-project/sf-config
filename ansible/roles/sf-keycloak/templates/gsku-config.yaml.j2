@@ -1,0 +1,17 @@
+gerrit:
+  url: "{{ gerrit_internal_url }}"
+  user: "admin"
+  password: "{{ gerrit_admin_password }}"
+  verify_ssl: true
+keycloak:
+  url: "{{ keycloak_internal_url }}"
+  user: "admin"
+  password: "{{ authentication.admin_password }}"
+  verify_ssl: true
+  version: 15.0.2
+mqtt:
+  host: "{{ firehose_host }}"
+  port: 1883
+  topic: "keycloak"
+  user: "SF_SERVICE_USER"
+  password: "{{ sf_service_user_password }}"

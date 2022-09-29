@@ -25,6 +25,8 @@ keycloak_default_realm: SF
 keycloak_mysql_password: "CHANGE_ME"
 keycloak_container_version: 15.0.2
 keycloak_container_release: 1
+gsku_container_version: 0.0.4
+gsku_container_release: 1
 
 keycloak_components:
   - service: "keycloak"
@@ -49,6 +51,15 @@ keycloak_components:
       --env DB_PASSWORD_FILE={{ keycloak_dir }}/mysql_password
       --env KEYCLOAK_USER=admin
       --env KEYCLOAK_PASSWORD_FILE={{ keycloak_dir }}/admin_password
+    dependencies_fulfilled: true
+  - service: "github-ssh-key-updater"
+    image: "quay.io/software-factory/github-ssh-key-updater:{{ gsku_container_version }}-{{ gsku_container_release }}"
+    params: >-
+      --network host
+      --uidmap 0:4000:999
+      --uidmap 1001:{{ keycloak_uid | default(1000)}}:1
+      --volume {{ keycloak_dir }}/github-ssh-key-updater:/etc/github-ssh-key-updater:Z
+    dependencies_fulfilled: "{% if 'gerrit' in roles %} true {% else %} false {% endif %}"
 
 kcadm_options: |
     --no-config

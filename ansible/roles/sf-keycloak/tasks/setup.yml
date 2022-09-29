@@ -5,6 +5,7 @@
     name: sf-container
     tasks_from: check_version.yaml
   loop: "{{ keycloak_components }}"
+  when: item.dependencies_fulfilled | bool
 
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
   vars:
@@ -17,6 +18,7 @@
   loop:
     - {path: "{{ keycloak_dir }}/standalone/configuration/", recurse: "yes"}
     - {path: "{{ keycloak_dir }}/themes"}
+    - {path: "{{ keycloak_dir }}/github-ssh-key-updater"}
 
 - name: Install templated files
   template:
@@ -35,6 +37,22 @@
   notify:
     - restart keycloak
     - apache reload
+
+- name: Configure github SSH key updater
+  template:
+    src: "{{ item.name }}.j2"
+    dest: "{{ item.path }}/config.yaml"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode }}"
+    backup: yes
+  loop:
+    - name: gsku-config.yaml
+      path: "{{ keycloak_dir }}/github-ssh-key-updater/"
+      mode: "0440"
+      user: keycloak
+      group: keycloak
+  when: "'gerrit' in roles"
 
 - name: Install files
   copy:
@@ -102,6 +120,7 @@
     name: sf-container
     tasks_from: setup.yaml
   loop: "{{ keycloak_components }}"
+  when: item.dependencies_fulfilled | bool
 
 - name: Remove and create container if container sh file was modified
   block:
@@ -111,18 +130,21 @@
         name: sf-container
         tasks_from: delete.yaml
       loop: "{{ keycloak_components }}"
+      when: item.dependencies_fulfilled | bool
 
     - name: Recreating {{ keycloak_components.service }} container files
       include_role:
         name: sf-container
         tasks_from: install.yaml
       loop: "{{ keycloak_components }}"
+      when: item.dependencies_fulfilled | bool
 
     - name: Recreating {{ keycloak_components.service }} container
       include_role:
         name: sf-container
         tasks_from: setup.yaml
       loop: "{{ keycloak_components }}"
+      when: item.dependencies_fulfilled | bool
 
   when: update_fqdn
 
@@ -134,11 +156,11 @@
     daemon_reload: "yes"
     enabled: "yes"
   loop: "{{ keycloak_components }}"
+  when: item.dependencies_fulfilled | bool
 
 - name: Wait for {{ role_package }} http port
   wait_for:
     port: "{{ keycloak_http_port }}"
-  loop: "{{ keycloak_components }}"
 
 # TODO fix until conditions
 - name: check for default realm
