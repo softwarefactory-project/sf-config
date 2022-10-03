@@ -50,6 +50,7 @@ def process(args):
 
     # hosts_files is a dict with host ip as key and hostname list as value
     args.glue["hosts_file"] = {}
+    args.glue["public_hosts_file"] = {}
 
     for host in args.sfarch["inventory"]:
         if "install-server" in host["roles"]:
@@ -103,6 +104,13 @@ def process(args):
             if 'opensearch' in aliases:
                 aliases.remove('opensearch')
                 aliases.remove("opensearch.%s" % args.sfconfig["fqdn"])
+
+        if "public_ip" in host:
+            args.glue["public_hosts_file"][host["public_ip"]] = \
+                [host["hostname"]] + list(aliases)
+        else:
+            args.glue["public_hosts_file"][host["ip"]] = [host["hostname"]] + \
+                list(aliases)
 
         args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
             list(aliases)

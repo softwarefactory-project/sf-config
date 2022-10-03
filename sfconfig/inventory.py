@@ -684,6 +684,7 @@ def generate(args):
     # Generate inventory
     arch["roles"] = args.glue["roles"]
     arch["hosts_file"] = args.glue["hosts_file"]
+    arch["public_hosts_file"] = args.glue["public_hosts_file"]
     render_template("%s/hosts" % args.ansible_root,
                     "%s/inventory.j2" % templates,
                     arch)
