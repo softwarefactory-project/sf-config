@@ -79,6 +79,13 @@
     tasks_from: setup.yaml
   loop: "{{ mysql_components }}"
 
+- name: Restart service when fqdn is updated
+  systemd:
+    name: "{{ role_package }}"
+    state: restarted
+    daemon_reload: "yes"
+  when: update_fqdn
+
 - name: Start service
   systemd:
     name: "{{ role_package }}"
