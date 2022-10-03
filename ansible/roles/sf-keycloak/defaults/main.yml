@@ -23,35 +23,38 @@ keycloak_internal_url: "http://{{ keycloak_host }}:{{ keycloak_http_port }}"
 keycloak_default_realm: SF
 
 keycloak_mysql_password: "CHANGE_ME"
-keycloak_container_version: 15.0.2
-keycloak_container_release: 1
+keycloak_container_version: 19.0.1
+keycloak_container_release: 4
 gsku_container_version: 0.0.4
 gsku_container_release: 1
+
+events_listener_config: "{% if 'firehose' in roles %} --spi-events-listener-mqtt-server-uri=\"tcp://{{ firehose_host }}:1883\" --spi-events-listener-mqtt-username=SF_SERVICE_USER --spi-events-listener-mqtt-password={{ sf_service_user_password }} --spi-events-listener-mqtt-topic=keycloak {% else %} {% endif %}"
 
 keycloak_components:
   - service: "keycloak"
     image: "quay.io/software-factory/keycloak:{{ keycloak_container_version }}-{{ keycloak_container_release }}"
+    run: >-
+      start
+      --http-port={{ keycloak_http_port }}
+      --http-relative-path=/auth
+      --proxy=edge
+      --log-level=info
+      --db=mariadb
+      --db-url-database=keycloak
+      --db-url-host={{ mysql_host }}
+      --db-username=keycloak
+      --db-password={{ keycloak_mysql_password }}
+      --health-enabled=true
+      --metrics-enabled=true
+      --hostname={{ fqdn }}
+      {{ events_listener_config }}
     params: >-
       --network host
-      --uidmap 0:4000:999
-      --uidmap {{ container_uid }}:{{ keycloak_uid | default(1000)}}:1
-      --volume {{ keycloak_dir }}/standalone/configuration/standalone.xml:{{ keycloak_dir }}/standalone/configuration/standalone-ha.xml:Z
-      --volume {{ keycloak_dir }}/themes/sf:{{ keycloak_dir }}/themes/sf:Z
       --volume /var/log/keycloak:{{ keycloak_dir }}/standalone/log:Z
-      --volume {{ keycloak_dir }}/admin_password:{{ keycloak_dir }}/admin_password:Z
-      --volume {{ keycloak_dir }}/mysql_password:{{ keycloak_dir }}/mysql_password:Z
       --volume {{ keycloak_certs_dir }}:/etc/x509/https:Z
-      --env KEYCLOAK_FRONTEND_URL=https://{{ fqdn }}/auth
-      --env PROXY_ADDRESS_FORWARDING=true
-      --env KEYCLOAK_HOSTNAME={{ fqdn }}
-      --env KEYCLOAK_WELCOME_THEME=sf
-      --env KEYCLOAK_HTTP_PORT={{ keycloak_http_port }}
-      --env DB_VENDOR=mysql
-      --env DB_ADDR={{ mysql_host }}
-      --env DB_USER={{ owner }}
-      --env DB_PASSWORD_FILE={{ keycloak_dir }}/mysql_password
-      --env KEYCLOAK_USER=admin
-      --env KEYCLOAK_PASSWORD_FILE={{ keycloak_dir }}/admin_password
+      -p {{ keycloak_http_port }}:{{ keycloak_http_port }}
+      --env KEYCLOAK_ADMIN=admin
+      --env KEYCLOAK_ADMIN_PASSWORD={{ authentication.admin_password }}
     dependencies_fulfilled: true
   - service: "github-ssh-key-updater"
     image: "quay.io/software-factory/github-ssh-key-updater:{{ gsku_container_version }}-{{ gsku_container_release }}"
@@ -80,5 +83,5 @@ sf_service_user_password: "CHANGE_ME"
 
 sf_cert_path: /var/lib/software-factory/bootstrap-data/certs
 
-keycloak_dir: /opt/jboss/keycloak
+keycloak_dir: /opt/keycloak
 keycloak_certs_dir: "{{ keycloak_dir }}/certs"

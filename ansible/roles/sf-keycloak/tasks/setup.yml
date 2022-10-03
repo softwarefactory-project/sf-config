@@ -16,28 +16,8 @@
     name: sf-container
     tasks_from: create_directory.yaml
   loop:
-    - {path: "{{ keycloak_dir }}/standalone/configuration/", recurse: "yes"}
-    - {path: "{{ keycloak_dir }}/themes"}
     - {path: "{{ keycloak_dir }}/github-ssh-key-updater"}
     - {path: "/var/log/keycloak"}
-
-- name: Install templated files
-  template:
-    src: "{{ item.name }}.j2"
-    dest: "{{ item.path }}/{{ item.name }}"
-    owner: "{{ item.owner | default('root') }}"
-    group: "{{ item.group | default('root') }}"
-    mode: "{{ item.mode }}"
-    backup: yes
-  loop:
-    - name: standalone.xml
-      path: "{{ keycloak_dir }}/standalone/configuration/"
-      mode: "0440"
-      user: keycloak
-      group: keycloak
-  notify:
-    - restart keycloak
-    - apache reload
 
 - name: Configure github SSH key updater
   template:
@@ -65,14 +45,6 @@
     group: keycloak
     mode: '0700'
 
-- name: Install custom themes
-  copy:
-    src: files/themes/sf
-    dest: "{{ keycloak_dir }}/themes"
-    owner: "{{ owner }}"
-    group: "{{ group }}"
-    mode: "0644"
-
 - name: Create cert dir
   file:
     path: "{{ keycloak_certs_dir }}"
@@ -92,22 +64,10 @@
     - keycloak.key
     - localCA.pem
 
-- name: Create password files for container
-  copy:
-    content: "{{ item.content }}"
-    dest: "{{ keycloak_dir }}/{{ item.dest }}"
-    owner: "{{ owner }}"
-    group: "{{ group }}"
-    mode: "0600"
-  loop:
-    - {content: "{{ authentication.admin_password }}", dest: "admin_password"}
-    - {content: "{{ keycloak_mysql_password }}", dest: "mysql_password"}
-  no_log: show_hidden_logs == True
-
-- name: Changing folder /opt/jboss permission to 755
+- name: Changing folder /opt/keycloak permission to 755
   file:
     mode: "0755"
-    dest: /opt/jboss/
+    dest: /opt/keycloak/
     recurse: true
 
 - name: "Get {{ owner }} uid"
@@ -466,3 +426,28 @@
           includedClientAudience: zuul
           idTokenClaim: "true"
           accessTokenClaim: "true"
+
+# This algorithm is unsupported by pyJWT in Zuul as of version 7
+- name: Disable RSA-OAEP key algorithm
+  block:
+    - command: |
+        podman exec -ti {{ keycloak_components[0].service }}
+        {{ keycloak_dir }}/bin/kcadm.sh get components
+            --compressed
+            --target-realm {{ keycloak_default_realm }}
+            --query name=rsa-enc-generated
+            {{ kcadm_options }}
+      register: _keyProviderInfo
+      no_log: show_hidden_logs == False
+    - set_fact:
+        keyProviderId: "{{ _keyProviderInfo.stdout_lines | last | from_json }}"
+      no_log: show_hidden_logs == False
+    - command:
+        podman exec -ti {{ keycloak_components[0].service }}
+        {{ keycloak_dir }}/bin/kcadm.sh update components/{{ keyProviderId[0]['id'] }}
+            --target-realm {{ keycloak_default_realm }}
+            --set "config.active=[\"false\"]"
+            --set "config.enabled=[\"false\"]"
+            {{ kcadm_options }}
+      no_log: show_hidden_logs == False
+  # when: "'zuul' in roles"
