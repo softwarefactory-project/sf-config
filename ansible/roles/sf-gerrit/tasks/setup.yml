@@ -280,16 +280,6 @@
   delay: 1
   when: "'keycloak' in roles"
 
-- name: Initialize admin user
-  command: pynotedb create-admin-user --email "admin@{{ fqdn }}" --pubkey "{{ gerrit_admin_rsa_pub }}" --all-users "{{ gerrit_lib_dir }}/git/All-Users.git" --scheme gerrit
-  become: true
-  become_user: "{{ owner }}"
-  register: task_result
-  until: task_result.rc == 0
-  retries: 60
-  delay: 1
-  when: "'cauth' in roles"
-
 - name: Create admin user password
   command: ssh gerrit gerrit set-account admin --http-password "{{ gerrit_admin_password }}"
   delegate_to: "{{ install_server_host }}"

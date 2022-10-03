@@ -42,26 +42,4 @@ config:
               - kibanaserver
         authentication_backend:
           type: noop
-{% else %}
-  {% if readonly_user_autologin is defined and readonly_user_autologin | lower == 'jwt' %}
-      # FIXME: add roles key into the jwt payload
-      # NOTE: when sub is set, you don't need to make in query:
-      # -H "Authorization: Bearer <user>:<token> but just
-      # -H "Authorization: Bearer <token>
-      jwt_auth_domain:
-        http_enabled: true
-        transport_enabled: true
-        order: 0
-        http_authenticator:
-          type: jwt
-          challenge: false
-          config:
-            signing_key: "{{ _opensearch_dashboards_jwt_secret_b64.stdout }}"
-            jwt_header: "Authorization"
-            jwt_url_parameter: null
-            roles_key: null
-            subject_key: "sub"
-        authentication_backend:
-          type: noop
-  {% endif %}
 {% endif %}

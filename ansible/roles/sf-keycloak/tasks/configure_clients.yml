@@ -41,9 +41,8 @@
         --set "publicClient=true"
         --set "implicitFlowEnabled=true"
         --set 'redirectUris=["https://{{ fqdn }}/*","https://{{ item.component }}.{{ fqdn }}/*"]'
-        {% if 'keycloak' in roles %}--set 'defaultClientScopes=["web-origins", "profile", "roles", "email","zuul_keycloak_cs"]'
+        --set 'defaultClientScopes=["web-origins", "profile", "roles", "email","zuul_keycloak_cs"]'
         --set "publicClient=true"
-        {% endif %}
         {{ kcadm_options }}
   register: _client_create
   failed_when: _client_create.rc != 0 and not ( _client_create.stdout is search("already exists", multiline=True, ignorecase=True) )

@@ -63,9 +63,36 @@
     # sf-4.0
     - name: Remove outdated packages
       yum:
-        name: repoxplorer
+        name:
+          - repoxplorer
+          - python3-cauth
+          - mod_auth_pubtkt
         state: absent
-  when: sf_previous_version < 4.0
+    - service:
+        name: cauth
+        enabled: false
+        state: stopped
+        daemon-reload: true
+      ignore_errors: true
+    - name: Remove cauth user
+      user:
+        name: cauth
+        state: absent
+        remove: true
+      ignore_errors: true
+    - name: Remove cauth related files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/cauth
+        - /etc/httpd/conf.d/cauth.site
+        - /var/lib/cauth/keys/privkey.pem
+        - /etc/httpd/conf.modules.d/00-tkt.conf
+        - /etc/httpd/conf.d/auth_pubtkt.conf
+        - /etc/httpd/conf.d/cauth.conf
+        - /etc/httpd/saml2/idp_metadata.xml
+  when: sf_previous_version < 3.8
 
 - name: Remove conflicting packages
   yum:
