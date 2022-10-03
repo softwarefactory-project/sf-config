@@ -85,6 +85,10 @@ class Gateway(Component):
            args.sfconfig["network"]["tls_challenge_alias_path"]:
             args.glue["tls_challenge_alias_path"] = args.sfconfig["network"][
                 "tls_challenge_alias_path"]
+        if "apache_server_status" in args.sfconfig["network"] and \
+                args.sfconfig["network"]["apache_server_status"]:
+            args.glue["apache_server_status"] = args.sfconfig["network"][
+                "apache_server_status"]
 
         args.glue['external_opensearch_host'] = None
         args.glue['external_opensearch_port'] = None
