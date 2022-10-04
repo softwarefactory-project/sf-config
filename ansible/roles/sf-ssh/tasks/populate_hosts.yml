@@ -20,24 +20,34 @@
     state: touch
   when: ssh_known_hosts.stat.exists == False
 
-- name: Get all server hostnames
-  shell: grep '^[a-zA-Z0-9]' /var/lib/software-factory/ansible/hosts | awk '{ print $1 }' | sort -u
-  register: servers
-  changed_when: false
+- name: Create empty hosts list
+  set_fact:
+    _public_servers: []
+
+- name: Build hosts list
+  set_fact:
+    _public_servers: >-
+        {% for host in inventory %}
+        {% if host.private is not defined or not host.private %}
+        {{ host.hostname }}
+        {% endif %}
+        {% endfor %}
+
+- name: Ensure _public_servers is a list
+  set_fact:
+    _public_servers: "{{ _public_servers.split() }}"
 
 - name: Wait for ssh services on all servers
   wait_for:
     host: "{{ item }}"
     port: 22
-  loop: "{{ servers.stdout_lines }}"
+  loop: "{{ _public_servers }}"
 
 - name: Gathering public ssh servers keys
-  shell: "ssh-keyscan -p 22 {{ item }} | grep ssh-rsa"
-  loop: "{{ servers.stdout_lines }}"
+  shell: "ssh-keyscan {{ item }} | grep ssh-rsa"
+  loop: "{{ _public_servers }}"
   register: public_ssh_host_keys
   until: public_ssh_host_keys is success
-  retries: 30
-  delay: 10
   changed_when: false
 
 - name: Populate ssh_know_hosts
@@ -52,11 +62,11 @@
     name: "{{ item }}"
   delegate_to: "{{ item }}"
   when: ansible_virtualization_type not in ["podman", "systemd-nspawn"]
-  loop: "{{ servers.stdout_lines }}"
+  loop: "{{ _public_servers }}"
 
 - name: Gather hostnames
   command: hostnamectl --static
-  loop: "{{ servers.stdout_lines }}"
+  loop: "{{ _public_servers }}"
   delegate_to: "{{ item }}"
   register: _hostnames
   changed_when: false
@@ -68,4 +78,4 @@
       manually fix using hostnamectl set-hostname ....
       Then run ansible -m setup
   when: 'item.1 != _hostnames.results[item.0].stdout'
-  with_indexed_items: "{{ servers.stdout_lines }}"
+  with_indexed_items: "{{ _public_servers }}"
