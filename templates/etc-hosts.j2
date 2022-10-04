@@ -2,10 +2,25 @@
 
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+{% for host in inventory %}
+{# 'ansible_nodename is not defined' is needed for this template is used in
+   render_template function from inventory.py #}
+{% if ansible_nodename == host.hostname or ansible_nodename is not defined %}
+{% if host.use_public_ips is defined and host.use_public_ips %}
+{% for hostip in public_hosts_file.keys()|sort %}
+
+{{ hostip }}{% for cname in public_hosts_file[hostip] %} {{ cname }}{% endfor %}
+{% endfor %}
+{% else %}
 {% for hostip in hosts_file.keys()|sort %}
 
 {{ hostip }}{% for cname in hosts_file[hostip] %} {{ cname }}{% endfor %}
 {% endfor %}
+
+{% endif %}
+{% endif %}
+{% endfor %}
+
 
 {% for host in (network|default({'static_hostnames':[]}))["static_hostnames"]|default([]) %}{{ host }}
 {% endfor %}
