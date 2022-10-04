@@ -59,9 +59,16 @@
   delegate_to: "{{ install_server_host }}"
 
 - name: Initialize managesf git config
-  template:
-    src: gitconfig.j2
-    dest: /var/lib/managesf/.gitconfig
+  block:
+    - name: Create working directory
+      file:
+        path: /var/lib/managesf
+        state: directory
+
+    - name: Install template
+      template:
+        src: gitconfig.j2
+        dest: /var/lib/managesf/.gitconfig
   delegate_to: "{{ managesf_host }}"
 
 - name: Initialize gerrit git config
