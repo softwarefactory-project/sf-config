@@ -314,6 +314,8 @@ def main():
                 continue
             components[role].validate(args, host)
 
+    print("\nRunning with the following inventory:\n\n%r\n\n" %
+          args.sfarch["inventory"])
     sfconfig.inventory.run(args)
 
     if not args.skip_apply:
