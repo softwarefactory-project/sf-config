@@ -6,7 +6,7 @@
 - name: Create empty resources file
   copy:
     content: 'resources: {}'
-    dest: /var/lib/software-factory/bootstrap-data/empty_resources.yaml
+    dest: /var/lib/managesf/managesf-resources/empty_resources.yaml
 
 - block:
     - name: Make a first admin connexion through SF SSO (force sf_users admin id:1)
@@ -21,7 +21,7 @@
     - name: Prepare initial resources
       template:
         src: config/resources/_internal.yaml.j2
-        dest: "/var/lib/software-factory/bootstrap-data/resources.yaml"
+        dest: "/var/lib/managesf/managesf-resources/resources.yaml"
 
     - set_fact:
         initial_creation: False
@@ -29,9 +29,9 @@
     # Ignoring errors to simplify retry, if direct_apply really failed, then below git clone won't work
     - name: Create initial resources
       command: >
-        /usr/bin/managesf-resources direct-apply
-        --prev-yaml /var/lib/software-factory/bootstrap-data/empty_resources.yaml
-        --new-yaml /var/lib/software-factory/bootstrap-data/resources.yaml
+        podman exec -ti managesf /usr/local/bin/managesf-resources direct-apply
+        --prev-yaml /var/lib/managesf/managesf-resources/empty_resources.yaml
+        --new-yaml  /var/lib/managesf/managesf-resources/resources.yaml
       ignore_errors: yes
       when:
         - not remote_config_repositories
