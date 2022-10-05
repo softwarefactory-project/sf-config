@@ -40,6 +40,9 @@ opensearch_components:
       -v {{ elk_config_dir }}/action_groups.yml:{{ opensearch_container_securityconfig_dir }}/action_groups.yml:z
       -v {{ elk_config_dir }}/nodes_dn.yml:{{ opensearch_container_securityconfig_dir }}/nodes_dn.yml:z
       -v {{ elk_config_dir }}/whitelist.yml:{{ opensearch_container_securityconfig_dir }}/whitelist.yml:z
+      {% if sf_opensearch_additional_params is defined %}
+      {{ sf_opensearch_additional_params }}
+      {% endif %}
 
 opensearch_container_dir: /usr/share/opensearch
 opensearch_container_config_dir: "{{ opensearch_container_dir }}/config"

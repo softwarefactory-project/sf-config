@@ -55,3 +55,6 @@ logserver_components:
       --gidmap {{ container_gid }}:{{ logserver_gid | default(1000) }}:1
       --volume {{ logserver_config_dir }}/{{ logserver_httpd_cont_conf_file }}:/etc/httpd/conf.d/{{ logserver_httpd_cont_conf_file }}:Z
       --volume /var/www/:/var/www/:Z
+      {% if sf_logserver_additional_params is defined %}
+      {{ sf_logserver_additional_params }}
+      {% endif %}

@@ -44,6 +44,9 @@ gerrit_components:
       --volume /var/lib/gerrit/plugins/:/var/gerrit/plugins/:z
       --volume /var/lib/gerrit/.ssh/:/var/gerrit/.ssh/:z
       --volume /var/log/gerrit/:/var/gerrit/logs/:z
+      {% if sf_gerrit_additional_params is defined %}
+      {{ sf_gerrit_additional_params }}
+      {% endif %}
 
 role_package: gerrit
 

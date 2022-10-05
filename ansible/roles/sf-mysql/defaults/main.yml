@@ -47,6 +47,9 @@ mysql_components:
       --volume {{ mysql_config_drop_in_dir }}:{{ mysql_config_drop_in_dir }}:z
       --volume {{ mysql_var_run_dir }}:{{ mysql_var_run_dir }}:z
       --volume {{ mysql_var_lib }}:{{ mysql_var_lib }}:z
+      {% if sf_mysql_additional_params is defined %}
+      {{ sf_mysql_additional_params }}
+      {% endif %}
 
 # Vars to pass linter check
 mariadb_sql_dir: /var/lib/software-factory/sql

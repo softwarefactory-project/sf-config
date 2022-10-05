@@ -57,6 +57,9 @@ nodepool_components:
       {% if nodepool_ibm_credentials %}
       --env IBM_CREDENTIALS_FILE=/var/lib/nodepool/.ibm.env
       {% endif %}
+      {% if sf_nodepool_launcher_additional_params is defined %}
+      {{ sf_nodepool_launcher_additional_params }}
+      {% endif %}
   - service: "nodepool-builder"
     image: "quay.io/software-factory/nodepool-builder-ubi:{{ nodepool_container_version }}"
     run: >-
@@ -88,6 +91,9 @@ nodepool_components:
       --env IBM_CREDENTIALS_FILE=/var/lib/nodepool/.ibm.env
       {% endif %}
       --privileged
+      {% if sf_nodepool_builder_additional_params is defined %}
+      {{ sf_nodepool_builder_additional_params }}
+      {% endif %}
 
 nodepool_cache_dir: "/var/cache/nodepool"
 nodepool_conf_dir: "/etc/nodepool"

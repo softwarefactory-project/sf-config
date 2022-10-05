@@ -30,3 +30,6 @@ mosquitto_components:
       --uidmap 0:4000:999
       --gidmap 0:4000:999
       --volume {{ mosquitto_config_dir }}:{{ mosquitto_config_dir }}:Z
+      {% if sf_moquitto_additional_params is defined %}
+      {{ sf_moquitto_additional_params }}
+      {% endif %}

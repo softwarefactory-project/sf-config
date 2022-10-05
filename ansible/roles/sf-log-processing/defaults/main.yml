@@ -54,6 +54,9 @@ log_processing_components:
       {% else %}
       --volume {{ custom_ca_crt }}:{{ custom_ca_crt }}:z
       {% endif %}
+      {% if sf_logscraper_additional_params is defined %}
+      {{ sf_logscraper_additional_params }}
+      {% endif %}
     run: >-
       /usr/local/bin/logscraper
       --config {{ logscraper_dir }}/logscraper.yaml
@@ -71,6 +74,9 @@ log_processing_components:
       --volume {{ external_opensearch_cacert }}:{{ external_opensearch_cacert }}:z
       {% else %}
       --volume {{ custom_ca_crt }}:{{ custom_ca_crt }}:z
+      {% endif %}
+      {% if sf_logsender_additional_params is defined %}
+      {{ sf_logsender_additional_params }}
       {% endif %}
     run: >-
       /usr/local/bin/logsender

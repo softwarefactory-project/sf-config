@@ -40,3 +40,6 @@ hound_components:
       {% endif %}
       --volume {{ hound_config_dir }}:/data:Z
       --volume {{ hound_repos_dir }}:{{ hound_repos_dir }}:Z
+      {% if sf_hound_additional_params is defined %}
+      {{ sf_hound_additional_params }}
+      {% endif %}

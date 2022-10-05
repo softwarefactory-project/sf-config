@@ -43,3 +43,6 @@ cgit_components:
       --volume {{ cgit_config_dir }}/httpd.conf:/etc/httpd/conf/httpd.conf:Z
       --volume {{ cgit_gerrit_repos_dir }}:{{ cgit_gerrit_repos_dir }}:Z
       --volume {{ cgit_config_dir }}/cgit.conf:{{ cgit_http_config_file }}:Z
+      {% if sf_cgit_additional_params is defined %}
+      {{ sf_cgit_additional_params }}
+      {% endif %}

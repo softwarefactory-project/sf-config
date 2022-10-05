@@ -32,3 +32,6 @@ gerritbot_components:
       --gidmap {{ container_gid }}:{{ gerritbot_gid | default(1000) }}:1
       --volume {{ gerritbot_config_dir }}:{{ gerritbot_config_dir }}:Z
       --volume {{ gerritbot_var_lib }}:{{ gerritbot_var_lib }}:Z
+      {% if sf_gerritbot_additional_params is defined %}
+      {{ sf_gerritbot_additional_params }}
+      {% endif %}

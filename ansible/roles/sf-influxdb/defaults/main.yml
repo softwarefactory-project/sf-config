@@ -43,3 +43,6 @@ influxdb_components:
       --volume {{ influxdb_log_dir }}:{{ influxdb_log_dir }}:Z
       --volume {{ influxdb_data_dir }}:{{ influxdb_data_dir }}:Z
       --volume /etc/ssl/certs/ca-bundle.crt:/etc/ssl/certs/ca-bundle.crt
+      {% if sf_influxdb_additional_params is defined %}
+      {{ sf_influxdb_additional_params }}
+      {% endif %}

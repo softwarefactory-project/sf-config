@@ -37,3 +37,6 @@ lodgeit_components:
       --env LODGEIT_SECRET_KEY={{ lodgeit_session_key }}
       --env LODGEIT_DBURI=mysql+pymysql://{{ lodgeit_mysql_user }}:{{ lodgeit_mysql_password }}@{{ lodgeit_mysql_host }}:{{ lodgeit_mysql_port }}/{{ lodgeit_mysql_db }}
       --env UWSGI_HTTP_SOCKET=:{{ lodgeit_port }}
+      {% if sf_lodgeit_additional_params is defined %}
+      {{ sf_lodgeit_additional_params }}
+      {% endif %}

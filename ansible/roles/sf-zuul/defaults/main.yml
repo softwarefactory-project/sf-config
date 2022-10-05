@@ -41,6 +41,9 @@ zuul_components:
     params: >-
       {{ zuul_components_default_params }}
       --volume /var/lib/zuul/:/var/lib/zuul/:z
+      {% if sf_zuul_scheduler_additional_params is defined %}
+      {{ sf_zuul_scheduler_additional_params }}
+      {% endif %}
   - service: "zuul-executor"
     image: "quay.io/software-factory/zuul-executor-ubi:{{ zuul_container_version }}"
     params: >-
@@ -51,19 +54,31 @@ zuul_components:
       --volume /var/lib/log-classify:/var/lib/log-classify:z
       {% endif %}
       --privileged
+      {% if sf_zuul_executor_additional_params is defined %}
+      {{ sf_zuul_executor_additional_params }}
+      {% endif %}
   - service: "zuul-fingergw"
     image: "quay.io/software-factory/zuul-fingergw-ubi:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
+      {% if sf_zuul_fingergw_additional_params is defined %}
+      {{ sf_zuul_fingergw_additional_params }}
+      {% endif %}
   - service: "zuul-merger"
     image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
       --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
+      {% if sf_zuul_merger_additional_params is defined %}
+      {{ sf_zuul_merger_additional_params }}
+      {% endif %}
   - service: "zuul-web"
     image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
+      {% if sf_zuul_web_additional_params is defined %}
+      {{ sf_zuul_web_additional_params }}
+      {% endif %}
 
 zuul_services:
   - zuul-scheduler

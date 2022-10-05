@@ -42,3 +42,6 @@ murmur_components:
       --uidmap {{ container_uid}}:{{ murmur_uid | default(1000) }}:1
       --gidmap {{ container_gid }}:{{ murmur_gid | default(1000) }}:1
       --volume {{ murmur_config_dir }}:/etc/umurmur:Z
+      {% if sf_murmur_additional_params is defined %}
+      {{ sf_murmur_additional_params }}
+      {% endif %}

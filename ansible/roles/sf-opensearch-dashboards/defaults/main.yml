@@ -28,6 +28,9 @@ opensearch_dashboards_components:
       --uidmap {{ container_uid }}:{{ opensearch_dashboard_uid | default(1000) }}:1
       -v {{ opensearch_dashboards_certs_dir }}:{{ opensearch_dashboards_container_certs_dir }}:z
       -v {{ elk_config_dir }}/opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml:z
+      {% if sf_opensearch_dashboards_additional_params is defined %}
+      {{ sf_opensearch_dashboards_additional_params }}
+      {% endif %}
 
 elk_config_dir: /etc/opensearch
 elk_log_dir: /var/log/opensearch

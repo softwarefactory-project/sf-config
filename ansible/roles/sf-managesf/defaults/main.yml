@@ -49,3 +49,6 @@ managesf_components:
       --volume {{ managesf_log_dir }}:{{ managesf_log_dir }}:Z
       --volume {{ managesf_lib_dir }}:{{ managesf_lib_dir }}:Z
       --volume {{ managesf_lib_dir }}/managesf-resources:/var/lib/software-factory/managesf-resources:Z
+      {% if sf_managesf_additional_params is defined %}
+      {{ sf_managesf_additional_params }}
+      {% endif %}

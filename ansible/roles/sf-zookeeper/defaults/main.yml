@@ -40,6 +40,9 @@ zookeeper_components:
       --volume {{ zookeeper_config_dir }}/zk-ca.pem:/conf/zk-ca.pem:Z
       --volume {{ zookeeper_config_dir }}/server.pem:/conf/server.pem:Z
       --volume {{ zookeeper_lib_dir }}:/logs:Z
+      {% if sf_zookeeper_additional_params is defined %}
+      {{ sf_zookeeper_additional_params }}
+      {% endif %}
 
 
 zookeeper_secure_client_port: 2281

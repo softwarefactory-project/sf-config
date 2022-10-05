@@ -55,6 +55,9 @@ keycloak_components:
       -p {{ keycloak_http_port }}:{{ keycloak_http_port }}
       --env KEYCLOAK_ADMIN=admin
       --env KEYCLOAK_ADMIN_PASSWORD={{ authentication.admin_password }}
+      {% if sf_keycloak_additional_params is defined %}
+      {{ sf_keycloak_additional_params }}
+      {% endif %}
     dependencies_fulfilled: true
   - service: "github-ssh-key-updater"
     image: "quay.io/software-factory/github-ssh-key-updater:{{ gsku_container_version }}-{{ gsku_container_release }}"
@@ -63,6 +66,9 @@ keycloak_components:
       --uidmap 0:4000:999
       --uidmap 1001:{{ keycloak_uid | default(1000)}}:1
       --volume {{ keycloak_dir }}/github-ssh-key-updater:/etc/github-ssh-key-updater:Z
+      {% if sf_github_ssh_key_updater_additional_params is defined %}
+      {{ sf_github_ssh_key_updater_additional_params }}
+      {% endif %}
     dependencies_fulfilled: "{% if 'gerrit' in roles and 'firehose' in roles %}yes{% else %}no{% endif %}"
 
 kcadm_options: |

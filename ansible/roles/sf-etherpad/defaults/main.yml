@@ -35,3 +35,6 @@ etherpad_components:
       --network host
       --user {{ container_uid }}:{{ container_gid }}
       --volume {{ etherpad_lib_dir }}/settings.json:{{ etherpad_opt_dir }}/settings.json:Z
+      {% if sf_etherpad_additional_params is defined %}
+      {{ sf_etherpad_additional_params }}
+      {% endif %}

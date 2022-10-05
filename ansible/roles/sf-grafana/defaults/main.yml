@@ -34,6 +34,9 @@ grafana_components:
       --volume {{ grafana_config_dir }}:{{ grafana_config_dir }}:z
       --volume {{ grafana_lib_dir }}:{{ grafana_lib_dir }}:z
       --volume {{ grafana_log_dir }}:{{ grafana_log_dir }}:z
+      {% if sf_grafana_additional_params is defined %}
+      {{ sf_grafana_additional_params }}
+      {% endif %}
 
 # Grafana Container Plugins Docs: https://grafana.com/docs/grafana/latest/installation/docker/#build-and-run-a-docker-image-with-pre-installed-plugins
 # Grafan Plugins page: https://grafana.com/grafana/plugins/
