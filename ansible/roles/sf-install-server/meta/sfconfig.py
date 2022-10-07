@@ -91,6 +91,13 @@ def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links,
         },
         services=(
             []
+            # FIXME "SF" is a set variable in the playbooks. This should
+            # remain a constant but it might be good to be able to set
+            # it arbitrarily.
+            #
+            # (also, list keycloak here so that the auth service
+            # is shown first)
+            + service("keycloak", "/auth/realms/SF/account/")
             + service("gerrit", "/r/")
             + [dict(name="zuul", path="/zuul")]
             + status_link
@@ -103,18 +110,13 @@ def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links,
             + service("cgit", "/cgit")
             + service("murmur", "mumble://" + fqdn + "/?version=1.2.0")
         ),
+        # TODO this is kept for compatibility with the re-sf library.
         auths=dict(
             oauth=(
                 []
-                + auth_oauth("github")
-                + auth_oauth("google")
-                + auth_oauth("bitbucket")
             ),
             other=(
                 []
-                + auth_other("openid")
-                + auth_other("openid_connect")
-                + auth_other("SAML2")
             )))
 
 
