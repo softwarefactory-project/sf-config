@@ -35,8 +35,8 @@ try:
     data = json.loads(req.read().decode('utf-8'))
     tenants = data.get("resources", {}).get("tenants", {})
     connections = data.get("resources", {}).get("connections", {})
-except Exception:
-    print("Couldn't connected to managesf")
+except Exception as e:
+    print("Couldn't connected to managesf: %s" % e, file=sys.stderr)
     raise
 
 # First find the local managesf url using the local tenant
@@ -126,7 +126,7 @@ for tenant, inf in tenants.items():
             "pkcs" in open(tenant_secret_path).read()):
         continue
 
-    print("Generating secret for tenant %s" % tenant)
+    print("Generating secret for tenant %s" % tenant, file=sys.stdout)
 
     req = urllib.request.urlopen(inf["url"] + "/v2/resources")
     data = json.loads(req.read().decode('utf-8'))
@@ -138,7 +138,8 @@ for tenant, inf in tenants.items():
         connections[tenant_config_connection]["base-url"]):].lstrip('/')
 
     print("Looking for %s key on connection %s in Zookeeper" % (
-        tenant_config_name, tenant_config_connection))
+        tenant_config_name, tenant_config_connection),
+        file=sys.stdout)
     private_key_file = wait_for_private_key(
         tenant_config_connection, tenant_config_name)
 
@@ -147,4 +148,4 @@ for tenant, inf in tenants.items():
     updated_keys.append(tenant_secret_path)
 
 for updated_key in updated_keys:
-    print(updated_key)
+    print(updated_key, file=sys.stdout)
