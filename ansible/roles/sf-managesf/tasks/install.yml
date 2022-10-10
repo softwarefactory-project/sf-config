@@ -1,10 +1,19 @@
 ---
-- name: Remove managesf package
+# We continue to install the managesf package for managesf-resources command
+# Especially "managesf-resources apply" is causing trouble when running via podenv.
+- name: Install managesf package
   yum:
     name: "{{ role_package }}"
+    state: present
+
+# As a safety measure let's remove the .service file provided by the package
+# /usr/lib/systemd/system/managesf.service
+# Container service is installed in /etc/systemd/system/managesf.service and seems to
+# take the priority either way.
+- name: Delete package service file
+  file:
+    path: /usr/lib/systemd/system/managesf.service
     state: absent
-  delegate_to: "{{ item }}"
-  loop: "{{ executor_hosts | union( groups['managesf'] ) }}"
 
 - name: Pull image
   include_role:
