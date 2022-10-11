@@ -1,4 +1,18 @@
 ---
+- name: Ensure logs directory exists
+  file:
+    path: "{{ item.target }}"
+    state: directory
+    mode: '0755'
+
+- name: Ensure logs destination exists
+  file:
+    path: "{{ item.target }}/{{ item.container }}.log"
+    state: touch
+    mode: u+rw,g-wx,o-rwx
+    modification_time: preserve
+    access_time: preserve
+
 # Gets container logs from podman
 - name: "Get {{ item.container }} container logs"
   shell: >

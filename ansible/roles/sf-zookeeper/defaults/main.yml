@@ -41,6 +41,7 @@ zookeeper_components:
       --volume {{ zookeeper_config_dir }}/server.pem:/conf/server.pem:Z
       --volume {{ zookeeper_lib_dir }}:/logs:Z
 
+
 zookeeper_secure_client_port: 2281
 zookeeper_follower_port: 2888
 zookeeper_election_port: 3888

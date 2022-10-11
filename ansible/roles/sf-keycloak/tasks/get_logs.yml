@@ -2,6 +2,12 @@
 - name: "Fetch keycloak logs"
   synchronize:
     mode: pull
-    src: "{{ keycloak_dir }}/standalone/log/"
+    src: "/var/log/keycloak/"
     dest: "{{ log_dest }}/log"
+  ignore_errors: true
+- name: "Fetch keycloak config"
+  synchronize:
+    mode: pull
+    src: "{{ keycloak_dir }}/standalone/configuration/"
+    dest: "{{ log_dest }}/configuration"
   ignore_errors: true

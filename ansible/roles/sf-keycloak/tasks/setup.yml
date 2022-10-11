@@ -19,6 +19,7 @@
     - {path: "{{ keycloak_dir }}/standalone/configuration/", recurse: "yes"}
     - {path: "{{ keycloak_dir }}/themes"}
     - {path: "{{ keycloak_dir }}/github-ssh-key-updater"}
+    - {path: "/var/log/keycloak"}
 
 - name: Install templated files
   template:

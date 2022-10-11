@@ -37,6 +37,7 @@ keycloak_components:
       --uidmap {{ container_uid }}:{{ keycloak_uid | default(1000)}}:1
       --volume {{ keycloak_dir }}/standalone/configuration/standalone.xml:{{ keycloak_dir }}/standalone/configuration/standalone-ha.xml:Z
       --volume {{ keycloak_dir }}/themes/sf:{{ keycloak_dir }}/themes/sf:Z
+      --volume /var/log/keycloak:{{ keycloak_dir }}/standalone/log:Z
       --volume {{ keycloak_dir }}/admin_password:{{ keycloak_dir }}/admin_password:Z
       --volume {{ keycloak_dir }}/mysql_password:{{ keycloak_dir }}/mysql_password:Z
       --volume {{ keycloak_certs_dir }}:/etc/x509/https:Z
