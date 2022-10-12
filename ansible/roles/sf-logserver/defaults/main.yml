@@ -42,7 +42,7 @@ logserver_components:
     params: >-
       --volume /var/www/:/var/www/:Z
     run: >-
-      puregelogs --retention-days '{{ logs_expiry }}' --loop 3600 --log-path-dir /var/www/logs
+      bash -c "/usr/local/bin/purgelogs --retention-days '{{ logs_expiry }}' --loop 3600 --log-path-dir /var/www/logs"
 
   - service: "{{ role_package }}"
     image: "quay.io/software-factory/{{ role_package }}:{{ logserver_container_version }}"
