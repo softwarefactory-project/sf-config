@@ -95,7 +95,8 @@ def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links,
             + [dict(name="zuul", path="/zuul")]
             + status_link
             + service("nodepool", "/nodepool")
-            + service("opensearch-dashboards", "/analytics_autologin")
+            + service("opensearchdashboards", "/analytics_autologin")
+            + service("keycloak", "/auth/realms/SF/account/")
             + service("grafana", "/grafana")
             + service("etherpad", "/etherpad")
             + service("lodgeit", "/paste")
