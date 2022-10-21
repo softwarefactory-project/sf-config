@@ -10,18 +10,12 @@
   changed_when: False
   register: localconfig
 
-- name: Log systemd message
-  command: 'logger --tag config-update "managesf: localconfig content {{ localconfig }}"'
-
 - name: Check upstream config
   command: git log --no-decorate -n 3 --oneline resources/
   args:
     chdir: /root/config
   changed_when: False
   register: upstreamconfig
-
-- name: Log systemd message
-  command: 'logger --tag config-update "managesf: upstreamconfig content {{ upstreamconfig }}"'
 
 - block:
 
