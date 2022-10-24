@@ -1,11 +1,11 @@
 ---
 - project:
     name: demo-project
+    queue: demo-integrated
     check:
       jobs:
         - linters
         - demo-rpmbuild
     gate:
-      queue: demo-integrated
       jobs:
         - linters
