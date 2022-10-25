@@ -9,7 +9,7 @@ payload = {
     "iss": "https://{{ fqdn }}",
     "exp": 2300819380,
     "name": "kibana",
-    "roles": ["kibana_viewer"],
+    "roles": ["sf_opensearch_dashboards_user"],
     "sub": "kibana",
 }
 token = jwt.encode(payload, secret, algorithm="HS256")

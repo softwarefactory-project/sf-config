@@ -228,8 +228,8 @@
   loop:
     - {component: "opensearch",
        roles: [
-            {name: "kibana_viewer",
-             description: "Default kibana viewer role",
+            {name: "sf_opensearch_dashboards_user",
+             description: "Default opensearch dashboards roles for SF users",
              default: True,
              assign_to: []},
             {name: "admin",
