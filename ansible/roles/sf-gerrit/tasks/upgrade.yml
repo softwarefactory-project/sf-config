@@ -74,3 +74,9 @@
       rm -Rf /var/lib/gerrit/logs
       ln -s /var/log/gerrit/ /var/lib/gerrit/logs
     fi
+
+- name: Migrate user external IDs to keycloak scheme
+  command: pynotedb cauth-to-keycloak --all-users /var/lib/gerrit/git/All-Users.git
+  become: true
+  become_user: gerrit
+  when: sf_previous_version < 3.8

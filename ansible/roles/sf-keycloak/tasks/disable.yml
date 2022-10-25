@@ -12,5 +12,6 @@
       name: sf-container
       tasks_from: delete.yaml
     loop: "{{ keycloak_components }}"
+    when: item.dependencies_fulfilled | bool
 
   when: erase == True

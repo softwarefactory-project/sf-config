@@ -7,7 +7,7 @@ inventory:
       - mysql
       - zookeeper
       - gateway
-      - cauth
+      - keycloak
       - managesf
       - logserver
       - zuul-scheduler
