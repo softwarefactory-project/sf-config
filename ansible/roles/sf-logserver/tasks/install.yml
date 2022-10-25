@@ -61,18 +61,9 @@
 
   when: _ara_service.rc == 0
 
-- name: Removing gunicorn package
-  yum:
-    name:
-      - python3-gunicorn
-    state: absent
-  when: "'cauth' not in roles"
-  register: _gunicorn_removed
-
-- name: Reloading Systemd if python3-gunicorn package was removed
+- name: Reloading Systemd
   systemd:
     daemon_reload: true
-  when: _gunicorn_removed.changed
 
 - name: Removing purgelogs package
   yum:
