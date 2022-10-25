@@ -4,6 +4,7 @@
 import argparse
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+import platform
 import requests
 import time
 
@@ -164,13 +165,100 @@ def update_groups_dry(sf_groups, current_kc_groups):
 
     return ids_to_delete, groups_to_create
 
-# TODO change @asyncio.coroutine to async when mockbuild
-# module is update to python >2.7
-# remove loop.run_until_complete and uncommante lines
+
+def update_group_memberships_dry(sf_group, kc_group_id, userids_by_email):
+    new_members = sf_group['members']
+    current_members = get_kc_group_members(kc_group_id)
+    current_members_emails = [x['email'] for x in current_members]
+
+    members_to_remove = list(set(current_members_emails) - set(new_members))
+    members_to_add = list(set(new_members) - set(current_members_emails))
+
+    ids_to_remove = []
+    ids_to_add = []
+    for u in members_to_remove:
+        if u in userids_by_email:
+            ids_to_remove.append(userids_by_email[u])
+        else:
+            print("Warning: unknown user '%s' cannot be removed "
+                  "from group '%s', this user needs to log in "
+                  "at least once to be managed."
+                  % (u, sf_group['name']))
+    for u in members_to_add:
+        if u in userids_by_email:
+            ids_to_add.append(userids_by_email[u])
+        else:
+            print("Warning: unknown user '%s' cannot be added to group '%s', "
+                  "this user needs to log in at least once to be managed."
+                  % (u, sf_group['name']))
+
+    return ids_to_remove, ids_to_add
 
 
-@asyncio.coroutine
-def update_groups(ids_to_delete, groups_to_create):
+major, minor, _ = platform.python_version_tuple()
+if major + "." + minor < "3.5":
+
+    # TODO change @asyncio.coroutine to async when mockbuild
+    # module is update to python >2.7
+    # remove loop.run_until_complete and uncommante lines
+
+    @asyncio.coroutine
+    def update_groups(ids_to_delete, groups_to_create):
+        with ThreadPoolExecutor(max_workers=5) as executor_del:
+            loop = asyncio.get_event_loop()
+            tasks = [
+                loop.run_in_executor(
+                    executor_del,
+                    delete_kc_group,
+                    g
+                ) for g in ids_to_delete
+            ]
+            for response in asyncio.gather(*tasks):
+                pass
+
+        with ThreadPoolExecutor(max_workers=5) as executor_create:
+            loop = asyncio.get_event_loop()
+            tasks = [
+                loop.run_in_executor(
+                    executor_create,
+                    create_kc_group,
+                    g
+                ) for g in groups_to_create
+            ]
+            for response in asyncio.gather(*tasks):
+                pass
+
+    @asyncio.coroutine
+    def update_group_memberships(kc_group_id, ids_to_remove, ids_to_add):
+        with ThreadPoolExecutor(max_workers=5) as executor_del:
+            loop = asyncio.get_event_loop()
+            tasks = [
+                loop.run_in_executor(
+                    executor_del,
+                    remove_user_from_group,
+                    *(user_id, kc_group_id)
+                ) for user_id in ids_to_remove
+            ]
+            for response in asyncio.gather(*tasks):
+                pass
+
+        with ThreadPoolExecutor(max_workers=5) as executor_add:
+            loop = asyncio.get_event_loop()
+            tasks = [
+                loop.run_in_executor(
+                    executor_add,
+                    add_user_to_group,
+                    *(user_id, kc_group_id)
+                ) for user_id in ids_to_add
+            ]
+            for response in asyncio.gather(*tasks):
+                pass
+
+
+else:
+    # Dirty hack to circumvent mockbuild limitations
+    exec("""
+async def update_groups(ids_to_delete, groups_to_create):
     with ThreadPoolExecutor(max_workers=5) as executor_del:
         loop = asyncio.get_event_loop()
         tasks = [
@@ -180,8 +268,7 @@ def update_groups(ids_to_delete, groups_to_create):
                 g
             ) for g in ids_to_delete
         ]
-        for response in asyncio.gather(*tasks):
-            pass
+        await asyncio.gather(*tasks)
 
     with ThreadPoolExecutor(max_workers=5) as executor_create:
         loop = asyncio.get_event_loop()
@@ -192,30 +279,12 @@ def update_groups(ids_to_delete, groups_to_create):
                 g
             ) for g in groups_to_create
         ]
-        for response in asyncio.gather(*tasks):
-            pass
-
-
-def update_group_memberships_dry(sf_group, kc_group_id, userids_by_email):
-    new_members = sf_group['members']
-    current_members = get_kc_group_members(kc_group_id)
-    current_members_emails = [x['email'] for x in current_members]
-
-    members_to_remove = list(set(current_members_emails) - set(new_members))
-    members_to_add = list(set(new_members) - set(current_members_emails))
-
-    ids_to_remove = [userids_by_email[u] for u in members_to_remove]
-    ids_to_add = [userids_by_email[u] for u in members_to_add]
-
-    return ids_to_remove, ids_to_add
-
-# TODO change @asyncio.coroutine to async when mockbuild
-# module is update to python >2.7
-# remove loop.run_until_complete and uncommante lines
-
-
-@asyncio.coroutine
-def update_group_memberships(kc_group_id, ids_to_remove, ids_to_add):
+        await asyncio.gather(*tasks)
+""")
+    exec("""
+async def update_group_memberships(kc_group_id,
+                                    ids_to_remove,
+                                    ids_to_add):
     with ThreadPoolExecutor(max_workers=5) as executor_del:
         loop = asyncio.get_event_loop()
         tasks = [
@@ -225,8 +294,7 @@ def update_group_memberships(kc_group_id, ids_to_remove, ids_to_add):
                 *(user_id, kc_group_id)
             ) for user_id in ids_to_remove
         ]
-        for response in asyncio.gather(*tasks):
-            pass
+        await asyncio.gather(*tasks)
 
     with ThreadPoolExecutor(max_workers=5) as executor_add:
         loop = asyncio.get_event_loop()
@@ -237,8 +305,8 @@ def update_group_memberships(kc_group_id, ids_to_remove, ids_to_add):
                 *(user_id, kc_group_id)
             ) for user_id in ids_to_add
         ]
-        for response in asyncio.gather(*tasks):
-            pass
+        await asyncio.gather(*tasks)
+""")
 
 
 def main(args):
@@ -281,6 +349,7 @@ def main(args):
                                          ids_to_add)
             )
             loop.run_until_complete(futures[kc_group_id])
+    loop.close()
 
 
 if __name__ == "__main__":
