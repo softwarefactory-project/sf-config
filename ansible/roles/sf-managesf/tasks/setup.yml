@@ -62,6 +62,10 @@
         Port {{ conn.port|default(29418) }}
       {% endfor %}
       {% if 'gerrit' in roles %}
+      Host managesf.{{ fqdn }}
+        User admin
+        Port 29418
+        IdentityFile /var/lib/managesf/.ssh/id_rsa
       Host {{ fqdn }}
         User admin
         Port 29418
@@ -72,6 +76,21 @@
         Port 29418
         IdentityFile /var/lib/managesf/.ssh/id_rsa
       {% endif %}
+
+- name: "Ensure known_hosts file"
+  file:
+    path: "{{ managesf_lib_dir }}/.ssh/known_hosts"
+    state: touch
+  changed_when: false
+
+- name: "Populate known_hosts for local gerrit"
+  shell: >
+    grep -q "\[{{ item }}\]:29418" {{ managesf_lib_dir }}/.ssh/known_hosts || ssh-keyscan -p 29418 -t ssh-ed25519 {{ item }} >> {{ managesf_lib_dir }}/.ssh/known_hosts
+  loop:
+    - "managesf.{{ fqdn }}"
+    - "{{ fqdn }}"
+    - "gerrit"
+  when: "'gerrit' in roles"
 
 - name: "Setup config.py"
   template:
