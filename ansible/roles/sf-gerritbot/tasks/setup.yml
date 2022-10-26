@@ -64,6 +64,17 @@
     - gerritbot.conf
     - logging.conf
 
+- name: Check for a channels.yaml file
+  stat:
+    path: "{{ gerritbot_config_dir }}/channels.yaml"
+  register: channels_file
+
+- name: Install a dummy channels.yaml file
+  copy:
+    content: "{}"
+    dest: "{{ gerritbot_config_dir }}/channels.yaml"
+  when: not channels_file.stat.exists
+
 - name: Apply selinux port labelling
   seport:
     ports: "{{ gerritbot_port }}"
