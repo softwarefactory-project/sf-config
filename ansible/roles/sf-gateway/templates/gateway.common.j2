@@ -301,6 +301,9 @@
         Require valid-user
         RequestHeader set X-Remote-User %{REMOTE_USER}s
 {% else %}
+        # Note that X-Remote-User is set *only* if the cookie is present.
+        # This basically enables "anonymous" access to managesf, and lets
+        # managesf's policy engine do the actual access control. 
         <If "%{HTTP_COOKIE} =~ /auth_pubtkt=.*/">
             AuthType mod_auth_pubtkt
             TKTAuthLoginURL /login
@@ -316,6 +319,22 @@
     <Location "/manage/v2/configurations">
         Allow from All
         Satisfy Any
+    </Location>
+
+    # Enable "anonymous" access to read resources.
+    <Location "/manage/v2/resources">
+        RequestHeader unset X-Remote-User
+        AuthType oauth20
+        <RequireAny>
+            <RequireAll>
+                Require valid-user
+                Require method POST
+            </RequireAll>
+            <RequireAll>
+                Require method GET
+            </RequireAll>
+        </RequireAny>
+        RequestHeader set X-Remote-User %{REMOTE_USER}s
     </Location>
 {% endif %}
 
