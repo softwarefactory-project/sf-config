@@ -45,7 +45,7 @@ log_processing_components:
       --net host
       --user {{ container_uid }}:{{ container_gid }}
       --uidmap 0:4000:999
-      --uidmap {{ container_uid }}:{{ logsender_uid | default(10210) }}:1
+      --uidmap {{ container_uid }}:{{ logscraper_uid | default(1000) }}:1
       --volume {{ logscraper_dir | default(logscraper_dir) }}:{{ logscraper_dir }}:z
       --volume {{ download_dir }}:{{ download_dir }}:z
       --volume {{ checkpoint_file }}:{{ checkpoint_file }}:z
@@ -64,7 +64,7 @@ log_processing_components:
       --net host
       --user {{ container_uid }}:{{ container_gid }}
       --uidmap 0:4000:999
-      --uidmap {{ container_uid }}:{{ logsender_uid | default(10210) }}:1
+      --uidmap {{ container_uid }}:{{ logsender_uid | default(1000) }}:1
       --volume {{ download_dir }}:{{ download_dir }}:z
       --volume {{ logscraper_dir }}:{{ logscraper_dir }}:z
       {% if external_opensearch_cacert and external_opensearch_cacert != '' %}
