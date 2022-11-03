@@ -10,10 +10,10 @@
 
 - project:
     name: demo-project-distgit
+    queue: demo-integrated
     check:
       jobs:
         - demo-rpmbuild
     gate:
-      queue: demo-integrated
       jobs:
         - demo-rpmbuild
