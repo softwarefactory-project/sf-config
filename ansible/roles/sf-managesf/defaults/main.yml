@@ -52,3 +52,7 @@ managesf_components:
       {% if sf_managesf_additional_params is defined %}
       {{ sf_managesf_additional_params }}
       {% endif %}
+
+keycloak_http_port: 38080
+keycloak_host: keycloak.example.com
+keycloak_internal_url: "http://{{ keycloak_host }}:{{ keycloak_http_port }}"

@@ -37,14 +37,6 @@
    - "'gerrit' in roles"
    - "'firehose' in roles"
 
-- name: Install files
-  copy:
-    src: files/update_keycloak_resources.py
-    dest: /usr/local/bin/
-    owner: keycloak
-    group: keycloak
-    mode: '0700'
-
 - name: Create cert dir
   file:
     path: "{{ keycloak_certs_dir }}"

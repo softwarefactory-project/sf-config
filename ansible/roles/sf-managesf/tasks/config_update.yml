@@ -56,6 +56,15 @@
   when:
     - localconfig.stdout != upstreamconfig.stdout
 
+- block:
+    - name: Create zuul-related roles in keycloak for new tenants
+      shell: |
+        managesf-keycloak --kc-api {{ keycloak_internal_url }}/auth --debug sync-roles
+      environment:
+        KC_ADMIN_PASSWORD: "{{ authentication.admin_password }}"
+  when:
+    - localconfig.stdout != upstreamconfig.stdout
+
 - name: Apply new policy.yaml
   copy:
     src: /root/config/policies/policy.yaml
