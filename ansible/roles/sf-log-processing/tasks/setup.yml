@@ -13,14 +13,13 @@
   set_fact:
     logscraper_uid: "{{ _logscraper_uid.stdout }}"
 
-# FIXME: change mode when logscraper user ID is not 1000
-- name: Create dedicated directory
-  file:
-    path: "{{ logscraper_dir }}"
-    state: directory
-    owner: "{{ owner }}"
-    group: "{{ group }}"
-    mode: "0777"
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - {path: "{{ logscraper_dir }}", recurse: "yes"}
+    - {path: "{{ download_dir }}", recurse: "yes"}
 
 - name: Init checkopoint file
   file:
@@ -28,16 +27,7 @@
     state: touch
     owner: "{{ owner }}"
     group: "{{ group }}"
-    mode: "0777"
-
-- name: Create logscraper download directory
-  file:
-    path: "{{ download_dir }}"
-    state: directory
-    recurse: true
-    owner: "{{ owner }}"
-    group: "{{ group }}"
-    mode: "0777"
+    mode: "0766"
 
 - name: Copy logscraper config file
   template:
