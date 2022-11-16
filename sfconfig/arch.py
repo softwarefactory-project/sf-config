@@ -84,14 +84,16 @@ def process(args):
             host['roles'] = [r.replace('kibana',
                                        'opensearch') for r in host['roles']]
 
+        if 'cauth' in host['roles']:
+            host['roles'] = [r.replace('cauth',
+                                       'keycloak') for r in host['roles']]
+
         for role in host["roles"]:
             # Add host to role list
             args.glue["roles"].setdefault(role, []).append(host)
             # Add extra aliases for specific roles
             if role == "gateway":
                 aliases.add(args.sfconfig["fqdn"])
-            elif role == "cauth":
-                aliases.add("auth.%s" % args.sfconfig["fqdn"])
             elif role not in args.glue["scalable_roles"]:
                 # Add role name virtual name (as cname)
                 aliases.add("%s.%s" % (role, args.sfconfig["fqdn"]))
@@ -135,6 +137,9 @@ def process(args):
             print("There is wrong order set in roles. Please change it to:")
             for role_index in correct_order_indexes:
                 print("- %s" % host["roles"][role_index])
+            print("Current host roles are:")
+            for role in host["roles"]:
+                print("- %s" % role)
             sys.exit(1)
 
     # Check roles
@@ -164,16 +169,6 @@ please remove them from /etc/software-factory/arch.yaml file:
             not args.sfconfig["config-locations"]["jobs-repo"] and
             not args.sfconfig["zuul"]["upstream_zuul_jobs"]):
         fail("Cgit or Gerrit component is required for distributed deployment")
-
-    if (all(x in args.glue["roles"] for x in ['cauth', 'keycloak']) or
-       all(x not in args.glue["roles"] for x in ['cauth', 'keycloak'])):
-        fail("Either 'keycloak' OR 'cauth' component is needed")
-
-    # TODO remove this at the end of the patch chain
-    if 'keycloak' in args.glue["roles"]:
-        print("/!\\ keycloak is not completely supported at this point."
-              "Deploying Software Factory with this role will lead to "
-              "failures. Do it only for testing things out!")
 
     if (args.sfconfig.get('external_opensearch', {}) and (
             not args.sfconfig['external_opensearch'].get('users') or

@@ -213,8 +213,9 @@ def setup(args, pb):
 
     # Setup infra role firsts
     pre_roles = ("mysql",
-                 "cauth", "keycloak",
-                 "gateway", "hypervisor-openshift")
+                 "gateway",
+                 "keycloak",
+                 "hypervisor-openshift")
     for role in pre_roles:
         if role in args.glue["roles"]:
             pb.append(host_play(role, role, action))
@@ -277,7 +278,7 @@ def config_update(args, pb):
     # The list of role to run update task
     roles_order = ["managesf", "gerrit", "pages", "gerritbot",
                    "zuul", "nodepool", "grafana", "hound",
-                   "cgit", "cauth", "keycloak", "hypervisor-k1s"]
+                   "cgit", "keycloak", "hypervisor-k1s"]
     # The extra list of host group to run fetch-config-repo
     roles_group = [
         "zuul-scheduler", "nodepool-launcher", "nodepool-builder",

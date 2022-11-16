@@ -6,6 +6,6 @@ inventory:
       - install-server
       - mysql
       - gateway
-      - cauth
+      - keycloak
       - managesf
       - logserver

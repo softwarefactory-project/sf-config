@@ -60,7 +60,7 @@ keycloak_components:
       --uidmap 0:4000:999
       --uidmap 1001:{{ keycloak_uid | default(1000)}}:1
       --volume {{ keycloak_dir }}/github-ssh-key-updater:/etc/github-ssh-key-updater:Z
-    dependencies_fulfilled: "{% if 'gerrit' in roles %} true {% else %} false {% endif %}"
+    dependencies_fulfilled: "{% if 'gerrit' in roles and 'firehose' in roles %}yes{% else %}no{% endif %}"
 
 kcadm_options: |
     --no-config
@@ -75,8 +75,6 @@ keycloak_zuul_client_secret: "CHANGE_ME"
 keycloak_grafana_client_secret: "CHANGE_ME"
 keycloak_managesf_client_secret: "CHANGE_ME"
 keycloak_opensearch_client_secret: "CHANGE_ME"
-keycloak_kibana_client_secret: "CHANGE_ME"
-keycloak_opensearch_dashboards_client_secret: "{{ keycloak_kibana_client_secret }}"
 
 sf_service_user_password: "CHANGE_ME"
 

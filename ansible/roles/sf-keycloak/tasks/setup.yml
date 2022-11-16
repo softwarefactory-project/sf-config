@@ -53,7 +53,9 @@
       mode: "0440"
       user: keycloak
       group: keycloak
-  when: "'gerrit' in roles"
+  when:
+   - "'gerrit' in roles"
+   - "'firehose' in roles"
 
 - name: Install files
   copy:
@@ -163,7 +165,6 @@
   wait_for:
     port: "{{ keycloak_http_port }}"
 
-# TODO fix until conditions
 - name: check for default realm
   command: |
     podman exec -ti {{ keycloak_components[0].service }}
@@ -172,8 +173,8 @@
   register: _default_realm
   # account for time needed to start the service
   retries: 60
-  delay: 5
-  until: _default_realm.rc == 0 or not ( _default_realm.stdout is search("Resource not found", multiline=True, ignorecase=True) )
+  delay: 2
+  until: _default_realm.rc == 0 or ( _default_realm.stdout is search("Resource not found", multiline=True, ignorecase=True) )
   ignore_errors: true
   no_log: show_hidden_logs == False
 
@@ -236,10 +237,6 @@
              default: False,
              description: "Admin access",
              assign_to: ["admin", ]},
-            {name: "zuul_keycloak_cs",
-             default: False,
-             description: "Zuul Keycloak Client Scope",
-             assign_to: []},
           ]
       }
   loop_control:
@@ -329,6 +326,15 @@
         {{ kcadm_options }}
   no_log: show_hidden_logs == False
 
+- name: Configure expiry timeout for SSO sessions
+  command: |
+    podman exec -ti {{ keycloak_components[0].service }}
+    {{ keycloak_dir }}/bin/kcadm.sh update realms/{{ keycloak_default_realm }}
+        --set "ssoSessionMaxLifespan={{ authentication.sso_session_timeout }}"
+        {{ kcadm_options }}
+  no_log: show_hidden_logs == False
+  when: '"sso_session_timeout" in authentication'
+
 # Identity Providers
 
 - name: Configure GitHub identity provider
@@ -398,10 +404,6 @@
     - component: "opensearch"
       use_secret: True
       realm_role_mapper: True
-      group_role_mapper: False
-    - component: "kibana"
-      use_secret: True
-      realm_role_mapper: False
       group_role_mapper: False
 
   when: item.component in roles

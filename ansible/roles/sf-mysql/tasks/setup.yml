@@ -135,3 +135,5 @@
     login_unix_socket: "{{ mysql_var_run_dir }}/mysqld.sock"
   loop:
     - test
+# TODO either add this line or provide a manual removal procedure post-upgrade to 3.8
+#    - cauth

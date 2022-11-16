@@ -12,6 +12,7 @@
 
 import os
 import sys
+import time
 import uuid
 import re
 from sfconfig.utils import pread
@@ -286,6 +287,96 @@ def update_sfconfig(args):
         open(args.config, 'w').write(re.sub(
             "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
 
+    # 3.8 - Keycloak related stuff
+    keycloak_warning = ""
+    gh_break = False
+    oauth2 = data["authentication"].get('oauth2')
+
+    if "sso_cookie_timeout" in data["authentication"]:
+        data["authentication"]["sso_session_timeout"] = (
+            data["authentication"]["sso_cookie_timeout"]
+        )
+        del data["authentication"]["sso_cookie_timeout"]
+    if "ldap" in data["authentication"]:
+        keycloak_warning += ("- Found entry in 'authentication.ldap': ")
+        keycloak_warning += ("LDAP authentication must be "
+                             "configured in Keycloak directly.\n")
+    if "active_directory" in data["authentication"]:
+        keycloak_warning += (
+            "- Found entry in 'authentication.active_directory': ")
+        keycloak_warning += ("Active Directory authentication must "
+                             "be configured in Keycloak directly.\n")
+    if "github" in oauth2:
+        if not oauth2["github"].get("disabled", True):
+            gh_break = True
+        if oauth2["github"].get('github_allowed_organizations', []) != []:
+            keycloak_warning += (
+                "- Found entry in 'authentication.oauth2.github': ")
+            keycloak_warning += ("Github organization filtering is "
+                                 "not supported anymore.\n")
+    if "google" in oauth2:
+        keycloak_warning += (
+            "- Found entry in 'authentication.oauth2.google': ")
+        keycloak_warning += ("Google authentication must be configured "
+                             "as a social provider in Keycloak directly.\n")
+    if "bitbucket" in oauth2:
+        keycloak_warning += (
+            "- Found entry in 'authentication.oauth2.bitbucket': ")
+        keycloak_warning += ("Bitbucket authentication must be "
+                             "configured as a social provider in Keycloak "
+                             "directly.\n")
+    if "openid" in data["authentication"]:
+        keycloak_warning += (
+            "- Found entry in 'authentication.openid': ")
+        keycloak_warning += ("Generic OpenID authentication must be "
+                             "configured in Keycloak directly.\n")
+    if "openid_connect" in data["authentication"]:
+        keycloak_warning += (
+            "- Found entry in 'authentication.openid_connect': ")
+        keycloak_warning += ("OpenID Connect authentication must be "
+                             "configured in Keycloak directly.\n")
+    if "SAML2" in data["authentication"]:
+        keycloak_warning += (
+            "- Found entry in 'authentication.SAML2': ")
+        keycloak_warning += ("SAML2 authentication must be configured "
+                             "in Keycloak directly.\n")
+    if len(keycloak_warning) > 0:
+        print("The following authentication settings are obsolete. "
+              "You can remove them from the configuration file "
+              "at any time, they will be safely ignored by sf-config:\n\n")
+        print(keycloak_warning)
+    if gh_break:
+        fqdn = args.sfconfig.get('fqdn', "{FQDN}")
+        print("""
+#####################################################
+#                      WARNING                      #
+#####################################################
+
+(The program will pause for a few seconds, resume by hitting
+Ctrl+c)
+
+Github is configured as a third-party authenticator.
+You need to get on the Github OAuth application settings page
+(https://github.com/settings/developers  then "OAuth Apps")
+to update the authorization callback URL to the following
+new value:
+
+https://%s/auth/realms/SF/broker/github/endpoint
+
+""" % fqdn)
+        try:
+            for remaining in range(20, 0, -1):
+                sys.stdout.write("\r")
+                sys.stdout.write(
+                    "{:2d} seconds until resuming.".format(remaining)
+                )
+                sys.stdout.flush()
+                time.sleep(1)
+            print("\rResuming upgrade.")
+        except KeyboardInterrupt:
+            sys.stdout.flush()
+            print("\rCountdown interrupted, resuming upgrade.")
+
 
 def runc_provider_exists():
     runc = ''
@@ -354,6 +445,12 @@ def update_arch(args):
         for sb in ("rabbitmq", "storyboard", "storyboard-webclient"):
             if sb in host['roles']:
                 host['roles'].remove(sb)
+
+        if sf_version > "3.7":
+            print("Keycloak replaces Cauth starting from release 3.8. "
+                  "The arch file will be modified accordingly.")
+            host['roles'] = [r.replace('cauth', 'keycloak')
+                             for r in host['roles']]
 
     # Remove deployments related information
     for deploy_key in ("cpu", "mem", "hostid", "rolesname"):

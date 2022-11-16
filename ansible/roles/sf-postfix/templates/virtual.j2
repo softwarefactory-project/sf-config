@@ -3,3 +3,6 @@ backup    {{ network.admin_mail_forward }}
 gerrit    {{ network.admin_mail_forward }}
 admin     {{ network.admin_mail_forward }}
 dev-robot {{ network.admin_mail_forward }}
+{% if 'keycloak' in roles %}
+keycloak {{ network.admin_mail_forward }}
+{% endif %}

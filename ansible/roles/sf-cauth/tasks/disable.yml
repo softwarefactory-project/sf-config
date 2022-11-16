@@ -14,5 +14,5 @@
         name: "{{ item }}"
         state: absent
       loop:
-        - python2-cauth
+        - python3-cauth
   when: erase == True

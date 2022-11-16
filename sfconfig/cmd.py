@@ -330,15 +330,6 @@ Login with admin user, get the admin password by running:
 """ % (args.sfconfig['fqdn'], args.sfconfig['fqdn']))
             open(prev_fqdn_path, "w").write(args.sfconfig['fqdn'])
 
-    if (not args.sfconfig['authentication']['SAML2']['disabled'] and
-       not os.path.isfile(saml_idp_file)):
-        print("""
-Service Provider metadata is available at /etc/httpd/saml2/mellon_metadata.xml
-Once you have the Identity Provider metadata, run:
-  sfconfig --set-idp-metadata <path/to/metadata.xml>
-
-""")
-
     try:
         notification = open(
             "/var/lib/software-factory/ansible/notification.txt").read()
