@@ -1,22 +1,4 @@
 ---
-- name: Create demo user (cauth)
-  command: >
-    sfmanager user create --username demo --password demo
-        --email demo@{{ fqdn }} --fullname "Demo User"
-  environment:
-    REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
-  # TODO: fix sfmanager to not fail when user already exists
-  ignore_errors: yes
-  when:
-    - "'cauth' in roles"
-
-- name: Log in to create user
-  command: sfmanager --auth demo:demo sf_user list
-  environment:
-    REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
-  when:
-    - "'cauth' in roles"
-
 # with keycloak there is no callback provisioning as with cauth. With this
 # task we talk directly to gerrit to pre-provision the user.
 # TODO use kc's mqtt event exporter to implement the user provisioning in gerrit.

@@ -5,8 +5,6 @@
         path: "{{ item }}"
         state: absent
       loop:
-        - /var/lib/cauth
-        - /var/lib/edeploy
         - /etc/pki/ca-trust/source/anchors/localCA.pem
 
     - name: "Update trust"

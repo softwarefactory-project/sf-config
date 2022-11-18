@@ -52,22 +52,6 @@
     option: '{{ item.option }}'
     value: '{{ item.value }}'
   loop:
-    - {section: auth.proxy, option: enabled, value: '{{ grafana_auth_proxy_enabled }}'}
-    - {section: auth.proxy, option: header_name, value: '{{ grafana_auth_proxy_header_name }}'}
-    - {section: auth.proxy, option: header_property, value: '{{ grafana_auth_proxy_header_property }}'}
-    - {section: auth.proxy, option: auto_sign_up, value: '{{ grafana_auth_proxy_auto_sign_up }}'}
-    - {section: auth.basic, option: enabled, value: '{{ grafana_auth_basic_enabled }}'}
-  register: _grafana_ini_auth
-  no_log: show_hidden_logs == False
-  when: '"cauth" in roles'
-
-- name: Configure authentication
-  ini_file:
-    dest: "{{ grafana_config_dir }}/grafana.ini"
-    section: '{{ item.section }}'
-    option: '{{ item.option }}'
-    value: '{{ item.value }}'
-  loop:
     - {section: auth.generic_oauth, option: enabled, value: 'true'}
     - {section: auth.generic_oauth, option: name, value: 'Software Factory SSO'}
     - {section: auth.generic_oauth, option: client_id, value: 'grafana'}

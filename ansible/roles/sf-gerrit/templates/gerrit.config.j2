@@ -15,11 +15,6 @@
     client-secret = {{ keycloak_gerrit_client_secret }}
 [oauth]
     allowRegisterNewEmail = true
-{% else %}
-    type = HTTP
-    gitBasicAuth = true
-    loginUrl = /r/login
-    logoutUrl = /logout
 {% endif %}
 [container]
     user = gerrit

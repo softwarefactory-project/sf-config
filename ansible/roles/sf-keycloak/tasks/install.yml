@@ -13,41 +13,11 @@
     tasks_from: install.yaml
   loop: "{{ keycloak_components }}"
 
-- name: "Check if cauth is running"
-  command: "systemctl is-active -q cauth"
-  register: _cauth_service
-  failed_when: _cauth_service.rc not in [0, 3]
-  changed_when: false
-
-- name: Remove cauth if present
-  block:
-    - name: Stop cauth service
-      service:
-        name: "cauth"
-        state: stopped
-        enabled: false
-      ignore_errors: true
-    - name: Remove cauth packages
-      yum:
-        name:
-          - python3-cauth
-          - mod_auth_pubtkt
-        state: absent
-    - name: Remove files
-      file:
-        path: "{{ item }}"
-        state: absent
-      loop:
-        - /etc/cauth
-        - /etc/httpd/conf.d/cauth.site
-        - /etc/httpd/conf.modules.d/00-tkt.conf
-        - /etc/httpd/conf.d/auth_pubtkt.conf
-        - /var/lib/cauth/keys/privkey.pem
-      ignore_errors: true
-    - name: Remove cauth user
-      user:
-        name: cauth
-        state: absent
-        remove: true
-      ignore_errors: true
-  when: _cauth_service.rc == 0
+# By safety ensure that cauth service is down
+- name: Stop cauth service
+  service:
+    name: cauth
+    state: stopped
+    enabled: false
+    daemon-reload: true
+  ignore_errors: true
