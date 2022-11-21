@@ -15,7 +15,7 @@ group: opensearch-dashboards
 container_uid: 1000
 container_gid: 1000
 
-opensearch_dashboards_version: 2.2.0
+opensearch_dashboards_version: 2.4.0
 opensearch_dashboards_container_version: "{{ opensearch_dashboards_version }}-1"
 
 opensearch_dashboards_components:
