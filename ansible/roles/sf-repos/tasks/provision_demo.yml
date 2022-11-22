@@ -1,22 +1,10 @@
 ---
-# with keycloak there is no callback provisioning as with cauth. With this
-# task we talk directly to gerrit to pre-provision the user.
-# TODO use kc's mqtt event exporter to implement the user provisioning in gerrit.
-- name: pre-provision user via direct managesf API call
-  uri:
-    url: http://managesf:20001/services_users/
-    method: POST
-    body_format: json
-    body:
-      full_name: "Demo User"
-      email: "demo@{{ fqdn }}"
-      username: "demo"
-      ssh_keys: []
-    status_code: [200, 201]
-    headers:
-      X-Remote-User: admin
-  when:
-    - "'keycloak' in roles"
+# Talk directly to gerrit to pre-provision the user.
+- name: create test accounts
+  command: ssh gerrit gerrit create-account --email demo@{{ fqdn }} demo
+  register: test_user_create
+  failed_when: test_user_create.rc != 0 and test_user_create.stderr.find("already exists") == -1
+  delegate_to: "{{ install_server_host }}"
 
 - name: Check if repository exists
   command: python3 -c "import requests; print('demo-project' in requests.get('{{ managesf_internal_url }}/v2/resources').json().get('resources', {}).get('repos', {}))"
