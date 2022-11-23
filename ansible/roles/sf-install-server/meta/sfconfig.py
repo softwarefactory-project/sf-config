@@ -97,7 +97,6 @@ def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links,
             #
             # (also, list keycloak here so that the auth service
             # is shown first)
-            + service("keycloak", "/auth/realms/SF/account/")
             + service("gerrit", "/r/")
             + [dict(name="zuul", path="/zuul")]
             + status_link
