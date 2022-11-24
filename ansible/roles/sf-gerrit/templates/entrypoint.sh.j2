@@ -11,8 +11,8 @@ configure_keystore () {
     keytool -importkeystore -srckeystore /var/gerrit/etc/{{ fqdn }}.pkcs12 \
       -srcstoretype PKCS12 -destkeystore /var/gerrit/etc/keystore \
       -srcstorepass {{ gerrit_keystore_password }} -deststorepass {{ gerrit_keystore_password }}
-    keytool -importcert -alias {{ fqdn }}-root-ca \
-      -file /etc/pki/tls/certs/ca-bundle.crt \
+
+    keytool -importcert -alias {{ fqdn }}-local-ca -file /var/gerrit/etc/localCA.crt \
       -keystore /var/gerrit/etc/truststore -storepass changeit -noprompt
 }
 
@@ -21,6 +21,7 @@ if [ -f "/var/gerrit/etc/{{ fqdn }}.pkcs12" ]; then
     rm -f /var/gerrit/etc/keystore
     configure_keystore
     rm -f /var/gerrit/etc/{{ fqdn }}.pkcs12
+    rm -f /var/gerrit/etc/localCA.crt
 fi
 
 if [ -f /var/gerrit/logs/.run_init ]; then

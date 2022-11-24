@@ -204,6 +204,12 @@
   when:
     - update_fqdn or not gerrit_keystore_file.stat.exists
 
+- name: prepare localCA certificate for import in keystore if fqdn is updated or keystore does not exist
+  shell: |
+    openssl x509 -outform der -in /etc/pki/ca-trust/source/anchors/localCA.pem -out {{ gerrit_conf_dir }}/localCA.crt
+  when:
+    - update_fqdn or not gerrit_keystore_file.stat.exists
+
 - name: set correct ownership of PKCS12 bundle
   file:
     path: "{{ gerrit_conf_dir }}/{{ fqdn }}.pkcs12"
