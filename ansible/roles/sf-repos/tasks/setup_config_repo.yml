@@ -5,16 +5,10 @@
 
 - name: Create empty resources file
   copy:
-    content: 'resources: {}'
+    content: "resources: {}"
     dest: /var/lib/software-factory/bootstrap-data/empty_resources.yaml
 
 - block:
-    - name: Make a first admin connexion through SF SSO (force sf_users admin id:1)
-      command: sfmanager sf_user list
-      environment:
-        REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-bundle.crt
-      when: "'keycloak' not in roles"
-
     - set_fact:
         initial_creation: True
 
@@ -90,7 +84,7 @@
 
 - include_tasks: gitreview_update_fqdn.yaml
   vars:
-    update_fqdn_project: '{{ config_done.stat.path }}'
+    update_fqdn_project: "{{ config_done.stat.path }}"
     update_fqdn_url: "{{ config_location }}"
   when:
     - update_fqdn
