@@ -91,12 +91,6 @@
     mode: "{{ item.mode }}"
     backup: yes
   loop:
-    - {name: patchset-created,
-       path: "{{ gerrit_lib_dir }}/hooks",
-       mode: '0740'}
-    - {name: change-merged,
-       path: "{{ gerrit_lib_dir }}/hooks",
-       mode: '0740'}
     - {name: gerrit.config,
        path: "{{ gerrit_conf_dir }}",
        mode: '0644'}
