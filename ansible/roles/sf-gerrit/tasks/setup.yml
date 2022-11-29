@@ -1,4 +1,12 @@
 ---
+- name: Get gerrit uid
+  command: id -u gerrit
+  register: _gerrit_id
+
+- name: Expose gerrit uid
+  set_fact:
+    gerrit_uid: "{{ _gerrit_id.stdout }}"
+
 - name: Check container image version
   include_role:
     name: sf-container
@@ -244,14 +252,6 @@
     owner: "{{ owner }}"
     group: "{{ group }}"
     mode: '0755'
-
-- name: Get gerrit uid
-  command: id -u gerrit
-  register: _gerrit_id
-
-- name: Expose gerrit uid
-  set_fact:
-    gerrit_uid: "{{ _gerrit_id.stdout }}"
 
 - name: Create container
   include_role:
