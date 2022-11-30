@@ -1,16 +1,11 @@
 ---
-- name: Add the influxdb RPM repository
-  yum_repository:
-    name: "{{ influxdb_repo_name }}"
-    description: "{{ influxdb_repo_desc }}"
-    baseurl: "{{ influxdb_repo_url }}"
-    gpgkey: "{{ influxdb_repo_gpgkey }}"
-    gpgcheck: "{{ influxdb_repo_gpgcheck }}"
-    enabled: 0
-
-- name: Install telegraf packages
+- name: Remove telegraf packages
   yum:
-    name: telegraf
-    state: present
-    disablerepo: "*"
-    enablerepo: "{{ influxdb_repo_name }}"
+    name: "telegraf"
+    state: absent
+
+- name: Pull image
+  include_role:
+    name: sf-container
+    tasks_from: install.yaml
+  loop: "{{ telegraf_components }}"

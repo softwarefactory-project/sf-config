@@ -1,35 +1,70 @@
 ---
-- include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
+- include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
+  vars:
+    user_name: "{{ owner }}"
 
-- name: Ensure telegraf owner for /etc/telegraf
-  file:
-    path: /etc/telegraf
-    owner: telegraf
+- name: Get {{ owner }} uid
+  command: id -u {{ owner }}
+  register: _telegraf_id
 
-- name: Install configuration templates
+- name: Get {{ owner }} gid
+  command: id -g {{ owner }}
+  register: _telegraf_gid
+
+- name: Setting {{ owner }} uid var
+  set_fact:
+    telegraf_uid: "{{ _telegraf_id.stdout }}"
+    telegraf_gid: "{{ _telegraf_gid.stdout }}"
+
+- name: Check container image version
+  include_role:
+    name: sf-container
+    tasks_from: check_version.yaml
+  loop: "{{ telegraf_components }}"
+
+- name: Create container directory
+  include_role:
+    name: sf-container
+    tasks_from: create_directory.yaml
+  loop:
+    - path: "{{ telegraf_config_dir }}"
+      recurse: "yes"
+      owner: "{{ owner }}"
+      group: "{{ group }}"
+      mode: "0750"
+
+- name: Apply selinux port labelling
+  seport:
+    ports: "{{ telegraf_port }}"
+    proto: "udp"
+    setype: "http_port_t"
+    state: present
+  when:
+    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
+    - ansible_selinux.status == "enabled"
+
+- name: Setup config files
   template:
-    src: '{{ item.name }}.j2'
-    dest: '{{ item.path }}/{{ item.name }}'
-    owner: telegraf
-    group: root
-    mode: '0440'
+    src: "telegraf.conf.j2"
+    dest: "{{ telegraf_config_dir }}/{{ item }}"
   loop:
-    - {name: 'output_influxdb.conf', path: '/etc/telegraf/telegraf.d'}
-    - {name: 'telegraf.conf', path: '/etc/telegraf'}
-  notify: Restart telegraf
+    - telegraf.conf
 
-- name: Install configuration files
-  copy:
-    src: '{{ item }}'
-    dest: '/etc/telegraf/telegraf.d/{{ item }}'
-    owner: telegraf
-    mode: '0440'
-  loop:
-    - statsd.conf
-  notify: Restart telegraf
+- name: Create container
+  include_role:
+    name: sf-container
+    tasks_from: setup.yaml
+  loop: "{{ telegraf_components }}"
+
+- name: Restart telegraf when fqdn is updated
+  systemd:
+    name: "{{ role_package }}"
+    state: restarted
+  when: update_fqdn
 
 - name: Start service
-  service:
-    name: telegraf
+  systemd:
+    name: "{{ role_package }}"
     state: started
-    enabled: "yes"
+    daemon_reload: true
+    enabled: true

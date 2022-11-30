@@ -1,26 +1,42 @@
 ---
 - name: Disable services
   service:
-    name: 'telegraf'
+    name: '{{ item }}'
     state: stopped
     enabled: "no"
+  loop:
+    - '{{ role_package }}'
   ignore_errors: "yes"
 
 - block:
+    - name: "Check if {{ role_package }} container exists"
+      command: "podman container exists {{ role_package }}"
+      ignore_errors: yes
+      register: _container_exists
+      changed_when: no
+      failed_when: _container_exists.rc not in [0, 1]
+      become: true
+
+    - name: Delete containers
+      include_role:
+        name: sf-container
+        tasks_from: delete.yaml
+      loop: "{{ telegraf_components }}"
+      when: _container_exists.rc == 0
+
     - name: Remove files
       file:
         path: "{{ item }}"
         state: absent
       loop:
-        - '/etc/{{ service_name }}'
-        - '/var/lib/{{ service_name }}'
-        - '/var/log/{{ service_name }}'
-        - "/etc/yum.repos.d/{{ influxdb_repo_name }}.repo"
+        - '/etc/{{ role_package }}'
 
     - name: Remove packages
       yum:
         name: '{{ item }}'
         state: absent
       loop:
-        - '{{ service_name }}'
+        - '{{ role_package }}'
+      when: _container_exists.rc != 0
+
   when: erase == True

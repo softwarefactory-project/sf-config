@@ -1,16 +1,16 @@
 ---
-- name: Check for telegraf.conf
-  stat:
-    path: /etc/telegraf/telegraf.conf
-  register: _telegraf_conf
+- name: Stop the service
+  service:
+    name: "{{ role_package }}"
+    state: stopped
 
-- name: Remove insecure ssl settings
-  replace:
-    dest: /etc/telegraf/telegraf.conf
-    regexp: '  #? ?insecure_skip_verify =.*'
-    replace: '  # insecure_skip_verify = true'
-  when: _telegraf_conf.stat.exists
+- name: Remove {{ role_package }} rpm package
+  yum:
+    name: "{{ role_package }}"
+    state: absent
 
-- name: Notify telegraf restart handler
-  command: /bin/true
-  notify: Restart telegraf
+- name: Upgrade container
+  include_role:
+    name: sf-container
+    tasks_from: upgrade.yaml
+  loop: "{{ telegraf_components }}"

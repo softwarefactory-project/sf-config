@@ -13,3 +13,26 @@
   logfile = ""
   hostname = "{{ ansible_fqdn }}"
   omit_hostname = false
+
+[[outputs.influxdb]]
+  urls = ["https://{{ influxdb_host }}:{{ influxdb_port }}"]
+  database = "telegraf"
+  retention_policy = ""
+  write_consistency = "any"
+  timeout = "5s"
+  username = "{{ telegraf_influxdb_user }}"
+  password = "{{ telegraf_influxdb_password }}"
+  skip_database_creation = true
+
+# Statsd Server
+[[inputs.statsd]]
+  service_address = ":8125"
+  delete_gauges = true
+  delete_counters = true
+  delete_sets = true
+  delete_timings = true
+  percentiles = [90.0]
+  metric_separator = "."
+  parse_data_dog_tags = false
+  allowed_pending_messages = 10000
+  percentile_limit = 1000
