@@ -199,6 +199,14 @@
              assign_to: ["admin", ]},
           ]
       }
+    - {component: "zuul",
+       roles: [
+            {name: "zuul_admin",
+             description: "This role grants privileged actions such as dequeues and autoholds on every tenant created in the resources",
+             default: False,
+             assign_to: []},
+          ]
+      }
   loop_control:
     loop_var: config_item
   when: config_item.component in roles
@@ -347,7 +355,7 @@
     - component: "managesf"
       use_secret: False
       realm_role_mapper: True
-      group_role_mapper: True
+      group_role_mapper: False
     # Not sure if gerrit oauth uses groups from the IdP.
     - component: "gerrit"
       use_secret: True
@@ -356,10 +364,10 @@
     - component: "zuul"
       use_secret: False
       realm_role_mapper: True
-      group_role_mapper: True
+      group_role_mapper: False
     - component: "grafana"
       use_secret: True
-      realm_role_mapper: False
+      realm_role_mapper: True
       group_role_mapper: False
     - component: "opensearch"
       use_secret: True
