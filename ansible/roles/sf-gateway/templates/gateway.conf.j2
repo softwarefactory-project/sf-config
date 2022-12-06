@@ -38,7 +38,6 @@ ServerTokens Prod
     Include conf.d/headers.conf
     Include conf.d/gateway.common
 
-{% if 'keycloak' in roles %}
     OIDCOAuthRemoteUserClaim    preferred_username
     OIDCRemoteUserClaim    preferred_username
     OIDCOAuthClientID           managesf
@@ -50,5 +49,4 @@ ServerTokens Prod
     OIDCResponseType        id_token
     OIDCProviderMetadataURL     https://{{ fqdn }}/auth/realms/SF/.well-known/openid-configuration
     OIDCOAuthVerifyJwksUri     https://{{ fqdn }}/auth/realms/SF/protocol/openid-connect/certs
-{% endif %}
 </VirtualHost>

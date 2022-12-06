@@ -44,9 +44,7 @@ services = [
 {% if 'nodepool' in roles %}
     'SFNodepool',
 {% endif %}
-{% if 'keycloak' in roles %}
     'keycloak',
-{% endif %}
 ]
 
 managesf = {
@@ -104,8 +102,6 @@ api = {
     }
 }
 
-{% if 'keycloak' in roles %}
 auth = {
     'type': 'keycloak',
 }
-{% endif %}

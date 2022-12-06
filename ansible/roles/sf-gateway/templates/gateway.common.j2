@@ -189,11 +189,9 @@
         ProxyPassReverse /codesearch/ {{ hound_internal_url }}/
 
 {% endif %}
-{% if 'keycloak' in roles %}
         ProxyPass /auth/ http://{{ keycloak_host }}:{{ keycloak_http_port }}/auth/
         ProxyPassReverse /auth/ http://{{ keycloak_host }}:{{ keycloak_http_port }}/auth/
 
-{% endif %}
         ProxyPreserveHost On
         AllowEncodedSlashes NoDecode
         <Proxy *>
@@ -236,24 +234,19 @@
     {% endfor -%}
 {% endif %}
 
-{% if 'keycloak' in roles %}
     <Location "/auth">
         RequestHeader add "X-forwarded-proto" "https"
         RequestHeader set x-ssl-client-cert "%{SSL_CLIENT_CERT}s"
     </Location>
 
-{% endif %}
 {% if 'managesf' in roles %}
     <Location "/manage">
         RequestHeader unset X-Remote-User
-{% if 'keycloak' in roles %}
         AuthType oauth20
         Require valid-user
         RequestHeader set X-Remote-User %{REMOTE_USER}s
-{% endif %}
     </Location>
 
-{% if 'keycloak' in roles %}
     <Location "/manage/v2/configurations">
         Allow from All
         Satisfy Any
@@ -274,7 +267,6 @@
         </RequireAny>
         RequestHeader set X-Remote-User %{REMOTE_USER}s
     </Location>
-{% endif %}
 
     <Location "/manage/about">
         Allow from All
@@ -290,17 +282,13 @@
     <LocationMatch "^(?!/(r/.*/(info/refs|git-upload-pack)|docs|static|auth|index.html|_defconf.tgz|.well-known|zuul/api/connection/[^\/]+/payload|server-status|$))">
         Order deny,allow
         Allow from all
-{% if 'keycloak' in roles %}
         AuthType openid-connect
         Require valid-user
-{% endif %}
     </LocationMatch>
 {% endif %}
 
-{% if 'keycloak' in roles %}
 # Needed for redirection to work
     <Location "/redirect">
         AuthType openid-connect
         require valid-user
     </Location>
-{% endif %}
