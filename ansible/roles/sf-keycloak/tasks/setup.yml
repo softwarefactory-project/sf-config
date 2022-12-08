@@ -212,7 +212,7 @@
   when: config_item.component in roles
 
 - name: Create demo user
-  include_tasks: ../../sf-keycloak/tasks/create_or_update_user.yml
+  include_tasks: create_or_update_user.yml
   vars:
     - realm_admin: false
     - service_name: "{{ keycloak_components[0].service }}"
@@ -356,23 +356,28 @@
       use_secret: False
       realm_role_mapper: True
       group_role_mapper: False
+      add_custom_audience: False
     # Not sure if gerrit oauth uses groups from the IdP.
     - component: "gerrit"
       use_secret: True
       realm_role_mapper: False
       group_role_mapper: False
+      add_custom_audience: False
     - component: "zuul"
       use_secret: False
       realm_role_mapper: True
       group_role_mapper: False
+      add_custom_audience: True
     - component: "grafana"
       use_secret: True
       realm_role_mapper: True
       group_role_mapper: False
+      add_custom_audience: False
     - component: "opensearch"
       use_secret: True
       realm_role_mapper: True
       group_role_mapper: False
+      add_custom_audience: False
 
   when: item.component in roles
 
@@ -405,35 +410,6 @@
         path: /tmp/keycloak.min.js
         state: absent
 
-- name: Create Client Scopes
-  include_tasks: create_client_scopes.yml
-  vars:
-    service_name: "{{ keycloak_components[0].service }}"
-  loop:
-    - name: zuul_keycloak_cs
-      realm: "{{ keycloak_default_realm }}"
-      protocol: openid-connect
-      attributes:
-          includeInTokenScope: "true"
-          displayOnConsentScreen: "true"
-
-# To understand why we have to create a client scope
-# and a mapper for keycloak.
-# Check the following link:
-# https://zuul-ci.org/docs/zuul/latest/howtos/openid-with-keycloak.html#create-a-client-scope
-- name: Add Mapper to Client Scope
-  include_tasks: add_mapper_to_client_scope.yml
-  loop:
-    - addToclientScope: zuul_keycloak_cs
-      realm: "{{ keycloak_default_realm }}"
-      name: zuul_keycloak_cs_mapper
-      protocol: openid-connect
-      consentRequired: "false"
-      protocolMapper: oidc-audience-mapper
-      config:
-          includedClientAudience: zuul
-          idTokenClaim: "true"
-          accessTokenClaim: "true"
 
 # This algorithm is unsupported by pyJWT in Zuul as of version 7
 - name: Disable RSA-OAEP key algorithm
