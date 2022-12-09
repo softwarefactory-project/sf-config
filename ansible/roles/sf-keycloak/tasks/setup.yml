@@ -263,16 +263,6 @@
       }
   when: "'sftests.com' in fqdn"
 
-# TODO: these could be sfconfig options
-- name: Allow user registration, password reset
-  command: |
-    podman exec -ti {{ keycloak_components[0].service }}
-    {{ keycloak_dir }}/bin/kcadm.sh update realms/{{ keycloak_default_realm }}
-        --set "registrationAllowed=true"
-        --set "resetPasswordAllowed=true"
-        {{ kcadm_options }}
-  no_log: show_hidden_logs == False
-
 - name: Apply custom themes to default realm
   command: |
     podman exec -ti {{ keycloak_components[0].service }}
