@@ -14,12 +14,8 @@
   changed_when: false
   failed_when: _container_exists.rc not in [0, 1]
 
-- name: Delete containers
-  include_role:
-    name: sf-container
-    tasks_from: delete.yaml
-  loop:
-    - service: "{{ item.service }}"
+- name: "Delete container {{ item.service }}"
+  include_tasks: delete.yaml
   when:
     - _container_script_changed.changed
     - _container_exists.rc == 0
