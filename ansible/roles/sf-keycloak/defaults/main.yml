@@ -46,6 +46,7 @@ keycloak_components:
       --health-enabled=true
       --metrics-enabled=true
       --hostname={{ fqdn }}
+      --cache=local
       {{ events_listener_config }}
     params: >-
       --network host
