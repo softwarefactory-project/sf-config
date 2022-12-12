@@ -98,7 +98,7 @@
         {{ kcadm_options }}
   no_log: show_hidden_logs == False
 
-# 7. Creates a user mapper
+# 7. Creates a roles mapper
 - name: "Create realm roles mapper if needed"
   command: >
     podman exec -ti keycloak
@@ -120,26 +120,58 @@
   when: item.realm_role_mapper == True
   no_log: show_hidden_logs == False
 
-# 8. Creates a user groups mapper
+# 8. Creates a groups mapper
 - name: "Create realm groups mapper if needed"
   command: >
     podman exec -ti keycloak
     {{ keycloak_dir }}/bin/kcadm.sh create clients/{{ kcid[0]['id'] }}/protocol-mappers/models
-        -r {{ keycloak_default_realm }}
-        -s name=group_mapper
-        -s protocol=openid-connect
-        -s protocolMapper=oidc-group-membership-mapper
-        -s consentRequired=false
-        -s 'config."full.path"=false'
-        -s 'config."userinfo.token.claim"=true'
-        -s 'config."id.token.claim"=true'
-        -s 'config."access.token.claim"=true'
-        -s 'config."claim.name"=groups'
+        -targt-realm {{ keycloak_default_realm }}
+        --set name=group_mapper
+        --set protocol=openid-connect
+        --set protocolMapper=oidc-group-membership-mapper
+        --set consentRequired=false
+        --set 'config."full.path"=false'
+        --set 'config."userinfo.token.claim"=true'
+        --set 'config."id.token.claim"=true'
+        --set 'config."access.token.claim"=true'
+        --set 'config."claim.name"=groups'
         {{ kcadm_options }}
   register: _groupmapper_create
   failed_when: _groupmapper_create.rc != 0 and not ( _groupmapper_create.stdout is search("Protocol mapper exists with same name", multiline=True, ignorecase=True) )
   when: item.group_role_mapper == True
   no_log: show_hidden_logs == False
+
+- name: Create Client Scope to add custom audience
+  include_tasks: create_client_scopes.yml
+  vars:
+    name: "{{ item.component }}_sf_client_scope"
+    realm: "{{ keycloak_default_realm }}"
+    protocol: openid-connect
+    attributes:
+      includeInTokenScope: "true"
+      displayOnConsentScreen: "true"
+  when: item.add_custom_audience
+
+# To understand why we have to create a client scope
+# and a mapper for keycloak.
+# Check the following link:
+# https://zuul-ci.org/docs/zuul/latest/howtos/openid-with-keycloak.html#create-a-client-scope
+- name: Configure audience mapper in zuul client via client scope
+  include_tasks: add_mapper_to_client_scope.yml
+  vars:
+    client_id: "{{ kcid[0]['id'] }}"
+    client_name: "{{ item.component }}"
+    addToclientScope: "{{ item.component }}_sf_client_scope"
+    realm: "{{ keycloak_default_realm }}"
+    name: "{{ item.component }}_sf_cs_mapper"
+    protocol: openid-connect
+    consentRequired: "false"
+    protocolMapper: oidc-audience-mapper
+    config:
+      includedClientAudience: zuul
+      idTokenClaim: "true"
+      accessTokenClaim: "true"
+  when: item.add_custom_audience
 
 # Any components deployed before keycloak will have to be reloaded "manually".
 # At this point it only concerns httpd.

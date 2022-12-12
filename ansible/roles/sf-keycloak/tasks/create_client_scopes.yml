@@ -3,8 +3,8 @@
 #
 # Inputs:
 #
-#   Object with the following attributes:
-#    - name - client scope name
+#   variables:
+#      name - client scope name
 #      realm - realm name to create client scope in
 #      protocol - protocol to be used by the client scope
 #      attributes:
@@ -14,15 +14,15 @@
 # This task executes following the steps below:
 
 # 1. Create client scope in realm
-- name: "Create Client Scope {{ item.name }}"
+- name: "Create Client Scope {{ name }}"
   command: >
-    podman exec -it {{ service_name }}
+    podman exec -it keycloak
     {{ keycloak_dir }}/bin/kcadm.sh create client-scopes
-         --target-realm {{ item.realm }}
-         --set "name={{ item.name }}"
-         --set "protocol={{ item.protocol }}"
-         --set 'attributes."include.in.token.scope"={{ item.attributes.includeInTokenScope }}'
-         --set 'attributes."display.on.consent.screen"={{ item.attributes.displayOnConsentScreen }}'
+         --target-realm {{ realm }}
+         --set "name={{ name }}"
+         --set "protocol={{ protocol }}"
+         --set 'attributes."include.in.token.scope"={{ attributes.includeInTokenScope }}'
+         --set 'attributes."display.on.consent.screen"={{ attributes.displayOnConsentScreen }}'
          -o --fields id
          {{ kcadm_options }}
   register: _client_scope_create
