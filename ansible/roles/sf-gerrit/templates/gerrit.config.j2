@@ -4,7 +4,6 @@
     gitHttpUrl =
     serverId = {{ gerrit_server_id }}
 [auth]
-{% if 'keycloak' in roles %}
     type = OAUTH
     trustedOpenId = ^.*$
     gitBasicAuthPolicy = HTTP
@@ -15,7 +14,6 @@
     client-secret = {{ keycloak_gerrit_client_secret }}
 [oauth]
     allowRegisterNewEmail = true
-{% endif %}
 [container]
     user = gerrit
 	startupTimeout = 300

@@ -21,9 +21,8 @@ config:
           type: intern
         http_authenticator:
           type: basic
-          challenge: {% if 'keycloak' in roles %}false{% else %}true{% endif %}
+          challenge: false
 
-{% if 'keycloak' in roles %}
       openid_auth_domain:
         http_enabled: true
         transport_enabled: true
@@ -42,4 +41,3 @@ config:
               - kibanaserver
         authentication_backend:
           type: noop
-{% endif %}

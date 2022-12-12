@@ -63,7 +63,6 @@
     - {section: auth.generic_oauth, option: tls_client_ca, value: '/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem'}
   register: _grafana_ini_auth
   no_log: show_hidden_logs == False
-  when: '"keycloak" in roles'
 
 # See https://community.grafana.com/t/grafana-will-not-start-after-update-from-4-1-3-to-4-3-6/5212/2
 # and https://github.com/puppetlabs/puppetlabs-pe_metrics_dashboard/issues/12

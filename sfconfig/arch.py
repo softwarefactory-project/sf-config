@@ -19,6 +19,7 @@ required_roles = (
     "gateway",
     "mysql",
     "managesf",
+    "keycloak",
 )
 
 rhel_unsupported_roles = (
