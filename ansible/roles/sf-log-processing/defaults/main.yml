@@ -15,11 +15,11 @@ opensearch_host: opensearch.example.com
 
 opensearch_logstash_password: "CHANGE_ME"
 
-zuul_api_url: https://{{ fqdn }}/zuul/api/tenant/local
+zuul_api_url: https://{{ fqdn }}/zuul/api/tenant/{{ tenant_name }}
 insecure: false
 download: true
 logscraper_dir: /var/lib/logscraper
-download_dir: /var/lib/logscraper/local
+download_dir: /var/lib/logscraper/{{ tenant_name }}
 checkpoint_file: "{{ logscraper_dir }}/checkpoint"
 file_list: "{{ logscraper_dir }}/download-list.yaml"
 max_skipped: 1000
