@@ -18,8 +18,8 @@
     name: sf-container
     tasks_from: create_directory.yaml
   loop:
-    - {path: "{{ logscraper_dir }}", recurse: "yes"}
-    - {path: "{{ download_dir }}", recurse: "yes"}
+    - {path: "{{ logscraper_dir }}", recurse: "yes", mode: "0750"}
+    - {path: "{{ download_dir }}", recurse: "yes", mode: "0750"}
 
 - name: Init checkopoint file
   file:

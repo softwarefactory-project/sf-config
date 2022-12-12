@@ -56,20 +56,12 @@ elk_stack_certs: "{{ elk_config_dir }}/certs/opensearch"
 old_elk_config_dir: /etc/elasticsearch
 old_elk_stack_certs: "{{ old_elk_config_dir }}/certs"
 
-# NOTE: Remove section after sf-config 3.8 is released.
-elasticsearch_password: "CHANGE_ME"
-elasticsearch_kibanaserver_password: "CHANGE_ME"
-elasticsearch_logstash_password: "CHANGE_ME"
-elasticsearch_zuul_password: "CHANGE_ME"
-elasticsearch_readonly_user: kibana
-elasticsearch_readonly_password: "CHANGE_ME"
-
-opensearch_password: "{{ elasticsearch_password }}"
-opensearch_kibanaserver_password: "{{ elasticsearch_kibanaserver_password }}"
-opensearch_logstash_password: "{{ elasticsearch_logstash_password }}"
-opensearch_zuul_password: "{{ elasticsearch_zuul_password }}"
+opensearch_password: "CHANGE_ME"
+opensearch_kibanaserver_password: "CHANGE_ME"
+opensearch_logstash_password: "CHANGE_ME"
+opensearch_zuul_password: "CHANGE_ME"
 opensearch_readonly_user: kibana
-opensearch_readonly_password: "{{ elasticsearch_readonly_password }}"
+opensearch_readonly_password: "CHANGE_ME"
 
 opensearch_http_port: 9200
 opensearch_host: opensearch.example.com
