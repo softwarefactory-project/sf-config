@@ -6,15 +6,6 @@
     name: "{{ role_package }}"
     state: present
 
-# As a safety measure let's remove the .service file provided by the package
-# /usr/lib/systemd/system/managesf.service
-# Container service is installed in /etc/systemd/system/managesf.service and seems to
-# take the priority either way.
-- name: Delete package service file
-  file:
-    path: /usr/lib/systemd/system/managesf.service
-    state: absent
-
 - name: Pull image
   include_role:
     name: sf-container
