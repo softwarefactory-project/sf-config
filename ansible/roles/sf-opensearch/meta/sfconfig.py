@@ -33,7 +33,7 @@ class OpensSearch(Component):
         args.glue["opensearch_connections"].append({
                     'name': "opensearch",
                     'username': 'zuul',
-                    'password': args.defaults['opensearch_zuul_password'],
+                    'password': args.secrets['opensearch_zuul_password'],
                     'host': args.glue["opensearch_host"],
                     'port': args.defaults["opensearch_http_port"],
                 })
