@@ -1,6 +1,6 @@
 ---
-- name: Copy Opensearch dashboards user token in secrets.yaml
-  command: grep -q 'opensearch_kibanauser_basicauth'
+- name: Check if Opensearch Dashboards user basicauth is in secrets
+  command: grep -q 'opensearch_kibanauser_basicauth' /var/lib/software-factory/bootstrap-data/secrets.yaml
   delegate_to: "{{ install_server_host }}"
   register: _opensearch_dashboards_basicauth_old
   no_log: show_hidden_logs == False
