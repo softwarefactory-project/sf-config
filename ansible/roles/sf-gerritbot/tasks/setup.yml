@@ -69,11 +69,19 @@
     path: "{{ gerritbot_config_dir }}/channels.yaml"
   register: channels_file
 
+- name: Test if channels.yaml is empty
+  command: sed -e '/---/d' -e '/^#.*/d' /etc/gerritbot/channels.yaml
+  register: _gerritbot_channel
+  changed_when: false
+  failed_when: false
+  args:
+    warn: false
+
 - name: Install a dummy channels.yaml file
   copy:
     content: "{}"
     dest: "{{ gerritbot_config_dir }}/channels.yaml"
-  when: not channels_file.stat.exists
+  when: not channels_file.stat.exists or _gerritbot_channel.stdout == ""
 
 - name: Apply selinux port labelling
   seport:
