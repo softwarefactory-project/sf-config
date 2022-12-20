@@ -9,19 +9,31 @@
     extra_repos: "rhel-7-server-rpms"
   when: ansible_distribution == "RedHat"
 
+- name: check if grafana package is present
+  command: rpm -ql grafana
+  register: _grafana_package
+  changed_when: false
+  failed_when: false
+  args:
+    warn: false
+
+- name: Stop grafana-server service
+  systemd:
+    name: grafana-server
+    state: stopped
+  when: _grafana_package.rc == 0
+
 - name: Remove grafana package
   yum:
-    name: grafana
+    name:
+      - grafana
+      - grafyaml
     state: absent
 
-- name: Install grafyaml for config-update and config-check
-  yum:
-    name: grafyaml
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-  delegate_to: "{{ item }}"
-  loop: "{{ executor_hosts | union( groups['install-server'] ) }}"
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+  when: _grafana_package.rc == 0
 
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml"
   vars:
@@ -32,4 +44,3 @@
     name: sf-container
     tasks_from: install.yaml
   loop: "{{ grafana_components }}"
-

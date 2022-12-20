@@ -118,7 +118,6 @@
   until:
     - _grafana_health.status == 200
     - _grafana_health.json.database == 'ok'
-    - _grafana_health.json.version == '{{ grafana_container_tag }}'
 
 - name: Restart service if required
   service:
@@ -137,23 +136,45 @@
     option: ExecStartPre
     value: /usr/libexec/software-factory/wait4mariadb
 
-- name: Create metrics directory on the install server
-  file:
-    path: '{{ grafyaml_metrics }}'
-    state: directory
-    mode: '0755'
-    owner: '{{ owner }}'
-    group: '{{ group }}'
+- name: Create scripts to manage dashboards creation and update
+  block:
+    - name: Create /bin/update-graphs to manage grafana dashboards
+      copy:
+        dest: /bin/update-graphs
+        content: |
+          #!/bin/bash
+          set -e
+          find /var/lib/software-factory/metrics -regextype posix-egrep -regex '.*.(yaml|yml)$' | xargs -I file grafana-dashboard update file
+        mode: "0550"
 
-  delegate_to: '{{ install_server_host }}'
+    - name: Create /bin/grafana-dashboard to interact with container
+      copy:
+        dest: /bin/grafana-dashboard
+        content: |
+          #!/bin/sh -e
+          exec podman run --rm -v {{ grafyaml_metrics }}:{{ grafyaml_metrics }}:z \
+          -v /etc/grafyaml/grafyaml.conf:/etc/grafyaml/grafyaml.conf:z \
+          -v /bin/update-graphs:/bin/update-graphs:z \
+          -v /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem:/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem \
+          --env REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt \
+          {{ grafyaml_container }} /bin/update-graphs
+        mode: "0550"
 
-- name: Install update-grafana-graphs script
-  template:
-    src: update-grafana-graphs.sh.j2
-    dest: /usr/bin/update-grafana-graphs.sh
-    owner: root
-    group: root
-    mode: '0755'
+    - name: Install update-grafana-graphs script
+      template:
+        src: update-grafana-graphs.sh.j2
+        dest: /usr/bin/update-grafana-graphs.sh
+        owner: root
+        group: root
+        mode: '0550'
+
+    - name: Create metrics directory on the install server
+      file:
+        path: '{{ grafyaml_metrics }}'
+        state: directory
+        mode: '0755'
+        owner: '{{ owner }}'
+        group: '{{ group }}'
   delegate_to: '{{ install_server_host }}'
 
 - name: Restart service {{ role_package }} to apply plugins

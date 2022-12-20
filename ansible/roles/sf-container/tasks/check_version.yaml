@@ -1,5 +1,5 @@
 ---
-- name: Check if container exists
+- name: "Check if container exists for  {{ item.service }}"
   command: "podman container exists {{ item.service }}"
   register: _container
   failed_when: _container.rc not in [0, 1]
