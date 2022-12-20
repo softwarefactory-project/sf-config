@@ -15,7 +15,7 @@ owner: "{{ role_package }}"
 group: "{{ role_package }}"
 
 cgit_version: 1.2.3
-cgit_container_version: "{{ cgit_version }}-1"
+cgit_container_version: "{{ cgit_version }}-2"
 
 cgit_port: 37920
 
