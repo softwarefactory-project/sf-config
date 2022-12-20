@@ -35,7 +35,8 @@ es_index_prefix: "logstash-"
 es_insecure: false
 logsender_workers: 2
 logsender_wait_time: 60
-custom_ca_crt: "/etc/opensearch/certs/opensearch/localCA.pem"
+logscraper_custom_ca_crt: ""
+logsender_custom_ca_crt: "/etc/opensearch/certs/opensearch/localCA.pem"
 
 log_processing_components:
   - service: "logscraper"
@@ -45,14 +46,14 @@ log_processing_components:
       --net host
       --user {{ container_uid }}:{{ container_gid }}
       --uidmap 0:4000:999
+      --gidmap 0:4000:999
       --uidmap {{ container_uid }}:{{ logscraper_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ logscraper_gid | default(1000) }}:1
       --volume {{ logscraper_dir | default(logscraper_dir) }}:{{ logscraper_dir }}:z
       --volume {{ download_dir }}:{{ download_dir }}:z
       --volume {{ checkpoint_file }}:{{ checkpoint_file }}:z
-      {% if external_opensearch_cacert and external_opensearch_cacert != '' %}
-      --volume {{ external_opensearch_cacert }}:{{ external_opensearch_cacert }}:z
-      {% else %}
-      --volume {{ custom_ca_crt }}:{{ custom_ca_crt }}:z
+      {% if logscraper_custom_ca_crt != '' %}
+      --volume {{ logscraper_custom_ca_crt }}:{{ logscraper_custom_ca_crt }}:z
       {% endif %}
       {% if sf_logscraper_additional_params is defined %}
       {{ sf_logscraper_additional_params }}
@@ -67,13 +68,15 @@ log_processing_components:
       --net host
       --user {{ container_uid }}:{{ container_gid }}
       --uidmap 0:4000:999
+      --gidmap 0:4000:999
       --uidmap {{ container_uid }}:{{ logscraper_uid | default(1000) }}:1
+      --gidmap {{ container_gid }}:{{ logscraper_gid | default(1000) }}:1
       --volume {{ download_dir }}:{{ download_dir }}:z
       --volume {{ logscraper_dir }}:{{ logscraper_dir }}:z
       {% if external_opensearch_cacert and external_opensearch_cacert != '' %}
       --volume {{ external_opensearch_cacert }}:{{ external_opensearch_cacert }}:z
-      {% else %}
-      --volume {{ custom_ca_crt }}:{{ custom_ca_crt }}:z
+      {% elif logsender_custom_ca_crt != '' %}
+      --volume {{ logsender_custom_ca_crt }}:{{ logsender_custom_ca_crt }}:z
       {% endif %}
       {% if sf_logsender_additional_params is defined %}
       {{ sf_logsender_additional_params }}
