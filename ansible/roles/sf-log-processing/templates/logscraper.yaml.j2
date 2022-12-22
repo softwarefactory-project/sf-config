@@ -10,4 +10,4 @@ file_list: {{ logscraper_dir }}/download-list.yaml
 directory: {{ download_dir | default('/tmp/logscraper') }}
 wait_time: {{ logscraper_wait_time | default(120) }}
 insecure: {{ insecure | default(false) }}
-ca_file: {{ custom_ca_crt | default('') }}
+ca_file: {{ logscraper_custom_ca_crt | default('') }}

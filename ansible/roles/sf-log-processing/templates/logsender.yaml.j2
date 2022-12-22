@@ -16,7 +16,7 @@ port: {{ opensearch_http_port | default(9200) }}
 username: "logstash"
 password: "{{ es_logstash_password }}"
 index_prefix: {{ es_index_prefix | default('logstash-') }}
-ca_file: {{ custom_ca_crt }}
+ca_file: {{ logsender_custom_ca_crt }}
 {% endif %}
 index: {{ es_index | default('') }}
 doc_type: {{ doc_type | default('_doc') }}

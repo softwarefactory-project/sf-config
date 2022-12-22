@@ -9,9 +9,14 @@
   command: id -u logscraper
   register: _logscraper_uid
 
+- name: Get logscraper gid
+  command: id -g logscraper
+  register: _logscraper_gid
+
 - name: Expose logscraper uid
   set_fact:
     logscraper_uid: "{{ _logscraper_uid.stdout }}"
+    logscraper_gid: "{{ _logscraper_gid.stdout }}"
 
 - name: Create container directory
   include_role:
