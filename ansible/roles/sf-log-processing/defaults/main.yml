@@ -38,9 +38,15 @@ logsender_wait_time: 60
 logscraper_custom_ca_crt: ""
 logsender_custom_ca_crt: "/etc/opensearch/certs/opensearch/localCA.pem"
 
+# NOTE(dpawlik): The openstack/ci-log-processing project does not have
+# release process yet. This image is pointing to latest patch set done
+# in that project: https://review.opendev.org/c/openstack/ci-log-processing/+/864400
+# Alternative url for newest container images:
+# https://hub.docker.com/r/cilogprocessing/logscraper
+logscraper_tag: "ce7aba2"
 log_processing_components:
   - service: "logscraper"
-    image: "quay.io/software-factory/logscraper:latest"
+    image: "quay.io/software-factory/logscraper:{{ logscraper_tag }}"
     skip-auto-update: true
     params: >-
       --net host
@@ -62,7 +68,7 @@ log_processing_components:
       /usr/local/bin/logscraper
       --config {{ logscraper_dir }}/logscraper.yaml
   - service: "logsender"
-    image: "quay.io/software-factory/logscraper:latest"
+    image: "quay.io/software-factory/logscraper:{{ logscraper_tag }}"
     skip-auto-update: true
     params: >-
       --net host
