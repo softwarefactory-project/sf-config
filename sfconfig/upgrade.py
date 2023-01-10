@@ -18,10 +18,21 @@ import re
 from sfconfig.utils import pread
 
 
+def get_version():
+    try:
+        sf_version = open("/etc/sf-release").read().strip()
+    except IOError:
+        sf_version = "master"
+    return sf_version
+
+
 def update_sfconfig(args):
     """ This method ensure /etc/software-factory content is upgraded """
     dirty = False
     data = args.sfconfig
+
+    sf_version = get_version()
+    has_kc = (sf_version == 'master' or sf_version >= '3.8')
 
     # 3.7.0: add external_authenticators config field
     if 'zuul' in data:
@@ -136,7 +147,7 @@ def update_sfconfig(args):
             r'(?:-([0-9a-zA-Z.-]+))?(?:\+([0-9a-zA-Z.-]+))?'
         dirty = True
 
-    if "active_directory" not in data["authentication"]:
+    if not has_kc and "active_directory" not in data["authentication"]:
         data["authentication"]["active_directory"] = {
             "disabled": True,
             "ldap_url": "ldap://sftests.com",
@@ -194,27 +205,28 @@ def update_sfconfig(args):
         dirty = True
 
     # 3.3: add SAML2 groups values
-    if 'SAML2' in data['authentication']:
-        if 'groups' not in data['authentication']['SAML2']['mapping']:
-            data['authentication']['SAML2']['mapping']['groups'] = None
-            dirty = True
+    if not has_kc:
+        if 'SAML2' in data['authentication']:
+            if 'groups' not in data['authentication']['SAML2']['mapping']:
+                data['authentication']['SAML2']['mapping']['groups'] = None
+                dirty = True
 
-    # 3.1: add SAML2 default auth values
-    else:
-        data['authentication']['SAML2'] = {
-            'disabled': True,
-            'login_button_text': 'Replace me with a SAML login prompt',
-            'key_delimiter': ';',
-            'mapping': {
-                'login': 'urn:oid:2.5.4.42',
-                'email': 'urn:oid:1.2.840.113549.1.9.1',
-                'name': 'urn:oid:2.5.4.42',
-                'uid': 'uid',
-                'ssh_keys': None,
-                'groups': None,
-            },
-        }
-        dirty = True
+        # 3.1: add SAML2 default auth values
+        else:
+            data['authentication']['SAML2'] = {
+                'disabled': True,
+                'login_button_text': 'Replace me with a SAML login prompt',
+                'key_delimiter': ';',
+                'mapping': {
+                    'login': 'urn:oid:2.5.4.42',
+                    'email': 'urn:oid:1.2.840.113549.1.9.1',
+                    'name': 'urn:oid:2.5.4.42',
+                    'uid': 'uid',
+                    'ssh_keys': None,
+                    'groups': None,
+                },
+            }
+            dirty = True
 
     if "config-locations" not in data:
         data["config-locations"] = {
@@ -391,10 +403,7 @@ def update_arch(args):
     dirty = False
     data = args.sfarch
 
-    try:
-        sf_version = open("/etc/sf-release").read().strip()
-    except IOError:
-        sf_version = "master"
+    sf_version = get_version()
 
     for host in data['inventory']:
         if "hypervisor-oci" in host["roles"] or \
