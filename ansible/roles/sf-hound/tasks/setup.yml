@@ -33,6 +33,7 @@
       mode: "0755"
     - path: "{{ hound_repos_dir }}"
       recurse: "yes"
+      follow: "no"
       owner: "{{ owner }}"
       mode: "0755"
 

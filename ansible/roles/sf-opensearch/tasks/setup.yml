@@ -160,3 +160,22 @@
     name: opensearch
     state: started
     enabled: "yes"
+
+# NOTE: Below tasks comes from handlers, but they needs to be executed now,
+# because Opensearch and Opensearch Dashboards services can be deployed in
+# wrong order, so the handlers from Dashboards role will wait for Opensearch
+# to be up and running, where Opensearch did not synchronize the security
+# plugin yet.
+- name: wait for opensearch service
+  uri:
+    url: "{{ opensearch_internal_url }}"
+    method: GET
+    validate_certs: false
+    status_code: "401"
+  register: _opensearch_service_status
+  until: "(_opensearch_service_status is successful) and (_opensearch_service_status.status == 401)"
+  retries: 30
+  delay: 10
+
+- name: reconfigure security plugin in containers
+  command: /usr/local/bin/reconfigure-opensearch.sh

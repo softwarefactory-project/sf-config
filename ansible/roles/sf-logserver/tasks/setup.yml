@@ -43,20 +43,21 @@
 
 - name: Install httpd conf.d logserver configurations
   template:
-    src: "{{ item.src }}.j2"
-    dest: "{{ item.dest }}"
-  loop:
-    - src: "{{ logserver_httpd_cont_conf_file }}"
-      dest: "{{ logserver_config_dir }}/{{ logserver_httpd_cont_conf_file }}"
-    - src: "{{ logserver_httpd_proxy_file }}"
-      dest: "/etc/httpd/conf.d/{{ logserver_httpd_proxy_file }}"
-  register: httpd_conf
+    src: "{{ logserver_httpd_cont_conf_file }}.j2"
+    dest: "{{ logserver_config_dir }}/{{ logserver_httpd_cont_conf_file }}"
   notify: apache reload
 
 - name: Ensure old purgelogs cron absent
   cron:
     name: purge-logs
     state: absent
+
+- name: Install httpd conf.d logserver configurations
+  template:
+    src: "{{ logserver_httpd_proxy_file }}.j2"
+    dest: "/etc/httpd/conf.d/{{ logserver_httpd_proxy_file }}"
+  notify: apache reload
+  delegate_to: '{{ gateway_host }}'
 
 - name: Create container
   include_role:
