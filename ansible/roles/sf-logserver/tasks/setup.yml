@@ -53,6 +53,11 @@
   register: httpd_conf
   notify: apache reload
 
+- name: Ensure old purgelogs cron absent
+  cron:
+    name: purge-logs
+    state: absent
+
 - name: Create container
   include_role:
     name: sf-container
