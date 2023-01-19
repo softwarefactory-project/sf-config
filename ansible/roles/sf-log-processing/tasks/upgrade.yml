@@ -4,14 +4,21 @@
   block:
     - name: Disable services
       service:
-        name: logstash
+        name: "{{ item }}"
         state: stopped
         enabled: "no"
       ignore_errors: true
+      loop:
+        - logstash
+        - log-gearman-client
+        - log-gearman-worker
 
-    - name: Remove curator package
+    - name: Remove not needed packages
       yum:
-        name: elasticsearch-curator
+        name:
+          - elasticsearch-curator
+          - python-log2gearman-client
+          - python-log2gearman-worker
         state: absent
 
     - name: Delete containers - logstash
@@ -20,8 +27,13 @@
         tasks_from: delete.yaml
       loop: "{{ logstash_components }}"
 
-    - name: Remove logstash directory
+    - name: Remove unecessary directories
       file:
-        path: /etc/logstash
+        path: "{{ item }}"
         state: absent
+      loop:
+        - /etc/logstash
+        - /etc/log-gearman-client
+        - /etc/log-gearman-worker
+
   when: sf_previous_version < 3.8
