@@ -22,6 +22,5 @@
         state: absent
       loop:
         - "{{ logserver_config_dir }}"
-        - "/etc/httpd/conf.d/{{ logserver_httpd_proxy_file }}"
 
   when: erase == True

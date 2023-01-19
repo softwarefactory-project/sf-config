@@ -1,9 +1,4 @@
-<VirtualHost *:{{ logserver_port }}>
-  Servername {{ fqdn }}
-  WSGIDaemonProcess logs user={{ role_package }} group={{ role_package }} processes={{ logs_wsgi_processes }} threads={{ logs_wsgi_threads }}
-  WSGIProcessGroup logs
-  WSGIApplicationGroup %{GLOBAL}
-
+<VirtualHost *:{{ logserver_http_port }}>
   AddType text/plain .log
   AddType text/plain .sh
   AddType text/plain .yaml
@@ -65,25 +60,11 @@
       ForceType text/css
   </FilesMatch>
 
-  <LocationMatch "/{{ logs_directory_prefix }}.*/{{ logs_wsgi_ara_directory }}(?!/ansible.sqlite)/>
-      # This ARA sqlite middleware automatically loads the ARA web application
-      # with the database located inside the {{ logs_wsgi_ara_directory }}
-      # directories.
-      # The rule does not match the databases themselves, allowing users to
-      # to download them if need be by querying the "ansible.sqlite" file directly.
-      ProxyPassMatch    http://localhost:20003
-      ProxyPassReverse  http://localhost:20003
-  </LocationMatch>
-
   <LocationMatch "/{{ logs_directory_prefix }}">
       # Enable zuul-web ui to access logs
       Header set Access-Control-Allow-Origin "*"
 
       RewriteEngine On
-
-      # Don't rewrite URLs for ARA dynamic reports
-      RewriteCond %{REQUEST_URI} ^.*/{{ logs_wsgi_ara_directory }} [NC]
-      RewriteRule .* - [L]
 
       # Serve gzipped static file requested w/o the .gz extention
       RewriteCond %{HTTP:Accept-Encoding} gzip

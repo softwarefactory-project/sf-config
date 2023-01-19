@@ -52,13 +52,6 @@
     name: purge-logs
     state: absent
 
-- name: Install httpd conf.d logserver configurations
-  template:
-    src: "{{ logserver_httpd_proxy_file }}.j2"
-    dest: "/etc/httpd/conf.d/{{ logserver_httpd_proxy_file }}"
-  notify: apache reload
-  delegate_to: '{{ gateway_host }}'
-
 - name: Create container
   include_role:
     name: sf-container

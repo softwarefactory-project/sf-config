@@ -18,24 +18,17 @@ logserver_authorized_keys: []
 logs_expiry: 60
 
 logs_directory_prefix: logs/
-# wsgi configuration
-logs_wsgi_processes: 8
-logs_wsgi_threads: 1
-logs_wsgi_ara_directory: ara-report
-logs_wsgi_ara_tmpdir_max_age: 3600
-logs_wsgi_ara_logdir: /var/www
 
 logserver_version: 4.9.3
-logserver_container_version: "{{ logserver_version }}-1"
+logserver_container_version: "{{ logserver_version }}-2"
 
 purgelogs_version: 0.2.0
 purgelogs_container_version: "{{ purgelogs_version }}-1"
 
-logserver_port: 31215
+logserver_http_port: 31215
 
 logserver_config_dir: /etc/logserver
 logserver_httpd_cont_conf_file: "logserver.conf"
-logserver_httpd_proxy_file: "logserverproxy.conf"
 
 logserver_components:
   - service: "purgelogs"
@@ -54,8 +47,8 @@ logserver_components:
     params: >-
       --network host
       --tty
-      --uidmap 0:4000:999
-      --gidmap 0:4000:999
+      --uidmap 0:4000:1000
+      --gidmap 0:4000:1000
       --uidmap {{ container_uid}}:{{ logserver_uid | default(1000) }}:1
       --gidmap {{ container_gid }}:{{ logserver_gid | default(1000) }}:1
       --volume {{ logserver_config_dir }}/{{ logserver_httpd_cont_conf_file }}:/etc/httpd/conf.d/{{ logserver_httpd_cont_conf_file }}:Z
