@@ -93,7 +93,8 @@ grafana_data_source:
   name: influxdb
   type: influxdb
   user: '{{ telegraf_influxdb_user }}'
-  password: '{{ telegraf_influxdb_password }}'
+  secureJsonData:
+    password: '{{ telegraf_influxdb_password }}'
   url: 'https://{{ influxdb_host }}:8086'
   access: proxy
   basicAuth: false

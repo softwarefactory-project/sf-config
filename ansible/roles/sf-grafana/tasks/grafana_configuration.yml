@@ -11,7 +11,7 @@
     user: admin
     password: '{{ grafana_admin_password }}'
     force_basic_auth: "yes"
-  when: update_fqdn
+  ignore_errors: true
 
 - name: Get datasources
   uri:

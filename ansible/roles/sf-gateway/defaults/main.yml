@@ -21,6 +21,8 @@ opensearch_dashboards_http_port: 5601
 opensearch_dashboards_host: opensearch_dashboards.example.com
 opensearch_dashboards_internal_url: "https://{{ opensearch_dashboards_host }}:{{ opensearch_dashboards_http_port }}"
 
+logserver_http_port: 31215
+
 keycloak_http_port: 38080
 keycloak_host: keycloak.example.com
 keycloak_internal_url: "http://{{ keycloak_host }}:{{ keycloak_http_port }}"

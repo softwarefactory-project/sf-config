@@ -108,7 +108,7 @@
     - {name: gerrit,
        path: /etc/sysconfig,
        mode: '0444'}
-  notify: [restart gerrit]
+  notify: restart gerrit
 
 - name: Check for replication.config
   stat:
@@ -132,18 +132,21 @@
   loop:
     - {name: gerrit_service_rsa, file: ssh_host_rsa_key, mode: "0400"}
     - {name: gerrit_service_rsa_pub, file: ssh_host_rsa_key.pub, mode: "0444"}
+  notify: restart gerrit
 
 - name: Copy gerrit admin key
   copy:
     content: "{{ gerrit_admin_rsa }}"
     dest: "/root/.ssh/gerrit_admin"
     mode: "0400"
+  notify: restart gerrit
 
 - name: Copy gerrit admin pub key
   copy:
     content: "{{ gerrit_admin_rsa_pub }}"
     dest: "/root/.ssh/gerrit_admin.pub"
     mode: "0444"
+  notify: restart gerrit
 
 - name: Gerrit pub key should be updated when fqdn is updated
   block:
@@ -157,6 +160,7 @@
         content: "{{ gerrit_service_rsa_pub }}\n"
         dest: "{{ gerrit_conf_dir }}/ssh_host_rsa_key.pub"
         mode: '0400'
+      notify: restart gerrit
   when: update_fqdn
 
 - name: Allow gerrit to connect to himself for self replication test
@@ -252,6 +256,7 @@
     owner: "{{ owner }}"
     group: "{{ group }}"
     mode: '0755'
+  notify: restart gerrit
 
 - name: Create container
   include_role:

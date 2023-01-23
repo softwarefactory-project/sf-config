@@ -1,11 +1,10 @@
 ---
-# TODO: fix zookeeper backup to only include what is needed
-#- name: "Backup data"
-#  synchronize:
-#    mode: pull
-#    src: "{{ item }}"
-#    dest: "{{ backup_dest }}/"
-#    delete: "yes"
-#    rsync_opts: --relative
-#  loop:
-#    - /var/lib/zookeeper/version-2
+- name: "Backup configuration data"
+  synchronize:
+    mode: pull
+    src: "{{ item }}"
+    dest: "{{ backup_dest }}/"
+    delete: "yes"
+    rsync_opts: --relative
+  loop:
+    - /etc/zookeeper

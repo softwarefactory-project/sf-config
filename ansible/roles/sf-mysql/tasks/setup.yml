@@ -17,6 +17,16 @@
       mode: "0755"
       recurse: "yes"
 
+# /run or /var/run (symlink to /run) is a tmpfs and mysqld directory must be added
+# to it before starting mysqld
+- name: Install a tmpfiles.d rule for /var/run/mysqld
+  copy:
+    content: "d /run/mysqld 0755 mysql mysql"
+    dest: /usr/lib/tmpfiles.d/mysqld.conf
+    mode: '0644'
+    owner: root
+    group: root
+
 - name: Check container image version
   include_role:
     name: sf-container
