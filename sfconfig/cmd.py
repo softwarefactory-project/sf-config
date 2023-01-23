@@ -224,7 +224,7 @@ def main():
         args.glue['force_update_tasks'] = False
 
     # Make sure the yaml files are updated
-    sfconfig.upgrade.update_sfconfig(args)
+    upgrade_warnings = sfconfig.upgrade.update_sfconfig(args)
     sfconfig.upgrade.update_arch(args)
     fix_rhel_centos_name(args.glue)
 
@@ -329,6 +329,9 @@ Login with admin user, get the admin password by running:
 
 """ % (args.sfconfig['fqdn'], args.sfconfig['fqdn']))
             open(prev_fqdn_path, "w").write(args.sfconfig['fqdn'])
+
+    if upgrade_warnings:
+        print(upgrade_warnings)
 
     try:
         notification = open(
