@@ -136,7 +136,7 @@
         dest: /bin/grafana-dashboard
         content: |
           #!/bin/sh -e
-          exec podman run --rm -v {{ grafyaml_metrics }}:{{ grafyaml_metrics }}:z \
+          exec podman run --network host --rm -v {{ grafyaml_metrics }}:{{ grafyaml_metrics }}:z \
           -v /etc/grafyaml/grafyaml.conf:/etc/grafyaml/grafyaml.conf:z \
           -v /bin/update-graphs:/bin/update-graphs:z \
           -v /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem:/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem \
