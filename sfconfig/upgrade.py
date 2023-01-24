@@ -12,7 +12,6 @@
 
 import os
 import sys
-import time
 import uuid
 import re
 from sfconfig.utils import pread
@@ -300,6 +299,13 @@ def update_sfconfig(args):
             "admin_password:.*", "admin_password: %s" % new_pass, raw_config))
 
     # 3.8 - Keycloak related stuff
+    if sf_version != "master" and sf_version < "3.8":
+        return keycloak_warnings(data, args)
+    else:
+        return None
+
+
+def keycloak_warnings(data, args):
     keycloak_warning = ""
     gh_break = False
     oauth2 = data["authentication"].get('oauth2')
@@ -353,41 +359,34 @@ def update_sfconfig(args):
         keycloak_warning += ("SAML2 authentication must be configured "
                              "in Keycloak directly.\n")
     if len(keycloak_warning) > 0:
-        print("The following authentication settings are obsolete. "
-              "You can remove them from the configuration file "
-              "at any time, they will be safely ignored by sf-config:\n\n")
-        print(keycloak_warning)
+        keycloak_warning = (
+            "The following authentication settings are obsolete. "
+            "You can remove them from the configuration file "
+            "at any time, they will be safely ignored by sf-config:\n\n") +\
+            keycloak_warning
     if gh_break:
         fqdn = args.sfconfig.get('fqdn', "{FQDN}")
-        print("""
-#####################################################
-#                      WARNING                      #
-#####################################################
+        keycloak_warning += ("""
 
-(The program will pause for a few seconds, resume by hitting
-Ctrl+c)
+#################################################################
+#                           WARNING                             #
+#################################################################
 
-Github is configured as a third-party authenticator.
+Github is configured as a third-party authenticator. If you were
+using this authenticator prior to this upgrade, the authorization
+callback URL must be updated on Github due to a new SSO service
+being used in SF 3.8; otherwise authentication with Github will
+be broken.
+
 You need to get on the Github OAuth application settings page
-(https://github.com/settings/developers  then "OAuth Apps")
+(https://github.com/settings/developers then "OAuth Apps")
 to update the authorization callback URL to the following
 new value:
 
 https://%s/auth/realms/SF/broker/github/endpoint
 
 """ % fqdn)
-        try:
-            for remaining in range(20, 0, -1):
-                sys.stdout.write("\r")
-                sys.stdout.write(
-                    "{:2d} seconds until resuming.".format(remaining)
-                )
-                sys.stdout.flush()
-                time.sleep(1)
-            print("\rResuming upgrade.")
-        except KeyboardInterrupt:
-            sys.stdout.flush()
-            print("\rCountdown interrupted, resuming upgrade.")
+    return keycloak_warning
 
 
 def runc_provider_exists():

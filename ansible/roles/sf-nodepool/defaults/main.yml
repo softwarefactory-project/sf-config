@@ -16,7 +16,7 @@ container_gid: 10001
 
 dib_upstream_elements: True
 
-nodepool_version: 8.0.1
+nodepool_version: 8.1.0
 nodepool_container_version: "{{ nodepool_version }}-1"
 
 nodepool_services:
