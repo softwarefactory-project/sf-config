@@ -63,14 +63,13 @@ nodepool_components:
   - service: "nodepool-builder"
     image: "quay.io/software-factory/nodepool-builder-ubi:{{ nodepool_container_version }}"
     run: >-
-      sudo
       /usr/local/bin/nodepool-builder -d
       -c /etc/nodepool/nodepool.yaml
       -s /etc/nodepool/secure.conf
       -l /etc/nodepool/builder-logging.yaml
     params: >-
       --network host
-      --user {{ container_uid }}:{{ container_gid }}
+      --user 0
       --volume /dev:/dev
       --volume /run/libvirt:/run/libvirt
       --volume /etc/nodepool/:/etc/nodepool/:z

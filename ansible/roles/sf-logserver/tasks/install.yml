@@ -2,7 +2,7 @@
 - service_facts:
   run_once: true
 
-- name: "Remove packages if {{ role_package }} is a container"
+- name: "Remove packages"
   block:
     - name: Stop services
       service:
@@ -16,10 +16,7 @@
           - httpd
           - mod_wsgi
         state: absent
-  when:
-    - "'{{ role_package }}.service' in {{ ansible_facts.services }}"
-    - "'gateway' not in roles"
-    - "'cauth' not in roles"
+  when: "'gateway' not in roles"
 
 - name: "Removing ara resources"
   block:
@@ -48,8 +45,7 @@
         name: ara
         state: absent
         remove: true
-
-  when: "'ara.service' in {{ ansible_facts.services }}"
+  when: "'ara.service' in ansible_facts.services"
 
 - name: Reloading Systemd
   systemd:
