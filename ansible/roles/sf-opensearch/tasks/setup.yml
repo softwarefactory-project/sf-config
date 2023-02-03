@@ -50,7 +50,14 @@
   loop:
     - opensearch-admin.crt
     - opensearch-admin.key
-    - localCA.pem
+
+- name: Copy ca-trust
+  copy:
+    src: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+    dest: "{{ elk_stack_certs }}/localCA.pem"
+    mode: "0644"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
 
 # This is required to set opendistro_security.authcz.elasticsearch_dn
 - name: Take opensearch subject

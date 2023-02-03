@@ -5,6 +5,8 @@ role_actions:
   - get_logs
   - disable
 
+role_package: "log-processing"
+
 owner: logscraper
 group: logscraper
 container_gid: 1000
