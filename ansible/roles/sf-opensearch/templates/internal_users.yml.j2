@@ -30,11 +30,3 @@ zuul:
     - admin
   description: Zuul user
   hidden: true
-# exception in Elasticsearch (https://opendistro.github.io/for-elasticsearch-docs/docs/security/access-control/users-roles/#predefined-roles)
-# FIXME: switch to the official roles when bug is fixed.
-{{ opensearch_readonly_user | default('kibana') }}:
-  hash: {{ opensearch_kibana_hash }}
-  reserved: true
-  backend_roles:
-    - sf_opensearch_dashboards_user
-  description: Kibana viewer user

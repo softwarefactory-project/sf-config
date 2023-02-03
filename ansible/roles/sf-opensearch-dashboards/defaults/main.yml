@@ -44,20 +44,13 @@ opensearch_dashboards_container_certs_dir: "{{ opensearch_dashboards_container_c
 opensearch_http_port: 9200
 opensearch_host: opensearch.example.com
 opensearch_internal_url: "https://{{ opensearch_host }}:{{ opensearch_http_port }}"
-opensearch_readonly_user: kibana
-opensearch_readonly_password: "CHANGE_ME"
 
 opensearch_dashboards_http_port: 5601
 opensearch_dashboards_host: opensearch_dashboards.example.com
 opensearch_dashboards_internal_url: "http://{{ opensearch_dashboards_host }}:{{ opensearch_dashboards_http_port }}"
-opensearch_dashboards_bundle_js_patch: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
 
 keycloak_default_realm: SF
 keycloak_kibana_client_secret: "CHANGE_ME"
 keycloak_opensearch_dashboards_client_secret: "{{ keycloak_kibana_client_secret }}"
-
-# External opensearch configuration
-external_opensearch_readonly_username: ''
-external_opensearch_readonly_password: ''
 
 sf_cert_path: /var/lib/software-factory/bootstrap-data/certs

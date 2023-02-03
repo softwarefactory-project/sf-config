@@ -24,15 +24,6 @@
     - opensearch-dashboards.key
     - localCA.pem
 
-- name: Generate Opensearch dashboards welcome page text - internal host
-  set_fact:
-    opensearch_dashboards_login_screen: "Readonly user: {{ opensearch_readonly_user }} password: {{ opensearch_readonly_password }}"
-
-- name: Generate Opensearch dashboards welcome page text - external host
-  set_fact:
-    opensearch_dashboards_login_screen: "Readonly user: {{ external_opensearch_readonly_username }} password: {{ external_opensearch_readonly_password }}"
-  when: external_opensearch_readonly_username != '' and external_opensearch_readonly_password != ''
-
 - name: Configure Opensearch Dashboards
   template:
     src: opensearch-dashboards.yml.j2

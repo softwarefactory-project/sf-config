@@ -8,10 +8,6 @@ config:
       anonymous_auth_enabled: false
       xff:
         enabled: false
-{% if readonly_user_autologin is defined and readonly_user_autologin | lower == 'basic' %}
-        remoteIpHeader: "x-forwarded-for"
-        internalProxies: "{{ fqdn }}"
-{% endif %}
     authc:
       basic_internal_auth_domain:
         http_enabled: true

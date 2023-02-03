@@ -20,15 +20,6 @@
       zuul:
         role: zuul
         password: "{{ opensearch['zuul_password'] | default(opensearch_zuul_password) }}"
-      # readonly user
-      kibana:
-        role: kibana
-        password: "{{ opensearch['readonly_password'] | default(opensearch_readonly_password) }}"
   with_dict: "{{ internal_users }}"
   include_tasks: gen_user_pass.yml
   no_log: show_hidden_logs == False
-
-- name: Set opensearch readonly user name
-  set_fact:
-    opensearch_readonly_user: "{{ opensearch['readonly_user'] | default(opensearch_readonly_user) }}"
-    opensearch_readonly_password: "{{ opensearch['readonly_password'] | default(opensearch_readonly_password) }}"

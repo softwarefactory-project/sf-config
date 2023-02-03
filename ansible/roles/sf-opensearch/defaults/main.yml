@@ -60,8 +60,6 @@ opensearch_password: "CHANGE_ME"
 opensearch_kibanaserver_password: "CHANGE_ME"
 opensearch_logstash_password: "CHANGE_ME"
 opensearch_zuul_password: "CHANGE_ME"
-opensearch_readonly_user: kibana
-opensearch_readonly_password: "CHANGE_ME"
 
 opensearch_http_port: 9200
 opensearch_host: opensearch.example.com

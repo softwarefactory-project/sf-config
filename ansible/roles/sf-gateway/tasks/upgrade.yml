@@ -19,11 +19,12 @@
     state: absent
   when: sf_previous_version < 3.7
 
-- name: Remove deprecated repoxplorer files
+- name: Remove deprecated config files
   file:
     path: "{{ item }}"
     state: absent
   loop:
     - /etc/httpd/conf.d/gateway-repoxplorer.conf
     - /var/www/static/repoxplorer.keycloak.json
+    - /etc/httpd/conf.d/opensearch_dashboards_autologin.conf
   notify: apache reload

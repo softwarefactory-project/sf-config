@@ -103,15 +103,3 @@ class Gateway(Component):
 
         args.glue['external_opensearch_dashboards_host'] = \
             args.sfconfig.get('opensearch_dashboards', {}).get('host_url')
-
-        args.glue['readonly_user_autologin'] = \
-            args.sfconfig.get('opensearch_dashboards', {}).get(
-                'readonly_user_autologin', 'Basic')
-
-        if args.sfconfig.get('external_opensearch', {}).get('users', {}):
-            for user, creds in args.sfconfig.get('external_opensearch'
-                                                 ).get('users').items():
-                if creds.get('role') == 'readonly':
-                    args.glue['external_opensearch_readonly_user'] = user
-                    args.glue['external_opensearch_readonly_password'] = \
-                        creds.get('password')

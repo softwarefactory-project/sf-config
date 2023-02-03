@@ -1,9 +1,0 @@
----
-- name: Setup Opensearch Dashboards autologin
-  block:
-    - include_tasks: jwt_configuration.yml
-    - include_tasks: basicauth_configuration.yml
-  when: >
-    'opensearch-dashboards' in roles or
-    external_opensearch_dashboards_host is defined and
-    external_opensearch_dashboards_host
