@@ -22,7 +22,14 @@
   loop:
     - opensearch-dashboards.crt
     - opensearch-dashboards.key
-    - localCA.pem
+
+- name: Copy ca-trust
+  copy:
+    src: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+    dest: "{{ opensearch_dashboards_certs_dir }}/localCA.pem"
+    mode: "0644"
+    owner: "{{ owner }}"
+    group: "{{ group }}"
 
 - name: Configure Opensearch Dashboards
   template:
