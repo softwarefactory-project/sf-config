@@ -22,7 +22,7 @@ zuul_log_dir: "/var/log/zuul"
 zuul_share_dir: "/usr/share/javascript/zuul"
 
 zuul_version: "8.1.0"
-zuul_container_version: "{{ zuul_version }}-1"
+zuul_container_version: "{{ zuul_version }}-2"
 zuul_client_version: "f96ddd00fc69d8a4d51eb207ef322b99983d1fe8"
 zuul_client_container_version: "0.1.0-{{ zuul_client_version }}-1"
 
