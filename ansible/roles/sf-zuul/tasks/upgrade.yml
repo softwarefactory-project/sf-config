@@ -3,6 +3,7 @@
   command: "find {{ zuul_lib_dir }}/keys/ -name \"*.pub\" -delete"
   when:
     - _previous_version is defined
+    - "'stdout' in {{ _previous_version }}"
     - _previous_version.stdout.startswith('rh-python35-zuul-3.2.0')
 
 - name: Remove legacy public key and files
