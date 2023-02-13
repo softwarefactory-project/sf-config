@@ -4,10 +4,7 @@
     name: sf-container
     tasks_from: create_directory.yaml
   loop:
-    - path: "{{ mysql_config_drop_in_dir }}"
-      mode: "0755"
-      recurse: "yes"
-    - path: "{{ mysql_var_run_dir }}"
+    - path: "{{ mysql_config_dir }}"
       mode: "0755"
       recurse: "yes"
     - path: "{{ mysql_var_lib }}"
@@ -52,8 +49,6 @@
     group: "root"
     mode: "0644"
   loop:
-    - src: "templates/my.cnf.j2"
-      dest: "{{ mysql_config_dir }}/my.cnf"
     - src: "templates/client.cnf.j2"
       dest: "{{ mysql_config_dir }}/.my.cnf"
 
@@ -62,13 +57,6 @@
     src: create_databases.sql.j2
     dest: "{{ mariadb_sql_dir }}/databases.sql"
   register: databases_setup
-
-- name: Set wait_timeout to 2 weeks
-  ini_file:
-    dest: "{{ mysql_config_drop_in_dir }}/mariadb-server.cnf"
-    section: server
-    option: wait_timeout
-    value: '1209600'
 
 - name: "Get {{ owner }} uid"
   command: "id -u {{ owner }}"
@@ -119,8 +107,7 @@
     host: "{{ item }}"
     state: absent
     config_file: "{{ mysql_config_dir }}/.my.cnf"
-    login_unix_socket: "{{ mysql_var_run_dir }}/mysqld.sock"
-  no_log: true
+    login_unix_socket: "{{ mysql_var_lib }}/mysql.sock"
   loop:
     - localhost
     - "{{ ansible_hostname }}"
@@ -136,7 +123,7 @@
     name: "{{ item }}"
     state: absent
     config_file: "{{ mysql_config_dir }}/.my.cnf"
-    login_unix_socket: "{{ mysql_var_run_dir }}/mysqld.sock"
+    login_unix_socket: "{{ mysql_var_lib }}/mysql.sock"
   loop:
     - test
 # TODO either add this line or provide a manual removal procedure post-upgrade to 3.8

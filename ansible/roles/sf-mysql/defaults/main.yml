@@ -12,11 +12,11 @@ role_package: mysql
 
 owner: mysql
 group: mysql
-container_uid: 999
-container_gid: 999
+container_uid: 1000
+container_gid: 1000
 
-container_tag: "10.3.10"
-container_version: 1
+container_tag: "10.3.28"
+container_version: 2
 
 mysql_host: "mysql.example.com"
 mysql_root_password: "CHANGE_ME"
@@ -25,7 +25,6 @@ mysql_databases: {}
 
 mysql_config_dir: /etc/mysql
 mysql_config_drop_in_dir: /etc/mysql/conf.d
-mysql_var_run_dir: /var/run/mysqld
 mysql_var_lib: /var/lib/mysql
 
 mysql_port: 3306
@@ -38,14 +37,10 @@ mysql_components:
       --user {{ container_uid }}:{{ container_gid }}
       --uidmap {{ container_uid }}:{{ user_uid | default(1000) }}:1
       --gidmap {{ container_uid }}:{{ usergroup_gid | default(1000) }}:1
-      --uidmap 0:4000:998
-      --gidmap 0:4000:998
+      --uidmap 0:4000:999
+      --gidmap 0:4000:999
       --env MYSQL_ROOT_PASSWORD={{ mysql_root_password }}
-      --volume {{ mysql_config_dir }}/my.cnf:{{ mysql_config_dir }}/my.cnf:z
-      --volume {{ mysql_config_dir }}/.my.cnf:/root/.my.cnf:z
       --volume {{ mariadb_sql_dir }}:{{ container_dir }}:z
-      --volume {{ mysql_config_drop_in_dir }}:{{ mysql_config_drop_in_dir }}:z
-      --volume {{ mysql_var_run_dir }}:{{ mysql_var_run_dir }}:z
       --volume {{ mysql_var_lib }}:{{ mysql_var_lib }}:z
       {% if sf_mysql_additional_params is defined %}
       {{ sf_mysql_additional_params }}
