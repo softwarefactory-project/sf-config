@@ -1,22 +1,27 @@
 ---
-- name: Check if Kibana service is alive
+- name: Check if Opensearch Dashboards service is alive
   wait_for:
     host: "{{ opensearch_dashboards_host }}"
     port: 5601
     timeout: 1
-  register: kibana_status
+  register: dashboards_status
   ignore_errors: true
 
 - name: Fail when Kibana is not available
   fail:
-    msg: "Can not connect to Kibana to perform backup"
-  when: kibana_status is not successful
+    msg: "Can not connect to Opensearch Dashboards to perform backup"
+  when: dashboards_status is not successful
 
-- name: Create backup of all Kibana objects
+- name: Ensure backup directory exists
+  file:
+    path: "{{ backup_dest }}"
+    state: directory
+
+- name: Create backup of all Opensearch Dashboards objects
   shell: |
     /usr/local/bin/kibana-backup.py \
       --user kibanaserver \
       --password "{{ opensearch['kibanaserver_password'] | default(opensearch_kibanaserver_password) }}" \
-      --kibana-url "https://{{ opensearch_dashboards_host }}/analytics" \
+      --kibana-url "https://{{ fqdn }}/analytics" \
       --backup-dir {{ backup_dest }} \
       backup
