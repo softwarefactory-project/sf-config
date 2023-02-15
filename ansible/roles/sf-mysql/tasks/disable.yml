@@ -20,9 +20,7 @@
         path: "{{ item }}"
         state: absent
       loop:
-        - "{{ mysql_config_drop_in_dir }}"
         - "{{ mysql_config_dir }}"
-        - "{{ mysql_var_run_dir }}"
         - "{{ mysql_var_lib }}"
 
   when: erase == True

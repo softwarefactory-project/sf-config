@@ -10,25 +10,6 @@
 - name: If mariadb-server is running
   block:
 
-    - name: Creating backup of old config files
-      copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.target }}"
-        owner: "{{ owner }}"
-        group: "{{ group }}"
-        mode: "0644"
-      loop:
-        - src: "/root/.my.cnf"
-          target: "{{ mysql_config_dir }}/.my.cnf.bck"
-        - src: "/root/.my.cnf"
-          target: "{{ mysql_config_dir }}/.my.cnf"
-        - src: "/etc/my.cnf"
-          target: "{{ mysql_config_dir }}/my.cnf.bck"
-        - src: "/etc/my.cnf"
-          target: "{{ mysql_config_dir }}/my.cnf"
-        - src: "/etc/my.cnf.d/mariadb-server.cnf"
-          target: "{{ mysql_config_drop_in_dir }}/mariadb-server.cnf.bck"
-
     - name: Stop the service
       service:
         name: mariadb
