@@ -6,6 +6,7 @@
     status_code: "200"
   retries: 6
   delay: 10
+  when: "'zuul-web' in roles"
 
 - name: Ensure grafana is available
   uri:
@@ -18,7 +19,7 @@
 - name: Delete old dashboards
   shell: >
     podman exec -it mysql sh -c "mysql -u{{ grafana_mysql_user }} -p{{ grafana_mysql_password }} grafana -e 'delete from dashboard where not slug=\"general-alerting\";'"
-  delegate_to: '{{ mysql_host }}'
+  delegate_to: "{{ mysql_host }}"
   when:
     - sf_previous_version < 3.8
 

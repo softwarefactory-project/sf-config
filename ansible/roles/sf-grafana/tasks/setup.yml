@@ -157,8 +157,6 @@
         path: '{{ grafyaml_metrics }}'
         state: directory
         mode: '0755'
-        owner: '{{ owner }}'
-        group: '{{ group }}'
   delegate_to: '{{ install_server_host }}'
 
 - name: Ensure service {{ role_package }} is enabled
