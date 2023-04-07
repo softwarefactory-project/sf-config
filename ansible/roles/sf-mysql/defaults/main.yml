@@ -26,6 +26,8 @@ mysql_databases: {}
 mysql_config_dir: /etc/mysql
 mysql_config_drop_in_dir: /etc/mysql/conf.d
 mysql_var_lib: /var/lib/mysql
+mysql_cache_dir: /var/tmp
+mysql_host_cache_dir: "{{ mysql_cache_dir }}/mysql"
 
 mysql_port: 3306
 
@@ -42,6 +44,7 @@ mysql_components:
       --env MYSQL_ROOT_PASSWORD={{ mysql_root_password }}
       --volume {{ mariadb_sql_dir }}:{{ container_dir }}:z
       --volume {{ mysql_var_lib }}:{{ mysql_var_lib }}:z
+      --volume {{ mysql_host_cache_dir }}:{{ mysql_cache_dir }}:z
       {% if sf_mysql_additional_params is defined %}
       {{ sf_mysql_additional_params }}
       {% endif %}

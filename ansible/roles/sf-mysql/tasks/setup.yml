@@ -13,6 +13,9 @@
     - path: "{{ mariadb_sql_dir }}"
       mode: "0755"
       recurse: "yes"
+    - path: "{{ mysql_host_cache_dir }}"
+      mode: "0755"
+      recurse: "yes"
 
 # /run or /var/run (symlink to /run) is a tmpfs and mysqld directory must be added
 # to it before starting mysqld
