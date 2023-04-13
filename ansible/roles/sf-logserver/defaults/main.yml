@@ -22,7 +22,7 @@ logs_directory_prefix: logs/
 logserver_version: 4.9.3
 logserver_container_version: "{{ logserver_version }}-2"
 
-purgelogs_version: 0.2.0
+purgelogs_version: 0.2.3
 purgelogs_container_version: "{{ purgelogs_version }}-1"
 purgelogs_debug: false
 
