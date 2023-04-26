@@ -58,3 +58,8 @@
   register: _update_cq
   failed_when: _update_cq.rc not in [0, 4]
   changed_when: _update_cq.rc == 4
+
+- name: Change default retention policy to 4 weeks
+  shell: "{{ influxdb_cli }} -execute 'ALTER RETENTION POLICY \"autogen\" ON \"telegraf\" DURATION 10d'"
+  changed_when: false
+  no_log: show_hidden_logs == False
