@@ -45,7 +45,7 @@ zuul_components:
       {{ sf_zuul_scheduler_additional_params }}
       {% endif %}
   - service: "zuul-executor"
-    image: "quay.io/software-factory/zuul-executor-ubi:{{ zuul_container_version }}"
+    image: "quay.io/software-factory/zuul-executor-ubi-sf38:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
       --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
