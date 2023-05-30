@@ -76,6 +76,7 @@ zuul_components:
     image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
+      --volume /var/lib/zuul/:/var/lib/zuul/:z
       {% if sf_zuul_web_additional_params is defined %}
       {{ sf_zuul_web_additional_params }}
       {% endif %}
