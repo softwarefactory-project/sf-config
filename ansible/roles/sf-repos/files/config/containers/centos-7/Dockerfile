@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-FROM registry.centos.org/centos:7
+FROM quay.io/centos/centos:centos7
 
 # Zuul minimal package
 RUN yum install -y sudo rsync git traceroute iproute python3-setuptools python3-pip rpm-build python3-rpm-macros
