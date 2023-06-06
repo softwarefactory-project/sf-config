@@ -24,3 +24,6 @@ base_sysctl:
   user.max_user_namespaces: 31089
   kernel.sysrq: 0
   vm.swappiness: 10
+
+# set 1000MB in bytes
+log_size_max: 1048576000
