@@ -18,13 +18,13 @@ gerrit_conf_dir: "/etc/gerrit"
 gerrit_lib_dir: "/var/lib/gerrit"
 gerrit_log_dir: "/var/log/gerrit"
 
-gerrit_version: 3.5.4
+gerrit_version: 3.6.6
 gerrit_container_version: "{{ gerrit_version }}-1"
 
 gerrit_components:
   - service: "gerrit"
     post_start: "/usr/libexec/software-factory/wait4gerrit"
-    image: "quay.io/software-factory/gerrit:{{ gerrit_container_version }}"
+    image: "quay.io/software-factory/gerrit-sf38:{{ gerrit_container_version }}"
     params: >-
       --network host
       --user {{ container_uid }}:{{ container_gid }}
