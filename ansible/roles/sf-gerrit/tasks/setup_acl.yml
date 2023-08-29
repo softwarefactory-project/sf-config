@@ -74,7 +74,7 @@
     - 'access.refs/tags/*.forgeCommitter "group Project Owners" "group Project Owners"'
     - 'access.refs/tags/*.push "group Administrators" "group Administrators"'
     - 'access.refs/tags/*.push "group Project Owners" "group Project Owners"'
-    - 'label.Code-Review.copyAllScoresIfNoCodeChange "true"'
+    - 'label.Code-Review.copyCondition "changekind:NO_CODE_CHANGE"'
     - 'label.Code-Review.value "-2 Do not submit" "-2.*"'
     - "label.Code-Review.value \"-1 I would prefer that you didn't submit this\" '-1.*'"
     - 'label.Code-Review.value "+2 Looks good to me (core reviewer)" "\+2.*"'
