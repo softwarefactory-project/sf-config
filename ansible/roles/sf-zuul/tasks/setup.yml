@@ -112,7 +112,7 @@
       exec podman run -it --rm --network host --user root \
         --volume /etc/zuul/:/etc/zuul/:Z                  \
         --volume /var/lib/zuul/:/var/lib/zuul/:Z          \
-        quay.io/software-factory/zuul-scheduler-ubi:{{ zuul_container_version }} zuul $*
+        quay.io/software-factory/zuul-scheduler-sf38:{{ zuul_container_version }} zuul $*
 
 - block:
     - name: Ensure known_hosts file exists

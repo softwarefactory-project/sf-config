@@ -16,7 +16,7 @@ container_gid: 10001
 
 dib_upstream_elements: True
 
-nodepool_version: 8.1.0
+nodepool_version: 9.0.0
 nodepool_container_version: "{{ nodepool_version }}-1"
 
 nodepool_services:
@@ -35,7 +35,7 @@ nodepool_providers:
 
 nodepool_components:
   - service: "nodepool-launcher"
-    image: "quay.io/software-factory/nodepool-launcher-ubi:{{ nodepool_container_version }}"
+    image: "quay.io/software-factory/nodepool-launcher-sf38:{{ nodepool_container_version }}"
     run: >-
       /usr/local/bin/nodepool-launcher -d
       -c /etc/nodepool/nodepool.yaml
@@ -61,7 +61,7 @@ nodepool_components:
       {{ sf_nodepool_launcher_additional_params }}
       {% endif %}
   - service: "nodepool-builder"
-    image: "quay.io/software-factory/nodepool-builder-ubi:{{ nodepool_container_version }}"
+    image: "quay.io/software-factory/nodepool-builder-sf38:{{ nodepool_container_version }}"
     run: >-
       /usr/local/bin/nodepool-builder -d
       -c /etc/nodepool/nodepool.yaml
