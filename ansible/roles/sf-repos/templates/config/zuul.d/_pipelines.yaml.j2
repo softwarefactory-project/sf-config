@@ -32,11 +32,12 @@
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
         - event: comment-added
-          require-approval:
-            - Verified: [-1, -2]
-              username: zuul
+          require:
+            approval:
+                - username: zuul
+                  Verified: [-1, -2]
           approval:
-            - Workflow: 1
+              - Workflow: 1
 {% endfor %}
 {% for github_connection in zuul_github_connections_pipelines %}
       {{ github_connection.name }}:

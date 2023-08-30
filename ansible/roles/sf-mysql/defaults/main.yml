@@ -7,7 +7,6 @@ role_actions:
   - restore
   - disable
 
-
 role_package: mysql
 
 owner: mysql
@@ -15,7 +14,7 @@ group: mysql
 container_uid: 1000
 container_gid: 1000
 
-container_tag: "10.3.28"
+container_tag: "10.5.9"
 container_version: 2
 
 mysql_host: "mysql.example.com"
@@ -33,7 +32,7 @@ mysql_port: 3306
 
 mysql_components:
   - service: "{{ role_package }}"
-    image: "quay.io/software-factory/mariadb:{{container_tag}}-{{container_version}}"
+    image: "quay.io/software-factory/mariadb-sf38:{{container_tag}}-{{container_version}}"
     params: >-
       --network host
       --user {{ container_uid }}:{{ container_gid }}

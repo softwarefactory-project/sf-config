@@ -21,8 +21,8 @@ zuul_lib_dir: "/var/lib/zuul"
 zuul_log_dir: "/var/log/zuul"
 zuul_share_dir: "/usr/share/javascript/zuul"
 
-zuul_version: "8.1.0"
-zuul_container_version: "{{ zuul_version }}-3"
+zuul_version: "10.0.0"
+zuul_container_version: "{{ zuul_version }}-1"
 zuul_client_version: "f96ddd00fc69d8a4d51eb207ef322b99983d1fe8"
 zuul_client_container_version: "0.1.0-{{ zuul_client_version }}-1"
 
@@ -37,7 +37,7 @@ zuul_components_default_params: >-
 
 zuul_components:
   - service: "zuul-scheduler"
-    image: "quay.io/software-factory/zuul-scheduler-ubi:{{ zuul_container_version }}"
+    image: "quay.io/software-factory/zuul-scheduler-sf38:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
       --volume /var/lib/zuul/:/var/lib/zuul/:z
@@ -45,7 +45,7 @@ zuul_components:
       {{ sf_zuul_scheduler_additional_params }}
       {% endif %}
   - service: "zuul-executor"
-    image: "quay.io/software-factory/zuul-executor-ubi-sf38:{{ zuul_container_version }}"
+    image: "quay.io/software-factory/zuul-executor-sf38:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
       --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
@@ -58,14 +58,14 @@ zuul_components:
       {{ sf_zuul_executor_additional_params }}
       {% endif %}
   - service: "zuul-fingergw"
-    image: "quay.io/software-factory/zuul-fingergw-ubi:{{ zuul_container_version }}"
+    image: "quay.io/software-factory/zuul-fingergw-sf38:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
       {% if sf_zuul_fingergw_additional_params is defined %}
       {{ sf_zuul_fingergw_additional_params }}
       {% endif %}
   - service: "zuul-merger"
-    image: "quay.io/software-factory/zuul-merger-ubi:{{ zuul_container_version }}"
+    image: "quay.io/software-factory/zuul-merger-sf38:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
       --volume {{ zuul_lib_dir }}/:{{ zuul_lib_dir }}/:z
@@ -73,7 +73,7 @@ zuul_components:
       {{ sf_zuul_merger_additional_params }}
       {% endif %}
   - service: "zuul-web"
-    image: "quay.io/software-factory/zuul-web-ubi:{{ zuul_container_version }}"
+    image: "quay.io/software-factory/zuul-web-sf38:{{ zuul_container_version }}"
     params: >-
       {{ zuul_components_default_params }}
       --volume /var/lib/zuul/:/var/lib/zuul/:z

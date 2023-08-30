@@ -23,7 +23,7 @@
   copy:
     content: "d /run/mysqld 0755 mysql mysql"
     dest: /usr/lib/tmpfiles.d/mysqld.conf
-    mode: '0644'
+    mode: "0644"
     owner: root
     group: root
 
@@ -106,7 +106,7 @@
 
 - name: ensure anonymous users are not in the database
   mysql_user:
-    name: ''
+    name: ""
     host: "{{ item }}"
     state: absent
     config_file: "{{ mysql_config_dir }}/.my.cnf"
@@ -114,6 +114,7 @@
   loop:
     - localhost
     - "{{ ansible_hostname }}"
+  ignore_errors: true
 
 - name: Ensure all databases are created
   shell: >
