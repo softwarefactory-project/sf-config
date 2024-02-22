@@ -19,14 +19,11 @@
 
 - include_tasks: "fetch_update_configuration.yml"
 
-- name: Restart service when fqdn is updated to refresh statsd client
+- name: Restart service to ensure labels are updated in zk
   service:
     name: "{{ item }}"
     state: restarted
   loop: "{{ nodepool_services }}"
-  when:
-    - _provider_count.stdout != "0"
-    - update_fqdn
 
 - name: Write config repo checksum matching current configuration
   copy:
