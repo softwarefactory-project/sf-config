@@ -41,6 +41,8 @@ mysql_components:
       --uidmap 0:4000:999
       --gidmap 0:4000:999
       --env MYSQL_ROOT_PASSWORD={{ mysql_root_password }}
+      --env MARIADB_DISABLE_UPGRADE_BACKUP=1
+      --env MARIADB_AUTO_UPGRADE=1
       --volume {{ mariadb_sql_dir }}:{{ container_dir }}:z
       --volume {{ mysql_var_lib }}:{{ mysql_var_lib }}:z
       --volume {{ mysql_host_cache_dir }}:{{ mysql_cache_dir }}:z
