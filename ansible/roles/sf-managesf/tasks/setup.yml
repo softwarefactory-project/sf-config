@@ -101,9 +101,13 @@
     mode: '0440'
   notify: restart managesf
 
+# https://github.com/git/git/blob/master/Documentation/config/safe.txt#L20
+- name: Ensure git safe directories managesf
+  command: "git config --global --add safe.directory '*'"
+
 - block:
     - name: Update local config repo remote url if fqdn is updated
-      command: 'git remote set-url origin {{ config_public_location }}'
+      command: "git remote set-url origin {{ config_public_location }}"
       args:
         chdir: "{{ managesf_lib_dir }}/git/local/{{ config_project_name }}"
 

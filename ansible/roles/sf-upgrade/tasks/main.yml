@@ -1,19 +1,4 @@
 ---
-- name: "Install new release repo"
-  yum:
-    name: "https://softwarefactory-project.io/repos/sf-release-{{ sf_version }}.rpm"
-    state: present
-    validate_certs: no
-  when:
-    - sf_version != "master"
-    - sf_version != sf_previous_version
-
-# TODO: check if this is still needed
-- name: "Fix yum contentdir vars"
-  copy:
-    content: "centos"
-    dest: /etc/yum/vars/contentdir
-
 # Note: with sf-3.6, the bin and plugins directories are no longer symlink
 - name: Fix gerrit package conflict with symlinks
   shell: if test -L {{ item }}; then rm {{ item }}; fi

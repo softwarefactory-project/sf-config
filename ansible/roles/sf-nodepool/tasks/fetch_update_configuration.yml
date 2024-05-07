@@ -11,7 +11,7 @@
   loop:
     - cp /var/lib/software-factory/conf/nodepool.yaml nodepool/_nodepool.yaml
     - |
-      env - /bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml"
+      env - /usr/local/bin/managesf-configuration nodepool --output "{{ nodepool_conf_dir }}/nodepool.yaml"
         {% if ansible_hostname != first_launcher %}--extra-launcher{% endif %}
         --hostname {{ ansible_hostname }}
         {% if "nodepool-builder" in nodepool_services %}--builder{% endif %}

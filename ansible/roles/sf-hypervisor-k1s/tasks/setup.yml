@@ -1,6 +1,12 @@
 ---
 - include_tasks: "{{ sf_tasks_dir }}/check_version.yml"
 
+- name: Create /etc/k1s directory
+  file:
+    path: /etc/k1s
+    state: directory
+    mode: 0700
+
 - name: Install certificates
   no_log: true
   copy:
@@ -24,18 +30,18 @@
     dest: /etc/sysconfig/k1s
     mode: '0400'
 
-- name: Ensure mtu for default bridge
-  lineinfile:
-    path: /etc/cni/net.d/87-podman-bridge.conflist
-    regexp: '^\s*"mtu":.*'
-    insertafter: '^\s*"bridge":.*'
-    line: '        "mtu": {{ k1s_mtu }},'
+- name: Install service file
+  ansible.builtin.copy:
+    remote_src: true
+    src: /usr/src/k1s-distgit/k1s.service
+    dest: /etc/systemd/system/k1s.service
 
 - name: Start service
   service:
     name: k1s
     state: started
     enabled: yes
+    daemon-reload: true
 
 - name: Add periodic job to prune unused podman images
   cron:

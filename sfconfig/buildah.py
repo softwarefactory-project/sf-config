@@ -132,10 +132,8 @@ class Buildah:
         self.kill(tag_name=output_name)
 
     def system(self, version):
-        self.log.info("Installing sfconfig and system tools")
-        self.run("yum install -y https://softwarefactory-project.io/repos/"
-                 "sf-release-%s.rpm" % version)
-        self.run("yum install -y ansible sf-config")
+        self.log.info("Installing ansible")
+        self.run("yum install -y ansible")
 
     def local_fixes(self):
         try:

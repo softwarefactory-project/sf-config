@@ -1,12 +1,4 @@
 ---
-- name: Install packages
-  yum:
-    name:
-      - pynotedb
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
-
 - name: Remove gerrit package
   yum:
     name:

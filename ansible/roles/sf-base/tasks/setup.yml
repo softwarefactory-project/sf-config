@@ -119,21 +119,6 @@
     - ansible_selinux.mode == "enforcing"
     - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
 
-- name: Configure ntp server
-  template:
-    src: ntp.conf.j2
-    dest: /etc/ntp.conf
-  register: ntp_config
-
-- name: Start ntpd
-  service:
-    name: ntpd
-    enabled: true
-    state: restarted
-  when:
-    - ansible_virtualization_type not in ["podman", "systemd-nspawn"]
-    - ntp_config is changed
-
 - name: Add localCA to pki trust
   copy:
     content: "{{ localCA_pem }}"

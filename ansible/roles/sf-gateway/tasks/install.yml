@@ -1,15 +1,19 @@
 ---
+- name: Get fontawesome-fonts-web rpm name
+  shell: curl -s https://mirror.stream.centos.org/9-stream/CRB/x86_64/os/Packages/ | grep -oE 'fontawesome-fonts-web-[0-9.-]+.el9.noarch.rpm' | sort -u
+  register: _fontawesome
+
 - name: Install requirements
   yum:
     name:
-      - sf-web-assets
-      - sf-docs
-      - managesf-doc
       - httpd
       - mod_ssl
       - mod_wsgi
-      - zuul-jobs-doc
-      - sf-ui
+      - "https://mirror.stream.centos.org/9-stream/CRB/x86_64/os/Packages/{{ _fontawesome.stdout }}"
+      - https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/x/xstatic-patternfly-common-3.21.0.1-1.el7.noarch.rpm
+      - https://softwarefactory-project.io/kojifiles/repos/sf-3.8-el7-release/Mash/sf-ui-0.2.9-1.el7.noarch.rpm
+      - https://softwarefactory-project.io/kojifiles/repos/sf-3.8-el7-release/Mash/sf-web-assets-1.0-6.el7.noarch.rpm
+      - https://softwarefactory-project.io/kojifiles/repos/sf-3.8-el7-release/Mash/sf-docs-3.8.0-1.el7.noarch.rpm
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"

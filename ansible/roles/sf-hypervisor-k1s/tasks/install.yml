@@ -1,7 +1,35 @@
 ---
-- name: "Install requirements"
-  yum:
-    name: "k1s"
-    state: present
-    disablerepo: "{{ yum_disable_repo|default(omit) }}"
-    enablerepo: "{{ yum_enable_repo|default(omit) }}"
+- name: Install requirements
+  ansible.builtin.package:
+    name:
+      - buildah
+      - cronie
+      - git
+      - openssl
+      - podman
+      - python3-cherrypy
+      - python3-routes
+      - socat
+  become: true
+
+- name: Clone the software
+  ansible.builtin.git:
+    repo: https://pagure.io/software-factory/k1s
+    dest: /usr/src/k1s
+    update: yes
+  become: true
+
+- name: Clone the package
+  ansible.builtin.git:
+    repo: https://softwarefactory-project.io/r/rpms/k1s
+    dest: /usr/src/k1s-distgit
+    update: no
+  become: true
+
+- name: Install the software
+  ansible.builtin.shell: |
+    if [ ! -f /usr/bin/k1s ]; then
+        cd /usr/src/k1s;
+        python3 setup.py develop --prefix /usr/ || exit 1
+    fi
+  become: true

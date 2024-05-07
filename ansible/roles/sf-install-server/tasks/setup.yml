@@ -36,13 +36,6 @@
         Port {{ conn.port|default(29418) }}
       {% endfor %}
 
-- name: Setup a recent git cli for gerrit 3.x
-  shell: |
-    ln -sf /opt/rh/rh-git218/root/bin/git /bin/git
-    for i in /opt/rh/httpd24/root/usr/lib64/*.so.*; do ln -sf $i /lib64; done
-  args:
-    warn: false
-
 - name: Initalize version control for yaml files
   shell: git init .; git add *; git commit -m 'init'
   args:
@@ -80,8 +73,6 @@
 
     - name: Set hostname in pub keys files
       shell: 'sed -i "s/@.*/@{{ fqdn }}/" {{ item }}'
-      args:
-        warn: false
       loop: '{{ pubkeys.stdout_lines }}'
   when: update_fqdn
 

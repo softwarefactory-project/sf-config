@@ -22,6 +22,6 @@ if [ ! -f /root/config/gerrit/replication.config ]; then
     if [ -n "$(git ls-files -o -m --exclude-standard)" ]; then
         git add -A
         git commit -m "Add gerrit/replication.config in the config repository"
-        git review -i
+        /usr/local/bin/git-review -i
     fi
 fi

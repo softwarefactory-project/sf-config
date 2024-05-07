@@ -26,7 +26,7 @@
           {{ kcadm_options }}
     register: _role
     failed_when: _role.rc != 0 and not ( _role.stdout is search("already exists", multiline=True, ignorecase=True) )
-    no_log: show_hidden_logs == False
+    no_log: "{{ show_hidden_logs }}"
 
   # 2. Assign role to default realm roles
   - name: "Add role {{ item.name }} to default realm roles"
@@ -38,7 +38,7 @@
           --rolename {{ item.name }}
           {{ kcadm_options }}
     when: item.default == True
-    no_log: show_hidden_logs == False
+    no_log: "{{ show_hidden_logs }}"
     register: _role
     failed_when: _role.rc != 0
 
@@ -52,7 +52,7 @@
           --uusername {{ user_item|lower }}
           --rolename {{ item.name }}
           {{ kcadm_options }}
-    no_log: show_hidden_logs == False
+    no_log: "{{ show_hidden_logs }}"
     loop: "{{ item.assign_to }}"
     loop_control:
       loop_var: user_item

@@ -62,7 +62,7 @@
     - {content: "{{gateway_chain}}", path: "certs/{{ fqdn }}-chain.crt"}
     - {content: "{{gateway_key}}", path: "private/{{ fqdn }}.key", mode: '0400'}
   when: "gateway_tls_cert_file|default('') == ''"
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Install config files
   copy:
@@ -73,27 +73,16 @@
     - {name: base64helper, path: /usr/local/sbin, mode: '0755'}
     - {name: ssl.conf, path: /etc/httpd/conf.d}
 
-- name: Read zuul-job version
-  command: rpm -q zuul-jobs-doc
-  args:
-    warn: false
-  register: _zuul_job_version
-  changed_when: false
-
 - name: Get zuul and nodepool versions
   block:
     - name: Read zuul version
       command: cat /var/lib/software-factory/versions/zuul
-      args:
-        warn: false
       register: _zuul_version
       changed_when: false
       delegate_to: "{{ install_server_host }}"
 
     - name: Read nodepool version
       command: cat /var/lib/software-factory/versions/nodepool
-      args:
-        warn: false
       register: _nodepool_version
       changed_when: false
       delegate_to: "{{ install_server_host }}"

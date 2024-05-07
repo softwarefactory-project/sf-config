@@ -1,12 +1,18 @@
 ---
-- name: "Install requirements"
-  yum:
+- name: "Install requirements rpm"
+  dnf:
     name:
       - git
-      - git-review
-      - python-testinfra
-      - zuul-jobs
-      - rh-git218-git
+      - net-tools
     state: present
     disablerepo: "{{ yum_disable_repo|default(omit) }}"
     enablerepo: "{{ yum_enable_repo|default(omit) }}"
+
+- name: "Install requirements pip"
+  ansible.builtin.pip:
+    name:
+      - git-review
+      - managesf==0.32.1
+      - pynotedb==0.2.1
+      - pytest-testinfra
+    state: present

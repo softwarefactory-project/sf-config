@@ -27,7 +27,7 @@
        -q name={{ name }}
        {{ kcadm_options }}
   register: _client_scopes_id_results
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 2. Gets the client scope id associated with the client scope
 - name: Getting client scope {{ addToclientScope }} id
@@ -43,7 +43,7 @@
     "
   register: _cs_id
   failed_when: _cs_id.stdout == "None"
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 3. Adds the mapper to the client scope using the user id and realm name.
 - name: "Create protocol mapper {{ name }} in client scope"
@@ -62,7 +62,7 @@
     {{ kcadm_options }}
   register: _mapper_created
   failed_when: _mapper_created.rc != 0 and not ( _mapper_created.stdout is search("mapper exists", multiline=True, ignorecase=True))
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: "Add client scope to client {{ client_name }} defaults"
   command: >
@@ -72,4 +72,4 @@
     {{ kcadm_options }}
   register: _scope_added
   failed_when: _scope_added.rc != 0 and not ( _scope_added.stdout is search("already", multiline=True, ignorecase=True))
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"

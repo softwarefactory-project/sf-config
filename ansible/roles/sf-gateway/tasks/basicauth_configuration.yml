@@ -3,7 +3,7 @@
   command: grep -q 'opensearch_kibanauser_basicauth' /var/lib/software-factory/bootstrap-data/secrets.yaml
   delegate_to: "{{ install_server_host }}"
   register: _opensearch_dashboards_basicauth_old
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
   ignore_errors: true
 
 - name: Setup autologin for Basic auth

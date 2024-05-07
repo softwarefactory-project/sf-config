@@ -3,7 +3,7 @@
   command: grep -q 'opensearch_kibanauser_token' /var/lib/software-factory/bootstrap-data/secrets.yaml
   delegate_to: '{{ install_server_host }}'
   register: _opensearch_dashboards_jwt_old_token
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
   ignore_errors: true
 
 - name: Setup autologin for JWT token
@@ -17,7 +17,7 @@
       command: |
         uuidgen
       register: _opensearch_dashboards_jwt_secret
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
 
     - name: Set jwt secret
       set_fact:
@@ -33,7 +33,7 @@
     - name: Generate jwt token
       command: python3 /usr/local/bin/jwt_generator
       register: _opensearch_dashboards_jwt_token
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
 
     - name: Set jwt facts
       set_fact:

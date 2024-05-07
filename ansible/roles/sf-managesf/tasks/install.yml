@@ -1,11 +1,4 @@
 ---
-# We continue to install the managesf package for managesf-resources command
-# Especially "managesf-resources apply" is causing trouble when running via podenv.
-- name: Install managesf package
-  yum:
-    name: "{{ role_package }}"
-    state: present
-
 - name: Pull image
   include_role:
     name: sf-container

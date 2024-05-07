@@ -2,7 +2,7 @@
   shell: |
     if [ ! -f /var/lib/gerrit/gerrit-service-users ]; then
       for repo in $(find /var/lib/gerrit/git -name "*.git" -type d); do
-        pynotedb migrate-group-su --repo $repo
+        /usr/local/bin/pynotedb migrate-group-su --repo $repo
       done 2>&1 | tee /var/log/gerrit/migration-pynotedb-su.log
       touch /var/lib/gerrit/gerrit-service-users
     fi

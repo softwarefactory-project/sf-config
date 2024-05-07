@@ -39,7 +39,7 @@
     - {key: "nodepool_rsa", name: "id_rsa", mode: "0400"}
     - {key: "nodepool_rsa_pub", name: "id_rsa.pub", mode: "0444"}
     - {key: "zuul_rsa_pub", name: "zuul_rsa.pub", mode: "0444"}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Define .kube/config location
   set_fact:
@@ -89,12 +89,12 @@
 
 - name: Add local k1s cluster provided by sf-hypervisor-k1s
   shell: |
-    oc config --config={{ nodepool_kube_config }} set-credentials k1s-managed --token={{ k1s_token }}
+    oc config --kubeconfig={{ nodepool_kube_config }} set-credentials k1s-managed --token={{ k1s_token }}
     {% for host in inventory %}{% if 'hypervisor-k1s' in host['roles'] %}
-    oc config --config={{ nodepool_kube_config }} set-cluster k1s-managed-{{ host['name']|replace('.', '-') }} --server=https://{{ host['hostname'] }}:9023 --insecure-skip-tls-verify=true
-    oc config --config={{ nodepool_kube_config }} set-context /k1s-{{ host['name']|replace('.', '-') }}/managed --cluster=k1s-managed-{{ host['name']|replace('.', '-') }} --user=k1s-managed
+    oc config --kubeconfig={{ nodepool_kube_config }} set-cluster k1s-managed-{{ host['name']|replace('.', '-') }} --server=https://{{ host['hostname'] }}:9023 --insecure-skip-tls-verify=true
+    oc config --kubeconfig={{ nodepool_kube_config }} set-context /k1s-{{ host['name']|replace('.', '-') }}/managed --cluster=k1s-managed-{{ host['name']|replace('.', '-') }} --user=k1s-managed
     {# ensure current-context is set #}
-    oc config --config={{ nodepool_kube_config }} current-context &> /dev/null || oc config --config={{ nodepool_kube_config }} use-context /k1s-{{ host['name'] }}/managed
+    oc config --kubeconfig={{ nodepool_kube_config }} current-context &> /dev/null || oc config --kubeconfig={{ nodepool_kube_config }} set current-context /k1s-{{ host['name'] }}/managed
     {% endif %}{% endfor %}
   become: yes
   become_user: "{{ owner }}"
@@ -135,7 +135,7 @@
     - {content: "{{ zk_ca_pem }}", dest: "zk-ca.pem"}
     - {content: "{{ zk_client_crt }}", dest: "zookeeper.crt"}
     - {content: "{{ zk_client_key }}", dest: "zookeeper.key"}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Install nodepool secure.conf
   template:

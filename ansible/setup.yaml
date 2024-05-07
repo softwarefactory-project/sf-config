@@ -1,0 +1,36 @@
+- hosts: localhost
+  tasks:
+    - name: Install sf binaries
+      ansible.builtin.command: python setup.py install
+      args:
+        chdir: "{{ sfconfig_path | default('/root/sf-config')}}"
+
+    - name: create working directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        recurse: yes
+      loop:
+        - /etc/software-factory/certs
+        - /var/log/software-factory
+        - /usr/libexec/software-factory
+        - /var/lib/software-factory/backup
+        - /var/lib/software-factory/conf
+        - /var/lib/software-factory/git
+        - /var/lib/software-factory/sql
+        - /var/lib/software-factory/state
+        - /var/lib/software-factory/versions
+
+    - name: Copy defaults config files
+      ansible.builtin.command: "{{ item }}"
+      loop:
+        - rsync -aL defaults/ /etc/software-factory/
+        - rsync -aL ansible  defaults  refarch  scripts  templates  testinfra /usr/share/sf-config/
+        - rsync -aL ansible/ansible.cfg ~/.ansible.cfg
+      args:
+        chdir: "{{ sfconfig_path | default('/root/sf-config')}}"
+
+    - name: Set sf version
+      ansible.builtin.copy:
+        dest: /etc/sf-release
+        content: 3.8

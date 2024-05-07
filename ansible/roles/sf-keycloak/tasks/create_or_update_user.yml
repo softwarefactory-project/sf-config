@@ -26,7 +26,7 @@
         {{ kcadm_options }}
   register: _user_create
   failed_when: _user_create.rc != 0 and not ( _user_create.stdout is search("User exists", multiline=True, ignorecase=True) )
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 2. Get user data
 - name: "Get {{ item.username }} data"
@@ -42,7 +42,7 @@
 - name: "Set {{ item.username }} user ID"
   set_fact:
     kuid: "{{ _user_data.stdout_lines | last | from_json }}"
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 3. Updates user password
 - name: "Update {{ item.username }}'s password"
@@ -55,7 +55,7 @@
         {{ kcadm_options }}
   register: _user_update
   when: item.password is defined
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 4. Updates user email only if fqdn name changed
 - name: "Update {{ item.username }}'s email if fqdn has changed"
@@ -66,7 +66,7 @@
         --set 'email={{ item.email }}'
         {{ kcadm_options }}
   register: _user_email_update
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
   when: update_fqdn
 
 # 5. Assings user as administrator of the target realm
@@ -81,4 +81,4 @@
         --rolename manage-users
         {{ kcadm_options }}
   when: realm_admin
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"

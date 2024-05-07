@@ -300,12 +300,16 @@ def main():
     legacy_name = 'enable_insecure_slaves'
     if legacy_name in args.glue:
         args.glue['enable_insecure_workers'] = args.glue[legacy_name]
+
+    # show_hidden_logs
+    if 'show_hidden_logs' in args.glue:
+        args.glue['show_hidden_logs'] = False
+    else:
+        args.glue['show_hidden_logs'] = True
+
     # Generate group vars
     with open(allyaml, "w") as allvars_file:
         yaml_dump(args.glue, allvars_file)
-
-    if 'show_hidden_logs' not in args.glue:
-        args.glue['show_hidden_logs'] = False
 
     # Validate role settings
     for host in args.sfarch["inventory"]:

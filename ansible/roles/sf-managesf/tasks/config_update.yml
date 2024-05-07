@@ -18,10 +18,9 @@
   register: upstreamconfig
 
 - block:
-
     - name: Exec resources apply
       command: >
-        /usr/bin/managesf-resources apply
+        /usr/local/bin/managesf-resources apply
         --zuul-prev-commit {{ localconfig.stdout_lines[0].split()[0] }}
         --log-output {{ managesf_log_dir }}/resources_apply.log
       register: output
@@ -47,21 +46,21 @@
     - "'gerrit' in roles"
     - localconfig.stdout != upstreamconfig.stdout
 
-- block:
-    - name: Update cached resources
-      shell: |
-        curl {{ managesf_internal_url }}/v2/resources > /var/www/api/resources.json.new
-        mv /var/www/api/resources.json.new /var/www/api/resources.json
-      delegate_to: "{{ gateway_host }}"
+- name: Update cached resources
+  shell: |
+    curl {{ managesf_internal_url }}/v2/resources > /var/www/api/resources.json.new
+    mv /var/www/api/resources.json.new /var/www/api/resources.json
+  delegate_to: "{{ gateway_host }}"
   when:
     - localconfig.stdout != upstreamconfig.stdout
 
-- block:
-    - name: Create zuul-related roles in keycloak for new tenants
-      shell: |
-        managesf-keycloak --kc-api {{ keycloak_internal_url }}/auth --debug sync-roles
-      environment:
-        KC_ADMIN_PASSWORD: "{{ authentication.admin_password }}"
+- name: Create zuul-related roles in keycloak for new tenants
+  shell: "{{ item }}"
+  environment:
+    KC_ADMIN_PASSWORD: "{{ authentication.admin_password }}"
+  loop:
+    - git config --global --add safe.directory /var/lib/software-factory/managesf-keycloak/sync-roles
+    - "/usr/local/bin/managesf-keycloak --kc-api {{ keycloak_internal_url }}/auth --debug sync-roles"
   when:
     - localconfig.stdout != upstreamconfig.stdout
 

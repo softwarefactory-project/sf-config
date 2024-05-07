@@ -25,7 +25,7 @@
   register: _client_create
   failed_when: _client_create.rc != 0 and not ( _client_create.stdout is search("already exists", multiline=True, ignorecase=True) )
   when: item.use_secret == True
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
   # The Jinja if statement can be removed and set at a different stage.
   # This keycloak container version only supports setting fields defaultClientScopes and optionalClientScopes.
   # Later container versions allow updating these fields.
@@ -47,7 +47,7 @@
   register: _client_create
   failed_when: _client_create.rc != 0 and not ( _client_create.stdout is search("already exists", multiline=True, ignorecase=True) )
   when: item.use_secret == False
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 3. Gets client id.
 - name: "Get {{ item.component }} client ID"
@@ -63,7 +63,7 @@
 - name: "Set {{ item.component }} client ID"
   set_fact:
     kcid: "{{ _cid.stdout_lines | last | from_json }}"
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 4. Updates client password based on client id.
 - name: "Update {{ item.component }} client password"
@@ -74,7 +74,7 @@
         --set secret={{ vars['keycloak_' + item.component + '_client_secret'] }}
         {{ kcadm_options }}
   when: item.use_secret == True or item.realm_role_mapper == True
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 5. Updates allowed urls for client application, redirection and origin urls.
 - name: "Update redirect URIs, allowed web origins if FQDN changed"
@@ -86,7 +86,7 @@
         --set 'webOrigins=["https://{{ fqdn }}","https://{{ item.component }}.{{ fqdn }}"]'
         {{ kcadm_options }}
   when: update_fqdn
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 6. Direct access grants allow an application to pass credentials directly to keycloak's authentication endpoint instead of redirecting first the user to keycloak's login page.
 - name: "Allow direct access grants for {{ item.component }}"
@@ -96,7 +96,7 @@
         --target-realm {{ keycloak_default_realm }}
         --set "directAccessGrantsEnabled=true"
         {{ kcadm_options }}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 7. Creates a roles mapper
 - name: "Create realm roles mapper if needed"
@@ -118,7 +118,7 @@
   register: _rolemapper_create
   failed_when: _rolemapper_create.rc != 0 and not ( _rolemapper_create.stdout is search("Protocol mapper exists with same name", multiline=True, ignorecase=True) )
   when: item.realm_role_mapper == True
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 # 8. Creates a groups mapper
 - name: "Create realm groups mapper if needed"
@@ -139,7 +139,7 @@
   register: _groupmapper_create
   failed_when: _groupmapper_create.rc != 0 and not ( _groupmapper_create.stdout is search("Protocol mapper exists with same name", multiline=True, ignorecase=True) )
   when: item.group_role_mapper == True
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Create Client Scope to add custom audience
   include_tasks: create_client_scopes.yml

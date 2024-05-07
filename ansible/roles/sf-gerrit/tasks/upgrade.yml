@@ -61,7 +61,7 @@
       become_user: gerrit
 
     - name: Run pynotedb migration
-      shell: pynotedb migrate --all-users /var/lib/gerrit/git/All-Users.git --all-projects /var/lib/gerrit/git/All-Projects.git &> /var/log/gerrit/migration-pynotedb.log
+      shell: /usr/local/bin/pynotedb migrate --all-users /var/lib/gerrit/git/All-Users.git --all-projects /var/lib/gerrit/git/All-Projects.git &> /var/log/gerrit/migration-pynotedb.log
       become: true
       become_user: gerrit
 
@@ -76,7 +76,7 @@
     fi
 
 - name: Migrate user external IDs to keycloak scheme
-  command: pynotedb cauth-to-keycloak --all-users /var/lib/gerrit/git/All-Users.git
+  command: /usr/local/bin/pynotedb cauth-to-keycloak --all-users /var/lib/gerrit/git/All-Users.git
   become: true
   become_user: gerrit
   when: sf_previous_version < 3.8

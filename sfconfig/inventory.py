@@ -505,7 +505,7 @@ def enable_action(args):
         testinfra_tests = sfconfig.utils.list_testinfra()
         for host in args.glue["inventory"]:
             logfile = "/var/log/software-factory/testinfra.log"
-            testinfra = ["testinfra", "-v", "--result-log=%s" % logfile]
+            testinfra = ["/usr/local/bin/py.test", "-v", "--log-file=%s" % logfile]
             tests = []
             if "install-server" not in host["roles"]:
                 testinfra.append("--connection=ssh")

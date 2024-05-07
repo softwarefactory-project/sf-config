@@ -29,7 +29,7 @@ else
 fi
 
 systemctl stop gerrit
-sudo -u gerrit pynotedb delete-user \
+sudo -u gerrit /usr/local/bin/pynotedb delete-user \
 --all-users /var/lib/gerrit/git/All-Users.git \
 --name ${USERNAME} --email ${EMAIL}
 systemctl start gerrit

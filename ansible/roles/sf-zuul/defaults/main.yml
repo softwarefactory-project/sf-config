@@ -87,7 +87,7 @@ zuul_services:
   - zuul-web
 
 zuul_scheduler_depends:
-  - wait4service
+  - https://softwarefactory-project.io/kojifiles/repos/sf-3.8-el7-release/Mash/wait4service-0.1-1.el7.noarch.rpm
 
 zuul_web_port: 9000
 

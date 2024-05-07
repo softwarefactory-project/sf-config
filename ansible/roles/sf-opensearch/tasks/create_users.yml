@@ -26,7 +26,7 @@
         password: "{{ opensearch['readonly_password'] | default(opensearch_readonly_password) }}"
   with_dict: "{{ internal_users }}"
   include_tasks: gen_user_pass.yml
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Set opensearch readonly user name
   set_fact:

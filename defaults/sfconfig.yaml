@@ -211,7 +211,7 @@ zuul:
   #      poll_delay: 7200
 
   # To use openstack-infra/zuul-jobs, review.openstack.org needs to be added to gerrit_connections list too
-  upstream_zuul_jobs: false
+  upstream_zuul_jobs: true
   opensearch_connections: []
 ##  Add other Elasticsearch services that Zuul service will send
 ##  NOTE: by adding index name: zuul, zuul will push the data to the

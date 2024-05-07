@@ -7,3 +7,11 @@
       # Those files are restored early on
       - --exclude=/etc/software-factory/
       - --exclude=/var/lib/software-factory/
+
+- name: "Ensure backup are owned by root user"
+  file:
+    path: /var/lib/software-factory/backup
+    owner: root
+    group: root
+    state: directory
+    recurse: yes

@@ -8,8 +8,6 @@
 
   - name: Clean yum metadata
     command: yum clean metadata
-    args:
-      warn: no
     when: old_repo is changed
 
   when: old_repo_name is defined

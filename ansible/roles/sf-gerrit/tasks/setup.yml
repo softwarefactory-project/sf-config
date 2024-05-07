@@ -44,7 +44,7 @@
   loop:
     - {key: "gerrit_service_rsa", name: "id_rsa", mode: "0400"}
     - {key: "gerrit_service_rsa_pub", name: "id_rsa.pub", mode: "0444"}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Ensure the germqtt is disabled
   service:
@@ -276,7 +276,7 @@
     enabled: "yes"
 
 - name: Initialize admin user
-  command: pynotedb create-admin-user --email "admin@{{ fqdn }}" --pubkey "{{ gerrit_admin_rsa_pub }}" --all-users "{{ gerrit_lib_dir }}/git/All-Users.git" --scheme keycloak-oauth
+  command: /usr/local/bin/pynotedb create-admin-user --email "admin@{{ fqdn }}" --pubkey "{{ gerrit_admin_rsa_pub }}" --all-users "{{ gerrit_lib_dir }}/git/All-Users.git" --scheme keycloak-oauth
   become: true
   become_user: "{{ owner }}"
   register: task_result

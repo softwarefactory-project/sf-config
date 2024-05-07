@@ -3,7 +3,7 @@
     dest: "{{ item.path }}"
     state: directory
     follow: "{{ item.follow | default('true') }}"
-    mode: "{{ item.mode | default(0700) }}"
+    mode: "{{ item.mode | default('0700') }}"
     recurse: "{{ item.recurse | default('no') }}"
     owner: "{{ item.owner | default(owner) }}"
     group: "{{ item.group | default(group) }}"

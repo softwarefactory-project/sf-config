@@ -128,7 +128,7 @@
   delay: 2
   until: _default_realm.rc == 0 or ( _default_realm.stdout is search("Resource not found", multiline=True, ignorecase=True) )
   ignore_errors: true
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Create default realm
   command: |
@@ -138,7 +138,7 @@
         --set enabled=true
         {{ kcadm_options }}
   when: _default_realm.rc != 0
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
   retries: 10
   delay: 3
 
@@ -262,7 +262,7 @@
         --set "loginTheme=sf"
         --set "accountTheme=sf"
         {{ kcadm_options }}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Configure SMTP service
   command: |
@@ -274,7 +274,7 @@
         --set "smtpServer.replyTo=admin@{{ fqdn }}"
         --set 'smtpServer.fromDisplayName="Software Factory IAM"'
         {{ kcadm_options }}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Configure expiry timeout for SSO sessions
   command: |
@@ -282,7 +282,7 @@
     {{ keycloak_dir }}/bin/kcadm.sh update realms/{{ keycloak_default_realm }}
         --set "ssoSessionMaxLifespan={{ authentication.sso_session_timeout }}"
         {{ kcadm_options }}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
   when: '"sso_session_timeout" in authentication'
 
 # Identity Providers
@@ -304,7 +304,7 @@
     # Fail if error not due to idp already existing
       register: _gh_idp
       failed_when: _gh_idp.rc != 0 and not ( _gh_idp.stdout is search("Identity Provider github already exists", multiline=True, ignorecase=True) )
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
 
     - name: check for an existing SSH key mapper
       command: |
@@ -313,7 +313,7 @@
             --target-realm {{ keycloak_default_realm }}
             {{ kcadm_options }}
       register: _gh_key_mapper
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
 
     - name: Create the SSH key mapper if needed
       command: |
@@ -326,7 +326,7 @@
             --set identityProviderAlias=github
             {{ kcadm_options }}
       when: _gh_key_mapper.stdout.find("publicKey") == -1
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
   when: not authentication.oauth2.github.disabled
 
 # components OIDC clients
@@ -373,7 +373,7 @@
         --set enabledEventTypes=[]
         {{ kcadm_options }}
   when: "'firehose' in roles"
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Copy {{ keycloak_components[0].service }} js adapter to gateway's /var/www/static/javascript
   block:
@@ -404,10 +404,10 @@
             --query name=rsa-enc-generated
             {{ kcadm_options }}
       register: _keyProviderInfo
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
     - set_fact:
         keyProviderId: "{{ _keyProviderInfo.stdout_lines | last | from_json }}"
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
     - command:
         podman exec -ti {{ keycloak_components[0].service }}
         {{ keycloak_dir }}/bin/kcadm.sh update components/{{ keyProviderId[0]['id'] }}
@@ -415,5 +415,5 @@
             --set "config.active=[\"false\"]"
             --set "config.enabled=[\"false\"]"
             {{ kcadm_options }}
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
   # when: "'zuul' in roles"

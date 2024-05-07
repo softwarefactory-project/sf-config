@@ -5,58 +5,40 @@
     regexp: "^retries="
     line: "retries=30"
 
-- name: Check if epel-release is installed
-  command: rpm -q epel-release
-  args:
-    warn: false
-  ignore_errors: yes
-  changed_when: false
-  register: epel_installed
-  failed_when: epel_installed.rc == 0
+- name: Enable codeready-builder-for-rhel-9 for it needed for installing epel on rhel
+  shell: subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
 
-- name: "Fix yum contentdir vars"
-  copy:
-    content: "centos"
-    dest: /etc/yum/vars/contentdir
+- name: Get gpg keys for rpms
+  get_url:
+    url: "{{ url }}"
+    dest: "/etc/pki/rpm-gpg/{{ url | basename }}"
+    mode: '0440'
+  loop: "{{ gpg_keys_url }}"
+  loop_control:
+    loop_var: url
 
-- name: Report error if epel-release is installed
-  fail:
-    msg: "Software Factory is not compatible with EPEL."
-  when: epel_installed.rc == 0
+- name: Install gpg keys for rpms
+  ansible.builtin.command: "rpm --import /etc/pki/rpm-gpg/{{ url | basename }}"
+  when: (url | basename) != "RPM-GPG-KEY-CentOS-SIG-Cloud"
+  loop: "{{ gpg_keys_url }}"
+  loop_control:
+    loop_var: url
 
-- name: Ensure conflicting packages are removed
-  yum:
-    name:
-      - rh-python35-runtime
-      - rh-git29-runtime
-      - rh-httpd24-runtime
-      - rh-python35-enable-py3
-      - rh-python35-managesf-doc
-      - python-devel
-    state: absent
+- name: Add epel repo
+  dnf:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 
-- name: Check for sf-release
-  stat:
-    path: /etc/yum.repos.d/sf-release.repo
-  register: sf_release_installed
-
-- name: Install sf-release if needed
-  yum:
-    name: "{{ sf_release_url }}"
-    state: present
-  when: not sf_release_installed.stat.exists
-
-- name: Add required repo package
-  yum:
-    name: "centos-release-{{ item }}"
-    state: present
-    disablerepo: '{{ yum_disable_repo|default(omit) }}'
-    enablerepo: '{{ yum_enable_repo|default(omit) }}'
-  loop:
-    - scl-rh
-    # TODO: keep in sync with sf-upgrade/tasks/main.yaml when changing openstack release
-    - openstack-stein
-  when: ansible_distribution == "CentOS"
+- name: Add /etc/yum.repos.d/CentOS-OpenStack-antelope.repo
+  ansible.builtin.copy:
+    content: |
+      [centos-openstack-antelope]
+      name=CentOS-$releasever - OpenStack antelope
+      metalink=https://mirrors.centos.org/metalink?repo=centos-cloud-sig-openstack-antelope-$releasever-stream&arch=$basearch&protocol=https,http
+      gpgcheck=1
+      enabled=1
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud
+      module_hotfixes=1
+    dest: /etc/yum.repos.d/CentOS-OpenStack-antelope.repo
 
 - name: Install useful packages
   yum:
@@ -64,17 +46,19 @@
       - haveged
       - logrotate
       - git
-      - ntp
+      - chrony
       - patch
       - postfix
       - rsyslog
       - tmux
       - vim-enhanced
-      - sf-config
       - podman
+      - python3-pip
+      - langpacks-en
+      - glibc-all-langpacks
       # Needed by ansible selinux module
-      - libsemanage-python
-      - policycoreutils-python
+      - python3-libsemanage
+      - policycoreutils-python-utils
       # Needed for wait4 scripts
       - nmap-ncat
       # Needed by very minimal instance

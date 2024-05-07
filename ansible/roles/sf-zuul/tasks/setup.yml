@@ -33,7 +33,7 @@
   loop:
     - {key: "zuul_rsa", name: "id_rsa", mode: "0400"}
     - {key: "zuul_rsa_pub", name: "id_rsa.pub", mode: "0444"}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: Expose public keys
   copy:
@@ -159,7 +159,7 @@
         group: "{{ group }}"
       loop: "{{ zuul_github_connections }}"
       when: item.app_key
-      no_log: show_hidden_logs == False
+      no_log: "{{ show_hidden_logs }}"
   when: "'zuul-scheduler' in zuul_services or 'zuul-merger' in zuul_services or 'zuul-executor' in zuul_services"
 
 - block:
@@ -218,7 +218,7 @@
     - {content: "{{ zk_client_crt }}", dest: "zookeeper.crt"}
     - {content: "{{ zk_client_key }}", dest: "zookeeper.key"}
     - {content: "{{ zk_ca_pem }}", dest: "zk-ca.pem"}
-  no_log: show_hidden_logs == False
+  no_log: "{{ show_hidden_logs }}"
 
 - name: "Setup configuration"
   template:

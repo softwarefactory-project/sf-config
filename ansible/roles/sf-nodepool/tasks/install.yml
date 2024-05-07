@@ -9,12 +9,17 @@
     state: absent
 
 # httpd to serve nodepool logs
-# managesf for config update
 - name: Install depends
   package:
     name:
       - httpd
-      - managesf
+
+# managesf for config update
+- name: "Install managesf"
+  ansible.builtin.pip:
+    name:
+      - managesf==0.32.1
+    state: present
 
 - name: Write version in file
   copy:
@@ -26,18 +31,27 @@
   package:
     name:
       - libvirt-daemon
-      - sf-elements
+      - https://softwarefactory-project.io/kojifiles/repos/sf-3.8-el7-release/Mash/sf-elements-0.7.0-2.el7.noarch.rpm
   when: '"nodepool-builder" in nodepool_services'
 
 - name: Install openshift client
   block:
-    - include_tasks: "{{ sf_tasks_dir }}/origin-311.yml"
-      when: ansible_distribution == 'CentOS'
+    - name: Add repo for openshift-client
+      copy:
+        dest: /etc/yum.repos.d/microshift-deps.repo
+        content: |
+          [microshift-deps-rpms]
+          name=Puddle of Microshift deps RPMs
+          baseurl=https://mirror.openshift.com/pub/openshift-v4/$basearch/dependencies/rpms/4.13-el9-beta/
+          enabled=0
+          gpgcheck=0
+          skip_if_unavailable=1
 
-    - name: Install packages
-      yum:
-        name: '{{ openshift_client }}'
-        state: present
+    - name: Install openshift-client
+      ansible.builtin.package:
+        name:
+          - openshift-clients
+        enablerepo: microshift-deps-rpms
   when: "nodepool_openshift_providers or nodepool_kube_file or 'hypervisor-k1s' in roles"
 
 - include_tasks: "{{ sf_tasks_dir }}/create_user.yml"

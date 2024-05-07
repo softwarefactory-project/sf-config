@@ -1,5 +1,5 @@
 ---
-description: "Minimal Software Factory deployment"
+description: "Supported roles for Software Factory deployment"
 inventory:
   - name: managesf
     roles:
@@ -8,7 +8,6 @@ inventory:
       - zookeeper
       - gateway
       - keycloak
-      - firehose
       - gerrit
       - managesf
       - logserver
@@ -16,3 +15,5 @@ inventory:
       - zuul-executor
       - zuul-web
       - nodepool-launcher
+      # - nodepool-builder
+      # - hypervisor-k1s

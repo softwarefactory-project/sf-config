@@ -18,12 +18,12 @@ class TestZookeeper(utils.Base):
         srv = host.service("zookeeper")
         assert srv.is_running
         assert srv.is_enabled
-        assert host.socket("tcp://2181").is_listening
+        assert host.socket("tcp://2281").is_listening
 
     def test_client_are_connected(self, host):
         expected_clients = 0
         for role in self.enabled_roles():
             if role in ("nodepool-builder", "nodepool-launcher"):
                 expected_clients += 1
-        skt = host.socket("tcp://2181")
+        skt = host.socket("tcp://2281")
         assert len(skt.clients) >= expected_clients

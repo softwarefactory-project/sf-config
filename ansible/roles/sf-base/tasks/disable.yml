@@ -29,5 +29,4 @@
         - /var/lib/software-factory/versions
         - /var/lib/software-factory/.version
         - /var/lib/software-factory/bootstrap-data/secrets.yaml
-        - /var/lib/software-factory/ansible
   when: erase == True
