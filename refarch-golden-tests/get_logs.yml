@@ -200,18 +200,7 @@
     - zuul-scheduler
     - zuul-web
 - any_errors_fatal: true
-  hosts: ze01.sftests.com
-  roles:
-  - log_dest: /root/sf-logs/base
-    role: sf-base
-  - log_dest: /root/sf-logs/zuul
-    role: sf-zuul
-  vars:
-    role_action: get_logs
-    zuul_services:
-    - zuul-executor
-- any_errors_fatal: true
-  hosts: ze02.sftests.com
+  hosts: ze01.sftests.com:ze02.sftests.com
   roles:
   - log_dest: /root/sf-logs/base
     role: sf-base

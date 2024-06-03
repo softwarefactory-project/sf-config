@@ -648,7 +648,7 @@ def generate(args):
     arch = copy.deepcopy(args.sfarch)
 
     # Adds playbooks to architecture
-    for host in arch["inventory"]:
+    for host in arch["combined_inventory"]:
         # Host params are generic roles parameters
         host["params"] = {}
 
@@ -691,7 +691,7 @@ def generate(args):
                     arch)
 
     # Generate playbooks
-    args.inventory = arch["inventory"]
+    args.inventory = arch["combined_inventory"]
     for playbook_name, generator in (
             ("zuul_start", zuul_start),
             ("zuul_stop", zuul_stop),

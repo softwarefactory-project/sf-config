@@ -10,6 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import copy
 import sys
 from sfconfig.utils import pread
 from sfconfig.utils import fail
@@ -27,6 +28,32 @@ rhel_unsupported_roles = (
 )
 
 correct_order = ['gerrit', 'managesf', 'opensearch', 'opensearch-dashboards']
+
+
+def combine_common_hosts(inventory):
+    # Combined the hosts that runs the same executor/merger roles
+    inventory = copy.deepcopy(inventory)
+    combined_hosts = set()
+
+    def combine_host(host, role):
+        # Collect all the host with this role setup
+        matching_hosts = list(
+            map(lambda x: x['hostname'],
+                filter(lambda x: x['roles'] == [role], inventory)))
+        # Modify the given host to match all the hosts
+        host['hostname'] = ':'.join(matching_hosts)
+        if len(matching_hosts) > 1:
+            # Register all the duplicated hosts
+            combined_hosts.update(matching_hosts)
+
+    for host in inventory:
+        if host['hostname'] not in combined_hosts:
+            for combinable in ["zuul-executor", "zuul-merger"]:
+                if host['roles'] == [combinable]:
+                    combine_host(host, combinable)
+
+    return list(filter(
+        lambda x: x['hostname'] not in combined_hosts, inventory))
 
 
 def process(args):
@@ -142,6 +169,9 @@ def process(args):
             for role in host["roles"]:
                 print("- %s" % role)
             sys.exit(1)
+
+    args.sfarch["combined_inventory"] = combine_common_hosts(
+        args.sfarch["inventory"])
 
     # Check roles
     for requirement in required_roles:
