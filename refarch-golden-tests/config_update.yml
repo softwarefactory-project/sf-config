@@ -19,21 +19,18 @@
   - sf-grafana
   - sf-keycloak
   vars:
-    host_public_url: https://sftests.com
     role_action: config_update
 - any_errors_fatal: true
   hosts: elk.sftests.com
   roles:
   - sf-hound
   vars:
-    host_public_url: http://192.168.240.14
     role_action: config_update
 - any_errors_fatal: true
   hosts: nodepool-builder.sftests.com
   roles:
   - sf-nodepool
   vars:
-    host_public_url: http://192.168.240.9
     nodepool_services:
     - nodepool-builder
     role_action: config_update
@@ -43,7 +40,6 @@
   - sf-zuul
   - sf-nodepool
   vars:
-    host_public_url: http://192.168.240.15
     nodepool_services:
     - nodepool-launcher
     role_action: config_update
@@ -53,5 +49,4 @@
 - any_errors_fatal: true
   hosts: runc01.sftests.com
   vars:
-    host_public_url: http://38.145.33.82
     role_action: config_update

@@ -69,7 +69,6 @@
   - backup_dest: /var/lib/software-factory/backup/zookeeper
     role: sf-zookeeper
   vars:
-    host_public_url: https://sftests.com
     role_action: backup
 - any_errors_fatal: true
   hosts: elk.sftests.com
@@ -87,7 +86,6 @@
   - backup_dest: /var/lib/software-factory/backup/telegraf
     role: sf-telegraf
   vars:
-    host_public_url: http://192.168.240.14
     role_action: backup
 - any_errors_fatal: true
   hosts: nodepool-builder.sftests.com
@@ -95,7 +93,6 @@
   - backup_dest: /var/lib/software-factory/backup/nodepool
     role: sf-nodepool
   vars:
-    host_public_url: http://192.168.240.9
     nodepool_services:
     - nodepool-builder
     role_action: backup
@@ -107,7 +104,6 @@
   - backup_dest: /var/lib/software-factory/backup/zuul
     role: sf-zuul
   vars:
-    host_public_url: http://192.168.240.15
     nodepool_services:
     - nodepool-launcher
     role_action: backup
@@ -118,7 +114,6 @@
   hosts: ze01.sftests.com
   roles: []
   vars:
-    host_public_url: http://192.168.240.8
     role_action: backup
     zuul_services:
     - zuul-executor
@@ -126,7 +121,6 @@
   hosts: ze02.sftests.com
   roles: []
   vars:
-    host_public_url: http://192.168.240.9
     role_action: backup
     zuul_services:
     - zuul-executor
@@ -136,5 +130,4 @@
   - backup_dest: /var/lib/software-factory/backup/hypervisor-runc
     role: sf-hypervisor-runc
   vars:
-    host_public_url: http://38.145.33.82
     role_action: backup

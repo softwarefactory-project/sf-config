@@ -31,7 +31,6 @@
   - sf-zookeeper
   vars:
     erase: true
-    host_public_url: https://sftests.com
     role_action: disable
 - any_errors_fatal: true
   hosts: elk.sftests.com
@@ -44,7 +43,6 @@
   - sf-telegraf
   vars:
     erase: true
-    host_public_url: http://192.168.240.14
     role_action: disable
 - any_errors_fatal: true
   hosts: nodepool-builder.sftests.com
@@ -52,7 +50,6 @@
   - sf-nodepool
   vars:
     erase: true
-    host_public_url: http://192.168.240.9
     nodepool_services:
     - nodepool-builder
     role_action: disable
@@ -63,7 +60,6 @@
   - sf-zuul
   vars:
     erase: true
-    host_public_url: http://192.168.240.15
     nodepool_services:
     - nodepool-launcher
     role_action: disable
@@ -76,7 +72,6 @@
   - sf-zuul
   vars:
     erase: true
-    host_public_url: http://192.168.240.8
     role_action: disable
     zuul_services:
     - zuul-executor
@@ -86,7 +81,6 @@
   - sf-zuul
   vars:
     erase: true
-    host_public_url: http://192.168.240.9
     role_action: disable
     zuul_services:
     - zuul-executor
@@ -96,7 +90,6 @@
   - sf-hypervisor-runc
   vars:
     erase: true
-    host_public_url: http://38.145.33.82
     role_action: disable
 - any_errors_fatal: true
   hosts: mysql

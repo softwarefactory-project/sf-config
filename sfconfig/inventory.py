@@ -650,7 +650,7 @@ def generate(args):
     # Adds playbooks to architecture
     for host in arch["inventory"]:
         # Host params are generic roles parameters
-        host["params"] = {'host_public_url': host['public_url']}
+        host["params"] = {}
 
         if "influxdb" in host["roles"]:
             # Add telegraf for statsd gateway
