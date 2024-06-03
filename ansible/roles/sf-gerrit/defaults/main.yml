@@ -18,8 +18,8 @@ gerrit_conf_dir: "/etc/gerrit"
 gerrit_lib_dir: "/var/lib/gerrit"
 gerrit_log_dir: "/var/log/gerrit"
 
-gerrit_version: 3.7.4
-gerrit_container_version: "{{ gerrit_version }}-1"
+gerrit_version: 3.7.8
+gerrit_container_version: "{{ gerrit_version }}-5"
 
 gerrit_components:
   - service: "gerrit"
