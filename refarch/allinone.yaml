@@ -16,6 +16,7 @@ inventory:
       - zuul-scheduler
       - zuul-executor
       - zuul-fingergw
+      - zuul-merger
       - zuul-web
       - log-classify
       - gerritbot
