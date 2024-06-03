@@ -3,53 +3,53 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
-10.0.0.88 managesf.sftests.com grafana murmur.sftests.com lodgeit zookeeper.sftests.com gerritbot.sftests.com murmur managesf.sftests.com etherpad.sftests.com keycloak mysql.sftests.com gerritbot sftests.com opensearch-dashboards.sftests.com lodgeit.sftests.com zookeeper mysql managesf firehose.sftests.com firehose keycloak.sftests.com gerrit.sftests.com gerrit opensearch-dashboards install-server etherpad install-server.sftests.com grafana.sftests.com
-192.168.240.14 elk.sftests.com influxdb.sftests.com influxdb opensearch.sftests.com logserver log-processing.sftests.com hound elk logserver.sftests.com log-processing hound.sftests.com opensearch
-192.168.240.15 zs.sftests.com zuul-scheduler.sftests.com zs zuul-web.sftests.com zuul-scheduler zuul-web
+10.0.0.88 managesf.sftests.com etherpad etherpad.sftests.com firehose firehose.sftests.com gerrit gerrit.sftests.com gerritbot gerritbot.sftests.com grafana grafana.sftests.com install-server install-server.sftests.com keycloak keycloak.sftests.com lodgeit lodgeit.sftests.com managesf managesf.sftests.com murmur murmur.sftests.com mysql mysql.sftests.com opensearch-dashboards opensearch-dashboards.sftests.com sftests.com zookeeper zookeeper.sftests.com
+192.168.240.14 elk.sftests.com elk hound hound.sftests.com influxdb influxdb.sftests.com log-processing log-processing.sftests.com logserver logserver.sftests.com opensearch opensearch.sftests.com
+192.168.240.15 zs.sftests.com zs zuul-scheduler zuul-scheduler.sftests.com zuul-web zuul-web.sftests.com
 192.168.240.8 ze01.sftests.com ze01
 192.168.240.9 ze02.sftests.com ze02
-38.145.33.82 runc01.sftests.com hypervisor-runc.sftests.com hypervisor-runc runc01
+38.145.33.82 runc01.sftests.com hypervisor-runc hypervisor-runc.sftests.com runc01
 
-10.0.0.88 managesf.sftests.com grafana murmur.sftests.com lodgeit zookeeper.sftests.com gerritbot.sftests.com murmur managesf.sftests.com etherpad.sftests.com keycloak mysql.sftests.com gerritbot sftests.com opensearch-dashboards.sftests.com lodgeit.sftests.com zookeeper mysql managesf firehose.sftests.com firehose keycloak.sftests.com gerrit.sftests.com gerrit opensearch-dashboards install-server etherpad install-server.sftests.com grafana.sftests.com
-192.168.240.14 elk.sftests.com influxdb.sftests.com influxdb opensearch.sftests.com logserver log-processing.sftests.com hound elk logserver.sftests.com log-processing hound.sftests.com opensearch
-192.168.240.15 zs.sftests.com zuul-scheduler.sftests.com zs zuul-web.sftests.com zuul-scheduler zuul-web
+10.0.0.88 managesf.sftests.com etherpad etherpad.sftests.com firehose firehose.sftests.com gerrit gerrit.sftests.com gerritbot gerritbot.sftests.com grafana grafana.sftests.com install-server install-server.sftests.com keycloak keycloak.sftests.com lodgeit lodgeit.sftests.com managesf managesf.sftests.com murmur murmur.sftests.com mysql mysql.sftests.com opensearch-dashboards opensearch-dashboards.sftests.com sftests.com zookeeper zookeeper.sftests.com
+192.168.240.14 elk.sftests.com elk hound hound.sftests.com influxdb influxdb.sftests.com log-processing log-processing.sftests.com logserver logserver.sftests.com opensearch opensearch.sftests.com
+192.168.240.15 zs.sftests.com zs zuul-scheduler zuul-scheduler.sftests.com zuul-web zuul-web.sftests.com
 192.168.240.8 ze01.sftests.com ze01
 192.168.240.9 ze02.sftests.com ze02
-38.145.33.82 runc01.sftests.com hypervisor-runc.sftests.com hypervisor-runc runc01
+38.145.33.82 runc01.sftests.com hypervisor-runc hypervisor-runc.sftests.com runc01
 
-10.0.0.88 managesf.sftests.com grafana murmur.sftests.com lodgeit zookeeper.sftests.com gerritbot.sftests.com murmur managesf.sftests.com etherpad.sftests.com keycloak mysql.sftests.com gerritbot sftests.com opensearch-dashboards.sftests.com lodgeit.sftests.com zookeeper mysql managesf firehose.sftests.com firehose keycloak.sftests.com gerrit.sftests.com gerrit opensearch-dashboards install-server etherpad install-server.sftests.com grafana.sftests.com
-192.168.240.14 elk.sftests.com influxdb.sftests.com influxdb opensearch.sftests.com logserver log-processing.sftests.com hound elk logserver.sftests.com log-processing hound.sftests.com opensearch
-192.168.240.15 zs.sftests.com zuul-scheduler.sftests.com zs zuul-web.sftests.com zuul-scheduler zuul-web
+10.0.0.88 managesf.sftests.com etherpad etherpad.sftests.com firehose firehose.sftests.com gerrit gerrit.sftests.com gerritbot gerritbot.sftests.com grafana grafana.sftests.com install-server install-server.sftests.com keycloak keycloak.sftests.com lodgeit lodgeit.sftests.com managesf managesf.sftests.com murmur murmur.sftests.com mysql mysql.sftests.com opensearch-dashboards opensearch-dashboards.sftests.com sftests.com zookeeper zookeeper.sftests.com
+192.168.240.14 elk.sftests.com elk hound hound.sftests.com influxdb influxdb.sftests.com log-processing log-processing.sftests.com logserver logserver.sftests.com opensearch opensearch.sftests.com
+192.168.240.15 zs.sftests.com zs zuul-scheduler zuul-scheduler.sftests.com zuul-web zuul-web.sftests.com
 192.168.240.8 ze01.sftests.com ze01
 192.168.240.9 ze02.sftests.com ze02
-38.145.33.82 runc01.sftests.com hypervisor-runc.sftests.com hypervisor-runc runc01
+38.145.33.82 runc01.sftests.com hypervisor-runc hypervisor-runc.sftests.com runc01
 
-10.0.0.88 managesf.sftests.com grafana murmur.sftests.com lodgeit zookeeper.sftests.com gerritbot.sftests.com murmur managesf.sftests.com etherpad.sftests.com keycloak mysql.sftests.com gerritbot sftests.com opensearch-dashboards.sftests.com lodgeit.sftests.com zookeeper mysql managesf firehose.sftests.com firehose keycloak.sftests.com gerrit.sftests.com gerrit opensearch-dashboards install-server etherpad install-server.sftests.com grafana.sftests.com
-192.168.240.14 elk.sftests.com influxdb.sftests.com influxdb opensearch.sftests.com logserver log-processing.sftests.com hound elk logserver.sftests.com log-processing hound.sftests.com opensearch
-192.168.240.15 zs.sftests.com zuul-scheduler.sftests.com zs zuul-web.sftests.com zuul-scheduler zuul-web
+10.0.0.88 managesf.sftests.com etherpad etherpad.sftests.com firehose firehose.sftests.com gerrit gerrit.sftests.com gerritbot gerritbot.sftests.com grafana grafana.sftests.com install-server install-server.sftests.com keycloak keycloak.sftests.com lodgeit lodgeit.sftests.com managesf managesf.sftests.com murmur murmur.sftests.com mysql mysql.sftests.com opensearch-dashboards opensearch-dashboards.sftests.com sftests.com zookeeper zookeeper.sftests.com
+192.168.240.14 elk.sftests.com elk hound hound.sftests.com influxdb influxdb.sftests.com log-processing log-processing.sftests.com logserver logserver.sftests.com opensearch opensearch.sftests.com
+192.168.240.15 zs.sftests.com zs zuul-scheduler zuul-scheduler.sftests.com zuul-web zuul-web.sftests.com
 192.168.240.8 ze01.sftests.com ze01
 192.168.240.9 ze02.sftests.com ze02
-38.145.33.82 runc01.sftests.com hypervisor-runc.sftests.com hypervisor-runc runc01
+38.145.33.82 runc01.sftests.com hypervisor-runc hypervisor-runc.sftests.com runc01
 
-10.0.0.88 managesf.sftests.com grafana murmur.sftests.com lodgeit zookeeper.sftests.com gerritbot.sftests.com murmur managesf.sftests.com etherpad.sftests.com keycloak mysql.sftests.com gerritbot sftests.com opensearch-dashboards.sftests.com lodgeit.sftests.com zookeeper mysql managesf firehose.sftests.com firehose keycloak.sftests.com gerrit.sftests.com gerrit opensearch-dashboards install-server etherpad install-server.sftests.com grafana.sftests.com
-192.168.240.14 elk.sftests.com influxdb.sftests.com influxdb opensearch.sftests.com logserver log-processing.sftests.com hound elk logserver.sftests.com log-processing hound.sftests.com opensearch
-192.168.240.15 zs.sftests.com zuul-scheduler.sftests.com zs zuul-web.sftests.com zuul-scheduler zuul-web
+10.0.0.88 managesf.sftests.com etherpad etherpad.sftests.com firehose firehose.sftests.com gerrit gerrit.sftests.com gerritbot gerritbot.sftests.com grafana grafana.sftests.com install-server install-server.sftests.com keycloak keycloak.sftests.com lodgeit lodgeit.sftests.com managesf managesf.sftests.com murmur murmur.sftests.com mysql mysql.sftests.com opensearch-dashboards opensearch-dashboards.sftests.com sftests.com zookeeper zookeeper.sftests.com
+192.168.240.14 elk.sftests.com elk hound hound.sftests.com influxdb influxdb.sftests.com log-processing log-processing.sftests.com logserver logserver.sftests.com opensearch opensearch.sftests.com
+192.168.240.15 zs.sftests.com zs zuul-scheduler zuul-scheduler.sftests.com zuul-web zuul-web.sftests.com
 192.168.240.8 ze01.sftests.com ze01
 192.168.240.9 ze02.sftests.com ze02
-38.145.33.82 runc01.sftests.com hypervisor-runc.sftests.com hypervisor-runc runc01
+38.145.33.82 runc01.sftests.com hypervisor-runc hypervisor-runc.sftests.com runc01
 
-10.0.0.88 managesf.sftests.com grafana murmur.sftests.com lodgeit zookeeper.sftests.com gerritbot.sftests.com murmur managesf.sftests.com etherpad.sftests.com keycloak mysql.sftests.com gerritbot sftests.com opensearch-dashboards.sftests.com lodgeit.sftests.com zookeeper mysql managesf firehose.sftests.com firehose keycloak.sftests.com gerrit.sftests.com gerrit opensearch-dashboards install-server etherpad install-server.sftests.com grafana.sftests.com
-192.168.240.14 elk.sftests.com influxdb.sftests.com influxdb opensearch.sftests.com logserver log-processing.sftests.com hound elk logserver.sftests.com log-processing hound.sftests.com opensearch
-192.168.240.15 zs.sftests.com zuul-scheduler.sftests.com zs zuul-web.sftests.com zuul-scheduler zuul-web
+10.0.0.88 managesf.sftests.com etherpad etherpad.sftests.com firehose firehose.sftests.com gerrit gerrit.sftests.com gerritbot gerritbot.sftests.com grafana grafana.sftests.com install-server install-server.sftests.com keycloak keycloak.sftests.com lodgeit lodgeit.sftests.com managesf managesf.sftests.com murmur murmur.sftests.com mysql mysql.sftests.com opensearch-dashboards opensearch-dashboards.sftests.com sftests.com zookeeper zookeeper.sftests.com
+192.168.240.14 elk.sftests.com elk hound hound.sftests.com influxdb influxdb.sftests.com log-processing log-processing.sftests.com logserver logserver.sftests.com opensearch opensearch.sftests.com
+192.168.240.15 zs.sftests.com zs zuul-scheduler zuul-scheduler.sftests.com zuul-web zuul-web.sftests.com
 192.168.240.8 ze01.sftests.com ze01
 192.168.240.9 ze02.sftests.com ze02
-38.145.33.82 runc01.sftests.com hypervisor-runc.sftests.com hypervisor-runc runc01
+38.145.33.82 runc01.sftests.com hypervisor-runc hypervisor-runc.sftests.com runc01
 
-10.0.0.88 managesf.sftests.com grafana murmur.sftests.com lodgeit zookeeper.sftests.com gerritbot.sftests.com murmur managesf.sftests.com etherpad.sftests.com keycloak mysql.sftests.com gerritbot sftests.com opensearch-dashboards.sftests.com lodgeit.sftests.com zookeeper mysql managesf firehose.sftests.com firehose keycloak.sftests.com gerrit.sftests.com gerrit opensearch-dashboards install-server etherpad install-server.sftests.com grafana.sftests.com
-192.168.240.14 elk.sftests.com influxdb.sftests.com influxdb opensearch.sftests.com logserver log-processing.sftests.com hound elk logserver.sftests.com log-processing hound.sftests.com opensearch
-192.168.240.15 zs.sftests.com zuul-scheduler.sftests.com zs zuul-web.sftests.com zuul-scheduler zuul-web
+10.0.0.88 managesf.sftests.com etherpad etherpad.sftests.com firehose firehose.sftests.com gerrit gerrit.sftests.com gerritbot gerritbot.sftests.com grafana grafana.sftests.com install-server install-server.sftests.com keycloak keycloak.sftests.com lodgeit lodgeit.sftests.com managesf managesf.sftests.com murmur murmur.sftests.com mysql mysql.sftests.com opensearch-dashboards opensearch-dashboards.sftests.com sftests.com zookeeper zookeeper.sftests.com
+192.168.240.14 elk.sftests.com elk hound hound.sftests.com influxdb influxdb.sftests.com log-processing log-processing.sftests.com logserver logserver.sftests.com opensearch opensearch.sftests.com
+192.168.240.15 zs.sftests.com zs zuul-scheduler zuul-scheduler.sftests.com zuul-web zuul-web.sftests.com
 192.168.240.8 ze01.sftests.com ze01
 192.168.240.9 ze02.sftests.com ze02
-38.145.33.82 runc01.sftests.com hypervisor-runc.sftests.com hypervisor-runc runc01
+38.145.33.82 runc01.sftests.com hypervisor-runc hypervisor-runc.sftests.com runc01
 
 
