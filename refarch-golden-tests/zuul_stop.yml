@@ -1,0 +1,29 @@
+- any_errors_fatal: true
+  hosts: zuul-web
+  tasks:
+  - failed_when: false
+    name: Setting service zuul-web to stopped
+    service:
+      name: zuul-web
+      state: stopped
+- any_errors_fatal: true
+  hosts: zuul-executor
+  tasks:
+  - failed_when: false
+    name: Setting service zuul-executor to stopped
+    service:
+      name: zuul-executor
+      state: stopped
+- any_errors_fatal: true
+  hosts: zuul-scheduler
+  tasks:
+  - failed_when: false
+    name: Setting service zuul-scheduler to stopped
+    service:
+      name: zuul-scheduler
+      state: stopped
+- any_errors_fatal: true
+  hosts: zuul-scheduler
+  tasks:
+  - name: Cleaning Zookeeper data
+    shell: echo yes | zuul_wrapper delete-state

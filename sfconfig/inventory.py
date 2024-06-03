@@ -712,6 +712,6 @@ def generate(args):
     # including network static_hostname defined in sfconfig.yaml
     host_arch = copy.copy(arch)
     host_arch["network"] = args.sfconfig["network"]
-    render_template("/etc/hosts",
+    render_template(args.etc_hosts,
                     "%s/etc-hosts.j2" % templates,
                     host_arch)

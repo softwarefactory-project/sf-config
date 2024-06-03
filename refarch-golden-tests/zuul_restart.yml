@@ -1,0 +1,97 @@
+- any_errors_fatal: true
+  hosts: install-server
+  tasks:
+  - command: 'logger --tag event-sfconfig "zuul restart process: begin"'
+    name: Log system message
+- any_errors_fatal: true
+  hosts: zuul-scheduler
+  tasks:
+  - command: systemctl -q is-active zuul-scheduler
+    failed_when: zuul_scheduler_status.rc not in [0, 3]
+    name: Check if zuul is running
+    register: zuul_scheduler_status
+  - command: podman exec -ti zuul-scheduler python3 /var/lib/zuul/scripts/zuul-changes.py
+      dump --dump_file /var/lib/zuul/scripts/zuul-change-dump.sh
+    delay: '5'
+    name: Dump zuul changes
+    retries: '50'
+    when: zuul_scheduler_status.rc == 0
+- any_errors_fatal: true
+  hosts: zuul-web
+  tasks:
+  - failed_when: false
+    name: Setting service zuul-web to stopped
+    service:
+      name: zuul-web
+      state: stopped
+- any_errors_fatal: true
+  hosts: zuul-executor
+  tasks:
+  - failed_when: false
+    name: Setting service zuul-executor to stopped
+    service:
+      name: zuul-executor
+      state: stopped
+- any_errors_fatal: true
+  hosts: zuul-scheduler
+  tasks:
+  - failed_when: false
+    name: Setting service zuul-scheduler to stopped
+    service:
+      name: zuul-scheduler
+      state: stopped
+- any_errors_fatal: true
+  hosts: zuul-scheduler
+  tasks:
+  - name: Cleaning Zookeeper data
+    shell: echo yes | zuul_wrapper delete-state
+- any_errors_fatal: true
+  hosts: zuul-web
+  tasks:
+  - name: Update container if needed
+    shell: if [ -f /var/lib/software-factory/versions/zuul-web-updated ]; then podman
+      rm zuul-web; /usr/local/bin/container-zuul-web.sh; rm /var/lib/software-factory/versions/zuul-web-updated;
+      fi
+  - name: Setting service zuul-web to started
+    service:
+      name: zuul-web
+      state: started
+- any_errors_fatal: true
+  hosts: zuul-executor
+  tasks:
+  - name: Update container if needed
+    shell: if [ -f /var/lib/software-factory/versions/zuul-executor-updated ]; then
+      podman rm zuul-executor; /usr/local/bin/container-zuul-executor.sh; rm /var/lib/software-factory/versions/zuul-executor-updated;
+      fi
+  - name: Setting service zuul-executor to started
+    service:
+      name: zuul-executor
+      state: started
+- any_errors_fatal: true
+  hosts: zuul-scheduler
+  tasks:
+  - name: Update container if needed
+    shell: if [ -f /var/lib/software-factory/versions/zuul-scheduler-updated ]; then
+      podman rm zuul-scheduler; /usr/local/bin/container-zuul-scheduler.sh; rm /var/lib/software-factory/versions/zuul-scheduler-updated;
+      fi
+  - name: Setting service zuul-scheduler to started
+    service:
+      name: zuul-scheduler
+      state: started
+- any_errors_fatal: true
+  hosts: install-server
+  tasks:
+  - include_tasks: '{{ sf_tasks_dir }}/ensure_zuul_running.yml'
+    name: Wait for Zuul running
+- any_errors_fatal: true
+  hosts: zuul-scheduler
+  tasks:
+  - name: Reload zuul queues
+    shell: if [ -f /var/lib/zuul/scripts/zuul-change-dump.sh ]; then /var/lib/zuul/scripts/zuul-change-dump.sh
+      && rm /var/lib/zuul/scripts/zuul-change-dump.sh; fi
+- any_errors_fatal: true
+  hosts: install-server
+  tasks:
+  - command: 'logger --tag event-sfconfig "zuul restart process: zuul restart process:
+      done"'
+    name: Log system message

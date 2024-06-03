@@ -1,0 +1,121 @@
+- any_errors_fatal: true
+  hosts: install-server
+  tasks:
+  - pause:
+      prompt: 'WARNING: this playbook will *DESTROY* software factory data , type
+        the fqdn to continue or CTRL-C to abort'
+    register: erase_prompt
+    when: sfconfig_batch is not defined
+- any_errors_fatal: true
+  hosts: install-server
+  tasks:
+  - fail:
+      msg: Incorrect hostname
+    when:
+    - sfconfig_batch is not defined
+    - erase_prompt.user_input != fqdn
+- any_errors_fatal: true
+  hosts: managesf.sftests.com
+  roles:
+  - sf-gerrit
+  - sf-gateway
+  - sf-managesf
+  - sf-etherpad
+  - sf-lodgeit
+  - sf-gerritbot
+  - sf-murmur
+  - sf-opensearch-dashboards
+  - sf-keycloak
+  - sf-firehose
+  - sf-grafana
+  - sf-zookeeper
+  vars:
+    erase: true
+    host_public_url: https://sftests.com
+    role_action: disable
+- any_errors_fatal: true
+  hosts: elk.sftests.com
+  roles:
+  - sf-logserver
+  - sf-opensearch
+  - sf-influxdb
+  - sf-log-processing
+  - sf-hound
+  - sf-telegraf
+  vars:
+    erase: true
+    host_public_url: http://192.168.240.14
+    role_action: disable
+- any_errors_fatal: true
+  hosts: nodepool-builder.sftests.com
+  roles:
+  - sf-nodepool
+  vars:
+    erase: true
+    host_public_url: http://192.168.240.9
+    nodepool_services:
+    - nodepool-builder
+    role_action: disable
+- any_errors_fatal: true
+  hosts: zs.sftests.com
+  roles:
+  - sf-nodepool
+  - sf-zuul
+  vars:
+    erase: true
+    host_public_url: http://192.168.240.15
+    nodepool_services:
+    - nodepool-launcher
+    role_action: disable
+    zuul_services:
+    - zuul-scheduler
+    - zuul-web
+- any_errors_fatal: true
+  hosts: ze01.sftests.com
+  roles:
+  - sf-zuul
+  vars:
+    erase: true
+    host_public_url: http://192.168.240.8
+    role_action: disable
+    zuul_services:
+    - zuul-executor
+- any_errors_fatal: true
+  hosts: ze02.sftests.com
+  roles:
+  - sf-zuul
+  vars:
+    erase: true
+    host_public_url: http://192.168.240.9
+    role_action: disable
+    zuul_services:
+    - zuul-executor
+- any_errors_fatal: true
+  hosts: runc01.sftests.com
+  roles:
+  - sf-hypervisor-runc
+  vars:
+    erase: true
+    host_public_url: http://38.145.33.82
+    role_action: disable
+- any_errors_fatal: true
+  hosts: mysql
+  roles:
+  - sf-mysql
+  vars:
+    erase: true
+    role_action: disable
+- any_errors_fatal: true
+  hosts: install-server
+  roles:
+  - sf-install-server
+  vars:
+    erase: true
+    role_action: disable
+- any_errors_fatal: true
+  hosts: all
+  roles:
+  - sf-base
+  vars:
+    erase: true
+    role_action: disable

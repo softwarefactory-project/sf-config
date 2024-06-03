@@ -1,0 +1,38 @@
+- any_errors_fatal: true
+  hosts: zuul-web
+  tasks:
+  - name: Update container if needed
+    shell: if [ -f /var/lib/software-factory/versions/zuul-web-updated ]; then podman
+      rm zuul-web; /usr/local/bin/container-zuul-web.sh; rm /var/lib/software-factory/versions/zuul-web-updated;
+      fi
+  - name: Setting service zuul-web to started
+    service:
+      name: zuul-web
+      state: started
+- any_errors_fatal: true
+  hosts: zuul-executor
+  tasks:
+  - name: Update container if needed
+    shell: if [ -f /var/lib/software-factory/versions/zuul-executor-updated ]; then
+      podman rm zuul-executor; /usr/local/bin/container-zuul-executor.sh; rm /var/lib/software-factory/versions/zuul-executor-updated;
+      fi
+  - name: Setting service zuul-executor to started
+    service:
+      name: zuul-executor
+      state: started
+- any_errors_fatal: true
+  hosts: zuul-scheduler
+  tasks:
+  - name: Update container if needed
+    shell: if [ -f /var/lib/software-factory/versions/zuul-scheduler-updated ]; then
+      podman rm zuul-scheduler; /usr/local/bin/container-zuul-scheduler.sh; rm /var/lib/software-factory/versions/zuul-scheduler-updated;
+      fi
+  - name: Setting service zuul-scheduler to started
+    service:
+      name: zuul-scheduler
+      state: started
+- any_errors_fatal: true
+  hosts: install-server
+  tasks:
+  - include_tasks: '{{ sf_tasks_dir }}/ensure_zuul_running.yml'
+    name: Wait for Zuul running

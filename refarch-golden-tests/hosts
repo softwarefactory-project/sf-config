@@ -1,0 +1,111 @@
+# This file is managed by ansible, don't edit
+# It's the list of host sort by roles group.
+
+[install-server]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[mysql]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[gerrit]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[gateway]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[managesf]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[etherpad]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[lodgeit]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[gerritbot]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[murmur]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[opensearch-dashboards]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[keycloak]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[firehose]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[grafana]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[zookeeper]
+managesf.sftests.com ansible_connection=local ansible_python_interpreter=/usr/bin/python
+
+
+[logserver]
+elk.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[opensearch]
+elk.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[influxdb]
+elk.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[log-processing]
+elk.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[hound]
+elk.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[nodepool-builder]
+nodepool-builder.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[zuul-scheduler]
+zs.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[zuul-web]
+zs.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[nodepool-launcher]
+zs.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[zuul-executor]
+ze01.sftests.com ansible_python_interpreter=/usr/bin/python
+ze02.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[hypervisor-runc]
+runc01.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[nodepool]
+nodepool-builder.sftests.com ansible_python_interpreter=/usr/bin/python
+
+
+[zuul]
+zs.sftests.com ansible_python_interpreter=/usr/bin/python
+

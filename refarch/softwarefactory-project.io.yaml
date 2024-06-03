@@ -4,11 +4,11 @@ inventory:
   roles:
   - install-server
   - mysql
+  - gerrit
   - gateway
   - managesf
   - etherpad
   - lodgeit
-  - gerrit
   - gerritbot
   - murmur
   - opensearch-dashboards
@@ -36,6 +36,10 @@ inventory:
   - nodepool-launcher
 - name: ze01
   ip: 192.168.240.8
+  roles:
+  - zuul-executor
+- name: ze02
+  ip: 192.168.240.9
   roles:
   - zuul-executor
 - name: runc01
