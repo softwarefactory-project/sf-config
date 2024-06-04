@@ -6,8 +6,11 @@
 
 - name: "Restore files ownership"
   file:
-    path: "/etc/zookeeper"
+    path: "{{ item }}"
     owner: "zookeeper"
     group: "zookeeper"
     recurse: "yes"
     state: "directory"
+  loop:
+    - "/etc/zookeeper"
+    - "/var/lib/zookeeper"
