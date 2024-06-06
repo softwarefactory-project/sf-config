@@ -89,7 +89,8 @@ def main():
         gr_opts = '-v'
 
     if args.review_id:
-        print(execute("/usr/local/bin/git-review %s -d %s" % (gr_opts, args.review_id)))
+        print(execute("/usr/local/bin/git-review %s -d %s"
+                      % (gr_opts, args.review_id)))
         sha = execute("git log -n1 --pretty=format:%H")
     else:
         # Submit change

@@ -74,8 +74,6 @@
   register: _gerritbot_channel
   changed_when: false
   failed_when: false
-  args:
-    warn: false
 
 - name: Install a dummy channels.yaml file
   copy:

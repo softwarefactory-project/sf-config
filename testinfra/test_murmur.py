@@ -13,6 +13,6 @@
 
 class TestMurmur:
     def test_service_running_and_enabled(self, host):
-        service = host.service("umurmurd")
+        service = host.service("umurmur")
         assert service.is_running
         assert service.is_enabled

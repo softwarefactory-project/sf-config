@@ -16,5 +16,5 @@ class TestEtherpad:
         etherpad = host.service("etherpad")
         assert etherpad.is_running
         assert etherpad.is_enabled
-        skt = host.socket("tcp://127.0.0.1:9001")
+        skt = host.socket("tcp://0.0.0.0:9001")
         assert skt.is_listening

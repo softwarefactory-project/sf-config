@@ -1,9 +1,0 @@
----
-- service_facts:
-  run_once: true
-
-- name: Upgrade container
-  include_role:
-    name: sf-container
-    tasks_from: upgrade.yaml
-  loop: "{{ grafana_components }}"
