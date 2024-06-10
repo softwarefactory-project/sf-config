@@ -476,22 +476,26 @@ def enable_action(args):
                      'not tenant_deployment']})
 
         # Perform zuul/nodepool service restart if needed
-        pb.append({
+        zuul_restart_task = {
             'import_playbook': '%s/zuul_restart.yml' % args.ansible_root,
-            'when': [
-                '(zuul_need_restart | default(False)) or update_fqdn',
-                'not disable_zuul_autorestart | default(False) | bool',
-                'not tenant_deployment'
-            ]
-        })
-        pb.append({
+            'when': ['(zuul_need_restart | default(False)) or update_fqdn',
+                     'not disable_zuul_autorestart | default(False) | bool',
+                     'not tenant_deployment']}
+
+        nodepool_restart_task = {
             'import_playbook': '%s/nodepool_restart.yml' % args.ansible_root,
             'when': [
                 '(nodepool_need_restart | default(False)) or update_fqdn',
                 'not disable_nodepool_autorestart | default(False) | bool',
-                'not tenant_deployment'
-            ]
-        })
+                'not tenant_deployment']}
+
+        for host in args.inventory:
+            for role in ["zuul"]:
+                if role in host["roles"]:
+                    pb.append(zuul_restart_task)
+            for role in ["nodepool"]:
+                if role in host["roles"]:
+                    pb.append(nodepool_restart_task)
 
         # Apply the last tasks
         config_update(args, pb)
