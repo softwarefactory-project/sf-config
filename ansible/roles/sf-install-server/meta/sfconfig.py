@@ -102,7 +102,7 @@ def create_context_info(fqdn, tenant, roles, auth, sf_version, custom_links,
             + status_link
             + service("nodepool", "/nodepool")
             + service("keycloak", "/auth/realms/SF/account/")
-            + service("opensearch-dashboards", "/analytics_autologin")
+            + service("opensearch-dashboards", "/analytics")
             + service("grafana", "/grafana")
             + service("etherpad", "/etherpad")
             + service("lodgeit", "/paste")

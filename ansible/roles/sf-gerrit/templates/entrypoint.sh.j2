@@ -4,8 +4,10 @@
 JAVA_OPTIONS="-Djava.security.egd=file:/dev/./urandom"
 JAVA_OPTIONS="${JAVA_OPTIONS} -Djavax.net.ssl.keyStore=/var/gerrit/etc/keystore"
 JAVA_OPTIONS="${JAVA_OPTIONS} -Djavax.net.ssl.keyStorePassword={{ gerrit_keystore_password }}"
+{% if gerrit_use_truststore|default(True) %}
 JAVA_OPTIONS="${JAVA_OPTIONS} -Djavax.net.ssl.trustStore=/var/gerrit/etc/truststore"
 JAVA_OPTIONS="${JAVA_OPTIONS} -Djavax.net.ssl.trustStorePassword=changeit"
+{% endif %}
 
 configure_keystore () {
     keytool -importkeystore -srckeystore /var/gerrit/etc/{{ fqdn }}.pkcs12 \

@@ -115,13 +115,6 @@
   when: '"kibana" in roles or external_opensearch_dashboards_host is defined'
   notify: apache reload
 
-- name: Create autologin empty file
-  file:
-    path: /etc/httpd/conf.d/opensearch_dashboards_autologin.conf
-    state: touch
-    mode: '0444'
-  when: readonly_user_autologin is defined and readonly_user_autologin
-
 - name: Add server status configuration file
   template:
     src: server-status.conf.j2

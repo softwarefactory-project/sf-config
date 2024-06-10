@@ -1,0 +1,32 @@
+- any_errors_fatal: true
+  hosts: nodepool-launcher
+  tasks:
+  - failed_when: false
+    name: Setting service nodepool-launcher to stopped
+    service:
+      name: nodepool-launcher
+      state: stopped
+  - name: Update container if needed
+    shell: if [ -f /var/lib/software-factory/versions/nodepool-launcher-updated ];
+      then podman rm nodepool-launcher; /usr/local/bin/container-nodepool-launcher.sh;
+      rm /var/lib/software-factory/versions/nodepool-launcher-updated; fi
+  - name: Setting service nodepool-launcher to started
+    service:
+      name: nodepool-launcher
+      state: started
+- any_errors_fatal: true
+  hosts: nodepool-builder
+  tasks:
+  - failed_when: false
+    name: Setting service nodepool-builder to stopped
+    service:
+      name: nodepool-builder
+      state: stopped
+  - name: Update container if needed
+    shell: if [ -f /var/lib/software-factory/versions/nodepool-builder-updated ];
+      then podman rm nodepool-builder; /usr/local/bin/container-nodepool-builder.sh;
+      rm /var/lib/software-factory/versions/nodepool-builder-updated; fi
+  - name: Setting service nodepool-builder to started
+    service:
+      name: nodepool-builder
+      state: started

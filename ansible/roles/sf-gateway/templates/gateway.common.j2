@@ -176,6 +176,9 @@
 {% endif %}
 
 {% if 'logserver' in roles %}
+        RewriteCond %{REQUEST_URI} /logs/+[^\.]+$
+        RewriteRule ^/logs/(.+[^/])$ %{REQUEST_URI}/ [R=301,L]
+
         ProxyPass /logs/ http://{{ logserver_host }}:{{ logserver_http_port }}/logs/
         ProxyPassReverse /logs/ http://{{ logserver_host }}:{{ logserver_http_port }}/logs/
 

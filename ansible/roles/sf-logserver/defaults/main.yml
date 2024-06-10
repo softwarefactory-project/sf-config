@@ -22,8 +22,9 @@ logs_directory_prefix: logs/
 logserver_version: 4.9.3
 logserver_container_version: "{{ logserver_version }}-2"
 
-purgelogs_version: 0.2.0
+purgelogs_version: 0.2.3
 purgelogs_container_version: "{{ purgelogs_version }}-1"
+purgelogs_debug: false
 
 logserver_http_port: 31215
 
@@ -34,13 +35,16 @@ logserver_components:
   - service: "purgelogs"
     image: "quay.io/software-factory/purgelogs:{{ purgelogs_container_version }}"
     params: >-
-      --volume /var/www/:/var/www/:Z
+      --volume /var/www/:/var/www/
       --uidmap 0:4000:100
       --gidmap 0:4000:100
       --uidmap {{ container_uid}}:{{ logserver_uid | default(1000) }}:1
       --gidmap {{ container_gid }}:{{ logserver_gid | default(1000) }}:1
+      {% if sf_purgelogs_additional_params is defined %}
+      {{ sf_purgelogs_additional_params }}
+      {% endif %}
     run: >-
-      bash -c "/usr/local/bin/purgelogs --retention-days '{{ logs_expiry }}' --loop 3600 --log-path-dir /var/www/logs"
+      bash -c "/usr/local/bin/purgelogs --retention-days '{{ logs_expiry }}' --loop 3600 --log-path-dir /var/www/logs {% if purgelogs_debug %}--debug{% endif %}"
 
   - service: "{{ role_package }}"
     image: "quay.io/software-factory/{{ role_package }}:{{ logserver_container_version }}"

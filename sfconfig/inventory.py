@@ -153,8 +153,14 @@ def recover(args, pb):
          'loop': [role for role in args.glue['roles']]}
     ]))
 
+    user_ns_task = {'sysctl': {
+        'name': 'user.max_user_namespaces',
+        'value': '31089'
+    }}
+
     # Start mysql
     pb.append(host_play('mysql', tasks=[
+        user_ns_task,
         {'include_role': {
             'name': 'sf-mysql',
             'tasks_from': 'install.yml',
@@ -168,6 +174,7 @@ def recover(args, pb):
 
     # Start zookeeper
     pb.append(host_play('zookeeper', tasks=[
+        user_ns_task,
         {'include_role': {
             'name': 'sf-zookeeper',
             'tasks_from': 'install.yml',
@@ -181,6 +188,7 @@ def recover(args, pb):
     # Call restore task
     for host in args.inventory:
         play = host_play(host, params={'role_action': 'restore'})
+        play['pre_tasks'] = [user_ns_task]
         play['roles'] = []
         for role in host["roles"]:
             # Only recover zuul data from the scheduler
@@ -651,7 +659,7 @@ def generate(args):
     # Adds playbooks to architecture
     for host in arch["inventory"]:
         # Host params are generic roles parameters
-        host["params"] = {'host_public_url': host['public_url']}
+        host["params"] = {}
 
         if "influxdb" in host["roles"]:
             # Add telegraf for statsd gateway
@@ -713,6 +721,6 @@ def generate(args):
     # including network static_hostname defined in sfconfig.yaml
     host_arch = copy.copy(arch)
     host_arch["network"] = args.sfconfig["network"]
-    render_template("/etc/hosts",
+    render_template(args.etc_hosts,
                     "%s/etc-hosts.j2" % templates,
                     host_arch)

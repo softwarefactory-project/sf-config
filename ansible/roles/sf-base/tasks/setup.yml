@@ -131,3 +131,11 @@
 - name: Trust crt
   shell: update-ca-trust
   when: new_crt is changed
+
+- name: Set max log limit in libpod configuration file
+  become: true
+  lineinfile:
+    path: /etc/containers/libpod.conf
+    regexp: "^max_log_size"
+    line: "max_log_size={{ log_size_max }}"
+    create: true

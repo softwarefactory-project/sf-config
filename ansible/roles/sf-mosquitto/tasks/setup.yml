@@ -57,7 +57,7 @@
 - name: update password file
   shell: "{{ item }}"
   loop:
-    - podman run --rm {{ mosquitto_components[0].params }} {{ mosquitto_components[0].image }} mosquitto_passwd -b {{ mosquitto_config_dir }}/passwords SF_SERVICE_USER {{sf_service_user_password}}
+    - podman run --network host --rm {{ mosquitto_components[0].params }} {{ mosquitto_components[0].image }} mosquitto_passwd -b {{ mosquitto_config_dir }}/passwords SF_SERVICE_USER {{sf_service_user_password}}
   changed_when: false
 
 - name: finish mosquitto configuration

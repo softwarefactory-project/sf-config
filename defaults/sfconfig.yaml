@@ -126,14 +126,9 @@ opensearch:
 #    logstash_sftests_com:
 #      password: logstash
 #      role: logstash
-#    kibana_sftests_com:
-#      password: kibana
-#      role: readonly
 
 ## Uncomment below lines if you are using EXTERNAL Opensearch dashboards service.
-opensearch_dashboards:
-  # You can choose None, Basic or JWT
-  readonly_user_autologin: Basic
+opensearch_dashboards: {}
 #  host_url: https://kibana-host-2:5601
 
 logs:

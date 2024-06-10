@@ -1,0 +1,52 @@
+- any_errors_fatal: true
+  hosts: managesf.sftests.com
+  vars:
+    force_update: true
+    role_action: config_update
+- any_errors_fatal: true
+  hosts: elk.sftests.com
+  vars:
+    force_update: true
+    role_action: config_update
+- any_errors_fatal: true
+  hosts: nodepool-builder.sftests.com
+  vars:
+    force_update: true
+    nodepool_services:
+    - nodepool-builder
+    role_action: config_update
+- any_errors_fatal: true
+  hosts: zs.sftests.com
+  roles:
+  - sf-zuul
+  vars:
+    force_update: true
+    nodepool_services:
+    - nodepool-launcher
+    role_action: config_update
+    zuul_services:
+    - zuul-scheduler
+    - zuul-web
+- any_errors_fatal: true
+  hosts: ze01.sftests.com
+  roles:
+  - sf-zuul
+  vars:
+    force_update: true
+    role_action: config_update
+    zuul_services:
+    - zuul-executor
+- any_errors_fatal: true
+  hosts: ze02.sftests.com
+  roles:
+  - sf-zuul
+  vars:
+    force_update: true
+    role_action: config_update
+    zuul_services:
+    - zuul-executor
+- any_errors_fatal: true
+  hosts: runc01.sftests.com
+  vars:
+    force_update: true
+    role_action: config_update

@@ -5,6 +5,8 @@ role_actions:
   - get_logs
   - disable
 
+role_package: "log-processing"
+
 owner: logscraper
 group: logscraper
 container_gid: 1000
@@ -15,7 +17,8 @@ opensearch_host: opensearch.example.com
 
 opensearch_logstash_password: "CHANGE_ME"
 
-zuul_api_url: https://{{ fqdn }}/zuul/api/tenant/{{ tenant_name }}
+zuul_api_url:
+  - "https://{{ fqdn }}/zuul/api/tenant/{{ tenant_name }}"
 insecure: false
 download: true
 logscraper_dir: /var/lib/logscraper

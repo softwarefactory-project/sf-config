@@ -1,4 +1,41 @@
 ---
+# NOTE: Remove this block in the future
+- name: Remove logstash and log-gearman
+  block:
+    - name: Disable services
+      service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: "no"
+      ignore_errors: true
+      loop:
+        - logstash
+        - log-gearman-client
+        - log-gearman-worker
+
+    - name: Remove not needed packages
+      yum:
+        name:
+          - elasticsearch-curator
+          - python-log2gearman-client
+          - python-log2gearman-worker
+        state: absent
+
+    - name: Delete logstash container
+      command: "podman rm logstash"
+      ignore_errors: true
+
+    - name: Remove unecessary directories
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/logstash
+        - /etc/log-gearman-client
+        - /etc/log-gearman-worker
+
+  when: sf_previous_version < 3.8
+
 - name: Check container image version
   include_role:
     name: sf-container

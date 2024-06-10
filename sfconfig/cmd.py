@@ -110,6 +110,7 @@ def usage(components):
     p.add_argument("--erase", action='store_true', help="Erase data")
     p.add_argument("--upgrade", action='store_true', help="Run upgrade task")
     p.add_argument("--update", action='store_true', help="Run upgrade task")
+    p.add_argument("--golden-tests", metavar='PATH', help="Run golden tests")
 
     # Deprecated
     p.add_argument("--skip-install", default=False, action='store_true',
@@ -175,6 +176,28 @@ def remove_unused_role(arch):
 def main():
     components = sfconfig.utils.load_components()
     args = usage(components)
+
+    if args.golden_tests:
+        # Update the golden tests and abort the execution
+        args.sfconfig = yaml_load(args.config)
+        args.sfarch = remove_unused_role(yaml_load(args.arch))
+        args.ansible_root = args.golden_tests
+        args.etc_hosts = "%s/etc-hosts" % args.golden_tests
+        args.glue = dict(
+            sf_playbooks_dir=args.golden_tests
+        )
+        for host in args.sfarch["inventory"]:
+            # TODO: do not force $fqdn as host domain name
+            if "hostname" not in host:
+                host["hostname"] = "%s.%s" % (
+                    host["name"], args.sfconfig["fqdn"])
+
+        sfconfig.arch.process(args)
+        sfconfig.inventory.generate(args)
+        exit(0)
+
+    # When not running golden tests, write /etc/hosts to the right place
+    args.etc_hosts = '/etc/hosts'
 
     # Ensure environment is UTF-8
     os.environ["LC_ALL"] = "en_US.UTF-8"

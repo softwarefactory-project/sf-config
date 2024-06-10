@@ -116,7 +116,7 @@ def process(args):
                 list(aliases)
 
         args.glue["hosts_file"][host["ip"]] = [host["hostname"]] + \
-            list(aliases)
+            list(sorted(aliases))
 
         # NOTE(dpawlik) Remove it after moving elasticsearch role to opensearch
         if 'elasticsearch' in aliases:

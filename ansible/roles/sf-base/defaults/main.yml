@@ -30,3 +30,6 @@ gpg_keys_url:
   - https://softwarefactory-project.io/cgit/software-factory/sf-release/plain/RPM-GPG-KEY-SOFTWARE-FACTORY
   - https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud
   - https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official
+
+# set 1000MB in bytes
+log_size_max: 1048576000

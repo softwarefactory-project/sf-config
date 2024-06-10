@@ -1,0 +1,232 @@
+- any_errors_fatal: true
+  hosts: install-server
+  tasks:
+  - file:
+      path: /root/sf-logs
+      state: absent
+    name: Cleanup sf-logs directory
+  - file:
+      mode: 448
+      path: /root/sf-logs
+      state: directory
+    name: Create sf-logs directory
+  - file:
+      path: /root/sf-logs/install-server
+      state: directory
+    name: Create install-server log storage directory
+  - file:
+      path: /root/sf-logs/mysql
+      state: directory
+    name: Create mysql log storage directory
+  - file:
+      path: /root/sf-logs/gerrit
+      state: directory
+    name: Create gerrit log storage directory
+  - file:
+      path: /root/sf-logs/gateway
+      state: directory
+    name: Create gateway log storage directory
+  - file:
+      path: /root/sf-logs/managesf
+      state: directory
+    name: Create managesf log storage directory
+  - file:
+      path: /root/sf-logs/etherpad
+      state: directory
+    name: Create etherpad log storage directory
+  - file:
+      path: /root/sf-logs/lodgeit
+      state: directory
+    name: Create lodgeit log storage directory
+  - file:
+      path: /root/sf-logs/gerritbot
+      state: directory
+    name: Create gerritbot log storage directory
+  - file:
+      path: /root/sf-logs/murmur
+      state: directory
+    name: Create murmur log storage directory
+  - file:
+      path: /root/sf-logs/opensearch-dashboards
+      state: directory
+    name: Create opensearch-dashboards log storage directory
+  - file:
+      path: /root/sf-logs/keycloak
+      state: directory
+    name: Create keycloak log storage directory
+  - file:
+      path: /root/sf-logs/firehose
+      state: directory
+    name: Create firehose log storage directory
+  - file:
+      path: /root/sf-logs/grafana
+      state: directory
+    name: Create grafana log storage directory
+  - file:
+      path: /root/sf-logs/zookeeper
+      state: directory
+    name: Create zookeeper log storage directory
+  - file:
+      path: /root/sf-logs/logserver
+      state: directory
+    name: Create logserver log storage directory
+  - file:
+      path: /root/sf-logs/opensearch
+      state: directory
+    name: Create opensearch log storage directory
+  - file:
+      path: /root/sf-logs/influxdb
+      state: directory
+    name: Create influxdb log storage directory
+  - file:
+      path: /root/sf-logs/log-processing
+      state: directory
+    name: Create log-processing log storage directory
+  - file:
+      path: /root/sf-logs/hound
+      state: directory
+    name: Create hound log storage directory
+  - file:
+      path: /root/sf-logs/nodepool-builder
+      state: directory
+    name: Create nodepool-builder log storage directory
+  - file:
+      path: /root/sf-logs/zuul-scheduler
+      state: directory
+    name: Create zuul-scheduler log storage directory
+  - file:
+      path: /root/sf-logs/zuul-web
+      state: directory
+    name: Create zuul-web log storage directory
+  - file:
+      path: /root/sf-logs/nodepool-launcher
+      state: directory
+    name: Create nodepool-launcher log storage directory
+  - file:
+      path: /root/sf-logs/zuul-executor
+      state: directory
+    name: Create zuul-executor log storage directory
+  - file:
+      path: /root/sf-logs/hypervisor-runc
+      state: directory
+    name: Create hypervisor-runc log storage directory
+  - file:
+      path: /root/sf-logs/nodepool
+      state: directory
+    name: Create nodepool log storage directory
+  - file:
+      path: /root/sf-logs/zuul
+      state: directory
+    name: Create zuul log storage directory
+- any_errors_fatal: true
+  hosts: managesf.sftests.com
+  roles:
+  - log_dest: /root/sf-logs/base
+    role: sf-base
+  - log_dest: /root/sf-logs/install-server
+    role: sf-install-server
+  - log_dest: /root/sf-logs/mysql
+    role: sf-mysql
+  - log_dest: /root/sf-logs/gerrit
+    role: sf-gerrit
+  - log_dest: /root/sf-logs/gateway
+    role: sf-gateway
+  - log_dest: /root/sf-logs/managesf
+    role: sf-managesf
+  - log_dest: /root/sf-logs/etherpad
+    role: sf-etherpad
+  - log_dest: /root/sf-logs/lodgeit
+    role: sf-lodgeit
+  - log_dest: /root/sf-logs/gerritbot
+    role: sf-gerritbot
+  - log_dest: /root/sf-logs/murmur
+    role: sf-murmur
+  - log_dest: /root/sf-logs/opensearch-dashboards
+    role: sf-opensearch-dashboards
+  - log_dest: /root/sf-logs/keycloak
+    role: sf-keycloak
+  - log_dest: /root/sf-logs/firehose
+    role: sf-firehose
+  - log_dest: /root/sf-logs/grafana
+    role: sf-grafana
+  - log_dest: /root/sf-logs/zookeeper
+    role: sf-zookeeper
+  vars:
+    role_action: get_logs
+- any_errors_fatal: true
+  hosts: elk.sftests.com
+  roles:
+  - log_dest: /root/sf-logs/base
+    role: sf-base
+  - log_dest: /root/sf-logs/logserver
+    role: sf-logserver
+  - log_dest: /root/sf-logs/opensearch
+    role: sf-opensearch
+  - log_dest: /root/sf-logs/influxdb
+    role: sf-influxdb
+  - log_dest: /root/sf-logs/log-processing
+    role: sf-log-processing
+  - log_dest: /root/sf-logs/hound
+    role: sf-hound
+  - log_dest: /root/sf-logs/telegraf
+    role: sf-telegraf
+  vars:
+    role_action: get_logs
+- any_errors_fatal: true
+  hosts: nodepool-builder.sftests.com
+  roles:
+  - log_dest: /root/sf-logs/base
+    role: sf-base
+  - log_dest: /root/sf-logs/nodepool
+    role: sf-nodepool
+  vars:
+    nodepool_services:
+    - nodepool-builder
+    role_action: get_logs
+- any_errors_fatal: true
+  hosts: zs.sftests.com
+  roles:
+  - log_dest: /root/sf-logs/base
+    role: sf-base
+  - log_dest: /root/sf-logs/nodepool
+    role: sf-nodepool
+  - log_dest: /root/sf-logs/zuul
+    role: sf-zuul
+  vars:
+    nodepool_services:
+    - nodepool-launcher
+    role_action: get_logs
+    zuul_services:
+    - zuul-scheduler
+    - zuul-web
+- any_errors_fatal: true
+  hosts: ze01.sftests.com
+  roles:
+  - log_dest: /root/sf-logs/base
+    role: sf-base
+  - log_dest: /root/sf-logs/zuul
+    role: sf-zuul
+  vars:
+    role_action: get_logs
+    zuul_services:
+    - zuul-executor
+- any_errors_fatal: true
+  hosts: ze02.sftests.com
+  roles:
+  - log_dest: /root/sf-logs/base
+    role: sf-base
+  - log_dest: /root/sf-logs/zuul
+    role: sf-zuul
+  vars:
+    role_action: get_logs
+    zuul_services:
+    - zuul-executor
+- any_errors_fatal: true
+  hosts: runc01.sftests.com
+  roles:
+  - log_dest: /root/sf-logs/base
+    role: sf-base
+  - log_dest: /root/sf-logs/hypervisor-runc
+    role: sf-hypervisor-runc
+  vars:
+    role_action: get_logs

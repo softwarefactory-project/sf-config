@@ -31,6 +31,6 @@
     mode: '0700'
 
 - name: Import zuul keys
-  command: "zuul_wrapper import-keys {{ zuul_lib_dir }}/keys/backup-keys"
+  command: "podman run -it --rm --network host --user root --volume /etc/zuul/:/etc/zuul/:Z --volume /var/lib/zuul/:/var/lib/zuul/:Z quay.io/software-factory/zuul-scheduler-sf38:{{ zuul_container_version }} zuul import-keys {{ zuul_lib_dir }}/keys/backup-keys"
   when:
     - "'zuul-scheduler' in zuul_services"

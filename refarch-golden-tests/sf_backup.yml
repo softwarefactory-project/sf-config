@@ -1,0 +1,133 @@
+- any_errors_fatal: true
+  hosts: install-server
+  tasks:
+  - file:
+      mode: '0700'
+      path: /var/lib/software-factory/backup
+      state: directory
+    name: Create backup directory
+  - file:
+      path: /var/lib/software-factory/backup/{{ item }}
+      state: directory
+    loop:
+    - install-server
+    - mysql
+    - gerrit
+    - gateway
+    - managesf
+    - etherpad
+    - lodgeit
+    - gerritbot
+    - murmur
+    - opensearch-dashboards
+    - keycloak
+    - firehose
+    - grafana
+    - zookeeper
+    - logserver
+    - opensearch
+    - influxdb
+    - log-processing
+    - hound
+    - nodepool-builder
+    - zuul-scheduler
+    - zuul-web
+    - nodepool-launcher
+    - zuul-executor
+    - hypervisor-runc
+    - nodepool
+    - zuul
+- any_errors_fatal: true
+  hosts: managesf.sftests.com
+  roles:
+  - backup_dest: /var/lib/software-factory/backup/install-server
+    role: sf-install-server
+  - backup_dest: /var/lib/software-factory/backup/mysql
+    role: sf-mysql
+  - backup_dest: /var/lib/software-factory/backup/gerrit
+    role: sf-gerrit
+  - backup_dest: /var/lib/software-factory/backup/gateway
+    role: sf-gateway
+  - backup_dest: /var/lib/software-factory/backup/managesf
+    role: sf-managesf
+  - backup_dest: /var/lib/software-factory/backup/etherpad
+    role: sf-etherpad
+  - backup_dest: /var/lib/software-factory/backup/lodgeit
+    role: sf-lodgeit
+  - backup_dest: /var/lib/software-factory/backup/gerritbot
+    role: sf-gerritbot
+  - backup_dest: /var/lib/software-factory/backup/murmur
+    role: sf-murmur
+  - backup_dest: /var/lib/software-factory/backup/opensearch-dashboards
+    role: sf-opensearch-dashboards
+  - backup_dest: /var/lib/software-factory/backup/keycloak
+    role: sf-keycloak
+  - backup_dest: /var/lib/software-factory/backup/firehose
+    role: sf-firehose
+  - backup_dest: /var/lib/software-factory/backup/grafana
+    role: sf-grafana
+  - backup_dest: /var/lib/software-factory/backup/zookeeper
+    role: sf-zookeeper
+  vars:
+    role_action: backup
+- any_errors_fatal: true
+  hosts: elk.sftests.com
+  roles:
+  - backup_dest: /var/lib/software-factory/backup/logserver
+    role: sf-logserver
+  - backup_dest: /var/lib/software-factory/backup/opensearch
+    role: sf-opensearch
+  - backup_dest: /var/lib/software-factory/backup/influxdb
+    role: sf-influxdb
+  - backup_dest: /var/lib/software-factory/backup/log-processing
+    role: sf-log-processing
+  - backup_dest: /var/lib/software-factory/backup/hound
+    role: sf-hound
+  - backup_dest: /var/lib/software-factory/backup/telegraf
+    role: sf-telegraf
+  vars:
+    role_action: backup
+- any_errors_fatal: true
+  hosts: nodepool-builder.sftests.com
+  roles:
+  - backup_dest: /var/lib/software-factory/backup/nodepool
+    role: sf-nodepool
+  vars:
+    nodepool_services:
+    - nodepool-builder
+    role_action: backup
+- any_errors_fatal: true
+  hosts: zs.sftests.com
+  roles:
+  - backup_dest: /var/lib/software-factory/backup/nodepool
+    role: sf-nodepool
+  - backup_dest: /var/lib/software-factory/backup/zuul
+    role: sf-zuul
+  vars:
+    nodepool_services:
+    - nodepool-launcher
+    role_action: backup
+    zuul_services:
+    - zuul-scheduler
+    - zuul-web
+- any_errors_fatal: true
+  hosts: ze01.sftests.com
+  roles: []
+  vars:
+    role_action: backup
+    zuul_services:
+    - zuul-executor
+- any_errors_fatal: true
+  hosts: ze02.sftests.com
+  roles: []
+  vars:
+    role_action: backup
+    zuul_services:
+    - zuul-executor
+- any_errors_fatal: true
+  hosts: runc01.sftests.com
+  roles:
+  - backup_dest: /var/lib/software-factory/backup/hypervisor-runc
+    role: sf-hypervisor-runc
+  vars:
+    role_action: backup

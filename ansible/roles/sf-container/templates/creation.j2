@@ -8,7 +8,7 @@ if [ "$1" ]; then
   {% else %}
     {% set module = 'unknown' %}
   {% endif %}
-  container_exec_path=$(podman run --rm {{ item.image }} python3 -c "import {{ module }}, os.path; print(os.path.dirname({{ module }}.__file__) + '/')")
+  container_exec_path=$(podman run --network host --rm {{ item.image }} python3 -c "import {{ module }}, os.path; print(os.path.dirname({{ module }}.__file__) + '/')")
   patched_volume=" --volume $1:$container_exec_path:z "
 fi
 podman create --name {{ item.service }} {{ item.params }} {{ self_signed_certs }} $patched_volume {{ item.image }} {{ item.run | default(None) }}

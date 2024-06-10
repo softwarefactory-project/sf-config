@@ -2,33 +2,13 @@
 - name: Gather the rpm packages as facts
   package_facts:
     manager: auto
-  no_log : true
+  no_log: true
 
 - service_facts:
   run_once: true
 
-- name: If mariadb-server is running
+- name: If mariadb-server is running (installed via package)
   block:
-
-    - name: Creating backup of old config files
-      copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.target }}"
-        owner: "{{ owner }}"
-        group: "{{ group }}"
-        mode: "0644"
-      loop:
-        - src: "/root/.my.cnf"
-          target: "{{ mysql_config_dir }}/.my.cnf.bck"
-        - src: "/root/.my.cnf"
-          target: "{{ mysql_config_dir }}/.my.cnf"
-        - src: "/etc/my.cnf"
-          target: "{{ mysql_config_dir }}/my.cnf.bck"
-        - src: "/etc/my.cnf"
-          target: "{{ mysql_config_dir }}/my.cnf"
-        - src: "/etc/my.cnf.d/mariadb-server.cnf"
-          target: "{{ mysql_config_drop_in_dir }}/mariadb-server.cnf.bck"
-
     - name: Stop the service
       service:
         name: mariadb
@@ -49,8 +29,31 @@
         - "/etc/my.cnf"
         - "/etc/my.cnf.d/mariadb-server.cnf"
   when:
-  - "'mariadb-server' in ansible_facts.packages"
-  - "'mariadb-server.service' in {{ ansible_facts.services }}"
+    - "'mariadb-server' in ansible_facts.packages"
+    - "'mariadb-server.service' in {{ ansible_facts.services }}"
+
+- name: Check if mariadb 10.3.28 is installed
+  shell: "podman images | grep mariadb | grep 10.3.28"
+  register: check_mariadb_10_3_28
+  ignore_errors: true
+
+- name: If mariadb-server 10.3.28 is running (installed via container sf-3.8)
+  block:
+    # podman stop attempt to kill SIGTERM mysqld_safe instead of mysqld
+    # and as it fails it send SIGKILL and the mysql is shutdown in impropoer state
+    # preventing the service to be upgraded.
+    - name: Fix systemctl stop command
+      shell: |
+        sed -i 's|^ExecStop.*|ExecStop=/bin/pkill mysqld|g' /etc/systemd/system/mysql.service
+        systemctl daemon-reload
+
+    - name: Stop the service
+      service:
+        name: mysql
+        state: stopped
+  when:
+    - "'mysql.service' in {{ ansible_facts.services }}"
+    - check_mariadb_10_3_28 is success
 
 - name: Pull image
   include_role:
