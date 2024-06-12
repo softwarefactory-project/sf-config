@@ -3,3 +3,4 @@
   service:
     name: k1s
     state: stopped
+  ignore_errors: true
