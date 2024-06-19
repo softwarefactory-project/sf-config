@@ -35,7 +35,7 @@ logserver_components:
   - service: "purgelogs"
     image: "quay.io/software-factory/purgelogs:{{ purgelogs_container_version }}"
     params: >-
-      --volume /var/www/:/var/www/
+      --volume /var/www/logs/:/var/www/logs/:Z
       --uidmap 0:4000:100
       --gidmap 0:4000:100
       --uidmap {{ container_uid}}:{{ logserver_uid | default(1000) }}:1
@@ -56,7 +56,7 @@ logserver_components:
       --uidmap {{ container_uid}}:{{ logserver_uid | default(1000) }}:1
       --gidmap {{ container_gid }}:{{ logserver_gid | default(1000) }}:1
       --volume {{ logserver_config_dir }}/{{ logserver_httpd_cont_conf_file }}:/etc/httpd/conf.d/{{ logserver_httpd_cont_conf_file }}:Z
-      --volume /var/www/:/var/www/:Z
+      --volume /var/www/logs/:/var/www/logs/:Z
       {% if sf_logserver_additional_params is defined %}
       {{ sf_logserver_additional_params }}
       {% endif %}
