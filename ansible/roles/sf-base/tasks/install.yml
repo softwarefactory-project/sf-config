@@ -119,6 +119,8 @@
   with_items:
     - /usr/libexec/software-factory
     - /var/lib/software-factory/versions
+    - /var/lib/software-factory/state
+    - /var/log/software-factory
 
 - name: Install libexec scripts
   copy:
