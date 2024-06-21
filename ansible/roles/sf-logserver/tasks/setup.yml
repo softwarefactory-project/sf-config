@@ -32,7 +32,6 @@
     path: /var/www/logs
     state: directory
     owner: "{{ owner }}"
-    group: apache
     mode: '0755'
 
 - name: Authorize logserver sshkey
@@ -45,7 +44,6 @@
   template:
     src: "{{ logserver_httpd_cont_conf_file }}.j2"
     dest: "{{ logserver_config_dir }}/{{ logserver_httpd_cont_conf_file }}"
-  notify: apache reload
 
 - name: Ensure old purgelogs cron absent
   cron:
