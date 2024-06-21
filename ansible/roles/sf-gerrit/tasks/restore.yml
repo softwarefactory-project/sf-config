@@ -13,16 +13,25 @@
     src: "{{ backup_src }}/"
     dest: /
 
-- name: "Restore files ownership"
+- name: "Restore ownership of directory {{ item }}"
   file:
     path: "{{ item }}"
     owner: "gerrit"
     group: "gerrit"
     recurse: "yes"
-    state: "directory"
+    state: directory
   loop:
     - /var/lib/gerrit/git
     - /var/lib/gerrit/.ssh
+
+- name: "Restore ownership of file {{ item }}"
+  file:
+    path: "{{ item }}"
+    owner: "gerrit"
+    group: "gerrit"
+    state: file
+  loop:
+    - /etc/gerrit/keystore
 
 - name: "Ensure /var/lib/gerrit is owned by gerrit"
   file:
