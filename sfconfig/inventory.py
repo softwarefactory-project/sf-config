@@ -138,6 +138,7 @@ def update(args, pb):
 def install(args, pb):
     action = {'role_action': 'install'}
     pb.append(host_play('all', 'base', action))
+    setup_base(args, pb)
     for host in args.inventory:
         pb.append(host_play(host, host['roles'], action))
 
@@ -153,14 +154,8 @@ def recover(args, pb):
          'loop': [role for role in args.glue['roles']]}
     ]))
 
-    user_ns_task = {'sysctl': {
-        'name': 'user.max_user_namespaces',
-        'value': '31089'
-    }}
-
     # Start mysql
     pb.append(host_play('mysql', tasks=[
-        user_ns_task,
         {'include_role': {
             'name': 'sf-mysql',
             'tasks_from': 'install.yml',
@@ -174,7 +169,6 @@ def recover(args, pb):
 
     # Start zookeeper
     pb.append(host_play('zookeeper', tasks=[
-        user_ns_task,
         {'include_role': {
             'name': 'sf-zookeeper',
             'tasks_from': 'install.yml',
@@ -188,7 +182,6 @@ def recover(args, pb):
     # Call restore task
     for host in args.inventory:
         play = host_play(host, params={'role_action': 'restore'})
-        play['pre_tasks'] = [user_ns_task]
         play['roles'] = []
         for role in host["roles"]:
             # Only recover zuul data from the scheduler
@@ -202,6 +195,18 @@ def recover(args, pb):
 
     pb.append(host_play('install-server',
                         tasks=notify_journald("recover ended")))
+
+
+def setup_base(args, pb):
+    # Setup base role on all hosts
+    for host in args.inventory:
+        roles_action = {'role_action': 'setup', 'manage_etc_hosts': True}
+        host_roles = ["postfix", "base"]
+        if host.get("remote", False):
+            # This host is running on isolated network
+            host_roles = ["base"]
+            roles_action['manage_etc_hosts'] = False
+        pb.append(host_play(host, host_roles, roles_action))
 
 
 def setup(args, pb):
