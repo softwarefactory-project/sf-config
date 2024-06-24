@@ -22,9 +22,7 @@ required_roles = (
     "keycloak",
 )
 
-rhel_unsupported_roles = (
-    "firehose",
-)
+rhel_unsupported_roles = []
 
 correct_order = ['gerrit', 'managesf', 'opensearch', 'opensearch-dashboards']
 
