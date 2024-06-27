@@ -12,11 +12,14 @@
       IndexOptions FancyIndexing HTMLTable NameWidth=* SuppressDescription
   </Directory>
 
+  <FilesMatch \.html$>
+      ForceType text/html
+      AddDefaultCharset UTF-8
+  </FilesMatch>
   <FilesMatch \.gz$>
       ForceType text/plain
       AddEncoding x-gzip gz
   </FilesMatch>
-
   <FilesMatch \.txt\.gz$>
       ForceType text/json
       AddDefaultCharset UTF-8
