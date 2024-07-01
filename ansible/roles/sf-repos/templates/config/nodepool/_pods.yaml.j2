@@ -2,7 +2,7 @@
 ---
 {% if not tenant_deployment %}
 labels:
-  - name: pod-centos-7
+  - name: pod-stream-9
 
 {% if 'hypervisor-k1s' in roles %}
 extra-labels:
@@ -10,8 +10,8 @@ extra-labels:
   - provider: managed-k1s-provider-{{ host['name'] }}
     pool: main
     labels:
-      - name: pod-centos-7
-        image: localhost/k1s/centos-7
+      - name: pod-stream-9
+        image: localhost/k1s/stream-9
         python-path: /bin/python2
 {% endif %}
 {% endfor %}
