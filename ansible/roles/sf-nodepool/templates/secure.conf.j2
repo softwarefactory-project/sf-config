@@ -6,3 +6,6 @@ diskimages:
       REG_PASSWORD: {{ dib_reg_password['reg_password'] }}
 {% endfor %}
 {% endif %}
+
+# Adds a fake secure to workaround https://review.opendev.org/c/zuul/nodepool/+/922971
+testy: clapiotte
