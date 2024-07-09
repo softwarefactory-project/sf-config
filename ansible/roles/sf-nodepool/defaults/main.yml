@@ -83,8 +83,8 @@ nodepool_components:
       {% if dib_upstream_elements %}
       --volume /usr/share/project-config/:/usr/share/project-config/
       {% endif %}
-      {% if 'influxdb' in roles %}
-      --env STATSD_HOST={{ statsd_host | default(influxdb_host | default ('')) }}
+      {% if statsd_host is defined %}
+      --env STATSD_HOST={{ statsd_host }}
       --env STATSD_PORT={{ statsd_port | default(8125) }}
       {% endif %}
       {% if nodepool_ibm_credentials %}

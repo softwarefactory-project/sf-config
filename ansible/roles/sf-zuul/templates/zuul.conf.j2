@@ -1,6 +1,6 @@
-{% if 'influxdb' in roles %}
+{% if statsd_host is defined %}
 [statsd]
-server={{ statsd_host | default(influxdb_host | default ('')) }}
+server={{ statsd_host }}
 port={{ statsd_port | default(8125) }}
 {% endif %}
 
