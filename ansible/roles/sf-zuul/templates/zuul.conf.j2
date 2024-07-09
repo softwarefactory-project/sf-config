@@ -164,12 +164,13 @@ driver=github
 # Github App
 app_id={{ conn.get('app_id') }}
 app_key={{ zuul_lib_dir }}/.ssh/github_{{ conn['name'] }}_rsa
-{% elif conn.get('api_token') %}
-# Github Webhook
+{% endif %}
 sshkey={{ zuul_lib_dir }}/.ssh/id_rsa
+{% if conn.get('api_token') %}
 api_token={{ conn['api_token'] }}
 {% endif %}
 {% if conn.get('webhook_token') %}
+# Github Webhook
 webhook_token={{ conn['webhook_token'] }}
 {% endif %}
 server={{ conn['hostname']|default('github.com') }}
