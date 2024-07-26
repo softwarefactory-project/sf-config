@@ -228,6 +228,7 @@
           cron:
             name: Update project-config repo
             hour: "1"
+            minute: "0"
             job: "systemd-cat ansible-playbook -i 'localhost,' /opt/manage_upstream_config_repo.yaml"
       when: dib_upstream_elements
   when:
