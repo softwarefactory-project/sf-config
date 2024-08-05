@@ -10,7 +10,7 @@
       - mod_ssl
       - mod_wsgi
       - "https://mirror.stream.centos.org/9-stream/CRB/x86_64/os/Packages/{{ _fontawesome.stdout }}"
-      - https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/x/xstatic-patternfly-common-3.21.0.1-1.el7.noarch.rpm
+      - https://archives.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/x/xstatic-patternfly-common-3.21.0.1-1.el7.noarch.rpm
       - https://softwarefactory-project.io/kojifiles/repos/sf-3.8-el7-release/Mash/sf-ui-0.2.9-1.el7.noarch.rpm
       - https://softwarefactory-project.io/kojifiles/repos/sf-3.8-el7-release/Mash/sf-web-assets-1.0-6.el7.noarch.rpm
       - https://softwarefactory-project.io/kojifiles/repos/sf-3.8-el7-release/Mash/sf-docs-3.8.0-1.el7.noarch.rpm
