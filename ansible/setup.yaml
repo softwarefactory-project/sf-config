@@ -5,6 +5,11 @@
       args:
         chdir: "{{ sfconfig_path | default('/root/sf-config')}}"
 
+    - name: Check if /etc/software-factory/sfconfig.yaml exists
+      ansible.builtin.stat:
+        path: /etc/software-factory/sfconfig.yaml
+      register: sfconfig_file
+
     - name: create working directories
       ansible.builtin.file:
         path: "{{ item }}"
@@ -21,10 +26,15 @@
         - /var/lib/software-factory/state
         - /var/lib/software-factory/versions
 
+    - name: Copy defaults config files if needed
+      ansible.builtin.command: rsync -aL defaults/ /etc/software-factory/
+      args:
+        chdir: "{{ sfconfig_path | default('/root/sf-config')}}"
+      when: not sfconfig_file.stat.exists
+
     - name: Copy defaults config files
       ansible.builtin.command: "{{ item }}"
       loop:
-        - rsync -aL defaults/ /etc/software-factory/
         - rsync -aL ansible  defaults  refarch  scripts  templates  testinfra /usr/share/sf-config/
         - rsync -aL ansible/ansible.cfg ~/.ansible.cfg
       args:
