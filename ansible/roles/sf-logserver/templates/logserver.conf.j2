@@ -16,6 +16,9 @@
       ForceType text/html
       AddDefaultCharset UTF-8
   </FilesMatch>
+  <FilesMatch \.y.?ml$>
+      ForceType application/yaml
+  </FilesMatch>
   <FilesMatch \.gz$>
       ForceType text/plain
       AddEncoding x-gzip gz
